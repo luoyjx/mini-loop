@@ -1,0 +1,5 @@
+learn-claude-code
+__pycache__
+.pytest_cache
+.venv
+.env
