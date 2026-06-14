@@ -9,18 +9,44 @@ many independent agents at once.
     Server = FastAPI + SessionManager (one isolated Agent per session)
 """
 
-from .agent import Agent
-from .config import Settings, load_settings, build_client
-from .session import AgentSession
+from .agent import Agent, TodoManager
+from .builtins import default_registry, explore_registry, worker_registry
+from .compaction import Compactor, DefaultCompactor, estimate_tokens, microcompact
+from .config import Settings, build_client, load_settings
 from .manager import SessionManager
+from .prompts import default_system_builder, sections_builder
+from .registry import Hook, Hooks, Tool, ToolCall, ToolContext, ToolRegistry
+from .session import AgentSession
+from .skills import SkillLoader
+from .tools import Toolset
 
 __all__ = [
+    # core
     "Agent",
     "AgentSession",
     "SessionManager",
     "Settings",
     "load_settings",
     "build_client",
+    # extension seams
+    "Tool",
+    "ToolRegistry",
+    "ToolContext",
+    "ToolCall",
+    "Hook",
+    "Hooks",
+    "Compactor",
+    "DefaultCompactor",
+    "SkillLoader",
+    "Toolset",
+    "TodoManager",
+    "default_registry",
+    "explore_registry",
+    "worker_registry",
+    "default_system_builder",
+    "sections_builder",
+    "estimate_tokens",
+    "microcompact",
 ]
 
 __version__ = "0.1.0"

@@ -55,18 +55,68 @@ parallel.
 
 ```
 mini_loop/
-  config.py     env + LLM-client factory (anthropic import is lazy)
-  tools.py      per-workspace bash/read/write/edit + async dispatch + safe_path
-  skills.py     SkillLoader — index descriptions, load bodies on demand
-  agent.py      the async agent loop: tools + todo + subagent + skills + compaction
-  session.py    AgentSession — history, status, event pub/sub, per-session lock
-  manager.py    SessionManager — registry, shared client + semaphore, isolation
-  server.py     FastAPI app: REST + SSE, plus a tiny browser console at /
-  fake_llm.py   deterministic offline stand-in for AsyncAnthropic
-  __main__.py   `python -m mini_loop` → uvicorn
+  config.py      env + LLM-client factory (anthropic import is lazy)
+  tools.py       per-workspace bash/read/write/edit + async dispatch + safe_path
+  registry.py    Tool / ToolRegistry / ToolContext + Hook / Hooks   ← extension seam
+  builtins.py    the built-in tools as Tools; default/explore/worker registries
+  skills.py      SkillLoader — index descriptions, load bodies on demand
+  prompts.py     system_builder (default + sections_builder)
+  compaction.py  Compactor protocol + DefaultCompactor (micro + auto)
+  agent.py       the async loop: dispatch via registry + hooks + compactor
+  session.py     AgentSession — history, status, event pub/sub, per-session lock
+  manager.py     SessionManager — injects every seam, shared client + semaphore
+  server.py      create_app() factory: REST + SSE + browser console at /
+  fake_llm.py    deterministic offline stand-in for AsyncAnthropic
+  __main__.py    `python -m mini_loop` → uvicorn
 skills/code_review/SKILL.md   sample skill (loadable via load_skill)
-tests/          offline tests (no API key): loop, sandbox, subagent, compaction, server, concurrency
+examples/custom_agent.py      all seams composed into a domain agent + custom server
+tests/           offline tests (no key): loop, sandbox, subagent, compaction,
+                 server, concurrency, and every extension seam
 ```
+
+---
+
+## Extending it (build your own business)
+
+Every capability around the loop is a **swappable seam** you inject at
+construction — no core edits. Add a tool, gate it with a permission hook, swap
+the prompt/compaction/provider, provision per-tenant sandboxes, tap the event
+stream:
+
+```python
+from mini_loop import SessionManager, build_client, load_settings, Hooks, default_registry
+from mini_loop.server import create_app
+
+registry = default_registry()
+
+@registry.add("web_search", "Search the web.",
+              {"type":"object","properties":{"query":{"type":"string"}},"required":["query"]})
+async def web_search(ctx, query):
+    return await my_search_api(query)        # ctx.workspace / ctx.state are yours
+
+s = load_settings()
+manager = SessionManager(s, build_client(s),
+                         tool_registry=registry,          # your tools
+                         hooks=Hooks([MyPolicy()]),       # permissions / audit
+                         system_builder=my_prompt,        # prompt assembly
+                         workspace_factory=per_tenant_dir,# sandbox provisioning
+                         event_sink=my_metrics)           # observability
+app = create_app(manager=manager)            # same REST + SSE + console
+```
+
+| Seam | Inject via | Changes |
+|---|---|---|
+| `ToolRegistry` | `tool_registry=` | what the agent can do |
+| `Hooks` | `hooks=` | permissions, audit, arg/output rewriting |
+| `system_builder` | `system_builder=` | the system prompt |
+| `Compactor` | `compactor=` | context trimming/summarization |
+| `SkillLoader` + `skills/` | `skills=` | on-demand domain knowledge |
+| LLM client | `client=` / env | model / provider / base_url |
+| `workspace_factory` | `workspace_factory=` | where/how the sandbox is provisioned |
+| `event_sink` | `event_sink=` | global metrics / logging / persistence |
+
+**Full guide with interfaces + runnable examples for each module:
+[EXTENDING.md](./EXTENDING.md).**
 
 ---
 

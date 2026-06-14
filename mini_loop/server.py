@@ -8,6 +8,17 @@ Concurrency model:
     keeps going. Blocking tool calls (bash, file I/O) are offloaded to threads
     inside the agent, so they never freeze the loop the others share.
 
+Extensibility:
+  Handlers read the manager from `request.app.state.manager`, and the app is
+  built by `create_app(...)`. To serve a *customized* fleet (your tools, hooks,
+  prompt, workspace factory) build a SessionManager and pass it in:
+
+      from mini_loop.server import create_app
+      app = create_app(manager=my_manager)
+
+  The module-level `app = create_app()` is the default fleet, used by
+  `python -m mini_loop` and `uvicorn mini_loop.server:app`.
+
 Endpoints
   GET    /                          embedded console + endpoint list
   GET    /healthz                   liveness + config
@@ -26,14 +37,16 @@ import asyncio
 import contextlib
 import json
 from contextlib import asynccontextmanager
+from collections.abc import Callable
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
 
-from .config import build_client, load_settings
+from .config import Settings, build_client, load_settings
 from .manager import SessionManager
+from .session import AgentSession
 
 
 class CreateSessionReq(BaseModel):
@@ -45,117 +58,129 @@ class MessageReq(BaseModel):
     message: str
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    settings = load_settings()
-    client = build_client(settings)
-    app.state.settings = settings
-    app.state.manager = SessionManager(settings, client)
-    yield
-    with contextlib.suppress(Exception):
-        await client.close()  # AsyncAnthropic exposes .close(); fake doesn't, hence suppress
+def _manager(request: Request) -> SessionManager:
+    return request.app.state.manager
 
 
-app = FastAPI(title="mini-loop", version="0.1.0", lifespan=lifespan)
-
-
-def _manager(app: FastAPI) -> SessionManager:
-    return app.state.manager
-
-
-def _require(session_id: str) -> "AgentSession":  # noqa: F821
-    session = _manager(app).get(session_id)
+def _require(request: Request, session_id: str) -> AgentSession:
+    session = _manager(request).get(session_id)
     if session is None:
         raise HTTPException(status_code=404, detail=f"No session '{session_id}'")
     return session
 
 
-@app.get("/healthz")
-async def healthz():
-    s = app.state.settings
-    return {"status": "ok", "model": s.model, "fake_llm": s.fake_llm,
-            "max_concurrent_llm": s.max_concurrent_llm, "sessions": len(_manager(app).list())}
+def create_app(
+    *,
+    settings: Settings | None = None,
+    manager: SessionManager | None = None,
+    manager_factory: Callable[[Settings], SessionManager] | None = None,
+) -> FastAPI:
+    """Build the FastAPI app. Pass `manager` (or `manager_factory`) to serve a
+    customized fleet; omit both for the default."""
 
-
-@app.post("/sessions")
-async def create_session(req: CreateSessionReq):
-    session = _manager(app).create(system=req.system, model=req.model)
-    return session.info()
-
-
-@app.get("/sessions")
-async def list_sessions():
-    return [s.info() for s in _manager(app).list()]
-
-
-@app.get("/sessions/{session_id}")
-async def get_session(session_id: str):
-    return _require(session_id).info()
-
-
-@app.delete("/sessions/{session_id}")
-async def delete_session(session_id: str):
-    ok = _manager(app).delete(session_id)
-    if not ok:
-        raise HTTPException(status_code=404, detail=f"No session '{session_id}'")
-    return {"deleted": session_id}
-
-
-@app.post("/sessions/{session_id}/messages")
-async def post_message(session_id: str, req: MessageReq):
-    session = _require(session_id)
-    final = await session.run(req.message)
-    return {"session": session_id, "final": final, "info": session.info()}
-
-
-@app.post("/sessions/{session_id}/messages/stream")
-async def post_message_stream(session_id: str, req: MessageReq):
-    session = _require(session_id)
-
-    async def gen():
-        q = session.subscribe(replay=False)
-        run_task = asyncio.create_task(session.run(req.message))
-        try:
-            while True:
-                getter = asyncio.ensure_future(q.get())
-                done, _ = await asyncio.wait({getter, run_task}, return_when=asyncio.FIRST_COMPLETED)
-                if getter in done:
-                    event = getter.result()
-                    yield {"event": event["type"], "data": json.dumps(event)}
-                else:
-                    getter.cancel()
-                    # run finished: flush any trailing events, then stop
-                    while not q.empty():
-                        event = q.get_nowait()
-                        yield {"event": event["type"], "data": json.dumps(event)}
-                    break
-        finally:
-            session.unsubscribe(q)
+    @asynccontextmanager
+    async def lifespan(app: FastAPI):
+        cfg = settings or load_settings()
+        app.state.settings = cfg
+        if manager is not None:
+            app.state.manager = manager
+            owns_client = False
+        elif manager_factory is not None:
+            app.state.manager = manager_factory(cfg)
+            owns_client = False
+        else:
+            app.state.manager = SessionManager(cfg, build_client(cfg))
+            owns_client = True
+        yield
+        if owns_client:
             with contextlib.suppress(Exception):
-                await run_task
+                await app.state.manager.client.close()
 
-    return EventSourceResponse(gen())
-
-
-@app.get("/sessions/{session_id}/events")
-async def observe(session_id: str):
-    session = _require(session_id)
-
-    async def gen():
-        q = session.subscribe(replay=True)
-        try:
-            while True:
-                event = await q.get()
-                yield {"event": event["type"], "data": json.dumps(event)}
-        finally:
-            session.unsubscribe(q)
-
-    return EventSourceResponse(gen())
+    app = FastAPI(title="mini-loop", version="0.1.0", lifespan=lifespan)
+    _register_routes(app)
+    return app
 
 
-@app.get("/", response_class=HTMLResponse)
-async def console():
-    return CONSOLE_HTML
+def _register_routes(app: FastAPI) -> None:
+    @app.get("/healthz")
+    async def healthz(request: Request):
+        s = request.app.state.settings
+        return {"status": "ok", "model": s.model, "fake_llm": s.fake_llm,
+                "max_concurrent_llm": s.max_concurrent_llm, "sessions": len(_manager(request).list())}
+
+    @app.post("/sessions")
+    async def create_session(request: Request, req: CreateSessionReq):
+        return _manager(request).create(system=req.system, model=req.model).info()
+
+    @app.get("/sessions")
+    async def list_sessions(request: Request):
+        return [s.info() for s in _manager(request).list()]
+
+    @app.get("/sessions/{session_id}")
+    async def get_session(request: Request, session_id: str):
+        return _require(request, session_id).info()
+
+    @app.delete("/sessions/{session_id}")
+    async def delete_session(request: Request, session_id: str):
+        if not _manager(request).delete(session_id):
+            raise HTTPException(status_code=404, detail=f"No session '{session_id}'")
+        return {"deleted": session_id}
+
+    @app.post("/sessions/{session_id}/messages")
+    async def post_message(request: Request, session_id: str, req: MessageReq):
+        session = _require(request, session_id)
+        final = await session.run(req.message)
+        return {"session": session_id, "final": final, "info": session.info()}
+
+    @app.post("/sessions/{session_id}/messages/stream")
+    async def post_message_stream(request: Request, session_id: str, req: MessageReq):
+        session = _require(request, session_id)
+
+        async def gen():
+            q = session.subscribe(replay=False)
+            run_task = asyncio.create_task(session.run(req.message))
+            try:
+                while True:
+                    getter = asyncio.ensure_future(q.get())
+                    done, _ = await asyncio.wait({getter, run_task}, return_when=asyncio.FIRST_COMPLETED)
+                    if getter in done:
+                        event = getter.result()
+                        yield {"event": event["type"], "data": json.dumps(event)}
+                    else:
+                        getter.cancel()
+                        while not q.empty():
+                            event = q.get_nowait()
+                            yield {"event": event["type"], "data": json.dumps(event)}
+                        break
+            finally:
+                session.unsubscribe(q)
+                with contextlib.suppress(Exception):
+                    await run_task
+
+        return EventSourceResponse(gen())
+
+    @app.get("/sessions/{session_id}/events")
+    async def observe(request: Request, session_id: str):
+        session = _require(request, session_id)
+
+        async def gen():
+            q = session.subscribe(replay=True)
+            try:
+                while True:
+                    event = await q.get()
+                    yield {"event": event["type"], "data": json.dumps(event)}
+            finally:
+                session.unsubscribe(q)
+
+        return EventSourceResponse(gen())
+
+    @app.get("/", response_class=HTMLResponse)
+    async def console():
+        return CONSOLE_HTML
+
+
+# Default fleet (used by `python -m mini_loop` and `uvicorn mini_loop.server:app`).
+app = create_app()
 
 
 CONSOLE_HTML = """<!doctype html>
@@ -171,7 +196,7 @@ CONSOLE_HTML = """<!doctype html>
  .log{height:60vh;overflow:auto;white-space:pre-wrap;font-size:12px}
  .ev{margin:2px 0;padding:2px 4px;border-radius:4px}
  .text{color:#79c0ff}.tool_use{color:#d2a8ff}.tool_result{color:#8b949e}
- .done{color:#3fb950}.error{color:#f85149}.status,.compact,.subagent_start,.subagent_end,.todo{color:#e3b341}
+ .done{color:#3fb950}.error{color:#f85149}.status,.compact,.subagent_start,.subagent_end,.todo,.audit{color:#e3b341}
  .id{color:#58a6ff}
 </style>
 <header><b>mini-loop</b> &mdash; minimal complete agent, served concurrently.

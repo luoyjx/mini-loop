@@ -56,7 +56,9 @@ def text(s: str) -> TextBlock:
     return TextBlock(s)
 
 
-def tool(name: str, _id: str = "toolu_x", **input) -> ToolUseBlock:
+def tool(name: str, /, _id: str = "toolu_x", **input) -> ToolUseBlock:
+    # `name` is positional-only so a tool's own `name` input field can still be
+    # passed as a kwarg, e.g. tool("greet", name="World").
     return ToolUseBlock(name, input, _id)
 
 

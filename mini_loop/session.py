@@ -13,8 +13,10 @@ server needs:
 from __future__ import annotations
 
 import asyncio
+import inspect
 import time
 from collections import deque
+from collections.abc import Callable
 from pathlib import Path
 
 from .agent import Agent
@@ -23,13 +25,17 @@ BACKLOG = 200  # recent events retained for replay to new subscribers
 
 
 class AgentSession:
-    def __init__(self, session_id: str, workspace: Path, *, system: str | None = None) -> None:
+    def __init__(self, session_id: str, workspace: Path, *, system: str | None = None,
+                 event_sink: Callable[[dict], object] | None = None) -> None:
         self.id = session_id
         self.workspace = workspace
         self.system = system
         self.created_at = time.time()
         self.status = "idle"  # idle | running | error
         self.run_count = 0
+
+        # Optional global observer (metrics, logging, persistence). Sync or async.
+        self._event_sink = event_sink
 
         self.lock = asyncio.Lock()
         self._subscribers: set[asyncio.Queue] = set()
@@ -41,10 +47,14 @@ class AgentSession:
     # -- event bus --
     async def emit(self, event: dict) -> None:
         self._seq += 1
-        event = {"seq": self._seq, "ts": time.time(), **event}
+        event = {"seq": self._seq, "ts": time.time(), "session": self.id, **event}
         self._backlog.append(event)
         for q in list(self._subscribers):
             q.put_nowait(event)
+        if self._event_sink is not None:
+            res = self._event_sink(event)
+            if inspect.isawaitable(res):
+                await res
 
     def subscribe(self, replay: bool = True) -> asyncio.Queue:
         q: asyncio.Queue = asyncio.Queue()
