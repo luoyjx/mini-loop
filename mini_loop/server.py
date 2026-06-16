@@ -89,12 +89,17 @@ def create_app(
             app.state.manager = manager_factory(cfg)
             owns_client = False
         else:
-            app.state.manager = SessionManager(cfg, build_client(cfg))
+            app.state.manager = SessionManager(cfg, build_client(cfg), enable_features=cfg.enable_features)
             owns_client = True
+        mgr = app.state.manager
+        with contextlib.suppress(Exception):
+            await mgr.start()   # starts the cron ticker when features are on
         yield
+        with contextlib.suppress(Exception):
+            await mgr.stop()
         if owns_client:
             with contextlib.suppress(Exception):
-                await app.state.manager.client.close()
+                await mgr.client.close()
 
     app = FastAPI(title="mini-loop", version="0.1.0", lifespan=lifespan)
     _register_routes(app)
@@ -106,7 +111,8 @@ def _register_routes(app: FastAPI) -> None:
     async def healthz(request: Request):
         s = request.app.state.settings
         return {"status": "ok", "model": s.model, "fake_llm": s.fake_llm,
-                "max_concurrent_llm": s.max_concurrent_llm, "sessions": len(_manager(request).list())}
+                "features": s.enable_features, "max_concurrent_llm": s.max_concurrent_llm,
+                "sessions": len(_manager(request).list())}
 
     @app.post("/sessions")
     async def create_session(request: Request, req: CreateSessionReq):

@@ -118,6 +118,28 @@ app = create_app(manager=manager)            # same REST + SSE + console
 **Full guide with interfaces + runnable examples for each module:
 [EXTENDING.md](./EXTENDING.md).**
 
+### Feature coverage (learn-claude-code s01–s20)
+
+The core loop is always on. The rest ship as optional modules — flip them all on
+with `MINILOOP_FEATURES=all` (or `SessionManager(enable_features=True)` /
+`full_registry()`):
+
+| | Mechanism | | Mechanism |
+|---|---|---|---|
+| s01 | agent loop ✅ | s11 | error recovery ✅ (`recovery=`) |
+| s02 | tool use ✅ | s12 | task system ✅ (`install_tasks`) |
+| s03 | permissions ✅ (Hooks) | s13 | background tasks ✅ (async) |
+| s04 | hooks ✅ | s14 | cron ✅ (asyncio scheduler) |
+| s05 | TodoWrite ✅ | s15–17 | teams ✅ (MessageBus + `spawn_teammate`) |
+| s06 | subagent ✅ | s18 | worktree isolation ✅ (`worktree_workspace_factory`) |
+| s07 | skills ✅ | s19 | MCP ✅ (`connect_mcp`, in-process + stdio) |
+| s08 | compaction ✅ | s20 | comprehensive ✅ (this assembly) |
+| s09 | memory ✅ (`remember`/`recall`) | s10 | system prompt ✅ (`system_builder`) |
+
+```sh
+MINILOOP_FAKE_LLM=1 MINILOOP_FEATURES=all python -m mini_loop   # everything on, no key
+```
+
 ---
 
 ## Quick start

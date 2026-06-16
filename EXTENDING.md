@@ -35,6 +35,8 @@ A complete, runnable example combining all of the below:
 | `registry.py` | `Hooks` (`Hook`) | `hooks=` | permissions, audit, arg/output rewriting |
 | `prompts.py` | `system_builder(agent)->str` | `system_builder=` / `system=` | the system prompt |
 | `compaction.py` | `Compactor` | `compactor=` | how context is trimmed/summarized |
+| `recovery.py` | `RecoveryPolicy` | `recovery=` | retry/backoff/token-escalation/fallback on LLM errors |
+| `agent.py` | `injectors` (`async (agent)->msgs`) | `injectors=` | splice messages into each turn (background, cron) |
 | `skills.py` | `SkillLoader` | `skills=` + `skills/` dir | on-demand domain knowledge |
 | `config.py` | LLM client | `build_client` / `client=` | model / provider / base_url |
 | `manager.py` | `workspace_factory(id)->Path` | `workspace_factory=` | where/how the sandbox is provisioned |
@@ -276,6 +278,51 @@ def app():
 ```sh
 uvicorn myapp:app --factory --port 8000
 ```
+
+---
+
+## 10. Built-in feature modules (s09, s11–s19)
+
+Beyond the core loop, mini-loop ships optional modules covering the rest of the
+learn-claude-code curriculum. Turn them all on at once:
+
+```python
+SessionManager(settings, client, enable_features=True)   # or env MINILOOP_FEATURES=all
+```
+
+`enable_features` swaps the per-session registry for `full_registry()` and adds
+the background injector. Or compose exactly what you want:
+
+```python
+from mini_loop import full_registry, default_injectors
+reg = full_registry(tasks=True, background=True, memory=True, cron=True, teams=True,
+                    mcp_servers={"docs": my_mcp_client})
+SessionManager(settings, client, tool_registry=reg, injectors=default_injectors())
+```
+
+Each module is also usable à la carte via its `install_*(registry)` helper.
+
+| Chapter | Module | Enable | Adds |
+|---|---|---|---|
+| **s11** Error Recovery | `recovery.py` | `recovery=DefaultRecovery(...)` (on by default) | backoff on 429/529, 8k→64k token escalation, reactive compaction, fallback model (`FALLBACK_MODEL_ID`) |
+| **s12** Task System | `tasks.py` | `install_tasks(reg)` | `create_task / list_tasks / get_task / claim_task / complete_task` — a file-backed `blockedBy` graph under `<ws>/.tasks/` |
+| **s13** Background Tasks | `background.py` | `install_background(reg)` + `background_injector` | `background_run / check_background`; results arrive as `<task_notification>` via the injector (asyncio, not threads) |
+| **s09** Memory | `memory.py` | `install_memory(reg)` (+ `memory_system_builder`) | `remember / recall`; Markdown memories + index; pass a shared dir for cross-session recall |
+| **s14** Cron | `cron.py` | manager `enable_features` | `schedule_cron / list_crons / cancel_cron`; an asyncio ticker wakes the session on schedule; durable to `.cron.json` |
+| **s15–17** Teams | `teams.py` | manager `enable_features` | `spawn_teammate` (a concurrent session sharing the workspace) + `send_message / read_inbox / broadcast / list_teammates` over a `MessageBus` |
+| **s18** Worktrees | `worktrees.py` | `workspace_factory=worktree_workspace_factory(repo)` | each session runs in its own git worktree + branch (`wt/<id>`); falls back to a plain dir if not a git repo |
+| **s19** MCP | `mcp.py` | `full_registry(mcp_servers=...)` or `install_mcp(reg, servers)` | `connect_mcp` discovers a server's tools and registers them as `mcp__<server>__<tool>`; transports: `InProcessMCP`, `StdioMCP` |
+
+Notes:
+* **Teams reframed.** Since every session already runs concurrently, teammates
+  are *sub-sessions* (not threads) that share the spawner's workspace — so they
+  share the `.tasks` board and `.memory`. The thread/idle-poll machinery from
+  the tutorial is intentionally dropped; the coordination layer (mailbox +
+  shared board) is what's kept. Teammates can't spawn teammates (fork-bomb
+  guard).
+* **Custom tools** can stash per-session services on `ctx.state` and emit custom
+  events with `ctx.emit_event(...)` — that's exactly how these modules are
+  built. Read any of them as a template.
 
 ---
 

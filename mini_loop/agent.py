@@ -30,9 +30,15 @@ from .builtins import default_registry, explore_registry, worker_registry
 from .compaction import Compactor, DefaultCompactor, estimate_tokens, microcompact  # re-exported
 from .config import Settings
 from .prompts import default_system_builder
+from .recovery import DefaultRecovery
 from .registry import Hooks, ToolCall, ToolContext, ToolRegistry
 from .skills import SkillLoader
 from .tools import Toolset
+
+# An injector is `async (agent) -> list[message]` run at the top of each loop
+# pass; it returns messages to splice into history (e.g. background results,
+# fired cron prompts). See background.py / cron.py.
+Injector = Callable[["Agent"], Awaitable[list]]
 
 __all__ = ["Agent", "TodoManager", "microcompact", "estimate_tokens"]
 
@@ -113,6 +119,8 @@ class Agent:
         system: str | None = None,
         system_builder: Callable[["Agent"], str] | None = None,
         compactor: Compactor | None = None,
+        recovery=None,
+        injectors: list[Injector] | None = None,
         emit: EmitFn | None = None,
         llm_semaphore=None,
         label: str = "main",
@@ -135,6 +143,8 @@ class Agent:
         self.tools = tools if tools is not None else default_registry()
         self.hooks = hooks if hooks is not None else Hooks()
         self.compactor = compactor or DefaultCompactor()
+        self.recovery = recovery or DefaultRecovery()
+        self.injectors: list[Injector] = list(injectors or [])
         self.state: dict = state if state is not None else {}
 
         # System prompt: explicit string wins, else build from the agent.
@@ -161,8 +171,12 @@ class Agent:
             kwargs["system"] = system
         if tools is not None:
             kwargs["tools"] = tools
-        async with self.semaphore:
-            return await self.client.messages.create(**kwargs)
+
+        async def call(kw: dict):
+            async with self.semaphore:   # backoff sleeps happen OUTSIDE the slot
+                return await self.client.messages.create(**kw)
+
+        return await self.recovery.run(self, kwargs, call)
 
     # -- public entry: run one user turn to completion, return final text --
     async def run(self, user_text: str) -> str:
@@ -174,6 +188,12 @@ class Agent:
     async def _loop(self) -> None:
         for _ in range(self.max_rounds):
             await self.compactor.maybe_compact(self)  # s08, pluggable
+
+            # Pre-turn injection: background results, fired cron prompts, etc.
+            for inject in self.injectors:
+                extra = await inject(self)
+                if extra:
+                    self.messages.extend(extra)
 
             response = await self._create(self.messages, tools=self.tools.schemas(), system=self.system)
             self.messages.append({"role": "assistant", "content": response.content})
@@ -249,6 +269,7 @@ class Agent:
             tools=registry,
             hooks=self.hooks,           # policies apply to subagents too
             compactor=self.compactor,
+            recovery=self.recovery,
             system=f"You are a {agent_type} subagent in {self.workspace}. "
                    f"Use tools to {verb}, then give a concise final summary. No preamble.",
             emit=self.emit,

@@ -129,3 +129,44 @@ def explore_registry() -> ToolRegistry:
 
 def worker_registry() -> ToolRegistry:
     return ToolRegistry(_file_tools())
+
+
+def full_registry(
+    *,
+    tasks: bool = True,
+    background: bool = True,
+    memory: bool = True,
+    cron: bool = True,
+    teams: bool = True,
+    mcp_servers: dict | None = None,
+) -> ToolRegistry:
+    """default_registry() plus the optional feature tool-groups (s09/12/13/14/
+    15-17/19). Toggle individual groups off as needed."""
+    from .background import install_background
+    from .cron import install_cron
+    from .mcp import install_mcp
+    from .memory import install_memory
+    from .tasks import install_tasks
+    from .teams import install_teams
+
+    reg = default_registry()
+    if tasks:
+        install_tasks(reg)
+    if background:
+        install_background(reg)
+    if memory:
+        install_memory(reg)
+    if cron:
+        install_cron(reg)
+    if teams:
+        install_teams(reg)
+    if mcp_servers:
+        install_mcp(reg, mcp_servers)
+    return reg
+
+
+def default_injectors(*, background: bool = True) -> list:
+    """Loop injectors that pair with full_registry (currently: background drain)."""
+    from .background import background_injector
+
+    return [background_injector] if background else []

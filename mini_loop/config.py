@@ -68,6 +68,10 @@ class Settings:
     # boot and be exercised end-to-end with no API key.
     fake_llm: bool = field(default_factory=lambda: os.getenv("MINILOOP_FAKE_LLM", "") not in ("", "0", "false"))
 
+    # Turn on the full feature tool set (tasks, background, memory, cron, teams).
+    # Env MINILOOP_FEATURES=all (or any non-empty/true) enables it on the default server.
+    enable_features: bool = field(default_factory=lambda: os.getenv("MINILOOP_FEATURES", "") not in ("", "0", "false"))
+
     def __post_init__(self) -> None:
         self.workspace_root.mkdir(parents=True, exist_ok=True)
 
