@@ -266,9 +266,12 @@ def test_spawn_teammate_shares_workspace(tmp_path):
 # --- s18 worktrees ---------------------------------------------------------
 
 def test_worktree_factory_falls_back_without_git(tmp_path):
-    factory = worktree_workspace_factory(tmp_path / "not-a-repo")
+    repo = tmp_path / "not-a-repo"
+    factory = worktree_workspace_factory(repo)
     ws = factory("sess1")
     assert ws.exists()
+    escaped = factory("../../escape")
+    assert escaped.resolve().is_relative_to((repo / ".worktrees").resolve())
 
 
 def test_worktree_factory_creates_branch_in_git_repo(tmp_path):

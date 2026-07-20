@@ -32,6 +32,13 @@ def _env_int(name: str, default: int) -> int:
         return default
 
 
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float(os.getenv(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
 @dataclass(frozen=True)
 class Settings:
     """Process-wide settings, resolved once from the environment."""
@@ -63,12 +70,24 @@ class Settings:
     skills_dir: Path = field(
         default_factory=lambda: Path(os.getenv("MINILOOP_SKILLS_DIR", "./skills")).resolve()
     )
+    memory_root: Path | None = field(
+        default_factory=lambda: Path(os.environ["MINILOOP_MEMORY_ROOT"]).resolve()
+        if os.getenv("MINILOOP_MEMORY_ROOT") else None
+    )
+    repo_root: Path | None = field(
+        default_factory=lambda: Path(os.environ["MINILOOP_REPO_ROOT"]).resolve()
+        if os.getenv("MINILOOP_REPO_ROOT") else None
+    )
+
+    # Autonomous teammate WORK -> IDLE -> SHUTDOWN polling.
+    team_idle_poll: float = field(default_factory=lambda: _env_float("MINILOOP_TEAM_IDLE_POLL", 1.0))
+    team_idle_timeout: float = field(default_factory=lambda: _env_float("MINILOOP_TEAM_IDLE_TIMEOUT", 60.0))
 
     # When true, build_client returns the deterministic fake -- lets the server
     # boot and be exercised end-to-end with no API key.
     fake_llm: bool = field(default_factory=lambda: os.getenv("MINILOOP_FAKE_LLM", "") not in ("", "0", "false"))
 
-    # Turn on the full feature tool set (tasks, background, memory, cron, teams).
+    # Turn on the comprehensive s20 tool set and lifecycle injectors.
     # Env MINILOOP_FEATURES=all (or any non-empty/true) enables it on the default server.
     enable_features: bool = field(default_factory=lambda: os.getenv("MINILOOP_FEATURES", "") not in ("", "0", "false"))
 

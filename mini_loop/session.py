@@ -76,6 +76,10 @@ class AgentSession:
             await self.emit({"type": "status", "status": "running"})
             try:
                 final = await self.agent.run(message)
+            except asyncio.CancelledError:
+                self.status = "idle"
+                await self.emit({"type": "status", "status": "idle", "cancelled": True})
+                raise
             except Exception as e:
                 self.status = "error"
                 await self.emit({"type": "error", "error": f"{type(e).__name__}: {e}"})

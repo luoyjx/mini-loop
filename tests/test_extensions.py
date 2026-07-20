@@ -10,11 +10,9 @@ from mini_loop import (
     Hooks,
     SessionManager,
     Settings,
-    Tool,
-    ToolRegistry,
     default_registry,
 )
-from mini_loop.fake_llm import FakeAsyncAnthropic, scripted, text, tool
+from mini_loop.fake_llm import FakeAsyncAnthropic, scripted, tool
 
 SKILLS_DIR = Path(__file__).resolve().parent.parent / "skills"
 

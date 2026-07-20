@@ -33,6 +33,21 @@ def test_health_crud_and_message(tmp_path, monkeypatch):
         assert c.get(f"/sessions/{sid}").status_code == 404
 
 
+def test_comprehensive_mode_is_assembled_end_to_end(tmp_path, monkeypatch):
+    monkeypatch.setenv("MINILOOP_FEATURES", "all")
+    monkeypatch.setenv("MINILOOP_MEMORY_ROOT", str(tmp_path / "memory"))
+    with _client(tmp_path, monkeypatch) as c:
+        sid = c.post("/sessions", json={}).json()["id"]
+        session = c.app.state.manager.get(sid)
+        assert {
+            "glob", "remember", "create_task", "background_run", "schedule_cron",
+            "spawn_teammate", "request_plan", "create_worktree", "connect_mcp",
+        } <= set(session.agent.tools.names())
+        run = c.post(f"/sessions/{sid}/messages", json={"message": "exercise the full harness"})
+        assert run.status_code == 200
+        assert run.json()["final"].startswith("Done.")
+
+
 def test_unknown_session_404(tmp_path, monkeypatch):
     with _client(tmp_path, monkeypatch) as c:
         assert c.get("/sessions/deadbeef").status_code == 404

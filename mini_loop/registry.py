@@ -19,8 +19,8 @@ and redaction are all just hooks.
 from __future__ import annotations
 
 import inspect
-from collections.abc import Awaitable, Callable, Iterable
-from dataclasses import dataclass, field
+from collections.abc import Callable, Iterable
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -126,18 +126,26 @@ class ToolRegistry:
 
 
 class Hook:
-    """Subclass and override either method (both async). Defaults are no-ops.
+    """Lifecycle extension points. All methods are async no-ops by default.
 
     `before_tool` -> return a string to DENY/short-circuit (it becomes the tool
                      result); mutate `call.input` in place to rewrite arguments;
                      return None to allow.
     `after_tool`  -> return a string to REPLACE the output; return None to keep.
+    `on_user_prompt` -> return a string to rewrite the submitted prompt.
+    `on_stop` -> return a continuation prompt to keep the loop running.
     """
 
     async def before_tool(self, ctx: ToolContext, call: ToolCall) -> str | None:
         return None
 
     async def after_tool(self, ctx: ToolContext, call: ToolCall, output: str) -> str | None:
+        return None
+
+    async def on_user_prompt(self, agent: Any, text: str) -> str | None:
+        return None
+
+    async def on_stop(self, agent: Any, messages: list[dict], last_text: str) -> str | None:
         return None
 
 
@@ -168,3 +176,17 @@ class Hooks:
             if replaced is not None:
                 output = replaced
         return output
+
+    async def user_prompt(self, agent: Any, text: str) -> str:
+        for h in self._hooks:
+            replaced = await h.on_user_prompt(agent, text)
+            if replaced is not None:
+                text = str(replaced)
+        return text
+
+    async def stop(self, agent: Any, messages: list[dict], last_text: str) -> str | None:
+        for h in self._hooks:
+            continuation = await h.on_stop(agent, messages, last_text)
+            if continuation is not None:
+                return str(continuation)
+        return None

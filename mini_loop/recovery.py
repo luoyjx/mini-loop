@@ -7,7 +7,8 @@ A bare `messages.create` dies on the first 429/529/overflow/truncation. A
     honoring Retry-After; after N consecutive 529s, switch to a fallback model;
   * prompt too long -> reactive compaction of the history, then retry once;
   * output truncated (stop_reason == "max_tokens") -> escalate the token budget
-    (8k -> 64k) once and retry.
+    (8k -> 64k) once, then continue from the truncated output with a bounded
+    continuation prompt.
 
 Inject via `Agent(recovery=...)` / `SessionManager(recovery=...)`. The default
 is transparent when no errors occur (so it changes nothing for healthy calls).
@@ -25,6 +26,10 @@ MAX_RETRIES = 10
 BASE_DELAY_MS = 500
 MAX_DELAY_MS = 32000
 MAX_CONSECUTIVE_529 = 3
+MAX_CONTINUATIONS = 3
+CONTINUATION_PROMPT = (
+    "Continue exactly where the truncated response stopped. Do not repeat completed content."
+)
 
 
 def _name(e) -> str:
@@ -79,10 +84,24 @@ def backoff_delay(attempt: int, retry_after: float | None = None) -> float:
 
 
 def reactive_compact(messages: list, keep: int = 6) -> list:
-    """Teaching-simple context shrink: drop older turns behind a marker."""
+    """Teaching-simple shrink that keeps tool-use/result pairs intact."""
     if len(messages) <= keep:
         return messages
-    return [{"role": "user", "content": "[Reactive compact: older turns dropped to fit context.]"}] + messages[-keep:]
+    start = len(messages) - keep
+    if start > 0:
+        current = messages[start].get("content")
+        previous = messages[start - 1].get("content")
+        current_is_result = isinstance(current, list) and any(
+            isinstance(block, dict) and block.get("type") == "tool_result" for block in current
+        )
+        previous_has_use = isinstance(previous, list) and any(
+            (block.get("type") if isinstance(block, dict) else getattr(block, "type", "")) == "tool_use"
+            for block in previous
+        )
+        if current_is_result and previous_has_use:
+            start -= 1
+    return [{"role": "user", "content": "[Reactive compact: older turns dropped to fit context.]"},
+            *messages[start:]]
 
 
 class DirectRecovery:
@@ -96,13 +115,14 @@ class DefaultRecovery:
     """Backoff + token escalation + reactive compaction + fallback model."""
 
     def __init__(self, *, fallback_model: str | None = None, max_retries: int = MAX_RETRIES,
-                 escalate: bool = True) -> None:
+                 escalate: bool = True, max_continuations: int = MAX_CONTINUATIONS) -> None:
         self.fallback_model = fallback_model or os.getenv("FALLBACK_MODEL_ID") or None
         self.max_retries = max_retries
         self.escalate = escalate
+        self.max_continuations = max_continuations
 
     async def run(self, agent, kwargs: dict, call):
-        attempt = consecutive_529 = 0
+        attempt = consecutive_529 = continuations = 0
         escalated = reactive = False
         while True:
             try:
@@ -113,6 +133,8 @@ class DefaultRecovery:
                         consecutive_529 += 1
                         if consecutive_529 >= MAX_CONSECUTIVE_529 and self.fallback_model:
                             kwargs["model"] = self.fallback_model
+                            if hasattr(agent, "state"):
+                                agent.state["recovery_model"] = self.fallback_model
                             consecutive_529 = 0
                             await agent._send("recovery", action="fallback_model", model=self.fallback_model)
                     await agent._send("recovery", action="retry", attempt=attempt + 1, error=type(e).__name__)
@@ -133,5 +155,12 @@ class DefaultRecovery:
                 kwargs["max_tokens"] = ESCALATED_MAX_TOKENS
                 escalated = True
                 await agent._send("recovery", action="escalate_tokens", max_tokens=ESCALATED_MAX_TOKENS)
+                continue
+            if (getattr(resp, "stop_reason", None) == "max_tokens"
+                    and continuations < self.max_continuations):
+                kwargs["messages"].append({"role": "assistant", "content": resp.content})
+                kwargs["messages"].append({"role": "user", "content": CONTINUATION_PROMPT})
+                continuations += 1
+                await agent._send("recovery", action="continue_truncated", attempt=continuations)
                 continue
             return resp

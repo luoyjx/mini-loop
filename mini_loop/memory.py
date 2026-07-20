@@ -15,6 +15,7 @@ from __future__ import annotations
 import asyncio
 import json
 import re
+import threading
 from pathlib import Path
 
 from .registry import Tool, ToolContext, ToolRegistry
@@ -27,20 +28,31 @@ def _slug(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-") or "memory"
 
 
+def _header(value: object) -> str:
+    return " ".join(str(value).splitlines()).strip()
+
+
 class MemoryStore:
     def __init__(self, root: Path) -> None:
         self.dir = Path(root)
         self.dir.mkdir(parents=True, exist_ok=True)
         self.index_path = self.dir / "MEMORY.md"
+        self._lock = threading.RLock()
+        self.lifecycle_lock = asyncio.Lock()
 
     def write(self, name: str, mem_type: str, description: str, body: str) -> str:
-        if mem_type not in MEMORY_TYPES:
-            mem_type = "project"
-        slug = _slug(name)
-        text = f"---\nname: {name}\ndescription: {description}\ntype: {mem_type}\n---\n\n{body}\n"
-        (self.dir / f"{slug}.md").write_text(text)
-        self._rebuild_index()
-        return f"Remembered '{name}' ({mem_type})"
+        with self._lock:
+            if mem_type not in MEMORY_TYPES:
+                mem_type = "project"
+            name, description = _header(name) or "memory", _header(description)
+            slug = _slug(name)
+            text = (
+                f"---\nname: {name}\ndescription: {description}\n"
+                f"type: {mem_type}\n---\n\n{body}\n"
+            )
+            (self.dir / f"{slug}.md").write_text(text)
+            self._rebuild_index()
+            return f"Remembered '{name}' ({mem_type})"
 
     def _parse(self, path: Path) -> dict:
         text = path.read_text()
@@ -57,7 +69,9 @@ class MemoryStore:
                 "body": body}
 
     def list(self) -> list[dict]:
-        return [self._parse(p) for p in sorted(self.dir.glob("*.md")) if p.name != "MEMORY.md"]
+        with self._lock:
+            return [self._parse(p) for p in sorted(self.dir.glob("*.md"))
+                    if p.name != "MEMORY.md"]
 
     def _rebuild_index(self) -> None:
         lines = ["# Memory index\n"]
@@ -66,18 +80,38 @@ class MemoryStore:
         self.index_path.write_text("\n".join(lines) + "\n")
 
     def index(self) -> str:
-        items = self.list()
-        if not items:
-            return "(no memories yet)"
-        return "\n".join(f"  - {m['name']} [{m['type']}]: {m['description']}" for m in items)
+        with self._lock:
+            items = self.list()
+            if not items:
+                return "(no memories yet)"
+            return "\n".join(
+                f"  - {m['name']} [{m['type']}]: {m['description']}" for m in items
+            )
 
     def search(self, query: str | None = None, limit: int = 5) -> list[dict]:
-        items = self.list()
-        if not query:
-            return items[:limit]
-        q = query.lower()
-        scored = [(sum(q in (m[f] or "").lower() for f in ("name", "description", "body")), m) for m in items]
-        return [m for score, m in sorted(scored, key=lambda x: -x[0]) if score][:limit]
+        with self._lock:
+            items = self.list()
+            if not query:
+                return items[:limit]
+            terms = set(re.findall(r"[\w-]{2,}", query.lower()))
+            scored = []
+            for memory in items:
+                haystack = " ".join(
+                    str(memory[f] or "") for f in ("name", "description", "body")
+                ).lower()
+                score = sum(haystack.count(term) for term in terms)
+                scored.append((score, memory))
+            return [m for score, m in sorted(scored, key=lambda x: -x[0]) if score][:limit]
+
+    def replace_all(self, memories: list[dict]) -> None:
+        with self._lock:
+            for path in self.dir.glob("*.md"):
+                if path.name != "MEMORY.md":
+                    path.unlink()
+            for memory in memories:
+                self.write(memory["name"], memory.get("type", "project"),
+                           memory.get("description", ""), memory.get("body", ""))
+            self._rebuild_index()
 
 
 def memory_system_builder(base_builder, store: MemoryStore):
@@ -95,7 +129,78 @@ def _store(ctx: ToolContext) -> MemoryStore:
     return store
 
 
-async def extract_memories(store: MemoryStore, messages: list, client, model: str, max_items: int = 5) -> int:
+def memory_store_for(agent) -> MemoryStore:
+    store = agent.state.get("memory")
+    if store is None:
+        root = agent.state.get("memory_root") or (agent.workspace / ".memory")
+        store = agent.state["memory"] = MemoryStore(root)
+    return store
+
+
+def memory_enabled(agent) -> bool:
+    return "remember" in agent.tools and "recall" in agent.tools and agent.state.get("memory_auto", True)
+
+
+def _response_text(response) -> str:
+    return "".join(getattr(block, "text", "") for block in response.content
+                   if getattr(block, "type", "") == "text")
+
+
+def _json_array(text: str) -> list:
+    start, end = text.find("["), text.rfind("]")
+    if start < 0 or end < start:
+        return []
+    value = json.loads(text[start:end + 1])
+    return value if isinstance(value, list) else []
+
+
+async def select_relevant_memories(agent, query: str, max_items: int = 5) -> list[dict]:
+    """Use a small side-query for selection, with lexical fallback."""
+    store = memory_store_for(agent)
+    memories = store.list()
+    if not memories:
+        return []
+    catalog = "\n".join(
+        f"{index}: {memory['name']} — {memory['description']}"
+        for index, memory in enumerate(memories)
+    )
+    try:
+        response = await agent._create(
+            [{"role": "user", "content": (
+                "Select relevant memory indices for the request. Return ONLY a JSON array of integers.\n\n"
+                f"Request:\n{query[-4000:]}\n\nCatalog:\n{catalog}"
+            )}],
+            max_tokens=200,
+        )
+        indices = _json_array(_response_text(response))
+        selected = [memories[index] for index in indices
+                    if isinstance(index, int) and 0 <= index < len(memories)]
+        if selected:
+            return selected[:max_items]
+    except Exception:
+        pass
+    return store.search(query, max_items)
+
+
+async def prepare_memory_context(agent, user_text: str) -> str:
+    if not memory_enabled(agent):
+        return user_text
+    selected = await select_relevant_memories(agent, user_text)
+    if not selected:
+        # Still create the store so the dynamic prompt can expose its index.
+        memory_store_for(agent)
+        return user_text
+    bodies = "\n\n".join(
+        f'<memory name="{memory["name"]}" type="{memory["type"]}">\n'
+        f'{memory["body"]}\n</memory>'
+        for memory in selected
+    )
+    await agent._send("memory", action="load", count=len(selected))
+    return f"<memory_context>\n{bodies}\n</memory_context>\n\n{user_text}"
+
+
+async def extract_memories(store: MemoryStore, messages: list, client, model: str,
+                           max_items: int = 5, create=None) -> int:
     """Side LLM query: pull durable facts out of a conversation and store them.
 
     Call at session end (or from a tool). Returns count written. Best-effort:
@@ -103,21 +208,59 @@ async def extract_memories(store: MemoryStore, messages: list, client, model: st
     """
     try:
         convo = json.dumps(messages, default=str)[-40_000:]
+        existing = "\n".join(f"- {item['name']}: {item['description']}" for item in store.list())
         prompt = (
             "From this conversation, extract durable facts worth remembering across sessions "
             f"(types: {', '.join(MEMORY_TYPES)}). Return ONLY a JSON array of "
-            '{"name","type","description","body"}. Empty array if nothing durable.\n\n' + convo
+            '{"name","type","description","body"}. Empty array if nothing durable or already covered.\n\n'
+            f"Existing memories:\n{existing}\n\nConversation:\n{convo}"
         )
-        resp = await client.messages.create(
-            model=model, max_tokens=1500, messages=[{"role": "user", "content": prompt}])
-        text = "".join(getattr(b, "text", "") for b in resp.content if getattr(b, "type", "") == "text")
-        start, end = text.find("["), text.rfind("]")
-        items = json.loads(text[start:end + 1]) if start >= 0 else []
+        request = [{"role": "user", "content": prompt}]
+        resp = (await create(request, max_tokens=1500) if create is not None
+                else await client.messages.create(model=model, max_tokens=1500, messages=request))
+        items = _json_array(_response_text(resp))
         for m in items[:max_items]:
             store.write(m["name"], m.get("type", "project"), m.get("description", ""), m.get("body", ""))
         return len(items[:max_items])
     except Exception:
         return 0
+
+
+async def consolidate_memories(store: MemoryStore, agent, threshold: int = 10) -> int:
+    memories = store.list()
+    if len(memories) < threshold:
+        return 0
+    try:
+        response = await agent._create(
+            [{"role": "user", "content": (
+                "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or "
+                "contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n"
+                + json.dumps(memories, ensure_ascii=False)
+            )}],
+            max_tokens=2500,
+        )
+        consolidated = _json_array(_response_text(response))
+        if not consolidated:
+            return 0
+        store.replace_all(consolidated)
+        return len(consolidated)
+    except Exception:
+        return 0
+
+
+async def memory_on_stop(agent) -> None:
+    if not memory_enabled(agent):
+        return
+    store = memory_store_for(agent)
+    async with store.lifecycle_lock:
+        count = await extract_memories(
+            store, list(agent.messages), agent.client,
+            agent.state.get("recovery_model", agent.settings.model),
+            create=agent._create,
+        )
+        consolidated = await consolidate_memories(store, agent)
+    if count or consolidated:
+        await agent._send("memory", action="extract", count=count, consolidated=consolidated)
 
 
 _REMEMBER = {
@@ -135,7 +278,9 @@ _RECALL = {"type": "object", "properties": {"query": {"type": "string"}}}
 
 def install_memory(registry: ToolRegistry) -> ToolRegistry:
     async def remember(ctx, name, content, type="project", description=""):
-        return await asyncio.to_thread(_store(ctx).write, name, type, description or name, content)
+        store = _store(ctx)
+        async with store.lifecycle_lock:
+            return await asyncio.to_thread(store.write, name, type, description or name, content)
 
     async def recall(ctx, query=None):
         hits = await asyncio.to_thread(_store(ctx).search, query)

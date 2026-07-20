@@ -21,6 +21,21 @@ from .registry import Tool, ToolContext, ToolRegistry
 from .tools import DANGEROUS, OUTPUT_CAP
 
 
+SLOW_KEYWORDS = (
+    " install", " build", " test", " deploy", " compile", "docker build",
+    "pip install", "npm install", "pnpm install", "cargo build", "pytest", " make",
+)
+
+
+def is_slow_operation(command: str) -> bool:
+    normalized = f" {command.lower()}"
+    return any(keyword in normalized for keyword in SLOW_KEYWORDS)
+
+
+def should_run_background(command: str, explicit: bool = False) -> bool:
+    return explicit or is_slow_operation(command)
+
+
 class BackgroundManager:
     def __init__(self, workspace, *, default_timeout: int = 300) -> None:
         self.workspace = workspace
@@ -35,10 +50,13 @@ class BackgroundManager:
         self._counter += 1
         bg_id = f"bg_{self._counter:04d}"
         self._tasks[bg_id] = {"status": "running", "command": command, "result": None}
-        asyncio.create_task(self._exec(bg_id, command, timeout or self.default_timeout))
+        self._tasks[bg_id]["handle"] = asyncio.create_task(
+            self._exec(bg_id, command, timeout or self.default_timeout)
+        )
         return f"Started background task {bg_id}: {command[:80]}"
 
     async def _exec(self, bg_id: str, command: str, timeout: int) -> None:
+        proc = None
         try:
             proc = await asyncio.create_subprocess_shell(
                 command, cwd=str(self.workspace),
@@ -50,7 +68,15 @@ class BackgroundManager:
                 status = "completed"
             except asyncio.TimeoutError:
                 proc.kill()
+                await proc.wait()
                 result, status = f"Error: Timeout ({timeout}s)", "error"
+        except asyncio.CancelledError:
+            if proc is not None and proc.returncode is None:
+                proc.kill()
+                await proc.wait()
+            result, status = "Cancelled", "cancelled"
+            self._tasks[bg_id].update(status=status, result=result)
+            raise
         except Exception as e:
             result, status = f"Error: {e}", "error"
         self._tasks[bg_id].update(status=status, result=result)
@@ -68,12 +94,24 @@ class BackgroundManager:
         done, self._completed = self._completed, []
         return done
 
+    async def close(self) -> None:
+        handles = [task.get("handle") for task in self._tasks.values()
+                   if task.get("handle") is not None and not task["handle"].done()]
+        for handle in handles:
+            handle.cancel()
+        if handles:
+            await asyncio.gather(*handles, return_exceptions=True)
+
 
 def _mgr(ctx: ToolContext) -> BackgroundManager:
     mgr = ctx.state.get("background")
     if mgr is None:
         mgr = ctx.state["background"] = BackgroundManager(ctx.workspace)
     return mgr
+
+
+def background_manager_for(ctx: ToolContext) -> BackgroundManager:
+    return _mgr(ctx)
 
 
 async def background_injector(agent) -> list:

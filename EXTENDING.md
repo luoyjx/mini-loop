@@ -98,9 +98,10 @@ different `task` tool if you need custom delegation.
 
 ---
 
-## 2. Hooks — permissions, audit, rewriting
+## 2. Hooks — permissions, lifecycle, audit, rewriting
 
-A `Hook` wraps every tool call. Both methods are async; override either.
+A `Hook` wraps tool calls and the outer turn lifecycle. All methods are async;
+override only the phases you need.
 
 ```python
 from mini_loop import Hook, Hooks
@@ -119,24 +120,34 @@ class Policy(Hook):
         await ctx.emit_event("audit", tool=call.name)
         return output.replace(SECRET, "***")   # return to REPLACE, None to keep
 
+    async def on_user_prompt(self, agent, text):
+        return text                              # may rewrite the prompt
+
+    async def on_stop(self, agent, messages, last_text):
+        return None                              # string = force another round
+
 Agent(..., hooks=Hooks([Policy(), AnotherHook()]))     # ordered chain
 SessionManager(settings, client, hooks=Hooks([Policy()]))
 ```
 
 `before_tool` runs in order; the **first** hook to return a string wins and
-short-circuits the call. `after_tool` runs in order; each may transform the
-output. Hooks apply to subagents too. Keep hooks stateless (or guard their
-state) since one `Hooks` instance is shared across concurrent sessions.
+short-circuits the call. `after_tool` and `on_user_prompt` transform in order;
+the first `on_stop` continuation keeps the loop alive. Hooks apply to
+subagents too. Keep hooks stateless (or guard their state) since one `Hooks`
+instance is shared across concurrent sessions.
 
-> Permissions (s03) and pre/post-tool extension points (s04) are *both* just
-> hooks here — there's no separate subsystem to learn.
+The default chain contains `PermissionHook`: an immutable command deny-list,
+ordered `PermissionRule`s, and an optional async approval callback. With no UI
+callback, an `ask` decision fails closed. Passing an explicit `Hooks(...)`
+chain replaces the default, so include `PermissionHook` when a custom fleet
+still needs the standard policy.
 
 ---
 
 ## 3. System prompt — `system_builder`
 
-The prompt is produced from the agent at construction, so it can reflect the
-*actual* tools and skills wired up.
+The prompt is rebuilt before every model call, so it reflects the current
+workspace, tools, skills, TodoWrite state, memory index, and team identity.
 
 ```python
 from mini_loop import sections_builder
@@ -176,9 +187,10 @@ SessionManager(settings, client, compactor=KeepLastN())
 ```
 
 `maybe_compact` runs at the top of every loop pass; `compact` is forced by the
-`compress` tool. The default (`DefaultCompactor`) micro-compacts old tool
-results every pass and writes a transcript + LLM summary past the token
-threshold.
+`compress` tool. The default (`DefaultCompactor`) runs four ordered layers:
+oversized-result persistence under `.task_outputs/tool-results/`, pair-safe
+middle snipping, old-result micro compaction, then transcript + LLM summary
+past the token threshold.
 
 ---
 
@@ -281,7 +293,7 @@ uvicorn myapp:app --factory --port 8000
 
 ---
 
-## 10. Built-in feature modules (s09, s11–s19)
+## 10. Built-in feature modules (s09–s20)
 
 Beyond the core loop, mini-loop ships optional modules covering the rest of the
 learn-claude-code curriculum. Turn them all on at once:
@@ -291,12 +303,12 @@ SessionManager(settings, client, enable_features=True)   # or env MINILOOP_FEATU
 ```
 
 `enable_features` swaps the per-session registry for `full_registry()` and adds
-the background injector. Or compose exactly what you want:
+the background/team injectors. Or compose exactly what you want:
 
 ```python
 from mini_loop import full_registry, default_injectors
 reg = full_registry(tasks=True, background=True, memory=True, cron=True, teams=True,
-                    mcp_servers={"docs": my_mcp_client})
+                    worktrees=True, mcp=True, mcp_servers={"docs": my_mcp_client})
 SessionManager(settings, client, tool_registry=reg, injectors=default_injectors())
 ```
 
@@ -304,22 +316,24 @@ Each module is also usable à la carte via its `install_*(registry)` helper.
 
 | Chapter | Module | Enable | Adds |
 |---|---|---|---|
-| **s11** Error Recovery | `recovery.py` | `recovery=DefaultRecovery(...)` (on by default) | backoff on 429/529, 8k→64k token escalation, reactive compaction, fallback model (`FALLBACK_MODEL_ID`) |
-| **s12** Task System | `tasks.py` | `install_tasks(reg)` | `create_task / list_tasks / get_task / claim_task / complete_task` — a file-backed `blockedBy` graph under `<ws>/.tasks/` |
-| **s13** Background Tasks | `background.py` | `install_background(reg)` + `background_injector` | `background_run / check_background`; results arrive as `<task_notification>` via the injector (asyncio, not threads) |
-| **s09** Memory | `memory.py` | `install_memory(reg)` (+ `memory_system_builder`) | `remember / recall`; Markdown memories + index; pass a shared dir for cross-session recall |
-| **s14** Cron | `cron.py` | manager `enable_features` | `schedule_cron / list_crons / cancel_cron`; an asyncio ticker wakes the session on schedule; durable to `.cron.json` |
-| **s15–17** Teams | `teams.py` | manager `enable_features` | `spawn_teammate` (a concurrent session sharing the workspace) + `send_message / read_inbox / broadcast / list_teammates` over a `MessageBus` |
-| **s18** Worktrees | `worktrees.py` | `workspace_factory=worktree_workspace_factory(repo)` | each session runs in its own git worktree + branch (`wt/<id>`); falls back to a plain dir if not a git repo |
+| **s09** Memory | `memory.py` | `install_memory(reg)` | shared Markdown/index store; per-turn selection; stop-time extraction and consolidation; explicit `remember / recall` |
+| **s10** System Prompt | `prompts.py` | on by default | per-call assembly from live tools, skills, todos, memory index, workspace, and team identity |
+| **s11** Error Recovery | `recovery.py` | on by default | 429/529 backoff, sticky fallback, 8k→64k escalation, bounded continuation, reactive compaction |
+| **s12** Task System | `tasks.py` | `install_tasks(reg)` | atomically claimed file task graph, strict state transitions, `blockedBy`, optional worktree binding |
+| **s13** Background Tasks | `background.py` | registry + injector | explicit/automatic slow commands and `<task_notification>` injection |
+| **s14** Cron | `cron.py` | manager `enable_features` | strict five-field matching, durable definitions, stable session restoration and wake-up |
+| **s15** Teams | `teams.py` | manager `enable_features` | concurrent sub-sessions, persisted JSONL mailboxes, automatic result delivery |
+| **s16** Protocols | `teams.py` | manager `enable_features` | request-correlated shutdown handshake and plan approval state machine |
+| **s17** Autonomy | `manager.py` | manager `enable_features` | WORK → IDLE → SHUTDOWN, inbox-first polling, atomic runnable-task claiming |
+| **s18** Worktrees | `worktrees.py` | `MINILOOP_REPO_ROOT` / `repo_root` | task binding, automatic teammate cwd switch, safe keep/remove and JSONL audit |
 | **s19** MCP | `mcp.py` | `full_registry(mcp_servers=...)` or `install_mcp(reg, servers)` | `connect_mcp` discovers a server's tools and registers them as `mcp__<server>__<tool>`; transports: `InProcessMCP`, `StdioMCP` |
+| **s20** Comprehensive | `builtins.py` + `manager.py` | `enable_features=True` | assembles the full registry, lifecycle injectors, shared services, recovery, and one content-driven agent loop |
 
 Notes:
-* **Teams reframed.** Since every session already runs concurrently, teammates
-  are *sub-sessions* (not threads) that share the spawner's workspace — so they
-  share the `.tasks` board and `.memory`. The thread/idle-poll machinery from
-  the tutorial is intentionally dropped; the coordination layer (mailbox +
-  shared board) is what's kept. Teammates can't spawn teammates (fork-bomb
-  guard).
+* **Teams are async-native.** Teammates are sub-sessions rather than OS threads,
+  but retain idle polling, protocol routing, the shared task board, automatic
+  claiming, result delivery, and shutdown lifecycle. Teammates cannot spawn
+  teammates (fork-bomb guard).
 * **Custom tools** can stash per-session services on `ctx.state` and emit custom
   events with `ctx.emit_event(...)` — that's exactly how these modules are
   built. Read any of them as a template.
@@ -332,8 +346,8 @@ Notes:
   `ctx.state`, the cloned `ToolRegistry`, the run `Lock`.
 * **Shared across the fleet:** the LLM client, the `LLM semaphore` (caps
   simultaneous requests — `MINILOOP_MAX_CONCURRENT_LLM`), the `SkillLoader`
-  (read-only), and your `Hooks` / `event_sink`. Keep those last two stateless
-  or concurrency-safe.
+  (read-only), long-term `MemoryStore`, JSONL team mailboxes, and your `Hooks` /
+  `event_sink`. Keep custom shared objects stateless or concurrency-safe.
 * A session's runs are serialized by its `Lock` (one conversation = one
   history); different sessions run truly in parallel on the event loop. Make
   custom tools **non-blocking** — `await` real I/O, or wrap blocking calls in

@@ -2,8 +2,8 @@
 
 This is the s02 dispatch pattern, with two changes for multi-tenancy:
 
-  * every filesystem/shell tool is bound to a *single session's* workspace via
-    `safe_path`, so concurrent agents can't read or clobber each other;
+  * file/glob tools enforce a *single session's* workspace via `safe_path`;
+    shell commands use that workspace as their cwd (not an OS security sandbox);
   * the blocking calls (subprocess, file I/O) are wrapped in `asyncio.to_thread`
     so one agent's `bash` never stalls the event loop the others share.
 
@@ -14,6 +14,7 @@ can compose tool subsets from one source of truth.
 from __future__ import annotations
 
 import asyncio
+import glob as globlib
 import subprocess
 from pathlib import Path
 
@@ -24,7 +25,13 @@ BASH = {
     "description": "Run a shell command in the workspace. Returns combined stdout+stderr.",
     "input_schema": {
         "type": "object",
-        "properties": {"command": {"type": "string"}},
+        "properties": {
+            "command": {"type": "string"},
+            "run_in_background": {
+                "type": "boolean",
+                "description": "Run asynchronously and return a task id immediately.",
+            },
+        },
         "required": ["command"],
     },
 }
@@ -33,8 +40,21 @@ READ_FILE = {
     "description": "Read a file's contents (workspace-relative path).",
     "input_schema": {
         "type": "object",
-        "properties": {"path": {"type": "string"}, "limit": {"type": "integer"}},
+        "properties": {
+            "path": {"type": "string"},
+            "limit": {"type": "integer"},
+            "offset": {"type": "integer"},
+        },
         "required": ["path"],
+    },
+}
+GLOB = {
+    "name": "glob",
+    "description": "Find workspace files matching a glob pattern.",
+    "input_schema": {
+        "type": "object",
+        "properties": {"pattern": {"type": "string"}},
+        "required": ["pattern"],
     },
 }
 WRITE_FILE = {
@@ -61,15 +81,15 @@ EDIT_FILE = {
 }
 
 # Convenience bundles used when composing main-agent vs. subagent tool sets.
-FILE_TOOLS = [BASH, READ_FILE, WRITE_FILE, EDIT_FILE]
-READONLY_TOOLS = [BASH, READ_FILE]
+FILE_TOOLS = [BASH, READ_FILE, WRITE_FILE, EDIT_FILE, GLOB]
+READONLY_TOOLS = [BASH, READ_FILE, GLOB]
 
 OUTPUT_CAP = 50_000
-DANGEROUS = ("rm -rf /", "sudo", "shutdown", "reboot", "> /dev/", ":(){", "mkfs")
+DANGEROUS = ("rm -rf /", "sudo", "shutdown", "reboot", "> /dev/", ":(){", "mkfs", "dd if=")
 
 
 class Toolset:
-    """The four base tools, sandboxed to one workspace directory."""
+    """The five base tools, sandboxed to one workspace directory."""
 
     def __init__(self, workspace: Path, *, bash_timeout: int = 120) -> None:
         self.workspace = workspace.resolve()
@@ -100,12 +120,31 @@ class Toolset:
         except (FileNotFoundError, OSError) as e:
             return f"Error: {e}"
 
-    def run_read(self, path: str, limit: int | None = None) -> str:
+    def run_read(self, path: str, limit: int | None = None, offset: int = 0) -> str:
         try:
             lines = self.safe_path(path).read_text().splitlines()
-            if limit and limit < len(lines):
+            offset = max(int(offset or 0), 0)
+            lines = lines[offset:]
+            limit = max(int(limit), 0) if limit is not None else None
+            if limit is not None and limit < len(lines):
                 lines = lines[:limit] + [f"... ({len(lines) - limit} more lines)"]
             return "\n".join(lines)[:OUTPUT_CAP]
+        except Exception as e:
+            return f"Error: {e}"
+
+    def run_glob(self, pattern: str) -> str:
+        try:
+            matches = []
+            total = 0
+            for match in globlib.iglob(pattern, root_dir=self.workspace, recursive=True):
+                resolved = (self.workspace / match).resolve()
+                if resolved == self.workspace or resolved.is_relative_to(self.workspace):
+                    matches.append(match)
+                    total += len(match) + 1
+                    if total >= OUTPUT_CAP:
+                        matches.append("... (matches truncated)")
+                        break
+            return "\n".join(sorted(set(matches)))[:OUTPUT_CAP] if matches else "(no matches)"
         except Exception as e:
             return f"Error: {e}"
 
@@ -134,12 +173,16 @@ class Toolset:
         if name == "bash":
             return await asyncio.to_thread(self.run_bash, args["command"])
         if name == "read_file":
-            return await asyncio.to_thread(self.run_read, args["path"], args.get("limit"))
+            return await asyncio.to_thread(
+                self.run_read, args["path"], args.get("limit"), args.get("offset", 0)
+            )
         if name == "write_file":
             return await asyncio.to_thread(self.run_write, args["path"], args["content"])
         if name == "edit_file":
             return await asyncio.to_thread(self.run_edit, args["path"], args["old_text"], args["new_text"])
+        if name == "glob":
+            return await asyncio.to_thread(self.run_glob, args["pattern"])
         return f"Unknown tool: {name}"
 
     def handles(self, name: str) -> bool:
-        return name in ("bash", "read_file", "write_file", "edit_file")
+        return name in ("bash", "read_file", "write_file", "edit_file", "glob")

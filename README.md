@@ -8,12 +8,12 @@ The agent is the `s01` loop from
 mechanisms layered on top — and nothing more:
 
 ```
-Agent  = one async loop                         (s01)
-       + tools: bash / read / write / edit      (s02, sandboxed per session)
+Agent  = one async loop                              (s01)
+       + tools: bash / read / write / edit / glob    (s02, workspace-scoped)
        + TodoWrite plan-then-execute            (s05)
        + subagent delegation (`task`)           (s06, fresh context)
        + on-demand skill loading                (s07)
-       + micro + auto context compaction        (s08)
+       + four-layer context compaction          (s08)
 
 Server = FastAPI + SessionManager
        + one isolated Agent per session
@@ -25,7 +25,9 @@ The one thing this project deliberately **does not** copy from the reference
 `s_full.py` is its module-global state (`WORKDIR`, `TODO`, `TASK_MGR`, …). A
 concurrent server needs every session fully isolated, so here **everything is
 instance-based and async** — thousands of agents can run in one process without
-touching each other's history, workspace, or todos.
+sharing history or todos. File tools enforce workspace boundaries; shell commands
+run with that workspace as their `cwd` and still require normal OS-level isolation
+if untrusted users can submit prompts.
 
 ---
 
@@ -56,12 +58,13 @@ parallel.
 ```
 mini_loop/
   config.py      env + LLM-client factory (anthropic import is lazy)
-  tools.py       per-workspace bash/read/write/edit + async dispatch + safe_path
+  tools.py       per-workspace bash/read/write/edit/glob + async dispatch + safe_path
   registry.py    Tool / ToolRegistry / ToolContext + Hook / Hooks   ← extension seam
+  permissions.py deny-list + PermissionRule + async approval callback
   builtins.py    the built-in tools as Tools; default/explore/worker registries
   skills.py      SkillLoader — index descriptions, load bodies on demand
   prompts.py     system_builder (default + sections_builder)
-  compaction.py  Compactor protocol + DefaultCompactor (micro + auto)
+  compaction.py  Compactor protocol + budget / snip / micro / auto layers
   agent.py       the async loop: dispatch via registry + hooks + compactor
   session.py     AgentSession — history, status, event pub/sub, per-session lock
   manager.py     SessionManager — injects every seam, shared client + semaphore
@@ -127,18 +130,23 @@ with `MINILOOP_FEATURES=all` (or `SessionManager(enable_features=True)` /
 | | Mechanism | | Mechanism |
 |---|---|---|---|
 | s01 | agent loop ✅ | s11 | error recovery ✅ (`recovery=`) |
-| s02 | tool use ✅ | s12 | task system ✅ (`install_tasks`) |
-| s03 | permissions ✅ (Hooks) | s13 | background tasks ✅ (async) |
-| s04 | hooks ✅ | s14 | cron ✅ (asyncio scheduler) |
-| s05 | TodoWrite ✅ | s15–17 | teams ✅ (MessageBus + `spawn_teammate`) |
-| s06 | subagent ✅ | s18 | worktree isolation ✅ (`worktree_workspace_factory`) |
+| s02 | bash/read/write/edit/glob ✅ | s12 | task system ✅ (`install_tasks`) |
+| s03 | permissions ✅ (`PermissionHook`) | s13 | background tasks ✅ (auto + explicit) |
+| s04 | lifecycle hooks ✅ | s14 | durable cron ✅ (asyncio scheduler) |
+| s05 | TodoWrite ✅ | s15–17 | teams + protocols + autonomy ✅ |
+| s06 | subagent ✅ | s18 | task-bound worktrees ✅ |
 | s07 | skills ✅ | s19 | MCP ✅ (`connect_mcp`, in-process + stdio) |
-| s08 | compaction ✅ | s20 | comprehensive ✅ (this assembly) |
-| s09 | memory ✅ (`remember`/`recall`) | s10 | system prompt ✅ (`system_builder`) |
+| s08 | four-layer compaction ✅ | s20 | comprehensive ✅ (`full_registry`) |
+| s09 | auto memory lifecycle ✅ | s10 | per-call runtime prompt ✅ |
 
 ```sh
-MINILOOP_FAKE_LLM=1 MINILOOP_FEATURES=all python -m mini_loop   # everything on, no key
+MINILOOP_FAKE_LLM=1 MINILOOP_FEATURES=all python -m mini_loop   # all built-in modules, no key
 ```
+
+`MINILOOP_REPO_ROOT=/path/to/repo` gives the worktree tools a target repository.
+MCP servers are application dependencies, supplied through `mcp_servers=` when
+constructing `SessionManager`; `connect_mcp` remains present and reports the
+configured server names.
 
 ---
 
@@ -201,13 +209,13 @@ All offline (injected fake model — no key, no network):
 
 ```sh
 .venv/bin/python -m pytest -q
-# 37 passed
+# 89 passed, 24 subtests passed
 ```
 
-Covers the loop, the max-turns guard, workspace sandbox escape, async tool
-dispatch, TodoWrite validation, micro/auto compaction, subagent delegation +
-context isolation, skill loading, every server endpoint + SSE, and the headline
-**concurrency** and **per-session isolation** guarantees.
+Covers the loop, sandbox and concurrency guarantees, permissions and all hook
+phases, four-layer compaction, automatic cross-session memory, recovery paths,
+atomic task claims, background notifications, strict/durable cron, team
+protocols and autonomous claiming, task-bound worktrees, MCP stdio, REST and SSE.
 
 ---
 
@@ -217,5 +225,7 @@ All via env (see `.env.example`): `ANTHROPIC_API_KEY`, `MODEL_ID`,
 `ANTHROPIC_BASE_URL` (for Anthropic-compatible providers — GLM / MiniMax /
 Kimi / DeepSeek), plus `MINILOOP_*` knobs for concurrency cap, turn limits,
 token budget, compaction threshold, bash timeout, and the workspace/skills
-directories.
+directories. Comprehensive-mode settings also include `MINILOOP_MEMORY_ROOT`,
+`MINILOOP_REPO_ROOT`, `MINILOOP_TEAM_IDLE_POLL`, and
+`MINILOOP_TEAM_IDLE_TIMEOUT`.
 ```
