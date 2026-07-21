@@ -1,5 +1,6 @@
 """End-to-end server tests via FastAPI's TestClient, fake LLM, no API key."""
 
+import json
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -57,21 +58,30 @@ def test_unknown_session_404(tmp_path, monkeypatch):
 def test_sse_stream_emits_events(tmp_path, monkeypatch):
     with _client(tmp_path, monkeypatch) as c:
         sid = c.post("/sessions", json={}).json()["id"]
-        seen = []
+        seen, event_ids, payloads = [], [], []
         with c.stream("POST", f"/sessions/{sid}/messages/stream", json={"message": "run it"}) as s:
             cur = None
             for line in s.iter_lines():
                 if line.startswith("event:"):
                     cur = line.split(":", 1)[1].strip()
+                elif line.startswith("id:"):
+                    event_ids.append(int(line.split(":", 1)[1].strip()))
                 elif line.startswith("data:") and cur:
                     seen.append(cur)
+                    payloads.append(json.loads(line.split(":", 1)[1].strip()))
         assert "status" in seen
         assert "tool_use" in seen
         assert "tool_result" in seen
         assert seen[-1] == "done"
+        assert event_ids == sorted(event_ids) and len(event_ids) == len(set(event_ids))
+        assert all({"seq", "ts", "session", "type"} <= payload.keys() for payload in payloads)
 
 
 def test_console_served(tmp_path, monkeypatch):
     with _client(tmp_path, monkeypatch) as c:
         body = c.get("/").text
-        assert "mini-loop" in body and "new session" in body
+        assert "mini-loop" in body and "New session" in body
+        assert "Pushed events" in body
+        assert 'aria-live="polite"' in body
+        assert "new EventSource(" in body and "events?envelope=true" in body
+        assert "View event payload" in body

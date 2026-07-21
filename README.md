@@ -167,8 +167,8 @@ A deterministic fake model lets you exercise the whole stack offline:
 MINILOOP_FAKE_LLM=1 MINILOOP_FAKE_DELAY=0.3 python -m mini_loop
 ```
 
-Open <http://127.0.0.1:8000> in **two browser tabs** and run both — you'll
-watch two agents work in parallel.
+Open <http://127.0.0.1:8000> in **two browser tabs** and run both — the pushed
+event panels show both agents working in parallel, with expandable SSE payloads.
 
 ---
 
@@ -184,7 +184,7 @@ watch two agents work in parallel.
 | DELETE | `/sessions/{id}`                 | — | drop session + workspace |
 | POST   | `/sessions/{id}/messages`        | `{message}` | run to completion → final text |
 | POST   | `/sessions/{id}/messages/stream` | `{message}` | run, stream live events (SSE) |
-| GET    | `/sessions/{id}/events`          | — | observe a session's events (SSE) |
+| GET    | `/sessions/{id}/events`          | — | persistent session event feed (SSE; `?envelope=true` emits one generic event name) |
 
 ```sh
 # create a session, then send it a task
@@ -197,9 +197,12 @@ curl -sN -XPOST localhost:8000/sessions/$SID/messages/stream \
      -H content-type:application/json -d '{"message":"now add tests"}'
 ```
 
-SSE event types: `status`, `assistant_text`, `tool_use`, `tool_result`,
-`subagent_start`, `subagent_end`, `todo`, `compact`, `done`, `error`. Every
-event carries `agent` + `depth`, so subagent activity is visibly nested.
+SSE event types include `status`, `assistant_text`, `tool_use`, `tool_result`,
+`permission`, `recovery`, `memory`, `background_result`, `team_inbox`,
+`subagent_start`, `subagent_end`, `todo`, `compact`, `done`, `error`, plus
+custom hook events. Every event carries `seq`, `ts`, `session`, and `type`;
+agent-originated events also carry `agent` + `depth`. Event IDs support safe
+reconnection with `Last-Event-ID`.
 
 ---
 
