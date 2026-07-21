@@ -178,6 +178,7 @@ class DefaultCompactor:
         resp = await agent._create(
             [{"role": "user", "content": f"Summarize this agent session for continuity:\n{conv}"}],
             max_tokens=2000,
+            purpose="compaction",
         )
         summary = "".join(getattr(b, "text", "") for b in resp.content if getattr(b, "type", "") == "text")
         agent.messages[:] = [

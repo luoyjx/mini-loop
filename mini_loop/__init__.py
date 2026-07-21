@@ -47,6 +47,8 @@ from .skills import SkillLoader
 from .tasks import TaskStore, install_tasks
 from .teams import MessageBus, ProtocolState, install_teams, team_injector
 from .tools import Toolset
+from .trajectory import SCHEMA_VERSION as TRAJECTORY_SCHEMA_VERSION
+from .trajectory import TrajectoryStore
 from .worktrees import WorktreeManager, install_worktrees, remove_worktree, worktree_workspace_factory
 
 __all__ = [
@@ -57,6 +59,8 @@ __all__ = [
     "Settings",
     "load_settings",
     "build_client",
+    "TrajectoryStore",
+    "TRAJECTORY_SCHEMA_VERSION",
     # extension seams
     "Tool",
     "ToolRegistry",

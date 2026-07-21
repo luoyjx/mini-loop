@@ -48,9 +48,14 @@ def test_basic_loop_runs_one_tool_then_finishes(tmp_path):
     assert final.startswith("Done.")
     assert client.calls == 2  # fresh-prompt turn + tool-result turn
     types = [e["type"] for e in events]
-    assert types == ["assistant_text", "tool_use", "tool_result", "assistant_text"]
-    assert events[1]["name"] == "bash"
-    assert "handled: hello" in events[2]["output"]
+    assert [kind for kind in types if not kind.startswith("model_")] == [
+        "assistant_text", "tool_use", "tool_result", "assistant_text",
+    ]
+    assert types.count("model_start") == types.count("model_end") == 2
+    tool_use = next(event for event in events if event["type"] == "tool_use")
+    tool_result = next(event for event in events if event["type"] == "tool_result")
+    assert tool_use["name"] == "bash"
+    assert "handled: hello" in tool_result["output"]
 
 
 def test_max_turns_guard(tmp_path):

@@ -171,6 +171,7 @@ async def select_relevant_memories(agent, query: str, max_items: int = 5) -> lis
                 f"Request:\n{query[-4000:]}\n\nCatalog:\n{catalog}"
             )}],
             max_tokens=200,
+            purpose="memory_selection",
         )
         indices = _json_array(_response_text(response))
         selected = [memories[index] for index in indices
@@ -238,6 +239,7 @@ async def consolidate_memories(store: MemoryStore, agent, threshold: int = 10) -
                 + json.dumps(memories, ensure_ascii=False)
             )}],
             max_tokens=2500,
+            purpose="memory_consolidation",
         )
         consolidated = _json_array(_response_text(response))
         if not consolidated:

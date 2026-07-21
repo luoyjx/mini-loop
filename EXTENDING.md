@@ -249,9 +249,10 @@ factory and have a custom `bash` tool exec inside it.
 
 ## 8. Events & observability — `event_sink`
 
-Each session is an event bus. Built-in event types: `status`, `assistant_text`,
-`tool_use`, `tool_result`, `subagent_start`, `subagent_end`, `todo`, `compact`,
-`done`, `error` — plus any you emit from tools/hooks via `ctx.emit_event(...)`.
+Each session is an event bus. Built-in event types: `status`, `model_start`,
+`model_end`, `assistant_text`, `tool_use`, `tool_result`, `trajectory_start`,
+`trajectory_end`, `subagent_start`, `subagent_end`, `todo`, `compact`, `done`,
+`error` — plus any you emit from tools/hooks via `ctx.emit_event(...)`.
 Every event carries `session`, `agent`, `depth`, `seq`, `ts`.
 
 ```python
@@ -264,6 +265,21 @@ SessionManager(settings, client, event_sink=sink)
 
 In-process consumers can also `session.subscribe()` (used by the SSE
 endpoints).
+
+Runs are also persisted by the injected `TrajectoryStore`. Pass a custom store
+to replace the fleet-wide recorder, or set `MINILOOP_TRAJECTORIES=0` to disable
+the built-in local JSONL implementation:
+
+```python
+from mini_loop import SessionManager, TrajectoryStore
+
+trajectories = TrajectoryStore("./audit", capture_content=False)
+manager = SessionManager(settings, client, trajectory_store=trajectories)
+```
+
+The store is intentionally independent from `event_sink`: exporter failures do
+not stop an agent run, and custom sinks continue to receive live events. See
+[Agent trajectories](docs/TRAJECTORIES.md) for the schema and API.
 
 ---
 

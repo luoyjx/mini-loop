@@ -39,6 +39,13 @@ def _env_float(name: str, default: float) -> float:
         return default
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() not in ("", "0", "false", "no", "off")
+
+
 @dataclass(frozen=True)
 class Settings:
     """Process-wide settings, resolved once from the environment."""
@@ -77,6 +84,19 @@ class Settings:
     repo_root: Path | None = field(
         default_factory=lambda: Path(os.environ["MINILOOP_REPO_ROOT"]).resolve()
         if os.getenv("MINILOOP_REPO_ROOT") else None
+    )
+
+    # Local append-only agent trajectories. They live outside individual
+    # session workspaces so deleting a workspace does not erase its audit log.
+    trajectory_root: Path | None = field(
+        default_factory=lambda: Path(os.environ["MINILOOP_TRAJECTORY_ROOT"]).resolve()
+        if os.getenv("MINILOOP_TRAJECTORY_ROOT") else None
+    )
+    trajectory_enabled: bool = field(
+        default_factory=lambda: _env_bool("MINILOOP_TRAJECTORIES", True)
+    )
+    trajectory_capture_content: bool = field(
+        default_factory=lambda: _env_bool("MINILOOP_TRAJECTORY_CAPTURE_CONTENT", True)
     )
 
     # Autonomous teammate WORK -> IDLE -> SHUTDOWN polling.

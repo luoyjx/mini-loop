@@ -5,7 +5,7 @@ extension seam for the whole fleet, now including the cross-session services
 Inject once at construction; every session inherits it:
 
     tool_registry / hooks / system_builder / compactor / recovery / injectors
-    workspace_factory / event_sink
+    workspace_factory / event_sink / trajectory_store
 
 Flip `enable_features=True` (or env MINILOOP_FEATURES) to turn on the complete
 tool set and its background/team lifecycle injectors.
@@ -32,6 +32,7 @@ from .session import AgentSession
 from .skills import SkillLoader
 from .tasks import TaskStore
 from .teams import MessageBus, ProtocolState, team_key
+from .trajectory import TrajectoryStore
 from .worktrees import WorktreeManager
 
 
@@ -51,6 +52,7 @@ class SessionManager:
         injectors: list | None = None,
         workspace_factory: Callable[[str], Path] | None = None,
         event_sink: Callable[[dict], object] | None = None,
+        trajectory_store: TrajectoryStore | None = None,
         enable_features: bool = False,
         mcp_servers: dict | None = None,
     ) -> None:
@@ -69,6 +71,17 @@ class SessionManager:
         self.event_sink = event_sink
         self.enable_features = enable_features
         self.mcp_servers = mcp_servers or {}
+
+        if trajectory_store is not None:
+            self.trajectories = trajectory_store
+        elif settings.trajectory_enabled:
+            trajectory_root = settings.trajectory_root or (settings.workspace_root / ".trajectories")
+            self.trajectories = TrajectoryStore(
+                trajectory_root,
+                capture_content=settings.trajectory_capture_content,
+            )
+        else:
+            self.trajectories = None
 
         # Tool registry template (cloned per session).
         if tool_registry is not None:
@@ -168,7 +181,13 @@ class SessionManager:
         workspace = Path(self.workspace_factory(session_id))
         workspace.mkdir(parents=True, exist_ok=True)
 
-        session = AgentSession(session_id, workspace, system=system, event_sink=self.event_sink)
+        session = AgentSession(
+            session_id,
+            workspace,
+            system=system,
+            event_sink=self.event_sink,
+            trajectory_store=self.trajectories,
+        )
         settings = self.settings if model is None else dataclasses.replace(self.settings, model=model)
         session.agent = self._build_agent(session, settings=settings, extra_state={})
         self._sessions[session_id] = session
@@ -181,7 +200,12 @@ class SessionManager:
             return existing
         workspace = Path(self.workspace_factory(session_id))
         workspace.mkdir(parents=True, exist_ok=True)
-        session = AgentSession(session_id, workspace, event_sink=self.event_sink)
+        session = AgentSession(
+            session_id,
+            workspace,
+            event_sink=self.event_sink,
+            trajectory_store=self.trajectories,
+        )
         session.agent = self._build_agent(session, settings=self.settings, extra_state={})
         self._sessions[session_id] = session
         return session
@@ -199,7 +223,12 @@ class SessionManager:
             return "Error: teammate name must match [A-Za-z0-9._-]{1,64}"
         session_id = uuid.uuid4().hex[:12]
         # Shares the parent's workspace -> shared .tasks board + .memory + mailbox group.
-        session = AgentSession(session_id, parent.workspace, event_sink=self.event_sink)
+        session = AgentSession(
+            session_id,
+            parent.workspace,
+            event_sink=self.event_sink,
+            trajectory_store=self.trajectories,
+        )
         session.agent = self._build_agent(
             session, settings=self.settings,
             extra_state={

@@ -169,6 +169,8 @@ MINILOOP_FAKE_LLM=1 MINILOOP_FAKE_DELAY=0.3 python -m mini_loop
 
 Open <http://127.0.0.1:8000> in **two browser tabs** and run both — the pushed
 event panels show both agents working in parallel, with expandable SSE payloads.
+Every run is also recorded locally; the console can reopen it and export JSON
+or JSONL. See [Agent trajectories](docs/TRAJECTORIES.md).
 
 ---
 
@@ -185,6 +187,10 @@ event panels show both agents working in parallel, with expandable SSE payloads.
 | POST   | `/sessions/{id}/messages`        | `{message}` | run to completion → final text |
 | POST   | `/sessions/{id}/messages/stream` | `{message}` | run, stream live events (SSE) |
 | GET    | `/sessions/{id}/events`          | — | persistent session event feed (SSE; `?envelope=true` emits one generic event name) |
+| GET    | `/sessions/{id}/trajectories`    | — | list durable runs for a session |
+| GET    | `/trajectories`                  | — | list all durable runs; filter with `?session_id=` |
+| GET    | `/trajectories/{trajectory_id}`  | — | inspect an assembled trajectory |
+| GET    | `/trajectories/{trajectory_id}/export` | — | download `?format=json` or `jsonl` |
 
 ```sh
 # create a session, then send it a task
@@ -197,7 +203,8 @@ curl -sN -XPOST localhost:8000/sessions/$SID/messages/stream \
      -H content-type:application/json -d '{"message":"now add tests"}'
 ```
 
-SSE event types include `status`, `assistant_text`, `tool_use`, `tool_result`,
+SSE event types include `status`, `model_start`, `model_end`, `assistant_text`,
+`tool_use`, `tool_result`, `trajectory_start`, `trajectory_end`,
 `permission`, `recovery`, `memory`, `background_result`, `team_inbox`,
 `subagent_start`, `subagent_end`, `todo`, `compact`, `done`, `error`, plus
 custom hook events. Every event carries `seq`, `ts`, `session`, and `type`;
@@ -212,7 +219,7 @@ All offline (injected fake model — no key, no network):
 
 ```sh
 .venv/bin/python -m pytest -q
-# 89 passed, 24 subtests passed
+# 96 passed, 24 subtests passed
 ```
 
 Covers the loop, sandbox and concurrency guarantees, permissions and all hook
@@ -230,5 +237,7 @@ Kimi / DeepSeek), plus `MINILOOP_*` knobs for concurrency cap, turn limits,
 token budget, compaction threshold, bash timeout, and the workspace/skills
 directories. Comprehensive-mode settings also include `MINILOOP_MEMORY_ROOT`,
 `MINILOOP_REPO_ROOT`, `MINILOOP_TEAM_IDLE_POLL`, and
-`MINILOOP_TEAM_IDLE_TIMEOUT`.
+`MINILOOP_TEAM_IDLE_TIMEOUT`. Trajectory settings are
+`MINILOOP_TRAJECTORIES`, `MINILOOP_TRAJECTORY_ROOT`, and
+`MINILOOP_TRAJECTORY_CAPTURE_CONTENT`; recording is enabled locally by default.
 ```

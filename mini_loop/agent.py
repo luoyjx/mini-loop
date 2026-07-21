@@ -23,6 +23,9 @@ See EXTENDING.md for how to replace each one without touching this file.
 
 from __future__ import annotations
 
+import asyncio
+import time
+import uuid
 from collections.abc import Awaitable, Callable
 from pathlib import Path
 
@@ -45,6 +48,56 @@ __all__ = ["Agent", "TodoManager", "microcompact", "estimate_tokens"]
 
 EmitFn = Callable[[dict], Awaitable[None]]
 DISPLAY_CAP = 2000   # how much of a tool result to surface in an event
+
+
+def _usage_payload(response) -> dict | None:
+    usage = getattr(response, "usage", None)
+    if usage is None:
+        return None
+    if hasattr(usage, "model_dump"):
+        return usage.model_dump()
+    if hasattr(usage, "to_dict"):
+        return usage.to_dict()
+    if hasattr(usage, "__dict__"):
+        return {
+            key: value for key, value in vars(usage).items()
+            if not key.startswith("_")
+        }
+    return {"value": str(usage)}
+
+
+def _content_payload(blocks: list) -> list:
+    payload = []
+    for block in blocks:
+        if isinstance(block, dict):
+            payload.append(block)
+        elif hasattr(block, "model_dump"):
+            payload.append(block.model_dump())
+        elif getattr(block, "type", None) == "text":
+            payload.append({"type": "text", "text": getattr(block, "text", "")})
+        elif getattr(block, "type", None) == "tool_use":
+            payload.append({
+                "type": "tool_use",
+                "id": getattr(block, "id", None),
+                "name": getattr(block, "name", None),
+                "input": getattr(block, "input", {}),
+            })
+        else:
+            payload.append({"type": getattr(block, "type", "unknown")})
+    return payload
+
+
+def _messages_payload(messages: list) -> list:
+    payload = []
+    for message in messages:
+        if not isinstance(message, dict):
+            payload.append(message)
+            continue
+        item = dict(message)
+        if isinstance(item.get("content"), list):
+            item["content"] = _content_payload(item["content"])
+        payload.append(item)
+    return payload
 
 
 # --- s05: TodoWrite ---------------------------------------------------------
@@ -154,6 +207,7 @@ class Agent:
 
         self.messages: list[dict] = []
         self.last_text: str = ""
+        self._last_model_span_id: str | None = None
         self._rounds_without_todo = 0
         self._pending_compact = False
 
@@ -190,9 +244,17 @@ class Agent:
     async def _send(self, event_type: str, **fields) -> None:
         if self.emit is None:
             return
-        await self.emit({"type": event_type, "agent": self.label, "depth": self.depth, **fields})
+        await self.emit({**fields, "type": event_type, "agent": self.label, "depth": self.depth})
 
-    async def _create(self, messages, *, tools=None, system=None, max_tokens=None):
+    async def _create(
+        self,
+        messages,
+        *,
+        tools=None,
+        system=None,
+        max_tokens=None,
+        purpose: str = "agent_turn",
+    ):
         kwargs: dict = {
             "model": self.state.get("recovery_model", self.settings.model),
             "messages": messages,
@@ -207,7 +269,61 @@ class Agent:
             async with self.semaphore:   # backoff sleeps happen OUTSIDE the slot
                 return await self.client.messages.create(**kw)
 
-        return await self.recovery.run(self, kwargs, call)
+        span_id = f"model_{uuid.uuid4().hex[:16]}"
+        self._last_model_span_id = span_id
+        started = time.monotonic()
+        await self._send(
+            "model_start",
+            span_id=span_id,
+            purpose=purpose,
+            model=kwargs["model"],
+            message_count=len(messages),
+            input_tokens_estimate=estimate_tokens(messages),
+            tool_count=len(tools or []),
+            max_tokens=kwargs["max_tokens"],
+            _trajectory_fields={
+                "model_input": {
+                    "messages": _messages_payload(messages),
+                    "system": system,
+                    "tools": tools,
+                    "max_tokens": kwargs["max_tokens"],
+                },
+            },
+        )
+        try:
+            response = await self.recovery.run(self, kwargs, call)
+        except asyncio.CancelledError:
+            await self._send(
+                "model_end",
+                span_id=span_id,
+                purpose=purpose,
+                status="cancelled",
+                duration_ms=round((time.monotonic() - started) * 1000, 3),
+            )
+            raise
+        except Exception as error:
+            await self._send(
+                "model_end",
+                span_id=span_id,
+                purpose=purpose,
+                status="error",
+                duration_ms=round((time.monotonic() - started) * 1000, 3),
+                error=f"{type(error).__name__}: {error}"[:500],
+            )
+            raise
+        await self._send(
+            "model_end",
+            span_id=span_id,
+            purpose=purpose,
+            status="completed",
+            duration_ms=round((time.monotonic() - started) * 1000, 3),
+            stop_reason=getattr(response, "stop_reason", None),
+            usage=_usage_payload(response),
+            _trajectory_fields={
+                "model_output": _content_payload(response.content),
+            },
+        )
+        return response
 
     # -- public entry: run one user turn to completion, return final text --
     async def run(self, user_text: str) -> str:
@@ -235,7 +351,10 @@ class Agent:
 
             try:
                 response = await self._create(
-                    self.messages, tools=self.tools.schemas(), system=self.refresh_system()
+                    self.messages,
+                    tools=self.tools.schemas(),
+                    system=self.refresh_system(),
+                    purpose="agent_turn",
                 )
             except Exception as error:
                 detail = f"{type(error).__name__}: {error}"[:500]
@@ -276,7 +395,9 @@ class Agent:
                 if block.name == "TodoWrite":
                     used_todo = True
                 call = ToolCall(block.name, dict(block.input), block.id)
-                output = await self._exec_tool(call)
+                output = await self._exec_tool(
+                    call, parent_span_id=self._last_model_span_id
+                )
                 # Keep the complete value until the next context-budget pass;
                 # DefaultCompactor persists oversized batches before the LLM sees them.
                 results.append({"type": "tool_result", "tool_use_id": block.id, "content": output})
@@ -298,27 +419,59 @@ class Agent:
         self.last_text = self.last_text or f"[stopped after {self.max_rounds} rounds]"
 
     # -- one tool call: emit, pre-hooks, dispatch via registry, post-hooks --
-    async def _exec_tool(self, call: ToolCall) -> str:
+    async def _exec_tool(self, call: ToolCall, *, parent_span_id: str | None = None) -> str:
         ctx = ToolContext(agent=self, workspace=self.workspace, state=self.state, call=call)
-        await self._send("tool_use", name=call.name, input=call.input, id=call.id)
+        span_id = f"tool_{uuid.uuid4().hex[:16]}"
+        started = time.monotonic()
+        await self._send(
+            "tool_use",
+            name=call.name,
+            input=call.input,
+            id=call.id,
+            span_id=span_id,
+            parent_span_id=parent_span_id,
+        )
 
         denied = await self.hooks.before_tool(ctx, call)
         if denied is not None:
             out = str(denied)
-            await self._send("tool_result", name=call.name, output=out[:DISPLAY_CAP], denied=True)
+            await self._send(
+                "tool_result",
+                name=call.name,
+                output=out[:DISPLAY_CAP],
+                id=call.id,
+                span_id=span_id,
+                parent_span_id=parent_span_id,
+                denied=True,
+                duration_ms=round((time.monotonic() - started) * 1000, 3),
+                _trajectory_fields={"output": out},
+            )
             return out
 
         tool = self.tools.get(call.name)
+        failed = False
         if tool is None:
             out = f"Unknown tool: {call.name}"
+            failed = True
         else:
             try:
                 out = str(await tool.run(ctx, **call.input))
             except Exception as e:  # tool errors are data the model reacts to, not crashes
                 out = f"Error: {e}"
+                failed = True
 
         out = str(await self.hooks.after_tool(ctx, call, out))
-        await self._send("tool_result", name=call.name, output=out[:DISPLAY_CAP])
+        await self._send(
+            "tool_result",
+            name=call.name,
+            output=out[:DISPLAY_CAP],
+            id=call.id,
+            span_id=span_id,
+            parent_span_id=parent_span_id,
+            error=failed,
+            duration_ms=round((time.monotonic() - started) * 1000, 3),
+            _trajectory_fields={"output": out},
+        )
         return out
 
     # -- s06: subagent = a fresh Agent, isolated context, restricted tools --
@@ -342,7 +495,17 @@ class Agent:
             depth=self.depth + 1,
             max_rounds=self.settings.subagent_max_rounds,
         )
-        await self._send("subagent_start", agent_type=agent_type, prompt=prompt[:DISPLAY_CAP])
+        await self._send(
+            "subagent_start",
+            agent_type=agent_type,
+            prompt=prompt[:DISPLAY_CAP],
+            _trajectory_fields={"prompt": prompt},
+        )
         summary = await child.run(prompt)
-        await self._send("subagent_end", agent_type=agent_type, summary=summary[:DISPLAY_CAP])
+        await self._send(
+            "subagent_end",
+            agent_type=agent_type,
+            summary=summary[:DISPLAY_CAP],
+            _trajectory_fields={"summary": summary},
+        )
         return summary or "(subagent produced no summary)"
