@@ -10,6 +10,7 @@ SKILLS_DIR = Path(__file__).resolve().parent.parent / "skills"
 
 def _client(tmp_path, monkeypatch) -> TestClient:
     monkeypatch.setenv("MINILOOP_FAKE_LLM", "1")
+    monkeypatch.setenv("MINILOOP_MAX_CONCURRENT_TOOLS", "8")
     monkeypatch.setenv("MINILOOP_WORKSPACE_ROOT", str(tmp_path / "ws"))
     monkeypatch.setenv("MINILOOP_SKILLS_DIR", str(SKILLS_DIR))
     from mini_loop.server import app
@@ -20,6 +21,7 @@ def test_health_crud_and_message(tmp_path, monkeypatch):
     with _client(tmp_path, monkeypatch) as c:
         health = c.get("/healthz").json()
         assert health["status"] == "ok" and health["fake_llm"] is True
+        assert health["max_concurrent_tools"] == 8
 
         sid = c.post("/sessions", json={"system": "be terse"}).json()["id"]
         assert c.get(f"/sessions/{sid}").json()["status"] == "idle"

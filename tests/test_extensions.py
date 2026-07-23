@@ -62,10 +62,182 @@ def test_register_custom_tool_and_call_it(tmp_path):
 def test_registry_subset_and_unregister():
     reg = default_registry()
     assert "task" in reg and "bash" in reg
+    assert reg.get("read_file").parallel_safe is True
+    assert reg.get("glob").parallel_safe is True
+    assert reg.get("bash").parallel_safe is False
     reg.unregister("task")
     assert "task" not in reg
     sub = reg.subset(["bash", "read_file"])
     assert sub.names() == ["bash", "read_file"]
+
+
+def test_parallel_safe_tool_calls_overlap_and_keep_result_order(tmp_path):
+    async def main():
+        reg = default_registry()
+        gate = asyncio.Event()
+        active = 0
+        peak = 0
+        started = 0
+
+        @reg.add(
+            "parallel_probe",
+            "Return a label after a delay.",
+            {
+                "type": "object",
+                "properties": {
+                    "label": {"type": "string"},
+                    "delay": {"type": "number"},
+                },
+                "required": ["label", "delay"],
+            },
+            parallel_safe=True,
+        )
+        async def parallel_probe(ctx, label, delay):
+            nonlocal active, peak, started
+            active += 1
+            peak = max(peak, active)
+            started += 1
+            if started == 2:
+                gate.set()
+            try:
+                await asyncio.wait_for(gate.wait(), timeout=0.5)
+                await asyncio.sleep(delay)
+                return label
+            finally:
+                active -= 1
+
+        client = FakeAsyncAnthropic(responder=scripted([
+            ([
+                tool("parallel_probe", _id="t1", label="first", delay=0.03),
+                tool("parallel_probe", _id="t2", label="second", delay=0),
+            ], "tool_use"),
+        ]))
+        agent, events = _agent(tmp_path, client, tools=reg)
+        final = await agent.run("run both")
+        result_message = agent.messages[-2]["content"]
+        completion_order = [
+            event["id"] for event in events
+            if event["type"] == "tool_result"
+        ]
+        return final, peak, result_message, completion_order
+
+    final, peak, results, completion_order = asyncio.run(main())
+    assert final == "Done."
+    assert peak == 2
+    assert completion_order == ["t2", "t1"]
+    assert [item["tool_use_id"] for item in results] == ["t1", "t2"]
+    assert [item["content"] for item in results] == ["first", "second"]
+
+
+def test_parallel_tool_calls_are_bounded_and_fail_independently(tmp_path):
+    async def main():
+        reg = default_registry()
+        active = 0
+        peak = 0
+
+        @reg.add(
+            "bounded_probe",
+            "Exercise the parallel tool-call limit.",
+            {
+                "type": "object",
+                "properties": {
+                    "label": {"type": "string"},
+                    "fail": {"type": "boolean"},
+                },
+                "required": ["label"],
+            },
+            parallel_safe=True,
+        )
+        async def bounded_probe(ctx, label, fail=False):
+            nonlocal active, peak
+            active += 1
+            peak = max(peak, active)
+            try:
+                await asyncio.sleep(0.03)
+                if fail:
+                    raise RuntimeError(f"boom:{label}")
+                return f"ok:{label}"
+            finally:
+                active -= 1
+
+        client = FakeAsyncAnthropic(responder=scripted([
+            ([
+                tool("bounded_probe", _id="t1", label="one"),
+                tool("bounded_probe", _id="t2", label="two", fail=True),
+                tool("bounded_probe", _id="t3", label="three"),
+            ], "tool_use"),
+        ]))
+        events = []
+        manager = SessionManager(
+            _settings(tmp_path, max_concurrent_tools=2),
+            client,
+            tool_registry=reg,
+            event_sink=events.append,
+        )
+        session = manager.create()
+        final = await session.run("run bounded batch")
+        return final, peak, session.agent.messages[-2]["content"], events
+
+    final, peak, results, events = asyncio.run(main())
+    assert final == "Done."
+    assert peak == 2
+    assert [item["tool_use_id"] for item in results] == ["t1", "t2", "t3"]
+    assert results[0]["content"] == "ok:one"
+    assert results[1]["content"] == "Error: boom:two"
+    assert results[2]["content"] == "ok:three"
+    sequences = [event["seq"] for event in events]
+    assert sequences == sorted(sequences)
+    assert len(sequences) == len(set(sequences))
+
+
+def test_non_parallel_safe_tool_is_an_ordering_barrier(tmp_path):
+    async def main():
+        reg = default_registry()
+        timeline = []
+
+        @reg.add(
+            "parallel_step",
+            "Record a parallel-safe step.",
+            {
+                "type": "object",
+                "properties": {"label": {"type": "string"}},
+                "required": ["label"],
+            },
+            parallel_safe=True,
+        )
+        async def parallel_step(ctx, label):
+            timeline.append(f"start:{label}")
+            await asyncio.sleep(0.02)
+            timeline.append(f"end:{label}")
+            return label
+
+        @reg.add(
+            "ordered_step",
+            "Record a step that must stay ordered.",
+            {"type": "object", "properties": {}},
+        )
+        async def ordered_step(ctx):
+            timeline.extend(["start:barrier", "end:barrier"])
+            return "barrier"
+
+        client = FakeAsyncAnthropic(responder=scripted([
+            ([
+                tool("parallel_step", _id="t1", label="a"),
+                tool("parallel_step", _id="t2", label="b"),
+                tool("ordered_step", _id="t3"),
+                tool("parallel_step", _id="t4", label="c"),
+                tool("parallel_step", _id="t5", label="d"),
+            ], "tool_use"),
+        ]))
+        agent, _ = _agent(tmp_path, client, tools=reg)
+        await agent.run("respect the barrier")
+        return timeline
+
+    timeline = asyncio.run(main())
+    barrier_start = timeline.index("start:barrier")
+    barrier_end = timeline.index("end:barrier")
+    assert max(timeline.index("end:a"), timeline.index("end:b")) < barrier_start
+    assert barrier_end < min(timeline.index("start:c"), timeline.index("start:d"))
 
 
 # --- hooks: permission (deny) + output transform ---------------------------

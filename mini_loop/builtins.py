@@ -120,10 +120,24 @@ def _compress(ctx: ToolContext) -> str:
 def _file_tools() -> list[Tool]:
     return [
         Tool("bash", BASH["description"], BASH["input_schema"], _bash, readonly=False),
-        Tool("read_file", READ_FILE["description"], READ_FILE["input_schema"], _read_file, readonly=True),
+        Tool(
+            "read_file",
+            READ_FILE["description"],
+            READ_FILE["input_schema"],
+            _read_file,
+            readonly=True,
+            parallel_safe=True,
+        ),
         Tool("write_file", WRITE_FILE["description"], WRITE_FILE["input_schema"], _write_file),
         Tool("edit_file", EDIT_FILE["description"], EDIT_FILE["input_schema"], _edit_file),
-        Tool("glob", GLOB["description"], GLOB["input_schema"], _glob, readonly=True),
+        Tool(
+            "glob",
+            GLOB["description"],
+            GLOB["input_schema"],
+            _glob,
+            readonly=True,
+            parallel_safe=True,
+        ),
     ]
 
 

@@ -43,6 +43,7 @@ class SessionManager:
         client,
         *,
         llm_semaphore=None,
+        tool_semaphore=None,
         skills: SkillLoader | None = None,
         tool_registry: ToolRegistry | None = None,
         hooks: Hooks | None = None,
@@ -62,6 +63,9 @@ class SessionManager:
         if llm_semaphore is None:
             llm_semaphore = asyncio.Semaphore(settings.max_concurrent_llm)
         self.llm_semaphore = llm_semaphore
+        if tool_semaphore is None:
+            tool_semaphore = asyncio.Semaphore(settings.max_concurrent_tools)
+        self.tool_semaphore = tool_semaphore
 
         self.hooks = hooks
         self.system_builder = system_builder
@@ -172,6 +176,7 @@ class SessionManager:
             injectors=list(self.injectors),
             emit=session.emit,
             llm_semaphore=self.llm_semaphore,
+            tool_semaphore=self.tool_semaphore,
             label=label,
             state=state,
         )

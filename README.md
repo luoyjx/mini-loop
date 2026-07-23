@@ -51,6 +51,14 @@ provider's rate limit. A per-session `asyncio.Lock` serializes a *single*
 session's runs (one conversation = one history) while different sessions stay
 parallel.
 
+Within one model turn, consecutive tools registered with
+`parallel_safe=True` run concurrently. A second global semaphore
+(`MINILOOP_MAX_CONCURRENT_TOOLS`, default 8) bounds those calls across all
+sessions. Results are returned to the model in its original call order even
+when completion order differs. Any tool not marked parallel-safe is an
+ordering barrier; built-in `read_file` and `glob` opt in, while `bash` and
+mutation tools remain sequential.
+
 ---
 
 ## Layout

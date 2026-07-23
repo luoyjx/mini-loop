@@ -65,6 +65,12 @@ class Settings:
     # mid-request at any instant.
     max_concurrent_llm: int = field(default_factory=lambda: _env_int("MINILOOP_MAX_CONCURRENT_LLM", 8))
 
+    # Global cap on tool calls explicitly registered as parallel-safe. Unsafe
+    # tools remain ordered barriers and do not consume this semaphore.
+    max_concurrent_tools: int = field(
+        default_factory=lambda: _env_int("MINILOOP_MAX_CONCURRENT_TOOLS", 8)
+    )
+
     # Hard ceiling on agent-loop turns, so a misbehaving model can't spin forever.
     max_turns: int = field(default_factory=lambda: _env_int("MINILOOP_MAX_TURNS", 50))
     subagent_max_rounds: int = field(default_factory=lambda: _env_int("MINILOOP_SUBAGENT_MAX_ROUNDS", 30))
@@ -112,6 +118,8 @@ class Settings:
     enable_features: bool = field(default_factory=lambda: os.getenv("MINILOOP_FEATURES", "") not in ("", "0", "false"))
 
     def __post_init__(self) -> None:
+        if self.max_concurrent_tools < 1:
+            raise ValueError("max_concurrent_tools must be at least 1")
         self.workspace_root.mkdir(parents=True, exist_ok=True)
 
 

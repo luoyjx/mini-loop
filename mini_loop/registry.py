@@ -64,6 +64,10 @@ class Tool:
     input_schema: dict
     handler: ToolHandler
     readonly: bool = False  # advisory: True = does not mutate the workspace
+    # Explicit opt-in: handlers and their hooks may run concurrently.
+    # This is deliberately separate from readonly; a read can still drain or
+    # mutate external state.
+    parallel_safe: bool = False
 
     @property
     def schema(self) -> dict:
@@ -90,11 +94,29 @@ class ToolRegistry:
         self._tools[tool.name] = tool
         return self
 
-    def add(self, name: str, description: str, input_schema: dict,
-            *, readonly: bool = False, replace: bool = False):
+    def add(
+        self,
+        name: str,
+        description: str,
+        input_schema: dict,
+        *,
+        readonly: bool = False,
+        parallel_safe: bool = False,
+        replace: bool = False,
+    ):
         """Decorator form: `@registry.add("greet", "...", {...})`."""
         def deco(fn: ToolHandler) -> ToolHandler:
-            self.register(Tool(name, description, input_schema, fn, readonly), replace=replace)
+            self.register(
+                Tool(
+                    name,
+                    description,
+                    input_schema,
+                    fn,
+                    readonly=readonly,
+                    parallel_safe=parallel_safe,
+                ),
+                replace=replace,
+            )
             return fn
         return deco
 
@@ -150,8 +172,11 @@ class Hook:
 
 
 class Hooks:
-    """An ordered hook chain. Shared safely across concurrent sessions if your
-    hooks are stateless (or guard their own state)."""
+    """An ordered hook chain.
+
+    Hooks are shared across concurrent sessions and parallel-safe tool calls,
+    so custom hooks must be stateless or guard their own state.
+    """
 
     def __init__(self, hooks: Iterable[Hook] | None = None) -> None:
         self._hooks: list[Hook] = list(hooks or [])

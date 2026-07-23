@@ -60,10 +60,11 @@ registry = default_registry()      # bash, read_file, write_file, edit_file,
     "web_search",
     "Search the web and return the top hit.",
     {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]},
+    readonly=True,
+    parallel_safe=True,
 )
 async def web_search(ctx, query):          # ctx + your schema properties
-    ctx.state.setdefault("searches", []).append(query)   # per-session state
-    return await my_search_api(query)      # return a string
+    return await my_concurrency_safe_search_client(query)  # return a string
 ```
 
 Hand it to an agent or the whole fleet:
@@ -83,6 +84,13 @@ SessionManager(settings, client, tool_registry=registry)   # cloned per session
 Handlers may be **sync or async**, and may return anything (`str()`-ified).
 Raised exceptions are caught and returned to the model as `Error: ...`, so a
 buggy tool degrades into feedback instead of a crash.
+
+Set `parallel_safe=True` only when the handler, its hooks, and any external
+client it uses can overlap safely. Consecutive parallel-safe calls from one
+model response run together under `MINILOOP_MAX_CONCURRENT_TOOLS`; result
+blocks still follow the model's original call order. A tool without this flag
+is an ordering barrier. `readonly` remains separate because a nominal read may
+still drain a queue or mutate external state.
 
 **Remove or replace built-ins:**
 
@@ -361,10 +369,14 @@ Notes:
 * **Per session (isolated):** workspace, conversation history, `TodoManager`,
   `ctx.state`, the cloned `ToolRegistry`, the run `Lock`.
 * **Shared across the fleet:** the LLM client, the `LLM semaphore` (caps
-  simultaneous requests — `MINILOOP_MAX_CONCURRENT_LLM`), the `SkillLoader`
-  (read-only), long-term `MemoryStore`, JSONL team mailboxes, and your `Hooks` /
+  simultaneous requests — `MINILOOP_MAX_CONCURRENT_LLM`), the parallel-tool
+  semaphore (`MINILOOP_MAX_CONCURRENT_TOOLS`), the `SkillLoader` (read-only),
+  long-term `MemoryStore`, JSONL team mailboxes, and your `Hooks` /
   `event_sink`. Keep custom shared objects stateless or concurrency-safe.
 * A session's runs are serialized by its `Lock` (one conversation = one
   history); different sessions run truly in parallel on the event loop. Make
   custom tools **non-blocking** — `await` real I/O, or wrap blocking calls in
   `asyncio.to_thread` (the built-in file/bash tools already do).
+* Within one session run, `parallel_safe` tool handlers and their before/after
+  hooks may overlap. Non-parallel-safe tools remain ordered barriers, and tool
+  results are always appended in model-call order.

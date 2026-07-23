@@ -57,6 +57,7 @@ class AgentSession:
                 self._trajectory_recording_error = f"{type(error).__name__}: {error}"
 
         self.lock = asyncio.Lock()
+        self._emit_lock = asyncio.Lock()
         self._subscribers: set[asyncio.Queue] = set()
         self._backlog: deque[dict] = deque(maxlen=BACKLOG)
         self._seq = 0
@@ -106,7 +107,10 @@ class AgentSession:
                 await res
 
     async def emit(self, event: dict) -> None:
-        await self._publish_event(await self._capture_event(event))
+        # Parallel tool calls may emit concurrently. Keep sequence assignment,
+        # trajectory append, backlog publication, and sinks in one order.
+        async with self._emit_lock:
+            await self._publish_event(await self._capture_event(event))
 
     def subscribe(self, replay: bool = True) -> asyncio.Queue:
         q: asyncio.Queue = asyncio.Queue()

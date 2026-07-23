@@ -176,6 +176,7 @@ class Agent:
         injectors: list[Injector] | None = None,
         emit: EmitFn | None = None,
         llm_semaphore=None,
+        tool_semaphore=None,
         label: str = "main",
         depth: int = 0,
         max_rounds: int | None = None,
@@ -187,6 +188,11 @@ class Agent:
         self.skills = skills or SkillLoader(settings.skills_dir)
         self.emit = emit
         self.semaphore = llm_semaphore or _Unbounded()
+        self.tool_semaphore = (
+            tool_semaphore
+            if tool_semaphore is not None
+            else asyncio.Semaphore(settings.max_concurrent_tools)
+        )
         self.label = label
         self.depth = depth
         self.max_rounds = max_rounds if max_rounds is not None else settings.max_turns
@@ -389,18 +395,12 @@ class Agent:
                 await memory_on_stop(self)
                 return
 
-            results, used_todo = [], False
+            used_todo = any(block.name == "TodoWrite" for block in tool_blocks)
             self._pending_compact = False
-            for block in tool_blocks:
-                if block.name == "TodoWrite":
-                    used_todo = True
-                call = ToolCall(block.name, dict(block.input), block.id)
-                output = await self._exec_tool(
-                    call, parent_span_id=self._last_model_span_id
-                )
-                # Keep the complete value until the next context-budget pass;
-                # DefaultCompactor persists oversized batches before the LLM sees them.
-                results.append({"type": "tool_result", "tool_use_id": block.id, "content": output})
+            results = await self._exec_tool_batch(
+                tool_blocks,
+                parent_span_id=self._last_model_span_id,
+            )
 
             # s05 nag: a plan is open but the model drifted off TodoWrite.
             self._rounds_without_todo = 0 if used_todo else self._rounds_without_todo + 1
@@ -418,6 +418,67 @@ class Agent:
         await self._send("error", error=f"Hit max_rounds ({self.max_rounds}) without finishing")
         self.last_text = self.last_text or f"[stopped after {self.max_rounds} rounds]"
 
+    async def _exec_tool_batch(
+        self,
+        blocks: list,
+        *,
+        parent_span_id: str | None = None,
+    ) -> list[dict]:
+        """Execute one model-emitted tool batch without reordering results.
+
+        Consecutive tools explicitly registered as ``parallel_safe`` run
+        together under the process-wide semaphore. Every other tool is an
+        ordering barrier, so reads never move across a write or unknown call.
+        """
+        calls = [
+            ToolCall(block.name, dict(block.input), block.id)
+            for block in blocks
+        ]
+        results: list[dict] = []
+        parallel_group: list[ToolCall] = []
+
+        async def result_for(call: ToolCall, *, limited: bool) -> dict:
+            if limited:
+                async with self.tool_semaphore:
+                    output = await self._exec_tool(
+                        call,
+                        parent_span_id=parent_span_id,
+                    )
+            else:
+                output = await self._exec_tool(
+                    call,
+                    parent_span_id=parent_span_id,
+                )
+            return {
+                "type": "tool_result",
+                "tool_use_id": call.id,
+                "content": output,
+            }
+
+        async def flush_parallel_group() -> None:
+            if not parallel_group:
+                return
+            # gather preserves input order even when completion order differs,
+            # which is required by provider tool-result protocols.
+            results.extend(
+                await asyncio.gather(
+                    *(result_for(call, limited=True) for call in parallel_group)
+                )
+            )
+            parallel_group.clear()
+
+        for call in calls:
+            tool = self.tools.get(call.name)
+            if tool is not None and tool.parallel_safe:
+                parallel_group.append(call)
+                continue
+
+            await flush_parallel_group()
+            results.append(await result_for(call, limited=False))
+
+        await flush_parallel_group()
+        return results
+
     # -- one tool call: emit, pre-hooks, dispatch via registry, post-hooks --
     async def _exec_tool(self, call: ToolCall, *, parent_span_id: str | None = None) -> str:
         ctx = ToolContext(agent=self, workspace=self.workspace, state=self.state, call=call)
@@ -432,46 +493,47 @@ class Agent:
             parent_span_id=parent_span_id,
         )
 
-        denied = await self.hooks.before_tool(ctx, call)
-        if denied is not None:
-            out = str(denied)
-            await self._send(
-                "tool_result",
-                name=call.name,
-                output=out[:DISPLAY_CAP],
-                id=call.id,
-                span_id=span_id,
-                parent_span_id=parent_span_id,
-                denied=True,
-                duration_ms=round((time.monotonic() - started) * 1000, 3),
-                _trajectory_fields={"output": out},
-            )
-            return out
-
-        tool = self.tools.get(call.name)
+        denied = False
         failed = False
-        if tool is None:
-            out = f"Unknown tool: {call.name}"
+        try:
+            decision = await self.hooks.before_tool(ctx, call)
+            if decision is not None:
+                out = str(decision)
+                denied = True
+            else:
+                tool = self.tools.get(call.name)
+                if tool is None:
+                    out = f"Unknown tool: {call.name}"
+                    failed = True
+                else:
+                    try:
+                        out = str(await tool.run(ctx, **call.input))
+                    except Exception as error:
+                        # Tool errors are data the model reacts to, not crashes.
+                        out = f"Error: {error}"
+                        failed = True
+                out = str(await self.hooks.after_tool(ctx, call, out))
+        except asyncio.CancelledError:
+            raise
+        except Exception as error:
+            # Hook failures are isolated just like handler failures so one
+            # parallel call cannot discard successful siblings.
+            out = f"Error: {error}"
             failed = True
-        else:
-            try:
-                out = str(await tool.run(ctx, **call.input))
-            except Exception as e:  # tool errors are data the model reacts to, not crashes
-                out = f"Error: {e}"
-                failed = True
 
-        out = str(await self.hooks.after_tool(ctx, call, out))
-        await self._send(
-            "tool_result",
-            name=call.name,
-            output=out[:DISPLAY_CAP],
-            id=call.id,
-            span_id=span_id,
-            parent_span_id=parent_span_id,
-            error=failed,
-            duration_ms=round((time.monotonic() - started) * 1000, 3),
-            _trajectory_fields={"output": out},
-        )
+        result_fields = {
+            "name": call.name,
+            "output": out[:DISPLAY_CAP],
+            "id": call.id,
+            "span_id": span_id,
+            "parent_span_id": parent_span_id,
+            "error": failed,
+            "duration_ms": round((time.monotonic() - started) * 1000, 3),
+            "_trajectory_fields": {"output": out},
+        }
+        if denied:
+            result_fields["denied"] = True
+        await self._send("tool_result", **result_fields)
         return out
 
     # -- s06: subagent = a fresh Agent, isolated context, restricted tools --
@@ -491,6 +553,7 @@ class Agent:
                    f"Use tools to {verb}, then give a concise final summary. No preamble.",
             emit=self.emit,
             llm_semaphore=self.semaphore,
+            tool_semaphore=self.tool_semaphore,
             label=f"{self.label}>{agent_type.lower()}",
             depth=self.depth + 1,
             max_rounds=self.settings.subagent_max_rounds,
