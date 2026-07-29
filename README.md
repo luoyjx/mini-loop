@@ -79,11 +79,21 @@ mini_loop/
   server.py      create_app() factory: REST + SSE + browser console at /
   fake_llm.py    deterministic offline stand-in for AsyncAnthropic
   __main__.py    `python -m mini_loop` → uvicorn
+docs/
+  CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md
+                 Claude Code dynamic workflows research + mini-loop design
+  AGENT_PLATFORM_ROADMAP.md
+                 evidence-based platform gaps, dependencies, and acceptance gates
+  TRAJECTORIES.md trajectory schema, inspection, privacy, and recovery boundary
 skills/code_review/SKILL.md   sample skill (loadable via load_skill)
 examples/custom_agent.py      all seams composed into a domain agent + custom server
 tests/           offline tests (no key): loop, sandbox, subagent, compaction,
                  server, concurrency, and every extension seam
 ```
+
+Design docs: [Claude Code dynamic workflows research](docs/CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md),
+[Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md), and
+[trajectory/recovery boundary](docs/TRAJECTORIES.md).
 
 ---
 
@@ -227,7 +237,7 @@ All offline (injected fake model — no key, no network):
 
 ```sh
 .venv/bin/python -m pytest -q
-# 96 passed, 24 subtests passed
+# 99 passed, 1 warning, 24 subtests passed
 ```
 
 Covers the loop, sandbox and concurrency guarantees, permissions and all hook
@@ -248,4 +258,3 @@ directories. Comprehensive-mode settings also include `MINILOOP_MEMORY_ROOT`,
 `MINILOOP_TEAM_IDLE_TIMEOUT`. Trajectory settings are
 `MINILOOP_TRAJECTORIES`, `MINILOOP_TRAJECTORY_ROOT`, and
 `MINILOOP_TRAJECTORY_CAPTURE_CONTENT`; recording is enabled locally by default.
-```
