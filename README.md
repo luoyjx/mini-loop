@@ -73,6 +73,10 @@ mini_loop/
   skills.py      SkillLoader — index descriptions, load bodies on demand
   prompts.py     system_builder (default + sections_builder)
   compaction.py  Compactor protocol + budget / snip / micro / auto layers
+  run_context.py immutable per-message provenance + capability approvals
+  actions.py     process-local action journal + replay/conflict binding
+  events.py      validated workflow event payloads for the session stream
+  workflows/     experimental read-only declarative workflow runtime
   agent.py       the async loop: dispatch via registry + hooks + compactor
   session.py     AgentSession — history, status, event pub/sub, per-session lock
   manager.py     SessionManager — injects every seam, shared client + semaphore
@@ -168,6 +172,93 @@ configured server names.
 
 ---
 
+## Experimental local workflows
+
+mini-loop includes a **default-off, local-only, process-local declarative
+workflow MVP** inspired by Claude Code Dynamic workflows. It is not compatible
+with Claude Code's generated JavaScript workflow scripts, and its in-memory
+store, action journal, events, and outbox are not durable or restart-safe.
+The unauthenticated FastAPI server never enables this surface.
+
+The executable MVP is intentionally narrow:
+
+- model-supplied definitions are canonicalized as `dynamic`; caller-supplied
+  source/revision/hash identifiers are discarded and each run pins the
+  runtime-owned revision, but the executable graph is fixed and acyclic with
+  only `AGENT`, `VERIFY`, and `REDUCE` nodes;
+- fresh workers receive only `read_file`, `glob`, and the synthetic
+  schema-checked `return_artifact` tool;
+- agent-facing launch and management tools require `explicit_human`
+  provenance plus a per-message `workflow.launch` or `workflow.manage`
+  capability approval; direct service methods are trusted local internals;
+- workflow-local concurrency and attempt/round/wall-time caps compose with a
+  manager/service-wide workflow-attempt semaphore and the manager's LLM/tool
+  semaphores; multiple managers can share an explicitly injected
+  `workflow_attempt_semaphore`;
+- status, correlated session events, process-local cancellation, and terminal
+  notifications are available; a completed result is injected only on the next
+  real parent turn;
+- non-`None` `token_budget` and JSON Schema constraints outside the supported
+  MVP subset are rejected instead of being silently ignored.
+
+The outbox uses a process-local lease, then append, then acknowledgement. An
+append failure releases the lease for retry; an acknowledgement failure can
+produce a later duplicate, so delivery is at-least-once rather than
+exactly-once. Failed/cancelled notifications carry their compact error or
+cancel reason. Nothing survives process restart.
+
+Trusted local Python callers opt in explicitly. `definition` below is a
+validated workflow-definition dictionary; a real model must emit it as the
+`Workflow` tool input because this MVP has no keyword router or separate
+planner:
+
+```python
+import json
+
+from mini_loop import RunContext, SessionManager, build_client, load_settings
+
+settings = load_settings()
+definition = {...}  # a complete validated WorkflowDefinition dictionary
+manager = SessionManager(
+    settings,
+    build_client(settings),
+    enable_workflows=True,  # constructor opt-in; env/default server stay off
+)
+session = manager.create()
+
+launch_context = RunContext.explicit_human(
+    actor_id="local-user",
+    channel="local-console",
+    stamped_by="trusted-local-entrypoint",
+    approved_capabilities=("workflow.launch",),
+)
+await session.run(
+    "Launch this validated read-only workflow definition:\n"
+    + json.dumps(definition),
+    run_context=launch_context,
+)
+run_id = manager.workflows.summaries(session.id)[0]["run_id"]
+
+# Approvals are per message and are not carried by with_new_message().
+manage_context = launch_context.with_new_message(
+    approved_capabilities=("workflow.manage",),
+)
+await session.run(
+    f"Use WorkflowStatus to inspect {run_id}",
+    run_context=manage_context,
+)
+
+await manager.stop()
+```
+
+`RunContext.explicit_human(...)` must be created only by an authenticated,
+trusted local boundary. Immutability prevents in-run mutation; it does not make
+an untrusted Python caller trustworthy. See the
+[research and implementation boundary](docs/CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md)
+for the exact implemented and unimplemented contracts.
+
+---
+
 ## Quick start
 
 ```sh
@@ -237,13 +328,14 @@ All offline (injected fake model — no key, no network):
 
 ```sh
 .venv/bin/python -m pytest -q
-# 99 passed, 1 warning, 24 subtests passed
 ```
 
 Covers the loop, sandbox and concurrency guarantees, permissions and all hook
 phases, four-layer compaction, automatic cross-session memory, recovery paths,
 atomic task claims, background notifications, strict/durable cron, team
-protocols and autonomous claiming, task-bound worktrees, MCP stdio, REST and SSE.
+protocols and autonomous claiming, task-bound worktrees, experimental
+read-only workflows and their authority/resource/delivery boundaries, MCP
+stdio, REST and SSE.
 
 ---
 
@@ -258,3 +350,6 @@ directories. Comprehensive-mode settings also include `MINILOOP_MEMORY_ROOT`,
 `MINILOOP_TEAM_IDLE_TIMEOUT`. Trajectory settings are
 `MINILOOP_TRAJECTORIES`, `MINILOOP_TRAJECTORY_ROOT`, and
 `MINILOOP_TRAJECTORY_CAPTURE_CONTENT`; recording is enabled locally by default.
+`MINILOOP_EXPERIMENTAL_WORKFLOWS` only supplies configuration defaults for
+explicit local integrations; it does not enable workflows on the default
+FastAPI server. Construct `SessionManager(enable_workflows=True)` to opt in.

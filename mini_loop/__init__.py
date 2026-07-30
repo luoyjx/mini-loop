@@ -9,6 +9,7 @@ many independent agents at once.
     Server = FastAPI + SessionManager (one isolated Agent per session)
 """
 
+from .actions import ActionJournalConflict, ActionRecord, InMemoryActionJournal
 from .agent import Agent, TodoManager
 from .background import (
     BackgroundManager,
@@ -42,6 +43,14 @@ from .permissions import PermissionHook, PermissionRule, default_hooks
 from .prompts import default_system_builder, sections_builder
 from .recovery import DefaultRecovery, DirectRecovery
 from .registry import Hook, Hooks, Tool, ToolCall, ToolContext, ToolRegistry
+from .run_context import (
+    EXPLICIT_HUMAN,
+    PEER_AGENT,
+    UNTRUSTED,
+    WORKFLOW_LAUNCH,
+    WORKFLOW_MANAGE,
+    RunContext,
+)
 from .session import AgentSession
 from .skills import SkillLoader
 from .tasks import TaskStore, install_tasks
@@ -50,6 +59,16 @@ from .tools import Toolset
 from .trajectory import SCHEMA_VERSION as TRAJECTORY_SCHEMA_VERSION
 from .trajectory import TrajectoryStore
 from .worktrees import WorktreeManager, install_worktrees, remove_worktree, worktree_workspace_factory
+from .workflows import (
+    FreshAgentRunner,
+    InMemoryWorkflowStore,
+    WorkflowDefinition,
+    WorkflowEngine,
+    WorkflowNode,
+    WorkflowRun,
+)
+from .workflows.service import WorkflowLaunchResult, WorkflowService
+from .workflows.tools import install_workflows
 
 __all__ = [
     # core
@@ -61,6 +80,15 @@ __all__ = [
     "build_client",
     "TrajectoryStore",
     "TRAJECTORY_SCHEMA_VERSION",
+    "RunContext",
+    "EXPLICIT_HUMAN",
+    "PEER_AGENT",
+    "UNTRUSTED",
+    "WORKFLOW_LAUNCH",
+    "WORKFLOW_MANAGE",
+    "ActionRecord",
+    "ActionJournalConflict",
+    "InMemoryActionJournal",
     # extension seams
     "Tool",
     "ToolRegistry",
@@ -125,6 +153,16 @@ __all__ = [
     "StdioMCP",
     "install_mcp",
     "register_mcp",
+    # experimental Dynamic Workflow MVP
+    "WorkflowDefinition",
+    "WorkflowNode",
+    "WorkflowRun",
+    "WorkflowEngine",
+    "WorkflowService",
+    "WorkflowLaunchResult",
+    "FreshAgentRunner",
+    "InMemoryWorkflowStore",
+    "install_workflows",
 ]
 
 __version__ = "0.1.0"

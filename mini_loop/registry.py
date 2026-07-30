@@ -24,6 +24,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .run_context import RunContext
+
 # A handler is `(ctx, **input) -> str | Awaitable[str]`.
 ToolHandler = Callable[..., Any]
 
@@ -45,12 +47,16 @@ class ToolContext:
     * `workspace` -- this session's sandboxed directory
     * `state`     -- a per-session dict for your business state (survives turns)
     * `call`      -- the current ToolCall
+    * `run_context` -- immutable provenance/authority for the current run
+    * `action_id` -- unique identifier for this tool execution
     """
 
     agent: Any
     workspace: Path
     state: dict
     call: ToolCall | None = None
+    run_context: RunContext | None = None
+    action_id: str | None = None
 
     async def emit_event(self, event_type: str, **fields) -> None:
         """Push a custom event onto the session's stream (SSE/observers see it)."""

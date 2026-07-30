@@ -20,6 +20,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 from .agent import Agent
+from .run_context import RunContext
 from .trajectory import TrajectoryStore
 
 BACKLOG = 200  # recent events retained for replay to new subscribers
@@ -70,6 +71,9 @@ class AgentSession:
         trajectory_fields = event.pop("_trajectory_fields", None)
         self._seq += 1
         event = {**event, "seq": self._seq, "ts": time.time(), "session": self.id}
+        if str(event.get("type", "")).startswith("workflow_"):
+            event.setdefault("sequence", self._seq)
+            event.setdefault("occurred_at", event["ts"])
         if self._active_trajectory_id is not None:
             event["trajectory_id"] = self._active_trajectory_id
             event["trace_id"] = self._active_trajectory_id
@@ -124,8 +128,13 @@ class AgentSession:
         self._subscribers.discard(q)
 
     # -- run one user message to completion (serialized per session) --
-    async def run(self, message: str) -> str:
+    async def run(
+        self,
+        message: str,
+        run_context: RunContext | None = None,
+    ) -> str:
         assert self.agent is not None
+        resolved_context = run_context or RunContext.default()
         async with self.lock:
             self.status = "running"
             self.run_count += 1
@@ -158,7 +167,25 @@ class AgentSession:
                 })
             await self.emit({"type": "status", "status": "running"})
             try:
-                final = await self.agent.run(message)
+                agent_run = self.agent.run
+                signature = inspect.signature(agent_run)
+                parameters = signature.parameters.values()
+                accepts_context = (
+                    "run_context" in signature.parameters
+                    or any(
+                        parameter.kind is inspect.Parameter.VAR_KEYWORD
+                        for parameter in parameters
+                    )
+                )
+                if accepts_context:
+                    final = await agent_run(
+                        message,
+                        run_context=resolved_context,
+                    )
+                else:
+                    # Preserve tests/extensions that replace ``Agent.run`` with
+                    # the pre-RunContext one-argument callable.
+                    final = await agent_run(message)
             except asyncio.CancelledError:
                 self.status = "idle"
                 await self._finish_trajectory(
@@ -210,38 +237,42 @@ class AgentSession:
             "status": status,
             "duration_ms": round(duration_ms, 3),
         })
-        terminal = await self._capture_event({
-            **terminal_event,
-            "trajectory_id": trajectory_id,
-            "trace_id": trajectory_id,
-            "group_id": self.id,
-            "trajectory_status": status,
-            "duration_ms": round(duration_ms, 3),
-        })
-        try:
-            assert self._trajectory_store is not None
-            await asyncio.to_thread(
-                self._trajectory_store.finish,
-                trajectory_id,
-                status=status,
-                output=output,
-                error=error,
-                duration_ms=duration_ms,
-            )
-        except Exception as recording_error:
-            self._trajectory_recording_error = (
-                f"{type(recording_error).__name__}: {recording_error}"
-            )
-        finally:
-            self._active_trajectory_id = None
-        terminal["trajectory_persisted"] = self._trajectory_recording_error is None
-        terminal["trajectory_recording_error"] = self._trajectory_recording_error
-        await self._publish_event(terminal)
+        # Keep capture, trajectory finalization, and publication under the same
+        # ordering lock. Background workflow events can otherwise publish seq
+        # N+1 while this terminal seq N is waiting on the store.
+        async with self._emit_lock:
+            terminal = await self._capture_event({
+                **terminal_event,
+                "trajectory_id": trajectory_id,
+                "trace_id": trajectory_id,
+                "group_id": self.id,
+                "trajectory_status": status,
+                "duration_ms": round(duration_ms, 3),
+            })
+            try:
+                assert self._trajectory_store is not None
+                await asyncio.to_thread(
+                    self._trajectory_store.finish,
+                    trajectory_id,
+                    status=status,
+                    output=output,
+                    error=error,
+                    duration_ms=duration_ms,
+                )
+            except Exception as recording_error:
+                self._trajectory_recording_error = (
+                    f"{type(recording_error).__name__}: {recording_error}"
+                )
+            finally:
+                self._active_trajectory_id = None
+            terminal["trajectory_persisted"] = self._trajectory_recording_error is None
+            terminal["trajectory_recording_error"] = self._trajectory_recording_error
+            await self._publish_event(terminal)
 
     # -- introspection for the API --
     def info(self) -> dict:
         agent = self.agent
-        return {
+        info = {
             "id": self.id,
             "status": self.status,
             "created_at": self.created_at,
@@ -255,3 +286,9 @@ class AgentSession:
             "trajectory_count": self._trajectory_count,
             "trajectory_recording_error": self._trajectory_recording_error,
         }
+        workflow_service = agent.state.get("workflow_service") if agent else None
+        info["workflows"] = (
+            workflow_service.summaries(self.id)
+            if workflow_service is not None else []
+        )
+        return info

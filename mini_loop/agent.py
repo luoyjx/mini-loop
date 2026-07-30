@@ -24,11 +24,14 @@ See EXTENDING.md for how to replace each one without touching this file.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import time
 import uuid
 from collections.abc import Awaitable, Callable
+from contextvars import ContextVar
 from pathlib import Path
 
+from .actions import InMemoryActionJournal
 from .builtins import default_registry, explore_registry, worker_registry
 from .compaction import Compactor, DefaultCompactor, estimate_tokens, microcompact  # re-exported
 from .config import Settings
@@ -36,6 +39,7 @@ from .permissions import default_hooks
 from .prompts import default_system_builder
 from .recovery import DefaultRecovery
 from .registry import Hooks, ToolCall, ToolContext, ToolRegistry
+from .run_context import RunContext
 from .skills import SkillLoader
 from .tools import Toolset
 
@@ -48,6 +52,26 @@ __all__ = ["Agent", "TodoManager", "microcompact", "estimate_tokens"]
 
 EmitFn = Callable[[dict], Awaitable[None]]
 DISPLAY_CAP = 2000   # how much of a tool result to surface in an event
+_CURRENT_RUN_CONTEXT: ContextVar[RunContext | None] = ContextVar(
+    "mini_loop_current_run_context",
+    default=None,
+)
+
+
+def _tool_action_id(
+    *,
+    session_id: str,
+    run_context: RunContext,
+    call: ToolCall,
+) -> str:
+    """Return a replay-stable id when the provider supplied a tool-use id."""
+
+    if not call.id:
+        return f"act_{uuid.uuid4().hex}"
+    identity = "\0".join(
+        (session_id, run_context.message_id, call.id, call.name)
+    )
+    return f"act_{hashlib.sha256(identity.encode()).hexdigest()}"
 
 
 def _usage_payload(response) -> dict | None:
@@ -332,18 +356,36 @@ class Agent:
         return response
 
     # -- public entry: run one user turn to completion, return final text --
-    async def run(self, user_text: str) -> str:
-        user_text = await self.hooks.user_prompt(self, user_text)
-        # s09: index + selected bodies are loaded before the user turn.
-        from .memory import prepare_memory_context
+    @property
+    def current_run_context(self) -> RunContext | None:
+        """Context for the current async task, if an agent is running."""
 
-        user_text = await prepare_memory_context(self, user_text)
-        self.messages.append({"role": "user", "content": user_text})
-        await self._loop()
-        return self.last_text
+        return _CURRENT_RUN_CONTEXT.get()
+
+    async def run(
+        self,
+        user_text: str,
+        run_context: RunContext | None = None,
+    ) -> str:
+        resolved_context = run_context or RunContext.default()
+        token = _CURRENT_RUN_CONTEXT.set(resolved_context)
+        try:
+            user_text = await self.hooks.user_prompt(self, user_text)
+            # s09: index + selected bodies are loaded before the user turn.
+            from .memory import prepare_memory_context
+
+            user_text = await prepare_memory_context(self, user_text)
+            self.messages.append({"role": "user", "content": user_text})
+            await self._loop(resolved_context)
+            return self.last_text
+        finally:
+            _CURRENT_RUN_CONTEXT.reset(token)
 
     # -- the loop --
-    async def _loop(self) -> None:
+    async def _loop(self, run_context: RunContext | None = None) -> None:
+        resolved_context = (
+            run_context or self.current_run_context or RunContext.default()
+        )
         for _ in range(self.max_rounds):
             # Pre-turn injection: background results, fired cron prompts, etc.
             for inject in self.injectors:
@@ -400,6 +442,7 @@ class Agent:
             results = await self._exec_tool_batch(
                 tool_blocks,
                 parent_span_id=self._last_model_span_id,
+                run_context=resolved_context,
             )
 
             # s05 nag: a plan is open but the model drifted off TodoWrite.
@@ -423,6 +466,7 @@ class Agent:
         blocks: list,
         *,
         parent_span_id: str | None = None,
+        run_context: RunContext | None = None,
     ) -> list[dict]:
         """Execute one model-emitted tool batch without reordering results.
 
@@ -443,11 +487,13 @@ class Agent:
                     output = await self._exec_tool(
                         call,
                         parent_span_id=parent_span_id,
+                        run_context=run_context,
                     )
             else:
                 output = await self._exec_tool(
                     call,
                     parent_span_id=parent_span_id,
+                    run_context=run_context,
                 )
             return {
                 "type": "tool_result",
@@ -480,8 +526,30 @@ class Agent:
         return results
 
     # -- one tool call: emit, pre-hooks, dispatch via registry, post-hooks --
-    async def _exec_tool(self, call: ToolCall, *, parent_span_id: str | None = None) -> str:
-        ctx = ToolContext(agent=self, workspace=self.workspace, state=self.state, call=call)
+    async def _exec_tool(
+        self,
+        call: ToolCall,
+        *,
+        parent_span_id: str | None = None,
+        run_context: RunContext | None = None,
+    ) -> str:
+        resolved_context = (
+            run_context or self.current_run_context or RunContext.default()
+        )
+        session_id = str(self.state.get("session_id") or self.workspace)
+        action_id = _tool_action_id(
+            session_id=session_id,
+            run_context=resolved_context,
+            call=call,
+        )
+        ctx = ToolContext(
+            agent=self,
+            workspace=self.workspace,
+            state=self.state,
+            call=call,
+            run_context=resolved_context,
+            action_id=action_id,
+        )
         span_id = f"tool_{uuid.uuid4().hex[:16]}"
         started = time.monotonic()
         await self._send(
@@ -491,16 +559,29 @@ class Agent:
             id=call.id,
             span_id=span_id,
             parent_span_id=parent_span_id,
+            action_id=action_id,
         )
 
         denied = False
         failed = False
+        journal: InMemoryActionJournal | None = self.state.get("action_journal")
+        journal_started = False
         try:
             decision = await self.hooks.before_tool(ctx, call)
             if decision is not None:
                 out = str(decision)
                 denied = True
             else:
+                if journal is not None:
+                    journal.begin(
+                        action_id=action_id,
+                        session_id=session_id,
+                        message_id=resolved_context.message_id,
+                        tool_use_id=call.id,
+                        tool_name=call.name,
+                        input_value=call.input,
+                    )
+                    journal_started = True
                 tool = self.tools.get(call.name)
                 if tool is None:
                     out = f"Unknown tool: {call.name}"
@@ -514,6 +595,8 @@ class Agent:
                         failed = True
                 out = str(await self.hooks.after_tool(ctx, call, out))
         except asyncio.CancelledError:
+            if journal is not None and journal_started:
+                journal.finish(action_id, status="cancelled")
             raise
         except Exception as error:
             # Hook failures are isolated just like handler failures so one
@@ -521,12 +604,20 @@ class Agent:
             out = f"Error: {error}"
             failed = True
 
+        if journal is not None and journal_started:
+            journal.finish(
+                action_id,
+                status="denied" if denied else ("failed" if failed else "completed"),
+                result=out,
+            )
+
         result_fields = {
             "name": call.name,
             "output": out[:DISPLAY_CAP],
             "id": call.id,
             "span_id": span_id,
             "parent_span_id": parent_span_id,
+            "action_id": action_id,
             "error": failed,
             "duration_ms": round((time.monotonic() - started) * 1000, 3),
             "_trajectory_fields": {"output": out},
@@ -537,7 +628,18 @@ class Agent:
         return out
 
     # -- s06: subagent = a fresh Agent, isolated context, restricted tools --
-    async def _run_subagent(self, prompt: str, agent_type: str = "Explore") -> str:
+    async def _run_subagent(
+        self,
+        prompt: str,
+        agent_type: str = "Explore",
+        run_context: RunContext | None = None,
+    ) -> str:
+        parent_context = (
+            run_context or self.current_run_context or RunContext.default()
+        )
+        child_context = parent_context.derive_peer_agent(
+            delegated_by=self.label,
+        )
         registry = explore_registry() if agent_type == "Explore" else worker_registry()
         verb = "explore and report" if agent_type == "Explore" else "complete the task"
         child = Agent(
@@ -564,7 +666,7 @@ class Agent:
             prompt=prompt[:DISPLAY_CAP],
             _trajectory_fields={"prompt": prompt},
         )
-        summary = await child.run(prompt)
+        summary = await child.run(prompt, run_context=child_context)
         await self._send(
             "subagent_end",
             agent_type=agent_type,

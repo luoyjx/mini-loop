@@ -117,9 +117,44 @@ class Settings:
     # Env MINILOOP_FEATURES=all (or any non-empty/true) enables it on the default server.
     enable_features: bool = field(default_factory=lambda: os.getenv("MINILOOP_FEATURES", "") not in ("", "0", "false"))
 
+    # Experimental Dynamic Workflow MVP. The default FastAPI server deliberately
+    # does not consume this flag: callers must opt a local SessionManager into the
+    # surface explicitly so the unauthenticated REST API never gains it by env
+    # accident.
+    enable_workflows: bool = field(
+        default_factory=lambda: _env_bool("MINILOOP_EXPERIMENTAL_WORKFLOWS", False)
+    )
+    workflow_max_concurrent_agents: int = field(
+        default_factory=lambda: _env_int("MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS", 4)
+    )
+    workflow_max_agents: int = field(
+        default_factory=lambda: _env_int("MINILOOP_WORKFLOW_MAX_AGENTS", 32)
+    )
+    workflow_max_rounds: int = field(
+        default_factory=lambda: _env_int("MINILOOP_WORKFLOW_MAX_ROUNDS", 4)
+    )
+    workflow_wall_time_seconds: float = field(
+        default_factory=lambda: _env_float("MINILOOP_WORKFLOW_WALL_TIME_SECONDS", 900.0)
+    )
+
     def __post_init__(self) -> None:
         if self.max_concurrent_tools < 1:
             raise ValueError("max_concurrent_tools must be at least 1")
+        if self.workflow_max_concurrent_agents < 1:
+            raise ValueError("workflow_max_concurrent_agents must be at least 1")
+        if self.workflow_max_concurrent_agents > 4:
+            raise ValueError("workflow_max_concurrent_agents must not exceed 4")
+        if self.workflow_max_agents < self.workflow_max_concurrent_agents:
+            raise ValueError(
+                "workflow_max_agents must be greater than or equal to "
+                "workflow_max_concurrent_agents"
+            )
+        if self.workflow_max_agents > 32:
+            raise ValueError("workflow_max_agents must not exceed 32")
+        if self.workflow_max_rounds < 1:
+            raise ValueError("workflow_max_rounds must be at least 1")
+        if self.workflow_wall_time_seconds <= 0:
+            raise ValueError("workflow_wall_time_seconds must be positive")
         self.workspace_root.mkdir(parents=True, exist_ok=True)
 
 

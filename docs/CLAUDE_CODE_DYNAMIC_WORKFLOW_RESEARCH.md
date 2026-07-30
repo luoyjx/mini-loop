@@ -6,7 +6,9 @@
 >
 > 功能首发基线：Claude Code `2.1.154`
 >
-> 文档状态：研究与实现设计，仓库尚未实现 first-class workflow runtime
+> 文档状态：上游研究、当前 MVP 实现边界与后续设计。仓库已实现 default-off、local-only、
+> process-local 的 declarative read-only vertical slice；它不是 Claude Code JavaScript workflow
+> runtime 的兼容实现，也不具备 durable / restart-safe 语义。
 
 本文回答两个问题：
 
@@ -68,6 +70,11 @@ human prompt
 7. **接近产品级可靠性前，先完成 Roadmap 的 Durable Core。** pause/resume、process restart、
    multi-worker claim、external side-effect retry 都依赖 SQLite state、action journal、lease 和
    idempotency，不应继续堆在 prompt 或 workspace JSON 上。
+
+截至当前 checkout，前两项已经形成一个窄 MVP：model 可以提交 dynamic definition，但 definition
+一经 canonicalize、validate 和 launch，就冻结为只含 `AGENT / VERIFY / REDUCE` 的固定 DAG；
+worker 只拥有 `read_file / glob / return_artifact`。这证明的是 bounded orchestration contract，
+不是 Claude Code parity，更不是 Durable Orchestration 已完成。
 
 ---
 
@@ -356,107 +363,113 @@ API”的形状，但应把 validation failure 设计成明确失败，不必兼
 
 ### 5.1 主调用链
 
-当前主链是固定的 turn-based agent loop：
+ordinary turn 仍走固定 agent loop；显式启用 workflow 的 trusted local session 才增加第二条
+process-local execution path：
 
 ```text
-AgentSession.run()
-  -> Agent.run()
+AgentSession.run(message, immutable RunContext)
+  -> Agent.run(message, RunContext)
   -> user-prompt hooks + memory prefetch
-  -> Agent._loop()
+  -> Agent._loop(RunContext)
       -> injectors
       -> compaction
       -> model(tools.schemas(), refresh_system())
-      -> tool batch
+      -> tool batch -> ToolContext(run_context, action_id)
+          -> Workflow tool
+              -> validate + canonical definition revision
+              -> InMemoryActionJournal / InMemoryWorkflowStore
+              -> bounded WorkflowEngine
+              -> fresh read-only Agents
+              -> process-local outbox
       -> tool results
       -> repeat or stop hooks
 ```
 
-源码证据：
+`SessionManager(enable_workflows=True)` 是唯一显式 opt-in；默认 FastAPI server 即使看到环境配置也
+不注册 workflow surface。`RunContext.default()` 是 `untrusted`，而 `workflow.launch` 与
+`workflow.manage` 必须由 trusted local entrypoint 对**当前 message**分别批准。`with_new_message()`
+默认清空 capability approvals，child/subagent 也会降权为 `peer_agent`。
 
-- [`AgentSession.run()`](../mini_loop/session.py#L127-L188) 用 per-session lock 串行消息处理，只区分
-  `idle / running / error`；
-- [`Agent._loop()`](../mini_loop/agent.py#L346-L419) 每轮调用 `refresh_system()`、读取 live tool
-  schemas，然后执行 model-emitted tool blocks；只有使用 dynamic system builder 的 session 会真正
-  重建 system，创建 session 时显式传入固定 `system` 会关闭这条 dynamic builder 路径；
-- [`Agent._exec_tool_batch()`](../mini_loop/agent.py#L421-L480) 只并发显式
-  `parallel_safe=True` 的连续 tool calls，mutation 是 ordering barrier；
-- [`ToolRegistry`](../mini_loop/registry.py#L83-L147) 支持 session-local register/unregister/clone；
-- [`Hooks`](../mini_loop/registry.py#L174-L217) 已进入 user、before tool、after tool 和 stop lifecycle；
-- [`AgentSession.emit()`](../mini_loop/session.py#L109-L113) 已序列化 concurrent events。
+### 5.2 已实现的 MVP contract
 
-这些 seam 足以接一个 workflow engine，但当前所有“下一步做什么”的决定仍留在模型 context 中。
+| 能力 | 当前实现 |
+| --- | --- |
+| Definition | model input 强制 canonicalize 为 `dynamic`；caller source/revision/hash 被丢弃，runtime 生成并冻结 hash/revision/policy snapshot |
+| Executable IR | 固定 acyclic DAG；只接受 `AGENT`、`VERIFY`、`REDUCE` |
+| Validation | launch 前校验 graph/schema/policy/budget；未知 JSON Schema constraint 和非空 `token_budget` 明确拒绝 |
+| Worker capability | fresh Agent；严格 `read_file`、`glob`、synthetic `return_artifact` |
+| Structured result | `return_artifact` JSON Schema validation；bounded repair rounds |
+| Verification | producer/verifier 使用不同 attempts；failure 记为 `unverified` 而非 `refuted` |
+| State | process-local definition/run/node/attempt/artifact store + CAS version/transition checks |
+| Idempotency | per-tool `action_id` + process-local action journal；same payload replay / different payload conflict |
+| Budget | workflow-local concurrency、attempt、round、wall-time hard caps |
+| Shared capacity | 一个 service/manager 的所有 runs 共享 attempt semaphore；多 manager 可显式注入同一个 semaphore；workers 同时受 `SessionManager` LLM/tool semaphores 约束 |
+| Observe/control | correlated session events、status query、process-local cancel |
+| Delivery | terminal outbox 先获取 process-local lease，再 append、ack；只在下一次真实 parent turn 注入 |
 
-### 5.2 当前四种容易被误称为 workflow 的状态
+“dynamic definition”只表示 definition 可以由本次 model/tool call 生成。launch 后的 graph、revision 和
+policy snapshot 固定，runtime 不会在执行中悄悄扩大 graph、tool capability 或 budget。
 
-| 当前机制 | scope / persistence | 能复用什么 | 不能代表什么 |
+### 5.3 当前安全与 delivery 边界
+
+- 对 agent-facing tools，`explicit_human` 本身还不够；launch message 必须带
+  `approved_capabilities=("workflow.launch",)`，status/cancel message 必须重新批准
+  `("workflow.manage",)`；direct service methods 属于 trusted local internal surface。
+- approval 由 trusted local Python boundary stamp，不从 prompt/body 自报；unauthenticated REST
+  仍无 workflow 能力。
+- workflow engine 自身没有 filesystem/shell capability；只有 fresh worker 的 allowlist tools
+  能读取 workspace。
+- outbox 是 process-local lease -> append -> ack notification，不是 durable message queue。append
+  失败会 release lease；ack 失败可能在 lease 到期后重复投递，因此是 live-process at-least-once，
+  不是 exactly-once。failed/cancelled notification 会携带 compact error/cancel reason；restart 后
+  既不能恢复 pending notification，也不能恢复 run。
+- cancellation 会停止当前 process 内的 task 和后续 claim；outbox lease 不等于 execution lease，
+  executor 仍没有 durable claim/heartbeat、draining 或 external side-effect `UNKNOWN` 语义。
+- `TrajectoryStore`、session backlog 和 workflow events 都是 projection/audit surface，不是
+  executable checkpoint。
+
+### 5.4 可复用但不等价的既有 primitives
+
+MVP 没有把仓库原有机制改名后冒充 workflow。它们仍各自承担相邻责任：
+
+| 既有机制 | scope / persistence | 可复用能力 | 不能代表 |
 | --- | --- | --- | --- |
 | `TodoManager` | 单 Agent 内存 | 简单 coverage checklist | durable plan / branch / resume |
 | `TaskStore` | workspace `.tasks/*.json` | dependency、claim、worktree binding | attempt、lease、retry、checkpoint |
-| inline `task` subagent | 同一 call 内同步等待 | fresh child context、现有 Explore/worker registry | concurrent run tree、durable child、hard read-only policy |
-| team protocol | 并发 AgentSession + shared tasks/mailbox | peer execution、plan approval shape | durable scheduler/source of truth |
+| inline `task` subagent | 同一 call 内同步等待 | fresh child context、既有 registries | concurrent run tree、durable child |
+| team protocol | concurrent AgentSessions + shared tasks/mailbox | peer execution、approval shape | durable scheduler/source of truth |
+| `CronScheduler` | definition 可持久化 | stable scheduled trigger | 完整 execution attempt/checkpoint |
 
-更具体地说：
+对应源码边界：
 
-- [`TodoManager`](../mini_loop/agent.py#L105-L147) 重启即丢失；
-- [`TaskStore`](../mini_loop/tasks.py#L50-L166) 只有
-  `pending / in_progress / completed`，lock 主要是 process-local；
-- [`Agent._run_subagent()`](../mini_loop/agent.py#L540-L574) 没有 child run ID、attempt、budget、
-  interrupt 或 resume；
-- [`explore_registry()`](../mini_loop/builtins.py#L153-L155) 仍包含 host `bash`；名称或 prompt 中的
-  “Explore”不能替代 capability allowlist；
-- [`SessionManager.spawn_teammate()`](../mini_loop/manager.py#L219-L270) 创建 concurrent session，但
-  team/protocol registry 仍在 manager memory；
-- [`CronScheduler`](../mini_loop/cron.py#L106-L225) 持久化 definition，不持久化完整 execution attempt。
+- [`Agent._loop()`](../mini_loop/agent.py) 每轮读取 live tool schemas；workflow scheduler 没有塞回
+  ordinary model loop；
+- [`ToolRegistry`](../mini_loop/registry.py) 的 clone/subset 能构造严格 worker catalog；
+- [`Hooks`](../mini_loop/registry.py) 可继续执行 policy checks，但 mutable workflow state 不放进
+  shared hook；
+- [`TaskStore`](../mini_loop/tasks.py)、[`teams.py`](../mini_loop/teams.py) 与
+  [`worktrees.py`](../mini_loop/worktrees.py) 可作为 future runner adapter 或 UI projection，不能
+  反向成为 workflow source of truth；
+- [`AgentSession.emit()`](../mini_loop/session.py) 和
+  [`TrajectoryStore`](../mini_loop/trajectory.py) 提供 live/audit projection；trajectory 仍不是
+  executable checkpoint。
 
-### 5.3 已经值得复用的能力
+### 5.5 Gap Matrix
 
-1. **Dynamic prompt/tool catalog**
-
-   每次 provider call 前都会读取 `tools.schemas()`，dynamic-system session 还会重建 system，
-   因此可以按 active workflow phase 更新 tool catalog 和 instruction。固定 `system` session 是
-   关键例外：workflow runtime context 必须通过每轮 `workflow_injector` rehydrate，或新增
-   base-system + dynamic-sections 的组合 API；不能只修改 `prompts.py` 后假定所有 session 都会刷新。
-
-2. **Global LLM/tool semaphores**
-
-   `SessionManager` 已把 process-wide LLM 和 tool semaphore 传给 session/subagent，可作为 workflow
-   bounded concurrency 的底层资源闸门。
-
-3. **Policy hooks**
-
-   subagent 继承 hooks，适合继续执行 capability checks 和 tool audit；但 mutable workflow state
-   不能放进全局共享 hook。
-
-4. **Task/team/worktree execution primitives**
-
-   可作为 runner adapter 或 UI projection，不能反过来成为 workflow source of truth。
-
-5. **SSE/event sink**
-
-   新增 `workflow_*` events 后，现有 SSE 和 console 可以先展示 active progress。
-
-6. **Trajectory**
-
-   [`TrajectoryStore`](../mini_loop/trajectory.py#L62-L253) 适合保存 audit projection、metrics 和训练
-   数据；[`TRAJECTORIES.md`](TRAJECTORIES.md#design-references-and-boundary) 已明确它不是 executable
-   checkpoint。
-
-### 5.4 Gap Matrix
-
-| 能力 | 当前状态 | Dynamic workflow 所需 | 结论 |
-| --- | --- | --- | --- |
-| Definition | 无 first-class model | versioned、validated IR/script | 新建 |
-| Planner/router | 模型自由选 tools | explicit trigger + structured plan | 新建 |
-| Runtime | 固定 agent loop | branch/join/loop/barrier/reducer | 新建 |
-| Structured node output | tool 多为 text | schema-first result | 扩展 |
-| Child execution | 同步 inline 或 team session | durable child run + policy/budget snapshot | 重构 |
-| Run control | session `idle/running/error` | awaiting approval/queued/running/paused/cancelled/... | 新建 |
-| Resume | trajectory 可读不可执行 | checkpoint/cursor/cache/recovery | 新建 |
-| Concurrency | LLM/tool semaphore | per-workflow hard cap + fairness | 扩展 |
-| Cost/budget | usage event，无 run ledger | token/cost/time/agent/round budgets | 新建 |
-| Isolation | shared workspace 或手工 worktree | per-node policy + safe integration | 扩展 |
-| Approval | synchronous tool callback | durable launch/step approval | 新建 |
-| Observability | SSE + trajectory | run/phase/node/attempt correlation | 扩展 |
+| 能力 | 当前 MVP | 后续仍需 |
+| --- | --- | --- |
+| Planner/router | model 可提交 definition；无 keyword router | explicit routing、planner repair、ordinary-turn non-interference proof |
+| Runtime | fixed `AGENT/VERIFY/REDUCE` DAG | dynamic map/branch/loop/barrier、runtime replan |
+| JavaScript | 不执行 | Claude Code JS script compatibility 如未来确有需要 |
+| Child execution | fresh read-only Agent + bounded rounds | durable child runs、lease/heartbeat/retry |
+| Run control | status + cancel | pause/resume、approval decision、restart recovery |
+| Persistence | in-memory store/journal/outbox | shared SQLite StateStore、durable event/action/outbox |
+| Concurrency | per-workflow cap + manager/service-wide semaphore；支持显式跨 manager 共享 | fairness、multi-worker claim、no double execution |
+| Cost/budget | attempt/round/wall-time；拒绝 `token_budget` | token/cost ledger、deadline/no-progress policy |
+| Isolation | shared read-only workspace | writable per-node worktree lease + integration barrier |
+| Saved workflows | source enum/args model only | project/personal/plugin load/save/version precedence |
+| Observability | correlated live session events | durable cursor replay、phase UI、token/cost progress |
+| Delivery | next-real-turn process-local outbox | restart-safe delivery、dead-letter、deleted-parent policy |
 
 这与 Roadmap 的
 [G7](AGENT_PLATFORM_ROADMAP.md#g7-backgroundtaskcron-都未达到-durable-job-semantics)、
@@ -565,7 +578,7 @@ Python API 可以提供 builder sugar，但落盘和网络传输必须统一为 
 
 ### 7.2 建议的 definition
 
-示意：
+下面是 target IR 示意，其中 `map/items_from` 尚不能由当前 MVP 执行：
 
 ```yaml
 schema_version: 1
@@ -608,7 +621,7 @@ nodes:
 return_from: synthesize
 ```
 
-MVP 只需支持少量正交 primitives：
+长期 target 只需支持少量正交 primitives：
 
 - `agent`
 - `map`
@@ -619,6 +632,9 @@ MVP 只需支持少量正交 primitives：
 - `repeat_until`
 - `barrier`
 - `return`
+
+当前 executable subset 只有 `agent`、`verify`、`reduce`，且 graph 必须在 launch 时完整展开为 DAG；
+`map/items_from`、`sequence`、`branch`、`repeat_until`、`barrier`、`return` 都会在 validation 阶段拒绝。
 
 不需要一开始实现任意 expression language。condition 可以采用受限 JSON predicate：
 
@@ -798,8 +814,10 @@ transaction` 提交；一个慢 sibling 不能阻止已完成结果落盘。`no 
 
 ### 8.2 Scheduler
 
-- process-wide LLM semaphore 是最终上限；
-- per-workflow semaphore 防止一个 run 饿死其他 sessions；
+- manager/service-wide workflow-attempt semaphore 限制其所有 runs 的活跃 workers；多个 managers
+  只有显式注入同一个 semaphore 时才共享 application-wide ceiling；
+- per-workflow concurrency limit 防止单个 run 一次 claim 过多 nodes；
+- process-wide LLM semaphore 继续限制实际 model calls；
 - mutation nodes 默认串行；
 - read-only fan-out 才可共享 checkout；
 - node claim 必须 durable，生产版本采用 lease + heartbeat；
@@ -871,20 +889,21 @@ producer 和 verifier 使用不同 agent attempt。verdict schema 至少包含�
 
 ## 9. 映射到当前仓库
 
-建议使用 `mini_loop/workflows/` package，避免把 planner、store、runtime 和 API 全塞进一个
-`workflows.py`：
+当前已使用 `mini_loop/workflows/` package；下表同时区分现有文件和 future target，避免把
+planner、store、runtime 和 API 全塞进一个 `workflows.py`：
 
 | 文件 | 责任 |
 | --- | --- |
 | `mini_loop/workflows/models.py` | versioned IR、run/node/artifact dataclasses/enums |
 | `mini_loop/workflows/validation.py` | schema、graph、budget、policy validator |
-| `mini_loop/workflows/registry.py` | definition discovery、revision、fingerprint |
-| `mini_loop/workflows/store.py` | `WorkflowStore` protocol；in-memory test implementation；后续接 shared SQLite StateStore |
-| `mini_loop/workflows/planner.py` | structured-output planner/router |
-| `mini_loop/workflows/engine.py` | transition、scheduler、branch/join/loop |
-| `mini_loop/workflows/runner.py` | child Agent、structured result、worktree adapter |
-| `mini_loop/workflows/injector.py` | completion outbox / active-run 的 next-turn rehydration |
-| `mini_loop/workflows/tools.py` | Workflow launch/status/pause/resume/cancel tools |
+| `mini_loop/workflows/store.py` | 当前 concrete in-memory implementation；future `WorkflowStore` protocol/shared SQLite adapter |
+| `mini_loop/workflows/service.py` | 当前 process-local launch/status/cancel/task/outbox orchestration |
+| `mini_loop/workflows/artifacts.py` | 当前 structured artifact conversion/verification |
+| `mini_loop/workflows/planner.py` | future structured-output planner/router；当前不存在 |
+| `mini_loop/workflows/engine.py` | 当前 fixed-DAG transition/scheduler；future branch/join/loop |
+| `mini_loop/workflows/runner.py` | 当前 strict read-only child Agent/structured result；future worktree adapter |
+| `mini_loop/workflows/tools.py` | 当前 Workflow launch/status/cancel tools |
+| `mini_loop/actions.py` | 当前 process-local action journal；future durable action log |
 | `mini_loop/events.py` | Roadmap R0-01 的统一 typed envelope；workflow 只增加 payload kinds，不另建 envelope |
 
 现有文件的最小接入：
@@ -893,12 +912,12 @@ producer 和 verifier 使用不同 agent attempt。verdict schema 至少包含�
 | --- | --- |
 | [`config.py`](../mini_loop/config.py) | workflow enabled、guideline、hard caps、store path、trigger policy |
 | [`manager.py`](../mini_loop/manager.py) | 构造共享 WorkflowService；注入 service handle；start/stop runtime workers |
-| [`builtins.py`](../mini_loop/builtins.py) | feature-flagged `install_workflows(registry)`，mutation tools 保持 ordering barrier |
-| [`agent.py`](../mini_loop/agent.py) | `Agent.run/_loop/_exec_tool` 显式传递 immutable RunContext；抽出 `SubagentSpec`；不把 scheduler 塞进 `_loop()` |
+| [`builtins.py`](../mini_loop/builtins.py) | core registry 保持不变；manager 显式调用 `install_workflows(registry)` |
+| [`agent.py`](../mini_loop/agent.py) | 已显式传递 immutable RunContext/action_id；future `SubagentSpec`；scheduler 不进 `_loop()` |
 | [`prompts.py`](../mini_loop/prompts.py) | dynamic session 注入 summary；固定 system 由 composite API 或每轮 injector 覆盖 |
 | [`session.py`](../mini_loop/session.py) | `run(message, *, run_context)`；event correlation；active workflow summaries |
 | [`registry.py`](../mini_loop/registry.py) | `ToolContext.run_context/action_id`；tool catalog revision/deep snapshot/fingerprint |
-| [`server.py`](../mini_loop/server.py) | 从 authenticated transport/server policy 派生 origin；management endpoints；durable replay |
+| [`server.py`](../mini_loop/server.py) | 当前明确不暴露 workflow；future authenticated origin/management/durable replay |
 | [`worktrees.py`](../mini_loop/worktrees.py) | lease/baseline/owner/integration lifecycle |
 | [`trajectory.py`](../mini_loop/trajectory.py) | 接收 workflow correlation fields，仍只做 projection |
 
@@ -974,7 +993,9 @@ workflow name + server-side policy 启动，不能靠 payload 文本或客户端
 
 ### 10.2 Agent-facing Workflow tool
 
-推荐一个高层 `Workflow` tool，而不是把 raw transition tools 全交给模型：
+推荐一个高层 `Workflow` tool，而不是把 raw transition tools 全交给模型。当前 MVP 只实现
+`definition + args` new launch，以及独立的 `WorkflowStatus` / `WorkflowCancel`；下面的
+`saved_name`、resume 和 approval status 是 future target，不是当前 public contract：
 
 新 definition launch：
 
@@ -1031,6 +1052,9 @@ create-run idempotency 不能依赖模型自己生成稳定字段。Agent-facing
 `ToolContext.action_id` 作为 launch key；该 action ID 必须在 handler 前由 action journal 持久化，
 并与保存的 assistant tool block / provider `tool_use_id` 绑定。只有 journal 明确复用原 action ID
 时，provider ID 才可参与 key，不能在 restart 后临时重新推导。
+
+当前 action ID binding 和 journal semantics 已在单 process 内实现，但 journal 本身仍是 memory-only；
+“持久化”和 restart replay 是 Phase C target。
 
 StateStore 对 `(session_id, idempotency_key)` 建唯一约束：
 
@@ -1141,7 +1165,9 @@ guideline，但每档仍必须被 organization/process hard caps 截断。
 
 ### 11.1 Tool policy snapshot
 
-run 启动时持久化：
+下面是 Durable Core 的 target snapshot。当前 MVP 只冻结 definition/policy hash、RunContext、
+launch action ID、固定 read-only tool policy 和 process settings caps；尚无 durable tool-catalog、
+Hook/MCP/model/workspace fingerprint。target 在 run 启动时持久化：
 
 - canonical tool schema snapshot；
 - tool catalog fingerprint；
@@ -1171,77 +1197,67 @@ run 启动时持久化：
 
 ## 12. 分阶段实施计划
 
-本节是 Roadmap 的 workflow-specific 子计划，不替代
+本节同时记录当前 checkout 状态与后续 target，不替代
 [`AGENT_PLATFORM_ROADMAP.md` 的第一个 Sprint](AGENT_PLATFORM_ROADMAP.md#13-建议立即启动的第一个-sprint)。
-仓库 top priority 仍是统一 event/state contract、SQLite/action/recovery baseline 和 sandbox spike。
-以下 Phase A 可以在 shared R0 contract 上做纯模型设计；任何 parallel executor 都要等 Roadmap
-R1 的 transaction ordering baseline。
+仓库已用 process-local components 验证 Phase A/B 的窄 contract；这不等价于绕过 Roadmap 的
+SQLite/action/recovery baseline。任何 production、multi-worker 或 restart-safe 宣称仍依赖 shared
+R0/R1 transaction ordering。
 
-### Phase A — Workflow contract（disabled、无 executor）
+### Phase A — Workflow contract（当前：核心 contract 已实现，仍为 process-local）
 
-**目标**：建立不会被 demo 绑架的 definition/run/event contract。
-
-实现：
+已实现：
 
 - `WorkflowDefinition`、`WorkflowRun`、`NodeAttempt`、`Artifact`；
 - transition table 和 table-driven tests；
-- declarative IR validator；
-- `WorkflowStore` protocol + deterministic in-memory test double；
+- bounded declarative IR validator 和 canonical definition hash/revision；
+- concrete `InMemoryWorkflowStore` test implementation；
 - 基于统一 `mini_loop/events.py` envelope 的 workflow payload schemas；
-- server-derived origin / authority contract，以及 `AgentSession -> Agent -> ToolContext` 的显式
+- trusted-entrypoint-derived origin / authority / per-message capability contract，以及
+  `AgentSession -> Agent -> ToolContext` 的显式
   immutable RunContext propagation；
-- definition、policy 和 tool-catalog fingerprint。
+- definition/policy snapshot、action replay/conflict 和 event correlation tests。
 
-验收：
-
-- invalid graph、unbounded loop、unknown tool、超预算 definition 在 launch 前失败；
-- illegal/duplicate transition 稳定拒绝；
-- event sequence 单调且具备 run/node/attempt correlation；
-- run-level event 不需要伪造 node/attempt ID；
-- payload 无法自行声明 trusted human；
-- 所有现有测试保持通过。
-
-说明：该阶段不注册产品 `Workflow` tool、不启动 scheduler，也不提供 management API。in-memory
-WorkflowStore 只是 test double，不是现有 `MemoryStore`，更不宣称 process restart resume。
+仍未完成：shared `WorkflowStore` protocol/SQLite adapter、tool-catalog fingerprint、durable event
+append/replay。当前 in-memory store 不是现有 `MemoryStore`，也不宣称 process restart resume。
 
 ### Phase B — Local-only experimental read-only vertical slice
 
-**依赖**：Phase A + Roadmap `R0-01/R0-02/R1-01/R1-02` 的最小 transaction ordering baseline。
-
-**目标**：在 default-off feature flag 下验证 `repo-audit` orchestration，不把它包装成 production
-durability。只允许 direct Python/local test surface；不向当前 unauthenticated REST 暴露。
+**当前状态**：已实现一个 default-off、direct Python/trusted-local、process-local slice；没有向
+unauthenticated REST 暴露，也不包装成 production durability。
 
 固定 shape：
 
 ```text
-planner
-  -> discover files/symbols
-  -> bounded fan-out agents with explicit read_file/glob-only registry
-  -> independent verifier per finding
-  -> reducer dedupe/rank
-  -> verified/refuted/unverified report
+validated fixed DAG
+  -> bounded fresh agents with explicit read_file/glob-only registry
+  -> explicitly modeled independent verifier nodes
+  -> reducer node
+  -> coordinated structured artifact
 ```
 
-实现：
+已实现：
 
-- `WorkflowRouter` 和 schema-first planner；
-- `SubagentSpec`：prompt/schema/model/tools/budget/label；
-- `ToolContext.run_context/action_id`，launch 复用 shared action journal 的 idempotency boundary；
+- model/tool-call-supplied definition 的 schema-first validation；launch 后固定 revision；
+- `ToolContext.run_context/action_id`，launch 复用 process-local action journal idempotency boundary；
 - synthetic `return_artifact` tool + validation/repair loop；
 - 4-agent concurrency hard cap；
-- progress SSE；
-- internal launch/status + cooperative cancel；
-- completion outbox/status query；下一次真实 parent turn 再由 injector 注入。
+- manager/service-wide workflow-attempt/LLM/tool semaphores（支持显式跨 manager 共享）+ workflow-local
+  concurrency/attempt/round/wall-time caps；
+- correlated live events；
+- internal launch/status + process-local cancel；
+- process-local lease -> append -> ack terminal outbox/status query；下一次真实 parent turn 再由
+  injector 注入，append failure 可 retry，ack failure 允许 at-least-once duplicate；
+- producer/verifier identity 分离和 verifier failure -> `unverified` tests。
 
-验收：
+明确未实现：
 
-- fan-out 实际 overlap，结果顺序和 node identity 稳定；
-- producer 与 verifier 是不同 attempts；
-- verifier failure 产生 `unverified`，不伪装为 refuted；
-- compaction 后 active workflow context 可从 store 重建；
-- cancel 后不再 claim 新 node；可取消 task 停止，不可取消 attempt 进入 draining / `UNKNOWN`；
-- completed result 不会自动伪造 user turn，parent 删除/忙碌时仍有明确 delivery policy；
-- ordinary prompt 不受 workflow router 影响。
+- `WorkflowRouter`、`ultracode` keyword trigger 和 dedicated planner；
+- `SubagentSpec` 的 per-node model/tools/budget/label；
+- discovery-result-driven dynamic fan-out、branch、loop、barrier、replan；
+- pause/resume、draining / `UNKNOWN`、execution lease/retry/fairness；
+- durable outbox、restart recovery 和 deleted-parent delivery policy；
+- token/cost ledger；`token_budget` 非空时直接拒绝；
+- Claude Code JavaScript script/runtime compatibility。
 
 ### Phase C — Durable Workflow Core
 
@@ -1316,24 +1332,21 @@ management API 和 durable human decision 还必须完成 `R2-02 Auth/Tenant/Sec
 
 ## 13. Roadmap R0/R1 后的首个 workflow-specific Sprint
 
-这不是仓库总 Roadmap 的“第一个 Sprint”。只有 shared R0 event/state contract 和 R1 StateStore
-interface 已冻结后，才开始 workflow Sprint W0；它只做 Phase A contract，不并行建设另一套 JSON
-job runtime：
+当前 checkout 已完成原 W0 的大部分 model/validation/state/event/RunContext contract，并提前实现了
+一个 bounded W1 read-only slice。它仍不改变总 Roadmap 的依赖顺序：当前 concrete store、action
+journal 和 outbox 都是 process-local implementation，不是 shared durable StateStore。
 
-1. 新增 `mini_loop/workflows/models.py` 和 state transition tests；
-2. 新增 JSON IR schema、canonical serialization 和 `definition_hash`；
-3. 新增 `WorkflowStore` protocol，并以 shared StateStore 为 production boundary；
-4. 提供 in-memory WorkflowStore test double；
-5. 在统一 `mini_loop/events.py` 中增加 workflow payload kinds；
-6. 定义 server-stamped `RunContext` 及 `AgentSession -> Agent -> ToolContext` propagation contract；
-7. 定义 action-journal stamped `action_id` / create-run idempotency contract；
-8. 测试 schema、hash、transition、event correlation、authority spoofing 和 duplicate launch；
-9. 明确不注册 `Workflow` tool、不实现 scheduler、不修改 `_run_subagent()`。
+下一步 workflow-specific 工作应收敛到：
 
-W0 review 通过且 Roadmap R1 transaction baseline 落地后，Sprint W1 才进入 Phase B：restricted
-SubagentSpec、bounded engine、`return_artifact`、local-only tool 和 vertical-slice tests。
+1. 抽出 `WorkflowStore` protocol，并接入 Roadmap 的 shared SQLite transaction boundary；
+2. durable action/event/outbox append、cursor replay 和 restart recovery；
+3. claim/lease/heartbeat/retry/dead-letter 与 multi-worker CAS tests；
+4. explicit router/planner，证明 ordinary prompt 和 non-human message 不会自动升级；
+5. token/cost/no-progress ledger 与 cross-run fairness；
+6. pause/resume/decision 和 deleted-parent delivery policy；
+7. 只有上述 contract 稳定后，才考虑 dynamic map/branch/loop 或 writable worktree workflow。
 
-Sprint W0 明确不做：
+当前 MVP 明确不做：
 
 - arbitrary JavaScript；
 - external publish/push/comment；
@@ -1346,80 +1359,46 @@ Sprint W0 明确不做：
 
 ## 14. 测试与质量门槛
 
-### 14.1 Contract tests
+### 14.1 当前 MVP 已覆盖
 
-- schema version migration / rejection；
-- definition canonical hash 稳定；
-- tool catalog fingerprint 稳定；
-- every legal/illegal transition；
-- node dependency、branch、join、loop bound；
-- duplicate event / transition idempotency；
-- `(session_id, idempotency_key)` duplicate launch 返回原 run，different-payload conflict 拒绝。
+- definition canonical hash/revision、schema version、invalid graph、unsupported node kind；
+- 未知 JSON Schema constraint、非空 `token_budget`、非只读/不完整 tool policy 拒绝；
+- legal/illegal transition、CAS conflict、duplicate launch replay/different-payload conflict；
+- event correlation 和 per-session monotonic sequence；
+- bounded overlap、跨 concurrent engines/runs 的显式 shared attempt cap、stable node/input
+  order、attempt/round/wall-time cap；
+- `return_artifact` validation/repair、producer/verifier identity 分离、`unverified` fallback；
+- default-off manager/server boundary、untrusted launch denial、fresh per-message management
+  capability 和 cross-session ownership denial；
+- child/peer authority downgrade、strict worker tool allowlist、context compaction 的 workspace
+  zero-write snapshot；
+- observability sink failure 不改变 source-of-truth state；
+- process-local cancel 停止后续 claim，并保留 timeout/manual/shutdown/delete reason；
+- terminal outbox 只在下一次真实 parent turn 出现；append failure 会 release lease 并可重试，
+  failed/cancelled notification 保留 error/cancel reason。
 
-### 14.2 Scheduler tests
+### 14.2 尚未满足的 gates
 
-- bounded overlap；
-- process-wide + workflow-local semaphore 共同生效；
-- fairness，不允许单 workflow 饿死普通 session；
-- mutation barrier；
-- cooperative cancel：停止新 claim、取消可中断 task、不可中断 attempt 进入 draining / `UNKNOWN`；
-- timeout、retry、no-progress；
-- same node 不 double claim。
+- `WorkflowStore` protocol、tool-catalog fingerprint、shared transaction tests；
+- planner/router ordinary-turn non-interference 和 non-human keyword tests；
+- dynamic map/branch/loop/coverage ledger/reducer provenance；
+- fairness、execution lease/heartbeat/retry/no-progress、same-node multi-worker claim；
+- draining / external side-effect `UNKNOWN`；
+- compaction/restart recovery、checkpoint/cache invalidation、durable event cursor；
+- pending approval、pause/resume、dead-letter 和 restart-safe outbox delivery；
+- writable worktree escape/symlink/integration/rollback gates；
+- token/cost ledger 和 executable budget accounting。
 
-### 14.3 Planner tests
+### 14.3 仓库回归
 
-- ordinary task 不误触发；
-- non-human `ultracode` 不触发；
-- invalid IR 修复次数有上限；
-- estimated worst-case agents 超 hard cap 时拒绝；
-- tool/model/workspace escalation 需要新 approval；
-- prompt injection 不能修改 server-stamped origin/policy；
-- unauthenticated REST 不能 prompt-trigger workflow。
-
-### 14.4 Result quality tests
-
-- structured output validation failure 不当作空成功；
-- worker 必须通过 `return_artifact` schema path 完成，Fake LLM 也不能绕过；
-- producer/verifier identity 分离；
-- `verified/refuted/unverified` 三态；
-- reducer 去重但保留 provenance；
-- coverage ledger 可证明所有 input item 已完成、失败或明确跳过；
-- final answer 不隐藏 unresolved node。
-
-### 14.5 Recovery tests
-
-- compaction 后 rehydrate；
-- server restart；
-- first unfinished node replay；
-- content-addressed independent node reuse；
-- changed prompt/tool/workspace/policy invalidates cache；
-- pending approval/retry deadline 恢复；
-- run 已创建但 tool result 未提交时 replay 返回同一 `run_id`；
-- partial event record 不改变 source-of-truth state。
-
-### 14.6 Security tests
-
-- engine 无 direct tool/filesystem/shell access；
-- subagent tool allowlist；
-- worktree escape；
-- symlink/path traversal；
-- untrusted origin；
-- child/peer RunContext 不继承 `explicit_human` authority；
-- agent count/token/time runaway；
-- external side-effect `UNKNOWN` 不 retry。
-
-### 14.7 仓库回归
-
-当前调研基线：
+以当前 checkout 的实际命令结果为准，不在研究文档中固化易过期的测试数量：
 
 ```sh
 .venv/bin/python -m pytest -q
-# 99 passed, 1 warning, 24 subtests passed
 ```
 
-新增实现后仍需运行全量测试，并增加 failure-injection 和 repeated-concurrency tests。上面的测试
-数量只代表本次 checkout 快照，不应复制为未来 feature 的 acceptance evidence；应以当次命令输出和
-新增行为测试为准。
+每次 workflow contract 变更仍需运行全量回归，并增加与风险成比例的 failure-injection 和
+repeated-concurrency tests。
 
 ---
 
@@ -1430,9 +1409,10 @@ Sprint W0 明确不做：
 | MVP wire format | declarative JSON IR | 可校验、hash、diff、迁移、恢复 |
 | arbitrary JS | 暂不实现 | 先避免脚本 sandbox 与 supply-chain 扩张 |
 | 首条 workflow | strict read_file/glob-only repo audit | 验证 orchestration，不复用含 bash 的 Explore registry |
-| planner trigger | server-stamped explicit human only | 保留 authority/provenance boundary |
+| MVP trigger | trusted-local explicit human + per-message capability | 保留 authority/provenance boundary |
 | default size | small | 与仓库资源规模匹配 |
-| source of truth | shared durable StateStore 的 workflow tables | conversation live handle/task/trajectory 都只做 projection |
+| MVP source of truth | process-local `InMemoryWorkflowStore` | 验证 contract，不宣称 restart recovery |
+| production source of truth | shared durable StateStore 的 workflow tables | conversation live handle/task/trajectory 都只做 projection |
 | resume | state + content-addressed cache | 比无条件重跑或 trajectory replay 更安全 |
 | writing isolation | per-node worktree | 避免 shared checkout data race |
 | verification | independent agent + executable checks | 降低 self-preferential bias |
@@ -1473,9 +1453,13 @@ Sprint W0 明确不做：
 - [`AGENT_PLATFORM_ROADMAP.md`](AGENT_PLATFORM_ROADMAP.md)
 - [`TRAJECTORIES.md`](TRAJECTORIES.md)
 - [`agent.py`](../mini_loop/agent.py)
+- [`run_context.py`](../mini_loop/run_context.py)
+- [`actions.py`](../mini_loop/actions.py)
+- [`events.py`](../mini_loop/events.py)
 - [`manager.py`](../mini_loop/manager.py)
 - [`session.py`](../mini_loop/session.py)
 - [`registry.py`](../mini_loop/registry.py)
+- [`workflows/`](../mini_loop/workflows/)
 - [`builtins.py`](../mini_loop/builtins.py)
 - [`tasks.py`](../mini_loop/tasks.py)
 - [`teams.py`](../mini_loop/teams.py)
@@ -1487,3 +1471,6 @@ Sprint W0 明确不做：
 - [`tests/test_curriculum.py`](../tests/test_curriculum.py)
 - [`tests/test_extensions.py`](../tests/test_extensions.py)
 - [`tests/test_server.py`](../tests/test_server.py)
+- [`tests/test_run_context.py`](../tests/test_run_context.py)
+- [`tests/test_workflows.py`](../tests/test_workflows.py)
+- [`tests/test_workflow_integration.py`](../tests/test_workflow_integration.py)

@@ -22,18 +22,22 @@ import uuid
 from collections.abc import Callable
 from pathlib import Path
 
+from .actions import InMemoryActionJournal
 from .agent import Agent
-from .builtins import default_injectors, full_registry
+from .builtins import default_injectors, default_registry, full_registry
 from .config import Settings
 from .cron import CronScheduler
 from .memory import MemoryStore
 from .registry import Hooks, ToolRegistry
+from .run_context import RunContext
 from .session import AgentSession
 from .skills import SkillLoader
 from .tasks import TaskStore
 from .teams import MessageBus, ProtocolState, team_key
 from .trajectory import TrajectoryStore
 from .worktrees import WorktreeManager
+from .workflows.service import WorkflowService, workflow_injector
+from .workflows.tools import install_workflows
 
 
 class SessionManager:
@@ -55,6 +59,9 @@ class SessionManager:
         event_sink: Callable[[dict], object] | None = None,
         trajectory_store: TrajectoryStore | None = None,
         enable_features: bool = False,
+        enable_workflows: bool = False,
+        workflow_service: WorkflowService | None = None,
+        workflow_attempt_semaphore: asyncio.Semaphore | None = None,
         mcp_servers: dict | None = None,
     ) -> None:
         self.settings = settings
@@ -66,6 +73,27 @@ class SessionManager:
         if tool_semaphore is None:
             tool_semaphore = asyncio.Semaphore(settings.max_concurrent_tools)
         self.tool_semaphore = tool_semaphore
+        if workflow_service is not None:
+            if (
+                workflow_attempt_semaphore is not None
+                and (
+                    workflow_attempt_semaphore
+                    is not workflow_service.attempt_semaphore
+                )
+            ):
+                raise ValueError(
+                    "workflow_attempt_semaphore conflicts with the injected "
+                    "WorkflowService"
+                )
+            self.workflow_attempt_semaphore = workflow_service.attempt_semaphore
+        else:
+            self.workflow_attempt_semaphore = (
+                workflow_attempt_semaphore
+                if workflow_attempt_semaphore is not None
+                else asyncio.Semaphore(
+                    settings.workflow_max_concurrent_agents
+                )
+            )
 
         self.hooks = hooks
         self.system_builder = system_builder
@@ -74,6 +102,7 @@ class SessionManager:
         self.workspace_factory = workspace_factory or (lambda sid: self.settings.workspace_root / sid)
         self.event_sink = event_sink
         self.enable_features = enable_features
+        self.enable_workflows = bool(enable_workflows or workflow_service is not None)
         self.mcp_servers = mcp_servers or {}
 
         if trajectory_store is not None:
@@ -89,27 +118,55 @@ class SessionManager:
 
         # Tool registry template (cloned per session).
         if tool_registry is not None:
-            self.tool_registry = tool_registry
+            self.tool_registry = (
+                tool_registry.clone() if self.enable_workflows else tool_registry
+            )
         elif enable_features:
             self.tool_registry = full_registry(mcp_servers=self.mcp_servers or None)
+        elif self.enable_workflows:
+            self.tool_registry = default_registry()
         else:
             self.tool_registry = None  # -> Agent default (default_registry)
+        if self.enable_workflows:
+            assert self.tool_registry is not None
+            install_workflows(self.tool_registry)
 
         if injectors is not None:
-            self.injectors = injectors
+            self.injectors = list(injectors)
         elif enable_features:
             self.injectors = default_injectors()
         else:
             self.injectors = []
+        if self.enable_workflows and workflow_injector not in self.injectors:
+            self.injectors.append(workflow_injector)
 
         # Cross-session services.
         self.bus = MessageBus(settings.workspace_root / ".teams")
+        self.actions = (
+            workflow_service.action_journal
+            if workflow_service is not None
+            else InMemoryActionJournal()
+        )
         self.memory = MemoryStore(settings.memory_root or (settings.workspace_root / ".memory"))
         self.worktrees = WorktreeManager(settings.repo_root) if settings.repo_root else None
         self.cron = CronScheduler(self, durable_path=settings.workspace_root / ".cron.json")
         self._teammates: dict[str, dict[str, str]] = {}
         self.protocols: dict[str, ProtocolState] = {}
         self._sessions: dict[str, AgentSession] = {}
+        self._cleanup_tasks: set[asyncio.Task] = set()
+        self._deferred_workspace_cleanup: dict[str, Path] = {}
+        self._cleanup_errors: list[dict[str, str]] = []
+        self.workflows = workflow_service
+        if self.enable_workflows and self.workflows is None:
+            self.workflows = WorkflowService(
+                settings=settings,
+                client=client,
+                action_journal=self.actions,
+                session_resolver=lambda session_id: self._sessions.get(session_id),
+                llm_semaphore=self.llm_semaphore,
+                tool_semaphore=self.tool_semaphore,
+                attempt_semaphore=self.workflow_attempt_semaphore,
+            )
 
     # -- lifecycle (called by the server lifespan) --
     async def start(self) -> None:
@@ -118,6 +175,20 @@ class SessionManager:
 
     async def stop(self) -> None:
         await self.cron.stop()
+        if self.workflows is not None:
+            await self.workflows.close()
+        if self._cleanup_tasks:
+            await asyncio.gather(
+                *tuple(self._cleanup_tasks),
+                return_exceptions=True,
+            )
+        for session_id in tuple(self._deferred_workspace_cleanup):
+            if not self._finalize_workspace_cleanup(session_id):
+                self._record_cleanup_error(
+                    session_id,
+                    "workspace retained after shutdown because a workflow "
+                    "or sharing session is still active",
+                )
         tasks = []
         for session in self._sessions.values():
             for attribute in ("spawn_task", "lifecycle_task"):
@@ -152,14 +223,17 @@ class SessionManager:
         registry = self.tool_registry.clone() if self.tool_registry is not None else None
         state = {
             "manager": self,
+            "session": session,
             "session_id": session.id,
             "bus": self.bus,
             "cron": self.cron,
             "team_id": session.id,
             "agent_name": "lead",
+            "action_journal": self.actions,
             "memory": self.memory,
             "memory_root": self.memory.dir,
             "worktrees": self.worktrees,
+            "workflow_service": self.workflows,
         }
         state.update(extra_state)
         return Agent(
@@ -216,7 +290,14 @@ class SessionManager:
         return session
 
     # -- s15-17: spawn a teammate = a concurrent session sharing the workspace --
-    async def spawn_teammate(self, parent_id: str, name: str, role: str, prompt: str) -> str:
+    async def spawn_teammate(
+        self,
+        parent_id: str,
+        name: str,
+        role: str,
+        prompt: str,
+        run_context: RunContext | None = None,
+    ) -> str:
         parent = self.get(parent_id)
         if parent is None:
             return f"Error: no parent session {parent_id}"
@@ -262,10 +343,21 @@ class SessionManager:
         )
         if session.agent.tools is not None:
             session.agent.tools.unregister("spawn_teammate")  # no fork bombs
+            for tool_name in ("Workflow", "WorkflowStatus", "WorkflowCancel"):
+                session.agent.tools.unregister(tool_name)  # no nested workflows
         self._sessions[session_id] = session
         self._teammates.setdefault(team_id, {})[name] = session_id
+        parent_context = (
+            run_context
+            or parent.agent.current_run_context
+            or RunContext.default()
+        )
+        teammate_context = parent_context.derive_peer_agent(
+            delegated_by=parent.agent.label,
+            actor_id=name,
+        )
         session.spawn_task = asyncio.create_task(  # type: ignore[attr-defined]
-            self._initial_teammate_run(session, prompt)
+            self._initial_teammate_run(session, prompt, teammate_context)
         )
         return f"Spawned teammate '{name}' (session {session_id}); running concurrently."
 
@@ -276,9 +368,17 @@ class SessionManager:
         session_id = self._teammates.get(team_id, {}).get(name)
         return self.get(session_id) if session_id else None
 
-    async def _initial_teammate_run(self, session: AgentSession, prompt: str) -> str:
+    async def _initial_teammate_run(
+        self,
+        session: AgentSession,
+        prompt: str,
+        run_context: RunContext | None = None,
+    ) -> str:
         assert session.agent is not None
-        result = await session.run(prompt)
+        result = await session.run(
+            prompt,
+            run_context=run_context or self._teammate_run_context(session),
+        )
         state = session.agent.state
         self.bus.send(team_key(state["team_id"], state["agent_name"]),
                       team_key(state["team_id"], "lead"), result, "result")
@@ -286,6 +386,16 @@ class SessionManager:
             self._teammate_idle_loop(session)
         )
         return result
+
+    @staticmethod
+    def _teammate_run_context(session: AgentSession) -> RunContext:
+        assert session.agent is not None
+        state = session.agent.state
+        return RunContext.peer_agent(
+            delegated_by="lead",
+            actor_id=state.get("agent_name"),
+            stamped_by="session_manager",
+        )
 
     async def _teammate_idle_loop(self, session: AgentSession) -> None:
         assert session.agent is not None
@@ -303,7 +413,10 @@ class SessionManager:
                 return
             if messages:
                 prompt = f"<team_inbox>\n{json.dumps(messages, default=str)}\n</team_inbox>"
-                result = await session.run(prompt)
+                result = await session.run(
+                    prompt,
+                    run_context=self._teammate_run_context(session),
+                )
                 self.bus.send(team_key(team_id, name), team_key(team_id, "lead"), result, "result")
                 deadline = loop.time() + self.settings.team_idle_timeout
                 continue
@@ -329,7 +442,8 @@ class SessionManager:
             agent.enter_workspace(target_workspace)
             result = await session.run(
                 f"You autonomously claimed {claimed.id}: {claimed.subject}\n"
-                f"{claimed.description}\nComplete the work, then call complete_task for {claimed.id}."
+                f"{claimed.description}\nComplete the work, then call complete_task for {claimed.id}.",
+                run_context=self._teammate_run_context(session),
             )
             self.bus.send(team_key(team_id, name), team_key(team_id, "lead"), result,
                           "result", {"task_id": claimed.id})
@@ -424,10 +538,77 @@ class SessionManager:
     def list(self) -> list[AgentSession]:
         return list(self._sessions.values())
 
+    @property
+    def cleanup_errors(self) -> tuple[dict[str, str], ...]:
+        return tuple(dict(item) for item in self._cleanup_errors)
+
+    def _record_cleanup_error(self, session_id: str, error: str) -> None:
+        workspace = self._deferred_workspace_cleanup.get(session_id)
+        self._cleanup_errors.append({
+            "session_id": session_id,
+            "workspace": str(workspace) if workspace is not None else "",
+            "error": error[:500],
+        })
+        del self._cleanup_errors[:-100]
+
+    def _finalize_workspace_cleanup(self, session_id: str) -> bool:
+        workspace = self._deferred_workspace_cleanup.get(session_id)
+        if workspace is None:
+            return True
+        if (
+            self.workflows is not None
+            and self.workflows.has_active(session_id)
+        ):
+            return False
+        if any(
+            session.workspace == workspace
+            for session in self._sessions.values()
+        ):
+            return False
+        shutil.rmtree(workspace, ignore_errors=True)
+        self._deferred_workspace_cleanup.pop(session_id, None)
+        return True
+
+    async def _drain_workspace_cleanup(
+        self,
+        session_id: str,
+        cancellation_tasks: tuple[asyncio.Task, ...],
+    ) -> None:
+        outcomes = await asyncio.gather(
+            *cancellation_tasks,
+            return_exceptions=True,
+        )
+        failures = [
+            outcome for outcome in outcomes
+            if isinstance(outcome, BaseException)
+        ]
+        if failures:
+            detail = "; ".join(
+                f"{type(error).__name__}: {error}"
+                for error in failures
+            )
+            self._record_cleanup_error(session_id, detail)
+            return
+        if not self._finalize_workspace_cleanup(session_id):
+            self._record_cleanup_error(
+                session_id,
+                "cancellation completed but workflow remains active",
+            )
+
     def delete(self, session_id: str, *, remove_workspace: bool = True) -> bool:
-        session = self._sessions.pop(session_id, None)
+        session = self._sessions.get(session_id)
         if session is None:
             return False
+        workflow_active = (
+            self.workflows is not None
+            and self.workflows.has_active(session_id)
+        )
+        cancellation_tasks = (
+            self.workflows.request_cancel_session(session_id)
+            if self.workflows is not None
+            else ()
+        )
+        self._sessions.pop(session_id, None)
         for attribute in ("spawn_task", "lifecycle_task"):
             task = getattr(session, attribute, None)
             if task is not None and not task.done():
@@ -440,6 +621,20 @@ class SessionManager:
                 self._teammates.pop(team_id, None)
         # Don't delete a workspace shared by teammates.
         shared = any(s.workspace == session.workspace for s in self._sessions.values())
+        # A process-local workflow may still have a read in flight while its
+        # cooperative cancellation task drains.
         if remove_workspace and not shared:
-            shutil.rmtree(session.workspace, ignore_errors=True)
+            if workflow_active:
+                self._deferred_workspace_cleanup[session_id] = session.workspace
+                if cancellation_tasks:
+                    cleanup = asyncio.create_task(
+                        self._drain_workspace_cleanup(
+                            session_id,
+                            cancellation_tasks,
+                        )
+                    )
+                    self._cleanup_tasks.add(cleanup)
+                    cleanup.add_done_callback(self._cleanup_tasks.discard)
+            elif not workflow_active:
+                shutil.rmtree(session.workspace, ignore_errors=True)
         return True

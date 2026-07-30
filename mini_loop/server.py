@@ -123,6 +123,7 @@ def _register_routes(app: FastAPI) -> None:
         return {"status": "ok", "model": s.model, "fake_llm": s.fake_llm,
                 "features": s.enable_features, "max_concurrent_llm": s.max_concurrent_llm,
                 "max_concurrent_tools": s.max_concurrent_tools,
+                "experimental_workflows": _manager(request).enable_workflows,
                 "trajectories": _manager(request).trajectories is not None,
                 "sessions": len(_manager(request).list())}
 

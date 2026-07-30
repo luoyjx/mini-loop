@@ -141,6 +141,34 @@ class Compactor(Protocol):
     async def compact(self, agent) -> None: ...
 
 
+class InMemoryCompactor:
+    """Bound context without persisting tool results or transcripts.
+
+    Workflow workers use this compactor so their nominally read-only tool
+    policy cannot be bypassed by an internal context-management write.
+    """
+
+    def __init__(
+        self,
+        token_threshold: int | None = None,
+        *,
+        max_messages: int = 50,
+    ) -> None:
+        self.token_threshold = token_threshold
+        self.max_messages = max_messages
+
+    async def maybe_compact(self, agent) -> None:
+        threshold = self.token_threshold or agent.settings.token_threshold
+        if estimate_tokens(agent.messages) < threshold:
+            return
+        snip_compact(agent.messages, self.max_messages)
+        microcompact(agent.messages)
+
+    async def compact(self, agent) -> None:
+        snip_compact(agent.messages, self.max_messages)
+        microcompact(agent.messages)
+
+
 class DefaultCompactor:
     """Four ordered layers: result budget, snip, micro, LLM summary."""
 
