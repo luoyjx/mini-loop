@@ -99,7 +99,9 @@ Design docs: [hardening notes](docs/HARDENING_NOTES.md) (why the non-curriculum
 modules exist, the traps they close, and what is still open),
 [Claude Code dynamic workflows research](docs/CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md),
 [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md), and
-[trajectory/recovery boundary](docs/TRAJECTORIES.md).
+[trajectory/recovery boundary](docs/TRAJECTORIES.md). Source-level external
+architecture reviews include
+[TencentDB Agent Memory](docs/TENCENTDB_AGENT_MEMORY_RESEARCH.md).
 
 ---
 
