@@ -14,13 +14,16 @@ import time
 from pathlib import Path
 from typing import Protocol, runtime_checkable
 
+from .durable import atomic_write_text
+from .blocks import block_field, block_text
+
 
 def estimate_tokens(messages: list) -> int:
     return len(json.dumps(messages, default=str)) // 4
 
 
 def _block_type(block) -> str:
-    return block.get("type", "") if isinstance(block, dict) else getattr(block, "type", "")
+    return block_field(block, "type", "")
 
 
 def _message_has_tool_use(message: dict) -> bool:
@@ -62,23 +65,43 @@ def snip_compact(messages: list, max_messages: int = 50) -> int:
 
 
 def microcompact(messages: list) -> int:
-    """Blank out the body of all but the 3 most recent tool results, in place.
+    """Blank out the body of all but the 3 most recent tool results.
 
     Returns how many were cleared. Old tool output is the cheapest context to
     shed -- the model already acted on it.
+
+    Cleared entries are **replaced, not mutated**. That is not a style choice:
+    the session mirrors the transcript to durable storage and detects a rewrite
+    by pointer comparison, so an edit that leaves the message object in place is
+    invisible to it. This function used to assign into the block dict, and the
+    consequence was that compaction did not survive a restart -- the store kept
+    the uncompacted transcript, and a session that compacted *because* it was
+    near the context limit came back exactly as large as when it overflowed.
     """
-    results = [
-        part
-        for msg in messages
-        if msg["role"] == "user" and isinstance(msg.get("content"), list)
-        for part in msg["content"]
+    located = [
+        (index, part_index)
+        for index, message in enumerate(messages)
+        if message.get("role") == "user" and isinstance(message.get("content"), list)
+        for part_index, part in enumerate(message["content"])
         if isinstance(part, dict) and part.get("type") == "tool_result"
     ]
+    targets: dict[int, list[int]] = {}
+    for index, part_index in located[:-3]:
+        targets.setdefault(index, []).append(part_index)
+
     cleared = 0
-    for part in results[:-3]:
-        if isinstance(part.get("content"), str) and len(part["content"]) > 100:
-            part["content"] = "[cleared]"
-            cleared += 1
+    for index, part_indexes in targets.items():
+        message = messages[index]
+        content = list(message["content"])
+        touched = False
+        for part_index in part_indexes:
+            part = content[part_index]
+            if isinstance(part.get("content"), str) and len(part["content"]) > 100:
+                content[part_index] = {**part, "content": "[cleared]"}
+                cleared += 1
+                touched = True
+        if touched:
+            messages[index] = {**message, "content": content}
     return cleared
 
 
@@ -92,37 +115,52 @@ def tool_result_budget(
     *,
     max_bytes: int = 200_000,
     preview_chars: int = 2_000,
+    secrets=None,
 ) -> int:
-    """Persist largest results until the newest result batch fits its budget."""
+    """Persist largest results until the newest result batch fits its budget.
+
+    What lands on disk is masked. The in-memory transcript is allowed to hold a
+    raw credential -- it goes back to the provider that already has it and dies
+    with the process -- but this writes into the *workspace*, where the file
+    outlives the session and the agent can read it back. The replacement block
+    even hands the model the path. Spilling context is not a reason to widen
+    where a secret is stored.
+    """
     if not messages:
         return 0
     content = None
-    for message in reversed(messages):
-        candidate = message.get("content")
-        if (message.get("role") == "user" and isinstance(candidate, list)
+    target_index = None
+    for index in range(len(messages) - 1, -1, -1):
+        candidate = messages[index].get("content")
+        if (messages[index].get("role") == "user" and isinstance(candidate, list)
                 and any(isinstance(part, dict) and part.get("type") == "tool_result"
                         for part in candidate)):
             content = candidate
+            target_index = index
             break
     if content is None:
         return 0
-    blocks = [part for part in content
-              if isinstance(part, dict) and part.get("type") == "tool_result"
-              and isinstance(part.get("content"), str)]
-    total = sum(len(part["content"].encode("utf-8")) for part in blocks)
+    targets = [(position, part) for position, part in enumerate(content)
+               if isinstance(part, dict) and part.get("type") == "tool_result"
+               and isinstance(part.get("content"), str)]
+    total = sum(len(part["content"].encode("utf-8")) for _, part in targets)
     if total <= max_bytes:
         return 0
 
     output_dir = Path(workspace) / ".task_outputs" / "tool-results"
     output_dir.mkdir(parents=True, exist_ok=True)
-    persisted = 0
-    for part in sorted(blocks, key=lambda item: len(item["content"]), reverse=True):
+    replacements: dict[int, str] = {}
+    for position, part in sorted(
+        targets, key=lambda item: len(item[1]["content"]), reverse=True
+    ):
         if total <= max_bytes:
             break
         original = part["content"]
         result_id = _safe_result_id(str(part.get("tool_use_id", "tool-result")))
         path = output_dir / f"{result_id}-{int(time.time() * 1000)}.txt"
-        path.write_text(original)
+        atomic_write_text(
+            path, secrets.mask(original) if secrets is not None else original
+        )
         preview = original[:preview_chars]
         replacement = (
             f'<persisted-output path="{path}" bytes="{len(original.encode("utf-8"))}">\n'
@@ -130,9 +168,42 @@ def tool_result_budget(
         )
         total -= len(original.encode("utf-8"))
         total += len(replacement.encode("utf-8"))
-        part["content"] = replacement
-        persisted += 1
-    return persisted
+        replacements[position] = replacement
+    if not replacements:
+        return 0
+    # Replace the block dicts *and* the message object -- do not edit in place.
+    # The session mirrors the transcript to disk and detects a rewrite by
+    # comparing message-object references (`_transcript_was_rewritten`); a block
+    # edited inside the same message object is invisible to it, so an in-place
+    # spill was never mirrored and a restart handed back the un-budgeted (large)
+    # transcript -- the exact stale-store bug round 27 fixed for `microcompact`,
+    # here in the one rewriter the mirroring test's roster had left out.
+    new_content = [
+        {**part, "content": replacements[position]}
+        if position in replacements else part
+        for position, part in enumerate(content)
+    ]
+    messages[target_index] = {**messages[target_index], "content": new_content}
+    return len(replacements)
+
+
+def context_used(agent) -> int:
+    """How full the context is, preferring the provider's count to a guess.
+
+    `estimate_tokens` is off by 0.36x-2.64x depending on content, and never saw
+    the system prompt or tool schemas at all. Every response carries the exact
+    number; `TokenMeter` keeps it. Falls back to the estimate for an agent that
+    has no meter, or before the first response has been seen.
+
+    Note this changes what `token_threshold` *means*: it used to be compared
+    against an estimate that excluded the system prompt and tools, so the real
+    prompt was always larger than the number being thresholded.
+    """
+
+    meter = getattr(agent, "token_meter", None)
+    if meter is None:
+        return estimate_tokens(agent.messages)
+    return meter.used(agent.messages)
 
 
 @runtime_checkable
@@ -159,7 +230,7 @@ class InMemoryCompactor:
 
     async def maybe_compact(self, agent) -> None:
         threshold = self.token_threshold or agent.settings.token_threshold
-        if estimate_tokens(agent.messages) < threshold:
+        if context_used(agent) < threshold:
             return
         snip_compact(agent.messages, self.max_messages)
         microcompact(agent.messages)
@@ -180,7 +251,10 @@ class DefaultCompactor:
 
     async def maybe_compact(self, agent) -> None:
         persisted = tool_result_budget(
-            agent.messages, agent.workspace, max_bytes=self.result_budget
+            agent.messages,
+            agent.workspace,
+            max_bytes=self.result_budget,
+            secrets=getattr(agent, "secrets", None),
         )
         if persisted:
             await agent._send("compact", kind="budget", persisted=persisted)
@@ -191,15 +265,25 @@ class DefaultCompactor:
         if cleared:
             await agent._send("compact", kind="micro", cleared=cleared)
         threshold = self.token_threshold or agent.settings.token_threshold
-        if estimate_tokens(agent.messages) > threshold:
+        if context_used(agent) > threshold:
             await self.compact(agent)
 
     async def compact(self, agent) -> None:
+        from .storage import _json_safe
+
+        secrets = getattr(agent, "secrets", None)
+
         transcript_dir = agent.workspace / ".transcripts"
         transcript_dir.mkdir(parents=True, exist_ok=True)
         path = transcript_dir / f"transcript_{int(time.time() * 1000)}.jsonl"
         with open(path, "w") as f:
             for msg in agent.messages:
+                # Detach before masking. An assistant turn can hold provider
+                # block *objects*, and a masker that walks dicts and lists steps
+                # straight past them -- the same trap that kept the durable
+                # tables leaking after the event stream was fixed.
+                if secrets is not None:
+                    msg = secrets.mask_payload(_json_safe(msg))
                 f.write(json.dumps(msg, default=str) + "\n")
 
         conv = json.dumps(agent.messages, default=str)[-80_000:]
@@ -208,7 +292,18 @@ class DefaultCompactor:
             max_tokens=2000,
             purpose="compaction",
         )
-        summary = "".join(getattr(b, "text", "") for b in resp.content if getattr(b, "type", "") == "text")
+        # Read shape-agnostically: this request can itself be truncated and
+        # come back as a `ContinuedResponse`, whose content is dicts. Reading it
+        # by attribute yielded an empty summary -- and this line is followed by
+        # replacing the *entire* transcript, so the agent lost everything and
+        # got a file path in return.
+        summary = block_text(resp.content)
+        # The summary is model-written prose about a transcript that may hold a
+        # credential, and it becomes the *permanent* history -- every later turn
+        # carries it. Masking it is the one case of "prose the model wrote about
+        # a secret" this harness can actually reach, because it asked for it.
+        if secrets is not None:
+            summary = secrets.mask(summary)
         agent.messages[:] = [
             {"role": "user", "content": f"[Context compressed. Full transcript: {path}]\n{summary}"}
         ]

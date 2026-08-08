@@ -9,7 +9,13 @@ many independent agents at once.
     Server = FastAPI + SessionManager (one isolated Agent per session)
 """
 
-from .actions import ActionJournalConflict, ActionRecord, InMemoryActionJournal
+from .actions import (
+    UNKNOWN_RESULT,
+    ActionJournalConflict,
+    ActionRecord,
+    DurableActionJournal,
+    InMemoryActionJournal,
+)
 from .agent import Agent, TodoManager
 from .background import (
     BackgroundManager,
@@ -18,6 +24,9 @@ from .background import (
     is_slow_operation,
     should_run_background,
 )
+from .auth import ANONYMOUS, Authenticator, NullAuth, Principal, TokenAuth, load_auth
+from .identity import build_id, posture, runtime_identity
+from .audit import Finding, audit, render as render_audit
 from .builtins import default_injectors, default_registry, explore_registry, full_registry, worker_registry
 from .compaction import (
     Compactor,
@@ -27,8 +36,15 @@ from .compaction import (
     snip_compact,
     tool_result_budget,
 )
+from .caching import (
+    CachePolicy,
+    DefaultCachePolicy,
+    NullCachePolicy,
+    runtime_facts_injector,
+)
 from .config import Settings, build_client, load_settings
 from .cron import CronScheduler, install_cron
+from .harness import Harness
 from .manager import SessionManager
 from .mcp import InProcessMCP, MCPClient, StdioMCP, install_mcp, register_mcp
 from .memory import (
@@ -40,7 +56,7 @@ from .memory import (
     select_relevant_memories,
 )
 from .permissions import PermissionHook, PermissionRule, default_hooks
-from .prompts import default_system_builder, sections_builder
+from .prompts import default_system_builder, runtime_facts, sections_builder
 from .recovery import DefaultRecovery, DirectRecovery
 from .registry import Hook, Hooks, Tool, ToolCall, ToolContext, ToolRegistry
 from .run_context import (
@@ -52,7 +68,32 @@ from .run_context import (
     RunContext,
 )
 from .session import AgentSession
+from .sandbox import NullSandbox, Sandbox, SeatbeltSandbox, default_sandbox
+from .secrets import (
+    DEFAULT_SECRET_PATTERNS,
+    MASK,
+    NullSecretRegistry,
+    SecretRegistry,
+)
 from .skills import SkillLoader
+from .stuck import (
+    DefaultStuckDetector,
+    NullStuckDetector,
+    StuckDetector,
+    StuckSignal,
+    StuckThresholds,
+    ToolStep,
+)
+from .storage import (
+    SCHEMA_VERSION as STORAGE_SCHEMA_VERSION,
+)
+from .storage import (
+    NullStateStore,
+    SessionRecord,
+    SQLiteStateStore,
+    StateStore,
+    StorageSchemaError,
+)
 from .tasks import TaskStore, install_tasks
 from .teams import MessageBus, ProtocolState, install_teams, team_injector
 from .tools import Toolset
@@ -89,6 +130,8 @@ __all__ = [
     "ActionRecord",
     "ActionJournalConflict",
     "InMemoryActionJournal",
+    "DurableActionJournal",
+    "UNKNOWN_RESULT",
     # extension seams
     "Tool",
     "ToolRegistry",
@@ -99,8 +142,43 @@ __all__ = [
     "PermissionHook",
     "PermissionRule",
     "default_hooks",
+    "TokenAuth",
+    "NullAuth",
+    "Principal",
+    "load_auth",
+    "build_id",
+    "runtime_identity",
+    "audit",
+    "render_audit",
+    "Finding",
+    "Harness",
     "Compactor",
     "DefaultCompactor",
+    "CachePolicy",
+    "DefaultCachePolicy",
+    "NullCachePolicy",
+    "runtime_facts",
+    "runtime_facts_injector",
+    "StuckDetector",
+    "DefaultStuckDetector",
+    "NullStuckDetector",
+    "StuckSignal",
+    "StuckThresholds",
+    "ToolStep",
+    "Sandbox",
+    "SeatbeltSandbox",
+    "NullSandbox",
+    "default_sandbox",
+    "SecretRegistry",
+    "NullSecretRegistry",
+    "DEFAULT_SECRET_PATTERNS",
+    "MASK",
+    "StateStore",
+    "SQLiteStateStore",
+    "NullStateStore",
+    "SessionRecord",
+    "StorageSchemaError",
+    "STORAGE_SCHEMA_VERSION",
     "SkillLoader",
     "Toolset",
     "TodoManager",

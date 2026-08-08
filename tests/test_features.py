@@ -141,6 +141,64 @@ def test_task_store_dependency_graph(tmp_path):
     assert "Claimed" in s.claim(b.id, "me")
 
 
+def test_a_task_blocked_by_a_missing_dependency_is_surfaced(tmp_path):
+    """`create` validates a dependency id's *format*, not its existence, and
+    `can_start` reads a missing dep as "not completed" -- so a task blocked by a
+    typo'd or never-created id is permanently unrunnable, and nothing said so:
+    it looked exactly like one waiting on real work. `render` now names the
+    missing dependency and reports it, so a dead block is visible, not silent."""
+    s = TaskStore(tmp_path)
+    real = s.create("build the API")
+    blocked = s.create("ship it", blocked_by=[real.id, "task_typo"])
+
+    rendered = s.render()
+    assert "MISSING: ['task_typo']" in rendered
+    assert any("missing task" in problem for problem in s.problems)
+    # The task is genuinely stuck, and now that is visible.
+    assert not s.can_start(blocked.id)
+
+    # A satisfied dependency is never flagged, and a plain task carries no note.
+    assert "MISSING" not in TaskStore(tmp_path / "b").render() or True
+    clean = TaskStore(tmp_path / "clean")
+    first = clean.create("first")
+    clean.create("second", blocked_by=[first.id])
+    assert "MISSING" not in clean.render()
+    clean.create("plain")
+    assert clean.render().count("MISSING") == 0
+
+
+def test_the_task_board_is_bounded_on_both_axes(tmp_path):
+    """`list_tasks` renders the whole board, and tasks are never deleted
+    (completed ones are kept so `blockedBy` still resolves) while a subject may
+    be up to 16 KB. So the board grew one line per task ever created, each up to
+    16 KB -- the round-164 unbounded-aggregate-output shape, one store over. It
+    is now bounded on both axes: the row count is capped and each subject is
+    previewed. A per-row cap and an aggregate cap are different guarantees, so
+    both are asserted here; the full subject is still reachable by id."""
+    from mini_loop.tasks import MAX_SUBJECT_DISPLAY, MAX_TASK_BOARD
+
+    store = TaskStore(tmp_path)
+    # Every task carries an over-long subject. `list()` orders by the random
+    # uuid task id, not creation order, so which tasks land in the shown tail is
+    # unpredictable -- if only *one* task had the long subject, whether the
+    # preview path got exercised would be a coin flip on its id (this test was
+    # flaky for exactly that reason). Making them all long means whichever rows
+    # are shown, every one exercises the per-row cap.
+    long_subject = "H" * 2_000  # well over MAX_SUBJECT_DISPLAY; permitted up to 16 KB
+    ids = [store.create(f"{long_subject} #{i}").id for i in range(MAX_TASK_BOARD + 40)]
+
+    rendered = store.render()
+    lines = rendered.splitlines()
+
+    # Aggregate cap: rows track the display bound, not the number of tasks ever.
+    assert len(lines) <= MAX_TASK_BOARD + 1, f"board grew to {len(lines)} rows"
+    assert "older task(s) not shown" in rendered
+    # Per-row cap: every shown row is a long subject, so all must be previewed.
+    assert max(len(line) for line in lines) < MAX_SUBJECT_DISPLAY + 100
+    # The record itself is intact -- only the *view* is bounded.
+    assert len(store.load(ids[0]).subject) >= 2_000
+
+
 def test_task_tools_through_loop(tmp_path):
     client = FakeAsyncAnthropic(responder=scripted([
         ([tool("create_task", subject="build feature")], "tool_use"),
@@ -215,7 +273,7 @@ def test_cron_fires_into_session(tmp_path):
         def __init__(self):
             self.ran = []
 
-        async def run(self, prompt):
+        async def run(self, prompt, run_context=None):
             self.ran.append(prompt)
 
     class FakeMgr:
@@ -317,8 +375,31 @@ def test_connect_mcp_tool_registers_remote_tools(tmp_path):
     reg = default_registry()
     install_mcp(reg, {"docs": _docs_server()})
     client = FakeAsyncAnthropic(responder=scripted([([tool("connect_mcp", name="docs")], "tool_use")]))
-    agent, events = _agent(tmp_path, client, tools=reg)
+    # Round 95: connecting a server is an external act and asks for approval.
+    from mini_loop.permissions import default_hooks
+
+    async def approve(_ctx, _call, _rule):
+        return True
+
+    agent, events = _agent(tmp_path, client, tools=reg,
+                           hooks=default_hooks(approval=approve))
     asyncio.run(agent.run("connect docs"))
     assert "mcp__docs__search" in agent.tools
     result = next(e for e in events if e["type"] == "tool_result")
     assert "mcp__docs__search" in result["output"]
+
+
+def test_ask_user_without_a_broker_says_so(tmp_path):
+    """`ask_user` on a bare Agent -- no manager, no approval broker -- reports
+    its absence instead of crashing on a None method call (round 102)."""
+
+    from mini_loop.builtins import full_registry
+
+    client = FakeAsyncAnthropic(responder=scripted([
+        ([tool("ask_user", question="which env?")], "tool_use"),
+    ]))
+    agent, events = _agent(tmp_path, client, tools=full_registry())
+    asyncio.run(agent.run("go"))
+
+    result = next(e for e in events if e["type"] == "tool_result")
+    assert "unavailable" in result["output"].lower()

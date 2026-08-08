@@ -21,6 +21,8 @@ import uuid
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
+from .durable import atomic_write_text
+from .problems import ProblemLog
 from .registry import Tool, ToolContext, ToolRegistry
 
 
@@ -40,6 +42,16 @@ _LOCKS: dict[str, threading.RLock] = {}
 _SAFE_ID = re.compile(r"[A-Za-z0-9._-]{1,128}")
 _SAFE_WORKTREE = re.compile(r"[A-Za-z0-9._-]{1,64}")
 
+#: Task rows shown by `list_tasks`, and the per-row subject width. Tasks are
+#: never deleted (completed ones are kept so `blockedBy` still resolves), and a
+#: subject may be up to `MAX_FIELD` (16 KB), so an unbounded board renders one
+#: line per task ever created, each up to 16 KB -- the round-164 unbounded-
+#: aggregate-output shape, one store over. The board is bounded on both axes:
+#: the most recent rows are shown and the rest summarised, and each subject is
+#: previewed. Any task stays reachable in full by id.
+MAX_TASK_BOARD = 50
+MAX_SUBJECT_DISPLAY = 200
+
 
 def _lock_for(path: Path) -> threading.RLock:
     key = str(path.resolve())
@@ -48,7 +60,10 @@ def _lock_for(path: Path) -> threading.RLock:
 
 
 class TaskStore:
-    def __init__(self, root: Path) -> None:
+    def __init__(self, root: Path, *, secrets=None) -> None:
+        self.secrets = secrets
+        #: Fields that were truncated on the way to disk.
+        self.problems = ProblemLog()
         self.dir = Path(root) / ".tasks"
         self.dir.mkdir(parents=True, exist_ok=True)
         self._lock = _lock_for(self.dir)
@@ -61,11 +76,29 @@ class TaskStore:
     def _new_id(self) -> str:
         return f"task_{uuid.uuid4().hex[:12]}"
 
+    #: A task description is work instructions another agent will claim and act
+    #: on. One measured 2,000,000 characters.
+    MAX_FIELD = 16_000
+
     def save(self, task: Task) -> None:
         target = self._path(task.id)
-        temporary = target.with_suffix(f".{uuid.uuid4().hex}.tmp")
-        temporary.write_text(json.dumps(asdict(task), indent=2))
-        temporary.replace(target)
+        payload = asdict(task)
+        for field in ("subject", "description"):
+            value = payload.get(field)
+            if isinstance(value, str) and len(value) > self.MAX_FIELD:
+                self.problems.append(
+                    f"{task.id}: {field} truncated from {len(value):,} to "
+                    f"{self.MAX_FIELD:,}"
+                )
+                payload[field] = value[:self.MAX_FIELD] + " [truncated]"
+        # Mask the structure before serializing, not the serialized text:
+        # `mask()` matches a secret's raw bytes, but `json.dumps` escapes
+        # non-ASCII to `\uXXXX` and quotes/backslashes, so a credential carrying
+        # any of those would survive a post-serialization mask onto this durable
+        # board. `mask_payload` scrubs each value before it is escaped.
+        if self.secrets is not None:
+            payload = self.secrets.mask_payload(payload)
+        atomic_write_text(target, json.dumps(payload, indent=2))
 
     def load(self, tid: str) -> Task | None:
         p = self._path(tid)
@@ -73,7 +106,15 @@ class TaskStore:
             return None
         try:
             return Task(**json.loads(p.read_text()))
-        except (OSError, json.JSONDecodeError, TypeError, ValueError):
+        except (OSError, json.JSONDecodeError, TypeError, ValueError) as exc:
+            # Four exception types went to `return None`, which is the same
+            # answer as "no such task". A board with a corrupt file therefore
+            # reported one task where two existed, and an agent asking what is
+            # left to do got a short answer with nothing anywhere saying it was
+            # short. Writes here are atomic, so this is a foreign edit or a
+            # half-finished write from a process that was killed -- either way
+            # the store has a channel for it and this path never used it.
+            self.problems.append(f"unreadable task {p.name}: {type(exc).__name__}")
             return None
 
     def list(self) -> list[Task]:
@@ -156,20 +197,53 @@ class TaskStore:
         tasks = self.list()
         if not tasks:
             return "No tasks."
+        # A task blocked by a dependency id that does not exist -- a typo, or a
+        # blocker that was never created -- is permanently unrunnable: `can_start`
+        # reads a missing dep as "not completed" and it never completes. Nothing
+        # said so, so it looked exactly like a task waiting on real work. Surface
+        # the missing dep in the id the agent reads (a legitimate forward
+        # reference reads as MISSING only until its blocker is created, which is
+        # accurate) and report it, the round-49 "does a failure report?" channel.
+        existing = {t.id for t in tasks}
         glyph = {"pending": "[ ]", "in_progress": "[>]", "completed": "[x]"}
         lines = []
+        # The missing-dependency scan runs over *every* task (a dead block on any
+        # task must still be reported), even though only the tail is displayed --
+        # the diagnostic is a property of the board, not of what fits on screen.
         for t in tasks:
             owner = f" @{t.owner}" if t.owner else ""
-            blocked = f" (blockedBy: {t.blockedBy})" if t.blockedBy else ""
             worktree = f" (worktree: {t.worktree})" if t.worktree else ""
-            lines.append(f"{glyph.get(t.status, '[?]')} {t.id}: {t.subject}{owner}{blocked}{worktree}")
+            if t.blockedBy:
+                missing = [dep for dep in t.blockedBy if dep not in existing]
+                if missing:
+                    self.problems.append(
+                        f"{t.id}: blocked by missing task(s) {missing}; it can "
+                        "never start until they are created"
+                    )
+                    blocked = f" (blockedBy: {t.blockedBy}; MISSING: {missing})"
+                else:
+                    blocked = f" (blockedBy: {t.blockedBy})"
+            else:
+                blocked = ""
+            subject = t.subject
+            if len(subject) > MAX_SUBJECT_DISPLAY:
+                subject = subject[:MAX_SUBJECT_DISPLAY] + "…"
+            lines.append(f"{glyph.get(t.status, '[?]')} {t.id}: {subject}{owner}{blocked}{worktree}")
+        if len(lines) > MAX_TASK_BOARD:
+            hidden = len(lines) - MAX_TASK_BOARD
+            lines = lines[-MAX_TASK_BOARD:]
+            lines.insert(
+                0, f"... ({hidden} older task(s) not shown; reference them by id)"
+            )
         return "\n".join(lines)
 
 
 def _store(ctx: ToolContext) -> TaskStore:
     store = ctx.state.get("tasks")
     if store is None:
-        store = ctx.state["tasks"] = TaskStore(ctx.workspace)
+        store = ctx.state["tasks"] = TaskStore(
+            ctx.workspace, secrets=getattr(ctx.agent, "secrets", None)
+        )
     return store
 
 
@@ -211,9 +285,9 @@ def install_tasks(registry: ToolRegistry) -> ToolRegistry:
     async def complete_task(ctx, task_id):
         return await asyncio.to_thread(_store(ctx).complete, task_id, _owner(ctx))
 
-    registry.register(Tool("create_task", "Create a persistent task (optionally blockedBy other task ids).", _CREATE, create_task))
-    registry.register(Tool("list_tasks", "List all persistent tasks and their status.", _EMPTY, list_tasks, readonly=True))
-    registry.register(Tool("get_task", "Get one task's full JSON by id.", _BY_ID, get_task, readonly=True))
-    registry.register(Tool("claim_task", "Claim a pending, unblocked task (sets you as owner).", _BY_ID, claim_task))
-    registry.register(Tool("complete_task", "Mark a task completed; reports newly-unblocked tasks.", _BY_ID, complete_task))
+    registry.register(Tool("create_task", "Create a persistent task (optionally blockedBy other task ids).", _CREATE, create_task, risk="write"))
+    registry.register(Tool("list_tasks", "List all persistent tasks and their status.", _EMPTY, list_tasks, readonly=True, risk="read"))
+    registry.register(Tool("get_task", "Get one task's full JSON by id.", _BY_ID, get_task, readonly=True, risk="read"))
+    registry.register(Tool("claim_task", "Claim a pending, unblocked task (sets you as owner).", _BY_ID, claim_task, risk="write"))
+    registry.register(Tool("complete_task", "Mark a task completed; reports newly-unblocked tasks.", _BY_ID, complete_task, risk="write"))
     return registry

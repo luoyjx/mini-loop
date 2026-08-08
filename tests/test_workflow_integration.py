@@ -10,7 +10,7 @@ import pytest
 from mini_loop.actions import ActionJournalConflict, InMemoryActionJournal
 from mini_loop.config import Settings
 from mini_loop.events import WorkflowEvent
-from mini_loop.fake_llm import FakeAsyncAnthropic, scripted, text, tool
+from mini_loop.fake_llm import system_text, FakeAsyncAnthropic, scripted, text, tool
 from mini_loop.manager import SessionManager
 from mini_loop.registry import ToolCall
 from mini_loop.run_context import RunContext
@@ -392,7 +392,7 @@ def _workflow_responder(definition: WorkflowDefinition, observed_results: list[s
     def responder(kwargs):
         messages = kwargs["messages"]
         last = messages[-1]["content"]
-        system = kwargs.get("system", "")
+        system = system_text(kwargs)
         if system.startswith("You are an isolated read-only workflow worker."):
             first_prompt = next(
                 item["content"]

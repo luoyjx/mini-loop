@@ -55,6 +55,14 @@ class WorkflowLaunchResult:
         }
 
 
+#: Workflow results delivered into one parent turn's context. Each result is
+#: already capped (truncated past 8 KB to a 2 KB preview), but the *count* was
+#: not -- a parent that launched many runs and returned after they all finished
+#: got every result joined into one injected message. Matches the team inbox /
+#: background drain caps (rounds 50 / 134); the overflow waits for the next turn.
+MAX_WORKFLOW_NOTIFICATIONS = 50
+
+
 class WorkflowService:
     """Own workflow transitions, background tasks, events, and delivery.
 
@@ -74,8 +82,14 @@ class WorkflowService:
         tool_semaphore=None,
         attempt_semaphore: asyncio.Semaphore | None = None,
         store: InMemoryWorkflowStore | None = None,
+        secrets=None,
+        sandbox=None,
+        harness=None,
     ) -> None:
         self.settings = settings
+        self.secrets = secrets
+        self.sandbox = sandbox
+        self.harness = harness
         self.client = client
         self.action_journal = action_journal
         self.session_resolver = session_resolver
@@ -230,6 +244,12 @@ class WorkflowService:
         )
         self.action_journal.attach_workflow(action_id, run.run_id)
         self._launch_turns.setdefault(run.run_id, launch_turn)
+        # Launching is the store's one growth point, so it is also where the
+        # retention bound is applied. Drop `_launch_turns` for anything the store
+        # evicted -- otherwise this dict keeps a per-run int for every run ever
+        # launched, the same only-grows leak the store just fixed, one layer up.
+        for pruned_run_id in self.store.prune_terminal_runs():
+            self._launch_turns.pop(pruned_run_id, None)
         await self._emit(
             run,
             "workflow_planned",
@@ -469,6 +489,12 @@ class WorkflowService:
             llm_semaphore=self.llm_semaphore,
             tool_semaphore=self.tool_semaphore,
             emit=progress,
+            # A fresh worker still reads repository files; without these it was
+            # the one path where a credential in a workspace file reached an
+            # artifact unmasked and unconfined.
+            secrets=self.secrets,
+            sandbox=self.sandbox,
+            harness=getattr(self, "harness", None),
         )
         try:
             submission = await runner(attempt, node, inputs)
@@ -659,6 +685,12 @@ class WorkflowService:
         claim_token, messages = self.store.claim_outbox(
             session_id=session_id,
             run_ids=eligible,
+            # One parent turn is not handed every completed run's result at once:
+            # the batch is joined into a single injected message, so an unbounded
+            # count floods the parent context (the background-drain bound of
+            # round 134, here for workflow results). The rest wait for the next
+            # turn, retrievable meanwhile via WorkflowStatus.
+            limit=MAX_WORKFLOW_NOTIFICATIONS,
         )
         message_ids = tuple(message.message_id for message in messages)
         try:

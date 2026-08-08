@@ -35,13 +35,77 @@ A complete, runnable example combining all of the below:
 | `registry.py` | `Hooks` (`Hook`) | `hooks=` | permissions, audit, arg/output rewriting |
 | `prompts.py` | `system_builder(agent)->str` | `system_builder=` / `system=` | the system prompt |
 | `compaction.py` | `Compactor` | `compactor=` | how context is trimmed/summarized |
+| `caching.py` | `CachePolicy` | `cache_policy=` | where prompt-cache breakpoints go |
+| `storage.py` | `StateStore` | `state_store=` | whether a session survives a restart |
+| `secrets.py` | `SecretRegistry` | `secrets=` | which credentials a tool can see or print |
+| `sandbox.py` | `Sandbox` | `sandbox=` | what the shell can reach on the host |
+| `stuck.py` | `StuckDetector` | `stuck_detector=` | when a repeating agent is nudged or halted |
 | `recovery.py` | `RecoveryPolicy` | `recovery=` | retry/backoff/token-escalation/fallback on LLM errors |
+
+A `RecoveryPolicy` receives `live_history=` — the agent's own message list when
+the failing request *was* the conversation, `None` otherwise. Reactive
+compaction needs it: it used to mutate the request list on the assumption that
+it aliased `agent.messages`, which stopped being true once a `CachePolicy`
+started annotating onto a copy. Shrinking only the retry leaves the next turn to
+rebuild the same oversized prompt.
 | `agent.py` | `injectors` (`async (agent)->msgs`) | `injectors=` | splice messages into each turn (background, cron) |
 | `skills.py` | `SkillLoader` | `skills=` + `skills/` dir | on-demand domain knowledge |
 | `config.py` | LLM client | `build_client` / `client=` | model / provider / base_url |
 | `manager.py` | `workspace_factory(id)->Path` | `workspace_factory=` | where/how the sandbox is provisioned |
 | `session.py` | `event_sink(event)` | `event_sink=` | global metrics / logging / persistence |
 | `server.py` | `create_app(manager=...)` | app factory | serving a customized fleet |
+
+---
+
+## 0a. Who is calling — `Authenticator`
+
+`app.state.auth` is resolved per request, so rotating a token takes effect
+without restarting or re-registering routes. `NullAuth` (the default) makes every
+caller one anonymous principal, which is why `refuse_open_bind` turns a
+non-loopback bind without tokens into a startup failure rather than a warning.
+
+Shape from the OpenHands agent server: authentication as a dependency on the
+router rather than a check repeated per handler, config read at request time,
+and any credential channel opened for one surface staying scoped to it. Two
+deliberate differences — constant-time comparison, and refusing to serve rather
+than defaulting open.
+
+---
+
+## 0. The policy set — `Harness`
+
+Every seam below can be passed to `Agent`/`SessionManager` individually. They
+are also fields of one value:
+
+```python
+from mini_loop import Harness, SessionManager
+
+harness = Harness(hooks=my_hooks, secrets=registry, sandbox=sandbox)
+SessionManager(settings, client, ...)          # assembles one internally
+Agent(client=..., settings=..., workspace=..., harness=harness)
+```
+
+**Why a value and not a parameter list.** An `Agent` is constructed in three
+places — the manager, subagent delegation, and workflow workers — and each used
+to keep its own list of what to pass. Over five added seams, two sites were
+missed: workflow workers ran without secret masking or sandboxing because they
+were built directly rather than through the manager. Nothing failed; the
+capability was simply absent on one path.
+
+Deriving a variant copies the whole value and overrides only what differs:
+
+```python
+child = parent.harness.derive(tools=narrow_registry, hooks=Hooks())
+```
+
+So a seam added to `Harness` reaches every construction site the moment it is
+added — you cannot forget a field you never had to type. This is the shape
+OpenHands uses for `AgentBase`, where the agent's whole configuration is a
+single serializable model rather than a call signature.
+
+`tests/test_harness.py` enforces it structurally: it AST-scans the package for
+`Agent(...)` calls and fails if one omits `harness=` or passes a seam alongside
+it.
 
 ---
 
@@ -84,6 +148,23 @@ SessionManager(settings, client, tool_registry=registry)   # cloned per session
 Handlers may be **sync or async**, and may return anything (`str()`-ified).
 Raised exceptions are caught and returned to the model as `Error: ...`, so a
 buggy tool degrades into feedback instead of a crash.
+
+A tool may also carry `verify=async (ctx, call) -> bool | None`, consulted only
+when a crash left its action `unknown`:
+
+```python
+async def already_sent(ctx, call):
+    return await my_api.message_exists(call.input["idempotency_key"])
+
+registry.register(Tool("send_email", ..., handler, verify=already_sent))
+```
+
+`True` records it as done without re-running; `False` is the only verdict that
+permits a retry; `None` — including a verifier that raises — leaves it unknown,
+because failing to check is not evidence that nothing happened. `write_file`
+ships with one; `bash` does not, and cannot: an opaque command string carries no
+statement of intent to check against. That asymmetry is the concrete payoff of
+promoting a side effect out of the shell into a typed tool.
 
 Set `parallel_safe=True` only when the handler, its hooks, and any external
 client it uses can overlap safely. Consecutive parallel-safe calls from one
@@ -199,6 +280,338 @@ SessionManager(settings, client, compactor=KeepLastN())
 oversized-result persistence under `.task_outputs/tool-results/`, pair-safe
 middle snipping, old-result micro compaction, then transcript + LLM summary
 past the token threshold.
+
+---
+
+## 3b. Shell confinement — `Sandbox`
+
+`run_bash` sets `cwd` to the workspace, but a shell can `cd /`. This seam puts
+an OS-level boundary around it. Default is `NullSandbox` — host execution,
+trusted callers only, exactly as before.
+
+```python
+from mini_loop import SeatbeltSandbox, SessionManager, default_sandbox
+
+sandbox = SeatbeltSandbox(
+    writable_roots=[workspace],
+    unreadable_roots=[Path.home() / ".ssh", Path.home() / ".aws"],
+    allow_network=False,
+)
+SessionManager(settings, client, sandbox=sandbox)
+# or: default_sandbox(workspace)  -> Seatbelt on macOS, NullSandbox elsewhere
+```
+
+Modelled on the OpenAI Codex CLI sandbox (`codex-rs/sandboxing/`), whose policy
+shape encodes decisions worth copying verbatim:
+
+* **Deny by default**, then re-grant what a shell needs to start.
+* **Reads broad, writes narrow.** A process that cannot read `/bin/sh` or the
+  dynamic linker is not a shell. Confinement lives on the write side, plus an
+  explicit read deny-list for paths that matter.
+* **Paths are `-D` parameters, never interpolated** into the policy body, so a
+  workspace path containing policy syntax cannot rewrite the policy.
+* **An excluded root needs two clauses.** `(require-not (subpath X))` alone does
+  not cover creating `X` itself; upstream pairs it with `(require-not (literal
+  X))` and cites `mkdir .codex`.
+* **Network is additive** — its absence is the denial.
+* **`/usr/bin/sandbox-exec` is hardcoded**, never resolved through `PATH`.
+
+Verified by execution, not by inspecting the policy string: `tests/test_sandbox.py`
+runs real commands and asserts a canary outside the roots is unreadable, writes
+outside are denied, the network is unreachable, and a shell still works.
+
+A sandbox rebinds itself when the workspace moves: `Agent.enter_workspace`
+switches into a per-task worktree (s18), and a sandbox still holding the
+previous workspace as its only writable root would deny every write in the new
+one — silently, and only in sandboxed deployments. `Sandbox.for_workspace()` is
+part of the protocol for that reason; extra writable roots and the read/network
+policy survive the rebind.
+
+**Two real limits.**
+
+*It is macOS-only.* `default_sandbox` elsewhere returns an `UnavailableSandbox`:
+commands still run, but the posture carries `sandbox_reason` and the audit
+raises a distinct `shell-confinement-unavailable` finding whose remedy is a
+container, not a configuration change. Pass `require=True` to refuse at
+construction instead.
+
+*It is not a container.* No CPU, memory, PID or wall-clock caps, so it does not
+stop a fork bomb — the roadmap's resource-exhaustion criterion needs
+`DockerWorkspace`. A test pins this as a known gap.
+
+*A read deny-list only protects what you list.* This bit the first version of
+the end-to-end test: the model could not read the protected file, but found the
+canary in neighbouring files that were never listed. Copies leak; a container's
+filesystem view does not have that failure mode.
+
+---
+
+## 3a. Secrets — `SecretRegistry`
+
+`run_bash` inherits the whole process environment, so an agent that runs
+`printenv` puts the host's API keys into the tool result — and from there into
+the model's context, the SSE stream the console renders, the trajectory, and the
+SQLite state store. Four sinks, one leak. Measured before/after on a canary key:
+4 of 4 leaked, then 0 of 4.
+
+```python
+from mini_loop import SecretRegistry, SessionManager
+
+secrets = SecretRegistry.from_environ()   # names matching *_API_KEY, *_TOKEN, ...
+SessionManager(settings, client, secrets=secrets)
+```
+
+The split is taken from the OpenHands SDK `SecretRegistry`:
+
+* **Injection is narrow.** A shell command receives a registered credential only
+  when the command *names* it, so a bare `printenv` has nothing to read. Naming
+  it does hand it over — that is deliberate, so legitimate use works.
+* **Masking is wide, and runs both ways.** Every registered secret's *value* is
+  scrubbed from tool output whether or not the command named it — a value can
+  arrive without one (upstream's example: a token inside a git remote URL) — and
+  from tool *arguments*, which are model-generated and were the leakier side:
+  before this, a credential a model wrote into a command reached the event
+  stream, the console, the trajectory and the durable tables.
+
+Masking applies to what is recorded and emitted, never to what is executed —
+the live `ToolCall` keeps the real value. The in-memory transcript keeps it too,
+deliberately: it goes back to the provider that already has it and dies with the
+process.
+
+Two properties are load-bearing and easy to get wrong:
+
+* **Cached values are never re-resolved.** After a secret rotates the registry
+  keeps masking the value it previously handed out; re-resolving would let the
+  old value start appearing again.
+* **Short values are reported, not masked.** A floor of 8 characters keeps a
+  two-character "secret" from shredding unrelated output;
+  `registry.short_values()` names any that were skipped.
+
+Masking is applied where a tool result is produced, which is upstream of all
+four sinks at once, and again inside `run_bash` so a direct `Toolset` caller is
+covered too.
+
+**What it does not cover:** text the *model* writes. If a model reads a
+credential and repeats it in prose, that is its own output, not a tool result.
+None of this substitutes for not giving an agent credentials it does not need.
+
+---
+
+## 4. Durable conversation state — `StateStore`
+
+`TrajectoryStore` records what happened, for audit, and redacts content when
+asked. `StateStore` is the other half: the state a *different process* needs to
+resume a session — the model-facing transcript and the event cursor an SSE
+client reconnects against. Off by default; persistence is a deployment choice,
+and the database holds unredacted transcripts.
+
+```python
+from mini_loop import SessionManager, SQLiteStateStore
+
+store = SQLiteStateStore("var/state.db")          # WAL, schema-versioned
+manager = SessionManager(settings, client, state_store=store)
+
+# ... process dies ...
+
+manager = SessionManager(settings, client, state_store=SQLiteStateStore("var/state.db"))
+for session in manager.restore_sessions():        # transcript + cursor rebuilt
+    await session.run("continue where we left off")
+```
+
+The backend is SQLite because the action journal that comes next needs actions
+and events ordered inside one transaction, which a file log cannot give. The
+*append contract* is taken from the OpenHands SDK `EventLog`, which solves the
+same problem over a file store, and whose properties are backend-independent:
+
+| Property | OpenHands (file store) | Here (SQLite) |
+|---|---|---|
+| Order is data | ordinal encoded in the filename, index rebuilt by `listdir` | explicit `ordinal` column, `UNIQUE(session_id, ordinal)` |
+| Re-read the head before appending | take a file lock, then re-scan the directory | read `MAX(ordinal)` inside the writing transaction |
+| Never materialize history to read a tail | one event file per read | every read takes `after` / `limit` |
+
+A stale writer therefore hits an integrity error rather than silently
+reordering history. Persistence failures are reported on
+`session._persist_error` and never stall the agent — the same contract the
+trajectory sink already follows.
+
+**Compaction and the append-only table.** `agent.messages` is mutable and
+compaction rewrites it; an append-only table cannot mirror that by index. The
+store versions each transcript with an `epoch`: when the live transcript stops
+extending what was persisted -- shortened, or edited in the middle -- the next
+flush opens a new epoch and rewrites it whole, leaving the superseded epoch on
+disk. This is the structural difference from OpenHands, whose log is never
+rewritten at all: condensation is another event and the conversation is a
+projection over the log.
+
+**A crash mid-tool leaves an unanswered call.** Killed between dispatching a
+tool and recording its result, the persisted transcript ends with a `tool_use`
+and no `tool_result` — which the provider rejects outright (`tool_use ids were
+found without tool_result blocks immediately after`), so an unrepaired session
+fails on *every* subsequent turn, not subtly. `restore()` closes such calls with
+an explicit **unknown** result rather than an error: the tool was dispatched and
+whether it completed is genuinely not known, and reporting failure invites a
+retry of a side effect that may already have happened. Given the unknown result
+a live model verified before acting rather than repeating the call. The repair
+is persisted, so a second restart does not rediscover it.
+
+**The journal is a replay guard, not an audit log.** `begin()` always returned
+the existing record on replay, and `_exec_tool` discarded it and executed
+anyway — so the journal recorded side effects without preventing a second one.
+It now decides:
+
+* a **terminal** record means the step already ran, so the recorded result is
+  returned and the tool is not called again (the `action_id`, derived from
+  session + message + tool_use id + tool name, is the idempotency key);
+* an **unknown** record means a dead process dispatched it, so the unknown
+  marker is returned rather than a retry.
+
+`DurableActionJournal` stores this in the same SQLite database, and opening the
+store marks every still-`started` action `unknown` — never `failed`, which would
+invite exactly the retry the rule forbids. A replayed tool result carries
+`replayed: True` on its event so an operator can see a resumed turn reused a
+recorded outcome.
+
+This shape comes from durable-execution engines (Temporal, Restate, Azure
+Durable Task) rather than from any agent harness: harnesses commonly journal
+actions for audit and re-run them regardless.
+
+Still missing: reconciliation. Nothing yet asks an external system whether an
+`unknown` action landed — the harness only refuses to guess.
+
+**Agent-side state.** The transcript mentions the plan but does not rebuild it,
+so the store also carries the TodoWrite board; without it a restored session has
+an empty board while its own transcript shows otherwise, silently disabling the
+s05 nag and the runtime-state reminder. The session row is refreshed on every
+flush rather than only at creation — otherwise `run_count` and `status` stay
+frozen at their initial values for the life of the session.
+
+**What this does not do yet.** No action journal, no outbox, no run state
+machine, no cross-process claim or lease, no fork/snapshot. Two processes on one
+database read consistently, but nothing stops both from advancing the same
+session. A process killed mid-run is restored with its recorded status
+(`running`) and no run attached — surfacing the truth rather than inventing a
+resume that the missing run state machine cannot honour.
+
+---
+
+## 4a. Prompt caching — `CachePolicy`
+
+A provider renders a request as `tools` → `system` → `messages` and caches it by
+**prefix match**: one changed byte at position N invalidates every cached token
+after it. Two things follow, and the first matters more than the second.
+
+**Keep volatile state out of the prefix.** The system prompt used to carry the
+TodoWrite board and the memory index, so every turn the model updated its plan
+it also invalidated the whole conversation. `default_system_builder` now emits
+only agent-lifetime-stable facts; `prompts.runtime_facts` returns the volatile
+half, and `runtime_facts_injector` (installed by default) delivers it through
+the *message stream*, re-sending only when it actually changes. Appending to the
+end invalidates nothing before it. Measured on a real 4-turn session: 3 distinct
+system payloads before, 1 after.
+
+A custom `system_builder` that interpolates changing state is still allowed —
+it is correct, just uncacheable. That is a trade, not a bug.
+
+**Then place breakpoints.** `DefaultCachePolicy` spends one on the last system
+block (which covers `tools` too — they render first) and walks the rest back
+through the conversation:
+
+```python
+from mini_loop import DefaultCachePolicy, NullCachePolicy
+
+Agent(..., cache_policy=DefaultCachePolicy(ttl="1h"))
+SessionManager(settings, client, cache_policy=NullCachePolicy())  # opt out
+```
+
+Placement is **per content block, not per message**. A breakpoint only searches
+back a bounded number of blocks for a prior entry, and mini-loop executes a
+*batch* of tool calls per round — one assistant turn with N `tool_use` blocks
+plus one user turn with N `tool_result` blocks — so marking just the newest turn
+leaves the next request's breakpoint out of range. Only user turns are marked:
+assistant content is provider objects that round-trip untouched.
+
+Annotation happens on per-request copies, so `agent.messages` never acquires
+provider-specific keys.
+
+**Known limit:** a round wider than the lookback window cannot be fully chained
+within the 4-breakpoint budget — a batch of N tools contributes N unmarkable
+assistant blocks. The newest entry is still written and earlier ones stay
+readable, so the cache degrades rather than breaking. `test_caching.py` pins
+this so a future change has to acknowledge it.
+
+Verify with `usage.cache_read_input_tokens`. If it is zero across repeated
+requests, something upstream is still changing the prefix — or the provider
+does not implement Anthropic-style caching (DeepSeek's compat endpoint accepts
+the blocks but reports no cache usage).
+
+---
+
+## 4b. Loop detection — `StuckDetector`
+
+`max_rounds` bounds work but cannot tell productive rounds from an agent
+retrying one denied call thirty times. A `StuckDetector` inspects the shape of
+recent activity and reports unproductive repetition before the budget is spent.
+
+```python
+from mini_loop import DefaultStuckDetector, NullStuckDetector, StuckThresholds
+
+# defaults: 4 identical call+result, 3 identical call+error, 5 unproductive
+# uses of one tool, 6-step ping-pong, 3 tool-less turns; one corrective nudge
+# before halting the turn.
+Agent(..., stuck_detector=DefaultStuckDetector(StuckThresholds(max_nudges=0)))
+SessionManager(settings, client, stuck_detector=NullStuckDetector())  # opt out
+```
+
+The five rules, in the order they are checked:
+
+| Pattern | Fires when | Default |
+|---|---|---|
+| `repeat_action_error` | N consecutive identical calls, all failed or denied | 3 |
+| `unproductive_tool` | N unproductive uses of one tool in the window, **never** successful — order and arguments irrelevant | 5 |
+| `repeat_action_result` | N consecutive identical calls with identical output | 4 |
+| `alternating` | two calls ping-ponging with stable outputs | 6 |
+| `monologue` | consecutive tool-less turns a `stop` hook keeps resuming | 3 |
+
+`unproductive_tool` is the one rule with no upstream counterpart. Every
+consecutive-and-identical detector (ours, OpenHands, Cline's
+`LoopDetectionTracker`, opencode's doom-loop check) is blind to a model that
+varies its arguments or interleaves other calls; Cline pairs its detector with
+a reset-on-success `MistakeTracker`, which a measured trace of this harness
+showed also misses — the model alternated a denied call with a *succeeding*
+workaround call, so the consecutive-failure count never got above 1. Scoping
+per tool and dropping the ordering requirement covers it, while a tool that
+sometimes succeeds is treated as flaky rather than stuck.
+
+The protocol is one method, and the detector is a **stateless policy** — the
+history lives on the agent, so a single instance is safely shared by every
+session in a manager:
+
+```python
+class NoRepeatedWrites:
+    max_nudges = 1                      # nudges before the turn halts
+    def inspect(self, agent):           # -> StuckSignal | None
+        steps = agent.recent_steps      # tuple[ToolStep], oldest first
+        if len(steps) >= 2 and steps[-1].same_call(steps[-2]):
+            return StuckSignal("repeat_write", "Same write twice.", steps[-1].name)
+        return None
+```
+
+`ToolStep` is `(name, input_hash, output_hash, failed, denied)` — ids, spans,
+and durations are excluded so two calls compare equal when the model asked for
+the same thing and got the same thing back. The ledger is bounded to the last
+`STUCK_WINDOW` (20) calls, recorded in *batch order* (not completion order, so
+parallel-safe groups stay deterministic), and cleared on each new user turn.
+
+On detection the loop emits a `stuck` event (`pattern`, `detail`, `tool`,
+`halted`, `nudges_used`). While nudges remain, the signal's reminder text is
+spliced into the tool-result block and the loop continues; once they are spent
+the turn ends. `agent.rounds_without_tools` powers the monologue rule, which
+only fires when a `stop` hook keeps resuming a model that stopped calling
+tools.
+
+Rules and default thresholds are ported from the OpenHands SDK `StuckDetector`
+(`OpenHands/software-agent-sdk`), adapted from one-action-per-step events to
+mini-loop's batched tool calls.
 
 ---
 

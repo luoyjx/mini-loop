@@ -9,6 +9,7 @@ import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
+from .problems import ProblemLog
 from .registry import Tool, ToolContext, ToolRegistry
 
 
@@ -27,10 +28,26 @@ class ProtocolState:
 class MessageBus:
     """Consume-on-read mailbox, optionally persisted as team JSONL files."""
 
-    def __init__(self, root: Path | None = None) -> None:
+    #: A message is injected whole into a peer's message stream. One measured
+    #: 2,000,000 characters -- half a million tokens delivered into another
+    #: agent's context by a sender it does not control.
+    MAX_CONTENT = 16_000
+    #: `team_injector` delivers a whole mailbox at once; 2,000 messages arrived
+    #: as one injection.
+    MAX_INBOX = 100
+    #: The most a single `read` pulls into memory. A read delivers at most
+    #: MAX_INBOX messages, each <= MAX_CONTENT, so the last MAX_INBOX lines fit
+    #: here with room for metadata; reading only this much from the tail bounds
+    #: a read to the batch it returns, however large an undrained mailbox grew.
+    MAX_READ_BYTES = MAX_INBOX * (MAX_CONTENT + 4_096)
+
+    def __init__(self, root: Path | None = None, *, secrets=None) -> None:
         self.inboxes: dict[str, list[dict]] = {}
         self.root = Path(root) if root is not None else None
         self._lock = threading.RLock()
+        self.secrets = secrets
+        #: Reads that found a malformed mailbox, which otherwise looks empty.
+        self.problems = ProblemLog()
 
     def _path(self, key: str) -> Path:
         team_id, separator, name = key.partition("/")
@@ -42,6 +59,11 @@ class MessageBus:
 
     def send(self, frm: str, to: str, content: str, msg_type: str = "message",
              metadata: dict | None = None, **extra) -> str:
+        if len(content) > self.MAX_CONTENT:
+            return (
+                f"Error: message is {len(content):,} characters; the limit is "
+                f"{self.MAX_CONTENT:,}"
+            )
         msg = {
             "from": frm,
             "to": to,
@@ -53,38 +75,99 @@ class MessageBus:
         }
         with self._lock:
             if self.root is None:
-                self.inboxes.setdefault(to, []).append(msg)
+                inbox = self.inboxes.setdefault(to, [])
+                inbox.append(msg)
+                # Bound the resource, not just the read. `read` returns only the
+                # last MAX_INBOX, but the queue held every message ever sent to a
+                # recipient that never drains -- a shut-down teammate, or a live
+                # one busy in a long turn -- growing without limit in RAM. Shed
+                # the oldest here so peak memory tracks the bound; the reader
+                # still sees the same last MAX_INBOX it always did. The persisted
+                # backend already bounds delivery by reading only the tail.
+                if len(inbox) > self.MAX_INBOX:
+                    del inbox[: -self.MAX_INBOX]
             else:
                 try:
                     path = self._path(to)
                 except ValueError as error:
                     return f"Error: {error}"
                 path.parent.mkdir(parents=True, exist_ok=True)
+                # Mask the *structure*, not the serialized line. `mask()` matches
+                # a secret's raw bytes, but `json.dumps` escapes non-ASCII to
+                # `\uXXXX` and quotes/backslashes to `\"`/`\\`, so a credential
+                # carrying any of those survived a post-serialization mask into
+                # this durable mailbox -- and it is then read straight into a
+                # peer agent's context. `mask_payload` scrubs each value before
+                # it is escaped, the order every other durable sink already uses.
+                payload = (
+                    self.secrets.mask_payload(msg) if self.secrets is not None else msg
+                )
                 with path.open("a") as stream:
-                    stream.write(json.dumps(msg) + "\n")
+                    stream.write(json.dumps(payload) + "\n")
         return f"Sent {msg_type} to {to.split('/')[-1]}"
+
+    def _read_tail(self, path: Path) -> tuple[str, bool]:
+        """The last MAX_READ_BYTES of the mailbox, and whether it was truncated.
+
+        A `read` returns at most MAX_INBOX messages but had loaded the whole
+        file to do it, so an undrained mailbox -- a peer that keeps sending to a
+        recipient which is busy, idle, or shut down -- grew without bound and
+        would OOM the shared process the moment anything finally read it (the
+        delivered batch is bounded; the read that produced it was not). Reading
+        only the tail bounds a read to the batch it delivers. The first line of
+        a truncated read is the tail of a message the seek cut through, so it is
+        dropped without being mistaken for corruption.
+        """
+        size = path.stat().st_size
+        if size <= self.MAX_READ_BYTES:
+            return path.read_text(), False
+        with path.open("rb") as handle:
+            handle.seek(size - self.MAX_READ_BYTES)
+            chunk = handle.read(self.MAX_READ_BYTES)
+        text = chunk.decode("utf-8", errors="ignore")
+        newline = text.find("\n")
+        return (text[newline + 1:] if newline != -1 else ""), True
 
     def read(self, name: str) -> list[dict]:
         with self._lock:
             if self.root is None:
                 messages = self.inboxes.get(name, [])
                 self.inboxes[name] = []
-                return messages
+                # The bound is the mailbox's, not the durable backend's: the
+                # in-memory path returned every queued message uncapped while
+                # the persisted path capped at MAX_INBOX. A new backend inherits
+                # the resource's bound, it does not get to skip it.
+                return messages[-self.MAX_INBOX:]
             try:
                 path = self._path(name)
-            except ValueError:
+            except ValueError as error:
+                # `send` reports a bad key and this returned `[]`, so a typo in
+                # a mailbox name looked exactly like an empty inbox -- to the
+                # agent waiting on it, forever.
+                self.problems.append(f"read({name!r}) refused: {error}")
                 return []
             if not path.exists():
                 return []
+            text, truncated = self._read_tail(path)
+            path.unlink(missing_ok=True)
             messages = []
-            for line in path.read_text().splitlines():
+            for line in text.splitlines():
                 try:
                     value = json.loads(line)
                 except json.JSONDecodeError:
+                    self.problems.append(f"{path}: a malformed message was dropped")
                     continue
                 if isinstance(value, dict):
                     messages.append(value)
-            path.unlink(missing_ok=True)
+            if truncated or len(messages) > self.MAX_INBOX:
+                self.problems.append(
+                    f"{path}: mailbox exceeded {self.MAX_READ_BYTES:,} bytes; "
+                    "older messages dropped unread"
+                    if truncated else
+                    f"{path}: {len(messages)} messages delivered at once; "
+                    f"{len(messages) - self.MAX_INBOX} dropped"
+                )
+                messages = messages[-self.MAX_INBOX:]
             return messages
 
 
@@ -168,6 +251,23 @@ def install_teams(registry: ToolRegistry) -> ToolRegistry:
         bus = ctx.state.get("bus")
         if bus is None:
             return "Error: message bus not available"
+        # A message to a name nobody consumes lands in a limbo inbox and is
+        # silently lost, while the sender is told "Sent" -- OpenWorker's
+        # unrouted-message hazard (research doc 6.4), and the same
+        # confirmed-a-delivery-that-never-happened bug round 50 fixed for an
+        # oversized broadcast. The manager knows the roster, so refuse a
+        # recipient that is not on it. The lead is always addressed as "lead"
+        # (manager pins its agent_name), so it is a valid recipient in any team.
+        manager = ctx.state.get("manager")
+        if manager is not None:
+            team_id = ctx.state.get("team_id", "")
+            known = set(manager.teammates_of(team_id)) | {"lead"}
+            if to not in known:
+                roster = ", ".join(sorted(known))
+                return (
+                    f"Error: no teammate named {to!r} in this team; message not "
+                    f"sent. Known recipients: {roster}"
+                )
         return bus.send(_self_key(ctx), _key(ctx, to), content, type, metadata)
 
     async def read_inbox(ctx):
@@ -184,11 +284,25 @@ def install_teams(registry: ToolRegistry) -> ToolRegistry:
         if bus is None or manager is None:
             return "Error: teams not available"
         me = ctx.state.get("agent_name", "lead")
-        sent = 0
+        sent, refused = 0, []
         for teammate in manager.teammates_of(ctx.state.get("team_id", "")):
-            if teammate != me:
-                bus.send(_self_key(ctx), _key(ctx, teammate), content, "broadcast")
+            if teammate == me:
+                continue
+            # `bus.send` reports refusals by returning a string starting with
+            # "Error:", and this discarded it -- so once round 50 gave `send` a
+            # size limit, an oversized broadcast answered "Broadcast to 3
+            # teammate(s)" while delivering none, and the lead carried on
+            # believing it had coordinated with its team.
+            result = bus.send(_self_key(ctx), _key(ctx, teammate), content, "broadcast")
+            if str(result).startswith("Error:"):
+                refused.append(f"{teammate}: {result}")
+            else:
                 sent += 1
+        if refused:
+            detail = "; ".join(refused[:3])
+            return (
+                f"Broadcast to {sent} teammate(s); {len(refused)} refused ({detail})"
+            )
         return f"Broadcast to {sent} teammate(s)"
 
     async def list_teammates(ctx):
@@ -237,16 +351,16 @@ def install_teams(registry: ToolRegistry) -> ToolRegistry:
                   if state.sender.startswith(ctx.state.get("team_id", "") + "/")]
         return json.dumps(states, indent=2) if states else "No protocol requests."
 
-    registry.register(Tool("spawn_teammate", "Spawn an autonomous concurrent teammate.", _SPAWN, spawn_teammate))
-    registry.register(Tool("send_message", "Send a typed message to a teammate.", _SEND, send_message))
-    registry.register(Tool("read_inbox", "Read, route, and drain your inbox.", _EMPTY, read_inbox, readonly=True))
-    registry.register(Tool("broadcast", "Send a message to all teammates.", _BROADCAST, broadcast))
-    registry.register(Tool("list_teammates", "List teammates in this team.", _EMPTY, list_teammates, readonly=True))
+    registry.register(Tool("spawn_teammate", "Spawn an autonomous concurrent teammate.", _SPAWN, spawn_teammate, risk="exec"))
+    registry.register(Tool("send_message", "Send a typed message to a teammate.", _SEND, send_message, risk="write"))
+    registry.register(Tool("read_inbox", "Read, route, and drain your inbox.", _EMPTY, read_inbox, readonly=True, risk="read"))
+    registry.register(Tool("broadcast", "Send a message to all teammates.", _BROADCAST, broadcast, risk="write"))
+    registry.register(Tool("list_teammates", "List teammates in this team.", _EMPTY, list_teammates, readonly=True, risk="read"))
     registry.register(Tool("request_shutdown", "Request a teammate shutdown with an auditable handshake.",
-                           _SHUTDOWN, request_shutdown))
+                           _SHUTDOWN, request_shutdown, risk="write"))
     registry.register(Tool("request_plan", "Ask a teammate to submit a plan for a task.",
-                           _REQUEST_PLAN, request_plan))
-    registry.register(Tool("submit_plan", "Submit a plan to the lead for approval.", _PLAN, submit_plan))
-    registry.register(Tool("review_plan", "Approve or reject a submitted teammate plan.", _REVIEW, review_plan))
-    registry.register(Tool("list_protocols", "List protocol request states.", _EMPTY, list_protocols, readonly=True))
+                           _REQUEST_PLAN, request_plan, risk="write"))
+    registry.register(Tool("submit_plan", "Submit a plan to the lead for approval.", _PLAN, submit_plan, risk="write"))
+    registry.register(Tool("review_plan", "Approve or reject a submitted teammate plan.", _REVIEW, review_plan, risk="write"))
+    registry.register(Tool("list_protocols", "List protocol request states.", _EMPTY, list_protocols, readonly=True, risk="read"))
     return registry

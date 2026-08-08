@@ -42,7 +42,8 @@ def test_register_custom_tool_and_call_it(tmp_path):
     reg = default_registry()
 
     @reg.add("greet", "Greet someone by name.",
-             {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]})
+             {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]},
+             risk="read")
     async def greet(ctx, name):
         # custom tools have full access to the sandbox + per-session state
         ctx.state["greeted"] = name
@@ -91,6 +92,7 @@ def test_parallel_safe_tool_calls_overlap_and_keep_result_order(tmp_path):
                 "required": ["label", "delay"],
             },
             parallel_safe=True,
+            risk="read",
         )
         async def parallel_probe(ctx, label, delay):
             nonlocal active, peak, started
@@ -147,6 +149,7 @@ def test_parallel_tool_calls_are_bounded_and_fail_independently(tmp_path):
                 "required": ["label"],
             },
             parallel_safe=True,
+            risk="read",
         )
         async def bounded_probe(ctx, label, fail=False):
             nonlocal active, peak
@@ -204,6 +207,7 @@ def test_non_parallel_safe_tool_is_an_ordering_barrier(tmp_path):
                 "required": ["label"],
             },
             parallel_safe=True,
+            risk="read",
         )
         async def parallel_step(ctx, label):
             timeline.append(f"start:{label}")
@@ -215,6 +219,7 @@ def test_non_parallel_safe_tool_is_an_ordering_barrier(tmp_path):
             "ordered_step",
             "Record a step that must stay ordered.",
             {"type": "object", "properties": {}},
+            risk="read",
         )
         async def ordered_step(ctx):
             timeline.extend(["start:barrier", "end:barrier"])
@@ -334,7 +339,7 @@ def test_workspace_factory_and_event_sink(tmp_path):
 def test_manager_injects_custom_tools_per_session(tmp_path):
     template = default_registry()
 
-    @template.add("ping", "Return pong.", {"type": "object", "properties": {}})
+    @template.add("ping", "Return pong.", {"type": "object", "properties": {}}, risk="read")
     async def ping(ctx):
         return "pong"
 

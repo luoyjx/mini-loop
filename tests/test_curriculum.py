@@ -37,7 +37,7 @@ from mini_loop import (
 )
 from mini_loop.background import background_injector
 from mini_loop.cron import cron_matches, validate_cron
-from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+from mini_loop.fake_llm import FakeAsyncAnthropic, system_text, text, tool
 from mini_loop.registry import ToolCall, ToolContext
 
 
@@ -220,6 +220,12 @@ def test_default_permission_rules_cover_workspace_and_mcp_boundaries(tmp_path):
         ctx = ToolContext(agent, agent.workspace, agent.state, call)
         return await hook.before_tool(ctx, call)
 
+    # Round 95: the MCP boundary is the risk contract, not a name heuristic.
+    agent.tools.register(Tool(
+        "mcp__prod__deploy", "[mcp:prod] Deploy.",
+        {"type": "object", "properties": {}}, lambda _ctx: "ok",
+        risk="external",
+    ))
     escaped = asyncio.run(check(ToolCall(
         "write_file", {"path": "../outside.txt", "content": "x"}, "escape"
     )))
@@ -230,10 +236,14 @@ def test_default_permission_rules_cover_workspace_and_mcp_boundaries(tmp_path):
     allowed = asyncio.run(check(ToolCall(
         "write_file", {"path": "inside.txt", "content": "x"}, "inside"
     )))
+    # Round 96: a tool that is not registered at all is dispatch's problem
+    # ("unknown tool"), not an approval -- permission passes it through.
+    missing = asyncio.run(check(ToolCall("mcp__ghost__nothing", {}, "ghost")))
     assert "escapes" in escaped.lower()
     assert "approval required" in deploy.lower()
     assert "approval required" in background_delete.lower()
     assert allowed is None
+    assert missing is None
 
 
 def test_four_layer_compaction_helpers_preserve_pairs_and_persist(tmp_path):
@@ -291,7 +301,7 @@ def test_oversized_tool_output_is_persisted_before_the_next_llm_call(tmp_path):
     registry = default_registry()
     registry.register(Tool(
         "huge_output", "return a large payload", {"type": "object", "properties": {}},
-        lambda _ctx: "z" * 10_000,
+        lambda _ctx: "z" * 10_000, risk="read",
     ))
     agent = _agent(
         tmp_path,
@@ -310,7 +320,7 @@ def test_system_prompt_rebuilds_when_runtime_tools_change(tmp_path):
     systems = []
 
     def responder(kwargs):
-        systems.append(kwargs.get("system", ""))
+        systems.append(system_text(kwargs))
         if len(systems) == 1:
             return [tool("add_runtime_tool")], "tool_use"
         return [text("done")], "end_turn"
@@ -320,12 +330,12 @@ def test_system_prompt_rebuilds_when_runtime_tools_change(tmp_path):
     async def add_runtime_tool(ctx):
         ctx.agent.tools.register(Tool(
             "late_capability", "runtime", {"type": "object", "properties": {}},
-            lambda _ctx: "ok",
+            lambda _ctx: "ok", risk="read",
         ))
         return "added"
 
     registry.register(Tool("add_runtime_tool", "add", {"type": "object", "properties": {}},
-                           add_runtime_tool))
+                           add_runtime_tool, risk="write"))
     agent = _agent(tmp_path, FakeAsyncAnthropic(responder=responder), tools=registry)
     asyncio.run(agent.run("go"))
     assert "late_capability" not in systems[0]
@@ -399,7 +409,9 @@ def test_memory_is_selected_and_extracted_across_sessions(tmp_path):
 
     def responder(kwargs):
         if kwargs.get("tools"):
-            main_prompts.append(kwargs["messages"][-1]["content"])
+            # Capture the whole turn: memory context rides the user message,
+            # which runtime-state reminders may now be appended after.
+            main_prompts.append([m["content"] for m in kwargs["messages"]])
             return [text("done")], "end_turn"
         prompt = kwargs["messages"][-1]["content"]
         if "Select relevant memory indices" in prompt:

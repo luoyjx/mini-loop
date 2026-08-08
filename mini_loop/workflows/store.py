@@ -79,6 +79,18 @@ _RUN_TRANSITIONS = {
 }
 
 
+#: Terminal runs whose full state graph is retained. The store is created once
+#: at the manager and shared for the whole process; every run adds a run, its
+#: nodes, attempts and artifacts, and none of it was ever removed -- a
+#: completed run's whole graph stayed in memory forever (rounds 146/147's
+#: retention-store class, third and largest instance). Past this the oldest
+#: terminal runs are evicted whole, but only ones with no undelivered outbox: an
+#: active run and an unread result are live commitments and are spared. Generous
+#: so a real workload's recent runs stay fully readable via `status`; a run
+#: evicted past it reads as NotFound, standard retention.
+MAX_TERMINAL_RUNS = 500
+
+
 class InMemoryWorkflowStore:
     def __init__(self) -> None:
         self._lock = threading.RLock()
@@ -191,6 +203,75 @@ class InMemoryWorkflowStore:
                 if session_id is None or run.session_id == session_id
             ]
         return sorted(runs, key=lambda item: (item.created_at, item.run_id))
+
+    def prune_terminal_runs(self, *, keep: int = MAX_TERMINAL_RUNS) -> list[str]:
+        """Evict the oldest terminal runs whose outbox is fully delivered.
+
+        Returns the pruned run ids so a caller can drop parallel bookkeeping
+        (the service's `_launch_turns`). Never touches an active run, nor a
+        terminal one that still has an undelivered outbox message -- an unread
+        result is a live commitment, the same rule that spares a pending
+        handshake in `_prune_protocols` (round 147). Removes the whole cascade
+        -- run, nodes, attempts, artifacts, delivered outbox, outbox keys, and
+        the launch key -- so nothing dangles and no reader hits a half-pruned
+        run. `create_run` returns `self._runs[run_id]` for a repeated launch
+        key, so the launch key must go with the run; a re-launch of an evicted
+        key past the retention window then starts a fresh run, a bounded dedup
+        window rather than an unbounded one.
+        """
+
+        with self._lock:
+            if len(self._runs) <= keep:
+                return []
+            undelivered = {
+                message.run_id
+                for message in self._outbox.values()
+                if message.delivered_at is None
+            }
+            terminal = sorted(
+                (
+                    run
+                    for run in self._runs.values()
+                    if run.is_terminal and run.run_id not in undelivered
+                ),
+                key=lambda run: (run.created_at, run.run_id),
+            )
+            if len(terminal) <= keep:
+                return []
+            pruned = []
+            for run in terminal[: len(terminal) - keep]:
+                self._prune_run_cascade(run.run_id)
+                pruned.append(run.run_id)
+            return pruned
+
+    def _prune_run_cascade(self, run_id: str) -> None:
+        """Delete a run and everything keyed to it. Caller holds `self._lock`."""
+
+        self._runs.pop(run_id, None)
+        for key in [key for key in self._nodes if key[0] == run_id]:
+            del self._nodes[key]
+        for attempt_id in [
+            attempt_id for attempt_id, attempt in self._attempts.items()
+            if attempt.run_id == run_id
+        ]:
+            del self._attempts[attempt_id]
+        for artifact_id in [
+            artifact_id for artifact_id, artifact in self._artifacts.items()
+            if artifact.run_id == run_id
+        ]:
+            del self._artifacts[artifact_id]
+        for message_id in [
+            message_id for message_id, message in self._outbox.items()
+            if message.run_id == run_id
+        ]:
+            del self._outbox[message_id]
+        for key in [key for key in self._outbox_keys if key[0] == run_id]:
+            del self._outbox_keys[key]
+        for key in [
+            key for key, (_hash, launched_run_id) in self._launches.items()
+            if launched_run_id == run_id
+        ]:
+            del self._launches[key]
 
     def list_nodes(self, run_id: str) -> list[NodeState]:
         definition = self.get_definition(self.get_run(run_id).definition_revision)
@@ -619,8 +700,14 @@ class InMemoryWorkflowStore:
         session_id: str,
         run_ids: set[str] | None = None,
         lease_seconds: float = 30.0,
+        limit: int | None = None,
     ) -> tuple[str, list[OutboxMessage]]:
-        """Lease pending messages without marking them delivered."""
+        """Lease pending messages without marking them delivered.
+
+        `limit` caps how many are claimed in one call, so a parent turn cannot be
+        handed every completed run's result at once. The rest stay unclaimed and
+        the next `claim_outbox` picks them up -- bounded delivery, nothing lost.
+        """
 
         if lease_seconds <= 0:
             raise ValueError("lease_seconds must be positive")
@@ -629,6 +716,8 @@ class InMemoryWorkflowStore:
         with self._lock:
             claimed = []
             for message_id, message in list(self._outbox.items()):
+                if limit is not None and len(claimed) >= limit:
+                    break
                 if message.session_id != session_id or message.delivered_at is not None:
                     continue
                 if run_ids is not None and message.run_id not in run_ids:

@@ -10,7 +10,8 @@ from ..agent import Agent
 from ..builtins import default_registry
 from ..compaction import InMemoryCompactor
 from ..config import Settings
-from ..registry import Hooks, Tool
+from ..permissions import default_hooks
+from ..registry import Tool
 from ..run_context import RunContext
 from .artifacts import ArtifactSubmission, return_artifact
 from .models import NodeAttempt, WorkflowNode, canonical_json
@@ -37,6 +38,9 @@ class FreshAgentRunner:
         llm_semaphore=None,
         tool_semaphore=None,
         emit: Callable[[dict], Awaitable[None]] | None = None,
+        secrets=None,
+        sandbox=None,
+        harness=None,
     ) -> None:
         if max_rounds <= 0:
             raise ValueError("max_rounds must be positive")
@@ -48,6 +52,20 @@ class FreshAgentRunner:
         self.llm_semaphore = llm_semaphore
         self.tool_semaphore = tool_semaphore
         self.emit = emit
+        # A fresh worker is still a worker: it reads repository files, so it
+        # needs the same masking and confinement the parent runs under.
+        # Without these it was the one path where a credential in a workspace
+        # file reached an artifact unmasked.
+        from ..harness import Harness
+
+        # Start from the parent's policy set so a worker inherits every seam,
+        # then narrow the parts a workflow node must control. Listing seams here
+        # is what let masking and confinement go missing on this path.
+        base = harness or Harness()
+        self.harness = base.derive(secrets=secrets or base.secrets,
+                                   sandbox=sandbox or base.sandbox)
+        self.secrets = self.harness.secrets
+        self.sandbox = self.harness.sandbox
         self.last_tool_names: tuple[str, ...] = ()
         self.last_run_context: RunContext | None = None
 
@@ -78,6 +96,12 @@ class FreshAgentRunner:
                     "additionalProperties": False,
                 },
                 submit,
+                # Captures the node's result in-process; no external side effect.
+                # Classified honestly as a read so the readonly backstop below
+                # admits it -- an unclassified tool would be denied in readonly
+                # mode, and leaving it unclassified is also just wrong.
+                readonly=True,
+                risk="read",
             )
         )
         self.last_tool_names = tuple(registry.names())
@@ -99,13 +123,28 @@ class FreshAgentRunner:
             client=self.client,
             settings=self.settings,
             workspace=self.workspace,
-            tools=registry,
-            hooks=Hooks(),
+            # A readonly permission backstop. The worker's read-only guarantee
+            # used to rest entirely on the `subset(("read_file", "glob"))` above
+            # with `hooks=Hooks()` -- an empty policy, unlike every other agent,
+            # which runs under a PermissionHook. That made the tool allowlist a
+            # single point of failure: one line broadening the subset, or a read
+            # tool growing a side effect, and a workflow worker (which processes
+            # inputs it does not control) could mutate with nothing to stop it.
+            # Readonly mode denies write/exec/external/unclassified risk, so the
+            # guarantee now has two independent barriers instead of one.
+            state={"permission_mode": "readonly"},
+            harness=self.harness.derive(
+                tools=registry,
+                hooks=default_hooks(),
+                compactor=InMemoryCompactor(),
+                # A workflow node owns its own turn budget and history; the
+                # parent's injectors and stop hooks must not reach it.
+                injectors=(),
+            ),
             system=system,
             label=f"workflow>{node.id}",
             depth=1,
             max_rounds=rounds,
-            compactor=InMemoryCompactor(),
             llm_semaphore=self.llm_semaphore,
             tool_semaphore=self.tool_semaphore,
             emit=self.emit,

@@ -19,12 +19,39 @@ and redaction are all just hooks.
 from __future__ import annotations
 
 import inspect
+import json
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .problems import ProblemLog
 from .run_context import RunContext
+
+#: Total characters of tool definitions allowed in one request. Sized so a
+#: large MCP fleet still leaves most of the window for the conversation --
+#: roughly 15,000 tokens, against the ~2,100 the 37 built-ins use.
+MAX_TOOL_PAYLOAD = 60_000
+
+#: Description lengths tried in order before any tool is dropped. A tool with
+#: a short description is still callable; an absent one is not.
+TOOL_DESCRIPTION_STEPS = (1_000, 400, 200, 80)
+
+
+def _payload_size(schemas: list[dict]) -> int:
+    return len(json.dumps(schemas, default=str))
+
+
+#: The risk ladder a tool declares on its contract, least to most consequential.
+#: `read` inspects, `write` mutates local/session state, `exec` runs code or
+#: spawns agents that can, `external` leaves the machine. The permission layer
+#: executes this -- a declaration nothing executes is documentation, not a
+#: contract (rounds 92/94) -- and a tool with *no* declaration is treated as
+#: `external`, not `read`: OpenWorker's own review flags its fall-back-to-READ
+#: as a standing hazard (OPENWORKER_RESEARCH.md 9.2.8), and the inversion is
+#: the fix. Unclassified gates upward, never downward.
+RISK_LEVELS = ("read", "write", "exec", "external")
+
 
 # A handler is `(ctx, **input) -> str | Awaitable[str]`.
 ToolHandler = Callable[..., Any]
@@ -63,6 +90,9 @@ class ToolContext:
         await self.agent._send(event_type, **fields)
 
 
+VerifyFn = Callable[["ToolContext", "ToolCall"], object]
+
+
 @dataclass
 class Tool:
     name: str
@@ -73,11 +103,51 @@ class Tool:
     # Explicit opt-in: handlers and their hooks may run concurrently.
     # This is deliberately separate from readonly; a read can still drain or
     # mutate external state.
+    #
+    # The reverse direction is the one that bites. `parallel_safe` **and not**
+    # `readonly` claims "I mutate the workspace and I am safe to run alongside
+    # other tools" -- sometimes true (a tool whose writes go somewhere with its
+    # own concurrency control), and a lost update when it is not. The harness
+    # cannot check the claim, so it does not reject it; the audit reports it,
+    # because the one outcome ruled out is that it stays silent.
     parallel_safe: bool = False
+    #: Where this tool sits on `RISK_LEVELS`. `None` means unclassified, and
+    #: unclassified is gated like `external` -- see `RISK_LEVELS`.
+    risk: str | None = None
+    #: Optional reconciler: `async (ctx, call) -> bool | None`, answering
+    #: "did this call already take effect?" -- `True` it did, `False` it did
+    #: not, `None` cannot tell.
+    #:
+    #: Only consulted when a crash left an action `unknown`: the tool was
+    #: dispatched and nobody recorded the outcome. Without a verifier the
+    #: harness refuses to guess, which is correct but leaves the agent stuck;
+    #: with one it can find out. This is the concrete payoff of promoting an
+    #: action out of `bash` into a dedicated tool -- an opaque command string
+    #: cannot be checked, a typed call often can.
+    verify: VerifyFn | None = None
 
     @property
     def schema(self) -> dict:
         return {"name": self.name, "description": self.description, "input_schema": self.input_schema}
+
+    async def already_took_effect(self, ctx: ToolContext, call: ToolCall):
+        """Ask the reconciler whether this call already landed.
+
+        Returns `None` when there is no verifier, when it cannot tell, or when
+        it fails -- all three mean the same thing to the caller: still unknown,
+        so still do not retry.
+        """
+
+        if self.verify is None:
+            return None
+        try:
+            verdict = self.verify(ctx, call)
+            if inspect.isawaitable(verdict):
+                verdict = await verdict
+        except Exception:
+            # A reconciler that breaks must not turn "unknown" into "no".
+            return None
+        return verdict if isinstance(verdict, bool) else None
 
     async def run(self, ctx: ToolContext, **kwargs) -> str:
         result = self.handler(ctx, **kwargs)
@@ -91,12 +161,23 @@ class ToolRegistry:
 
     def __init__(self, tools: Iterable[Tool] | None = None) -> None:
         self._tools: dict[str, Tool] = {}
+        #: Definitions trimmed or omitted to fit the request. Every other store
+        #: in the package grew one of these.
+        self.problems = ProblemLog()
         for t in tools or []:
             self.register(t)
 
     def register(self, tool: Tool, *, replace: bool = False) -> "ToolRegistry":
         if tool.name in self._tools and not replace:
             raise ValueError(f"Tool '{tool.name}' already registered (pass replace=True to override)")
+        if tool.risk is not None and tool.risk not in RISK_LEVELS:
+            # A typo'd level would fall through to "unclassified" and gate as
+            # external -- safe, but silently stricter than the author asked
+            # for. Reject it loudly instead.
+            raise ValueError(
+                f"Tool '{tool.name}' declares unknown risk {tool.risk!r}; "
+                f"expected one of {RISK_LEVELS} or None"
+            )
         self._tools[tool.name] = tool
         return self
 
@@ -108,6 +189,7 @@ class ToolRegistry:
         *,
         readonly: bool = False,
         parallel_safe: bool = False,
+        risk: str | None = None,
         replace: bool = False,
     ):
         """Decorator form: `@registry.add("greet", "...", {...})`."""
@@ -120,6 +202,7 @@ class ToolRegistry:
                     fn,
                     readonly=readonly,
                     parallel_safe=parallel_safe,
+                    risk=risk,
                 ),
                 replace=replace,
             )
@@ -136,8 +219,92 @@ class ToolRegistry:
     def names(self) -> list[str]:
         return list(self._tools)
 
+    def _fit(self) -> tuple[list[dict], int | None, list[str]]:
+        """(schemas to send, trim step applied or None, names omitted).
+
+        Pure: no problem reports, no state. `schemas()` adds the reporting;
+        `sent_names()`/`omitted_names()` let the system builder describe the
+        request that will actually be made without logging a problem twice.
+        """
+
+        schemas = [dict(t.schema) for t in self._tools.values()]
+        if _payload_size(schemas) <= MAX_TOOL_PAYLOAD:
+            return schemas, None, []
+        for limit in TOOL_DESCRIPTION_STEPS:
+            for schema in schemas:
+                description = schema.get("description") or ""
+                if len(description) > limit:
+                    schema["description"] = description[:limit] + "..."
+            if _payload_size(schemas) <= MAX_TOOL_PAYLOAD:
+                return schemas, limit, []
+        # Names and schemas alone are over budget: drop, keeping request order.
+        kept, used = [], 0
+        for schema in schemas:
+            size = _payload_size([schema])
+            if used + size > MAX_TOOL_PAYLOAD:
+                continue
+            kept.append(schema)
+            used += size
+        kept_names = {s["name"] for s in kept}
+        omitted = [name for name in self._tools if name not in kept_names]
+        return kept, TOOL_DESCRIPTION_STEPS[-1], omitted
+
     def schemas(self) -> list[dict]:
-        return [t.schema for t in self._tools.values()]
+        """Tool definitions for one request, within a total budget.
+
+        Round 40 capped each MCP description at 4,000 characters and left the
+        *count* alone, which is the same inversion round 90 found in skills.
+        Tool definitions are sent on every single request, and MCP servers add
+        them by the dozen:
+
+             50 extra tools ->   222,485 chars  ~55,621 tokens per request
+            200 extra tools ->   851,835 chars ~212,958 tokens per request
+            500 extra tools -> 2,110,635 chars ~527,658 tokens per request
+
+        Past a point that is not a cost problem but a hard failure: the request
+        exceeds the context window and *every* turn fails, with a provider error
+        that says nothing about which tool did it.
+
+        Descriptions are trimmed before any tool is dropped, because they are
+        the compressible part -- a tool with a short description is still
+        callable, and a tool that is absent is a capability the model is told it
+        does not have. Only if the names and schemas alone exceed the budget is
+        anything omitted, and then it is reported both ways: an operator sees
+        `problems`, and `default_system_builder` names the omission to the
+        model via `omitted_names()`.
+        """
+
+        schemas, trimmed_to, omitted = self._fit()
+        if omitted:
+            self.problems.append(
+                f"{len(omitted)} tool(s) omitted from the request: "
+                f"{len(self._tools)} tools exceed {MAX_TOOL_PAYLOAD:,} "
+                "characters even with minimal descriptions"
+            )
+        elif trimmed_to is not None:
+            self.problems.append(
+                f"tool descriptions trimmed to {trimmed_to:,} characters to fit "
+                f"{MAX_TOOL_PAYLOAD:,} in the request ({len(schemas)} tools)"
+            )
+        return schemas
+
+    def sent_names(self) -> list[str]:
+        """Names of the tools the next request will actually carry.
+
+        `names()` is the registry inventory and stays that way -- the audit,
+        session events, and workflow provenance all want what is *registered*.
+        The system prompt is the one place that must describe the *request*:
+        round 93 found `default_system_builder` listing all 3,037 names of a
+        pathological registry while `schemas()` sent 529, telling the model it
+        had 2,508 tools it could not reliably call.
+        """
+
+        return [schema["name"] for schema in self._fit()[0]]
+
+    def omitted_names(self) -> list[str]:
+        """Registered tools the next request will not carry (usually empty)."""
+
+        return self._fit()[2]
 
     def subset(self, names: Iterable[str]) -> "ToolRegistry":
         keep = set(names)

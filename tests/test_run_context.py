@@ -6,7 +6,7 @@ import pytest
 
 from mini_loop.agent import Agent
 from mini_loop.config import Settings
-from mini_loop.fake_llm import FakeAsyncAnthropic, _last_result_text, scripted, text, tool
+from mini_loop.fake_llm import system_text, FakeAsyncAnthropic, _last_result_text, scripted, text, tool
 from mini_loop.manager import SessionManager
 from mini_loop.registry import Hook, Hooks, ToolCall, ToolContext
 from mini_loop.run_context import EXPLICIT_HUMAN, PEER_AGENT, UNTRUSTED, RunContext
@@ -63,7 +63,7 @@ def test_session_propagates_exact_context_to_tool_and_emits_action_id(tmp_path):
     events = []
     registry = default_registry()
 
-    @registry.add("probe_context", "Capture context.", {"type": "object", "properties": {}})
+    @registry.add("probe_context", "Capture context.", {"type": "object", "properties": {}}, risk="read")
     async def probe_context(ctx):
         captured.append(ctx)
         return ctx.run_context.authority
@@ -149,7 +149,7 @@ def test_legacy_session_run_defaults_to_untrusted(tmp_path):
     authorities = []
     registry = default_registry()
 
-    @registry.add("probe_context", "Capture context.", {"type": "object", "properties": {}})
+    @registry.add("probe_context", "Capture context.", {"type": "object", "properties": {}}, risk="read")
     async def probe_context(ctx):
         authorities.append(ctx.run_context.authority)
         return "ok"
@@ -180,7 +180,7 @@ def test_inline_subagent_tool_context_is_peer_agent(tmp_path):
         tools = kwargs.get("tools")
         messages = kwargs["messages"]
         last = messages[-1]
-        is_child = "subagent" in (kwargs.get("system") or "")
+        is_child = "subagent" in system_text(kwargs)
         if not tools:
             return [text("[summary]")], "end_turn"
         if isinstance(last.get("content"), str):
@@ -225,7 +225,7 @@ def test_manager_teammate_initial_run_is_peer_agent(tmp_path):
     seen = []
     registry = default_registry()
 
-    @registry.add("probe_context", "Capture context.", {"type": "object", "properties": {}})
+    @registry.add("probe_context", "Capture context.", {"type": "object", "properties": {}}, risk="read")
     async def probe_context(ctx):
         seen.append(ctx.run_context)
         return "ok"

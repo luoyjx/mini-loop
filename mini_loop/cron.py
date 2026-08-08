@@ -20,6 +20,9 @@ from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
 
+from .durable import atomic_write_text
+from .problems import ProblemLog
+from .run_context import RunContext
 from .registry import Tool, ToolContext, ToolRegistry
 
 
@@ -106,9 +109,21 @@ class CronJob:
 class CronScheduler:
     """Manager-level. Holds all jobs; one ticker fires them into sessions."""
 
-    def __init__(self, manager, *, durable_path: Path | None = None) -> None:
+    #: A scheduled prompt is an instruction that fires unattended, so an
+    #: unbounded one is a half-million-token user message nobody is watching.
+    MAX_PROMPT = 8_000
+    #: Jobs accumulate; 500 `schedule` calls produced 503 of them.
+    MAX_JOBS = 200
+
+    def __init__(self, manager, *, durable_path: Path | None = None, secrets=None) -> None:
         self.manager = manager
         self.jobs: dict[str, CronJob] = {}
+        #: The durable file is a disk sink -- prompts persist across restarts.
+        self.secrets = secrets
+        #: Jobs refused, dropped or fired into nothing. Reported rather than
+        #: swallowed: a schedule that silently stops running is indistinguishable
+        #: from one that never existed.
+        self.problems = ProblemLog()
         self.durable_path = durable_path
         self._task: asyncio.Task | None = None
         self._running: set[asyncio.Task] = set()
@@ -136,8 +151,13 @@ class CronScheduler:
         while True:
             try:
                 self._tick_once(datetime.now())
-            except Exception:
-                pass
+            except Exception as error:
+                # `_tick_once` catches per job, so reaching here means the sweep
+                # itself broke and *every* job missed this minute.
+                self.problems.append(
+                    f"a scheduler tick failed ({type(error).__name__}: {error}); "
+                    "no job ran this minute"
+                )
             await asyncio.sleep(20)
 
     def _tick_once(self, now: datetime) -> None:
@@ -147,23 +167,61 @@ class CronScheduler:
                 if not cron_matches(job.cron, now) or job.last_fired == marker:
                     continue
                 job.last_fired = marker
-                self._fire(job)
                 if not job.recurring:
                     self.jobs.pop(job.id, None)
+                # Persist the mark (and any one-shot removal) BEFORE dispatching
+                # the run. The old order fired first and saved after, so a crash
+                # in that window left the run dispatched but the mark only in
+                # memory -- a restart within the same minute re-fired it. This
+                # is at-most-once across a crash, matching the in-process
+                # semantics: if the durable state cannot be written, the
+                # occurrence is not fired (and is reported below as lost), which
+                # is the safe direction. A crash before the save means nothing
+                # was dispatched, so re-firing on restart is correct.
                 if job.durable:
                     self._save()
-            except Exception:
-                # One malformed or unavailable job cannot starve the rest.
+                self._fire(job)
+            except Exception as error:
+                # One malformed or unavailable job cannot starve the rest --
+                # still true, and still not a reason to say nothing. The
+                # occurrence is already marked fired by this point, so a
+                # swallowed failure here is a scheduled run that silently did
+                # not happen.
+                self.problems.append(
+                    f"{job.id}: firing failed ({type(error).__name__}: {error}); "
+                    "the occurrence was lost"
+                )
                 continue
 
     def _fire(self, job: CronJob) -> None:
         session = self.manager.get(job.session_id)
         if session is None and hasattr(self.manager, "restore_scheduled_session"):
             session = self.manager.restore_scheduled_session(job.session_id)
-        if session is not None:
-            task = asyncio.create_task(session.run(f"[Scheduled cron {job.id}] {job.prompt}"))
-            self._running.add(task)
-            task.add_done_callback(self._running.discard)
+        if session is None:
+            # Silence here is the worst outcome: the occurrence is already
+            # marked fired, so the schedule is consumed and nothing runs -- for
+            # every occurrence, forever, with no signal that the job is dead.
+            self.problems.append(
+                f"{job.id}: fired at its scheduled time but session "
+                f"{job.session_id!r} does not exist; the occurrence was lost"
+            )
+            return
+        # A scheduled prompt fires unattended and durably -- it survives a
+        # restart and runs with no human present. It must therefore carry
+        # UNTRUSTED authority, never the human's: workflow launch and manage
+        # require EXPLICIT_HUMAN (workflows/service.py, workflows/tools.py), so a
+        # cron job running with human authority would let a model schedule one
+        # turn that escalates to launching workflows on every later firing.
+        # `session.run` already defaults to `RunContext.default()` (untrusted);
+        # passing it explicitly makes the security choice visible at the firing
+        # site and resistant to a well-meaning edit that hands cron "the
+        # scheduler's authority".
+        prompt = f"[Scheduled cron {job.id}] {job.prompt}"
+        task = asyncio.create_task(
+            session.run(prompt, run_context=RunContext.default())
+        )
+        self._running.add(task)
+        task.add_done_callback(self._running.discard)
 
     # -- ops (used by tools) --
     def schedule(self, session_id: str, cron: str, prompt: str, *, recurring: bool = True,
@@ -171,6 +229,15 @@ class CronScheduler:
         err = validate_cron(cron)
         if err:
             return f"Error: {err}"
+        if len(prompt) > self.MAX_PROMPT:
+            # Refused, not truncated. A truncated instruction that still fires
+            # is worse than one that never got scheduled.
+            return (
+                f"Error: prompt is {len(prompt):,} characters; the limit is "
+                f"{self.MAX_PROMPT:,}"
+            )
+        if len(self.jobs) >= self.MAX_JOBS:
+            return f"Error: {self.MAX_JOBS} scheduled jobs already exist"
         job = CronJob(id=uuid.uuid4().hex[:8], cron=cron, prompt=prompt,
                       session_id=session_id, recurring=recurring, durable=durable)
         self.jobs[job.id] = job
@@ -186,11 +253,53 @@ class CronScheduler:
             self._save()
         return f"Scheduled cron {job.id}: '{cron}' -> {prompt[:60]}"
 
-    def cancel(self, job_id: str) -> str:
-        if self.jobs.pop(job_id, None):
+    def cancel(self, job_id: str, session_id: str | None = None) -> str:
+        """Cancel a job, optionally only if it belongs to this session.
+
+        `list_for` filters by session and this did not, so one session could
+        cancel another's scheduled work by id -- the same "filtered index,
+        unprotected direct reference" shape as the trajectory fetch in round 74
+        and the trajectory listing in round 76, here for the third time.
+
+        `session_id=None` keeps the unscoped behaviour for callers that own the
+        scheduler outright (an operator, the tests). The tool passes its own
+        session, so an agent can only cancel its own.
+
+        A job that exists but belongs to someone else answers exactly like one
+        that does not exist, per round 24: a distinguishable refusal confirms
+        the id.
+        """
+
+        job = self.jobs.get(job_id)
+        if job is None or (session_id is not None and job.session_id != session_id):
+            return f"No cron {job_id}"
+        del self.jobs[job_id]
+        self._save()
+        return f"Cancelled cron {job_id}"
+
+    def cancel_for_session(self, session_id: str) -> int:
+        """Remove every job scheduled for a session; returns how many.
+
+        Called when the session is deleted. A leftover job outlives its session
+        and, on its next fire, `restore_scheduled_session` rebuilds the session
+        from durable state -- re-creating the workspace `delete` removed and
+        rehydrating the transcript -- so the deleted session comes back to life
+        and keeps running its scheduled prompt. `delete` reclaimed every other
+        per-session resource (background shells, MCP clients, approvals) and left
+        this one, so the one form of work that fires unattended was the one a
+        delete did not stop.
+        """
+
+        removed = [jid for jid, job in self.jobs.items()
+                   if job.session_id == session_id]
+        if not removed:
+            return 0
+        persist = any(self.jobs[jid].durable for jid in removed)
+        for jid in removed:
+            self.jobs.pop(jid, None)
+        if persist:
             self._save()
-            return f"Cancelled cron {job_id}"
-        return f"No cron {job_id}"
+        return len(removed)
 
     def list_for(self, session_id: str) -> str:
         jobs = [j for j in self.jobs.values() if j.session_id == session_id]
@@ -206,23 +315,43 @@ class CronScheduler:
             return
         self.durable_path.parent.mkdir(parents=True, exist_ok=True)
         durable = [asdict(j) for j in self.jobs.values() if j.durable]
-        temporary = self.durable_path.with_suffix(".tmp")
-        temporary.write_text(json.dumps(durable, indent=2))
-        temporary.replace(self.durable_path)
+        if self.secrets is not None:
+            for record in durable:
+                masked = self.secrets.mask(record["prompt"])
+                if masked != record["prompt"]:
+                    self.problems.append(
+                        f"{record['id']}: prompt held a registered secret; the "
+                        "stored copy is masked and will fire masked after a "
+                        "restart"
+                    )
+                    record["prompt"] = masked
+        atomic_write_text(self.durable_path, json.dumps(durable, indent=2))
 
     def _load(self) -> None:
         if self.durable_path and self.durable_path.exists():
             try:
                 records = json.loads(self.durable_path.read_text())
-            except (OSError, json.JSONDecodeError):
+            except (OSError, json.JSONDecodeError) as error:
+                # Every durable job just vanished. Saying nothing makes a lost
+                # schedule look like an empty one.
+                self.problems.append(
+                    f"{self.durable_path}: unreadable ({type(error).__name__}); "
+                    "all durable jobs were dropped"
+                )
                 return
             for record in records if isinstance(records, list) else []:
                 try:
                     job = CronJob(**record)
-                except (TypeError, ValueError):
+                except (TypeError, ValueError) as error:
+                    self.problems.append(f"a stored job was unreadable: {error}")
                     continue
-                if validate_cron(job.cron) is None:
-                    self.jobs[job.id] = job
+                if validate_cron(job.cron) is not None:
+                    self.problems.append(
+                        f"{job.id}: dropped, {job.cron!r} is not a valid cron "
+                        "expression"
+                    )
+                    continue
+                self.jobs[job.id] = job
 
 
 _SCHEDULE = {
@@ -256,9 +385,11 @@ def install_cron(registry: ToolRegistry) -> ToolRegistry:
 
     async def cancel_cron(ctx, job_id):
         sched = _sched(ctx)
-        return sched.cancel(job_id) if sched else "Error: cron not available"
+        if not sched:
+            return "Error: cron not available"
+        return sched.cancel(job_id, session_id=ctx.state.get("session_id"))
 
-    registry.register(Tool("schedule_cron", "Schedule a prompt to run on a cron schedule (wakes this session).", _SCHEDULE, schedule_cron))
-    registry.register(Tool("list_crons", "List this session's scheduled cron jobs.", _EMPTY, list_crons, readonly=True))
-    registry.register(Tool("cancel_cron", "Cancel a scheduled cron job by id.", _CANCEL, cancel_cron))
+    registry.register(Tool("schedule_cron", "Schedule a prompt to run on a cron schedule (wakes this session).", _SCHEDULE, schedule_cron, risk="write"))
+    registry.register(Tool("list_crons", "List this session's scheduled cron jobs.", _EMPTY, list_crons, readonly=True, risk="read"))
+    registry.register(Tool("cancel_cron", "Cancel a scheduled cron job by id.", _CANCEL, cancel_cron, risk="write"))
     return registry

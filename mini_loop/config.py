@@ -77,6 +77,12 @@ class Settings:
 
     bash_timeout: int = field(default_factory=lambda: _env_int("MINILOOP_BASH_TIMEOUT", 120))
 
+    # How long a turn waits on a pending tool approval before the safe
+    # default -- deny -- answers instead. See mini_loop/approvals.py.
+    approval_timeout: float = field(
+        default_factory=lambda: float(_env_int("MINILOOP_APPROVAL_TIMEOUT", 300))
+    )
+
     workspace_root: Path = field(
         default_factory=lambda: Path(os.getenv("MINILOOP_WORKSPACE_ROOT", "./workspaces")).resolve()
     )
@@ -140,6 +146,19 @@ class Settings:
     def __post_init__(self) -> None:
         if self.max_concurrent_tools < 1:
             raise ValueError("max_concurrent_tools must be at least 1")
+        # Same failure mode as the check above, and it was missing: a
+        # Semaphore(0) is never acquirable, so max_concurrent_llm < 1 does not
+        # slow the agent -- it hangs it forever on the first model call, with
+        # no error. Validated loudly at construction rather than deadlocked at
+        # runtime.
+        if self.max_concurrent_llm < 1:
+            raise ValueError("max_concurrent_llm must be at least 1")
+        # A zero round budget is a silent no-op: `for _ in range(0)` runs the
+        # loop body never, so the agent returns having done nothing at all.
+        if self.max_turns < 1:
+            raise ValueError("max_turns must be at least 1")
+        if self.subagent_max_rounds < 1:
+            raise ValueError("subagent_max_rounds must be at least 1")
         if self.workflow_max_concurrent_agents < 1:
             raise ValueError("workflow_max_concurrent_agents must be at least 1")
         if self.workflow_max_concurrent_agents > 4:
@@ -155,6 +174,29 @@ class Settings:
             raise ValueError("workflow_max_rounds must be at least 1")
         if self.workflow_wall_time_seconds <= 0:
             raise ValueError("workflow_wall_time_seconds must be positive")
+        # The budgets and timeouts have the same failure mode as the semaphores
+        # above -- a non-positive one does not slow the harness, it breaks it
+        # silently, so it is validated loudly at construction rather than
+        # discovered as "the agent does nothing" at runtime:
+        #   max_tokens < 1        -> the provider rejects every request;
+        #   token_threshold < 1   -> compaction fires every turn, summarizing the
+        #                            transcript away before the agent can use it;
+        #   bash_timeout < 1      -> every shell command times out immediately;
+        #   approval_timeout <= 0 -> every approval is denied before it is asked;
+        #   team_idle_poll <= 0   -> the idle loop busy-spins with no sleep;
+        #   team_idle_timeout<= 0 -> a teammate shuts down before doing any work.
+        if self.max_tokens < 1:
+            raise ValueError("max_tokens must be at least 1")
+        if self.token_threshold < 1:
+            raise ValueError("token_threshold must be at least 1")
+        if self.bash_timeout < 1:
+            raise ValueError("bash_timeout must be at least 1")
+        if self.approval_timeout <= 0:
+            raise ValueError("approval_timeout must be positive")
+        if self.team_idle_poll <= 0:
+            raise ValueError("team_idle_poll must be positive")
+        if self.team_idle_timeout <= 0:
+            raise ValueError("team_idle_timeout must be positive")
         self.workspace_root.mkdir(parents=True, exist_ok=True)
 
 

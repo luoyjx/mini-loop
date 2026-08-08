@@ -49,7 +49,66 @@ def _path_escapes(ctx: ToolContext, call: ToolCall) -> bool:
         return True
 
 
+#: Per-session decision posture, OpenWorker's mode model reduced to the three
+#: its GUI actually shows (discuss / ask / full access). The mode maps risk to
+#: decision; the *rules* stay the same in every mode:
+#:
+#: * `readonly`    -- write/exec/external (and unclassified) deny outright,
+#:                    reads pass. A session that can be handed an untrusted
+#:                    prompt and provably mutate nothing.
+#: * `interactive` -- the default: external and unclassified ask.
+#: * `auto`        -- ask-rules auto-allow (with an audit event). Deny rules
+#:                    and the immutable deny-list still apply: full access
+#:                    means "stop asking", not "stop refusing".
+#:
+#: Runtime state, deliberately not persisted: a restored session comes back
+#: `interactive` -- the fail-safe direction is toward asking again.
+PERMISSION_MODES = ("readonly", "interactive", "auto")
+
+#: Risk levels a read-only session refuses. Unclassified (None) is refused
+#: too -- the round-95 rule that no claim gates upward, applied per mode.
+_MUTATING_RISK = ("write", "exec", "external")
+
+
+def _session_mode(ctx: ToolContext) -> str:
+    state = getattr(getattr(ctx, "agent", None), "state", None) or {}
+    session = state.get("session")
+    mode = getattr(session, "permission_mode", None) or state.get("permission_mode")
+    return mode if mode in PERMISSION_MODES else "interactive"
+
+
+#: A call to a tool that is not in the registry at all. Distinct from an
+#: unclassified tool on purpose: there is nothing to approve -- no handler
+#: exists -- and the dispatcher's "unknown tool" answer is the feedback the
+#: model needs. Round 96 found the collapse the hard way: treating missing as
+#: unclassified parked a turn for the full approval timeout waiting for a
+#: human to authorize a tool that does not exist.
+_MISSING = object()
+
+
+def _declared_risk(ctx: ToolContext, call: ToolCall):
+    """The risk on the tool's contract: a level, None (no claim), or _MISSING."""
+
+    registry = getattr(getattr(ctx, "agent", None), "tools", None)
+    tool = registry.get(call.name) if registry is not None else None
+    if tool is None:
+        return _MISSING
+    return tool.risk
+
+
 def default_permission_rules() -> list[PermissionRule]:
+    """Deny-list rules for the shell, plus the risk ladder, executed.
+
+    Until round 95 the only oversight an MCP tool had was a name heuristic:
+    `"deploy" in call.name`. Measured through a real turn, a tool named
+    `mcp__ghsrv__delete_repository` ran against `prod/main` with zero
+    permission events -- and its contract carried `readonly=True`, because the
+    *server's own* readOnlyHint was taken at its word. Metadata the untrusted
+    side writes and nothing executes is not a boundary. The rules below read
+    `Tool.risk`, which `register_mcp` pins to `"external"` regardless of what
+    the server claims.
+    """
+
     return [
         PermissionRule(
             "workspace-boundary",
@@ -65,10 +124,16 @@ def default_permission_rules() -> list[PermissionRule]:
             "Potentially destructive shell command",
         ),
         PermissionRule(
-            "destructive-mcp",
+            "external-action",
             ("*",),
-            lambda _ctx, call: call.name.startswith("mcp__") and "deploy" in call.name.lower(),
-            "Destructive-looking MCP tool",
+            lambda ctx, call: _declared_risk(ctx, call) == "external",
+            "Tool acts outside this machine",
+        ),
+        PermissionRule(
+            "unclassified-tool",
+            ("*",),
+            lambda ctx, call: _declared_risk(ctx, call) is None,
+            "Tool declares no risk level; treated as external until classified",
         ),
     ]
 
@@ -96,6 +161,8 @@ class PermissionHook(Hook):
         await ctx.emit_event("permission", **fields)
 
     async def before_tool(self, ctx: ToolContext, call: ToolCall) -> str | None:
+        # The immutable deny-list holds in every mode. `auto` widens what is
+        # not *asked about*; it never widens what is refused.
         if call.name in ("bash", "background_run"):
             command = str(call.input.get("command", ""))
             for pattern in self.deny_commands:
@@ -104,10 +171,30 @@ class PermissionHook(Hook):
                                      tool=call.name, reason=pattern)
                     return f"Permission denied: '{pattern}' is blocked"
 
+        mode = _session_mode(ctx)
+        if mode == "readonly":
+            risk = _declared_risk(ctx, call)
+            if risk in _MUTATING_RISK or risk is None:
+                # Denied, not asked: the whole point of a read-only session is
+                # that no approval -- human or hook -- can mutate through it.
+                # A missing tool still passes to dispatch's "unknown tool".
+                await self._emit(ctx, decision="deny", rule="readonly-mode",
+                                 tool=call.name, reason=f"risk={risk}")
+                return (
+                    "Permission denied: this session is read-only "
+                    f"(tool risk: {risk or 'unclassified'})"
+                )
+
         for rule in self.rules:
             if not rule.matches(ctx, call):
                 continue
             allowed = False
+            if rule.action == "ask" and mode == "auto":
+                # Auto-allowed, still audited: the event stream shows what
+                # would have asked, so full access is visible, not silent.
+                await self._emit(ctx, decision="allow", rule=rule.name,
+                                 tool=call.name, reason="auto mode")
+                continue
             if rule.action == "ask" and self.approval is not None:
                 allowed = self.approval(ctx, call, rule)
                 if inspect.isawaitable(allowed):

@@ -15,8 +15,14 @@ from __future__ import annotations
 
 import asyncio
 import glob as globlib
+import contextlib
+import os
+import signal
 import subprocess
+import threading
 from pathlib import Path
+
+from .durable import atomic_write_text
 
 # --- Tool schemas (the contract the model reasons over) --------------------
 
@@ -85,16 +91,170 @@ FILE_TOOLS = [BASH, READ_FILE, WRITE_FILE, EDIT_FILE, GLOB]
 READONLY_TOOLS = [BASH, READ_FILE, GLOB]
 
 OUTPUT_CAP = 50_000
+#: Characters `read_file` pulls into memory at once. The *output* is capped at
+#: OUTPUT_CAP, but `read_text()` loaded the whole file first, so a model that
+#: created a huge file (shell output is capped, but a file it writes is not) and
+#: then read it would OOM the process -- every tenant on it with it. Larger than
+#: OUTPUT_CAP so the output cap still governs a normal read; a file past this is
+#: truncated rather than loaded whole.
+READ_CHAR_CAP = 2_000_000
+
+#: Characters of command output `run_bash` reads into memory. `communicate()`
+#: read *all* of stdout before `capped` ever ran, so a high-output command
+#: (`yes`, `cat /dev/zero | tr`, `base64 /dev/urandom`) produced gigabytes within
+#: the timeout window and OOMed the host: 40 MB of output measured 120 MB
+#: resident. The timeout bounds time; this bounds memory (the round-140 "bounded
+#: output is not bounded work" hazard, for bash). Well above OUTPUT_CAP so a
+#: normal command's true end still survives `keep_tail`; past it the capture
+#: stops and the command is ended rather than buffered.
+MAX_BASH_CAPTURE = 5_000_000
+
+
+class _BoundedCapture:
+    """Read a stream up to a byte limit in a thread, ending the producer past it.
+
+    A thread, so the main flow can still enforce the wall-clock timeout with
+    `process.wait(timeout=...)`. Draining continuously keeps the producer from
+    blocking on a full pipe up to the limit; once the limit is hit the producer
+    is ended (its stdout then reaches EOF and this returns) instead of being
+    buffered without bound.
+    """
+
+    def __init__(self, limit: int, on_overflow) -> None:
+        self._limit = limit
+        self._on_overflow = on_overflow
+        self.text = ""
+        self.overflowed = False
+
+    def drain(self, stream) -> None:
+        parts: list[str] = []
+        size = 0
+        while size < self._limit:
+            chunk = stream.read(min(65536, self._limit - size))
+            if not chunk:
+                self.text = "".join(parts)
+                return
+            parts.append(chunk)
+            size += len(chunk)
+        self.overflowed = True
+        self.text = "".join(parts)
+        self._on_overflow()  # end the runaway; its stdout then hits EOF
+
+
+def _kill_group(process) -> None:
+    """End a command's whole process group, then reap it.
+
+    `SIGKILL` rather than `SIGTERM`: the group is being killed because it
+    ignored a deadline, and a second grace period for something already past one
+    is how orphans survive.
+    """
+
+    try:
+        group = os.getpgid(process.pid)
+    except (ProcessLookupError, OSError):
+        group = None
+    # Never signal our own group. If the child was not started in a new session
+    # it shares ours, and `killpg` would take down the harness -- discovered
+    # when the mutation that removes `start_new_session=True` hung the guard
+    # verifier instead of failing its test. A safety net that kills the process
+    # holding it is worse than none.
+    if group is not None and group != os.getpgid(0):
+        with contextlib.suppress(ProcessLookupError, PermissionError, OSError):
+            os.killpg(group, signal.SIGKILL)
+    with contextlib.suppress(Exception):
+        process.kill()
+    with contextlib.suppress(Exception):
+        process.wait(timeout=5)
+
+
+def capped(text: str, *, keep_tail: bool = False) -> str:
+    """Truncate to `OUTPUT_CAP`, saying so.
+
+    `run_bash` and `read_file` cut at exactly 50,000 characters and said
+    nothing, so the agent received output ending mid-stream with no way to know
+    more existed -- it reasons about "the end" of a file it never saw, or
+    concludes a search found no further matches. Two of the three sites had
+    already thought about truncation and then applied a blanket `[:OUTPUT_CAP]`
+    that silently truncated again.
+
+    `keep_tail` is for command output, where the important part is usually at
+    the end: a test summary, a stack trace, an exit status. Keeping only the
+    head throws away exactly the part that was worth running the command for.
+    """
+
+    if len(text) <= OUTPUT_CAP:
+        return text
+    note = f"\n[truncated: {len(text):,} characters capped at {OUTPUT_CAP:,}]"
+    if not keep_tail:
+        return text[: OUTPUT_CAP - len(note)] + note
+    head = OUTPUT_CAP // 2
+    tail = OUTPUT_CAP - head - len(note) - 64
+    omitted = len(text) - head - tail
+    return (
+        text[:head]
+        + f"\n[... {omitted:,} characters omitted from the middle ...]\n"
+        + text[-tail:]
+        + note
+    )
+#: Commands refused before the shell sees them.
+#:
+#: **This is a typo guard, not a security control, and it cannot become one.**
+#: It is substring matching on a command string, and a shell has unlimited ways
+#: to spell the same instruction -- `$(echo rm) -rf /`, `r\'\'m -rf /`,
+#: `find / -delete`, or any of them read from a file. Every one of those is
+#: below, pinned as *not blocked*, so nobody extends this list believing they
+#: are closing a hole.
+#:
+#: What it is worth: an agent that has decided to run `sudo` or `rm -rf /`
+#: usually got there by mistake, and stopping the literal spelling is cheap.
+#: What confines a shell is `SeatbeltSandbox` (or a container). The audit says
+#: so when `bash` is registered without one.
 DANGEROUS = ("rm -rf /", "sudo", "shutdown", "reboot", "> /dev/", ":(){", "mkfs", "dd if=")
+
+
+def looks_dangerous(command: str) -> bool:
+    """Match the blocklist against a whitespace-normalized command.
+
+    `rm  -rf  /` with a doubled space slipped through raw substring matching --
+    and a doubled space is a typo, which is the one thing this check is actually
+    for. Normalizing does not make it a security control; it makes it do the job
+    it does have.
+    """
+
+    normalized = " ".join(command.split())
+    return any(pattern in normalized for pattern in DANGEROUS)
 
 
 class Toolset:
     """The five base tools, sandboxed to one workspace directory."""
 
-    def __init__(self, workspace: Path, *, bash_timeout: int = 120) -> None:
+    def __init__(
+        self,
+        workspace: Path,
+        *,
+        bash_timeout: int = 120,
+        secrets=None,
+        sandbox=None,
+    ) -> None:
         self.workspace = workspace.resolve()
         self.workspace.mkdir(parents=True, exist_ok=True)
         self.bash_timeout = bash_timeout
+        from .sandbox import NullSandbox
+        from .secrets import NullSecretRegistry
+
+        self.secrets = secrets if secrets is not None else NullSecretRegistry()
+        # OS-level confinement for the shell. Default is host execution.
+        # Bind the sandbox to *this* workspace: a shared sandbox object whose
+        # writable root still points at a previous workspace denies every write.
+        base = sandbox if sandbox is not None else NullSandbox()
+        self.sandbox = base.for_workspace(self.workspace)
+        # Foreground shells currently executing, so a cancelled turn can end
+        # them. `run_bash` runs in worker threads; the lock keeps the set
+        # coherent if a misdeclared parallel-safe tool ever runs two at once.
+        import threading
+
+        self._live_lock = threading.Lock()
+        self._live: set = set()
 
     # -- path safety: nothing may escape the session's workspace --
     def safe_path(self, p: str) -> Path:
@@ -105,54 +265,158 @@ class Toolset:
 
     # -- blocking primitives (run via to_thread in `dispatch`) --
     def run_bash(self, command: str) -> str:
-        if any(d in command for d in DANGEROUS):
+        if looks_dangerous(command):
             return "Error: Dangerous command blocked"
+        # Narrow injection: the shell sees registered credentials only when the
+        # command names them, so an unrelated `printenv` has nothing to read.
+        env = self.secrets.scrub_env(os.environ)
+        env.update(self.secrets.env_for_command(command))
         try:
-            r = subprocess.run(
-                command, shell=True, cwd=self.workspace,
-                capture_output=True, text=True,
-                encoding="utf-8", errors="replace", timeout=self.bash_timeout,
+            # The sandbox owns argv construction, so the shell is invoked the
+            # same way whether or not confinement is active.
+            # In its own process group, so a timeout can end the *whole*
+            # command rather than only the shell that started it.
+            #
+            # `subprocess.run(timeout=...)` kills the direct child. A command
+            # that backgrounds work survives it: three spin loops started by one
+            # `run_bash` call were still burning CPU after the harness had
+            # reported `Error: Timeout (3s)` and the agent had moved on. Repeat
+            # that a few times and the host is unusable, with nothing in the
+            # transcript to explain why.
+            process = subprocess.Popen(
+                self.sandbox.argv(command), cwd=self.workspace,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env,
+                text=True, encoding="utf-8", errors="replace",
+                start_new_session=True,
             )
-            out = (r.stdout + r.stderr).strip()
-            return out[:OUTPUT_CAP] if out else "(no output)"
-        except subprocess.TimeoutExpired:
-            return f"Error: Timeout ({self.bash_timeout}s)"
+            with self._live_lock:
+                self._live.add(process)
+            # Drain stdout in a thread with a byte bound, so a high-output command
+            # cannot fill memory before `capped` runs. `communicate()` read all of
+            # stdout first; this holds at most MAX_BASH_CAPTURE while the timeout
+            # below still bounds the wall clock.
+            capture = _BoundedCapture(MAX_BASH_CAPTURE, lambda: _kill_group(process))
+            reader = threading.Thread(
+                target=capture.drain, args=(process.stdout,), daemon=True
+            )
+            reader.start()
+            # The reader ends at stdout EOF, which needs the command *and* any
+            # child holding stdout to exit. Bound the whole drain by the timeout,
+            # then end the group. The *second* join is bounded too: a child that
+            # keeps stdout open past the kill (or a kill that does not reach the
+            # group) must fail this command, not hang the harness -- an unbounded
+            # join here is the wait `communicate(timeout=...)` used to own.
+            reader.join(timeout=self.bash_timeout)
+            timed_out = reader.is_alive()
+            if timed_out:
+                _kill_group(process)
+            with contextlib.suppress(subprocess.TimeoutExpired):
+                process.wait(timeout=5)
+            reader.join(timeout=5)
+            with self._live_lock:
+                self._live.discard(process)
+            if timed_out:
+                return f"Error: Timeout ({self.bash_timeout}s)"
+            # Mask here too, not only at the agent boundary: narrow injection
+            # still hands a secret to a command that names it, and a direct
+            # Toolset caller never passes through `Agent._exec_tool`. Masking runs
+            # on the whole captured window before `capped` truncates it, so a
+            # secret is never split into a leaking fragment within the window.
+            out = self.secrets.mask(capture.text.strip())
+            if not out:
+                return "(no output)"
+            rendered = capped(out, keep_tail=True)
+            if capture.overflowed:
+                rendered += (
+                    f"\n[output exceeded {MAX_BASH_CAPTURE:,} bytes; capture "
+                    "stopped and the command was ended]"
+                )
+            return rendered
         except (FileNotFoundError, OSError) as e:
             return f"Error: {e}"
 
     def run_read(self, path: str, limit: int | None = None, offset: int = 0) -> str:
         try:
-            lines = self.safe_path(path).read_text().splitlines()
             offset = max(int(offset or 0), 0)
-            lines = lines[offset:]
+            # Bounded read: never load more than READ_CHAR_CAP into memory, so a
+            # pathologically large file cannot OOM the process. `offset` skips
+            # that many lines *from the file*, then the cap bounds what is read
+            # from there. The old read capped first and applied the line offset
+            # *within* that window, so any line past READ_CHAR_CAP was
+            # unreachable -- while the truncation notice told the model to seek
+            # it with `offset`. Now a larger offset genuinely reaches later lines.
+            with self.safe_path(path).open("r", encoding="utf-8", errors="replace") as handle:
+                hit_eof = False
+                for _ in range(offset):
+                    # Skip one line, reading in READ_CHAR_CAP-sized pieces so an
+                    # overlong line cannot pull more than the cap into memory --
+                    # readline(size) stops at a newline *or* `size` chars.
+                    while True:
+                        piece = handle.readline(READ_CHAR_CAP)
+                        if not piece:
+                            hit_eof = True
+                            break
+                        if piece.endswith("\n"):
+                            break
+                    if hit_eof:
+                        break
+                data = "" if hit_eof else handle.read(READ_CHAR_CAP + 1)
+            truncated_read = len(data) > READ_CHAR_CAP
+            lines = data[:READ_CHAR_CAP].splitlines()
             limit = max(int(limit), 0) if limit is not None else None
             if limit is not None and limit < len(lines):
-                lines = lines[:limit] + [f"... ({len(lines) - limit} more lines)"]
-            return "\n".join(lines)[:OUTPUT_CAP]
+                tail = ", read truncated" if truncated_read else ""
+                lines = lines[:limit] + [f"... ({len(lines) - limit} more lines{tail})"]
+            elif truncated_read:
+                lines.append(
+                    f"... (file exceeds {READ_CHAR_CAP:,} characters from this "
+                    "offset; read further with a larger `offset`)"
+                )
+            return capped("\n".join(lines))
         except Exception as e:
             return f"Error: {e}"
 
     def run_glob(self, pattern: str) -> str:
         try:
+            marker = "... (matches truncated)"
+            # Reserve room for the trailing notice so `capped` cannot trim it
+            # off the end -- the old body filled OUTPUT_CAP exactly, so a notice
+            # appended after it would have been the first thing cut.
+            budget = OUTPUT_CAP - len(marker) - 1
             matches = []
             total = 0
+            truncated = False
             for match in globlib.iglob(pattern, root_dir=self.workspace, recursive=True):
                 resolved = (self.workspace / match).resolve()
                 if resolved == self.workspace or resolved.is_relative_to(self.workspace):
+                    if total + len(match) + 1 > budget:
+                        truncated = True
+                        break
                     matches.append(match)
                     total += len(match) + 1
-                    if total >= OUTPUT_CAP:
-                        matches.append("... (matches truncated)")
-                        break
-            return "\n".join(sorted(set(matches)))[:OUTPUT_CAP] if matches else "(no matches)"
+            if not matches:
+                return "(no matches)"
+            lines = sorted(set(matches))
+            if truncated:
+                # Appended *after* the sort. Mixed into `matches` it sorted by
+                # its leading "." to the top of the list, so the notice read as
+                # if truncation happened before any match rather than after the
+                # last one shown -- it belongs at the end, as a trailing signal.
+                lines.append(marker)
+            return capped("\n".join(lines))
         except Exception as e:
             return f"Error: {e}"
 
     def run_write(self, path: str, content: str) -> str:
         try:
             fp = self.safe_path(path)
-            fp.parent.mkdir(parents=True, exist_ok=True)
-            fp.write_text(content)
+            # Atomic: write beside the target and rename over it, the same
+            # temp+fsync+rename the durable store uses everywhere else. A bare
+            # write_text truncates the target in place, so a crash mid-write
+            # leaves a half-written file, and a teammate sharing the workspace
+            # can read one -- the file is either fully old or fully new, never a
+            # torn mix, and a failed write leaves the original untouched.
+            atomic_write_text(fp, content)
             return f"Wrote {len(content)} bytes to {path}"
         except Exception as e:
             return f"Error: {e}"
@@ -160,15 +424,57 @@ class Toolset:
     def run_edit(self, path: str, old_text: str, new_text: str) -> str:
         try:
             fp = self.safe_path(path)
+            # Edit needs the whole file to replace within it, so `read_file`'s
+            # bounded read (round 140) cannot apply here -- reading a huge file
+            # whole would OOM the process, every tenant with it. Refuse instead:
+            # the same danger, the same agent reach (a file the agent grew), a
+            # different remedy because the operation cannot be truncated.
+            size = fp.stat().st_size
+            if size > READ_CHAR_CAP:
+                return (
+                    f"Error: {path} is {size:,} bytes; too large to edit in one "
+                    f"pass (limit {READ_CHAR_CAP:,}). Rewrite it with write_file."
+                )
             content = fp.read_text()
-            if old_text not in content:
+            occurrences = content.count(old_text)
+            if occurrences == 0:
                 return f"Error: Text not found in {path}"
-            fp.write_text(content.replace(old_text, new_text, 1))
+            if occurrences > 1:
+                # Replacing the first of several silently edits a location the
+                # model may not have meant, and reports success so it never
+                # learns. Claude Code's Edit and Aider both require the anchor to
+                # be unique for exactly this reason; refuse and say how to fix it.
+                return (
+                    f"Error: old_text matches {occurrences} places in {path}; the "
+                    "edit is ambiguous. Include enough surrounding context to "
+                    "identify exactly one occurrence."
+                )
+            atomic_write_text(fp, content.replace(old_text, new_text, 1))
             return f"Edited {path}"
         except Exception as e:
             return f"Error: {e}"
 
     # -- async dispatch: route + offload blocking work off the event loop --
+    def interrupt(self) -> int:
+        """End every foreground shell still running; the count killed.
+
+        Cancelling the turn only abandons `to_thread(run_bash, ...)` -- the
+        worker thread and its subprocess keep going until `bash_timeout`.
+        Measured: after `session.cancel()` a foreground `sleep` was still
+        alive a second later, with 119 seconds of billed CPU left in it.
+        OpenWorker's stop contract names both halves -- "interrupt the model
+        stream *and* the foreground shell" -- and round 94 already held the
+        background sibling to it; this is the same rule for the tool that
+        started the turn. Kills the whole process group: ending only the
+        shell would orphan whatever it had spawned.
+        """
+
+        with self._live_lock:
+            live = [p for p in self._live if p.poll() is None]
+        for process in live:
+            _kill_group(process)
+        return len(live)
+
     async def dispatch(self, name: str, args: dict) -> str:
         if name == "bash":
             return await asyncio.to_thread(self.run_bash, args["command"])

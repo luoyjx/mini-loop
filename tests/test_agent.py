@@ -8,9 +8,9 @@ import asyncio
 import time
 from pathlib import Path
 
-from mini_loop.agent import Agent, TodoManager, microcompact
+from mini_loop.agent import MAX_TODO_FIELD, Agent, TodoManager, microcompact
 from mini_loop.config import Settings
-from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool, _last_result_text
+from mini_loop.fake_llm import FakeAsyncAnthropic, system_text, text, tool, _last_result_text
 from mini_loop.manager import SessionManager
 from mini_loop.skills import SkillLoader
 from mini_loop.tools import Toolset
@@ -124,6 +124,31 @@ def test_todo_manager_validation_and_render():
             pass
 
 
+def test_todo_fields_are_size_bounded():
+    """The count is capped at 20, but the board renders into runtime_facts and
+    re-injects on every change -- so an uncapped content or activeForm floods the
+    context each edit. Both are truncated with a marker; the count bound was
+    there and the size bound was not."""
+    todo = TodoManager()
+    todo.update([{"content": "X" * 1_000_000, "status": "pending",
+                  "activeForm": "Y" * 1_000_000}])
+    item = todo.items[0]
+    assert len(item["content"]) <= MAX_TODO_FIELD + 16
+    assert item["content"].endswith("[truncated]")
+    assert len(item["activeForm"]) <= MAX_TODO_FIELD + 16
+    assert item["activeForm"].endswith("[truncated]")
+
+    # The whole board is bounded even at the maximum count.
+    todo.update([{"content": "Z" * 1_000_000, "status": "pending", "activeForm": "w"}
+                 for _ in range(20)])
+    assert len(todo.render()) < 20 * (MAX_TODO_FIELD + 100) + 500
+
+    # Not a wall: an ordinary todo is stored verbatim.
+    todo.update([{"content": "write the report", "status": "pending",
+                  "activeForm": "Writing the report"}])
+    assert todo.items[0]["content"] == "write the report"
+
+
 # --- compaction ------------------------------------------------------------
 
 def test_microcompact_keeps_last_three():
@@ -159,7 +184,7 @@ def test_subagent_delegation(tmp_path):
     def responder(kwargs):
         tools, msgs = kwargs.get("tools"), kwargs["messages"]
         last = msgs[-1]
-        is_sub = "subagent" in (kwargs.get("system") or "")
+        is_sub = "subagent" in system_text(kwargs)
         if not tools:
             return [text("[summary]")], "end_turn"
         if isinstance(last.get("content"), str):

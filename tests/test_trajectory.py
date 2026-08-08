@@ -129,7 +129,7 @@ def test_trajectory_keeps_full_details_while_live_events_stay_bounded(tmp_path):
 
     @registry.add("long_observation", "Return a long observation.", {
         "type": "object", "properties": {},
-    })
+    }, risk="read")
     async def long_observation(_ctx):
         return full_output
 
@@ -169,6 +169,82 @@ def test_trajectory_keeps_full_details_while_live_events_stay_bounded(tmp_path):
         for message in second_input if isinstance(message.get("content"), list)
         for part in message["content"]
     )
+
+
+def test_a_listing_does_not_read_the_event_bodies_it_discards(tmp_path):
+    """`summary()` needs the header and the terminal metrics, never the event
+    stream -- yet it built the full `get()` representation (every event body in
+    a list) and threw the events away. So `list()`, and `count()` on every
+    session construction, cost O(recorded content), not O(trajectory count):
+    the server reads *every* trajectory on the box to build the listing before
+    filtering by caller, so one tenant's oversized recording loaded its whole
+    body into memory to summarise -- amplifying one caller's data into
+    everyone's listing. The summary now streams: one record resident at a time.
+    """
+    import tracemalloc
+
+    store = TrajectoryStore(tmp_path / "trajectories")
+    trajectory_id = store.start(session_id="s", run_index=1, input_text="hi")
+    big = "X" * 20_000
+    for _ in range(1500):  # ~30 MB of event bodies a summary must not load
+        store.append(trajectory_id, {"type": "tool_result", "content": big})
+    store.finish(trajectory_id, status="completed", output="done", duration_ms=1.0)
+    body_bytes = (tmp_path / "trajectories" / f"{trajectory_id}.jsonl").stat().st_size
+
+    tracemalloc.start()
+    summaries = store.list()
+    _current, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+
+    assert peak < body_bytes // 10, (
+        f"list() held {peak:,} bytes to summarise a {body_bytes:,}-byte body"
+    )
+    # The summary is still correct: metrics come from the stored end record.
+    assert summaries[0]["metrics"]["event_count"] == 1500
+    assert summaries[0]["status"] == "completed"
+
+
+def test_the_streamed_summary_matches_the_full_representation(tmp_path):
+    """Streaming must not change *what* a summary says -- only how it is read.
+
+    Pins the equivalence for both a finished trajectory (metrics from the end
+    record) and a still-open one (metrics counted while streaming), so a future
+    change to either path cannot drift the two apart unnoticed.
+    """
+    store = TrajectoryStore(tmp_path / "trajectories")
+
+    done = store.start(session_id="a", run_index=1, input_text="q" * 300,
+                       metadata={"model": "m1"})
+    for index in range(10):
+        store.append(done, {"type": "tool_use"})
+        store.append(done, {"type": "tool_result", "error": bool(index % 2)})
+        store.append(done, {"type": "model_start"})
+        store.append(done, {"type": "error"})
+    store.finish(done, status="completed", output="ok", duration_ms=9.0)
+
+    running = store.start(session_id="b", run_index=1, input_text="short")
+    store.append(running, {"type": "tool_use"})
+    store.append(running, {"type": "model_start"})
+
+    def from_full(trajectory_id):
+        full = store.get(trajectory_id)
+        preview = full.get("input")
+        if isinstance(preview, str) and len(preview) > 160:
+            preview = preview[:159] + "…"
+        row = {
+            key: full[key]
+            for key in (
+                "id", "trajectory_id", "trace_id", "group_id", "session", "owner",
+                "run_index", "status", "started_at", "ended_at", "duration_ms",
+                "metrics", "partial",
+            )
+        }
+        row["input_preview"] = preview
+        row["model"] = (full.get("metadata") or {}).get("model")
+        return row
+
+    for trajectory_id in (done, running):
+        assert store.summary(trajectory_id) == from_full(trajectory_id)
 
 
 def test_unexpected_session_failure_closes_the_trajectory(tmp_path):

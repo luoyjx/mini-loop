@@ -27,20 +27,38 @@ import asyncio
 import hashlib
 import time
 import uuid
+from collections import deque
 from collections.abc import Awaitable, Callable
 from contextvars import ContextVar
 from pathlib import Path
 
+from .actions import TERMINAL_STATUSES as _REPLAYABLE_STATUSES
 from .actions import InMemoryActionJournal
 from .builtins import default_registry, explore_registry, worker_registry
+from .blocks import block_field, block_text
+from .caching import CachePolicy, DefaultCachePolicy, runtime_facts_injector
 from .compaction import Compactor, DefaultCompactor, estimate_tokens, microcompact  # re-exported
+from .metering import TokenMeter
+from .transport import DirectTransport
 from .config import Settings
+from .actions import RECONCILED_RESULT, UNKNOWN_RESULT
+from .harness import Harness
 from .permissions import default_hooks
 from .prompts import default_system_builder
 from .recovery import DefaultRecovery
 from .registry import Hooks, ToolCall, ToolContext, ToolRegistry
 from .run_context import RunContext
+from .sandbox import NullSandbox
+from .secrets import NullSecretRegistry
 from .skills import SkillLoader
+from .stuck import (
+    STUCK_WINDOW,
+    DefaultStuckDetector,
+    StuckDetector,
+    StuckSignal,
+    ToolStep,
+    step_hash,
+)
 from .tools import Toolset
 
 # An injector is `async (agent) -> list[message]` run at the top of each loop
@@ -52,6 +70,32 @@ __all__ = ["Agent", "TodoManager", "microcompact", "estimate_tokens"]
 
 EmitFn = Callable[[dict], Awaitable[None]]
 DISPLAY_CAP = 2000   # how much of a tool result to surface in an event
+
+#: Stop reasons this harness knows how to act on. The loop decides by *content*
+#: -- run the tool_use blocks, stop when there are none -- which is right when a
+#: provider disagrees with itself about `end_turn` versus `tool_use`. It is
+#: wrong for reasons that say something the content cannot: a paused turn and a
+#: finished one both arrive with no tool blocks. Anything not named here is
+#: still returned to the caller, but is reported rather than passing as an
+#: ordinary completion.
+KNOWN_STOP_REASONS = frozenset({
+    "end_turn", "tool_use", "max_tokens", "stop_sequence", "pause_turn",
+    "refusal",
+})
+
+#: Reasons that mean "send this back to me", not "I am done".
+RESUMABLE_STOP_REASONS = frozenset({"pause_turn"})
+
+#: A provider that keeps pausing must not loop forever. Each resumption is a
+#: real request, so this is a spend limit as much as a liveness one.
+MAX_RESUMPTIONS = 8
+
+#: Returned when the provider refuses and sends no content. Attributed to the
+#: harness rather than phrased as the model speaking, because the model said
+#: nothing -- that is what a refusal is.
+REFUSAL_NOTICE = (
+    "[the model declined to answer this request and returned no content]"
+)
 _CURRENT_RUN_CONTEXT: ContextVar[RunContext | None] = ContextVar(
     "mini_loop_current_run_context",
     default=None,
@@ -90,6 +134,101 @@ def _usage_payload(response) -> dict | None:
     return {"value": str(usage)}
 
 
+def _injected_messages(extra, source) -> list:
+    """Check an injector's return before it reaches the transcript.
+
+    `messages.extend(...)` on a *string* appends its characters. An injector
+    that returns `"note"` turns the transcript into four one-character messages,
+    the conversation is destroyed in place, and the first thing anyone notices
+    is an `AttributeError: 'str' object has no attribute 'get'` raised inside
+    the compactor -- a module with nothing to do with injectors.
+
+    Injectors are an extension point, so the wrong shape is a mistake someone
+    outside this file will make. The seam checks its own contract and names who
+    broke it. Loud, because the alternative is corrupt shared state: this is a
+    bug in an extension, not a runtime condition to degrade around.
+    """
+
+    name = getattr(source, "__name__", None) or type(source).__name__
+    if isinstance(extra, (str, bytes)) or not isinstance(extra, (list, tuple)):
+        raise TypeError(
+            f"injector {name!r} returned {type(extra).__name__}; expected a list "
+            "of message dicts (or None). A string would be appended one "
+            "character per message."
+        )
+    for index, message in enumerate(extra):
+        if not (isinstance(message, dict) and message.get("role")):
+            raise TypeError(
+                f"injector {name!r} returned a non-message at index {index}: "
+                f"{message!r:.80}. Each entry needs a 'role'."
+            )
+    return list(extra)
+
+
+def unanswered_tool_uses(messages: list) -> list[str]:
+    """Tool-use ids at the tail that no tool_result answers.
+
+    A process killed between dispatching a tool and recording its result
+    leaves exactly this shape. The provider rejects it outright --
+    "`tool_use` ids were found without `tool_result` blocks immediately
+    after" -- so a session restored in this state 400s on every subsequent
+    turn.
+    """
+
+    if not messages:
+        return []
+    last = messages[-1]
+    if not isinstance(last, dict) or last.get("role") != "assistant":
+        return []
+    content = last.get("content")
+    if not isinstance(content, list):
+        return []
+    # Both shapes: a restored transcript holds dicts, a live one holds
+    # provider block objects. Written for the first, this method silently
+    # found nothing on the second -- so cancelling a live turn repaired
+    # nothing, which only a real provider would have complained about.
+    return [
+        block_field(block, "id")
+        for block in content
+        if block_field(block, "type") == "tool_use" and block_field(block, "id")
+    ]
+
+def _close_unanswered_tools(self) -> list[str]:
+    """Answer dangling tool calls with an explicit *unknown* outcome.
+
+    The tool was dispatched; whether it completed is genuinely unknown, and
+    reporting it as an error would invite the model to retry a side effect
+    that may already have happened. Saying so plainly is what makes the
+    difference: given this result a real model verifies before acting.
+    """
+
+    agent = self.agent
+    if agent is None:
+        return []
+    pending = self._unanswered_tool_uses(agent.messages)
+    if not pending:
+        return []
+    agent.messages.append({
+        "role": "user",
+        "content": [
+            {
+                "type": "tool_result",
+                "tool_use_id": tool_use_id,
+                "content": UNKNOWN_RESULT,
+            }
+            for tool_use_id in pending
+        ],
+    })
+    return list(pending)
+
+
+
+def _block(block, field: str, default=None):
+    """Shape-agnostic block read. See `blocks.py` for why this exists."""
+
+    return block_field(block, field, default)
+
+
 def _content_payload(blocks: list) -> list:
     payload = []
     for block in blocks:
@@ -107,7 +246,23 @@ def _content_payload(blocks: list) -> list:
                 "input": getattr(block, "input", {}),
             })
         else:
-            payload.append({"type": getattr(block, "type", "unknown")})
+            # Keep whatever the block carries. This branch used to reduce an
+            # unrecognized block to its type alone, which is silently lossy in
+            # the worst way for `thinking`: the signature is dropped, and the
+            # next turn sends back a thinking block the API rejects. The list of
+            # types this does not name explicitly only grows -- redacted
+            # thinking, server tool use, search results -- so the default has to
+            # be "preserve", not "summarize".
+            #
+            # Real SDK blocks never reach here (they have `model_dump`); a
+            # provider adapter that yields plain objects does.
+            fields = {
+                key: value
+                for key, value in (vars(block) if hasattr(block, "__dict__") else {}).items()
+                if not key.startswith("_")
+            }
+            fields["type"] = getattr(block, "type", "unknown")
+            payload.append(fields)
     return payload
 
 
@@ -126,6 +281,14 @@ def _messages_payload(messages: list) -> list:
 
 # --- s05: TodoWrite ---------------------------------------------------------
 
+#: Per-field cap on a todo's text. The count is capped at 20 below, but the
+#: board renders into `runtime_facts` and re-injects on every change, so an
+#: uncapped `content` or `activeForm` floods the context on each edit -- the
+#: count bound applied and the size bound not, the shape round 50/132 kept
+#: finding one sink over.
+MAX_TODO_FIELD = 2_000
+
+
 class TodoManager:
     def __init__(self) -> None:
         self.items: list[dict] = []
@@ -142,6 +305,10 @@ class TodoManager:
                 raise ValueError(f"Item {i}: invalid status '{status}'")
             if not active:
                 raise ValueError(f"Item {i}: activeForm required")
+            if len(content) > MAX_TODO_FIELD:
+                content = content[:MAX_TODO_FIELD] + " [truncated]"
+            if len(active) > MAX_TODO_FIELD:
+                active = active[:MAX_TODO_FIELD] + " [truncated]"
             if status == "in_progress":
                 in_progress += 1
             validated.append({"content": content, "status": status, "activeForm": active})
@@ -196,7 +363,13 @@ class Agent:
         system: str | None = None,
         system_builder: Callable[["Agent"], str] | None = None,
         compactor: Compactor | None = None,
+        transport=None,
         recovery=None,
+        stuck_detector: StuckDetector | None = None,
+        cache_policy: CachePolicy | None = None,
+        secrets=None,
+        sandbox=None,
+        harness: Harness | None = None,
         injectors: list[Injector] | None = None,
         emit: EmitFn | None = None,
         llm_semaphore=None,
@@ -217,17 +390,56 @@ class Agent:
             if tool_semaphore is not None
             else asyncio.Semaphore(settings.max_concurrent_tools)
         )
+        # One value carries the policy set; explicit kwargs still win. Children
+        # derive from `self.harness`, so a seam added to Harness reaches every
+        # construction site without editing any of them.
+        self.harness = harness or Harness()
+        tools = self.harness.resolve("tools", tools)
+        hooks = self.harness.resolve("hooks", hooks)
+        skills = self.harness.resolve("skills", skills)
+        system_builder = self.harness.resolve("system_builder", system_builder)
+        compactor = self.harness.resolve("compactor", compactor)
+        recovery = self.harness.resolve("recovery", recovery)
+        stuck_detector = self.harness.resolve("stuck_detector", stuck_detector)
+        cache_policy = self.harness.resolve("cache_policy", cache_policy)
+        secrets = self.harness.resolve("secrets", secrets)
+        sandbox = self.harness.resolve("sandbox", sandbox)
+        if injectors is None and self.harness.injectors:
+            injectors = list(self.harness.injectors)
+
         self.label = label
         self.depth = depth
         self.max_rounds = max_rounds if max_rounds is not None else settings.max_turns
 
-        self.toolset = Toolset(self.workspace, bash_timeout=settings.bash_timeout)
+        # Assigned before the Toolset that consumes it.
+        self.secrets = secrets if secrets is not None else NullSecretRegistry()
+        self.sandbox = sandbox if sandbox is not None else NullSandbox()
+        self.toolset = Toolset(
+            self.workspace,
+            bash_timeout=settings.bash_timeout,
+            secrets=self.secrets,
+            sandbox=self.sandbox,
+        )
         self.todo = TodoManager()
         self.tools = tools if tools is not None else default_registry()
         self.hooks = hooks if hooks is not None else default_hooks()
         self.compactor = compactor or DefaultCompactor()
+        # Fed from every response's usage; read by the compactor. Not a seam:
+        # it is a measurement, not a policy -- what to do about a full context
+        # is the compactor's decision and that already swaps.
+        self.token_meter = TokenMeter()
+        self.transport = self.harness.resolve("transport", transport) or DirectTransport()
+        #: Text a streaming transport has emitted for the current generation.
+        #: Empty for `DirectTransport`, which shows nothing before it finishes.
+        self.streamed_text = ""
         self.recovery = recovery or DefaultRecovery()
+        self.stuck_detector = stuck_detector or DefaultStuckDetector()
+        self.cache_policy = cache_policy or DefaultCachePolicy()
         self.injectors: list[Injector] = list(injectors or [])
+        # Volatile runtime state rides the message stream instead of the system
+        # prompt, so the cached prefix survives a changing todo board.
+        if runtime_facts_injector not in self.injectors:
+            self.injectors.append(runtime_facts_injector)
         self.state: dict = state if state is not None else {}
 
         # System prompt: explicit string wins, else build from the agent.
@@ -240,6 +452,30 @@ class Agent:
         self._last_model_span_id: str | None = None
         self._rounds_without_todo = 0
         self._pending_compact = False
+
+        # Loop-detection ledger. Bounded, ordered by execution, and reset per
+        # user turn -- like the upstream detector, repetition is only
+        # interesting relative to the current intent.
+        self._recent_steps: deque[ToolStep] = deque(maxlen=STUCK_WINDOW)
+        self._rounds_without_tools = 0
+        self._resumptions = 0
+        self._stuck_nudges = 0
+        #: One turn at a time per agent. See `run`.
+        self._turn_lock = asyncio.Lock()
+        #: Tool uses closed as unknown since the last report. See `run`.
+        self._repaired_tool_uses: list[str] = []
+
+    @property
+    def recent_steps(self) -> tuple[ToolStep, ...]:
+        """Recently executed tool calls, oldest first, for loop detection."""
+
+        return tuple(self._recent_steps)
+
+    @property
+    def rounds_without_tools(self) -> int:
+        """Consecutive model turns that emitted no tool call."""
+
+        return self._rounds_without_tools
 
     @property
     def system(self) -> str:
@@ -265,11 +501,25 @@ class Agent:
 
     def enter_workspace(self, workspace: Path) -> None:
         """Switch this agent's file tools to an already-provisioned workspace."""
-        self.toolset = Toolset(Path(workspace), bash_timeout=self.settings.bash_timeout)
+        self.toolset = Toolset(
+            Path(workspace),
+            bash_timeout=self.settings.bash_timeout,
+            secrets=self.secrets,
+            sandbox=self.sandbox,
+        )
         self.workspace = self.toolset.workspace
         background = self.state.get("background")
         if background is not None:
             background.workspace = self.workspace
+            # Re-confine, not just re-point. The background sandbox was bound to
+            # the old workspace, so after a worktree switch a background command
+            # ran in the new workspace but was confined to the old one -- unable
+            # to write its own worktree, yet still able to write the one it left,
+            # defeating the isolation entering a worktree exists to provide.
+            # `run_bash` is re-bound by the new Toolset above; its background
+            # sibling has to move with it -- the same run_bash/background_run
+            # parity `test_background_parity.py` exists to keep.
+            background.sandbox = self.sandbox.for_workspace(self.workspace)
 
     async def _send(self, event_type: str, **fields) -> None:
         if self.emit is None:
@@ -285,6 +535,16 @@ class Agent:
         max_tokens=None,
         purpose: str = "agent_turn",
     ):
+        # Recorded before annotation: the policy hands back a copy, so this is
+        # the only point where "is this request the live conversation?" is knowable.
+        live_history = self.messages if messages is self.messages else None
+        # Breakpoints are placed on per-request copies; `self.messages` stays
+        # free of provider-specific keys so history remains portable.
+        system, tools, messages = self.cache_policy.annotate(
+            system=system,
+            tools=tools,
+            messages=messages,
+        )
         kwargs: dict = {
             "model": self.state.get("recovery_model", self.settings.model),
             "messages": messages,
@@ -297,7 +557,7 @@ class Agent:
 
         async def call(kw: dict):
             async with self.semaphore:   # backoff sleeps happen OUTSIDE the slot
-                return await self.client.messages.create(**kw)
+                return await self.transport.send(self, kw)
 
         span_id = f"model_{uuid.uuid4().hex[:16]}"
         self._last_model_span_id = span_id
@@ -321,7 +581,9 @@ class Agent:
             },
         )
         try:
-            response = await self.recovery.run(self, kwargs, call)
+            response = await self.recovery.run(
+                self, kwargs, call, live_history=live_history
+            )
         except asyncio.CancelledError:
             await self._send(
                 "model_end",
@@ -349,6 +611,10 @@ class Agent:
             duration_ms=round((time.monotonic() - started) * 1000, 3),
             stop_reason=getattr(response, "stop_reason", None),
             usage=_usage_payload(response),
+            prompt_tokens=self.token_meter.observe(
+                getattr(response, "usage", None), messages
+            ),
+            token_meter=self.token_meter.snapshot(),
             _trajectory_fields={
                 "model_output": _content_payload(response.content),
             },
@@ -367,8 +633,108 @@ class Agent:
         user_text: str,
         run_context: RunContext | None = None,
     ) -> str:
+        """Run one user turn to completion and return the final text.
+
+        Turns on one agent are serialized. `self.messages` is a single mutable
+        transcript, and two `run()` calls interleaving their appends produce a
+        shape the provider refuses -- a `tool_use` block with somebody else's
+        user message where its `tool_result` belongs. Measured on four
+        concurrent calls to one session: five provider requests, four rejected
+        with `InvalidTranscript`, all four callers handed the same error, and
+        the transcript left permanently malformed.
+
+        A server gets this from an ordinary double-submit or a reconnect, so it
+        is not an exotic input. Queueing rather than refusing, because the
+        second request is almost always something the user meant to ask; the
+        wait is reported so that a caller blocked behind a long turn is not
+        left guessing.
+        """
+
+        if self._turn_lock.locked():
+            await self._send("turn_queued")
+        async with self._turn_lock:
+            try:
+                return await self._run_one_turn(user_text, run_context)
+            except asyncio.CancelledError:
+                # A cancel between dispatching a tool and recording its result
+                # leaves a `tool_use` the provider refuses to see unanswered,
+                # and the session carries that shape forward -- every later turn
+                # returns `[Error] InvalidTranscript`. `Session.cancel` already
+                # repaired this, and so did restore, but a cancellation arriving
+                # from *outside* -- an HTTP client disconnecting, a `wait_for`
+                # timeout -- reached neither. The invariant belongs to whoever
+                # owns the transcript, which is this object.
+                self.close_unanswered_tools()
+                # Cancelling the await abandoned the worker thread, not the
+                # shell inside it: without this the command burns on until
+                # bash_timeout. Both halves of stopping a turn -- the model
+                # stream and the foreground shell -- belong to the same event.
+                self.toolset.interrupt()
+                raise
+
+    def close_unanswered_tools(self, overrides=None) -> list[str]:
+        """Answer dangling tool calls with an explicit *unknown* outcome.
+
+        The tool was dispatched; whether it completed is genuinely unknown, and
+        reporting it as an error would invite the model to retry a side effect
+        that may already have happened. Saying so plainly is what makes the
+        difference: given this result a real model verifies before acting.
+
+        `overrides` maps tool_use_id -> result text for the calls where the
+        caller knows better than "unknown" -- restore uses it to answer a call
+        that was parked on an approval as *not run* (safe to retry), which is
+        the opposite advice from unknown (do not retry).
+
+        Idempotent, so the session-level repair that already ran on its own
+        cancel path finds nothing left to do.
+        """
+
+        pending = unanswered_tool_uses(self.messages)
+        if not pending:
+            return []
+        # Held for whoever reports the cancellation. Moving the repair earlier
+        # meant the session's own call found nothing left to do and its
+        # `cancelled` event started saying no tools were left unknown -- the
+        # repair kept working and the report of it stopped.
+        self._repaired_tool_uses.extend(pending)
+        self.messages.append({
+            "role": "user",
+            "content": [
+                {
+                    "type": "tool_result",
+                    "tool_use_id": tool_use_id,
+                    "content": (overrides or {}).get(tool_use_id, UNKNOWN_RESULT),
+                }
+                for tool_use_id in pending
+            ],
+        })
+        return list(pending)
+
+    def take_repaired_tool_uses(self) -> list[str]:
+        """Tool uses closed as unknown since the last call, and clear them."""
+
+        taken, self._repaired_tool_uses = list(self._repaired_tool_uses), []
+        return taken
+
+    async def _run_one_turn(
+        self,
+        user_text: str,
+        run_context: RunContext | None = None,
+    ) -> str:
         resolved_context = run_context or RunContext.default()
         token = _CURRENT_RUN_CONTEXT.set(resolved_context)
+        # A new user turn is a new intent: repetition before it is not evidence
+        # that the model is stuck on *this* request.
+        self._recent_steps.clear()
+        self._rounds_without_tools = 0
+        self._stuck_nudges = 0
+        # Per turn, like the two above and for the same reason. Introduced in
+        # round 84 as a plain instance counter, which quietly made it a
+        # *session lifetime* budget: after eight paused turns spread over an
+        # afternoon, every later pause was returned to the caller as a finished
+        # answer -- the exact bug the counter was added to prevent, arriving
+        # only in the long sessions nobody reproduces.
+        self._resumptions = 0
         try:
             user_text = await self.hooks.user_prompt(self, user_text)
             # s09: index + selected bodies are loaded before the user turn.
@@ -391,7 +757,7 @@ class Agent:
             for inject in self.injectors:
                 extra = await inject(self)
                 if extra:
-                    self.messages.extend(extra)
+                    self.messages.extend(_injected_messages(extra, inject))
 
             # Every new notification goes through the same context-budget
             # pipeline before the model sees it.
@@ -413,9 +779,21 @@ class Agent:
                 })
                 await self._send("error", error=detail)
                 return
-            self.messages.append({"role": "assistant", "content": response.content})
+            # Normalized on the way in, not at each reader. Provider block
+            # objects are not ordinary data structures, and four separate
+            # traversals -- the store's serializer, the secret masker, the
+            # trajectory writer, the dangling-tool-call scan -- were each
+            # written for dicts and silently walked past them. Converting once,
+            # here, removes the class rather than the instance.
+            #
+            # Verified against a provider that validates the round-trip: the
+            # reasoner returns `thinking` blocks, requires them back, and
+            # accepts the dict form with its signature intact.
+            self.messages.append(
+                {"role": "assistant", "content": _content_payload(response.content)}
+            )
 
-            text = "".join(getattr(b, "text", "") for b in response.content if getattr(b, "type", "") == "text")
+            text = block_text(response.content)
             if text:
                 self.last_text = text
                 await self._send("assistant_text", text=text)
@@ -425,11 +803,60 @@ class Agent:
             # blocks, and stop when none are present.
             tool_blocks = [
                 block for block in response.content
-                if getattr(block, "type", "") == "tool_use"
+                if _block(block, "type", "") == "tool_use"
             ]
+
+            # ...but "no tool blocks" is not the same claim as "the turn is
+            # over", and treating them as one made every stop reason outside an
+            # implicit allowlist mean "done" silently. `pause_turn` says the
+            # opposite -- the model was interrupted and is asking to be sent
+            # back -- and it arrives with no tool blocks, so a paused turn was
+            # returned to the caller as a finished answer.
+            reason = getattr(response, "stop_reason", None)
+            if not tool_blocks and reason in RESUMABLE_STOP_REASONS:
+                self._resumptions += 1
+                if self._resumptions <= MAX_RESUMPTIONS:
+                    await self._send("turn_paused", stop_reason=reason,
+                                     resumption=self._resumptions)
+                    # The protocol resumption: hand the partial turn straight
+                    # back. No user message -- inventing one would put words in
+                    # the caller's mouth and change what the model continues.
+                    continue
+                await self._send(
+                    "provider_stop_unhandled", stop_reason=reason,
+                    detail=f"still paused after {MAX_RESUMPTIONS} resumptions",
+                )
+
+            if not tool_blocks and reason == "refusal":
+                # A refusal arrives with no content by design, so the caller got
+                # `""` -- indistinguishable from the model having nothing to say
+                # or from the harness breaking. Naming it in the set above was
+                # not enough: an entry nothing acts on is a vacuous entry.
+                await self._send("provider_refusal", stop_reason=reason)
+                if not self.last_text:
+                    # Attributed to the harness, not spoken as the model. The
+                    # alternative is returning empty and letting the caller
+                    # invent an explanation.
+                    self.last_text = REFUSAL_NOTICE
+
+            if not tool_blocks and reason is not None and reason not in KNOWN_STOP_REASONS:
+                # Not fatal: a new reason usually still carries a usable answer,
+                # and refusing to return it would be worse than returning it.
+                # But it must not look like an ordinary completion.
+                await self._send("provider_stop_unhandled", stop_reason=reason,
+                                 detail="unrecognized stop reason, treated as end of turn")
+
             if not tool_blocks:
+                self._rounds_without_tools += 1
                 continuation = await self.hooks.stop(self, self.messages, self.last_text)
                 if continuation is not None:
+                    signal = self.stuck_detector.inspect(self)
+                    if signal is not None:
+                        if not await self._nudge_or_halt(signal):
+                            return
+                        # A stop hook is resuming the model; the correction has
+                        # to ride on that continuation or it never lands.
+                        continuation = f"{signal.reminder()}\n\n{continuation}"
                     self.messages.append({"role": "user", "content": continuation})
                     continue
                 from .memory import memory_on_stop
@@ -437,7 +864,8 @@ class Agent:
                 await memory_on_stop(self)
                 return
 
-            used_todo = any(block.name == "TodoWrite" for block in tool_blocks)
+            self._rounds_without_tools = 0
+            used_todo = any(_block(b, "name") == "TodoWrite" for b in tool_blocks)
             self._pending_compact = False
             results = await self._exec_tool_batch(
                 tool_blocks,
@@ -451,6 +879,17 @@ class Agent:
                 results.append({"type": "text", "text": "<reminder>Update your todos.</reminder>"})
                 self._rounds_without_todo = 0
 
+            # Loop detection rides the same seam as the todo nag: results are
+            # still mutable, so a nudge stays inside the tool_result block the
+            # provider protocol requires.
+            signal = self.stuck_detector.inspect(self)
+            if signal is not None:
+                if await self._nudge_or_halt(signal):
+                    results.append({"type": "text", "text": signal.reminder()})
+                else:
+                    self.messages.append({"role": "user", "content": results})
+                    return
+
             self.messages.append({"role": "user", "content": results})
 
             if self._pending_compact:
@@ -460,6 +899,34 @@ class Agent:
 
         await self._send("error", error=f"Hit max_rounds ({self.max_rounds}) without finishing")
         self.last_text = self.last_text or f"[stopped after {self.max_rounds} rounds]"
+
+    async def _nudge_or_halt(self, signal: StuckSignal) -> bool:
+        """Report a stuck pattern. Return True to nudge, False to halt.
+
+        The nudge budget is spent per user turn, so a model that ignores the
+        correction cannot keep trading rounds for the same wall.
+        """
+
+        budget = int(getattr(self.stuck_detector, "max_nudges", 0))
+        halted = self._stuck_nudges >= budget
+        await self._send(
+            "stuck",
+            pattern=signal.pattern,
+            detail=signal.detail,
+            tool=signal.tool_name,
+            halted=halted,
+            nudges_used=self._stuck_nudges,
+        )
+        if halted:
+            self.last_text = self.last_text or f"[stopped: {signal.detail}]"
+            return False
+        self._stuck_nudges += 1
+        # The pattern has been answered. Drop the evidence so the very next
+        # round does not re-fire on the same history and spend the budget
+        # without the model ever getting a chance to act on the correction.
+        self._recent_steps.clear()
+        self._rounds_without_tools = 0
+        return True
 
     async def _exec_tool_batch(
         self,
@@ -475,11 +942,17 @@ class Agent:
         ordering barrier, so reads never move across a write or unknown call.
         """
         calls = [
-            ToolCall(block.name, dict(block.input), block.id)
+            ToolCall(
+                _block(block, "name"),
+                dict(_block(block, "input") or {}),
+                _block(block, "id"),
+            )
             for block in blocks
         ]
         results: list[dict] = []
         parallel_group: list[ToolCall] = []
+        # Batch-local, so nothing accumulates on the agent between batches.
+        ledger: dict[int, ToolStep] = {}
 
         async def result_for(call: ToolCall, *, limited: bool) -> dict:
             if limited:
@@ -488,12 +961,14 @@ class Agent:
                         call,
                         parent_span_id=parent_span_id,
                         run_context=run_context,
+                        ledger=ledger,
                     )
             else:
                 output = await self._exec_tool(
                     call,
                     parent_span_id=parent_span_id,
                     run_context=run_context,
+                    ledger=ledger,
                 )
             return {
                 "type": "tool_result",
@@ -523,6 +998,13 @@ class Agent:
             results.append(await result_for(call, limited=False))
 
         await flush_parallel_group()
+        # Parallel-safe calls complete out of order, so the ledger is drained in
+        # `calls` order rather than completion order. Loop detection compares
+        # sequences; an unstable order would make it non-deterministic.
+        for call in calls:
+            step = ledger.get(id(call))
+            if step is not None:
+                self._recent_steps.append(step)
         return results
 
     # -- one tool call: emit, pre-hooks, dispatch via registry, post-hooks --
@@ -532,6 +1014,7 @@ class Agent:
         *,
         parent_span_id: str | None = None,
         run_context: RunContext | None = None,
+        ledger: dict | None = None,
     ) -> str:
         resolved_context = (
             run_context or self.current_run_context or RunContext.default()
@@ -555,7 +1038,9 @@ class Agent:
         await self._send(
             "tool_use",
             name=call.name,
-            input=call.input,
+            # The *recorded* arguments, not the executed ones: `call.input`
+            # still carries the real value into the tool.
+            input=self.secrets.mask_payload(call.input),
             id=call.id,
             span_id=span_id,
             parent_span_id=parent_span_id,
@@ -566,14 +1051,16 @@ class Agent:
         failed = False
         journal: InMemoryActionJournal | None = self.state.get("action_journal")
         journal_started = False
+        replayed_action = False
         try:
             decision = await self.hooks.before_tool(ctx, call)
             if decision is not None:
                 out = str(decision)
                 denied = True
             else:
+                replayed = None
                 if journal is not None:
-                    journal.begin(
+                    prior = journal.begin(
                         action_id=action_id,
                         session_id=session_id,
                         message_id=resolved_context.message_id,
@@ -581,18 +1068,65 @@ class Agent:
                         tool_name=call.name,
                         input_value=call.input,
                     )
-                    journal_started = True
-                tool = self.tools.get(call.name)
-                if tool is None:
-                    out = f"Unknown tool: {call.name}"
-                    failed = True
+                    # The journal is the authority on whether this step ran. A
+                    # terminal record means it already did: return what was
+                    # recorded instead of executing the side effect twice. An
+                    # `unknown` record means a dead process dispatched it and
+                    # nobody knows the outcome -- say so rather than retrying.
+                    if prior.status in _REPLAYABLE_STATUSES:
+                        replayed = prior.result or ""
+                    elif prior.status == "unknown":
+                        # A dead process dispatched this and nobody recorded the
+                        # outcome. Ask the tool whether it landed, if it can say.
+                        landed = None
+                        candidate = self.tools.get(call.name)
+                        if candidate is not None:
+                            landed = await candidate.already_took_effect(ctx, call)
+                        await self._send(
+                            "reconcile",
+                            name=call.name,
+                            action_id=action_id,
+                            verdict=(
+                                "already_applied" if landed is True
+                                else "not_applied" if landed is False
+                                else "undetermined"
+                            ),
+                            verifiable=candidate is not None
+                            and candidate.verify is not None,
+                        )
+                        if landed is True:
+                            # It happened. Record that, and do not run it again.
+                            replayed = RECONCILED_RESULT
+                            reconcile = getattr(journal, "reconcile", None)
+                            if reconcile is not None:
+                                reconcile(
+                                    action_id,
+                                    status="completed",
+                                    result=RECONCILED_RESULT,
+                                )
+                        elif landed is False:
+                            # It provably did not happen, so retrying is safe --
+                            # the only branch where an unknown action re-runs.
+                            journal_started = True
+                        else:
+                            replayed = UNKNOWN_RESULT
+                    else:
+                        journal_started = True
+                if replayed is not None:
+                    out = replayed
+                    replayed_action = True
                 else:
-                    try:
-                        out = str(await tool.run(ctx, **call.input))
-                    except Exception as error:
-                        # Tool errors are data the model reacts to, not crashes.
-                        out = f"Error: {error}"
+                    tool = self.tools.get(call.name)
+                    if tool is None:
+                        out = f"Unknown tool: {call.name}"
                         failed = True
+                    else:
+                        try:
+                            out = str(await tool.run(ctx, **call.input))
+                        except Exception as error:
+                            # Tool errors are data the model reacts to, not crashes.
+                            out = f"Error: {error}"
+                            failed = True
                 out = str(await self.hooks.after_tool(ctx, call, out))
         except asyncio.CancelledError:
             if journal is not None and journal_started:
@@ -603,6 +1137,14 @@ class Agent:
             # parallel call cannot discard successful siblings.
             out = f"Error: {error}"
             failed = True
+
+        # Wide masking, applied once as soon as the tool result is finalized:
+        # everything downstream -- the action journal, the model transcript,
+        # the event stream, the trajectory, the durable store -- reads the
+        # masked `out`. Ordered *before* journal.finish (round 116): the finish
+        # used to record the raw result, so the durable actions table kept a
+        # secret the tool echoed while every other sink masked it.
+        out = self.secrets.mask(out)
 
         if journal is not None and journal_started:
             journal.finish(
@@ -624,7 +1166,26 @@ class Agent:
         }
         if denied:
             result_fields["denied"] = True
+        if replayed_action:
+            # Surfaced so an operator can see a resumed turn reused a recorded
+            # outcome rather than performing the action again.
+            result_fields["replayed"] = True
         await self._send("tool_result", **result_fields)
+        step = ToolStep(
+            name=call.name,
+            input_hash=step_hash(call.input),
+            output_hash=step_hash(out),
+            failed=failed,
+            denied=denied,
+        )
+        if ledger is None:
+            # Direct call outside a batch (tests, embedders): order is the
+            # caller's own, so record immediately.
+            self._recent_steps.append(step)
+        else:
+            # Keyed by object identity, not `call.id`: a provider (or a fake
+            # client) may leave the id blank, and blank keys would collide.
+            ledger[id(call)] = step
         return out
 
     # -- s06: subagent = a fresh Agent, isolated context, restricted tools --
@@ -646,11 +1207,20 @@ class Agent:
             client=self.client,
             settings=self.settings,
             workspace=self.workspace,
-            skills=self.skills,
-            tools=registry,
-            hooks=self.hooks,           # policies apply to subagents too
-            compactor=self.compactor,
-            recovery=self.recovery,
+            # Derive, do not re-list: the child inherits every seam the parent
+            # has, including ones added after this line was written.
+            harness=self.harness.derive(
+                tools=registry,
+                hooks=self.hooks,
+                skills=self.skills,
+                compactor=self.compactor,
+                recovery=self.recovery,
+                stuck_detector=self.stuck_detector,
+                cache_policy=self.cache_policy,
+                secrets=self.secrets,
+                sandbox=self.sandbox,
+                transport=self.transport,
+            ),
             system=f"You are a {agent_type} subagent in {self.workspace}. "
                    f"Use tools to {verb}, then give a concise final summary. No preamble.",
             emit=self.emit,
@@ -660,6 +1230,15 @@ class Agent:
             depth=self.depth + 1,
             max_rounds=self.settings.subagent_max_rounds,
         )
+        if agent_type == "Explore":
+            # "Explore is read-only" is a promise the `task` tool makes to the
+            # model, and it was only a tool-list convention: the default
+            # interactive mode runs a plain `echo x > file` via bash with no
+            # approval (only *destructive* shell asks), so an Explore subagent
+            # could mutate the workspace a caller delegated as read-only.
+            # Read-only mode denies every mutating-risk tool -- bash included --
+            # so the promise holds by construction, whatever the registry carries.
+            child.state["permission_mode"] = "readonly"
         await self._send(
             "subagent_start",
             agent_type=agent_type,

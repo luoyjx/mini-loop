@@ -14,6 +14,7 @@ tool set and its background/team lifecycle injectors.
 from __future__ import annotations
 
 import asyncio
+import os
 import dataclasses
 import json
 import re
@@ -22,16 +23,19 @@ import uuid
 from collections.abc import Callable
 from pathlib import Path
 
-from .actions import InMemoryActionJournal
+from .actions import DurableActionJournal, InMemoryActionJournal
 from .agent import Agent
 from .builtins import default_injectors, default_registry, full_registry
 from .config import Settings
 from .cron import CronScheduler
+from .harness import Harness
 from .memory import MemoryStore
 from .registry import Hooks, ToolRegistry
 from .run_context import RunContext
 from .session import AgentSession
+from .secrets import NullSecretRegistry
 from .skills import SkillLoader
+from .storage import NullStateStore, SessionRecord, StateStore
 from .tasks import TaskStore
 from .teams import MessageBus, ProtocolState, team_key
 from .trajectory import TrajectoryStore
@@ -39,8 +43,56 @@ from .worktrees import WorktreeManager
 from .workflows.service import WorkflowService, workflow_injector
 from .workflows.tools import install_workflows
 
+#: How many deleted-session owners to remember for the legacy trajectory
+#: access-check fallback. Modern trajectories carry their own durable owner and
+#: never consult this map, so the cap only bounds how far back a *pre-round-74*
+#: trajectory of a deleted session stays attributable within one process.
+MAX_REMEMBERED_OWNERS = 10_000
+
+#: Team protocol handshakes (plan approvals, shutdown requests) retained. Each
+#: `submit_plan`/`request_shutdown` added a `ProtocolState` -- holding the plan
+#: payload -- to `self.protocols`, and nothing, not even `delete()`, ever removed
+#: one: a resolved handshake is pure history the model still re-reads through
+#: `list_protocols`. This is round 146's leak again (the background result store),
+#: a manager-level dict that only grows. Past this, the oldest *resolved*
+#: handshakes are evicted; a pending one is a live request and is spared until
+#: the cap is reached by pending alone.
+MAX_PROTOCOLS = 200
+
 
 class SessionManager:
+    @property
+    def session_owners(self) -> dict:
+        """`session_id -> owner`, retained after a session is deleted.
+
+        Trajectories outlive their session, so their access check needs an
+        attribution that outlives it too. Within this process only; after a
+        restart the mapping is gone and the check fails closed, which is the
+        right direction for an access check and is recorded as still open.
+
+        Bounded to `MAX_REMEMBERED_OWNERS` (round 112): a legacy fallback that
+        modern trajectories -- which carry their own durable `owner` -- never
+        read, it had grown one entry per deleted session forever. Eviction of
+        the oldest fails the same closed way a restart does.
+        """
+
+        return self._session_owners
+
+    def persistence_error(self) -> str | None:
+        """Why durable state is not being written, or None if it is.
+
+        A store that constructs fine and then fails every write reports itself
+        present everywhere -- `posture()` names the class, the audit sees a
+        store configured -- while nothing reaches disk. "Installed" and
+        "working" are different questions and only one of them was being asked.
+        """
+
+        for session in getattr(self, "_sessions", {}).values():
+            error = getattr(session, "persist_error", None)
+            if error:
+                return error
+        return None
+
     def __init__(
         self,
         settings: Settings,
@@ -54,6 +106,12 @@ class SessionManager:
         system_builder: Callable[[Agent], str] | None = None,
         compactor=None,
         recovery=None,
+        stuck_detector=None,
+        cache_policy=None,
+        transport=None,
+        state_store: StateStore | None = None,
+        secrets=None,
+        sandbox=None,
         injectors: list | None = None,
         workspace_factory: Callable[[str], Path] | None = None,
         event_sink: Callable[[dict], object] | None = None,
@@ -95,10 +153,57 @@ class SessionManager:
                 )
             )
 
+        # Pending tool approvals, resolvable over the API. When the embedding
+        # application supplies its own hooks it owns approval routing too; the
+        # broker still exists so the REST surface answers with empty lists
+        # rather than errors.
+        from .approvals import ApprovalBroker
+
+        self.approvals = ApprovalBroker(timeout=settings.approval_timeout)
+        if hooks is None:
+            from .permissions import default_hooks
+
+            hooks = default_hooks(approval=self.approvals.ask)
         self.hooks = hooks
         self.system_builder = system_builder
         self.compactor = compactor
         self.recovery = recovery
+        # Stateless policy: history lives on each Agent, so one detector
+        # instance is safely shared by every session in this manager.
+        self.stuck_detector = stuck_detector
+        self.cache_policy = cache_policy
+        # Durable conversation state. Default is off: persistence is a
+        # deployment choice, and the store holds unredacted transcripts.
+        self.state_store: StateStore = state_store or NullStateStore()
+        # Late-bound: the broker exists before the store does. With a durable
+        # store every ask leaves a row, so a restart can tell "parked, never
+        # ran" from "dispatched, outcome unknown" (session.restore).
+        self.approvals.store = self.state_store
+        # Identifies this process to the lease table. Leases only exist when a
+        # durable store does -- a NullStateStore has no second process to race.
+        self.instance_id = f"{uuid.uuid4().hex[:8]}@{os.getpid()}"
+        self._session_owners: dict[str, str] = {}
+        # Host credentials: narrow injection into bash, wide masking of
+        # every tool result. Default off -- callers opt in explicitly.
+        self.secrets = secrets if secrets is not None else NullSecretRegistry()
+        # The broker persists a human's answer to the durable approvals table;
+        # a registered secret in it must be masked there like every other sink.
+        self.approvals.secrets = self.secrets
+        self.sandbox = sandbox
+        # One value, assembled once. Every agent this manager builds -- session
+        # agents, their subagents, workflow workers -- starts from it, so a new
+        # seam does not have to be threaded to each construction site.
+        self.harness = Harness(
+            hooks=hooks,
+            system_builder=system_builder,
+            compactor=compactor,
+            recovery=recovery,
+            stuck_detector=stuck_detector,
+            cache_policy=cache_policy,
+            transport=transport,
+            secrets=self.secrets,
+            sandbox=sandbox,
+        )
         self.workspace_factory = workspace_factory or (lambda sid: self.settings.workspace_root / sid)
         self.event_sink = event_sink
         self.enable_features = enable_features
@@ -139,17 +244,36 @@ class SessionManager:
             self.injectors = []
         if self.enable_workflows and workflow_injector not in self.injectors:
             self.injectors.append(workflow_injector)
+        # Core, not a feature toggle: every manager-built session can be
+        # steered, or a busy session drops its caller's words on the floor.
+        from .session import steering_injector
+
+        if steering_injector not in self.injectors:
+            self.injectors.append(steering_injector)
 
         # Cross-session services.
-        self.bus = MessageBus(settings.workspace_root / ".teams")
-        self.actions = (
-            workflow_service.action_journal
-            if workflow_service is not None
-            else InMemoryActionJournal()
+        self.bus = MessageBus(settings.workspace_root / ".teams", secrets=self.secrets)
+        # The journal is durable when the state store is: an in-memory journal
+        # cannot tell a resumed process which side effects already happened.
+        if workflow_service is not None:
+            self.actions = workflow_service.action_journal
+        elif hasattr(self.state_store, "read_action"):
+            self.actions = DurableActionJournal(self.state_store)
+            # Anything still `started` belongs to a process that is gone.
+            self.unknown_actions = tuple(self.actions.mark_inflight_unknown())
+        else:
+            self.actions = InMemoryActionJournal()
+        self.unknown_actions = getattr(self, "unknown_actions", ())
+        self.memory = MemoryStore(
+            settings.memory_root or (settings.workspace_root / ".memory"),
+            secrets=self.secrets,
         )
-        self.memory = MemoryStore(settings.memory_root or (settings.workspace_root / ".memory"))
         self.worktrees = WorktreeManager(settings.repo_root) if settings.repo_root else None
-        self.cron = CronScheduler(self, durable_path=settings.workspace_root / ".cron.json")
+        self.cron = CronScheduler(
+            self,
+            durable_path=settings.workspace_root / ".cron.json",
+            secrets=self.secrets,
+        )
         self._teammates: dict[str, dict[str, str]] = {}
         self.protocols: dict[str, ProtocolState] = {}
         self._sessions: dict[str, AgentSession] = {}
@@ -166,6 +290,9 @@ class SessionManager:
                 llm_semaphore=self.llm_semaphore,
                 tool_semaphore=self.tool_semaphore,
                 attempt_semaphore=self.workflow_attempt_semaphore,
+                secrets=self.secrets,
+                sandbox=self.sandbox,
+                harness=self.harness,
             )
 
     # -- lifecycle (called by the server lifespan) --
@@ -174,7 +301,17 @@ class SessionManager:
             self.cron.start()
 
     async def stop(self) -> None:
+        # A clean shutdown hands the sessions back at once. A crash does not,
+        # which is what the TTL is for -- the next process waits it out rather
+        # than assuming the holder is gone.
+        release = getattr(self.state_store, "release_lease", None)
+        if release is not None:
+            for session in list(self._sessions.values()):
+                if session.lease_owner:
+                    release(session.id, session.lease_owner)
+                    session.lease_owner = None
         await self.cron.stop()
+        self.approvals.cancel_all()
         if self.workflows is not None:
             await self.workflows.close()
         if self._cleanup_tasks:
@@ -240,14 +377,12 @@ class SessionManager:
             client=self.client,
             settings=settings,
             workspace=session.workspace,
-            skills=self.skills,
-            tools=registry,
-            hooks=self.hooks,
             system=session.system,
-            system_builder=self.system_builder,
-            compactor=self.compactor,
-            recovery=self.recovery,
-            injectors=list(self.injectors),
+            harness=self.harness.derive(
+                tools=registry,
+                skills=self.skills,
+                injectors=tuple(self.injectors),
+            ),
             emit=session.emit,
             llm_semaphore=self.llm_semaphore,
             tool_semaphore=self.tool_semaphore,
@@ -255,7 +390,20 @@ class SessionManager:
             state=state,
         )
 
-    def create(self, *, system: str | None = None, model: str | None = None) -> AgentSession:
+    def create(
+        self,
+        *,
+        system: str | None = None,
+        model: str | None = None,
+        permission_mode: str = "interactive",
+    ) -> AgentSession:
+        from .permissions import PERMISSION_MODES
+
+        if permission_mode not in PERMISSION_MODES:
+            raise ValueError(
+                f"unknown permission mode {permission_mode!r}; "
+                f"expected one of {PERMISSION_MODES}"
+            )
         session_id = uuid.uuid4().hex[:12]
         workspace = Path(self.workspace_factory(session_id))
         workspace.mkdir(parents=True, exist_ok=True)
@@ -266,11 +414,85 @@ class SessionManager:
             system=system,
             event_sink=self.event_sink,
             trajectory_store=self.trajectories,
+            state_store=self.state_store,
         )
+        session.permission_mode = permission_mode
         settings = self.settings if model is None else dataclasses.replace(self.settings, model=model)
         session.agent = self._build_agent(session, settings=settings, extra_state={})
         self._sessions[session_id] = session
+        self._record(session)
+        self._claim(session)
         return session
+
+    def _claim(self, session: AgentSession) -> None:
+        """Take the session's lease, if the store supports one."""
+        if not hasattr(self.state_store, "acquire_lease"):
+            return
+        session.lease_owner = self.instance_id
+        # Check the acquire, don't discard it -- the sibling smell to the
+        # renewal `_renew_lease` used to have (round 157). A claim whose result
+        # goes unread is a lease this process cannot prove it holds. On success,
+        # record that it holds it, so a mid-turn loss is a real loss even for a
+        # session driven straight through `agent.run`, which never reaches
+        # `_require_lease`. `lease_owner` stays set on failure so `_require_lease`
+        # at the turn's start still re-checks and fails closed on a live foreign
+        # lease -- the restored session that lost its claim stays unconfirmed and
+        # does not raise on a renewal it was never going to win.
+        if self.state_store.acquire_lease(
+            session.id, self.instance_id, ttl=session.lease_ttl
+        ):
+            session.lease_confirmed = True
+
+    def _record(self, session: AgentSession) -> None:
+        """Write the session's identity so a later process can rebuild it."""
+        self.state_store.upsert_session(
+            SessionRecord(
+                session_id=session.id,
+                workspace=str(session.workspace),
+                system=session.system,
+                created_at=session.created_at,
+                run_count=session.run_count,
+                status=session.status,
+                event_cursor=0,  # derived on read; not authoritative here
+                owner=getattr(session, "owner", "anonymous"),
+            )
+        )
+
+    def restore_sessions(self) -> list[AgentSession]:
+        """Rebuild live handles for every persisted session.
+
+        The store is the source of truth for the transcript and the event
+        cursor. Workspaces are *not* recreated -- a session whose workspace is
+        gone is restored with an empty one rather than being silently skipped,
+        so the caller can see it and decide.
+
+        Not in this slice: run status is restored as recorded, so a process
+        killed mid-run comes back as `running` with no run attached. There is no
+        run state machine to resume yet, and inventing one here would be worse
+        than surfacing the truth.
+        """
+        restored = []
+        for record in self.state_store.load_sessions():
+            if record.session_id in self._sessions:
+                continue
+            workspace = Path(record.workspace)
+            workspace.mkdir(parents=True, exist_ok=True)
+            session = AgentSession(
+                record.session_id,
+                workspace,
+                system=record.system,
+                event_sink=self.event_sink,
+                trajectory_store=self.trajectories,
+                state_store=self.state_store,
+            )
+            session.agent = self._build_agent(
+                session, settings=self.settings, extra_state={}
+            )
+            self._rehydrate(session)
+            self._claim(session)
+            self._sessions[record.session_id] = session
+            restored.append(session)
+        return restored
 
     def restore_scheduled_session(self, session_id: str) -> AgentSession:
         """Restore the stable session identity referenced by a durable cron job."""
@@ -284,10 +506,35 @@ class SessionManager:
             workspace,
             event_sink=self.event_sink,
             trajectory_store=self.trajectories,
+            state_store=self.state_store,
         )
         session.agent = self._build_agent(session, settings=self.settings, extra_state={})
+        # Same rehydration as `restore_sessions`: without it the handle starts
+        # with an empty transcript while the store already holds one, and the
+        # next flush appends into that same epoch -- splicing two histories.
+        self._rehydrate(session)
+        self._claim(session)
         self._sessions[session_id] = session
         return session
+
+    def _rehydrate(self, session: AgentSession) -> None:
+        """Rebuild a session's durable state onto a freshly built handle."""
+        record = next(
+            (r for r in self.state_store.load_sessions() if r.session_id == session.id),
+            None,
+        )
+        if record is None:
+            return
+        session.created_at = record.created_at
+        session.run_count = record.run_count
+        session.status = record.status
+        # Restore the tenant owner here, so both restore paths -- startup and a
+        # cron job's `restore_scheduled_session` -- carry it, or the handle comes
+        # back `anonymous` and its owner is refused access to it (round 138).
+        session.owner = record.owner
+        session.restore()
+        if record.todos and session.agent is not None:
+            session.agent.todo.items = [dict(t) for t in record.todos]
 
     # -- s15-17: spawn a teammate = a concurrent session sharing the workspace --
     async def spawn_teammate(
@@ -314,6 +561,7 @@ class SessionManager:
             parent.workspace,
             event_sink=self.event_sink,
             trajectory_store=self.trajectories,
+            state_store=self.state_store,
         )
         session.agent = self._build_agent(
             session, settings=self.settings,
@@ -323,7 +571,7 @@ class SessionManager:
                 "role": role,
                 "session_id": session_id,
                 "team_workspace": parent.workspace,
-                "tasks": TaskStore(parent.workspace),
+                "tasks": TaskStore(parent.workspace, secrets=self.secrets),
             },
             label=name,
         )
@@ -361,6 +609,41 @@ class SessionManager:
         )
         return f"Spawned teammate '{name}' (session {session_id}); running concurrently."
 
+    def _deliver(self, frm: str, to: str, content: str,
+                 msg_type: str = "message", metadata: dict | None = None) -> str:
+        """Deliver a team message, keeping the content rather than dropping it.
+
+        Eight `bus.send` calls in this file discarded their return value. That
+        was harmless until round 50 gave `send` a size limit and made it report
+        refusals by returning a string -- after which a teammate's finished work
+        was silently lost:
+
+            a teammate's finished result: 26,032 chars
+            bus.send returned           : 'Error: message is 26,032 characters...'
+            lead's inbox                : 0 messages
+
+        A *result* is truncated rather than refused, which is the opposite of
+        the call made for a cron prompt in round 47 and for the same reason: a
+        truncated report still carries most of the work, while a truncated
+        instruction that still executes is worse than one that never ran.
+        `request_plan` sends an instruction and so keeps using `bus.send`
+        directly, where a refusal is returned to its caller.
+
+        Anything the bus still refuses is recorded rather than swallowed.
+        """
+
+        limit = MessageBus.MAX_CONTENT
+        if len(content) > limit:
+            kept = content[: limit - 200]
+            content = (
+                f"{kept}\n\n[truncated: {len(content):,} characters delivered "
+                f"as {limit:,}]"
+            )
+        result = self.bus.send(frm, to, content, msg_type, metadata)
+        if str(result).startswith("Error:"):
+            self.bus.problems.append(f"delivery to {to!r} failed: {result}")
+        return result
+
     def teammates_of(self, team_id: str) -> list[str]:
         return list(self._teammates.get(team_id, {}))
 
@@ -380,7 +663,7 @@ class SessionManager:
             run_context=run_context or self._teammate_run_context(session),
         )
         state = session.agent.state
-        self.bus.send(team_key(state["team_id"], state["agent_name"]),
+        self._deliver(team_key(state["team_id"], state["agent_name"]),
                       team_key(state["team_id"], "lead"), result, "result")
         session.lifecycle_task = asyncio.create_task(  # type: ignore[attr-defined]
             self._teammate_idle_loop(session)
@@ -417,7 +700,7 @@ class SessionManager:
                     prompt,
                     run_context=self._teammate_run_context(session),
                 )
-                self.bus.send(team_key(team_id, name), team_key(team_id, "lead"), result, "result")
+                self._deliver(team_key(team_id, name), team_key(team_id, "lead"), result, "result")
                 deadline = loop.time() + self.settings.team_idle_timeout
                 continue
 
@@ -445,11 +728,11 @@ class SessionManager:
                 f"{claimed.description}\nComplete the work, then call complete_task for {claimed.id}.",
                 run_context=self._teammate_run_context(session),
             )
-            self.bus.send(team_key(team_id, name), team_key(team_id, "lead"), result,
+            self._deliver(team_key(team_id, name), team_key(team_id, "lead"), result,
                           "result", {"task_id": claimed.id})
             deadline = loop.time() + self.settings.team_idle_timeout
 
-        self.bus.send(team_key(team_id, name), team_key(team_id, "lead"),
+        self._deliver(team_key(team_id, name), team_key(team_id, "lead"),
                       "Idle timeout reached; teammate shut down.", "idle_notification")
 
     def _new_protocol(self, protocol_type: str, team_id: str, sender: str,
@@ -463,13 +746,37 @@ class SessionManager:
             payload=payload,
         )
         self.protocols[request_id] = state
+        self._prune_protocols()
         return state
+
+    def _prune_protocols(self) -> None:
+        """Bound `self.protocols`, evicting resolved handshakes before pending.
+
+        A resolved (approved/rejected) handshake is history the model still
+        re-reads through `list_protocols`; a pending one is a live request
+        awaiting a response, and dropping it reads as "never asked" -- the
+        action journal's rule. So resolved entries give way first, oldest by
+        insertion order; only a cap reached by pending alone (a requester that
+        vanished mid-handshake, e.g. a deleted session that never resolved) lets
+        the oldest pending give way, as a bounded safety valve.
+        """
+
+        overflow = len(self.protocols) - MAX_PROTOCOLS
+        if overflow <= 0:
+            return
+        resolved = [rid for rid, s in self.protocols.items() if s.status != "pending"]
+        victims = resolved[:overflow]
+        if len(victims) < overflow:
+            pending = [rid for rid, s in self.protocols.items() if s.status == "pending"]
+            victims += pending[: overflow - len(victims)]
+        for request_id in victims:
+            del self.protocols[request_id]
 
     def request_shutdown(self, team_id: str, target: str, reason: str = "") -> str:
         if self.teammate_session(team_id, target) is None:
             return f"Error: no teammate {target}"
         state = self._new_protocol("shutdown", team_id, "lead", target, reason)
-        self.bus.send(state.sender, state.target, reason or "Please shut down.",
+        self._deliver(state.sender, state.target, reason or "Please shut down.",
                       "shutdown_request", {"request_id": state.request_id})
         return state.request_id
 
@@ -485,7 +792,7 @@ class SessionManager:
         if sender == "lead":
             return "Error: only teammates submit plans to the lead"
         state = self._new_protocol("plan_approval", team_id, sender, "lead", plan)
-        self.bus.send(state.sender, state.target, plan, "plan_approval_request",
+        self._deliver(state.sender, state.target, plan, "plan_approval_request",
                       {"request_id": state.request_id})
         return state.request_id
 
@@ -500,7 +807,7 @@ class SessionManager:
             return f"Error: request {request_id} belongs to another team"
         state.status = "approved" if approve else "rejected"
         state.feedback = feedback
-        self.bus.send(team_key(team_id, "lead"), state.sender,
+        self._deliver(team_key(team_id, "lead"), state.sender,
                       feedback or state.status, "plan_approval_response",
                       {"request_id": request_id, "approve": approve})
         return f"Plan {request_id} {state.status}"
@@ -525,7 +832,7 @@ class SessionManager:
             self._match_protocol(message)
             if message.get("type") == "shutdown_request" and session and session.agent:
                 request_id = message.get("metadata", {}).get("request_id", "")
-                self.bus.send(team_key(team_id, name), team_key(team_id, "lead"),
+                self._deliver(team_key(team_id, name), team_key(team_id, "lead"),
                               "Shutdown approved.", "shutdown_response",
                               {"request_id": request_id, "approve": True})
                 session.agent.state["shutdown_requested"] = True
@@ -597,6 +904,21 @@ class SessionManager:
 
     def delete(self, session_id: str, *, remove_workspace: bool = True) -> bool:
         session = self._sessions.get(session_id)
+        if session is not None:
+            # A legacy fallback, and now a bounded one. Trajectories recorded
+            # since round 74 carry their own durable `owner` field, which is
+            # the primary path in `_owns_trajectory`; this map is consulted
+            # only for older trajectories that lack it. Left unbounded it grew
+            # one entry per deleted session forever -- memory, and O(deleted)
+            # latency on every trajectory *listing*, which iterates it. Capped
+            # here: eviction only affects legacy trajectories of long-ago
+            # deleted sessions, which then fail the access check closed -- the
+            # same safe direction as after a restart (see `session_owners`).
+            owners = self._session_owners
+            owners.pop(session_id, None)  # move-to-newest on re-delete
+            owners[session_id] = getattr(session, "owner", "anonymous")
+            while len(owners) > MAX_REMEMBERED_OWNERS:
+                del owners[next(iter(owners))]
         if session is None:
             return False
         workflow_active = (
@@ -609,6 +931,28 @@ class SessionManager:
             else ()
         )
         self._sessions.pop(session_id, None)
+        # Disown the lease before waking a parked turn below: `delete_session`
+        # removes the row this session's lease lived in, so a turn that emits
+        # after that finds its lease gone and -- if it held one -- would read the
+        # self-delete as another process stealing it. Clearing `lease_owner` (as
+        # the clean-shutdown path already does) makes the renewal a no-op, so the
+        # cancelled turn finishes recording its own cancellation instead.
+        session.lease_owner = None
+        session.lease_confirmed = False
+        # A turn may be parked on an approval nobody will ever answer now;
+        # denying it lets that turn finish instead of waiting out the timeout.
+        self.approvals.cancel_session(session_id)
+        # Cancel the session's scheduled work too. A leftover cron job outlives
+        # its session and resurrects it via restore_scheduled_session on its next
+        # fire -- re-creating the workspace removed just below and rehydrating the
+        # transcript -- so a delete that skipped this did not actually stop the
+        # one kind of work that runs unattended.
+        self.cron.cancel_for_session(session_id)
+        # Remove the durable record too, or `restore_sessions()` on the next
+        # startup rebuilds the deleted session from the `sessions` row that
+        # survived -- the same resurrection as the cron path above, on every
+        # restart. This also frees the session's lease, which lives in that row.
+        self.state_store.delete_session(session_id)
         for attribute in ("spawn_task", "lifecycle_task"):
             task = getattr(session, attribute, None)
             if task is not None and not task.done():
@@ -619,22 +963,71 @@ class SessionManager:
                     teammates.pop(name, None)
             if not teammates:
                 self._teammates.pop(team_id, None)
+        # The services stop() reclaims, reclaimed for this one session.
+        # delete() used to skip this, and the gap compounded: the background
+        # shell kept running in a workspace this method was about to remove,
+        # `check_background` had left with the session, and stop() could no
+        # longer see the manager because the session was already popped from
+        # `_sessions` -- so a process started with `start_new_session=True`
+        # survived the server itself. OpenWorker documents the same hazard
+        # (background shell outliving session/server) as an open risk; here
+        # the close path existed and nothing on this route called it.
+        agent = session.agent
+        background = agent.state.get("background") if agent is not None else None
+        # An MCP client object may be registered on several sessions; close
+        # it only when no surviving session still holds it -- the same rule
+        # as the shared workspace below.
+        still_held = {
+            id(client)
+            for other in self._sessions.values() if other.agent is not None
+            for client in other.agent.state.get("mcp_clients", {}).values()
+        }
+        mcp_clients = [
+            client
+            for client in (agent.state.get("mcp_clients", {}).values() if agent else ())
+            if id(client) not in still_held
+        ]
         # Don't delete a workspace shared by teammates.
         shared = any(s.workspace == session.workspace for s in self._sessions.values())
+        remove_now = remove_workspace and not shared and not workflow_active
+        if background is not None or mcp_clients:
+            try:
+                asyncio.get_running_loop()
+            except RuntimeError:
+                # No loop to run an async close on. Cancellation is still
+                # requested -- the process-group kill rides on it if the loop
+                # ever runs again -- and the workspace is removed as before.
+                if background is not None:
+                    background.cancel_all()
+                if remove_now:
+                    shutil.rmtree(session.workspace, ignore_errors=True)
+            else:
+                async def _close_services() -> None:
+                    closes = []
+                    if background is not None:
+                        closes.append(background.close())
+                    closes.extend(client.close() for client in mcp_clients)
+                    await asyncio.gather(*closes, return_exceptions=True)
+                    # Only after the shell is dead: removing the directory a
+                    # live process has as its cwd is a race, not a cleanup.
+                    if remove_now:
+                        shutil.rmtree(session.workspace, ignore_errors=True)
+                cleanup = asyncio.create_task(_close_services())
+                self._cleanup_tasks.add(cleanup)
+                cleanup.add_done_callback(self._cleanup_tasks.discard)
+        elif remove_now:
+            shutil.rmtree(session.workspace, ignore_errors=True)
         # A process-local workflow may still have a read in flight while its
         # cooperative cancellation task drains.
-        if remove_workspace and not shared:
-            if workflow_active:
-                self._deferred_workspace_cleanup[session_id] = session.workspace
-                if cancellation_tasks:
-                    cleanup = asyncio.create_task(
-                        self._drain_workspace_cleanup(
-                            session_id,
-                            cancellation_tasks,
-                        )
+        if remove_workspace and not shared and workflow_active:
+            self._deferred_workspace_cleanup[session_id] = session.workspace
+            if cancellation_tasks:
+                cleanup = asyncio.create_task(
+                    self._drain_workspace_cleanup(
+                        session_id,
+                        cancellation_tasks,
                     )
-                    self._cleanup_tasks.add(cleanup)
-                    cleanup.add_done_callback(self._cleanup_tasks.discard)
-            elif not workflow_active:
-                shutil.rmtree(session.workspace, ignore_errors=True)
+                )
+                self._cleanup_tasks.add(cleanup)
+                cleanup.add_done_callback(self._cleanup_tasks.discard)
         return True

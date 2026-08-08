@@ -113,6 +113,7 @@ def install_workflows(registry: ToolRegistry) -> ToolRegistry:
             ),
             WORKFLOW_INPUT_SCHEMA,
             _launch_workflow,
+            risk="exec",
         )
     )
     registry.register(
@@ -122,6 +123,7 @@ def install_workflows(registry: ToolRegistry) -> ToolRegistry:
             RUN_ID_SCHEMA,
             _workflow_status,
             readonly=True,
+            risk="read",
         )
     )
     registry.register(
@@ -130,6 +132,7 @@ def install_workflows(registry: ToolRegistry) -> ToolRegistry:
             "Cooperatively cancel a workflow owned by this session.",
             RUN_ID_SCHEMA,
             _cancel_workflow,
+            risk="write",
         )
     )
     return registry

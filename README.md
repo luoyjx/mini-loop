@@ -95,7 +95,9 @@ tests/           offline tests (no key): loop, sandbox, subagent, compaction,
                  server, concurrency, and every extension seam
 ```
 
-Design docs: [Claude Code dynamic workflows research](docs/CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md),
+Design docs: [hardening notes](docs/HARDENING_NOTES.md) (why the non-curriculum
+modules exist, the traps they close, and what is still open),
+[Claude Code dynamic workflows research](docs/CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md),
 [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md), and
 [trajectory/recovery boundary](docs/TRAJECTORIES.md).
 
@@ -131,10 +133,16 @@ app = create_app(manager=manager)            # same REST + SSE + console
 
 | Seam | Inject via | Changes |
 |---|---|---|
+| `Harness` | `harness=` | all of the below as one derivable value |
 | `ToolRegistry` | `tool_registry=` | what the agent can do |
 | `Hooks` | `hooks=` | permissions, audit, arg/output rewriting |
 | `system_builder` | `system_builder=` | the system prompt |
 | `Compactor` | `compactor=` | context trimming/summarization |
+| `CachePolicy` | `cache_policy=` | where prompt-cache breakpoints go |
+| `StateStore` | `state_store=` | whether a session survives a restart |
+| `SecretRegistry` | `secrets=` | which credentials a tool can see or print |
+| `Sandbox` | `sandbox=` | what the shell can reach on the host |
+| `StuckDetector` | `stuck_detector=` | when a repeating agent is nudged or halted |
 | `SkillLoader` + `skills/` | `skills=` | on-demand domain knowledge |
 | LLM client | `client=` / env | model / provider / base_url |
 | `workspace_factory` | `workspace_factory=` | where/how the sandbox is provisioned |
@@ -164,6 +172,107 @@ with `MINILOOP_FEATURES=all` (or `SessionManager(enable_features=True)` /
 ```sh
 MINILOOP_FAKE_LLM=1 MINILOOP_FEATURES=all python -m mini_loop   # all built-in modules, no key
 ```
+
+### Verifying the whole thing
+
+`tests/test_fullstack.py` runs one session with **every** protection on at once —
+authentication, per-caller scope, durable state, the durable action journal,
+secret masking, shell confinement, prompt caching — and asserts the invariants
+hold *simultaneously*. Eight of the defects found while building this harness
+lived at a boundary between two modules and were each found by hand, one pair at
+a time, because nothing ran the stack together.
+
+The same composition is verified against a live model over HTTP; the offline
+version is the one that runs in CI.
+
+### Authentication
+
+The HTTP surface had none. An anonymous caller could create a session, run shell
+commands, enumerate *other* callers' sessions and download every recorded
+transcript — demonstrated against a running server before this landed.
+
+```sh
+MINILOOP_API_TOKEN=…                       # single user
+MINILOOP_API_TOKENS=alice:…,bob:…          # per-principal
+```
+
+Sessions are owned by the principal that created them; listing, reading, driving
+and trajectories are all scoped to the owner. Someone else's session answers
+**404, not 403** — 403 confirms the id exists. Tokens are compared with
+`hmac.compare_digest`, and `python -m mini_loop` **refuses to start** on a
+non-loopback bind with no tokens configured rather than warning about it.
+
+### What is actually switched on
+
+Every protection below is opt-in and defaults to a `Null*` implementation — right
+per module, wrong in aggregate: a default deployment has no shell confinement, no
+secret masking, no durable state, and an in-memory action journal, and nothing
+says so. Ask it:
+
+```sh
+python -m mini_loop.audit                          # this machine's configuration
+python -m mini_loop.audit --url http://host:port   # a server that is actually running
+```
+
+Both exit non-zero on any high/critical finding. `/healthz` carries a **build
+fingerprint** (a content hash over the package source) alongside the posture, so
+a client can assert it is talking to the build it just started rather than a
+process that outlived a failed `pkill` — which is exactly how one round of
+measurements here got taken against a fourteen-hour-old server. The remote audit
+reports fewer checks than the local one, and says so: filesystem permissions and
+the bind address are not observable from outside.
+
+On this checkout, unconfigured, that reports 3 high and 2 medium — including the
+combination that matters: unmasked transcripts written to disk while real
+credential-shaped variables are set in the environment.
+
+**Shell confinement** (`mini_loop/sandbox.py`, off by default) pays down the
+caveat this README has always carried. A `SeatbeltSandbox` runs `bash` under
+macOS `sandbox-exec`: writes confined to the workspace, reads denied for listed
+roots, network denied unless granted. Policy shape follows the OpenAI Codex CLI
+sandbox. Verified by execution — a real model asked to exfiltrate a canary got
+it with the sandbox off and failed with it on. Not a container: no resource
+limits, and a read deny-list only protects the paths you list.
+
+**Secret handling** (`mini_loop/secrets.py`, off by default) closes a leak the
+state store widened: `run_bash` inherits the process environment, so `printenv`
+put the host API key into the transcript, the event stream, the trajectory *and*
+the database. A `SecretRegistry` injects a credential into a shell command only
+when the command names it, and masks every registered value out of tool output
+regardless. Measured on a canary key: 4 of 4 sinks leaked before, 0 of 4 after.
+
+**Durable conversation state** (`mini_loop/storage.py`, off by default) is the
+first slice of the roadmap's `R1`: a SQLite (WAL) `StateStore` persists the
+transcript and the event cursor, and `manager.restore_sessions()` rebuilds live
+handles in a process that never saw them. Verified across two real OS processes
+against a live model — the second process answered a question that could only be
+resolved from the first process's transcript. A crash between dispatching a tool and recording its result is repaired on
+restore by closing the call as *unknown* — the provider rejects an unanswered
+`tool_use`, and reporting it as an error would invite re-running a side effect
+that may already have happened. Not yet in it: durable action journal,
+outbox, run state machine, cross-process leases, fork/snapshot. See
+[EXTENDING.md](./EXTENDING.md#4-durable-conversation-state--statestore).
+
+It also carries **prompt caching** (`mini_loop/caching.py`, on by default).
+Providers cache a request by prefix (`tools` → `system` → `messages`), so the
+old system prompt — which inlined the TodoWrite board — invalidated the whole
+conversation every time the model updated its plan. Volatile state now rides the
+message stream instead, and `DefaultCachePolicy` places `cache_control`
+breakpoints per content block so a wide parallel tool batch cannot push the
+previous breakpoint out of the provider's lookback window. Measured on a real
+4-turn session: 3 distinct system prefixes before, 1 after. Swap or disable with
+`cache_policy=`.
+
+Beyond the curriculum, the loop also carries **stuck detection**
+(`mini_loop/stuck.py`, on by default): `max_rounds` cannot tell thirty rounds of
+work from thirty retries of one denied call, so a `StuckDetector` watches for
+identical call+result repeats, identical call+error repeats, one tool that never
+works however it is called, two calls ping-ponging, and tool-less monologues.
+The default policy nudges once, then ends the turn and emits a `stuck` event.
+Four rules are ported from the OpenHands SDK `StuckDetector`; the fifth covers a
+blind spot shared by every consecutive-and-identical detector. Swap or disable
+it with `stuck_detector=`
+(see [EXTENDING.md](./EXTENDING.md#4b-loop-detection--stuckdetector)).
 
 `MINILOOP_REPO_ROOT=/path/to/repo` gives the worktree tools a target repository.
 MCP servers are application dependencies, supplied through `mcp_servers=` when

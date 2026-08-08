@@ -11,9 +11,16 @@ import uvicorn
 
 
 def main() -> None:
+    from .auth import load_auth, refuse_open_bind
+
+    host = os.getenv("HOST", "127.0.0.1")
+    refusal = refuse_open_bind(host, load_auth())
+    if refusal:
+        raise SystemExit(refusal)
+
     uvicorn.run(
         "mini_loop.server:app",
-        host=os.getenv("HOST", "127.0.0.1"),
+        host=host,
         port=int(os.getenv("PORT", "8000")),
         reload=bool(os.getenv("MINILOOP_RELOAD")),
     )

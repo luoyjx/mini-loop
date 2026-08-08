@@ -262,6 +262,78 @@ def test_store_launch_idempotency_cas_and_payload_conflict():
         )
 
 
+def test_terminal_runs_are_bounded_but_active_and_unread_are_spared():
+    """The store is created once at the manager and shared for the whole
+    process; every run added a run, nodes, attempts and artifacts, and nothing
+    was ever removed -- a completed run's whole graph stayed forever (the
+    round-146/147 retention class, third and largest instance). Terminal runs
+    are bounded now, but an active run (still doing work) and a terminal one
+    whose result is unread (an undelivered outbox message) are live commitments
+    and are spared. A pruned run is removed whole -- no dangling node, outbox
+    key, or launch key -- and reads back as NotFound, standard retention.
+    """
+    from mini_loop.workflows.store import NotFoundError
+
+    store, definition = _registered_store()
+
+    def make(key, *, terminal=True):
+        run = _create_run(store, definition, key=key, launch_action_id=f"act-{key}")
+        if terminal:
+            run = store.transition_run(
+                run.run_id, expected_version=run.version,
+                to_status=RunStatus.CANCELLED,
+            )
+        return run
+
+    terminal = [make(f"t{i}") for i in range(20)]
+    active = [make(f"a{i}", terminal=False) for i in range(3)]
+    unread = [make(f"u{i}") for i in range(2)]
+    for run in unread:
+        store.enqueue_outbox(run.run_id, kind="workflow_completed", payload={"n": 1})
+
+    pruned = store.prune_terminal_runs(keep=5)
+
+    # Live commitments survive regardless of the bound.
+    for run in active + unread:
+        assert run.run_id in store._runs
+
+    # Terminal, drained runs are bounded to `keep`.
+    assert sum(run.run_id in store._runs for run in terminal) == 5
+    assert len(pruned) == 15
+
+    # A pruned run is gone whole -- no dangling cascade, and NotFound on read.
+    gone = pruned[0]
+    assert not any(key[0] == gone for key in store._nodes)
+    assert not any(key[0] == gone for key in store._outbox_keys)
+    assert not any(run_id == gone for _hash, run_id in store._launches.values())
+    with pytest.raises(NotFoundError):
+        store.get_run(gone)
+
+    # A retained terminal run is still fully readable (status/nodes).
+    alive = next(run.run_id for run in terminal if run.run_id in store._runs)
+    assert store.list_nodes(alive)
+
+    # Nothing is pruned while under the bound.
+    assert store.prune_terminal_runs(keep=500) == []
+
+
+def test_relaunching_an_evicted_key_starts_a_fresh_run():
+    """`create_run` returns the existing run for a repeated launch key, so the
+    launch key is evicted with its run. A re-launch of an evicted key must then
+    start a new run rather than KeyError on the missing run -- a bounded dedup
+    window, not a dangling idempotency entry."""
+    store, definition = _registered_store()
+    run = _create_run(store, definition, key="once", launch_action_id="act-once")
+    store.transition_run(
+        run.run_id, expected_version=run.version, to_status=RunStatus.CANCELLED
+    )
+    assert store.prune_terminal_runs(keep=0) == [run.run_id]
+
+    replay = _create_run(store, definition, key="once", launch_action_id="act-once")
+    assert replay.run_id != run.run_id
+    assert store.get_run(replay.run_id).run_id == replay.run_id
+
+
 def test_store_tracks_node_attempt_artifact_and_outbox_atomically():
     store, definition = _registered_store()
     run = _create_run(store, definition)
@@ -321,6 +393,34 @@ def test_store_tracks_node_attempt_artifact_and_outbox_atomically():
     )
     assert acknowledged.delivered_at is not None
     assert store.list_outbox(run_id=run.run_id)[0].delivered_at is not None
+
+
+def test_claim_outbox_caps_one_delivery_and_keeps_the_rest():
+    """`workflow_injector` joins every claimed result into one injected message,
+    so an unbounded claim floods the parent context (round 134's background-drain
+    bound, here for workflow results). `claim_outbox(limit=N)` claims at most N;
+    the rest stay pending and the next claim picks them up, nothing lost.
+    """
+    from mini_loop.workflows.models import OutboxMessage
+
+    store = InMemoryWorkflowStore()
+    for i in range(120):
+        message = OutboxMessage(
+            message_id=f"wfout_{i:04d}", run_id=f"run_{i}", session_id="s1",
+            kind="final", payload={"i": i},
+        )
+        store._outbox[message.message_id] = message
+
+    _t1, first = store.claim_outbox(session_id="s1", limit=50)
+    assert len(first) == 50, "claim_outbox ignored its limit"
+
+    # The already-leased 50 are skipped; the next claims take the remaining 70.
+    _t2, second = store.claim_outbox(session_id="s1", limit=50)
+    _t3, third = store.claim_outbox(session_id="s1", limit=50)
+    assert len(second) == 50 and len(third) == 20, "the overflow was lost, not deferred"
+
+    delivered = {m.message_id for m in first} | {m.message_id for m in second} | {m.message_id for m in third}
+    assert len(delivered) == 120, "a message was delivered twice or dropped"
 
 
 def test_schema_subset_rejects_constraints_it_cannot_enforce():
@@ -449,6 +549,84 @@ def test_fresh_agent_runner_repairs_invalid_artifact_with_strict_peer_context(tm
     assert runner.last_run_context.authority == "peer_agent"
     assert runner.last_run_context.actor_id == attempt.agent_id
     assert runner.last_run_context.parent_message_id == run.run_context.message_id
+
+
+def test_the_worker_runs_readonly_with_a_permission_backstop(tmp_path, monkeypatch):
+    """The worker's read-only guarantee has a second, independent barrier.
+
+    Its tools are restricted to `subset(("read_file", "glob"))` + return_artifact,
+    but it used to run with empty hooks -- so that allowlist was the only thing
+    standing between a worker (which processes inputs it does not control) and a
+    mutation. It now runs in `readonly` permission mode under a real
+    `PermissionHook`: even if a mutating tool reached its registry, the backstop
+    denies it. `return_artifact` is classified `read` so the one tool the worker
+    must call is still admitted.
+    """
+    import mini_loop.workflows.runner as runner_mod
+    from mini_loop.registry import Tool, ToolCall, ToolContext
+
+    captured = {}
+    real_agent = runner_mod.Agent
+
+    def spy(*args, **kwargs):
+        agent = real_agent(*args, **kwargs)
+        captured["agent"] = agent
+        return agent
+
+    monkeypatch.setattr(runner_mod, "Agent", spy)
+
+    store, definition = _registered_store(
+        _definition(
+            (WorkflowNode("discover", NodeKind.AGENT, output_schema=VALUE_SCHEMA, max_rounds=3),)
+        )
+    )
+    run = _create_run(store, definition)
+    running = store.transition_run(
+        run.run_id, expected_version=run.version, to_status=RunStatus.RUNNING
+    )
+    [attempt] = store.claim_nodes(
+        run.run_id,
+        [AttemptClaim("discover", "fresh-agent", 0)],
+        expected_version=running.version,
+    )
+    client = FakeAsyncAnthropic(
+        responder=scripted(
+            [
+                ([tool("return_artifact", _id="a1", value={"value": "ok"})], "tool_use"),
+                ([text("done")], "end_turn"),
+            ]
+        )
+    )
+    runner = FreshAgentRunner(
+        client=client,
+        settings=Settings(
+            fake_llm=True, workspace_root=tmp_path / "ws", skills_dir=tmp_path / "skills"
+        ),
+        workspace=tmp_path,
+        context_resolver=lambda claimed: store.get_run(claimed.run_id).run_context,
+        max_rounds=4,
+    )
+    submission = asyncio.run(runner(attempt, definition.nodes[0], {}))
+    assert submission.value == {"value": "ok"}, "the read tools + submit must still work"
+
+    worker = captured["agent"]
+    # The read-only mode is wired, and return_artifact is honestly classified so
+    # the backstop admits it (an unclassified tool would be denied in readonly).
+    assert worker.state.get("permission_mode") == "readonly"
+    assert worker.tools.get("return_artifact").risk == "read"
+
+    # A mutating tool that reached the worker's registry is denied by the
+    # backstop -- the empty-hooks worker would have run it.
+    async def mutate(_ctx, **_kw):
+        return "mutated"
+
+    worker.tools.register(Tool("write_thing", "w", {"type": "object"}, mutate, risk="write"))
+    call = ToolCall("write_thing", {}, "m1")
+    ctx = ToolContext(worker, worker.workspace, worker.state, call)
+    verdict = asyncio.run(worker.hooks.before_tool(ctx, call))
+    assert verdict is not None and "read-only" in verdict.lower(), (
+        "the readonly backstop did not deny a mutating tool"
+    )
 
 
 def test_fresh_agent_runner_fails_when_agent_never_returns_artifact(tmp_path):

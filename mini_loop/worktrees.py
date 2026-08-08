@@ -160,10 +160,21 @@ class WorktreeManager:
         if not discard_changes and (files or commits):
             return (f"Refusing: worktree {name} has {files} changed file(s) and "
                     f"{commits} commit(s); keep it or pass discard_changes=True")
-        ok, output = _git(self.repo_root, "worktree", "remove", str(path), "--force")
+        # `--force` only when the caller asked to discard. It was passed
+        # unconditionally, which threw away git's own check and left the whole
+        # guarantee resting on the `_changes()` call above -- with a window
+        # between the two. Verified: with work that arrived after the check, git
+        # refuses (rc=128) and `--force` removes it anyway.
+        remove_args = ["worktree", "remove", str(path)]
+        if discard_changes:
+            remove_args.append("--force")
+        ok, output = _git(self.repo_root, *remove_args)
         if not ok:
             return f"Error: {output}"
-        _git(self.repo_root, "branch", "-D", f"{self.branch_prefix}{name}")
+        # Likewise `-D` (delete regardless of merge state) only when discarding;
+        # `-d` refuses to drop a branch holding unmerged commits.
+        _git(self.repo_root, "branch", "-D" if discard_changes else "-d",
+             f"{self.branch_prefix}{name}")
         self._log("remove", name)
         return f"Removed worktree {name}"
 
@@ -202,7 +213,9 @@ def install_worktrees(registry: ToolRegistry) -> ToolRegistry:
         store = ctx.state.get("tasks")
         if store is None:
             root = ctx.state.get("team_workspace", ctx.workspace)
-            store = ctx.state["tasks"] = TaskStore(root)
+            store = ctx.state["tasks"] = TaskStore(
+                root, secrets=getattr(ctx.agent, "secrets", None)
+            )
         return store
 
     async def create_worktree(ctx, name, task_id=""):
@@ -236,10 +249,10 @@ def install_worktrees(registry: ToolRegistry) -> ToolRegistry:
         return f"Entered worktree '{name}' at {path}"
 
     registry.register(Tool("create_worktree", "Create an isolated git worktree and optionally bind a task.",
-                           _CREATE, create_worktree))
+                           _CREATE, create_worktree, risk="exec"))
     registry.register(Tool("remove_worktree", "Remove a clean worktree, or explicitly discard its changes.",
-                           _REMOVE, remove_worktree_tool))
-    registry.register(Tool("keep_worktree", "Keep a worktree and record it for review.", _NAME, keep_worktree))
-    registry.register(Tool("list_worktrees", "List git worktrees.", _EMPTY, list_worktrees_tool, readonly=True))
-    registry.register(Tool("enter_worktree", "Switch this agent's file tools into a worktree.", _NAME, enter_worktree))
+                           _REMOVE, remove_worktree_tool, risk="exec"))
+    registry.register(Tool("keep_worktree", "Keep a worktree and record it for review.", _NAME, keep_worktree, risk="write"))
+    registry.register(Tool("list_worktrees", "List git worktrees.", _EMPTY, list_worktrees_tool, readonly=True, risk="read"))
+    registry.register(Tool("enter_worktree", "Switch this agent's file tools into a worktree.", _NAME, enter_worktree, risk="write"))
     return registry

@@ -6,7 +6,7 @@ special, and any can be removed (`registry.unregister`) or replaced
 
   default_registry()  -> bash, read_file, write_file, edit_file, glob,
                          TodoWrite, task, load_skill, compress
-  explore_registry()  -> bash, read_file, glob         (exploration subagents)
+  explore_registry()  -> read_file, glob               (read-only exploration subagents)
   worker_registry()   -> bash, read_file, write_file, edit_file, glob
 """
 
@@ -64,6 +64,20 @@ COMPRESS = {
     "input_schema": {"type": "object", "properties": {}},
 }
 
+ASK_USER = {
+    "name": "ask_user",
+    "description": (
+        "Ask the human operator one clarifying question and wait for their "
+        "reply. Use sparingly -- prefer acting on the information you have. "
+        "The reply may take a while; if nobody answers, you will be told so."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {"question": {"type": "string"}},
+        "required": ["question"],
+    },
+}
+
 
 # --- handlers (all receive ctx first) --------------------------------------
 
@@ -86,6 +100,31 @@ async def _read_file(
 
 async def _write_file(ctx: ToolContext, path: str, content: str) -> str:
     return await ctx.agent.toolset.dispatch("write_file", {"path": path, "content": content})
+
+
+async def _write_file_took_effect(ctx: ToolContext, call) -> bool | None:
+    """Did this exact write already land?
+
+    Answerable precisely because `write_file` is a typed call rather than an
+    opaque shell string: the intended path and content are both in the request,
+    so the file on disk settles it. `bash` has no equivalent -- which is the
+    concrete argument for promoting a side effect out of it.
+    """
+
+    path = call.input.get("path")
+    content = call.input.get("content")
+    if not isinstance(path, str) or not isinstance(content, str):
+        return None
+    try:
+        target = ctx.agent.toolset.safe_path(path)
+    except ValueError:
+        return None
+    if not target.is_file():
+        return False  # provably not applied: retrying is safe
+    try:
+        return target.read_text() == content
+    except OSError:
+        return None  # cannot tell -- stay unknown rather than guess
 
 
 async def _edit_file(ctx: ToolContext, path: str, old_text: str, new_text: str) -> str:
@@ -117,9 +156,22 @@ def _compress(ctx: ToolContext) -> str:
     return "Compressing conversation..."
 
 
+async def _ask_user(ctx: ToolContext, question: str) -> str:
+    # The broker lives on the manager; a bare Agent (no manager in state) has
+    # nobody to route the question to and says so instead of hanging.
+    broker = getattr(ctx.state.get("manager"), "approvals", None)
+    if broker is None:
+        return "[ask_user unavailable on this surface: no approval broker]"
+    answer = await broker.ask_question(ctx, question)
+    if answer is None:
+        return ("[no answer] The user declined or did not respond in time. "
+                "Proceed on your best judgment and say what you assumed.")
+    return f"The user answered: {answer}"
+
+
 def _file_tools() -> list[Tool]:
     return [
-        Tool("bash", BASH["description"], BASH["input_schema"], _bash, readonly=False),
+        Tool("bash", BASH["description"], BASH["input_schema"], _bash, readonly=False, risk="exec"),
         Tool(
             "read_file",
             READ_FILE["description"],
@@ -127,9 +179,17 @@ def _file_tools() -> list[Tool]:
             _read_file,
             readonly=True,
             parallel_safe=True,
+            risk="read",
         ),
-        Tool("write_file", WRITE_FILE["description"], WRITE_FILE["input_schema"], _write_file),
-        Tool("edit_file", EDIT_FILE["description"], EDIT_FILE["input_schema"], _edit_file),
+        Tool(
+            "write_file",
+            WRITE_FILE["description"],
+            WRITE_FILE["input_schema"],
+            _write_file,
+            verify=_write_file_took_effect,
+            risk="write",
+        ),
+        Tool("edit_file", EDIT_FILE["description"], EDIT_FILE["input_schema"], _edit_file, risk="write"),
         Tool(
             "glob",
             GLOB["description"],
@@ -137,22 +197,31 @@ def _file_tools() -> list[Tool]:
             _glob,
             readonly=True,
             parallel_safe=True,
+            risk="read",
         ),
     ]
 
 
 def default_registry() -> ToolRegistry:
     reg = ToolRegistry(_file_tools())
-    reg.register(Tool("TodoWrite", TODO_WRITE["description"], TODO_WRITE["input_schema"], _todo_write))
-    reg.register(Tool("task", TASK["description"], TASK["input_schema"], _task))
-    reg.register(Tool("load_skill", LOAD_SKILL["description"], LOAD_SKILL["input_schema"], _load_skill))
-    reg.register(Tool("compress", COMPRESS["description"], COMPRESS["input_schema"], _compress))
+    reg.register(Tool("TodoWrite", TODO_WRITE["description"], TODO_WRITE["input_schema"], _todo_write, risk="write"))
+    reg.register(Tool("task", TASK["description"], TASK["input_schema"], _task, risk="exec"))
+    # readonly=True keeps the advisory field in step with risk="read" -- round
+    # 104 found these two the only built-ins where the two had drifted.
+    reg.register(Tool("load_skill", LOAD_SKILL["description"], LOAD_SKILL["input_schema"], _load_skill, readonly=True, risk="read"))
+    reg.register(Tool("compress", COMPRESS["description"], COMPRESS["input_schema"], _compress, risk="write"))
+    # A question mutates nothing; a readonly session may still ask.
+    reg.register(Tool("ask_user", ASK_USER["description"], ASK_USER["input_schema"], _ask_user, readonly=True, risk="read"))
     return reg
 
 
 def explore_registry() -> ToolRegistry:
+    # No bash: the Explore subagent runs in read-only permission mode (see
+    # `Agent._run_subagent`), which denies exec-risk tools, so an offered bash
+    # would be a tool the model is told it has and cannot ever call. read_file
+    # and glob are read-risk and are all a read-only explorer needs.
     by_name = {t.name: t for t in _file_tools()}
-    return ToolRegistry([by_name["bash"], by_name["read_file"], by_name["glob"]])
+    return ToolRegistry([by_name["read_file"], by_name["glob"]])
 
 
 def worker_registry() -> ToolRegistry:
