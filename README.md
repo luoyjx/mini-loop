@@ -86,6 +86,8 @@ mini_loop/
 docs/
   CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md
                  Claude Code dynamic workflows research + mini-loop design
+  TOKEN_EFFICIENCY_COMPONENTS.md
+                 token-efficient tools, harness contracts, and rollout design
   AGENT_PLATFORM_ROADMAP.md
                  evidence-based platform gaps, dependencies, and acceptance gates
   TRAJECTORIES.md trajectory schema, inspection, privacy, and recovery boundary
@@ -98,6 +100,7 @@ tests/           offline tests (no key): loop, sandbox, subagent, compaction,
 Design docs: [hardening notes](docs/HARDENING_NOTES.md) (why the non-curriculum
 modules exist, the traps they close, and what is still open),
 [Claude Code dynamic workflows research](docs/CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md),
+[token-efficiency tools and harness components](docs/TOKEN_EFFICIENCY_COMPONENTS.md),
 [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md), and
 [trajectory/recovery boundary](docs/TRAJECTORIES.md). Source-level external
 architecture reviews include
