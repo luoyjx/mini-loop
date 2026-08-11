@@ -129,9 +129,26 @@ def test_every_guard_mutation_still_applies():
     spec.loader.exec_module(module)
 
     root = path.parent.parent
+    counts = {m.name: (root / m.file).read_text().count(m.old) for m in module.MUTATIONS}
     stale = [
         f"{m.name}: anchor gone from {m.file}"
         for m in module.MUTATIONS
-        if m.old not in (root / m.file).read_text()
+        if counts[m.name] == 0
     ]
     assert not stale, "\n  ".join(["stale guard mutations:"] + stale)
+
+    # An anchor matching several places is as broken as one matching none, and
+    # quieter: `replace(..., 1)` breaks the *first* match, which need not be the
+    # site the named test covers, so the guard reports on code nobody aimed it
+    # at. Found when `workspace-removal-forgets-its-turn` mutated the
+    # no-running-loop branch while its test exercised the async one, and
+    # SURVIVED. This is the round-162 ambiguous-edit defect inside the
+    # instrument that exists to catch such defects.
+    ambiguous = [
+        f"{m.name}: anchor matches {counts[m.name]} places in {m.file}"
+        for m in module.MUTATIONS
+        if counts[m.name] > 1
+    ]
+    assert not ambiguous, "\n  ".join(
+        ["guard mutations whose anchor is not unique:"] + ambiguous
+    )

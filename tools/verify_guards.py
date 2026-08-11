@@ -611,8 +611,12 @@ MUTATIONS = [
     ),
     Mutation(
         "shutdown-authorization-dropped", 55, "mini_loop/teams.py",
-        '        if ctx.state.get("agent_name", "lead") != "lead":',
-        "        if False:",
+        # The lead-only guard is spelled identically in request_plan and
+        # review_plan; the error message is what makes the shutdown site unique.
+        '        if ctx.state.get("agent_name", "lead") != "lead":\n'
+        '            return "Error: only the lead can request teammate shutdown"',
+        '        if False:\n'
+        '            return "Error: only the lead can request teammate shutdown"',
         "tests/test_team_tools.py",
         "only the lead may request a teammate shutdown",
     ),
@@ -1576,7 +1580,12 @@ MUTATIONS = [
     ),
     Mutation(
         "workspace-removal-forgets-its-turn", 94, "mini_loop/manager.py",
+        # Anchored on the *async close* site (the one the named test exercises,
+        # since it runs under a live loop). The bare `if remove_now:` matched
+        # several sites and mutated the first -- a different branch entirely.
+        "                    # live process has as its cwd is a race, not a cleanup.\n"
         "                    if remove_now:",
+        "                    # live process has as its cwd is a race, not a cleanup.\n"
         "                    if False:",
         "tests/test_session_reclamation.py::test_the_workspace_outlives_the_shell",
         "when the close path owns workspace removal it must actually remove "
@@ -1702,8 +1711,15 @@ MUTATIONS = [
     ),
     Mutation(
         "ask-leaves-no-durable-row", 100, "mini_loop/approvals.py",
-        '        self._pending[pending.approval_id] = pending\n        self._persist(pending, "pending")',
-        "        self._pending[pending.approval_id] = pending",
+        # `ask` and `ask_question` register identically; the absence of
+        # `kind="question"` is what pins this to the tool-approval site.
+        '            tool_use_id=getattr(call, "id", "") or "",\n'
+        '        )\n'
+        '        self._pending[pending.approval_id] = pending\n'
+        '        self._persist(pending, "pending")',
+        '            tool_use_id=getattr(call, "id", "") or "",\n'
+        '        )\n'
+        '        self._pending[pending.approval_id] = pending',
         "tests/test_durable_approvals.py::test_every_ask_leaves_a_row_and_every_outcome_updates_it",
         "every ask leaves a durable row: without it a restart cannot tell "
         "parked-never-ran from dispatched-outcome-unknown",
@@ -2076,11 +2092,23 @@ def _run(selector: str | None) -> int:
             )
             target = work / mutation.file
             source = target.read_text()
-            if mutation.old not in source:
+            occurrences = source.count(mutation.old)
+            if occurrences == 0:
                 # The code moved. Reporting this is the whole point: a mutation
                 # that cannot be applied is a check that silently stops running.
                 missing.append(mutation)
                 print(f"  STALE     {mutation.name}  (anchor not found in {mutation.file})")
+                continue
+            if occurrences > 1:
+                # `replace(..., 1)` would silently break the *first* match, which
+                # need not be the site the named test covers -- exactly the
+                # ambiguous-edit defect round 162 fixed in `edit_file`, here in
+                # the instrument that checks for such defects. A guard aimed at
+                # the wrong site reports "caught" or "SURVIVED" about code nobody
+                # asked it to check, so refuse rather than guess.
+                missing.append(mutation)
+                print(f"  AMBIGUOUS {mutation.name}  (anchor matches {occurrences} "
+                      f"places in {mutation.file}; it would mutate the first)")
                 continue
             target.write_text(source.replace(mutation.old, mutation.new, 1))
 

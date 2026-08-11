@@ -5930,3 +5930,43 @@ peak memory tracks the bound, not the output, while a fitting command keeps its
 tail untouched; the round-63 keep-tail and round-97 live-set mutations
 re-anchored onto the rewritten body and still caught; timeout still fires
 promptly; timing-safety and the 19 scan anchors green; full guard sweep clean.
+
+### 8er — a guard mutation aimed at the wrong site and reported success (round 170)
+
+The full sweep reported `workspace-removal-forgets-its-turn` as SURVIVED. The
+guard was sound and the code it checks was correct; the *anchor* was the defect.
+`if remove_now:` appears at several indistinguishable sites in `manager.py` --
+the no-running-loop branch, the post-turn callback, the async close -- and
+`verify_guards` applied its rewrite with `source.replace(old, new, 1)`. So it
+broke the first match, the no-loop branch, while the named test runs under a
+live loop and exercises the async one. The mutation therefore proved nothing
+about the site it named, and had it been "caught" it would have been just as
+meaningless -- a green result about code nobody aimed it at.
+
+This is precisely the defect round 162 fixed in `edit_file`: an ambiguous anchor
+silently applied to the first match, reporting success either way. It was
+sitting inside the instrument built to find such defects, which is the part
+worth remembering -- the tool that checks the guards was never itself checked
+against its own lesson.
+
+Three fixes, in increasing order of durability. `verify_guards` now counts
+occurrences and refuses an anchor matching more than one place, reporting
+AMBIGUOUS beside STALE -- an anchor matching several sites is as broken as one
+matching none, and quieter. The three ambiguous anchors found by a sweep of all
+247 (this one, `shutdown-authorization-dropped`, `ask-leaves-no-durable-row` --
+the other two caught only by the luck of the first match being the right one)
+were disambiguated with surrounding context. And the anchor-freshness meta-test,
+which asked only "does this anchor still exist", now also asks "does it match
+exactly once", so the next ambiguous anchor fails at test time rather than
+after a full sweep.
+
+Lesson: a verification instrument is code, and inherits every defect class the
+code it verifies can have. The staleness check was built after an anchor went
+missing; nobody asked the mirrored question -- what if an anchor matches too
+much? Both failures produce a check that is not checking what it claims, and the
+ambiguous one is worse because it still prints a verdict.
+
+Verification: the previously-surviving mutation now targets the async close site
+and is caught; all three formerly-ambiguous anchors caught individually; a scan
+confirms all 247 anchors match exactly once; the meta-test was shown to fail on
+a deliberately duplicated anchor; full guard sweep clean.
