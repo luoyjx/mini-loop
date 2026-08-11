@@ -102,6 +102,23 @@ def test_the_newest_results_are_intact():
     assert len(newest.result) == 4_000
 
 
+def test_truncated_action_result_is_explicit_on_replay():
+    journal = InMemoryActionJournal()
+    journal.begin(
+        action_id="long",
+        session_id="session",
+        message_id="message",
+        tool_use_id="tool",
+        tool_name="bash",
+        input_value={},
+    )
+    journal.finish("long", status="completed", result="x" * 5_000)
+
+    result = journal.get("long").result
+    assert len(result) == 4_000
+    assert result.endswith("[action result truncated; original_chars=5000]")
+
+
 def test_a_short_session_sheds_nothing():
     """Not vacuous: the bound must not fire on ordinary use."""
 

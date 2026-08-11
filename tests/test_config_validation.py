@@ -96,3 +96,111 @@ def test_min_one_is_the_boundary(tmp_path):
     settings = _settings(tmp_path, max_concurrent_llm=1, max_turns=1,
                          subagent_max_rounds=1)
     assert settings.max_concurrent_llm == 1
+
+
+@pytest.mark.parametrize(
+    "field",
+    [
+        "token_efficiency_raw_min_bytes",
+        "token_efficiency_artifact_ttl_seconds",
+        "token_efficiency_max_artifact_bytes",
+        "token_efficiency_max_total_bytes",
+        "ast_outline_timeout",
+        "ast_outline_max_output_bytes",
+    ],
+)
+@pytest.mark.parametrize("bad", [0, -1])
+def test_token_efficiency_and_ast_positive_bounds_are_validated(
+    tmp_path, field, bad
+):
+    with pytest.raises(ValueError, match=field):
+        _settings(tmp_path, **{field: bad})
+
+
+@pytest.mark.parametrize(
+    ("field", "bad"),
+    [
+        ("token_efficiency_mode", "auto"),
+        ("token_efficiency_response_style", "terse"),
+        ("ast_outline_binary", ""),
+    ],
+)
+def test_token_efficiency_and_ast_enums_or_binary_are_validated(
+    tmp_path, field, bad
+):
+    with pytest.raises(ValueError, match=field):
+        _settings(tmp_path, **{field: bad})
+
+
+def test_artifact_limit_cannot_exceed_total_capacity(tmp_path):
+    with pytest.raises(ValueError, match="must not exceed"):
+        _settings(
+            tmp_path,
+            token_efficiency_max_artifact_bytes=101,
+            token_efficiency_max_total_bytes=100,
+        )
+
+
+def test_raw_persistence_threshold_cannot_exceed_artifact_limit(tmp_path):
+    with pytest.raises(ValueError, match="raw_min_bytes must not exceed"):
+        _settings(
+            tmp_path,
+            token_efficiency_raw_min_bytes=101,
+            token_efficiency_max_artifact_bytes=100,
+        )
+
+
+def test_token_efficiency_and_ast_defaults_are_safe(tmp_path):
+    settings = _settings(tmp_path)
+
+    assert settings.token_efficiency_mode == "off"
+    assert settings.token_efficiency_response_style == "normal"
+    assert settings.token_efficiency_persist_raw is True
+    assert settings.ast_outline_enabled is False
+    assert settings.ast_outline_binary == "ast-outline"
+    assert settings.ast_outline_sha256 is None
+
+
+def test_token_efficiency_and_ast_settings_are_env_backed(tmp_path, monkeypatch):
+    monkeypatch.setenv("MINILOOP_TOKEN_EFFICIENCY_MODE", "SHADOW")
+    monkeypatch.setenv("MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE", "CONCISE")
+    monkeypatch.setenv("MINILOOP_TOKEN_EFFICIENCY_PERSIST_RAW", "false")
+    monkeypatch.setenv("MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES", "123")
+    monkeypatch.setenv(
+        "MINILOOP_TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS", "45.5"
+    )
+    monkeypatch.setenv("MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES", "456")
+    monkeypatch.setenv("MINILOOP_TOKEN_EFFICIENCY_MAX_TOTAL_BYTES", "789")
+    monkeypatch.setenv("MINILOOP_AST_OUTLINE_ENABLED", "true")
+    monkeypatch.setenv("MINILOOP_AST_OUTLINE_BINARY", "/opt/ast-outline")
+    monkeypatch.setenv("MINILOOP_AST_OUTLINE_SHA256", "a" * 64)
+    monkeypatch.setenv("MINILOOP_AST_OUTLINE_TIMEOUT", "3.5")
+    monkeypatch.setenv("MINILOOP_AST_OUTLINE_MAX_OUTPUT_BYTES", "987")
+
+    settings = _settings(tmp_path)
+
+    assert settings.token_efficiency_mode == "shadow"
+    assert settings.token_efficiency_response_style == "concise"
+    assert settings.token_efficiency_persist_raw is False
+    assert settings.token_efficiency_raw_min_bytes == 123
+    assert settings.token_efficiency_artifact_ttl_seconds == 45.5
+    assert settings.token_efficiency_max_artifact_bytes == 456
+    assert settings.token_efficiency_max_total_bytes == 789
+    assert settings.ast_outline_enabled is True
+    assert settings.ast_outline_binary == "/opt/ast-outline"
+    assert settings.ast_outline_sha256 == "a" * 64
+    assert settings.ast_outline_timeout == 3.5
+    assert settings.ast_outline_max_output_bytes == 987
+
+
+def test_enabled_ast_outline_requires_absolute_digest_pinned_binary(tmp_path):
+    with pytest.raises(ValueError, match="absolute binary path"):
+        _settings(tmp_path, ast_outline_enabled=True)
+    with pytest.raises(ValueError, match="requires ast_outline_sha256"):
+        _settings(
+            tmp_path,
+            ast_outline_enabled=True,
+            ast_outline_binary="/opt/ast-outline",
+        )
+    with pytest.raises(ValueError, match="64 lowercase hex"):
+        _settings(tmp_path, ast_outline_sha256="not-a-digest")

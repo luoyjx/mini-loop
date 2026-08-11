@@ -66,8 +66,13 @@ mutation tools remain sequential.
 ```
 mini_loop/
   config.py      env + LLM-client factory (anthropic import is lazy)
-  tools.py       per-workspace bash/read/write/edit/glob + async dispatch + safe_path
-  registry.py    Tool / ToolRegistry / ToolContext + Hook / Hooks   ← extension seam
+  tools.py       per-workspace tools + structured CommandResult + safe_path
+  registry.py    Tool / immutable ToolCatalogSnapshot / Hook / Hooks
+  ast_context.py ast-outline 1.9.x adapter + four typed semantic-read tools
+  token_efficiency.py
+                 staged reducer/optimizer/policy registry + receipts + lifecycle
+  token_tools.py scoped recovery of already-masked raw tool results
+  tool_policy.py capability-based Explore/Worker tool inheritance
   permissions.py deny-list + PermissionRule + async approval callback
   builtins.py    the built-in tools as Tools; default/explore/worker registries
   skills.py      SkillLoader — index descriptions, load bodies on demand
@@ -279,6 +284,22 @@ blind spot shared by every consecutive-and-identical detector. Swap or disable
 it with `stuck_detector=`
 (see [EXTENDING.md](./EXTENDING.md#4b-loop-detection--stuckdetector)).
 
+The harness now also has an explicit **token-efficiency pipeline**
+(`mini_loop/token_efficiency.py`). It is off by default. `shadow` runs selected
+components and emits content-free optimization receipts without changing the
+model view; `enforce` can apply a post-mask observation projection, a
+request-copy optimizer, and a concise response policy. Enforced observation
+projection can retain a session-scoped, TTL-bound in-memory copy of the
+**already masked** result and expose it through a 50 kB paged
+`read_token_artifact`. Tool schemas and
+the system prompt share one immutable `ToolCatalogSnapshot` and fingerprint per
+provider request, and Explore/Worker children inherit tools by declared
+capability instead of rebuilding hard-coded name lists. The optional
+`ast-outline` adapter exposes `repo_map`, `file_outline`, `show_symbol`, and
+`symbol_references` through direct argv execution and accepts only 1.9.x. See
+[the extension guide](./EXTENDING.md#4c-token-efficiency-stages) and the
+[source-level research](docs/TOKEN_EFFICIENCY_COMPONENTS.md).
+
 `MINILOOP_REPO_ROOT=/path/to/repo` gives the worktree tools a target repository.
 MCP servers are application dependencies, supplied through `mcp_servers=` when
 constructing `SessionManager`; `connect_mcp` remains present and reports the
@@ -467,3 +488,18 @@ directories. Comprehensive-mode settings also include `MINILOOP_MEMORY_ROOT`,
 `MINILOOP_EXPERIMENTAL_WORKFLOWS` only supplies configuration defaults for
 explicit local integrations; it does not enable workflows on the default
 FastAPI server. Construct `SessionManager(enable_workflows=True)` to opt in.
+
+Token-efficiency settings are `MINILOOP_TOKEN_EFFICIENCY_MODE`
+(`off|shadow|enforce`), `MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE`
+(`normal|concise`), `MINILOOP_TOKEN_EFFICIENCY_PERSIST_RAW`,
+`MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES`,
+`MINILOOP_TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS`,
+`MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES`, and
+`MINILOOP_TOKEN_EFFICIENCY_MAX_TOTAL_BYTES`. Semantic code tools are controlled
+by `MINILOOP_AST_OUTLINE_ENABLED`, `MINILOOP_AST_OUTLINE_BINARY`,
+`MINILOOP_AST_OUTLINE_SHA256`,
+`MINILOOP_AST_OUTLINE_TIMEOUT`, and `MINILOOP_AST_OUTLINE_MAX_OUTPUT_BYTES`.
+Both feature families default off. Enabling ast-outline through `Settings` and
+`SessionManager` requires an operator-configured absolute binary path plus its
+SHA-256; the adapter rechecks that digest on every invocation and accepts only
+`>=1.9.0,<1.10.0`.

@@ -4,8 +4,8 @@ Round 58 found `run_in_background` reaching the same shell as `run_bash` with
 none of its guards. That is a shape -- *a sibling path to a dangerous
 primitive* -- and the answer to a shape is a scan, not another module read.
 
-There are four spawn sites. Two run **model-supplied commands** and must go
-through the sandbox and a scrubbed environment. Two run **harness-controlled
+There are five spawn sites. Two run **model-supplied commands** and must go
+through the sandbox and a scrubbed environment. Three run **harness-controlled
 argv** and need not be sandboxed, but must never interpolate into a shell.
 
 The scan found the fourth was worse than unsandboxed. An MCP server -- the least
@@ -43,7 +43,7 @@ SPAWN_CALLS = {"run", "Popen", "call", "check_call", "check_output",
 MODEL_SUPPLIED = {"tools.py", "background.py"}
 #: Runs a fixed argv the harness controls: no shell, and the arguments are
 #: validated before they get here.
-HARNESS_CONTROLLED = {"worktrees.py", "mcp.py"}
+HARNESS_CONTROLLED = {"worktrees.py", "mcp.py", "ast_context.py"}
 
 
 def _spawn_sites() -> dict[str, list[int]]:

@@ -32,6 +32,8 @@ A complete, runnable example combining all of the below:
 | Module | Seam | Inject via | Replace to change… |
 |---|---|---|---|
 | `registry.py` / `builtins.py` | `ToolRegistry` | `tools=` / `tool_registry=` | what the agent can *do* |
+| `registry.py` | immutable `ToolCatalogSnapshot` | automatic per request | the exact schema/prompt prefix and its fingerprint |
+| `tool_policy.py` | `RoleToolPolicy` | `role_tool_policy=` | which declared capabilities Explore/Worker children inherit |
 | `registry.py` | `Hooks` (`Hook`) | `hooks=` | permissions, audit, arg/output rewriting |
 | `prompts.py` | `system_builder(agent)->str` | `system_builder=` / `system=` | the system prompt |
 | `compaction.py` | `Compactor` | `compactor=` | how context is trimmed/summarized |
@@ -41,6 +43,14 @@ A complete, runnable example combining all of the below:
 | `sandbox.py` | `Sandbox` | `sandbox=` | what the shell can reach on the host |
 | `stuck.py` | `StuckDetector` | `stuck_detector=` | when a repeating agent is nudged or halted |
 | `recovery.py` | `RecoveryPolicy` | `recovery=` | retry/backoff/token-escalation/fallback on LLM errors |
+| `token_efficiency.py` | `TokenEfficiencyRuntime` | `token_efficiency=` | post-mask observations, request copies, and response policy |
+| `ast_context.py` | `AstOutlineAdapter` | settings or `install_ast_context_tools()` | typed, bounded semantic code reads |
+| `agent.py` | `injectors` (`async (agent)->msgs`) | `injectors=` | splice messages into each turn (background, cron) |
+| `skills.py` | `SkillLoader` | `skills=` + `skills/` dir | on-demand domain knowledge |
+| `config.py` | LLM client | `build_client` / `client=` | model / provider / base_url |
+| `manager.py` | `workspace_factory(id)->Path` | `workspace_factory=` | where/how the sandbox is provisioned |
+| `session.py` | `event_sink(event)` | `event_sink=` | global metrics / logging / persistence |
+| `server.py` | `create_app(manager=...)` | app factory | serving a customized fleet |
 
 A `RecoveryPolicy` receives `live_history=` — the agent's own message list when
 the failing request *was* the conversation, `None` otherwise. Reactive
@@ -48,12 +58,6 @@ compaction needs it: it used to mutate the request list on the assumption that
 it aliased `agent.messages`, which stopped being true once a `CachePolicy`
 started annotating onto a copy. Shrinking only the retry leaves the next turn to
 rebuild the same oversized prompt.
-| `agent.py` | `injectors` (`async (agent)->msgs`) | `injectors=` | splice messages into each turn (background, cron) |
-| `skills.py` | `SkillLoader` | `skills=` + `skills/` dir | on-demand domain knowledge |
-| `config.py` | LLM client | `build_client` / `client=` | model / provider / base_url |
-| `manager.py` | `workspace_factory(id)->Path` | `workspace_factory=` | where/how the sandbox is provisioned |
-| `session.py` | `event_sink(event)` | `event_sink=` | global metrics / logging / persistence |
-| `server.py` | `create_app(manager=...)` | app factory | serving a customized fleet |
 
 ---
 
@@ -80,7 +84,13 @@ are also fields of one value:
 ```python
 from mini_loop import Harness, SessionManager
 
-harness = Harness(hooks=my_hooks, secrets=registry, sandbox=sandbox)
+harness = Harness(
+    hooks=my_hooks,
+    secrets=registry,
+    sandbox=sandbox,
+    token_efficiency=my_runtime,
+    role_tool_policy=my_role_policy,
+)
 SessionManager(settings, client, ...)          # assembles one internally
 Agent(client=..., settings=..., workspace=..., harness=harness)
 ```
@@ -126,6 +136,7 @@ registry = default_registry()      # bash, read_file, write_file, edit_file,
     {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]},
     readonly=True,
     parallel_safe=True,
+    capabilities={"repo.search"},
 )
 async def web_search(ctx, query):          # ctx + your schema properties
     return await my_concurrency_safe_search_client(query)  # return a string
@@ -181,9 +192,20 @@ registry.register(my_bash_tool, replace=True)    # swap the implementation
 readonly = registry.subset(["read_file", "web_search"])
 ```
 
-Subagents get their own restricted registries (`explore_registry`,
-`worker_registry` in `builtins.py`) — override `Agent._run_subagent` or pass a
-different `task` tool if you need custom delegation.
+`registry.snapshot()` fits the catalogue once and returns an immutable
+`ToolCatalogSnapshot`: canonical schema JSON, sent/omitted names, registry
+revision, and a SHA-256 fingerprint. During one model request both
+`default_system_builder` and `tools=` consume that same snapshot, so cache
+identity cannot drift because the registry was fitted twice. `schemas()`
+returns a detached copy; provider/cache annotation cannot mutate the snapshot.
+
+Subagents no longer rebuild a list of concrete tool names. Every `Tool` may
+declare stable `capabilities`; the default `CapabilityRoleToolPolicy` selects a
+subset of the **parent** registry. Explore inherits `repo.read`, `repo.search`,
+`repo.semantic_outline`, `repo.symbol`, and `repo.references`; Worker adds
+`workspace.write` and `process.exec`. A tool with no capability is not inherited
+implicitly. Explore also runs in read-only permission mode, so capability
+selection and execution-time authority agree.
 
 ---
 
@@ -612,6 +634,207 @@ tools.
 Rules and default thresholds are ported from the OpenHands SDK `StuckDetector`
 (`OpenHands/software-agent-sdk`), adapted from one-action-per-step events to
 mini-loop's batched tool calls.
+
+---
+
+## 4c. Token-efficiency stages
+
+Token efficiency is a staged projection pipeline, not an output-string hook:
+
+```text
+tool authority
+  -> Hook.after_tool
+  -> SecretRegistry.mask
+  -> ObservationReducer(s)
+  -> SecretRegistry.mask (again, across the plugin boundary)
+  -> action journal: bounded masked authority
+  -> event / trajectory / model transcript: guarded projection
+
+provider request copy
+  -> RequestContextOptimizer(s)
+  -> role + tool_use/tool_result protocol guard
+  -> CachePolicy.annotate
+  -> provider
+```
+
+`TokenEfficiencyRegistry` has three typed stages:
+
+* `ObservationReducer` receives only an already-masked `MaskedObservation`;
+* `RequestContextOptimizer` receives a deep copy plus the cache-stable
+  `frozen_prefix_messages` boundary;
+* `ResponsePolicy` returns stable instructions and output-budget settings
+  before cache annotation.
+
+Each component exposes a `ComponentDescriptor` (id, version, stage, content
+types, determinism, lossiness, network access, timeout and limits). Every
+attempt creates an internal `OptimizationReceipt` with digests, before/after
+byte and token estimates, status, reason, bounded warning codes, elapsed time
+and optional `raw_ref` — never the observation content. Normal events omit
+warnings and all content digests, exposing only a `warning_count`. Modes have
+strict semantics:
+
+| Mode | Calls component | Changes model view |
+|---|---:|---:|
+| `off` | no | no |
+| `shadow` | yes | no; emits candidate receipt |
+| `enforce` | yes | only after frozen-prefix, inflation and double-reduction guards |
+
+Component exceptions and cooperative async timeouts fail open to the last good
+projection. Descriptor fields such as `network_access` and `timeout_ms` are
+policy metadata, not an in-process security sandbox: registered components must
+be trusted and event-loop cooperative; untrusted or remote reducers belong in a
+restricted sidecar. The runtime snapshot is immutable; a changed rollout is
+constructed as a new runtime rather than mutating live sessions. Optional
+`initialize`, synchronous `health`, and `close` hooks initialize in registry
+order and close in reverse.
+`SessionManager.start()`
+initializes them without handing over the manager or its credentials, and
+`SessionManager.stop()` closes them only after session/background consumers.
+
+An enforced recoverable observation reducer can retain a sufficiently large
+**already masked** result in a per-session in-memory store. References are
+opaque, object-scoped, size-bounded and TTL-bound; no artifact bytes are written
+under the model-visible workspace. The model gets paged
+`read_token_artifact(raw_ref, offset, limit)` only when its catalogue explicitly
+contains the `observation.recover` capability. The action journal keeps the
+masked authoritative result rather than an ephemeral recovery marker.
+
+The built-in shell now returns a `CommandResult` to the harness with separate
+`stdout`, `stderr`, `exit_code`, `timed_out`, `overflowed`, duration and harness
+error fields. Its compatibility string rendering is stdout followed by stderr;
+it does not claim to reconstruct cross-stream interleaving. No RTK binary is
+invoked and no shell command is transparently rewritten; adapters can classify
+this structured result later without moving execution behind the permission
+decision.
+
+### Inject a custom reducer and request optimizer
+
+Start custom components in `shadow`, inspect receipts and task-quality checks,
+then construct a new `enforce` runtime only for a validated rollout:
+
+```python
+from mini_loop import (
+    ComponentDescriptor,
+    ComponentStage,
+    Lossiness,
+    OptimizationMode,
+    SessionManager,
+    TokenEfficiencyRegistry,
+)
+from mini_loop.token_efficiency import ObservationReduction, RequestOptimization
+
+
+class DomainLogReducer:
+    descriptor = ComponentDescriptor(
+        id="domain-heartbeat-fold",
+        version="1",
+        stage=ComponentStage.OBSERVATION,
+        content_types=("text/x-command-output",),
+        deterministic=True,
+        lossiness=Lossiness.LOSSY,
+        network_access=False,
+        timeout_ms=100,
+    )
+
+    async def reduce(self, observation, *, query=None, budget_tokens=None):
+        lines = observation.content.splitlines()
+        kept = [line for line in lines if line != "HEARTBEAT OK"]
+        removed = len(lines) - len(kept)
+        warnings = (f"removed_known_heartbeat:{removed}",) if removed else ()
+        return ObservationReduction("\n".join(kept), warnings)
+
+
+class LatestDeltaOptimizer:
+    descriptor = ComponentDescriptor(
+        id="latest-delta-blank-fold",
+        version="1",
+        stage=ComponentStage.REQUEST_CONTEXT,
+        deterministic=True,
+        lossiness=Lossiness.LOSSY,
+        network_access=False,
+        timeout_ms=100,
+    )
+
+    async def optimize(self, context, *, budget_tokens=None):
+        request = dict(context.request)
+        messages = [dict(message) for message in request.get("messages", [])]
+        if messages and isinstance(messages[-1].get("content"), str):
+            messages[-1]["content"] = "\n".join(
+                line for line in messages[-1]["content"].splitlines()
+                if line.strip()
+            )
+        request["messages"] = messages
+        return RequestOptimization(request)
+
+
+components = TokenEfficiencyRegistry()
+components.register_observation(DomainLogReducer())
+components.register_request_optimizer(LatestDeltaOptimizer())
+runtime = components.runtime(default_mode=OptimizationMode.SHADOW)
+
+manager = SessionManager(settings, client, token_efficiency=runtime)
+```
+
+The request optimizer above can touch only the newest delta: the runtime rejects
+a changed frozen prefix, and `Agent._create` separately rejects changes to role
+count or `tool_use`/`tool_result` identities. Optimizers operate before
+`CachePolicy.annotate`, and neither their mutation nor provider-specific cache
+keys enter `agent.messages`.
+
+### Built-in configuration
+
+`SessionManager` performs no package/entry-point discovery. Settings select
+only reviewed built-ins; an injected `token_efficiency=` runtime takes
+precedence.
+
+| Environment variable | Default | Meaning |
+|---|---:|---|
+| `MINILOOP_TOKEN_EFFICIENCY_MODE` | `off` | `off`, `shadow`, or `enforce` for built-in components |
+| `MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE` | `normal` | `concise` registers the Caveman-inspired local response policy |
+| `MINILOOP_TOKEN_EFFICIENCY_PERSIST_RAW` | `true` | retain eligible already-masked raw observations in enforce mode |
+| `MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES` | `16384` | minimum masked observation size eligible for in-memory recovery |
+| `MINILOOP_TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS` | `3600` | in-memory artifact lifetime |
+| `MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES` | `2000000` | per-artifact limit |
+| `MINILOOP_TOKEN_EFFICIENCY_MAX_TOTAL_BYTES` | `20000000` | per-session store limit |
+
+With a non-`off` mode, the manager registers the local
+`DeterministicLosslessReducer`; despite its historical class name, its
+descriptor is `recoverable` because it folds display noise. `enforce` therefore
+applies it only when the scoped original can be recovered.
+`RESPONSE_STYLE=concise` additionally registers
+`ConciseResponsePolicy`; `shadow` measures it and `enforce` applies it. This is
+a small local policy inspired by Caveman, not the Caveman project packaged as a
+runtime dependency.
+
+The optional code-context provider is independent and off by default:
+
+| Environment variable | Default | Meaning |
+|---|---:|---|
+| `MINILOOP_AST_OUTLINE_ENABLED` | `false` | install four typed semantic-read tools |
+| `MINILOOP_AST_OUTLINE_BINARY` | `ast-outline` | absolute operator-pinned path when enabled |
+| `MINILOOP_AST_OUTLINE_SHA256` | unset | required 64-hex executable digest when enabled |
+| `MINILOOP_AST_OUTLINE_TIMEOUT` | `10` | per-process wall-clock bound in seconds |
+| `MINILOOP_AST_OUTLINE_MAX_OUTPUT_BYTES` | `1000000` | independent stdout/stderr capture cap |
+
+The `Settings`/`SessionManager` built-in path probes and accepts
+`>=1.9.0,<1.10.0`, rechecks the pinned SHA-256 before every execution, and calls
+the executable with direct argv
+(`shell=False`), refuses a binary inside the model-visible workspace, confines
+paths to the session workspace, and
+returns typed statuses such as `applied`, `no_match`, `partial`, `missing`, and
+`incompatible`. The installed tools are `repo_map`, `file_outline`,
+`show_symbol`, and `symbol_references`; their semantic capabilities flow to
+Explore/Worker children through `RoleToolPolicy`.
+
+Direct construction of `AstOutlineAdapter(AstContextConfig(...))` is a trusted
+embedding seam and can intentionally omit the digest or resolve a PATH name;
+the embedding caller then owns binary verification. Do not treat that lower-
+level API as carrying the manager's supply-chain guarantee.
+
+Headroom is not bundled as an adapter or proxy. A future integration must run
+offline with its upload beacon disabled, preserve the frozen prefix, and begin
+in `shadow`; merely importing a proxy into the provider path is outside this
+contract.
 
 ---
 

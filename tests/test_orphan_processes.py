@@ -28,6 +28,7 @@ survive.
 """
 
 import asyncio
+import io
 import pathlib
 import subprocess
 import time
@@ -85,6 +86,35 @@ def test_a_timeout_reaps_the_whole_process_group(workspace):
     assert _alive(FOREGROUND_MARK) == [], (
         "children survived the timeout and will burn CPU indefinitely"
     )
+
+
+def test_foreground_command_requests_own_process_group(workspace, monkeypatch):
+    """Pin group creation without relying on host process-inspection access."""
+
+    captured = {}
+
+    class FakeProcess:
+        pid = 12345
+        returncode = 0
+        stdout = io.StringIO("")
+        stderr = io.StringIO("")
+
+        def poll(self):
+            return 0
+
+        def wait(self, timeout=None):
+            return 0
+
+    def fake_popen(*args, **kwargs):
+        captured["args"] = args
+        captured["kwargs"] = kwargs
+        return FakeProcess()
+
+    monkeypatch.setattr("mini_loop.tools.subprocess.Popen", fake_popen)
+    result = Toolset(workspace).run_bash_result("echo ok")
+
+    assert result.timed_out is False
+    assert captured["kwargs"]["start_new_session"] is True
 
 
 def test_an_ordinary_command_is_unaffected(workspace):

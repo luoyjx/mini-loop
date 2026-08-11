@@ -16,10 +16,12 @@ from __future__ import annotations
 import asyncio
 import glob as globlib
 import contextlib
+from dataclasses import dataclass
 import os
 import signal
 import subprocess
 import threading
+import time
 from pathlib import Path
 
 from .durable import atomic_write_text
@@ -110,35 +112,108 @@ READ_CHAR_CAP = 2_000_000
 MAX_BASH_CAPTURE = 5_000_000
 
 
-class _BoundedCapture:
-    """Read a stream up to a byte limit in a thread, ending the producer past it.
+@dataclass(frozen=True, slots=True)
+class CommandResult:
+    """Structured, masked result from one foreground shell command.
 
-    A thread, so the main flow can still enforce the wall-clock timeout with
-    `process.wait(timeout=...)`. Draining continuously keeps the producer from
-    blocking on a full pipe up to the limit; once the limit is hit the producer
-    is ended (its stdout then reaches EOF and this returns) instead of being
-    buffered without bound.
+    ``stdout`` and ``stderr`` retain their separate meanings for reducers and
+    audit code. ``render`` is the compatibility string projection the model
+    receives through :meth:`Toolset.run_bash`: stdout followed by stderr and
+    bounded with the same tail-preserving policy. Cross-stream interleaving is
+    not reconstructed; consumers that care about channel semantics use the
+    structured fields.
+
+    ``error`` represents a failure outside the command's own exit status (for
+    example a blocked command, failure to start, or the harness deadline).  It
+    is intentionally separate from stderr so callers never mistake a harness
+    decision for bytes produced by the child process.
+    """
+
+    stdout: str
+    stderr: str
+    exit_code: int | None
+    timed_out: bool
+    overflowed: bool
+    duration_ms: int
+    error: str | None = None
+    projection: str | None = None
+    capture_limit: int = MAX_BASH_CAPTURE
+
+    def render(self) -> str:
+        if self.error is not None:
+            return self.error
+        out = (
+            self.projection
+            if self.projection is not None
+            else self.stdout + self.stderr
+        ).strip()
+        if not out:
+            return "(no output)"
+        rendered = capped(out, keep_tail=True)
+        if self.overflowed:
+            rendered += (
+                f"\n[output exceeded {self.capture_limit:,} bytes; capture "
+                "stopped and the command was ended]"
+            )
+        return rendered
+
+    def __str__(self) -> str:
+        return self.render()
+
+
+class _BoundedCapture:
+    """Read stdout and stderr under one aggregate bound.
+
+    Each pipe is drained in its own thread, so neither can fill while the other
+    is active.  Both readers debit the same locked budget: separating the
+    streams must not silently turn the old five-megabyte ceiling into ten.
+    Once a byte beyond the budget is observed, the producer is ended.
     """
 
     def __init__(self, limit: int, on_overflow) -> None:
         self._limit = limit
         self._on_overflow = on_overflow
-        self.text = ""
+        self._lock = threading.Lock()
+        self._size = 0
+        self._parts: dict[str, list[str]] = {"stdout": [], "stderr": []}
         self.overflowed = False
 
-    def drain(self, stream) -> None:
-        parts: list[str] = []
-        size = 0
-        while size < self._limit:
-            chunk = stream.read(min(65536, self._limit - size))
+    def drain(self, stream, channel: str) -> None:
+        while True:
+            # Reading one character when the budget is exactly exhausted lets
+            # us distinguish "exactly at the cap" from real overflow without
+            # retaining anything beyond the cap.
+            with self._lock:
+                if self.overflowed:
+                    return
+                room = self._limit - self._size
+            chunk = stream.read(min(65536, room) if room > 0 else 1)
             if not chunk:
-                self.text = "".join(parts)
                 return
-            parts.append(chunk)
-            size += len(chunk)
-        self.overflowed = True
-        self.text = "".join(parts)
-        self._on_overflow()  # end the runaway; its stdout then hits EOF
+            notify = False
+            with self._lock:
+                if self.overflowed:
+                    return
+                room = self._limit - self._size
+                accepted = chunk[:room]
+                if accepted:
+                    self._parts[channel].append(accepted)
+                    self._size += len(accepted)
+                if len(chunk) > len(accepted):
+                    self.overflowed = True
+                    notify = True
+            if notify:
+                self._on_overflow()  # both pipes reach EOF after the group ends
+                return
+
+    def finish(self) -> tuple[str, str]:
+        """Return captured streams and release the chunk lists."""
+
+        with self._lock:
+            stdout = "".join(self._parts["stdout"])
+            stderr = "".join(self._parts["stderr"])
+            self._parts = {"stdout": [], "stderr": []}
+        return stdout, stderr
 
 
 def _kill_group(process) -> None:
@@ -264,9 +339,35 @@ class Toolset:
         return path
 
     # -- blocking primitives (run via to_thread in `dispatch`) --
-    def run_bash(self, command: str) -> str:
+    def run_bash_result(self, command: str) -> CommandResult:
+        """Run a foreground shell and return its structured, masked result."""
+
+        started_ns = time.monotonic_ns()
+
+        def result(
+            *,
+            stdout: str = "",
+            stderr: str = "",
+            exit_code: int | None = None,
+            timed_out: bool = False,
+            overflowed: bool = False,
+            error: str | None = None,
+            projection: str | None = None,
+        ) -> CommandResult:
+            return CommandResult(
+                stdout=stdout,
+                stderr=stderr,
+                exit_code=exit_code,
+                timed_out=timed_out,
+                overflowed=overflowed,
+                duration_ms=max(0, (time.monotonic_ns() - started_ns) // 1_000_000),
+                error=error,
+                projection=projection,
+                capture_limit=MAX_BASH_CAPTURE,
+            )
+
         if looks_dangerous(command):
-            return "Error: Dangerous command blocked"
+            return result(error="Error: Dangerous command blocked")
         # Narrow injection: the shell sees registered credentials only when the
         # command names them, so an unrelated `printenv` has nothing to read.
         env = self.secrets.scrub_env(os.environ)
@@ -285,55 +386,93 @@ class Toolset:
             # transcript to explain why.
             process = subprocess.Popen(
                 self.sandbox.argv(command), cwd=self.workspace,
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env,
                 text=True, encoding="utf-8", errors="replace",
                 start_new_session=True,
             )
             with self._live_lock:
                 self._live.add(process)
-            # Drain stdout in a thread with a byte bound, so a high-output command
-            # cannot fill memory before `capped` runs. `communicate()` read all of
-            # stdout first; this holds at most MAX_BASH_CAPTURE while the timeout
-            # below still bounds the wall clock.
+            # Drain both pipes concurrently under one aggregate byte bound, so
+            # either high-output stream cannot fill memory or block the child.
             capture = _BoundedCapture(MAX_BASH_CAPTURE, lambda: _kill_group(process))
-            reader = threading.Thread(
-                target=capture.drain, args=(process.stdout,), daemon=True
-            )
-            reader.start()
-            # The reader ends at stdout EOF, which needs the command *and* any
-            # child holding stdout to exit. Bound the whole drain by the timeout,
+            assert process.stdout is not None and process.stderr is not None
+            readers = [
+                threading.Thread(
+                    target=capture.drain,
+                    args=(process.stdout, "stdout"),
+                    daemon=True,
+                ),
+                threading.Thread(
+                    target=capture.drain,
+                    args=(process.stderr, "stderr"),
+                    daemon=True,
+                ),
+            ]
+            for reader in readers:
+                reader.start()
+            # A reader ends at its pipe's EOF, which needs the command *and* any
+            # child holding that pipe to exit. Bound the whole drain by one
+            # shared deadline (not one timeout per stream),
             # then end the group. The *second* join is bounded too: a child that
-            # keeps stdout open past the kill (or a kill that does not reach the
+            # keeps a pipe open past the kill (or a kill that does not reach the
             # group) must fail this command, not hang the harness -- an unbounded
             # join here is the wait `communicate(timeout=...)` used to own.
-            reader.join(timeout=self.bash_timeout)
-            timed_out = reader.is_alive()
+            deadline = time.monotonic() + self.bash_timeout
+            for reader in readers:
+                reader.join(timeout=max(0.0, deadline - time.monotonic()))
+            timed_out = any(reader.is_alive() for reader in readers)
+            if not timed_out and process.poll() is None:
+                try:
+                    process.wait(timeout=max(0.0, deadline - time.monotonic()))
+                except subprocess.TimeoutExpired:
+                    timed_out = True
             if timed_out:
                 _kill_group(process)
             with contextlib.suppress(subprocess.TimeoutExpired):
                 process.wait(timeout=5)
-            reader.join(timeout=5)
+            for reader in readers:
+                reader.join(timeout=5)
             with self._live_lock:
                 self._live.discard(process)
-            if timed_out:
-                return f"Error: Timeout ({self.bash_timeout}s)"
+            stdout, stderr = capture.finish()
             # Mask here too, not only at the agent boundary: narrow injection
             # still hands a secret to a command that names it, and a direct
-            # Toolset caller never passes through `Agent._exec_tool`. Masking runs
-            # on the whole captured window before `capped` truncates it, so a
-            # secret is never split into a leaking fragment within the window.
-            out = self.secrets.mask(capture.text.strip())
-            if not out:
-                return "(no output)"
-            rendered = capped(out, keep_tail=True)
-            if capture.overflowed:
-                rendered += (
-                    f"\n[output exceeded {MAX_BASH_CAPTURE:,} bytes; capture "
-                    "stopped and the command was ended]"
+            # Toolset caller never passes through `Agent._exec_tool`. Each whole
+            # captured stream is masked before any projection can truncate it,
+            # so a secret cannot be split into a leaking fragment within a stream.
+            projection = self.secrets.mask(stdout + stderr)
+            stdout = self.secrets.mask(stdout)
+            stderr = self.secrets.mask(stderr)
+            # A credential can be deliberately split between the two pipes.
+            # Masking each stream alone would then let ``render`` reconstruct
+            # the complete value.  In that exceptional case the safe combined
+            # projection becomes the only returned stream content.
+            if projection != stdout + stderr:
+                stdout, stderr = projection, ""
+            if timed_out:
+                return result(
+                    stdout=stdout,
+                    stderr=stderr,
+                    exit_code=process.returncode,
+                    timed_out=True,
+                    overflowed=capture.overflowed,
+                    error=f"Error: Timeout ({self.bash_timeout}s)",
+                    projection=projection,
                 )
-            return rendered
+            return result(
+                stdout=stdout,
+                stderr=stderr,
+                exit_code=process.returncode,
+                overflowed=capture.overflowed,
+                projection=projection,
+            )
         except (FileNotFoundError, OSError) as e:
-            return f"Error: {e}"
+            return result(error=self.secrets.mask(f"Error: {e}"))
+
+    def run_bash(self, command: str) -> str:
+        """Compatibility projection used by the existing ``bash`` tool."""
+
+        return self.run_bash_result(command).render()
 
     def run_read(self, path: str, limit: int | None = None, offset: int = 0) -> str:
         try:

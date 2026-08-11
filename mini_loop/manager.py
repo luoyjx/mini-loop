@@ -14,9 +14,10 @@ tool set and its background/team lifecycle injectors.
 from __future__ import annotations
 
 import asyncio
-import os
 import dataclasses
+import inspect
 import json
+import os
 import re
 import shutil
 import uuid
@@ -25,6 +26,7 @@ from pathlib import Path
 
 from .actions import DurableActionJournal, InMemoryActionJournal
 from .agent import Agent
+from .ast_context import AstContextConfig, install_ast_context_tools
 from .builtins import default_injectors, default_registry, full_registry
 from .config import Settings
 from .cron import CronScheduler
@@ -39,6 +41,15 @@ from .storage import NullStateStore, SessionRecord, StateStore
 from .tasks import TaskStore
 from .teams import MessageBus, ProtocolState, team_key
 from .trajectory import TrajectoryStore
+from .token_efficiency import (
+    ConciseResponsePolicy,
+    ConciseResponsePolicySettings,
+    DeterministicLosslessReducer,
+    OptimizationMode,
+    TokenEfficiencyRegistry,
+)
+from .tool_policy import DEFAULT_ROLE_TOOL_POLICY
+from .token_tools import install_token_efficiency_tools
 from .worktrees import WorktreeManager
 from .workflows.service import WorkflowService, workflow_injector
 from .workflows.tools import install_workflows
@@ -121,6 +132,8 @@ class SessionManager:
         workflow_service: WorkflowService | None = None,
         workflow_attempt_semaphore: asyncio.Semaphore | None = None,
         mcp_servers: dict | None = None,
+        token_efficiency=None,
+        role_tool_policy=None,
     ) -> None:
         self.settings = settings
         self.client = client
@@ -190,6 +203,36 @@ class SessionManager:
         # a registered secret in it must be masked there like every other sink.
         self.approvals.secrets = self.secrets
         self.sandbox = sandbox
+        if token_efficiency is None:
+            efficiency_registry = TokenEfficiencyRegistry()
+            efficiency_mode = OptimizationMode(settings.token_efficiency_mode)
+            if efficiency_mode is not OptimizationMode.OFF:
+                efficiency_registry.register_observation(
+                    DeterministicLosslessReducer()
+                )
+            if settings.token_efficiency_response_style == "concise":
+                efficiency_registry.register_response_policy(
+                    ConciseResponsePolicy(
+                        ConciseResponsePolicySettings(require_opt_in=False)
+                    )
+                )
+            token_efficiency = efficiency_registry.runtime(
+                default_mode=efficiency_mode,
+                raw_store=None,
+            )
+        self.token_efficiency = token_efficiency
+        self.role_tool_policy = (
+            role_tool_policy
+            if role_tool_policy is not None
+            else DEFAULT_ROLE_TOOL_POLICY
+        )
+        self._token_efficiency_initialize_report = None
+        self._token_efficiency_initialize_error: str | None = None
+        self._token_efficiency_close_report = None
+        self._token_efficiency_close_error: str | None = None
+        self._token_efficiency_store_close_errors: list[str] = []
+        self._token_efficiency_started = False
+        self._manager_stopped = False
         # One value, assembled once. Every agent this manager builds -- session
         # agents, their subagents, workflow workers -- starts from it, so a new
         # seam does not have to be threaded to each construction site.
@@ -203,6 +246,8 @@ class SessionManager:
             transport=transport,
             secrets=self.secrets,
             sandbox=sandbox,
+            token_efficiency=self.token_efficiency,
+            role_tool_policy=self.role_tool_policy,
         )
         self.workspace_factory = workspace_factory or (lambda sid: self.settings.workspace_root / sid)
         self.event_sink = event_sink
@@ -222,9 +267,12 @@ class SessionManager:
             self.trajectories = None
 
         # Tool registry template (cloned per session).
+        tool_registry_was_supplied = tool_registry is not None
         if tool_registry is not None:
             self.tool_registry = (
-                tool_registry.clone() if self.enable_workflows else tool_registry
+                tool_registry.clone()
+                if self.enable_workflows or settings.ast_outline_enabled
+                else tool_registry
             )
         elif enable_features:
             self.tool_registry = full_registry(mcp_servers=self.mcp_servers or None)
@@ -235,6 +283,32 @@ class SessionManager:
         if self.enable_workflows:
             assert self.tool_registry is not None
             install_workflows(self.tool_registry)
+        if settings.ast_outline_enabled:
+            if self.tool_registry is None:
+                self.tool_registry = default_registry()
+            install_ast_context_tools(
+                self.tool_registry,
+                AstContextConfig(
+                    binary=settings.ast_outline_binary,
+                    expected_sha256=settings.ast_outline_sha256,
+                    timeout_seconds=settings.ast_outline_timeout,
+                    max_output_bytes=settings.ast_outline_max_output_bytes,
+                ),
+            )
+        if (
+            self.tool_registry is not None
+            and not tool_registry_was_supplied
+            and getattr(self.token_efficiency, "observation_enforced", False)
+            and settings.token_efficiency_persist_raw
+        ):
+            # Install on the parent catalogue before any workflow/subagent
+            # capability policy narrows it. Constructors must never widen an
+            # already-filtered child registry.
+            install_token_efficiency_tools(self.tool_registry)
+        if self.tool_registry is not None:
+            # Workflow workers derive a capability subset from this template;
+            # session agents still receive a private clone in `_build_agent`.
+            self.harness = self.harness.derive(tools=self.tool_registry)
 
         if injectors is not None:
             self.injectors = list(injectors)
@@ -297,10 +371,58 @@ class SessionManager:
 
     # -- lifecycle (called by the server lifespan) --
     async def start(self) -> None:
+        if self._token_efficiency_started or self._manager_stopped:
+            return
+        self._token_efficiency_started = True
+        initialize = getattr(self.token_efficiency, "initialize", None)
+        if callable(initialize):
+            try:
+                # Components do not receive the SessionManager: that would hand
+                # an optimization plugin credentials, stores, process services,
+                # and authority well beyond its stage contract.
+                report = initialize(None)
+                if inspect.isawaitable(report):
+                    report = await report
+                self._token_efficiency_initialize_report = report
+            except Exception as error:
+                # Components are advisory projections.  A broken lifecycle hook
+                # must not stop the authoritative agent runtime from starting.
+                self._token_efficiency_initialize_error = (
+                    type(error).__name__
+                )
         if self.enable_features or self.cron.jobs:
             self.cron.start()
 
     async def stop(self) -> None:
+        if self._manager_stopped:
+            return
+        self._manager_stopped = True
+        for session in tuple(self._sessions.values()):
+            session.stop_accepting("session manager stopped")
+        # Resolve parked approvals first so those turns can reach their normal
+        # denied terminal record. Give every current holder one short grace
+        # window, then cancel anything genuinely stuck before dependencies
+        # close. Queued turns already fail the admission check inside the lock.
+        self.approvals.cancel_all()
+        active_tasks = tuple(
+            task
+            for session in self._sessions.values()
+            if (task := getattr(session, "_running", None)) is not None
+            and not task.done()
+        )
+        if active_tasks:
+            await asyncio.wait(active_tasks, timeout=0.25)
+        # Ordinary session turns are not background/lifecycle tasks. Drain
+        # them explicitly before revoking stores or closing shared optimizer
+        # components, otherwise a tool result can race a closed dependency.
+        await asyncio.gather(
+            *(
+                session.cancel("session manager stopped")
+                for session in tuple(self._sessions.values())
+                if session.busy
+            ),
+            return_exceptions=True,
+        )
         # A clean shutdown hands the sessions back at once. A crash does not,
         # which is what the TTL is for -- the next process waits it out rather
         # than assuming the holder is gone.
@@ -311,7 +433,6 @@ class SessionManager:
                     release(session.id, session.lease_owner)
                     session.lease_owner = None
         await self.cron.stop()
-        self.approvals.cancel_all()
         if self.workflows is not None:
             await self.workflows.close()
         if self._cleanup_tasks:
@@ -353,6 +474,48 @@ class SessionManager:
         if backgrounds:
             await asyncio.gather(*(manager.close() for manager in backgrounds.values()),
                                  return_exceptions=True)
+        # Raw recovery stores are session capabilities, not component-global
+        # caches. Revoke every distinct store after consumers have drained and
+        # before shared components close.
+        raw_stores = {}
+        template_store = getattr(self.token_efficiency, "raw_store", None)
+        if template_store is not None:
+            raw_stores[id(template_store)] = template_store
+        for session in self._sessions.values():
+            agent = session.agent
+            if agent is None:
+                continue
+            store = getattr(getattr(agent, "token_efficiency", None), "raw_store", None)
+            if store is not None:
+                raw_stores[id(store)] = store
+        for store in raw_stores.values():
+            close_store = getattr(store, "close", None)
+            if not callable(close_store):
+                continue
+            try:
+                result = close_store()
+                if inspect.isawaitable(result):
+                    await result
+            except Exception as error:
+                self._token_efficiency_store_close_errors.append(
+                    type(error).__name__
+                )
+        # Consumers are stopped before their shared components. Closing this
+        # at the top races active session/background work that may still be
+        # producing an observation or finishing a request optimization.
+        close = getattr(self.token_efficiency, "close", None)
+        if callable(close):
+            try:
+                report = close()
+                if inspect.isawaitable(report):
+                    report = await report
+                self._token_efficiency_close_report = report
+            except Exception as error:
+                # Optional component failure must not undo the authoritative
+                # cleanup that has already completed.
+                self._token_efficiency_close_error = (
+                    type(error).__name__
+                )
 
     # -- internal: build an Agent with services seeded into its state --
     def _build_agent(self, session: AgentSession, *, settings: Settings, extra_state: dict,
@@ -371,6 +534,7 @@ class SessionManager:
             "memory_root": self.memory.dir,
             "worktrees": self.worktrees,
             "workflow_service": self.workflows,
+            "permission_mode": session.permission_mode,
         }
         state.update(extra_state)
         return Agent(
@@ -397,6 +561,8 @@ class SessionManager:
         model: str | None = None,
         permission_mode: str = "interactive",
     ) -> AgentSession:
+        if self._manager_stopped:
+            raise RuntimeError("session manager is stopped")
         from .permissions import PERMISSION_MODES
 
         if permission_mode not in PERMISSION_MODES:
@@ -471,6 +637,8 @@ class SessionManager:
         run state machine to resume yet, and inventing one here would be worse
         than surfacing the truth.
         """
+        if self._manager_stopped:
+            raise RuntimeError("session manager is stopped")
         restored = []
         for record in self.state_store.load_sessions():
             if record.session_id in self._sessions:
@@ -496,6 +664,8 @@ class SessionManager:
 
     def restore_scheduled_session(self, session_id: str) -> AgentSession:
         """Restore the stable session identity referenced by a durable cron job."""
+        if self._manager_stopped:
+            raise RuntimeError("session manager is stopped")
         existing = self.get(session_id)
         if existing is not None:
             return existing
@@ -545,6 +715,8 @@ class SessionManager:
         prompt: str,
         run_context: RunContext | None = None,
     ) -> str:
+        if self._manager_stopped:
+            return "Error: session manager is stopped"
         parent = self.get(parent_id)
         if parent is None:
             return f"Error: no parent session {parent_id}"
@@ -921,6 +1093,8 @@ class SessionManager:
                 del owners[next(iter(owners))]
         if session is None:
             return False
+        session.stop_accepting("session deleted")
+        running_turn = getattr(session, "_running", None)
         workflow_active = (
             self.workflows is not None
             and self.workflows.has_active(session_id)
@@ -987,10 +1161,31 @@ class SessionManager:
             for client in (agent.state.get("mcp_clients", {}).values() if agent else ())
             if id(client) not in still_held
         ]
+        raw_store = (
+            getattr(getattr(agent, "token_efficiency", None), "raw_store", None)
+            if agent is not None
+            else None
+        )
+        if raw_store is not None and any(
+            getattr(
+                getattr(other.agent, "token_efficiency", None),
+                "raw_store",
+                None,
+            )
+            is raw_store
+            for other in self._sessions.values()
+            if other.agent is not None
+        ):
+            raw_store = None
         # Don't delete a workspace shared by teammates.
         shared = any(s.workspace == session.workspace for s in self._sessions.values())
         remove_now = remove_workspace and not shared and not workflow_active
-        if background is not None or mcp_clients:
+        if (
+            background is not None
+            or mcp_clients
+            or raw_store is not None
+            or (running_turn is not None and not running_turn.done())
+        ):
             try:
                 asyncio.get_running_loop()
             except RuntimeError:
@@ -999,15 +1194,44 @@ class SessionManager:
                 # ever runs again -- and the workspace is removed as before.
                 if background is not None:
                     background.cancel_all()
-                if remove_now:
-                    shutil.rmtree(session.workspace, ignore_errors=True)
+                if running_turn is not None and not running_turn.done():
+                    running_turn.get_loop().call_soon_threadsafe(running_turn.cancel)
+
+                    def _revoke_after_turn(_task) -> None:
+                        close_store = getattr(raw_store, "close", None)
+                        if callable(close_store):
+                            close_store()
+                        if remove_now:
+                            shutil.rmtree(session.workspace, ignore_errors=True)
+
+                    running_turn.add_done_callback(_revoke_after_turn)
+                else:
+                    close_store = getattr(raw_store, "close", None)
+                    if callable(close_store):
+                        close_store()
+                    if remove_now:
+                        shutil.rmtree(session.workspace, ignore_errors=True)
             else:
                 async def _close_services() -> None:
+                    if running_turn is not None and not running_turn.done():
+                        try:
+                            await asyncio.wait_for(
+                                asyncio.shield(running_turn), timeout=5
+                            )
+                        except asyncio.TimeoutError:
+                            await session.cancel("session deleted")
+                        except (asyncio.CancelledError, Exception):
+                            pass
                     closes = []
                     if background is not None:
                         closes.append(background.close())
                     closes.extend(client.close() for client in mcp_clients)
                     await asyncio.gather(*closes, return_exceptions=True)
+                    close_store = getattr(raw_store, "close", None)
+                    if callable(close_store):
+                        result = close_store()
+                        if inspect.isawaitable(result):
+                            await result
                     # Only after the shell is dead: removing the directory a
                     # live process has as its cwd is a race, not a cleanup.
                     if remove_now:

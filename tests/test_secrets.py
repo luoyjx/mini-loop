@@ -97,6 +97,18 @@ def test_masking_covers_values_the_command_never_named():
     assert MASK in out
 
 
+def test_masking_treats_ansi_controls_inside_a_secret_as_transparent():
+    registry = SecretRegistry()
+    registry.register("API_TOKEN", LONG)
+    split = len(LONG) // 2
+
+    coloured = f"before {LONG[:split]}\x1b[31m{LONG[split:]} after"
+    titled = f"before {LONG[:split]}\x1b]0;terminal-title\x07{LONG[split:]} after"
+
+    assert registry.mask(coloured) == f"before {MASK} after"
+    assert registry.mask(titled) == f"before {MASK} after"
+
+
 def test_rotation_keeps_masking_the_previously_handed_out_value():
     """Re-resolving would let the old value start leaking again."""
     values = [LONG, "sk-rotated-fedcba9876543210"]

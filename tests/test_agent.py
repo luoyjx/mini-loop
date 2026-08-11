@@ -152,17 +152,88 @@ def test_todo_fields_are_size_bounded():
 # --- compaction ------------------------------------------------------------
 
 def test_microcompact_keeps_last_three():
-    messages = []
+    messages = [{"role": "user", "content": "start"}]
     for i in range(5):
+        messages.append({"role": "assistant", "content": [
+            {"type": "tool_use", "id": f"id{i}", "name": "read_file", "input": {}}
+        ]})
         messages.append({"role": "user", "content": [
             {"type": "tool_result", "tool_use_id": f"id{i}", "content": "x" * 200}
         ]})
+    messages.append({"role": "assistant", "content": [{"type": "text", "text": "done"}]})
     cleared = microcompact(messages)
     assert cleared == 2
-    results = [p for m in messages for p in m["content"] if p["type"] == "tool_result"]
+    results = [
+        part
+        for message in messages
+        if isinstance(message.get("content"), list)
+        for part in message["content"]
+        if part.get("type") == "tool_result"
+    ]
     assert results[0]["content"] == "[cleared]"
     assert results[1]["content"] == "[cleared]"
     assert results[-1]["content"] == "x" * 200
+
+
+def test_microcompact_preserves_an_unconsumed_batch_past_injected_user_messages():
+    results = [
+        {"type": "tool_result", "tool_use_id": f"id{i}", "content": str(i) * 200}
+        for i in range(5)
+    ]
+    messages = [
+        {"role": "user", "content": "inspect five files"},
+        {"role": "assistant", "content": [
+            {"type": "tool_use", "id": f"id{i}", "name": "read_file", "input": {}}
+            for i in range(5)
+        ]},
+        {"role": "user", "content": results},
+        # Injectors run before compaction. This is not an assistant response and
+        # therefore does not prove the provider consumed the result batch.
+        {"role": "user", "content": "<task_notification>still running</task_notification>"},
+    ]
+
+    assert microcompact(messages) == 0
+    assert [part["content"] for part in messages[2]["content"]] == [
+        str(i) * 200 for i in range(5)
+    ]
+
+    # Once a later assistant response exists, the same batch is old context and
+    # the existing last-three policy applies again.
+    messages.append({"role": "assistant", "content": [{"type": "text", "text": "done"}]})
+    assert microcompact(messages) == 2
+    assert [part["content"] for part in messages[2]["content"]] == [
+        "[cleared]", "[cleared]", "2" * 200, "3" * 200, "4" * 200,
+    ]
+
+
+def test_the_next_provider_request_receives_a_wide_result_batch_intact(tmp_path):
+    requests = []
+
+    def responder(kwargs):
+        requests.append(kwargs)
+        if len(requests) == 1:
+            return [
+                tool("read_file", _id=f"id{i}", path=f"file-{i}.txt")
+                for i in range(5)
+            ], "tool_use"
+        return [text("Done.")], "end_turn"
+
+    agent, _ = _agent(tmp_path, FakeAsyncAnthropic(responder=responder))
+    for i in range(5):
+        (agent.workspace / f"file-{i}.txt").write_text(str(i) * 200)
+
+    assert asyncio.run(agent.run("inspect all five files")) == "Done."
+    assert len(requests) == 2
+    result_batch = next(
+        message["content"]
+        for message in reversed(requests[1]["messages"])
+        if message.get("role") == "user"
+        and isinstance(message.get("content"), list)
+        and any(part.get("type") == "tool_result" for part in message["content"])
+    )
+    assert [part["content"] for part in result_batch] == [
+        str(i) * 200 for i in range(5)
+    ]
 
 
 def test_auto_compact_replaces_history(tmp_path):

@@ -160,6 +160,9 @@ def _probe_agent(manager):
         workspace = manager.settings.workspace_root
         system = None
         emit = None
+        # Match AgentSession's fail-safe default without constructing or
+        # persisting a real session just to report runtime posture.
+        permission_mode = "interactive"
 
     return manager._build_agent(_Probe(), settings=manager.settings, extra_state={})
 

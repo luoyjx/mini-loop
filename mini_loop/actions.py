@@ -18,6 +18,19 @@ from dataclasses import asdict, dataclass, replace
 from typing import Any, Mapping
 
 
+MAX_ACTION_RESULT_CHARS = 4_000
+
+
+def _bounded_result(result: str | None) -> str | None:
+    """Retain a replay-safe prefix that explicitly reports truncation."""
+
+    if result is None or len(result) <= MAX_ACTION_RESULT_CHARS:
+        return result
+    marker = f"\n[action result truncated; original_chars={len(result)}]"
+    keep = MAX_ACTION_RESULT_CHARS - len(marker)
+    return f"{result[:max(0, keep)]}{marker}"[:MAX_ACTION_RESULT_CHARS]
+
+
 class ActionJournalConflict(RuntimeError):
     """The same action ID was reused with different immutable input."""
 
@@ -171,7 +184,7 @@ class InMemoryActionJournal:
             updated = replace(
                 existing,
                 status=status,
-                result=result[:4_000] if result is not None else None,
+                result=_bounded_result(result),
                 completed_at=time.time(),
             )
             self._records[action_id] = updated
@@ -317,7 +330,7 @@ class DurableActionJournal:
             updated = {
                 **existing,
                 "status": status,
-                "result": result[:4_000] if result is not None else None,
+                "result": _bounded_result(result),
                 "completed_at": time.time(),
             }
             self.store.write_action(updated)
@@ -343,7 +356,7 @@ class DurableActionJournal:
             updated = {
                 **existing,
                 "status": status,
-                "result": result[:4_000],
+                "result": _bounded_result(result),
                 "completed_at": time.time(),
             }
             self.store.write_action(updated)

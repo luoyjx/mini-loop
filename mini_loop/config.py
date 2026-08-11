@@ -11,6 +11,7 @@ client without the SDK installed.
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -59,6 +60,69 @@ class Settings:
 
     # Auto-compaction fires once an estimate of the history crosses this.
     token_threshold: int = field(default_factory=lambda: _env_int("MINILOOP_TOKEN_THRESHOLD", 100_000))
+
+    # Harness-level token-efficiency stages.  Components are assembled
+    # explicitly by SessionManager; environment variables select only the
+    # trusted built-ins and never trigger arbitrary package discovery.
+    token_efficiency_mode: str = field(
+        default_factory=lambda: os.getenv(
+            "MINILOOP_TOKEN_EFFICIENCY_MODE", "off"
+        ).strip().lower()
+    )
+    token_efficiency_response_style: str = field(
+        default_factory=lambda: os.getenv(
+            "MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE", "normal"
+        ).strip().lower()
+    )
+    token_efficiency_persist_raw: bool = field(
+        default_factory=lambda: _env_bool(
+            "MINILOOP_TOKEN_EFFICIENCY_PERSIST_RAW", True
+        )
+    )
+    token_efficiency_raw_min_bytes: int = field(
+        default_factory=lambda: _env_int(
+            "MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES", 16_384
+        )
+    )
+    token_efficiency_artifact_ttl_seconds: float = field(
+        default_factory=lambda: _env_float(
+            "MINILOOP_TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS", 3_600.0
+        )
+    )
+    token_efficiency_max_artifact_bytes: int = field(
+        default_factory=lambda: _env_int(
+            "MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES", 2_000_000
+        )
+    )
+    token_efficiency_max_total_bytes: int = field(
+        default_factory=lambda: _env_int(
+            "MINILOOP_TOKEN_EFFICIENCY_MAX_TOTAL_BYTES", 20_000_000
+        )
+    )
+
+    # Optional stateless semantic-code tools.  Off by default so deployments
+    # without the pinned ast-outline binary keep the existing tool surface.
+    ast_outline_enabled: bool = field(
+        default_factory=lambda: _env_bool("MINILOOP_AST_OUTLINE_ENABLED", False)
+    )
+    ast_outline_binary: str = field(
+        default_factory=lambda: os.getenv(
+            "MINILOOP_AST_OUTLINE_BINARY", "ast-outline"
+        ).strip()
+    )
+    ast_outline_sha256: str | None = field(
+        default_factory=lambda: (
+            os.getenv("MINILOOP_AST_OUTLINE_SHA256", "").strip().lower() or None
+        )
+    )
+    ast_outline_timeout: float = field(
+        default_factory=lambda: _env_float("MINILOOP_AST_OUTLINE_TIMEOUT", 10.0)
+    )
+    ast_outline_max_output_bytes: int = field(
+        default_factory=lambda: _env_int(
+            "MINILOOP_AST_OUTLINE_MAX_OUTPUT_BYTES", 1_000_000
+        )
+    )
 
     # Global cap on *simultaneous* LLM calls across every session (rate-limit
     # protection). Sessions still number in the thousands; only this many are
@@ -144,6 +208,61 @@ class Settings:
     )
 
     def __post_init__(self) -> None:
+        if self.token_efficiency_mode not in {"off", "shadow", "enforce"}:
+            raise ValueError(
+                "token_efficiency_mode must be one of: off, shadow, enforce"
+            )
+        if self.token_efficiency_response_style not in {"normal", "concise"}:
+            raise ValueError(
+                "token_efficiency_response_style must be one of: normal, concise"
+            )
+        if self.token_efficiency_raw_min_bytes < 1:
+            raise ValueError("token_efficiency_raw_min_bytes must be positive")
+        if self.token_efficiency_artifact_ttl_seconds <= 0:
+            raise ValueError(
+                "token_efficiency_artifact_ttl_seconds must be positive"
+            )
+        if self.token_efficiency_max_artifact_bytes < 1:
+            raise ValueError(
+                "token_efficiency_max_artifact_bytes must be positive"
+            )
+        if self.token_efficiency_max_total_bytes < 1:
+            raise ValueError("token_efficiency_max_total_bytes must be positive")
+        if (
+            self.token_efficiency_raw_min_bytes
+            > self.token_efficiency_max_artifact_bytes
+        ):
+            raise ValueError(
+                "token_efficiency_raw_min_bytes must not exceed "
+                "token_efficiency_max_artifact_bytes"
+            )
+        if (
+            self.token_efficiency_max_artifact_bytes
+            > self.token_efficiency_max_total_bytes
+        ):
+            raise ValueError(
+                "token_efficiency_max_artifact_bytes must not exceed "
+                "token_efficiency_max_total_bytes"
+            )
+        if not self.ast_outline_binary:
+            raise ValueError("ast_outline_binary must not be empty")
+        if self.ast_outline_sha256 is not None and not re.fullmatch(
+            r"[0-9a-f]{64}", self.ast_outline_sha256
+        ):
+            raise ValueError("ast_outline_sha256 must be 64 lowercase hex characters")
+        if self.ast_outline_enabled:
+            if not Path(self.ast_outline_binary).expanduser().is_absolute():
+                raise ValueError(
+                    "enabled ast-outline requires an operator-pinned absolute binary path"
+                )
+            if self.ast_outline_sha256 is None:
+                raise ValueError(
+                    "enabled ast-outline requires ast_outline_sha256"
+                )
+        if self.ast_outline_timeout <= 0:
+            raise ValueError("ast_outline_timeout must be positive")
+        if self.ast_outline_max_output_bytes < 1:
+            raise ValueError("ast_outline_max_output_bytes must be positive")
         if self.max_concurrent_tools < 1:
             raise ValueError("max_concurrent_tools must be at least 1")
         # Same failure mode as the check above, and it was missing: a

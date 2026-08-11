@@ -50,6 +50,8 @@ class Harness:
     cache_policy: Any = None
     secrets: Any = None
     sandbox: Any = None
+    token_efficiency: Any = None
+    role_tool_policy: Any = None
     injectors: Sequence[Any] = field(default_factory=tuple)
 
     def derive(self, **overrides: Any) -> "Harness":

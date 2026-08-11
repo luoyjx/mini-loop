@@ -40,7 +40,12 @@ def _omitted_notice(agent) -> str:
     is absent from the request is said to be absent, not left implied.
     """
 
-    omitted = agent.tools.omitted_names()
+    catalog = getattr(agent, "_request_tool_catalog", None)
+    omitted = list(
+        catalog.omitted_names
+        if catalog is not None
+        else agent.tools.snapshot().omitted_names
+    )
     if not omitted:
         return ""
     shown = ", ".join(omitted[:MAX_OMITTED_NAMED])
@@ -60,7 +65,13 @@ def default_system_builder(agent) -> str:
     # The names the request will carry, not the registry inventory. These can
     # differ, and the prompt describing tools the request does not define is
     # an affirmative false claim -- worse than silence.
-    tools = ", ".join(agent.tools.sent_names())
+    catalog = getattr(agent, "_request_tool_catalog", None)
+    sent_names = (
+        catalog.sent_names
+        if catalog is not None
+        else agent.tools.snapshot().sent_names
+    )
+    tools = ", ".join(sent_names)
     parts = [
         f"You are a coding agent working in {agent.workspace}.\n"
         "Use the provided tools to act; prefer doing over explaining.\n"

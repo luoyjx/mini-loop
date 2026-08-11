@@ -65,10 +65,16 @@ def snip_compact(messages: list, max_messages: int = 50) -> int:
 
 
 def microcompact(messages: list) -> int:
-    """Blank out the body of all but the 3 most recent tool results.
+    """Blank old, consumed tool results except for the 3 most recent.
 
-    Returns how many were cleared. Old tool output is the cheapest context to
-    shed -- the model already acted on it.
+    Returns how many were cleared. A tool-result batch is consumable context
+    until a later assistant response proves the model has seen it. Preserve
+    every result after the last assistant message as one protected tail -- an
+    injector may append more user messages before the next provider request,
+    but that does not make the preceding results consumed.
+
+    Among results that *have* a later assistant response, old tool output is
+    the cheapest context to shed -- the model already acted on it.
 
     Cleared entries are **replaced, not mutated**. That is not a style choice:
     the session mirrors the transcript to durable storage and detects a rewrite
@@ -78,15 +84,24 @@ def microcompact(messages: list) -> int:
     the uncompacted transcript, and a session that compacted *because* it was
     near the context limit came back exactly as large as when it overflowed.
     """
-    located = [
+    last_assistant = max(
+        (
+            index
+            for index, message in enumerate(messages)
+            if message.get("role") == "assistant"
+        ),
+        default=-1,
+    )
+    consumed = [
         (index, part_index)
         for index, message in enumerate(messages)
+        if index < last_assistant
         if message.get("role") == "user" and isinstance(message.get("content"), list)
         for part_index, part in enumerate(message["content"])
         if isinstance(part, dict) and part.get("type") == "tool_result"
     ]
     targets: dict[int, list[int]] = {}
-    for index, part_index in located[:-3]:
+    for index, part_index in consumed[:-3]:
         targets.setdefault(index, []).append(part_index)
 
     cleared = 0

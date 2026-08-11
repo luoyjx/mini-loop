@@ -109,6 +109,8 @@ class AgentSession:
         # runaway agent can only be ended by killing the process.
         self._running: asyncio.Task | None = None
         self._cancel_reason: str | None = None
+        self._accepting_runs = True
+        self._closed_reason = ""
         self._trajectory_store = trajectory_store
         self._active_trajectory_id: str | None = None
         self._trajectory_started = 0.0
@@ -263,6 +265,12 @@ class AgentSession:
         """True while a turn is in flight."""
 
         return self._running is not None and not self._running.done()
+
+    def stop_accepting(self, reason: str = "session closed") -> None:
+        """Reject new and lock-queued turns before dependencies are revoked."""
+
+        self._accepting_runs = False
+        self._closed_reason = reason
 
     def _record_interruption(self, reason: str, repaired) -> bool:
         """Leave the transcript describing a turn that was cut short.
@@ -612,8 +620,16 @@ class AgentSession:
     ) -> str:
         """Drive one turn. Concurrent callers queue on this session's lock."""
 
+        if not self._accepting_runs:
+            raise RuntimeError(self._closed_reason or "session is not accepting turns")
         self._require_lease()
         async with self.lock:
+            # A caller may have passed the first check, then queued behind a
+            # turn while SessionManager.stop/delete closed admission.
+            if not self._accepting_runs:
+                raise RuntimeError(
+                    self._closed_reason or "session is not accepting turns"
+                )
             # `_running` is the task that HOLDS the lock -- the turn actually
             # in flight -- not whoever most recently entered run(). Set before
             # the lock, a caller still queued on it (a cron fire into a busy

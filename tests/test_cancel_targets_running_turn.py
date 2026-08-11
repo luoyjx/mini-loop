@@ -86,6 +86,26 @@ async def test_cancel_hits_the_running_turn_not_the_queued_one(tmp_path):
 
 
 @pytest.mark.asyncio
+async def test_manager_stop_closes_admission_before_cancelling_the_holder(tmp_path):
+    gate, entered = asyncio.Event(), asyncio.Event()
+    manager = _blocking_manager(tmp_path, gate, entered)
+    session = manager.create()
+
+    running = asyncio.create_task(session.run("first request"))
+    await asyncio.wait_for(entered.wait(), timeout=3)
+    queued = asyncio.create_task(session.run("SECOND"))
+    await asyncio.sleep(0.05)
+
+    await manager.stop()
+
+    with pytest.raises(asyncio.CancelledError):
+        await running
+    with pytest.raises(RuntimeError, match="session manager stopped"):
+        await queued
+    assert not session.busy
+
+
+@pytest.mark.asyncio
 async def test_busy_stays_true_until_the_running_turn_ends(tmp_path):
     """The queued task's lifecycle must not flip `busy` off under the runner --
     an HTTP caller seeing False mid-turn would start a third, racing turn."""

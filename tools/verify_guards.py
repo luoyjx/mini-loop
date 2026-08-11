@@ -879,7 +879,7 @@ MUTATIONS = [
     ),
     Mutation(
         "bash-reads-all-output-into-memory", 169, "mini_loop/tools.py",
-        "            chunk = stream.read(min(65536, self._limit - size))",
+        "            chunk = stream.read(min(65536, room) if room > 0 else 1)",
         "            chunk = stream.read()",
         "tests/test_output_truncation.py::test_bash_output_is_memory_bounded_not_just_capped",
         "run_bash drains stdout with a byte bound so a high-output command cannot "
@@ -1006,21 +1006,21 @@ MUTATIONS = [
     ),
     Mutation(
         "explore-subagent-not-read-only", 155, "mini_loop/agent.py",
-        '            child.state["permission_mode"] = "readonly"',
-        '            child.state["permission_mode"] = "interactive"',
+        '                {"permission_mode": "readonly"}',
+        '                {"permission_mode": "interactive"}',
         "tests/test_extension_contracts.py::test_an_explore_subagent_is_read_only",
         "an Explore subagent runs read-only: the task tool promises the model it "
         "is, but interactive mode runs a plain `echo x > file` via bash with no "
         "approval, so the promise has to be enforced by the permission gate",
     ),
     Mutation(
-        "explore-registry-offers-bash", 155, "mini_loop/builtins.py",
-        '    return ToolRegistry([by_name["read_file"], by_name["glob"]])',
-        '    return ToolRegistry([by_name["bash"], by_name["read_file"], by_name["glob"]])',
-        "tests/test_extension_contracts.py::test_an_explore_subagent_is_read_only",
-        "the read-only explorer is offered no bash: bash can write, and offering "
-        "a tool read-only mode denies is a capability the model is told it has "
-        "and cannot use",
+        "explore-registry-offers-bash", 155, "mini_loop/tool_policy.py",
+        '        "repo.references",\n    }\n)\n\nWORKER_CAPABILITIES',
+        '        "repo.references",\n        "process.exec",\n    }\n)\n\nWORKER_CAPABILITIES',
+        "tests/test_role_tool_policy.py::test_explore_inherits_semantic_reads_without_write_or_exec",
+        "the read-only explorer capability policy offers no process.exec/bash: "
+        "offering a tool read-only mode denies is a capability the model is told "
+        "it has and cannot use",
     ),
     Mutation(
         "worktree-switch-leaves-background-misconfined", 156, "mini_loop/agent.py",
@@ -1106,8 +1106,8 @@ MUTATIONS = [
     ),
     Mutation(
         "command-output-loses-its-tail", 63, "mini_loop/tools.py",
-        "            rendered = capped(out, keep_tail=True)",
-        "            rendered = capped(out)",
+        "        rendered = capped(out, keep_tail=True)",
+        "        rendered = capped(out)",
         "tests/test_output_truncation.py",
         "a command's failure summary survives truncation",
     ),
@@ -1145,7 +1145,7 @@ MUTATIONS = [
         "timeout-leaves-orphans", 70, "mini_loop/tools.py",
         "                start_new_session=True,\n            )\n            with self._live_lock:",
         "            )\n            with self._live_lock:",
-        "tests/test_orphan_processes.py",
+        "tests/test_orphan_processes.py::test_foreground_command_requests_own_process_group",
         "a timed-out command's children are reaped, not left running",
     ),
     Mutation(
@@ -1509,7 +1509,7 @@ MUTATIONS = [
     ),
     Mutation(
         "system-prompt-lists-the-registry-not-the-request", 93, "mini_loop/prompts.py",
-        '    tools = ", ".join(agent.tools.sent_names())',
+        '    tools = ", ".join(sent_names)',
         '    tools = ", ".join(agent.tools.names())',
         "tests/test_tool_payload.py::test_the_system_prompt_lists_only_sent_tools",
         "the prompt enumerates what the request carries: listing a tool whose "
@@ -1517,8 +1517,8 @@ MUTATIONS = [
     ),
     Mutation(
         "tool-omission-hidden-from-the-model", 93, "mini_loop/prompts.py",
-        "    omitted = agent.tools.omitted_names()",
-        "    omitted = []",
+        "    if not omitted:",
+        "    if True:",
         "tests/test_tool_payload.py::test_the_model_is_told_what_was_omitted",
         "dropped tools are named to the model, not only to the operator: "
         "silence leaves it believing it was shown everything",
@@ -1779,8 +1779,8 @@ MUTATIONS = [
     ),
     Mutation(
         "tool-result-unmasked-before-the-journal", 116, "mini_loop/agent.py",
-        "        out = self.secrets.mask(out)\n\n        if journal is not None and journal_started:",
-        "        out = out\n\n        if journal is not None and journal_started:",
+        "        out = self.secrets.mask(out)",
+        "        out = out",
         "tests/test_no_secret_on_disk.py::test_no_recorded_sink_leaks_a_secret",
         "the tool result is masked before the action journal records it: the "
         "finish-before-mask order kept the secret in the durable actions table",
@@ -1940,6 +1940,12 @@ MUTATIONS = [
     Mutation(
         "running-marker-set-before-the-lock", 103, "mini_loop/session.py",
         "        async with self.lock:\n"
+        "            # A caller may have passed the first check, then queued behind a\n"
+        "            # turn while SessionManager.stop/delete closed admission.\n"
+        "            if not self._accepting_runs:\n"
+        "                raise RuntimeError(\n"
+        "                    self._closed_reason or \"session is not accepting turns\"\n"
+        "                )\n"
         "            # `_running` is the task that HOLDS the lock -- the turn actually\n"
         "            # in flight -- not whoever most recently entered run(). Set before\n"
         "            # the lock, a caller still queued on it (a cron fire into a busy\n"
@@ -1947,7 +1953,18 @@ MUTATIONS = [
         "            # then stopped the queued turn while the running one continued.\n"
         "            self._running = asyncio.current_task()",
         "        self._running = asyncio.current_task()\n"
-        "        async with self.lock:",
+        "        async with self.lock:\n"
+        "            # A caller may have passed the first check, then queued behind a\n"
+        "            # turn while SessionManager.stop/delete closed admission.\n"
+        "            if not self._accepting_runs:\n"
+        "                raise RuntimeError(\n"
+        "                    self._closed_reason or \"session is not accepting turns\"\n"
+        "                )\n"
+        "            # `_running` is the task that HOLDS the lock -- the turn actually\n"
+        "            # in flight -- not whoever most recently entered run(). Set before\n"
+        "            # the lock, a caller still queued on it (a cron fire into a busy\n"
+        "            # session) overwrote the running task's reference, and cancel()\n"
+        "            # then stopped the queued turn while the running one continued.",
         "tests/test_cancel_targets_running_turn.py::test_cancel_hits_the_running_turn_not_the_queued_one",
         "the cancel target is the lock holder, set inside the lock: assigned "
         "before it, a queued cron fire steals the marker and cancel misfires",

@@ -13,6 +13,7 @@ from ..config import Settings
 from ..permissions import default_hooks
 from ..registry import Tool
 from ..run_context import RunContext
+from ..tool_policy import DEFAULT_ROLE_TOOL_POLICY
 from .artifacts import ArtifactSubmission, return_artifact
 from .models import NodeAttempt, WorkflowNode, canonical_json
 from .validation import validate_json_value
@@ -69,6 +70,13 @@ class FreshAgentRunner:
         self.last_tool_names: tuple[str, ...] = ()
         self.last_run_context: RunContext | None = None
 
+    def _worker_registry(self):
+        """Inherit read capabilities without delegating write or process tools."""
+
+        parent = self.harness.tools or default_registry()
+        policy = self.harness.role_tool_policy or DEFAULT_ROLE_TOOL_POLICY
+        return policy.select("Explore", parent)
+
     async def __call__(
         self,
         attempt: NodeAttempt,
@@ -76,7 +84,7 @@ class FreshAgentRunner:
         inputs: Mapping[str, Any],
     ) -> ArtifactSubmission:
         captured: list[ArtifactSubmission] = []
-        registry = default_registry().subset(("read_file", "glob"))
+        registry = self._worker_registry()
 
         async def submit(_ctx, value):
             if captured:
@@ -108,7 +116,7 @@ class FreshAgentRunner:
         rounds = min(self.max_rounds, node.max_rounds or self.max_rounds)
         system = (
             "You are an isolated read-only workflow worker. "
-            "Use only the provided read_file/glob tools for repository evidence. "
+            "Use only the provided read-only repository tools for evidence. "
             "Do not assume access to a parent conversation. "
             "You must finish by calling return_artifact exactly once with a value "
             "matching this JSON Schema:\n"

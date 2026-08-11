@@ -24,21 +24,24 @@ See EXTENDING.md for how to replace each one without touching this file.
 from __future__ import annotations
 
 import asyncio
+import copy
 import hashlib
+import json
 import time
 import uuid
 from collections import deque
 from collections.abc import Awaitable, Callable
 from contextvars import ContextVar
+from dataclasses import replace
 from pathlib import Path
 
 from .actions import TERMINAL_STATUSES as _REPLAYABLE_STATUSES
 from .actions import InMemoryActionJournal
-from .builtins import default_registry, explore_registry, worker_registry
+from .builtins import default_registry
 from .blocks import block_field, block_text
 from .caching import CachePolicy, DefaultCachePolicy, runtime_facts_injector
 from .compaction import Compactor, DefaultCompactor, estimate_tokens, microcompact  # re-exported
-from .metering import TokenMeter
+from .metering import TokenMeter, prompt_tokens
 from .transport import DirectTransport
 from .config import Settings
 from .actions import RECONCILED_RESULT, UNKNOWN_RESULT
@@ -59,7 +62,23 @@ from .stuck import (
     ToolStep,
     step_hash,
 )
-from .tools import Toolset
+from .tool_policy import DEFAULT_ROLE_TOOL_POLICY, RoleToolPolicy
+from .token_efficiency import (
+    MaskedObservation,
+    MaskedRawArtifactStore,
+    OptimizationStatus,
+    RequestContext,
+    ResponsePolicyContext,
+    StableRequestSettings,
+    TokenEfficiencyRegistry,
+    TokenEfficiencyRuntime,
+)
+from .token_tools import (
+    RAW_ARTIFACT_TOOL,
+    install_token_efficiency_tools,
+    render_recovery_marker,
+)
+from .tools import CommandResult, Toolset
 
 # An injector is `async (agent) -> list[message]` run at the top of each loop
 # pass; it returns messages to splice into history (e.g. background results,
@@ -279,6 +298,139 @@ def _messages_payload(messages: list) -> list:
     return payload
 
 
+def _latest_text_task(messages: list[dict]) -> str:
+    """Best-effort task label for response policy, excluding tool results."""
+
+    for message in reversed(messages):
+        if message.get("role") != "user":
+            continue
+        content = message.get("content")
+        if isinstance(content, str):
+            return content
+        if isinstance(content, list):
+            text_parts = [
+                str(part.get("text", ""))
+                for part in content
+                if isinstance(part, dict) and part.get("type") == "text"
+            ]
+            if text_parts:
+                return "\n".join(text_parts)
+    return ""
+
+
+def _append_system_instructions(system, instructions: tuple[str, ...]):
+    """Return a detached provider-neutral system value with stable guidance."""
+
+    if not instructions:
+        return system
+    addition = "\n\n".join(instructions)
+    if system is None:
+        return addition
+    if isinstance(system, str):
+        return f"{system}\n\n{addition}"
+    # Provider block form. Copy the outer blocks so policy never mutates the
+    # caller's cached prefix in place.
+    if isinstance(system, list):
+        return [*system, {"type": "text", "text": addition}]
+    return system
+
+
+def _message_protocol_shape(messages) -> tuple | None:
+    """Provider-sensitive message bytes an optimizer must not mutate.
+
+    Only ordinary text and the payload of a tail ``tool_result`` are eligible
+    for request-context reduction.  Tool calls, thinking/signature blocks,
+    media, cache metadata, and unknown block types remain byte-stable.
+    """
+
+    def canonical(value) -> str:
+        try:
+            return json.dumps(
+                value,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+                allow_nan=False,
+            )
+        except (TypeError, ValueError):
+            return repr(value)
+
+    if not isinstance(messages, list):
+        return None
+    shape = []
+    for message in messages:
+        if not isinstance(message, dict) or message.get("role") not in {
+            "user", "assistant"
+        }:
+            return None
+        message_metadata = {
+            key: value for key, value in message.items() if key != "content"
+        }
+        blocks = message.get("content")
+        protocol = []
+        if isinstance(blocks, list):
+            for block in blocks:
+                if not isinstance(block, dict):
+                    protocol.append(("opaque", canonical(block)))
+                    continue
+                kind = block.get("type")
+                if kind == "text":
+                    stable = {key: value for key, value in block.items() if key != "text"}
+                    protocol.append((kind, canonical(stable)))
+                elif kind == "tool_result":
+                    stable = {
+                        key: value for key, value in block.items() if key != "content"
+                    }
+                    protocol.append((kind, canonical(stable)))
+                else:
+                    # Includes tool_use, thinking/signature, images and any new
+                    # provider protocol block we do not yet understand.
+                    protocol.append((str(kind), canonical(block)))
+        elif isinstance(blocks, str):
+            protocol.append(("text",))
+        else:
+            protocol.append(("opaque-content", canonical(blocks)))
+        shape.append((canonical(message_metadata), tuple(protocol)))
+    return tuple(shape)
+
+
+def _canonical_message_digest(message: dict) -> str:
+    """Identity for one authoritative message in the projection ledger."""
+
+    try:
+        payload = json.dumps(
+            message,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+    except (TypeError, ValueError):
+        payload = repr(message).encode("utf-8", errors="replace")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _text_digest(value: str) -> str:
+    return f"sha256:{hashlib.sha256(value.encode('utf-8')).hexdigest()}"
+
+
+def _token_estimate(value: str) -> int:
+    size = len(value.encode("utf-8"))
+    return 0 if not size else max(1, (size + 3) // 4)
+
+
+def _observation_content_type(value: str) -> str:
+    stripped = value.lstrip()
+    if stripped.startswith(("{", "[")):
+        try:
+            json.loads(value)
+        except (TypeError, json.JSONDecodeError):
+            pass
+        else:
+            return "application/json"
+    return "text/plain"
+
+
 # --- s05: TodoWrite ---------------------------------------------------------
 
 #: Per-field cap on a todo's text. The count is capped at 20 below, but the
@@ -369,6 +521,8 @@ class Agent:
         cache_policy: CachePolicy | None = None,
         secrets=None,
         sandbox=None,
+        token_efficiency: TokenEfficiencyRuntime | None = None,
+        role_tool_policy: RoleToolPolicy | None = None,
         harness: Harness | None = None,
         injectors: list[Injector] | None = None,
         emit: EmitFn | None = None,
@@ -382,7 +536,7 @@ class Agent:
         self.client = client
         self.settings = settings
         self.workspace = Path(workspace)
-        self.skills = skills or SkillLoader(settings.skills_dir)
+        self.state: dict = state if state is not None else {}
         self.emit = emit
         self.semaphore = llm_semaphore or _Unbounded()
         self.tool_semaphore = (
@@ -395,6 +549,7 @@ class Agent:
         # construction site without editing any of them.
         self.harness = harness or Harness()
         tools = self.harness.resolve("tools", tools)
+        catalog_was_supplied = tools is not None
         hooks = self.harness.resolve("hooks", hooks)
         skills = self.harness.resolve("skills", skills)
         system_builder = self.harness.resolve("system_builder", system_builder)
@@ -404,12 +559,19 @@ class Agent:
         cache_policy = self.harness.resolve("cache_policy", cache_policy)
         secrets = self.harness.resolve("secrets", secrets)
         sandbox = self.harness.resolve("sandbox", sandbox)
+        token_efficiency = self.harness.resolve(
+            "token_efficiency", token_efficiency
+        )
+        role_tool_policy = self.harness.resolve(
+            "role_tool_policy", role_tool_policy
+        )
         if injectors is None and self.harness.injectors:
             injectors = list(self.harness.injectors)
 
         self.label = label
         self.depth = depth
         self.max_rounds = max_rounds if max_rounds is not None else settings.max_turns
+        self.skills = skills or SkillLoader(settings.skills_dir)
 
         # Assigned before the Toolset that consumes it.
         self.secrets = secrets if secrets is not None else NullSecretRegistry()
@@ -422,6 +584,65 @@ class Agent:
         )
         self.todo = TodoManager()
         self.tools = tools if tools is not None else default_registry()
+        self.role_tool_policy = role_tool_policy or DEFAULT_ROLE_TOOL_POLICY
+        self.token_efficiency = (
+            token_efficiency
+            if token_efficiency is not None
+            else TokenEfficiencyRegistry().runtime()
+        )
+        existing_raw_store = self.token_efficiency.raw_store
+        if existing_raw_store is not None:
+            try:
+                store_workspace = Path(existing_raw_store.workspace).resolve()
+            except (AttributeError, OSError, TypeError):
+                store_workspace = None
+            if store_workspace != self.workspace.resolve():
+                # A runtime can be shared as an immutable component template,
+                # but its raw authority cannot cross a workspace/session edge.
+                self.token_efficiency = self.token_efficiency.with_raw_store(None)
+        # Raw artifacts are authority-adjacent and therefore session scoped.
+        # The manager shares an immutable component template; each Agent binds
+        # a store rooted in its own workspace only when an enforced observation
+        # reducer can actually return a projection.
+        if (
+            self.token_efficiency.observation_enforced
+            and getattr(settings, "token_efficiency_persist_raw", True)
+            and self.state.get("permission_mode") != "readonly"
+            and (not catalog_was_supplied or RAW_ARTIFACT_TOOL in self.tools)
+        ):
+            if self.token_efficiency.raw_store is None:
+                raw_store = MaskedRawArtifactStore(
+                    self.workspace,
+                    ttl_seconds=getattr(
+                        settings,
+                        "token_efficiency_artifact_ttl_seconds",
+                        3_600,
+                    ),
+                    max_artifact_bytes=getattr(
+                        settings,
+                        "token_efficiency_max_artifact_bytes",
+                        2_000_000,
+                    ),
+                    max_total_bytes=getattr(
+                        settings,
+                        "token_efficiency_max_total_bytes",
+                        20_000_000,
+                    ),
+                )
+                self.token_efficiency = self.token_efficiency.with_raw_store(
+                    raw_store
+                )
+            # Only a genuinely bare default catalogue is widened implicitly.
+            # Manager/harness and child-role catalogues are supplied policy
+            # results; their constructor must not add authority back.
+            if not catalog_was_supplied:
+                install_token_efficiency_tools(self.tools)
+        # Ensure the two new seams survive grandchildren even for a bare Agent
+        # constructed with explicit overrides rather than a manager Harness.
+        self.harness = self.harness.derive(
+            token_efficiency=self.token_efficiency,
+            role_tool_policy=self.role_tool_policy,
+        )
         self.hooks = hooks if hooks is not None else default_hooks()
         self.compactor = compactor or DefaultCompactor()
         # Fed from every response's usage; read by the compactor. Not a seam:
@@ -440,14 +661,20 @@ class Agent:
         # prompt, so the cached prefix survives a changing todo board.
         if runtime_facts_injector not in self.injectors:
             self.injectors.append(runtime_facts_injector)
-        self.state: dict = state if state is not None else {}
-
         # System prompt: explicit string wins, else build from the agent.
         self.system_builder = system_builder or default_system_builder
         self._dynamic_system = system is None
         self._system = system if system is not None else self.system_builder(self)
 
         self.messages: list[dict] = []
+        # Provider-facing request reductions are projections, not transcript
+        # authority.  Once a tail is projected it becomes the next request's
+        # cache prefix, so retain that exact projection by authoritative
+        # message digest and stable append index.
+        self._request_projection_ledger: dict[tuple[int, str], dict] = {}
+        # Bound only while one provider request is being assembled. The system
+        # builder and `tools=` payload then consume the exact same fitted view.
+        self._request_tool_catalog = None
         self.last_text: str = ""
         self._last_model_span_id: str | None = None
         self._rounds_without_todo = 0
@@ -526,6 +753,31 @@ class Agent:
             return
         await self.emit({**fields, "type": event_type, "agent": self.label, "depth": self.depth})
 
+    async def _send_optimization_receipts(
+        self,
+        receipts,
+        *,
+        parent_span_id: str | None = None,
+    ) -> None:
+        """Emit provenance/metrics without placing observation content in events."""
+
+        for receipt in receipts:
+            payload = receipt.as_dict()
+            warning_count = len(getattr(receipt, "warnings", ()))
+            for unsafe_field in (
+                "warnings",
+                "input_digest",
+                "output_digest",
+                "raw_digest",
+            ):
+                payload.pop(unsafe_field, None)
+            payload["warning_count"] = warning_count
+            await self._send(
+                "optimization_receipt",
+                parent_span_id=parent_span_id,
+                **payload,
+            )
+
     async def _create(
         self,
         messages,
@@ -534,10 +786,107 @@ class Agent:
         system=None,
         max_tokens=None,
         purpose: str = "agent_turn",
+        tool_catalog_fingerprint: str | None = None,
     ):
         # Recorded before annotation: the policy hands back a copy, so this is
         # the only point where "is this request the live conversation?" is knowable.
         live_history = self.messages if messages is self.messages else None
+        requested_max_tokens = max_tokens or self.settings.max_tokens
+
+        # Response policy produces stable provider-neutral guidance. It runs
+        # before cache annotation so an opt-in policy becomes part of the
+        # reusable prefix rather than a provider-specific mutation afterward.
+        if purpose == "agent_turn":
+            response_outcome = await self.token_efficiency.plan_response(
+                ResponsePolicyContext(
+                    task=_latest_text_task(messages),
+                    settings=StableRequestSettings(
+                        max_output_tokens=requested_max_tokens
+                    ),
+                    budget_tokens=requested_max_tokens,
+                    concise_requested=bool(
+                        self.state.get("concise_response", False)
+                    ),
+                )
+            )
+            await self._send_optimization_receipts(response_outcome.receipts)
+            response_settings = response_outcome.context.settings
+            system = _append_system_instructions(
+                system, response_settings.instructions
+            )
+            if response_settings.max_output_tokens is not None:
+                requested_max_tokens = min(
+                    requested_max_tokens, response_settings.max_output_tokens
+                )
+
+        # Re-apply earlier provider projections before optimizing the newest
+        # delta.  Without this ledger, round N's compressed tail silently
+        # expands back to authoritative bytes when it becomes round N+1's
+        # prefix, defeating provider cache stability.
+        provider_messages = messages
+        if purpose == "agent_turn" and live_history is not None:
+            provider_messages = copy.deepcopy(messages)
+            valid_keys: set[tuple[int, str]] = set()
+            for index, authoritative in enumerate(messages):
+                if not isinstance(authoritative, dict):
+                    continue
+                key = (index, _canonical_message_digest(authoritative))
+                valid_keys.add(key)
+                projected = self._request_projection_ledger.get(key)
+                if projected is not None:
+                    provider_messages[index] = copy.deepcopy(projected)
+            self._request_projection_ledger = {
+                key: value
+                for key, value in self._request_projection_ledger.items()
+                if key in valid_keys
+            }
+
+        # Request optimizers receive a detached message copy and may only
+        # transform the newest delta. The runtime protects the frozen prefix;
+        # this provider-facing guard additionally preserves role count and
+        # tool-use/result identities so an optimizer cannot break pairing.
+        original_shape = _message_protocol_shape(provider_messages)
+        latest_role = (
+            messages[-1].get("role")
+            if messages and isinstance(messages[-1], dict)
+            else None
+        )
+        frozen_prefix_messages = (
+            len(messages)
+            if latest_role == "assistant"
+            else max(0, len(messages) - 1)
+        )
+        request_outcome = await self.token_efficiency.optimize_request(
+            RequestContext(
+                request={"messages": provider_messages},
+                frozen_prefix_messages=frozen_prefix_messages,
+            ),
+            budget_tokens=self.settings.token_threshold,
+        )
+        await self._send_optimization_receipts(request_outcome.receipts)
+        optimized_messages = request_outcome.context.request.get("messages")
+        if (
+            original_shape is not None
+            and _message_protocol_shape(optimized_messages) == original_shape
+        ):
+            messages = optimized_messages
+        else:
+            await self._send(
+                "request_optimization_rejected",
+                reason="message_protocol_guard",
+            )
+            messages = provider_messages
+        if purpose == "agent_turn" and live_history is not None:
+            for index, (authoritative, projected) in enumerate(
+                zip(live_history, messages, strict=False)
+            ):
+                if not isinstance(authoritative, dict) or not isinstance(projected, dict):
+                    continue
+                key = (index, _canonical_message_digest(authoritative))
+                if _canonical_message_digest(projected) == key[1]:
+                    self._request_projection_ledger.pop(key, None)
+                else:
+                    self._request_projection_ledger[key] = copy.deepcopy(projected)
         # Breakpoints are placed on per-request copies; `self.messages` stays
         # free of provider-specific keys so history remains portable.
         system, tools, messages = self.cache_policy.annotate(
@@ -548,7 +897,7 @@ class Agent:
         kwargs: dict = {
             "model": self.state.get("recovery_model", self.settings.model),
             "messages": messages,
-            "max_tokens": max_tokens or self.settings.max_tokens,
+            "max_tokens": requested_max_tokens,
         }
         if system is not None:
             kwargs["system"] = system
@@ -570,6 +919,7 @@ class Agent:
             message_count=len(messages),
             input_tokens_estimate=estimate_tokens(messages),
             tool_count=len(tools or []),
+            tool_catalog_fingerprint=tool_catalog_fingerprint,
             max_tokens=kwargs["max_tokens"],
             _trajectory_fields={
                 "model_input": {
@@ -603,6 +953,16 @@ class Agent:
                 error=f"{type(error).__name__}: {error}"[:500],
             )
             raise
+        usage = getattr(response, "usage", None)
+        measured_prompt_tokens = prompt_tokens(usage)
+        # The conversation meter models one stable prefix plus growth in
+        # `self.messages`. Memory selection, extraction, consolidation and
+        # compaction summaries use unrelated message lists (and often no tools
+        # or system prompt); observing them would replace the live anchor with
+        # a different request shape. Their own usage still belongs on the
+        # model_end event, just not in the live conversation meter.
+        if purpose == "agent_turn" and live_history is not None:
+            self.token_meter.observe(usage, live_history)
         await self._send(
             "model_end",
             span_id=span_id,
@@ -611,9 +971,8 @@ class Agent:
             duration_ms=round((time.monotonic() - started) * 1000, 3),
             stop_reason=getattr(response, "stop_reason", None),
             usage=_usage_payload(response),
-            prompt_tokens=self.token_meter.observe(
-                getattr(response, "usage", None), messages
-            ),
+            prompt_tokens=measured_prompt_tokens,
+            tool_catalog_fingerprint=tool_catalog_fingerprint,
             token_meter=self.token_meter.snapshot(),
             _trajectory_fields={
                 "model_output": _content_payload(response.content),
@@ -763,12 +1122,15 @@ class Agent:
             # pipeline before the model sees it.
             await self.compactor.maybe_compact(self)  # s08, pluggable
 
+            catalog = self.tools.snapshot(report=True)
+            self._request_tool_catalog = catalog
             try:
                 response = await self._create(
                     self.messages,
-                    tools=self.tools.schemas(),
+                    tools=catalog.schemas(),
                     system=self.refresh_system(),
                     purpose="agent_turn",
+                    tool_catalog_fingerprint=catalog.fingerprint,
                 )
             except Exception as error:
                 detail = f"{type(error).__name__}: {error}"[:500]
@@ -779,6 +1141,8 @@ class Agent:
                 })
                 await self._send("error", error=detail)
                 return
+            finally:
+                self._request_tool_catalog = None
             # Normalized on the way in, not at each reader. Provider block
             # objects are not ordinary data structures, and four separate
             # traversals -- the store's serializer, the secret masker, the
@@ -1052,6 +1416,7 @@ class Agent:
         journal: InMemoryActionJournal | None = self.state.get("action_journal")
         journal_started = False
         replayed_action = False
+        command_result: CommandResult | None = None
         try:
             decision = await self.hooks.before_tool(ctx, call)
             if decision is not None:
@@ -1122,7 +1487,15 @@ class Agent:
                         failed = True
                     else:
                         try:
-                            out = str(await tool.run(ctx, **call.input))
+                            raw_result = await tool.run(ctx, **call.input)
+                            if isinstance(raw_result, CommandResult):
+                                command_result = raw_result
+                                failed = bool(
+                                    raw_result.error
+                                    or raw_result.timed_out
+                                    or raw_result.exit_code not in {None, 0}
+                                )
+                            out = str(raw_result)
                         except Exception as error:
                             # Tool errors are data the model reacts to, not crashes.
                             out = f"Error: {error}"
@@ -1145,12 +1518,139 @@ class Agent:
         # used to record the raw result, so the durable actions table kept a
         # secret the tool echoed while every other sink masked it.
         out = self.secrets.mask(out)
+        # This is the journal authority.  A projection may carry an ephemeral
+        # raw_ref that intentionally dies with the session; persisting that
+        # projection would make replay advertise recovery it can no longer do.
+        authoritative_out = out
+
+        # Observation reduction is a formal post-mask stage. Hooks still see
+        # the legacy raw result for compatibility, but no reducer, sidecar,
+        # receipt, journal, event, trajectory, or transcript receives it before
+        # the application-wide secret registry has run.
+        if not replayed_action and call.name != RAW_ARTIFACT_TOOL:
+            masked_query = json.dumps(
+                self.secrets.mask_payload(call.input),
+                ensure_ascii=False,
+                sort_keys=True,
+                default=str,
+            )
+            persist_masked_raw = (
+                getattr(self.settings, "token_efficiency_persist_raw", True)
+                and self.state.get("permission_mode") != "readonly"
+                and RAW_ARTIFACT_TOOL in self.tools
+                and len(out.encode("utf-8"))
+                >= getattr(self.settings, "token_efficiency_raw_min_bytes", 4_096)
+            )
+            try:
+                optimization = await self.token_efficiency.reduce_observation(
+                    MaskedObservation(
+                        content=out,
+                        content_type=(
+                            "text/x-command-output"
+                            if command_result is not None
+                            else _observation_content_type(out)
+                        ),
+                        metadata=(
+                            (
+                                ("exit_code", command_result.exit_code),
+                                ("timed_out", command_result.timed_out),
+                                ("overflowed", command_result.overflowed),
+                                ("duration_ms", command_result.duration_ms),
+                            )
+                            if command_result is not None
+                            else ()
+                        ),
+                    ),
+                    query=masked_query,
+                    budget_tokens=self.settings.token_threshold,
+                    persist_masked_raw=persist_masked_raw,
+                )
+                # Reducers are plugins.  Mask their candidate again: even a
+                # reducer that normalizes control bytes or emits malformed
+                # content cannot reconstruct a registered credential into a
+                # downstream sink.
+                candidate_out = self.secrets.mask(
+                    optimization.observation.content
+                )
+                recovery_marker = render_recovery_marker(optimization)
+                if recovery_marker:
+                    candidate_out = f"{recovery_marker}\n{candidate_out}"
+                candidate_out = self.secrets.mask(candidate_out)
+
+                applied = tuple(
+                    receipt
+                    for receipt in optimization.receipts
+                    if receipt.status is OptimizationStatus.APPLIED
+                )
+                authority_bytes = len(authoritative_out.encode("utf-8"))
+                candidate_bytes = len(candidate_out.encode("utf-8"))
+                if applied and candidate_bytes >= authority_bytes:
+                    # The recovery envelope is part of what the model sees.  A
+                    # candidate that only looks smaller before that envelope is
+                    # not a token-efficiency win; discard its now-unused ref.
+                    raw_ref = optimization.observation.raw_ref
+                    store = self.token_efficiency.raw_store
+                    discard = getattr(store, "discard", None)
+                    if raw_ref is not None and callable(discard):
+                        try:
+                            discard(raw_ref)
+                        except Exception:
+                            pass
+                    receipts = tuple(
+                        replace(
+                            receipt,
+                            status=OptimizationStatus.DEGRADED,
+                            reason="recovery_envelope_inflation",
+                            projected_bytes=authority_bytes,
+                            tokens_after_estimate=_token_estimate(
+                                authoritative_out
+                            ),
+                            output_digest=_text_digest(authoritative_out),
+                            raw_ref=None,
+                            raw_digest=None,
+                        )
+                        if receipt.status is OptimizationStatus.APPLIED
+                        else receipt
+                        for receipt in optimization.receipts
+                    )
+                    optimization = replace(optimization, receipts=receipts)
+                    out = authoritative_out
+                else:
+                    # Receipt metrics describe the actual provider envelope,
+                    # including the recovery marker and final secret mask.
+                    receipts = tuple(
+                        replace(
+                            receipt,
+                            projected_bytes=candidate_bytes,
+                            tokens_after_estimate=_token_estimate(candidate_out),
+                            output_digest=_text_digest(candidate_out),
+                        )
+                        if receipt.status is OptimizationStatus.APPLIED
+                        else receipt
+                        for receipt in optimization.receipts
+                    )
+                    optimization = replace(optimization, receipts=receipts)
+                    out = candidate_out
+                await self._send_optimization_receipts(
+                    optimization.receipts,
+                    parent_span_id=span_id,
+                )
+            except Exception as error:
+                # A custom runtime is still a plugin boundary. Fail open with
+                # the already-masked observation and expose only the exception
+                # class, never plugin text that might contain the observation.
+                await self._send(
+                    "optimization_stage_error",
+                    stage="observation",
+                    parent_span_id=span_id,
+                    error=type(error).__name__,
+                )
 
         if journal is not None and journal_started:
             journal.finish(
                 action_id,
                 status="denied" if denied else ("failed" if failed else "completed"),
-                result=out,
+                result=authoritative_out,
             )
 
         result_fields = {
@@ -1170,6 +1670,13 @@ class Agent:
             # Surfaced so an operator can see a resumed turn reused a recorded
             # outcome rather than performing the action again.
             result_fields["replayed"] = True
+        if command_result is not None:
+            result_fields["command_result"] = {
+                "exit_code": command_result.exit_code,
+                "timed_out": command_result.timed_out,
+                "overflowed": command_result.overflowed,
+                "duration_ms": command_result.duration_ms,
+            }
         await self._send("tool_result", **result_fields)
         step = ToolStep(
             name=call.name,
@@ -1201,8 +1708,9 @@ class Agent:
         child_context = parent_context.derive_peer_agent(
             delegated_by=self.label,
         )
-        registry = explore_registry() if agent_type == "Explore" else worker_registry()
-        verb = "explore and report" if agent_type == "Explore" else "complete the task"
+        is_explore = agent_type.strip().lower() == "explore"
+        registry = self.role_tool_policy.select(agent_type, self.tools)
+        verb = "explore and report" if is_explore else "complete the task"
         child = Agent(
             client=self.client,
             settings=self.settings,
@@ -1229,8 +1737,13 @@ class Agent:
             label=f"{self.label}>{agent_type.lower()}",
             depth=self.depth + 1,
             max_rounds=self.settings.subagent_max_rounds,
+            state=(
+                {"permission_mode": "readonly"}
+                if is_explore
+                else None
+            ),
         )
-        if agent_type == "Explore":
+        if is_explore:
             # "Explore is read-only" is a promise the `task` tool makes to the
             # model, and it was only a tool-list convention: the default
             # interactive mode runs a plain `echo x > file` via bash with no
@@ -1238,7 +1751,7 @@ class Agent:
             # could mutate the workspace a caller delegated as read-only.
             # Read-only mode denies every mutating-risk tool -- bash included --
             # so the promise holds by construction, whatever the registry carries.
-            child.state["permission_mode"] = "readonly"
+            assert child.state["permission_mode"] == "readonly"
         await self._send(
             "subagent_start",
             agent_type=agent_type,

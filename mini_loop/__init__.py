@@ -17,6 +17,13 @@ from .actions import (
     InMemoryActionJournal,
 )
 from .agent import Agent, TodoManager
+from .ast_context import (
+    AstContextConfig,
+    AstContextProbe,
+    AstContextResult,
+    AstOutlineAdapter,
+    install_ast_context_tools,
+)
 from .background import (
     BackgroundManager,
     background_injector,
@@ -58,7 +65,15 @@ from .memory import (
 from .permissions import PermissionHook, PermissionRule, default_hooks
 from .prompts import default_system_builder, runtime_facts, sections_builder
 from .recovery import DefaultRecovery, DirectRecovery
-from .registry import Hook, Hooks, Tool, ToolCall, ToolContext, ToolRegistry
+from .registry import (
+    Hook,
+    Hooks,
+    Tool,
+    ToolCall,
+    ToolCatalogSnapshot,
+    ToolContext,
+    ToolRegistry,
+)
 from .run_context import (
     EXPLICIT_HUMAN,
     PEER_AGENT,
@@ -96,7 +111,31 @@ from .storage import (
 )
 from .tasks import TaskStore, install_tasks
 from .teams import MessageBus, ProtocolState, install_teams, team_injector
-from .tools import Toolset
+from .token_efficiency import (
+    ComponentDescriptor,
+    ComponentStage,
+    ConciseResponsePolicy,
+    ConciseResponsePolicySettings,
+    DeterministicLosslessReducer,
+    Lossiness,
+    MaskedObservation,
+    MaskedRawArtifactStore,
+    ObservationReducer,
+    OptimizationMode,
+    OptimizationReceipt,
+    OptimizationStatus,
+    RequestContext,
+    RequestContextOptimizer,
+    ResponsePolicy,
+    TokenEfficiencyRegistry,
+    TokenEfficiencyRuntime,
+)
+from .token_tools import install_token_efficiency_tools
+from .tool_policy import (
+    CapabilityRoleToolPolicy,
+    RoleToolPolicy,
+)
+from .tools import CommandResult, Toolset
 from .trajectory import SCHEMA_VERSION as TRAJECTORY_SCHEMA_VERSION
 from .trajectory import TrajectoryStore
 from .worktrees import WorktreeManager, install_worktrees, remove_worktree, worktree_workspace_factory
@@ -135,6 +174,7 @@ __all__ = [
     # extension seams
     "Tool",
     "ToolRegistry",
+    "ToolCatalogSnapshot",
     "ToolContext",
     "ToolCall",
     "Hook",
@@ -181,6 +221,7 @@ __all__ = [
     "STORAGE_SCHEMA_VERSION",
     "SkillLoader",
     "Toolset",
+    "CommandResult",
     "TodoManager",
     "default_registry",
     "explore_registry",
@@ -193,6 +234,32 @@ __all__ = [
     "microcompact",
     "snip_compact",
     "tool_result_budget",
+    # token-efficient code context and projection stages
+    "AstContextConfig",
+    "AstContextProbe",
+    "AstContextResult",
+    "AstOutlineAdapter",
+    "install_ast_context_tools",
+    "ComponentDescriptor",
+    "ComponentStage",
+    "Lossiness",
+    "OptimizationMode",
+    "OptimizationStatus",
+    "OptimizationReceipt",
+    "MaskedObservation",
+    "MaskedRawArtifactStore",
+    "ObservationReducer",
+    "RequestContext",
+    "RequestContextOptimizer",
+    "ResponsePolicy",
+    "TokenEfficiencyRegistry",
+    "TokenEfficiencyRuntime",
+    "DeterministicLosslessReducer",
+    "ConciseResponsePolicy",
+    "ConciseResponsePolicySettings",
+    "install_token_efficiency_tools",
+    "RoleToolPolicy",
+    "CapabilityRoleToolPolicy",
     # error recovery (s11)
     "DefaultRecovery",
     "DirectRecovery",

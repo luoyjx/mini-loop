@@ -78,6 +78,7 @@ from __future__ import annotations
 
 import fnmatch
 import os
+import re
 import threading
 import time
 from collections.abc import Callable, Iterable, Mapping
@@ -96,6 +97,28 @@ MASK = "<secret-hidden>"
 # and masking it would corrupt unrelated output.
 MIN_MASKABLE_LENGTH = 8
 FAILED_LOOKUP_RETRY_SECONDS = 60.0
+
+# Terminal control sequences are presentation bytes, not visible credential
+# characters.  A tool can split ``TOPSECRET`` as ``TOP\x1b[31mSECRET``; a
+# reducer that strips colour then reconstructs the credential unless masking
+# treats those bytes as transparent while matching.  CSI covers colour/cursor
+# controls, OSC covers terminal-title/hyperlink controls, and the final branch
+# covers the remaining two-byte ESC sequences.
+_ANSI_ESCAPE = (
+    r"(?:\x1b(?:\[[0-?]*[ -/]*[@-~]"
+    r"|\][^\x07\x1b]*(?:\x07|\x1b\\)"
+    r"|[@-_]))"
+)
+
+
+def _mask_ansi_interleaved(text: str, value: str, replacement: str) -> str:
+    """Mask ``value`` even when ANSI controls occur between its characters."""
+
+    if not value:
+        return text
+    separator = rf"(?:{_ANSI_ESCAPE})*"
+    pattern = separator.join(re.escape(character) for character in value)
+    return re.sub(pattern, lambda _match: replacement, text)
 
 DEFAULT_SECRET_PATTERNS = (
     "*_API_KEY",
@@ -318,6 +341,7 @@ class SecretRegistry:
             if value and len(value) >= self.min_length:
                 values.append(value)
         for value in sorted(values, key=len, reverse=True):
-            if value in text:
-                text = text.replace(value, self.mask_with)
+            # The regex also matches the ordinary no-ANSI form.  Use a callable
+            # replacement so custom mask strings containing ``\\`` stay literal.
+            text = _mask_ansi_interleaved(text, value, self.mask_with)
         return text

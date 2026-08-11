@@ -18,10 +18,11 @@ and redaction are all just hooks.
 
 from __future__ import annotations
 
+import hashlib
 import inspect
 import json
 from collections.abc import Callable, Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -125,6 +126,14 @@ class Tool:
     #: action out of `bash` into a dedicated tool -- an opaque command string
     #: cannot be checked, a typed call often can.
     verify: VerifyFn | None = None
+    #: Stable capability names used when a child agent receives a role-specific
+    #: subset of its parent's tools. Empty means "do not inherit by capability".
+    capabilities: frozenset[str] = field(default_factory=frozenset)
+
+    def __post_init__(self) -> None:
+        # Accept any iterable at the public construction boundary, then keep
+        # one immutable representation for role-policy decisions.
+        self.capabilities = frozenset(self.capabilities)
 
     @property
     def schema(self) -> dict:
@@ -156,11 +165,34 @@ class Tool:
         return result
 
 
+@dataclass(frozen=True, slots=True)
+class ToolCatalogSnapshot:
+    """One immutable, byte-stable view of the tools sent on a model request.
+
+    The JSON payload is stored rather than a tuple of mutable dictionaries. A
+    caller gets a fresh decoded list from :meth:`schemas`, so neither cache
+    annotation nor a provider SDK can mutate the snapshot shared with the
+    system-prompt builder.
+    """
+
+    revision: int
+    fingerprint: str
+    schema_json: str
+    sent_names: tuple[str, ...]
+    omitted_names: tuple[str, ...]
+    trimmed_to: int | None
+    inventory_count: int
+
+    def schemas(self) -> list[dict]:
+        return json.loads(self.schema_json)
+
+
 class ToolRegistry:
     """An ordered, named collection of tools."""
 
     def __init__(self, tools: Iterable[Tool] | None = None) -> None:
         self._tools: dict[str, Tool] = {}
+        self._revision = 0
         #: Definitions trimmed or omitted to fit the request. Every other store
         #: in the package grew one of these.
         self.problems = ProblemLog()
@@ -178,7 +210,12 @@ class ToolRegistry:
                 f"Tool '{tool.name}' declares unknown risk {tool.risk!r}; "
                 f"expected one of {RISK_LEVELS} or None"
             )
+        if any(not isinstance(name, str) or not name.strip() for name in tool.capabilities):
+            raise ValueError(
+                f"Tool '{tool.name}' capabilities must be non-empty strings"
+            )
         self._tools[tool.name] = tool
+        self._revision += 1
         return self
 
     def add(
@@ -190,6 +227,7 @@ class ToolRegistry:
         readonly: bool = False,
         parallel_safe: bool = False,
         risk: str | None = None,
+        capabilities: Iterable[str] = (),
         replace: bool = False,
     ):
         """Decorator form: `@registry.add("greet", "...", {...})`."""
@@ -203,6 +241,7 @@ class ToolRegistry:
                     readonly=readonly,
                     parallel_safe=parallel_safe,
                     risk=risk,
+                    capabilities=frozenset(capabilities),
                 ),
                 replace=replace,
             )
@@ -210,7 +249,8 @@ class ToolRegistry:
         return deco
 
     def unregister(self, name: str) -> "ToolRegistry":
-        self._tools.pop(name, None)
+        if self._tools.pop(name, None) is not None:
+            self._revision += 1
         return self
 
     def get(self, name: str) -> Tool | None:
@@ -274,7 +314,36 @@ class ToolRegistry:
         model via `omitted_names()`.
         """
 
+        return self.snapshot(report=True).schemas()
+
+    def snapshot(self, *, report: bool = False) -> ToolCatalogSnapshot:
+        """Freeze the fitted catalogue once for a single model request.
+
+        Ordering remains registry insertion order: changing it is a provider
+        cache change and therefore changes the fingerprint. Object key order is
+        canonicalized only for the serialized payload so equal schemas built by
+        different dictionary insertion paths still have the same identity.
+        """
+
         schemas, trimmed_to, omitted = self._fit()
+        schema_json = json.dumps(
+            schemas,
+            default=str,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        snapshot = ToolCatalogSnapshot(
+            revision=self._revision,
+            fingerprint=hashlib.sha256(schema_json.encode("utf-8")).hexdigest(),
+            schema_json=schema_json,
+            sent_names=tuple(schema["name"] for schema in schemas),
+            omitted_names=tuple(omitted),
+            trimmed_to=trimmed_to,
+            inventory_count=len(self._tools),
+        )
+        if not report:
+            return snapshot
         if omitted:
             self.problems.append(
                 f"{len(omitted)} tool(s) omitted from the request: "
@@ -286,7 +355,7 @@ class ToolRegistry:
                 f"tool descriptions trimmed to {trimmed_to:,} characters to fit "
                 f"{MAX_TOOL_PAYLOAD:,} in the request ({len(schemas)} tools)"
             )
-        return schemas
+        return snapshot
 
     def sent_names(self) -> list[str]:
         """Names of the tools the next request will actually carry.
@@ -299,16 +368,25 @@ class ToolRegistry:
         had 2,508 tools it could not reliably call.
         """
 
-        return [schema["name"] for schema in self._fit()[0]]
+        return list(self.snapshot().sent_names)
 
     def omitted_names(self) -> list[str]:
         """Registered tools the next request will not carry (usually empty)."""
 
-        return self._fit()[2]
+        return list(self.snapshot().omitted_names)
 
     def subset(self, names: Iterable[str]) -> "ToolRegistry":
         keep = set(names)
         return ToolRegistry([t for n, t in self._tools.items() if n in keep])
+
+    def with_capabilities(self, capabilities: Iterable[str]) -> "ToolRegistry":
+        """Return tools whose complete authority fits within ``capabilities``."""
+
+        allowed = set(capabilities)
+        return ToolRegistry(
+            tool for tool in self._tools.values()
+            if tool.capabilities and tool.capabilities.issubset(allowed)
+        )
 
     def clone(self) -> "ToolRegistry":
         return ToolRegistry(list(self._tools.values()))

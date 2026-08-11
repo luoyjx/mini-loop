@@ -12,6 +12,8 @@ special, and any can be removed (`registry.unregister`) or replaced
 
 from __future__ import annotations
 
+import asyncio
+
 from .registry import Tool, ToolContext, ToolRegistry
 from .tools import BASH, EDIT_FILE, GLOB, READ_FILE, WRITE_FILE
 
@@ -87,7 +89,7 @@ async def _bash(ctx: ToolContext, command: str, run_in_background: bool = False)
 
         if should_run_background(command, run_in_background):
             return background_manager_for(ctx).run(command)
-    return await ctx.agent.toolset.dispatch("bash", {"command": command})
+    return await asyncio.to_thread(ctx.agent.toolset.run_bash_result, command)
 
 
 async def _read_file(
@@ -171,7 +173,15 @@ async def _ask_user(ctx: ToolContext, question: str) -> str:
 
 def _file_tools() -> list[Tool]:
     return [
-        Tool("bash", BASH["description"], BASH["input_schema"], _bash, readonly=False, risk="exec"),
+        Tool(
+            "bash",
+            BASH["description"],
+            BASH["input_schema"],
+            _bash,
+            readonly=False,
+            risk="exec",
+            capabilities=frozenset({"process.exec"}),
+        ),
         Tool(
             "read_file",
             READ_FILE["description"],
@@ -180,6 +190,7 @@ def _file_tools() -> list[Tool]:
             readonly=True,
             parallel_safe=True,
             risk="read",
+            capabilities=frozenset({"repo.read"}),
         ),
         Tool(
             "write_file",
@@ -188,8 +199,16 @@ def _file_tools() -> list[Tool]:
             _write_file,
             verify=_write_file_took_effect,
             risk="write",
+            capabilities=frozenset({"workspace.write"}),
         ),
-        Tool("edit_file", EDIT_FILE["description"], EDIT_FILE["input_schema"], _edit_file, risk="write"),
+        Tool(
+            "edit_file",
+            EDIT_FILE["description"],
+            EDIT_FILE["input_schema"],
+            _edit_file,
+            risk="write",
+            capabilities=frozenset({"workspace.write"}),
+        ),
         Tool(
             "glob",
             GLOB["description"],
@@ -198,6 +217,7 @@ def _file_tools() -> list[Tool]:
             readonly=True,
             parallel_safe=True,
             risk="read",
+            capabilities=frozenset({"repo.search"}),
         ),
     ]
 

@@ -222,8 +222,52 @@ def test_the_threshold_now_fires_on_real_tokens(tmp_path):
     assert fired, "compaction did not fire on the real token count"
 
 
-def test_the_agent_feeds_the_meter_from_every_response(tmp_path):
-    """Wiring check: the usage was already captured, into an event nobody read."""
+def test_the_agent_feeds_the_meter_from_live_conversation_responses(tmp_path):
+    """Wiring check: live usage reaches the conversation meter."""
     agent = _agent(tmp_path)
     asyncio.run(agent.run("hello"))
     assert agent.token_meter.observations > 0, "no response was ever observed"
+
+
+def test_side_queries_report_usage_without_reanchoring_the_live_meter(tmp_path):
+    agent = _agent(tmp_path)
+    agent.messages.append({"role": "user", "content": "live conversation"})
+    session = agent.state["session"]
+
+    async def exercise():
+        await agent._create(
+            agent.messages, tools=[], system="stable", purpose="agent_turn"
+        )
+        live_snapshot = agent.token_meter.snapshot()
+        assert live_snapshot["observations"] == 1
+
+        side_messages = [{"role": "user", "content": "side query" * 100}]
+        for purpose, messages in (
+            ("memory_selection", side_messages),
+            ("memory_consolidation", side_messages),
+            ("compaction", side_messages),
+            # Memory extraction currently calls `_create` without overriding
+            # the default purpose. Object identity must still keep it separate.
+            ("agent_turn", side_messages),
+            # Purpose is also load-bearing: even the live list must not anchor
+            # a request explicitly classified as a side operation.
+            ("compaction", agent.messages),
+        ):
+            await agent._create(messages, purpose=purpose)
+            assert agent.token_meter.snapshot() == live_snapshot
+
+        await agent._create(
+            agent.messages, tools=[], system="stable", purpose="agent_turn"
+        )
+        assert agent.token_meter.observations == 2
+
+    asyncio.run(exercise())
+
+    side_events = [
+        event
+        for event in session._backlog
+        if event.get("type") == "model_end"
+        and event.get("purpose") != "agent_turn"
+    ]
+    assert side_events
+    assert all(event.get("prompt_tokens") for event in side_events)

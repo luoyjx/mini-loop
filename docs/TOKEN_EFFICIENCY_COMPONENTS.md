@@ -31,13 +31,25 @@
 4. **权威数据与模型投影视图必须分离。** workspace 与脱敏后的原始 tool
    result 是 authority；outline、折叠结果、request copy、简短回答是
    projection。投影失败时可以 fail open，不能反向覆盖 authority。
-5. **mini-loop 最适合先做 ast-outline pilot。** 第二步借鉴 RTK 的
-   command classification、never-worse、raw-on-failure 设计；Headroom 仅以
-   library/sidecar shadow mode 接入；Caveman 作为用户可选输出风格，不应默认
-   注入 1k+ token 的长规则。
-6. **接入前先修两个现存 correctness 问题。** 当前 compaction 可能在模型
-   首次消费前清掉同一批中的第 4 个及更早 tool result；旁路 LLM 请求还会
-   共用并重锚主会话 TokenMeter。未修复前，压缩收益与信息丢失都无法可信测量。
+5. **mini-loop 已落地本地、显式、可关闭的第一版。** ast-outline 以四个 typed
+   tools 接入；RTK 的设计原则被实现为结构化 `CommandResult` 与确定性 reducer，
+   但没有调用 RTK binary 或透明改写 shell；Caveman 只被借鉴为短小的本地
+   `ConciseResponsePolicy`；Headroom adapter/proxy 尚未交付。
+6. **两个 correctness 前置问题已经修复。** 最新尚未被 assistant 消费的完整
+   tool-result batch 会被保护；memory/compaction 等 side query 不再重锚 live
+   conversation `TokenMeter`。这表示现在可以做可信 benchmark，但本报告没有把
+   尚未执行的 benchmark 写成节省结论。
+
+### 0.1 当前实现状态
+
+| 层 | 状态 | 当前边界 |
+|---|---|---|
+| Phase 0 正确性 | **已落地** | 未消费并行 batch 保护、side-query meter 隔离、单请求 catalogue snapshot |
+| 代码获取 | **已落地，可选** | ast-outline 1.9.x direct-argv adapter；外部 binary 由运维提供，默认关闭 |
+| 工具回传 | **已落地基础设施** | `CommandResult`、post-mask reducer、receipt、masked raw recovery；没有 RTK binary rewrite |
+| 请求上下文 | **已落地 SPI** | request copy、frozen prefix、protocol guard；没有内置 Headroom/ML optimizer |
+| 模型输出 | **已落地本地策略** | Caveman-inspired concise policy；默认关闭，不打包 Caveman 项目 |
+| 外部压缩器 | **未交付** | Headroom adapter/proxy、RTK executable integration、通用 ML compressor 均未启用 |
 
 ## 1. 调研口径与证据等级
 
@@ -179,6 +191,9 @@ stdout 输出 note/error 并以 `0` 退出，目的是不打断并行 shell batc
   provider usage 或账单缩减。
 - parser 出错时 outline 可能不完整；生成代码、动态语言、宏、模板和跨语言关系
   仍需要 raw read、LSP 或 build/test 证据。
+- mini-loop adapter 为了让 pre-process 校验有界，只接受静态工作区目录下的末级
+  basename glob；拒绝 `**` 和中间目录通配。需要递归发现时先用受限 catalogue 工具
+  选出显式路径，再调用 typed AST tool。
 - 0.6+ 代码是 Apache-2.0，但 README、CLI help、prompt snippet、digest legend
   按 CC BY 4.0 发布。可以封装 CLI；若复制长篇 prompt 文案，应保留 attribution。
 
@@ -419,15 +434,15 @@ contract，也应由 mini-loop 统一计量，禁用组件自己的上传路径�
 
 第一阶段仅对已脱敏的大型 JSON、search result、log 做 shadow：同时生成 compact
 candidate 和 receipt，但仍把原文给模型；观察命中类型、潜在节省、延迟和错误。
-第二阶段只启用 deterministic/lossless 路由。第三阶段再对可回读、低风险内容启用
+第二阶段只启用 deterministic/recoverable 本地路由。第三阶段再对可回读、低风险内容启用
 lossy+CCR。不要一开始把整个 provider 流量切到 proxy，也不要同时叠加 RTK、
 Headroom 和 compactor 对同一 block 重复压缩。
 
-## 8. mini-loop 当前 harness 审计
+## 8. mini-loop 调研基线与落地后审计
 
-### 8.1 真实调用链
+### 8.1 落地后的真实调用链
 
-固定基线的关键路径是：
+当前关键路径是：
 
 ```text
 AgentSession.run
@@ -436,41 +451,53 @@ AgentSession.run
   -> Agent._loop
        -> injectors
        -> Compactor.maybe_compact
-       -> ToolRegistry.schemas + system_builder
+       -> one immutable ToolCatalogSnapshot
+       -> system_builder + snapshot.schemas
+       -> ResponsePolicy (stable settings)
+       -> RequestContextOptimizer (detached copy + frozen prefix)
+       -> message protocol guard
        -> CachePolicy.annotate
        -> Recovery -> Transport -> provider
        -> Agent._exec_tool_batch
             -> Hooks.before_tool
             -> ActionJournal.begin/reconcile
-            -> Tool.run -> Toolset.dispatch
+            -> Tool.run -> Toolset.dispatch / CommandResult
             -> Hooks.after_tool
-            -> SecretRegistry.mask
-            -> ActionJournal.finish
-            -> event / trajectory / transcript
+            -> SecretRegistry.mask(authority)
+            -> ObservationReducer
+            -> SecretRegistry.mask(projection)
+            -> optional session-scoped masked artifact + guarded recovery envelope
+            -> ActionJournal.finish(bounded masked-authority prefix)
+            -> receipt / event / trajectory / transcript (guarded projection)
 ```
 
-源码入口：[`Harness`](../mini_loop/harness.py#L38)、
-[`Agent._create`](../mini_loop/agent.py#L529)、
-[`Agent._loop`](../mini_loop/agent.py#L751)、
-[`Agent._exec_tool`](../mini_loop/agent.py#L1011)、
-[`ToolRegistry`](../mini_loop/registry.py#L163)、
-[`DefaultCompactor`](../mini_loop/compaction.py#L228)、
-[`SessionManager`](../mini_loop/manager.py#L96)。
+源码入口：[`Harness`](../mini_loop/harness.py)、
+[`Agent._create`](../mini_loop/agent.py)、
+[`Agent._loop`](../mini_loop/agent.py)、
+[`Agent._exec_tool`](../mini_loop/agent.py)、
+[`TokenEfficiencyRuntime`](../mini_loop/token_efficiency.py)、
+[`ToolRegistry`](../mini_loop/registry.py)、
+[`DefaultCompactor`](../mini_loop/compaction.py)、
+[`SessionManager`](../mini_loop/manager.py)。
 
 ### 8.2 已有 seam 与缺口
 
-| 能力 | 现有 seam | 可以做的 PoC | 组件化缺口 |
-|---|---|---|---|
-| semantic read | `ToolRegistry` / builtins | 注册 ast-outline typed tools | subagent/workflow 会硬重建 registry，不能按 capability 继承 |
-| tool middleware | `Hook` | 参数校验、audit、简单本地 transform | `after_tool` 早于统一 secret masking，不适合远端 reducer |
-| context reduction | `Compactor` | 包一层 reducer | 面向 transcript mutation，缺少 request copy、frozen prefix、receipt |
-| prompt cache | `CachePolicy` | cache breakpoint | tool catalogue 无单次 immutable snapshot/fingerprint |
-| oversized output | `tool_result_budget` | 脱敏后 sidecar + preview | 不是通用 typed reducer/recovery contract |
-| dynamic tools | MCP | 外部进程工具 | stdio server 不走 Toolset sandbox，工具统一按 external risk |
-| provider | client + `Transport` | 定制 API 传输 | 无 provider capability/usage normalization contract |
-| memory | 内建 `MemoryStore` | Markdown memory | manager/agent 直接绑定，不是预算化 Provider seam |
+下表保留调研时发现的缺口，并给出当前状态：
 
-当前 `Harness` 可作为组件聚合点，但需要增加正式字段，而不是继续扩大 `Hook`：
+| 能力 | 调研时缺口 | 当前状态 |
+|---|---|---|
+| semantic read | subagent 硬重建 registry | 四个 ast typed tools + capability `RoleToolPolicy` 已落地 |
+| tool middleware | `after_tool` 早于统一 mask | reducer 已成为 mask 后的独立 stage |
+| context reduction | 只有 transcript mutation | request copy、frozen prefix、receipt、protocol guard 已落地 |
+| prompt cache | catalogue 重复拟合、无 fingerprint | 单请求 immutable `ToolCatalogSnapshot` 已落地 |
+| oversized output | 无统一 recovery contract | session-scoped in-memory masked artifact + paged `read_token_artifact` 已落地 |
+| command output | 混合字符串、exit metadata 丢失 | `CommandResult` 已分离 stdout/stderr/exit/timeout；格式专用 adapter 未交付 |
+| dynamic tools | MCP 进程边界更宽 | 仍按 external risk 管理；本轮没有改变 MCP sandbox 边界 |
+| provider / memory | capability、budget provider seam 不完整 | 不在本轮实现范围，仍是后续平台工作 |
+
+`Harness` 现已增加正式 `token_efficiency` 与 `role_tool_policy` 字段；stage
+协议由 `TokenEfficiencyRegistry` 聚合，而不是继续扩大 `Hook`。调研中提出的更宽
+边界仍可作为后续方向：
 
 ```text
 command_adapter
@@ -481,30 +508,32 @@ tool_catalog_policy
 context_provider / memory_provider
 ```
 
-### 8.3 两个接入前 P1
+### 8.3 两个接入前 P1（已修复）
 
 #### P1-A：最新并行 tool batch 可能首次消费前被清空
 
-`microcompact()` 只保留最后三个 tool results；它在下一轮 model request 前执行。
+原实现的 `microcompact()` 只保留最后三个 tool results；它在下一轮 model request
+前执行。
 若一个 assistant response 并行调用五个工具，五个结果进入同一最新 user message，
 前两个长结果可能在模型第一次看到它们前就变为 `[cleared]`。注释假设“模型已经
 处理过”，但对最新 batch 不成立。
 
-前置修复：按**已被后续 assistant turn 消费的完整 batch**做 compaction，不按
-全局最后 N 个 result；增加“一轮五个长结果，下一 provider request 五个都可见”的
-端到端测试。
+当前修复：`microcompact()` 只把最后一个 assistant 之前的 tool-result 视为已消费；
+最后 assistant 之后的完整尾部都受保护，即便 injector 又追加 user messages 也不会
+改变其“尚未消费”状态。已消费区域仍保留最近三个 result 的既有策略。
 
 #### P1-B：side query 污染主会话 TokenMeter
 
-所有 `_create()` response 都更新同一个 conversation meter，包括 memory
+原实现让所有 `_create()` response 都更新同一个 conversation meter，包括 memory
 selection/extraction 和 LLM compaction summary。这些旁路 request 的
 system/tools/messages 与 live conversation 不同，却会重锚 context size，使后续
 compaction 过早或过晚。
 
-前置修复：trajectory 仍记录全部 usage，但 live conversation meter 只观察主
-agent turn；side query 按 `purpose` 使用独立 meter。
+当前修复：`Agent._create(..., purpose=...)` 仍把全部 usage 写入 model-end event，
+但只有 `purpose="agent_turn"` 且输入确实别名到 live history 时才更新 conversation
+meter；`memory_selection`、`memory_consolidation` 与 `compaction` 不再重锚它。
 
-## 9. 建议的 Harness 架构
+## 9. 目标架构与已实现切片
 
 ### 9.1 authority 与 projection
 
@@ -515,23 +544,23 @@ flowchart LR
     M --> P["Permission on original + effective plan"]
     P --> E["Sandboxed execution"]
     E --> S["Secret masking"]
-    S --> A["Masked raw artifact<br/>authority + scoped ref"]
-    A --> O["ObservationReducer<br/>RTK / Headroom adapter"]
+    S --> O["ObservationReducer<br/>local reducer / future adapter"]
+    O --> A["Masked raw artifact<br/>session memory + scoped ref"]
     O --> T["Compact transcript projection"]
     T --> X["RequestContextOptimizer<br/>delta only + frozen prefix"]
     X --> K["CachePolicy"]
     K --> M
-    M --> R["ResponsePolicy<br/>normal / concise / terse"]
+    M --> R["ResponsePolicy<br/>normal / concise"]
 ```
 
 关键不变量：
 
 - optimizer 只生成 projection，不覆盖 workspace 或 masked raw artifact；
-- secret masking 在任何远端 reducer、sidecar persistence 和 telemetry 之前；
-- permission 同时审核模型原始意图和 command adapter 的有效执行计划；
+- secret masking 在任何远端 reducer、artifact retention 和 telemetry 之前；
+- 若未来增加 command adapter，permission 必须同时审核模型原始意图和有效计划；
 - transcript 的 tool-use/result pairing 永远合法；
 - request optimizer 在副本上工作，不改变 authoritative conversation；
-- frozen prefix byte-identical；
+- provider projection ledger 让上一轮 tail 在下一轮成为 byte-identical prefix；
 - 任一组件 timeout/crash 时有明确定义的 fail-open 或 fail-closed 行为。
 
 ### 9.2 通用 descriptor 与 receipt
@@ -543,8 +572,8 @@ ComponentDescriptor {
   id, version, stage,
   content_types,
   deterministic,
-  lossless,
-  recoverability,
+  lossiness,
+  recoverable,
   cost_tier,
   network_access,
   timeout_ms,
@@ -554,32 +583,33 @@ ComponentDescriptor {
 
 OptimizationReceipt {
   component_id, component_version,
-  status: applied | passthrough | degraded | error,
+  stage, mode,
+  status: applied | passthrough | shadowed | degraded | error,
   reason,
   raw_bytes, projected_bytes,
   tokens_before_estimate, tokens_after_estimate,
-  provider_usage_before, provider_usage_after,
-  lossless, deterministic,
+  input_digest, output_digest,
+  lossiness, deterministic,
   raw_ref, raw_digest,
   warnings,
   elapsed_ms
 }
 ```
 
-`tokens_before_estimate` 只用于实时路由；最终报表以 provider usage 为准。receipt
-进入 trajectory/metrics，但 raw content 不进入普通 event。
+`tokens_before_estimate` / `tokens_after_estimate` 是轻量估算，不可伪装成 provider
+usage。provider usage 由 model event 单独记录。receipt 进入 event/trajectory，但 raw
+content 不进入普通 event。
 
 ### 9.3 分 stage 协议
 
 ```text
-CodeContextProvider
-  capabilities()
-  map(paths, budget, query)
-  outline(paths, budget)
-  show(symbols, budget)
-  references(patterns, budget)
+AstOutlineAdapter                         [已实现的窄 code-context adapter]
+  repo_map(workspace, paths, ...)
+  file_outline(workspace, paths, ...)
+  show_symbol(workspace, target, symbols, ...)
+  symbol_references(workspace, patterns, paths, ...)
 
-CommandAdapter
+CommandAdapter                           [未来 seam，当前未实现]
   plan(original_argv, tool_context) -> EffectiveExecutionPlan
   classify(result_metadata) -> content_type
 
@@ -593,35 +623,38 @@ ResponsePolicy
   plan(task, provider_capabilities, budget) -> StableRequestSettings
 
 ComponentLifecycle
-  initialize(config, services)
+  initialize(services=None)
   health()
-  close(deadline)
+  close(deadline_seconds=None)
 ```
 
-`services` 由 harness 提供 tokenizer、masked artifact store、metrics、clock、logger
-和 cancellation；组件不得自行读取全局 credentials 或绕过 sandbox。
+当前 manager 调用 lifecycle 时给 `initialize` 传 `None`，不会把 manager、credentials、
+stores 或进程服务交给组件；artifact store 由 runtime/agent 绑定。未来若增加窄
+services object，也必须按 descriptor capability 显式授权。
 
 ### 9.4 安全执行顺序
 
 ```text
 1. capture original tool call
-2. command adapter proposes effective plan
-3. permission checks original + effective plan
-4. action journal begin
-5. sandbox executes; preserve stdout/stderr/exit code separately
-6. secret mask raw observation
-7. persist masked raw artifact when policy allows
-8. observation reducer creates compact projection + receipt
-9. action journal finish records result status + projection + raw_ref
-10. event/trajectory/transcript receive bounded projection and metrics
+2. Hooks.before_tool / permission checks the original call
+3. action journal begin/reconcile
+4. sandbox executes; CommandResult preserves stdout/stderr/exit/timeout
+5. Hooks.after_tool runs for compatibility
+6. secret mask the finalized observation
+7. observation reducer creates a candidate projection
+8. only an accepted recoverable candidate may retain the masked authority in session memory
+9. action journal records status + masked authoritative result, never an ephemeral raw ref
+10. event/trajectory/transcript receive the re-masked projection and content-free metrics
 11. compactor only touches previously consumed batches
-12. request optimizer transforms a request copy/delta
-13. cache policy annotates the final stable copy
-14. provider call
+12. response policy produces stable request settings
+13. request optimizer transforms a request copy/newest delta
+14. role/tool-pair protocol guard validates the candidate
+15. cache policy annotates the final stable copy
+16. provider call
 ```
 
-当前 `Hooks.after_tool` 在统一 mask 前运行，所以远端 Headroom reducer 不能直接作为
-该 hook；必须新增 mask 后的正式 stage，或先调整顺序并锁定兼容语义。
+`Hooks.after_tool` 为兼容性仍在统一 mask 前运行，所以远端 Headroom reducer 不能作为
+该 hook。正式 observation stage 已位于 mask 后；外部 reducer 只能接这里。
 
 ### 9.5 Tool catalogue 也是 token 组件
 
@@ -630,13 +663,13 @@ ComponentLifecycle
 
 ```text
 ToolCatalogSnapshot {
-  schemas,
+  canonical schema_json -> detached schemas(),
   sent_names,
   omitted_names,
-  deterministic_order,
+  trimmed_to,
+  inventory_count,
   revision,
-  fingerprint,
-  selected_component_versions
+  fingerprint
 }
 ```
 
@@ -646,60 +679,56 @@ ToolCatalogSnapshot {
 
 ### 9.6 role-aware 继承
 
-主 Harness 会被 child derive，但当前 Explore 与 workflow worker 会硬重建 registry。
-因此主 agent 安装 semantic read 后，最需要它的只读 worker 可能仍只有 raw read/glob。
-
-建议 `registry_factory(role, parent_snapshot)` 按 capability 裁剪：
+主 Harness 由 child derive，`CapabilityRoleToolPolicy` 已按父 registry 的 capability
+裁剪，而不是硬重建具体工具名：
 
 ```text
 repo.read
 repo.semantic_outline
 repo.search
+repo.symbol
+repo.references
 workspace.write
 process.exec
-network.external
 ```
 
-Explore 可继承前三类，继续排除 write/exec；worker 不按具体工具名硬编码。
+Explore 继承五类 repo read/search/semantic capability，并继续排除 write/exec 与父会话
+observation recovery；Worker 增加 write/exec/`observation.recover`。无 capability 的
+custom tool 不会被隐式下放。
 
 ## 10. 配置与插件发现
 
-建议先保持 mini-loop 的显式 Python composition，不立即引入任意 entry-point 自动
-执行。配置描述选择，代码负责构造可信组件：
+mini-loop 保持显式 Python composition，不执行任意 entry-point/package discovery。
+当前 `Settings` 只选择代码库内审查过的 built-ins；调用方传入
+`SessionManager(..., token_efficiency=runtime)` 时，注入值优先。
 
-```toml
-[token_efficiency]
-mode = "shadow"                 # off | shadow | enforce
-raw_store = "masked-sidecar"
-fail_policy = "open"
-max_added_latency_ms = 150
-prevent_double_reduction = true
+| 环境变量 | 默认值 | 作用 |
+|---|---:|---|
+| `MINILOOP_TOKEN_EFFICIENCY_MODE` | `off` | `off`、`shadow`、`enforce` |
+| `MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE` | `normal` | `concise` 时注册本地 response policy |
+| `MINILOOP_TOKEN_EFFICIENCY_PERSIST_RAW` | `true` | enforce observation 时允许保存已脱敏原文 |
+| `MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES` | `16384` | 可进入会话内存恢复区的最小输入大小 |
+| `MINILOOP_TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS` | `3600` | artifact TTL |
+| `MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES` | `2000000` | 单 artifact 上限 |
+| `MINILOOP_TOKEN_EFFICIENCY_MAX_TOTAL_BYTES` | `20000000` | 单 session store 上限 |
+| `MINILOOP_AST_OUTLINE_ENABLED` | `false` | 安装四个 semantic-read tools |
+| `MINILOOP_AST_OUTLINE_BINARY` | `ast-outline` | 启用时必须是运维固定的绝对路径 |
+| `MINILOOP_AST_OUTLINE_SHA256` | 未设置 | 启用时必填的 64 位十六进制摘要 |
+| `MINILOOP_AST_OUTLINE_TIMEOUT` | `10` | 单次 wall-clock 秒数 |
+| `MINILOOP_AST_OUTLINE_MAX_OUTPUT_BYTES` | `1000000` | stdout/stderr 捕获上限 |
 
-[[token_efficiency.components]]
-id = "ast-outline"
-stage = "code_context"
-version = "1.9.*"
-mode = "enforce"
+`mode != off` 时 manager 注册 `DeterministicLosslessReducer`；
+`RESPONSE_STYLE=concise` 额外注册 Caveman-inspired
+`ConciseResponsePolicy`。`shadow` 只产候选 receipt，`enforce` 才改变模型投影。
+`Settings`/`SessionManager` 启用的 ast-outline adapter 固定接受
+`>=1.9.0,<1.10.0`，每次执行前复核 SHA-256，并拒绝工作区内可被 agent 改写的
+binary；missing/incompatible 是 typed status，不会触发自动下载或 shell fallback。
+直接构造 `AstOutlineAdapter(AstContextConfig(...))` 是可信 embedding seam，可显式
+省略 digest 或使用 PATH；此时 binary 验证责任属于调用方，不继承 manager 的保证。
 
-[[token_efficiency.components]]
-id = "rtk-command"
-stage = "command_adapter"
-version = "0.42.*"
-mode = "shadow"
-
-[[token_efficiency.components]]
-id = "headroom-structural"
-stage = "observation"
-mode = "shadow"
-allow_content_types = ["application/json", "text/x-search", "text/x-log"]
-lossless_only = true
-network = false
-
-[[token_efficiency.components]]
-id = "concise-response"
-stage = "response"
-mode = "opt_in"
-```
+自定义 reducer/optimizer 通过 `TokenEfficiencyRegistry` 显式注册，再把 immutable
+runtime 注入 manager 或 `Harness`；完整示例见
+[`EXTENDING.md`](../EXTENDING.md#4c-token-efficiency-stages)。
 
 如果以后支持包发现，manifest/allowlist 至少固定 package、hash/signature、版本范围、
 license、network、filesystem、subprocess、secret access、stage 与 capability；发现可
@@ -713,24 +742,27 @@ deterministic lossless fold
 
 ## 11. mini-loop 的具体落点
 
-这是设计映射，不是已经完成的代码：
+这里区分**本轮已经落地**与**外部适配器仍未交付**：
 
-| 文件 | 建议变化 |
-|---|---|
-| `mini_loop/token_efficiency.py` | descriptor、receipt、stage protocols、registry、mode 与 budget |
-| `mini_loop/harness.py` | 增加 component registry / stage-specific policy，并确保 `derive()` 继承 |
-| `mini_loop/manager.py` | 显式构造生命周期、artifact store、metrics；start/close 有序 |
-| `mini_loop/agent.py::_exec_tool` | mask 后 reducer stage；journal 同时记录 projection 与 scoped raw ref |
-| `mini_loop/agent.py::_create` | 在副本上 request optimization，再执行 cache annotate |
-| `mini_loop/registry.py` | 单次 request 的 immutable catalogue snapshot/fingerprint |
-| `mini_loop/builtins.py` | 安装 ast-outline typed tools，声明 read risk/capability |
-| `mini_loop/tools.py` | command backend 返回 stdout/stderr/exit code/timeout，而非只给混合字符串 |
-| `mini_loop/events.py` / trajectory | 写 receipt/ledger，不写 raw secret-bearing content |
-| `mini_loop/config.py` | mode、allowlist、version、timeout、offline/telemetry policy |
+| 状态 | 文件 / 能力 | 当前实现边界 |
+|---|---|---|
+| **已落地** | `mini_loop/compaction.py` / `agent.py` | 未消费 batch 保护；只有 live agent turn 更新 conversation meter |
+| **已落地** | `mini_loop/token_efficiency.py` | descriptor、receipt、三类 stage protocol、explicit registry、off/shadow/enforce、fail-open、inflation/double-reduction guard、lifecycle |
+| **已落地** | `mini_loop/harness.py` / `manager.py` | `token_efficiency`、`role_tool_policy` 可注入且 `derive()` 继承；manager 有序 initialize/close |
+| **已落地** | `mini_loop/agent.py::_exec_tool` / `token_tools.py` | secret mask 后 reduction、projection 再 mask；journal 保存 masked authority，事件/trajectory/transcript 收 projection；receipt event 无 warning/digest 内容；可分页恢复 eligible masked raw |
+| **已落地** | `mini_loop/agent.py::_create` | response plan 后在 request copy 上优化；frozen-prefix 与 message protocol 双重 guard；之后才 cache annotate |
+| **已落地** | `mini_loop/registry.py` / `prompts.py` | 单 request immutable `ToolCatalogSnapshot`，system prompt 与 tools 共用 fingerprint |
+| **已落地** | `mini_loop/tool_policy.py` / `builtins.py` | capability `RoleToolPolicy`；Explore 不继承 write/exec，Worker 可继承 |
+| **已落地，可选** | `mini_loop/ast_context.py` | 1.9.x probe、绝对路径+SHA 固定、workspace containment、timeout/cap、direct argv、四个 typed tools |
+| **已落地** | `mini_loop/tools.py` | `CommandResult` 分离 stdout、stderr、exit code、timeout、overflow、duration、harness error |
+| **已落地** | `mini_loop/config.py` | mode、response style、in-memory store quota/TTL 与 ast binary/hash/timeout/cap settings |
+| **未交付** | RTK executable integration | 没有安装/调用 RTK binary，也没有透明 command rewrite；当前只复用其结构化降噪设计原则 |
+| **未交付** | Headroom adapter/proxy | 没有 import、sidecar 或 provider proxy；未来必须 offline、关闭 upload beacon/telemetry、先 shadow |
+| **未交付** | 通用 ML/context compressor | request SPI 已有，但没有默认 lossy optimizer，也没有宣称 benchmark savings |
 
-首期 PoC 若不改核心，可只做 ast-outline typed tools；Headroom/Caveman 不宜粗暴包装成
-当前 `Compactor`，因为该 compactor 会修改历史，且不能表达 frozen prefix、raw ref、
-component provenance 和 per-request copy。
+`ConciseResponsePolicy` 是仓库内的 Caveman-inspired 小策略，不是对 Caveman 项目的
+打包。Headroom 也不应被粗暴包装成 `Compactor`：后者修改历史，而当前 request stage
+明确表达 frozen prefix、component provenance 和 per-request copy。
 
 ## 12. Benchmark 与验收
 
@@ -767,93 +799,107 @@ component provenance 和 per-request copy。
 百分比是首轮推荐 gate，不是通用行业标准。若 workload 的 baseline 本来很短，应允许
 组件判定 `passthrough`，而不是为了达标强行压缩。
 
-### 12.4 需要新增的回归测试
+### 12.4 回归覆盖与待补
 
-- binary missing、版本/schema 不兼容、timeout、cancel、crash、fallback；
-- argv/path 无 shell injection，sandbox 与 risk policy 未被绕过；
-- secret 在 reducer、sidecar、event、telemetry 前已 mask；
-- raw ref 跨 tenant/session/workspace 访问被拒；
-- 最新五结果 batch 在首次 provider request 全部可见；
-- side-query usage 不重锚 live conversation meter；
-- same input/config 的 deterministic projection 与 catalogue fingerprint byte-stable；
-- cache-control/frozen prefix 不被修改；
-- parallel result 顺序、tool id、error status 不变；
-- Explore/workflow 继承 semantic-read capability，但仍不能 write/exec；
-- double-reduction marker/receipt 阻止 RTK + Headroom 重复压同一 observation。
+当前实现已加入针对核心 contract 的回归覆盖：binary missing/incompatible/timeout/
+output cap、direct argv 与 path containment、mask-before/after-reducer、raw-ref session
+scope/TTL、最新未消费 batch、side-query meter 隔离、deterministic projection、catalogue
+fingerprint、frozen-prefix/protocol guard、capability role inheritance、inflation 与
+double-reduction guard。这里不把测试覆盖等同于端到端节省结论。
+
+仍需随着后续 adapter 补齐：真实 RTK/Headroom process cancel/crash、format-specific
+failure recovery、持久化 artifact adapter policy、真实 provider cache/usage A/B，以及完整任务
+的质量 verifier。Headroom/RTK 尚未接入，因此不能宣称它们的集成测试已通过。
 
 ## 13. 安全、隐私、运维
 
-1. **版本与供应链。** 固定 binary/package/hash，启动 health 返回实际版本；不能只信
-   PATH 上同名可执行文件。ast-outline 与 RTK 都存在同名/兼容 shim 风险。
+1. **版本与供应链。** 固定 binary/package/hash，component health 或执行前 probe 返回
+   实际版本；不能只信 PATH 上同名可执行文件。ast-outline 与 RTK 都存在同名/兼容
+   shim 风险。
 2. **权限不变量。** optimizer 不新增文件、网络、进程权限；command rewrite 后重新
    检查 effective plan。
 3. **脱敏顺序。** raw secret 只能在受控执行内存中短暂存在；持久化与外部调用前
    mask。远端 compressor 默认禁用。
-4. **恢复存储。** masked raw artifact 使用不可猜 scoped id，不向模型暴露宿主绝对
-   路径；有 TTL、quota、delete、checksum、audit。
-5. **遥测。** 平台统一收集 receipt/ledger；第三方 telemetry 默认禁用。Headroom
-   需额外关闭默认 upload beacon，并用 egress test 验证。
+4. **恢复存储。** masked raw artifact 只存在于 session-scoped memory，使用不可猜
+   id，不向模型暴露宿主路径；有 TTL、quota、delete、checksum，删除 session/停止
+   manager 会撤销 store。若未来需要持久化，必须另设计不在工具可读根下的 authority。
+   活跃 event loop 中的 session delete 会调度异步 drain/revoke；manager stop 会等待
+   这些 cleanup 完成。
+5. **遥测。** 平台只发出有界 receipt，并维护进程内 provider projection ledger；完整
+   benchmark ledger 仍在 Phase 0 待做。第三方 telemetry 默认禁用。Headroom 需额外
+   关闭默认 upload beacon，并用 egress test 验证。
 6. **提示词注入。** 日志、源码和 tool output 都是不可信数据；reducer 不能把其中
    的指令提升为 system policy，recovery marker 也必须是 harness 生成并校验。
 7. **fail-open 边界。** 只读 projection/reducer 可在安全检查通过后 fail open 到已
    脱敏原文；permission、secret mask、scope 校验必须 fail closed。
+8. **当前已知边界。** `Settings`/`SessionManager` 启用路径会在每次执行前重算运维
+   固定的绝对路径 binary hash，并限制输入数量、长度与 glob 展开量，但 hash 校验与
+   `exec` 之间仍有 TOCTOU 窗口，因此它属于可信运维安装边界，不是恶意 binary
+   沙箱。进程内 token component 同样只接受可信插件：`asyncio` timeout/cancel 不能
+   硬隔离阻塞事件循环或吞掉取消的实现；不可信/远程 reducer 应放到受限 sidecar。
+9. **回收与进程边界。** memory artifact 到期后立即拒绝读取，但物理内存清除是
+   lazy eviction（`get`/`put`/`sweep`/`close`）；这应称为“逻辑过期”，不是实时清零。
+   `CommandResult` 的共享 cap 当前按字符计数，且 shell sandbox 不是容器/PID namespace；
+   需要 byte-exact cap 或恶意进程隔离时，应使用独立 worker/container。
 
-## 14. 推荐路线图
+## 14. 路线图与当前进度
 
 ### Phase 0：先建立可信 baseline
 
-- 修复最新 tool batch 首次消费问题；
-- 分离 live-turn 与 side-query TokenMeter；
-- 扩展 `tools/bench.py` 的真实 usage/cache/output/quality ledger；
-- 给一次 request 固化 ToolCatalogSnapshot。
+- **完成：**修复最新 tool batch 首次消费问题；
+- **完成：**分离 live-turn 与 side-query TokenMeter；
+- **完成：**给一次 request 固化 `ToolCatalogSnapshot`；
+- **待做：**扩展 `tools/bench.py` 的真实 usage/cache/output/quality ledger。
 
 ### Phase 1：ast-outline typed tools
 
-- 固定 1.9.x binary 与 JSON schema；
-- 注册四类 semantic-read tools；
-- Explore/worker 按 capability 继承；
-- shadow 记录 raw read 与 outline 的候选体积和后续回读率。
+- **完成：**固定 1.9.x version range 与 JSON schema；
+- **完成：**`Settings` 启用路径固定 absolute binary + SHA-256，并在每次 exec 前复核；
+- **完成：**注册四类 semantic-read tools；
+- **完成：**Explore/Worker 按 capability 继承；
+- **待做：**shadow 记录 raw read 与 outline 的候选体积和后续回读率。
 
 ### Phase 2：RTK-inspired observation contract
 
-- 先做 git status/log、pytest、build/lint 三类高确定性 adapter；
-- 分离 stdout/stderr/exit code；
-- mask 后保存失败原文，返回 projection + raw ref + receipt；
-- 不先做任意 shell 透明 rewrite。
+- **完成：**分离 stdout/stderr/exit code/timeout 的 `CommandResult`；
+- **完成：**mask 后 observation stage、projection + session-memory scoped raw ref + receipt；
+- **坚持：**不做任意 shell 透明 rewrite；
+- **待做：**git status/log、pytest、build/lint 三类格式专用 adapter；RTK binary 未接入。
 
 ### Phase 3：正式 `ObservationReducer`
 
-- 增加 stage protocol、artifact store、receipt 与 double-reduction guard；
-- deterministic/lossless reducer enforce；
-- Headroom structural adapter 只做 shadow、离线、无 telemetry。
+- **完成：**stage protocol、in-memory artifact store、receipt、inflation 与 double-reduction guard；
+- **完成：**deterministic/recoverable reducer 可 shadow/enforce；
+- **待做：**Headroom structural adapter；若实现，只能先 shadow、offline、关闭 upload beacon/telemetry。
 
 ### Phase 4：request-time context optimizer
 
-- 只处理 request copy 和新 delta；
-- frozen prefix、pair-safe、cache-aware；
-- lossless 通过后再小流量启用 recoverable lossy/CCR。
+- **完成：**只处理 request copy 和最新 delta，并用 projection ledger 跨轮稳定前缀；
+- **完成：**frozen prefix、thinking/tool pair protocol guard、cache annotate 顺序；
+- **待做：**内置 lossless optimizer 与小流量 recoverable lossy/CCR。
 
 ### Phase 5：response policy 与 ML compressor
 
-- 用户 opt-in 的 concise/terse A/B；
-- provider 原生控制优先；
-- LLMLingua/Kompress 等只在长通用文本、收益覆盖延迟且 verifier 成熟时启用。
+- **完成：**本地 Caveman-inspired `concise` policy，可 shadow/enforce，默认关闭；
+- **待做：**真实 A/B 与 provider 原生 verbosity capability negotiation；
+- **待做：**LLMLingua/Kompress 等仅在长通用文本、收益覆盖延迟且 verifier 成熟时评估。
 
 ## 15. 最终决策建议
 
 | 项目 | 建议 | 理由 |
 |---|---|---|
-| ast-outline | **优先原生接入** | stateless、只读、边界小；在 token 进入上下文前避免浪费 |
-| RTK | **复用设计模式，先窄适配；不做盲目全局 rewrite** | command-specific 过滤价值高，但必须与权限、sandbox、exit code、raw recovery 合并 |
-| Caveman | **可选 response policy，不设默认** | 完整 coding run 的现实收益远小于 65%，且长 skill 有 input overhead |
-| Headroom | **离线 library/sidecar shadow；逐内容类型放量** | contract 与 recoverability 很有参考价值，但 cache、复杂度、ML、store、telemetry 都扩大边界 |
+| ast-outline | **已按原生 typed tools 接入，默认关闭** | stateless、只读、边界小；在 token 进入上下文前避免浪费 |
+| RTK | **已复用设计模式；binary/rewrite 不交付** | command-specific 过滤价值高，但透明 rewrite 会越过权限计划边界 |
+| Caveman | **已落地本地可选 response policy，不设默认** | 完整 coding run 的现实收益远小于 65%，且长 skill 有 input overhead |
+| Headroom | **尚未接入；未来 offline + beacon off + shadow** | contract 与 recoverability 有参考价值，但 cache、ML、store、telemetry 都扩大边界 |
 | Aider/Serena | **作为下一阶段 code-context 参照** | 任务相关 repo map/LSP 能覆盖跨文件语义，但引入索引与生命周期 |
 | LLMLingua | **只做长文本实验** | 通用压缩比高，但不是代码/error/permission 文本的安全默认项 |
 | context-mode | **借鉴沙箱内处理与检索，不直接当宽松 OSS 依赖** | 架构方向有价值；ELv2 与运行时强制路由需要单独评估 |
 
-一句话方案：**用 ast-outline 减少获取，用 RTK-style reducer 减少 observation，用
-Headroom-style receipt/recovery 管理上下文投影，用 Caveman-style policy 控制输出；
-由 Harness 统一 authority、权限、脱敏、缓存、预算、生命周期与真实用量。**
+一句话现状：**用 ast-outline 减少获取，用 RTK-style 本地 reducer 减少
+observation，用 Headroom-style receipt/recovery 管理上下文投影，用
+Caveman-style 本地 policy 控制输出；由 Harness 统一 authority、权限、脱敏、缓存、
+预算与生命周期。Headroom/RTK 外部运行时都没有被静默启用。**
 
 ## 16. 主要来源
 
