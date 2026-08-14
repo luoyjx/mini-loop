@@ -203,8 +203,9 @@ Subagents no longer rebuild a list of concrete tool names. Every `Tool` may
 declare stable `capabilities`; the default `CapabilityRoleToolPolicy` selects a
 subset of the **parent** registry. Explore inherits `repo.read`, `repo.search`,
 `repo.semantic_outline`, `repo.symbol`, and `repo.references`; Worker adds
-`workspace.write` and `process.exec`. A tool with no capability is not inherited
-implicitly. Explore also runs in read-only permission mode, so capability
+`workspace.write`, `process.exec`, and `observation.recover` when those
+capabilities exist in the parent registry. A tool with no capability is not
+inherited implicitly. Explore also runs in read-only permission mode, so capability
 selection and execution-time authority agree.
 
 ---
@@ -697,7 +698,8 @@ opaque, object-scoped, size-bounded and TTL-bound; no artifact bytes are written
 under the model-visible workspace. The model gets paged
 `read_token_artifact(raw_ref, offset, limit)` only when its catalogue explicitly
 contains the `observation.recover` capability. The action journal keeps the
-masked authoritative result rather than an ephemeral recovery marker.
+bounded masked-authority prefix with an explicit truncation marker, rather than
+an ephemeral recovery reference.
 
 The built-in shell now returns a `CommandResult` to the harness with separate
 `stdout`, `stderr`, `exit_code`, `timed_out`, `overflowed`, duration and harness
@@ -820,7 +822,14 @@ The `Settings`/`SessionManager` built-in path probes and accepts
 `>=1.9.0,<1.10.0`, rechecks the pinned SHA-256 before every execution, and calls
 the executable with direct argv
 (`shell=False`), refuses a binary inside the model-visible workspace, confines
-paths to the session workspace, and
+paths to the session workspace, and gives every invocation a bounded,
+root-anchored/no-follow private source snapshot. Recursive snapshots omit
+symlinks, special files and VCS metadata, and apply ast-outline 1.9's supported
+source-name set plus bounded root/nested `.gitignore`/`.ignore` frames before
+copying. Ignore files also have byte, line, pattern, match-operation and
+wall-clock guards; patterns with more than two variable-star groups fail closed
+before `pathspec` can compile a backtracking regex. `show_symbol` globs are resolved in the harness rather than
+re-expanded by the child. It
 returns typed statuses such as `applied`, `no_match`, `partial`, `missing`, and
 `incompatible`. The installed tools are `repo_map`, `file_outline`,
 `show_symbol`, and `symbol_references`; their semantic capabilities flow to

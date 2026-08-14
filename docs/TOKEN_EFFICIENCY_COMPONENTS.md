@@ -192,8 +192,15 @@ stdout 输出 note/error 并以 `0` 退出，目的是不打断并行 shell batc
 - parser 出错时 outline 可能不完整；生成代码、动态语言、宏、模板和跨语言关系
   仍需要 raw read、LSP 或 build/test 证据。
 - mini-loop adapter 为了让 pre-process 校验有界，只接受静态工作区目录下的末级
-  basename glob；拒绝 `**` 和中间目录通配。需要递归发现时先用受限 catalogue 工具
-  选出显式路径，再调用 typed AST tool。
+  basename glob；拒绝 `**` 和中间目录通配。glob 在 harness 内先冻结：零匹配和多匹配
+  分别返回 `no_match` / byte-and-count-bounded `ambiguous`，唯一 regular-file match
+  不把 wildcard 重新传入进程。四类 tool 的 model-controlled path 都会先复制到
+  root-anchored、component-wise no-follow、64 MiB capped 私有 source snapshot；递归
+  snapshot 忽略 symlink、特殊文件和 VCS metadata，并在复制前按 1.9 完整源码名集合
+  与有界的 root/nested `.gitignore`/`.ignore` frame 过滤。ignore 文件还有 byte、
+  line、pattern、match-op 与 wall-clock guard；超过两个 variable-star group 的模式会在
+  `pathspec` 编译前 fail closed，以避免主进程 regex backtracking。需要递归
+  发现时先用受限 catalogue 工具选出显式路径，再调用 typed AST tool。
 - 0.6+ 代码是 Apache-2.0，但 README、CLI help、prompt snippet、digest legend
   按 CC BY 4.0 发布。可以封装 CLI；若复制长篇 prompt 文案，应保留 attribution。
 

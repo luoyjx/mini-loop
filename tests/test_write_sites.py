@@ -59,6 +59,10 @@ RECORDED = {
 #: request the server cannot act on. The same rule the transcript follows --
 #: what is recorded is masked, what is executed is not.
 EXECUTED = {
+    "ast_context.py": (
+        "ephemeral, private source snapshots passed byte-for-byte to the "
+        "operator-pinned ast-outline process and deleted after each invocation"
+    ),
     "tools.py": "write_file / edit_file put the agent's work product on disk",
     "mcp.py": "requests to an MCP server, which must arrive intact to work",
     "durable.py": (

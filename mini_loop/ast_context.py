@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
-import glob as globlib
+import fnmatch
 import hashlib
 import hmac
 import json
@@ -26,12 +26,16 @@ import os
 import re
 import shutil
 import signal
+import stat
 import subprocess
+import tempfile
 import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Iterator
+
+from pathspec import GitIgnoreSpec
 
 from .registry import Tool, ToolContext, ToolRegistry
 
@@ -51,10 +55,128 @@ _RESULT_STATUSES = frozenset(
 _REFERENCE_KINDS = frozenset({"def", "call", "ref", "import", "comment", "string"})
 _OUTLINE_VIEWS = frozenset({"full", "public", "minimal"})
 _DIGEST_DENSITIES = frozenset({"names", "compact", "default", "wide"})
-_SAFE_ENV_NAMES = ("PATH", "LANG", "LC_ALL", "TMPDIR", "SYSTEMROOT")
+_SAFE_ENV_NAMES = ("LANG", "LC_ALL", "SYSTEMROOT")
 _MAX_INPUT_ITEMS = 64
 _MAX_INPUT_CHARS = 2_048
 _MAX_GLOB_MATCHES = 10_000
+_MAX_SNAPSHOT_BYTES = 64 * 1024 * 1024
+_MAX_SNAPSHOT_ENTRIES = 50_000
+_MAX_SNAPSHOT_FILES = 20_000
+_MAX_SNAPSHOT_DEPTH = 64
+_MAX_AMBIGUOUS_MATCHES = 32
+_MAX_AMBIGUOUS_BYTES = 16_384
+_MAX_IGNORE_BYTES = 512 * 1024
+_MAX_IGNORE_PATTERNS = 4_096
+_MAX_IGNORE_PATTERN_CHARS = 4_096
+_MAX_IGNORE_MATCH_OPS = 10_000_000
+_SNAPSHOT_TEMP_PARENTS = (Path("/tmp"), Path("/var/tmp"))
+_HAS_SECURE_DIR_FD = os.open in os.supports_dir_fd and hasattr(os, "O_NOFOLLOW")
+_SNAPSHOT_ALWAYS_SKIP_DIRS = frozenset(
+    {
+        ".git",
+        ".hg",
+        ".svn",
+    }
+)
+_AST_SOURCE_SUFFIXES = frozenset(
+    {
+        ".c++",
+        ".cc",
+        ".cjs",
+        ".cpp",
+        ".cppm",
+        ".cs",
+        ".css",
+        ".cxx",
+        ".ex",
+        ".exs",
+        ".gd",
+        ".go",
+        ".gemspec",
+        ".h",
+        ".h++",
+        ".hh",
+        ".hpp",
+        ".htm",
+        ".html",
+        ".hxx",
+        ".inl",
+        ".ipp",
+        ".ixx",
+        ".java",
+        ".js",
+        ".jsx",
+        ".kt",
+        ".kts",
+        ".lua",
+        ".markdown",
+        ".md",
+        ".mdown",
+        ".mdx",
+        ".mjs",
+        ".php",
+        ".php8",
+        ".phps",
+        ".phtml",
+        ".py",
+        ".pyi",
+        ".rake",
+        ".rb",
+        ".rs",
+        ".ru",
+        ".sc",
+        ".scala",
+        ".scss",
+        ".sql",
+        ".swift",
+        ".tpp",
+        ".ts",
+        ".tsx",
+        ".vue",
+        ".wlua",
+        ".yaml",
+        ".yml",
+    }
+)
+_AST_SOURCE_BASENAMES = frozenset({"Gemfile", "Rakefile"})
+_IGNORE_FILE_NAMES = (".gitignore", ".ignore")
+_DEFAULT_IGNORE_PATTERNS = (
+    ".git/",
+    ".svn/",
+    ".hg/",
+    "node_modules/",
+    "__pycache__/",
+    ".venv/",
+    "venv/",
+    ".tox/",
+    ".mypy_cache/",
+    ".pytest_cache/",
+    ".ruff_cache/",
+    ".eggs/",
+    "*.egg-info/",
+    ".gradle/",
+    ".idea/",
+    ".vs/",
+    ".vscode/",
+    ".cursor/",
+    ".zed/",
+    ".fleet/",
+    "__snapshots__/",
+    ".husky/",
+    ".next/",
+    ".nuxt/",
+    ".svelte-kit/",
+    ".turbo/",
+    ".parcel-cache/",
+    ".vite/",
+    ".terraform/",
+    "*.min.js",
+    "*.min.mjs",
+    "*.min.cjs",
+    "*.min.css",
+    "*.min.html",
+    "*.map",
+)
 
 
 def _version_tuple(version: str) -> tuple[int, int, int]:
@@ -62,6 +184,40 @@ def _version_tuple(version: str) -> tuple[int, int, int]:
     if match is None:
         raise ValueError(f"invalid semantic version: {version!r}")
     return tuple(int(part) for part in match.groups())
+
+
+def _validate_ignore_patterns(lines: Iterable[str]) -> None:
+    """Reject GitWildMatch shapes that compile to catastrophic backtracking regex."""
+
+    for raw_line in lines:
+        if len(raw_line) > _MAX_IGNORE_PATTERN_CHARS:
+            raise ValueError(
+                "ast-outline ignore patterns must be at most "
+                f"{_MAX_IGNORE_PATTERN_CHARS} characters"
+            )
+        if not raw_line or (raw_line.startswith("#") and not raw_line.startswith("\\#")):
+            continue
+        line = raw_line[1:] if raw_line.startswith("!") else raw_line
+        variable_star_groups = 0
+        for segment in line.split("/"):
+            if segment == "**":
+                variable_star_groups += 1
+            else:
+                escaped = False
+                for character in segment:
+                    if escaped:
+                        escaped = False
+                        continue
+                    if character == "\\":
+                        escaped = True
+                        continue
+                    if character == "*":
+                        variable_star_groups += 1
+            if variable_star_groups > 2:
+                raise ValueError(
+                    "ast-outline ignore patterns allow at most two "
+                    "variable-star groups"
+                )
 
 
 @dataclass(frozen=True)
@@ -270,6 +426,11 @@ class AstOutlineAdapter:
             if name in os.environ
         }
         child_env["NO_COLOR"] = "1"
+        if cwd is not None:
+            try:
+                child_env["TMPDIR"] = str(self._snapshot_temp_parent(cwd))
+            except OSError as exc:
+                return _ProcessResult("error", message=str(exc))
         try:
             process = subprocess.Popen(
                 argv,
@@ -342,8 +503,10 @@ class AstOutlineAdapter:
             "applied", decoded_stdout, decoded_stderr, process.returncode
         )
 
-    def probe(self) -> AstContextProbe:
-        process = self._run(["--version"])
+    def probe(self, *, cwd: Path | None = None) -> AstContextProbe:
+        """Probe the executable, applying workspace containment when supplied."""
+
+        process = self._run(["--version"], cwd=cwd)
         if process.status != "applied":
             return AstContextProbe(
                 process.status,
@@ -401,19 +564,41 @@ class AstOutlineAdapter:
     def _contained(root: Path, candidate: Path) -> bool:
         return candidate == root or root in candidate.parents
 
-    def _safe_path(self, root: Path, raw: str, *, allow_glob: bool = False) -> str:
+    def _snapshot_temp_parent(self, root: Path) -> Path:
+        """Choose a fixed system temp root outside model-visible workspace state."""
+
+        for configured in _SNAPSHOT_TEMP_PARENTS:
+            try:
+                candidate = configured.resolve(strict=True)
+            except OSError:
+                continue
+            if candidate.is_dir() and not self._contained(root, candidate):
+                return candidate
+        raise OSError("no trusted temporary directory is available outside workspace")
+
+    def _safe_path(self, root: Path, raw: str) -> str:
+        if not isinstance(raw, str) or not raw or "\x00" in raw:
+            raise ValueError("paths must be non-empty strings without NUL bytes")
+        if len(raw) > _MAX_INPUT_CHARS:
+            raise ValueError(f"paths must be at most {_MAX_INPUT_CHARS} characters")
+        if any(char in raw for char in _GLOB_CHARS):
+            raise ValueError(
+                "glob syntax is accepted only by show_symbol's bounded basename matcher"
+            )
+        path = Path(raw).expanduser()
+        candidate = (path if path.is_absolute() else root / path).resolve()
+        if not self._contained(root, candidate):
+            raise ValueError(f"path resolves outside workspace: {raw}")
+        return str(candidate)
+
+    def _safe_glob_paths(self, root: Path, raw: str) -> tuple[str, ...]:
+        """Expand one basename glob through root-anchored, no-follow descriptors."""
+
         if not isinstance(raw, str) or not raw or "\x00" in raw:
             raise ValueError("paths must be non-empty strings without NUL bytes")
         if len(raw) > _MAX_INPUT_CHARS:
             raise ValueError(f"paths must be at most {_MAX_INPUT_CHARS} characters")
         path = Path(raw).expanduser()
-        has_glob = allow_glob and any(char in raw for char in _GLOB_CHARS)
-        if not has_glob:
-            candidate = (path if path.is_absolute() else root / path).resolve()
-            if not self._contained(root, candidate):
-                raise ValueError(f"path resolves outside workspace: {raw}")
-            return str(candidate)
-
         parts = path.parts
         glob_index = next(
             index
@@ -429,26 +614,548 @@ class AstOutlineAdapter:
         suffix = parts[glob_index:]
         if any(part == ".." for part in suffix):
             raise ValueError(f"glob escapes workspace: {raw}")
+        if not _HAS_SECURE_DIR_FD:
+            raise OSError(
+                "secure ast-outline globs require dir_fd and O_NOFOLLOW support"
+            )
         static = Path(*parts[:glob_index]) if glob_index else Path(".")
-        prefix = (static if static.is_absolute() else root / static).resolve()
-        if not self._contained(root, prefix):
+        unchecked_prefix = static if static.is_absolute() else root / static
+        prefix = Path(os.path.abspath(unchecked_prefix))
+        try:
+            relative_prefix = prefix.relative_to(root)
+        except ValueError as exc:
+            raise ValueError(f"glob resolves outside workspace: {raw}") from exc
+        if any(part == ".." for part in relative_prefix.parts):
             raise ValueError(f"glob resolves outside workspace: {raw}")
-        pattern = prefix.joinpath(*suffix)
-        # Resolve existing matches too: a wildcard can otherwise traverse a
-        # symlink whose static prefix itself still sits inside the workspace.
-        # Only a basename is variable and recursive expansion is forbidden, so
-        # validation cannot walk an unbounded tree before the process timeout.
-        for index, matched in enumerate(
-            globlib.iglob(str(pattern), recursive=False), start=1
-        ):
-            if index > _MAX_GLOB_MATCHES:
+        directory_flags = (
+            os.O_RDONLY
+            | getattr(os, "O_DIRECTORY", 0)
+            | os.O_NOFOLLOW
+            | getattr(os, "O_NONBLOCK", 0)
+        )
+        deadline = time.monotonic() + self.config.timeout_seconds
+        current_fd = os.open(root, directory_flags)
+        try:
+            for component in relative_prefix.parts:
+                try:
+                    next_fd = os.open(
+                        component, directory_flags, dir_fd=current_fd
+                    )
+                except OSError as exc:
+                    raise ValueError(
+                        "glob static directory is unavailable or outside workspace: "
+                        f"{raw}"
+                    ) from exc
+                os.close(current_fd)
+                current_fd = next_fd
+
+            pattern = suffix[0]
+            names: list[str] = []
+            scan_fd = os.dup(current_fd)
+            try:
+                with os.scandir(scan_fd) as entries:
+                    for index, entry in enumerate(entries, start=1):
+                        if time.monotonic() > deadline:
+                            raise ValueError(
+                                "ast-outline glob expansion exceeded "
+                                f"{self.config.timeout_seconds:g}s"
+                            )
+                        if index > _MAX_GLOB_MATCHES:
+                            raise ValueError(
+                                "glob directory contains more than "
+                                f"{_MAX_GLOB_MATCHES} entries"
+                            )
+                        if entry.name.startswith(".") and not pattern.startswith("."):
+                            continue
+                        if not fnmatch.fnmatchcase(entry.name, pattern):
+                            continue
+                        if not entry.is_file(follow_symlinks=False):
+                            continue
+                        names.append(entry.name)
+            finally:
+                with contextlib.suppress(OSError):
+                    os.close(scan_fd)
+        finally:
+            os.close(current_fd)
+
+        # The frozen source snapshot reopens every match relative to ``root``
+        # with O_NOFOLLOW, so a writer racing this enumeration cannot redirect
+        # the child outside the workspace.
+        matches: list[str] = []
+        for name in sorted(names):
+            matches.append(str(prefix / name))
+        return tuple(sorted(matches))
+
+    @contextlib.contextmanager
+    def _snapshot_workspace_paths(
+        self, root: Path, candidates: Iterable[Path]
+    ) -> Iterator[tuple[tuple[Path, ...], tuple[tuple[str, str], ...]]]:
+        """Build one bounded, no-follow source snapshot for an AST invocation.
+
+        Every directory component is opened relative to an already-open parent
+        descriptor. Workspace writers may race the copy, but they cannot turn a
+        validated entry into a symlink that makes the child read outside root.
+        Recursive snapshots ignore symlinks, special files, VCS metadata and
+        unsupported source names. They apply ast-outline 1.9's default plus
+        root/nested .gitignore/.ignore frames before copying; explicit regular
+        files intentionally bypass those directory-walk filters.
+        """
+
+        if not _HAS_SECURE_DIR_FD:
+            raise OSError(
+                "secure ast-outline snapshots require dir_fd and O_NOFOLLOW support"
+            )
+        candidate_list: list[Path] = []
+        seen: set[Path] = set()
+        for candidate in candidates:
+            candidate = Path(candidate)
+            try:
+                candidate.relative_to(root)
+            except ValueError as exc:
+                raise ValueError("snapshot target is outside workspace") from exc
+            if candidate not in seen:
+                candidate_list.append(candidate)
+                seen.add(candidate)
+        if not candidate_list:
+            raise ValueError("at least one snapshot target is required")
+
+        directory_flags = (
+            os.O_RDONLY
+            | getattr(os, "O_DIRECTORY", 0)
+            | os.O_NOFOLLOW
+            | getattr(os, "O_NONBLOCK", 0)
+        )
+        file_flags = (
+            os.O_RDONLY
+            | os.O_NOFOLLOW
+            | getattr(os, "O_NONBLOCK", 0)
+        )
+        budget = {
+            "entries": 0,
+            "files": 0,
+            "bytes": 0,
+            "ignore_bytes": 0,
+            "ignore_patterns": 0,
+            "ignore_match_ops": 0,
+        }
+        deadline = time.monotonic() + self.config.timeout_seconds
+        ignore_cache: dict[tuple[str, ...], tuple[tuple[str, bytes], ...]] = {}
+
+        def check_deadline() -> None:
+            if time.monotonic() > deadline:
                 raise ValueError(
-                    f"glob matched more than {_MAX_GLOB_MATCHES} paths"
+                    "ast-outline source snapshot exceeded "
+                    f"{self.config.timeout_seconds:g}s"
                 )
-            resolved = Path(matched).resolve()
-            if not self._contained(root, resolved):
-                raise ValueError(f"glob resolves outside workspace: {raw}")
-        return str(pattern)
+
+        def write_bytes(data: bytes, destination: Path) -> None:
+            if budget["files"] >= _MAX_SNAPSHOT_FILES:
+                raise ValueError(
+                    f"ast-outline snapshot exceeds {_MAX_SNAPSHOT_FILES} files"
+                )
+            if budget["bytes"] + len(data) > _MAX_SNAPSHOT_BYTES:
+                raise ValueError(
+                    f"ast-outline snapshot exceeds {_MAX_SNAPSHOT_BYTES} bytes"
+                )
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            with destination.open("xb") as output:
+                output.write(data)
+            destination.chmod(0o400)
+            budget["files"] += 1
+            budget["bytes"] += len(data)
+
+        def copy_regular(file_fd: int, destination: Path) -> None:
+            metadata = os.fstat(file_fd)
+            if not stat.S_ISREG(metadata.st_mode):
+                raise ValueError("ast-outline snapshot accepts regular files only")
+            if budget["files"] >= _MAX_SNAPSHOT_FILES:
+                raise ValueError(
+                    f"ast-outline snapshot exceeds {_MAX_SNAPSHOT_FILES} files"
+                )
+            if budget["bytes"] + metadata.st_size > _MAX_SNAPSHOT_BYTES:
+                raise ValueError(
+                    f"ast-outline snapshot exceeds {_MAX_SNAPSHOT_BYTES} bytes"
+                )
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            budget["files"] += 1
+            with os.fdopen(os.dup(file_fd), "rb", closefd=True) as source:
+                with destination.open("xb") as output:
+                    while True:
+                        check_deadline()
+                        chunk = source.read(128 * 1024)
+                        if not chunk:
+                            break
+                        budget["bytes"] += len(chunk)
+                        if budget["bytes"] > _MAX_SNAPSHOT_BYTES:
+                            raise ValueError(
+                                f"ast-outline snapshot exceeds {_MAX_SNAPSHOT_BYTES} bytes"
+                            )
+                        output.write(chunk)
+            destination.chmod(0o400)
+
+        def open_parent(root_fd: int, parts: tuple[str, ...]) -> int:
+            current = os.dup(root_fd)
+            try:
+                for component in parts:
+                    next_fd = os.open(
+                        component,
+                        directory_flags,
+                        dir_fd=current,
+                    )
+                    os.close(current)
+                    current = next_fd
+                return current
+            except BaseException:
+                os.close(current)
+                raise
+
+        def read_ignore_controls(
+            directory_fd: int, anchor: tuple[str, ...]
+        ) -> tuple[tuple[str, bytes], ...]:
+            cached = ignore_cache.get(anchor)
+            if cached is not None:
+                return cached
+            controls: list[tuple[str, bytes]] = []
+            for name in _IGNORE_FILE_NAMES:
+                check_deadline()
+                try:
+                    metadata = os.stat(
+                        name,
+                        dir_fd=directory_fd,
+                        follow_symlinks=False,
+                    )
+                except OSError:
+                    continue
+                if not stat.S_ISREG(metadata.st_mode):
+                    continue
+                remaining = _MAX_IGNORE_BYTES - budget["ignore_bytes"]
+                if metadata.st_size > remaining:
+                    raise ValueError(
+                        f"ast-outline ignore files exceed {_MAX_IGNORE_BYTES} bytes"
+                    )
+                try:
+                    control_fd = os.open(name, file_flags, dir_fd=directory_fd)
+                except OSError:
+                    continue
+                try:
+                    if not stat.S_ISREG(os.fstat(control_fd).st_mode):
+                        continue
+                    with os.fdopen(os.dup(control_fd), "rb", closefd=True) as source:
+                        data = source.read(remaining + 1)
+                finally:
+                    os.close(control_fd)
+                if len(data) > remaining:
+                    raise ValueError(
+                        f"ast-outline ignore files exceed {_MAX_IGNORE_BYTES} bytes"
+                    )
+                decoded_lines = data.decode("utf-8", errors="ignore").splitlines()
+                _validate_ignore_patterns(decoded_lines)
+                pattern_count = len(decoded_lines)
+                if budget["ignore_patterns"] + pattern_count > _MAX_IGNORE_PATTERNS:
+                    raise ValueError(
+                        "ast-outline ignore files exceed "
+                        f"{_MAX_IGNORE_PATTERNS} patterns"
+                    )
+                budget["ignore_bytes"] += len(data)
+                budget["ignore_patterns"] += pattern_count
+                controls.append((name, data))
+            frozen = tuple(controls)
+            ignore_cache[anchor] = frozen
+            return frozen
+
+        def ignore_lines(controls: tuple[tuple[str, bytes], ...]) -> list[str]:
+            lines: list[str] = []
+            for _, data in controls:
+                lines.extend(data.decode("utf-8", errors="ignore").splitlines())
+            return lines
+
+        def copy_controls(
+            controls: tuple[tuple[str, bytes], ...], destination: Path
+        ) -> None:
+            for name, data in controls:
+                target = destination / name
+                if not target.exists():
+                    write_bytes(data, target)
+
+        def is_ignored(
+            path_parts: tuple[str, ...],
+            *,
+            is_dir: bool,
+            frames: list[tuple[tuple[str, ...], GitIgnoreSpec]],
+        ) -> bool:
+            for anchor, spec in reversed(frames):
+                check_deadline()
+                if path_parts[: len(anchor)] != anchor:
+                    continue
+                budget["ignore_match_ops"] += len(spec.patterns)
+                if budget["ignore_match_ops"] > _MAX_IGNORE_MATCH_OPS:
+                    raise ValueError(
+                        "ast-outline ignore matching exceeds "
+                        f"{_MAX_IGNORE_MATCH_OPS} pattern checks"
+                    )
+                rendered = "/".join(path_parts[len(anchor) :])
+                if is_dir:
+                    rendered += "/"
+                result = spec.check_file(rendered)
+                if result.include is True:
+                    return True
+                if result.include is False:
+                    return False
+            return False
+
+        def has_git_marker(directory_fd: int) -> bool:
+            try:
+                metadata = os.stat(
+                    ".git", dir_fd=directory_fd, follow_symlinks=False
+                )
+            except OSError:
+                return False
+            return not stat.S_ISLNK(metadata.st_mode)
+
+        def find_project_root(
+            root_fd: int, directory_parts: tuple[str, ...]
+        ) -> tuple[str, ...]:
+            current_fd = os.dup(root_fd)
+            nearest: tuple[str, ...] | None = None
+            try:
+                check_deadline()
+                if has_git_marker(current_fd):
+                    nearest = ()
+                for index, component in enumerate(directory_parts, start=1):
+                    check_deadline()
+                    next_fd = os.open(
+                        component, directory_flags, dir_fd=current_fd
+                    )
+                    os.close(current_fd)
+                    current_fd = next_fd
+                    if has_git_marker(current_fd):
+                        nearest = directory_parts[:index]
+                return directory_parts if nearest is None else nearest
+            finally:
+                os.close(current_fd)
+
+        def copy_directory(
+            directory_fd: int,
+            destination: Path,
+            *,
+            source_parts: tuple[str, ...],
+            project_root_parts: tuple[str, ...],
+            frames: list[tuple[tuple[str, ...], GitIgnoreSpec]],
+            depth: int,
+        ) -> None:
+            if depth > _MAX_SNAPSHOT_DEPTH:
+                raise ValueError(
+                    f"ast-outline snapshot exceeds {_MAX_SNAPSHOT_DEPTH} directory levels"
+                )
+            destination.mkdir(parents=True, exist_ok=True)
+            local_frames = frames
+            controls = read_ignore_controls(directory_fd, source_parts)
+            if source_parts != project_root_parts and controls:
+                local_frames = [
+                    *frames,
+                    (source_parts, GitIgnoreSpec.from_lines(ignore_lines(controls))),
+                ]
+            copy_controls(controls, destination)
+
+            names: list[str] = []
+            scan_fd = os.dup(directory_fd)
+            try:
+                with os.scandir(scan_fd) as entries:
+                    for entry in entries:
+                        check_deadline()
+                        budget["entries"] += 1
+                        if budget["entries"] > _MAX_SNAPSHOT_ENTRIES:
+                            raise ValueError(
+                                f"ast-outline snapshot exceeds {_MAX_SNAPSHOT_ENTRIES} entries"
+                            )
+                        names.append(entry.name)
+            finally:
+                with contextlib.suppress(OSError):
+                    os.close(scan_fd)
+            for name in sorted(names):
+                if name in _IGNORE_FILE_NAMES:
+                    continue
+                copy_entry(
+                    directory_fd,
+                    name,
+                    destination / name,
+                    source_parts=(*source_parts, name),
+                    project_root_parts=project_root_parts,
+                    frames=local_frames,
+                    depth=depth + 1,
+                    explicit=False,
+                )
+
+        def copy_entry(
+            parent_fd: int,
+            name: str,
+            destination: Path,
+            *,
+            source_parts: tuple[str, ...],
+            project_root_parts: tuple[str, ...],
+            frames: list[tuple[tuple[str, ...], GitIgnoreSpec]],
+            depth: int,
+            explicit: bool,
+        ) -> bool:
+            metadata = os.stat(
+                name,
+                dir_fd=parent_fd,
+                follow_symlinks=False,
+            )
+            if stat.S_ISLNK(metadata.st_mode):
+                if explicit:
+                    raise ValueError("ast-outline snapshot target may not be a symlink")
+                return False
+            if stat.S_ISDIR(metadata.st_mode):
+                if not explicit and (
+                    name in _SNAPSHOT_ALWAYS_SKIP_DIRS
+                    or is_ignored(source_parts, is_dir=True, frames=frames)
+                ):
+                    return False
+                child_fd = os.open(name, directory_flags, dir_fd=parent_fd)
+                try:
+                    if not stat.S_ISDIR(os.fstat(child_fd).st_mode):
+                        raise ValueError("ast-outline snapshot directory changed type")
+                    if destination.exists() and not destination.is_dir():
+                        raise ValueError("ast-outline snapshot path changed type")
+                    copy_directory(
+                        child_fd,
+                        destination,
+                        source_parts=source_parts,
+                        project_root_parts=project_root_parts,
+                        frames=frames,
+                        depth=depth,
+                    )
+                finally:
+                    os.close(child_fd)
+                return True
+            if stat.S_ISREG(metadata.st_mode):
+                if not explicit:
+                    supported = (
+                        Path(name).suffix.lower() in _AST_SOURCE_SUFFIXES
+                        or name in _AST_SOURCE_BASENAMES
+                    )
+                    if not supported or is_ignored(
+                        source_parts, is_dir=False, frames=frames
+                    ):
+                        return False
+                if destination.exists():
+                    if not destination.is_file():
+                        raise ValueError("ast-outline snapshot path changed type")
+                    return False
+                file_fd = os.open(name, file_flags, dir_fd=parent_fd)
+                try:
+                    copy_regular(file_fd, destination)
+                finally:
+                    os.close(file_fd)
+                return False
+            if explicit:
+                raise ValueError("ast-outline snapshot target is not a regular file or directory")
+            return False
+
+        with tempfile.TemporaryDirectory(
+            prefix="mini-loop-ast-",
+            dir=self._snapshot_temp_parent(root),
+        ) as directory:
+            snapshot_root = Path(directory) / "workspace"
+            snapshot_root.mkdir()
+            root_fd = os.open(root, directory_flags)
+            try:
+                for candidate in sorted(
+                    candidate_list,
+                    key=lambda path: (len(path.relative_to(root).parts), str(path)),
+                ):
+                    check_deadline()
+                    relative = candidate.relative_to(root)
+                    relative_parts = relative.parts
+                    destination = snapshot_root / relative
+                    if relative_parts:
+                        parent_fd = open_parent(root_fd, relative_parts[:-1])
+                        name = relative_parts[-1]
+                        metadata = os.stat(
+                            name, dir_fd=parent_fd, follow_symlinks=False
+                        )
+                    else:
+                        parent_fd = os.dup(root_fd)
+                        name = ""
+                        metadata = os.fstat(parent_fd)
+                    try:
+                        if stat.S_ISLNK(metadata.st_mode):
+                            raise ValueError(
+                                "ast-outline snapshot target may not be a symlink"
+                            )
+                        if stat.S_ISREG(metadata.st_mode):
+                            if destination.exists():
+                                continue
+                            file_fd = os.open(name, file_flags, dir_fd=parent_fd)
+                            try:
+                                copy_regular(file_fd, destination)
+                            finally:
+                                os.close(file_fd)
+                            continue
+                        if not stat.S_ISDIR(metadata.st_mode):
+                            raise ValueError(
+                                "ast-outline snapshot target is not a regular file or directory"
+                            )
+
+                        project_root_parts = find_project_root(
+                            root_fd, relative_parts
+                        )
+                        project_fd = open_parent(root_fd, project_root_parts)
+                        try:
+                            root_controls = read_ignore_controls(
+                                project_fd, project_root_parts
+                            )
+                        finally:
+                            os.close(project_fd)
+                        root_spec = GitIgnoreSpec.from_lines(
+                            [*_DEFAULT_IGNORE_PATTERNS, *ignore_lines(root_controls)]
+                        )
+                        project_destination = snapshot_root.joinpath(
+                            *project_root_parts
+                        )
+                        project_destination.mkdir(parents=True, exist_ok=True)
+                        (project_destination / ".git").mkdir(exist_ok=True)
+                        copy_controls(root_controls, project_destination)
+
+                        directory_fd = (
+                            os.dup(parent_fd)
+                            if not name
+                            else os.open(name, directory_flags, dir_fd=parent_fd)
+                        )
+                        try:
+                            copy_directory(
+                                directory_fd,
+                                destination,
+                                source_parts=relative_parts,
+                                project_root_parts=project_root_parts,
+                                frames=[(project_root_parts, root_spec)],
+                                depth=len(relative_parts),
+                            )
+                        finally:
+                            os.close(directory_fd)
+                    finally:
+                        os.close(parent_fd)
+            finally:
+                os.close(root_fd)
+
+            snapshot_paths = tuple(
+                snapshot_root / candidate.relative_to(root)
+                for candidate in candidate_list
+            )
+            replacements = ((str(snapshot_root), str(root)),)
+            yield snapshot_paths, replacements
+
+    @contextlib.contextmanager
+    def _snapshot_workspace_file(
+        self, root: Path, candidate: Path
+    ) -> Iterator[tuple[Path, tuple[tuple[str, str], ...]]]:
+        with self._snapshot_workspace_paths(root, (candidate,)) as snapshot:
+            paths, replacements = snapshot
+            target = paths[0]
+            if not target.is_file():
+                raise ValueError("show_symbol requires a regular source file")
+            yield target, replacements
 
     @staticmethod
     def _validate_strings(values: Iterable[str], label: str) -> list[str]:
@@ -482,23 +1189,29 @@ class AstOutlineAdapter:
         root: Path,
         *,
         include_imports: bool | None = None,
+        path_rewrites: tuple[tuple[str, str], ...] = (),
     ) -> AstContextResult:
-        probe = self.probe()
+        # The workspace boundary must be checked before even the version probe:
+        # otherwise a model-writable executable gets one host-code execution
+        # before the real command is rejected.
+        probe = self.probe(cwd=root)
         if probe.status != "applied":
             return AstContextResult(
                 probe.status, operation, probe=probe, message=probe.message
             )
         process = self._run(argv, cwd=root)
         if process.status != "applied":
+            message = _rewrite_path_strings(process.message, path_rewrites)
             return AstContextResult(
                 process.status,
                 operation,
                 probe=probe,
-                message=process.message,
+                message=message,
                 output_bytes=len(process.stdout.encode("utf-8")),
             )
         if process.returncode != 0:
             detail = process.stderr.strip() or process.stdout.strip()
+            detail = _rewrite_path_strings(detail, path_rewrites)
             return AstContextResult(
                 "error",
                 operation,
@@ -520,6 +1233,8 @@ class AstOutlineAdapter:
             return AstContextResult(
                 "error", operation, probe=probe, message="ast-outline JSON must be an object"
             )
+        if path_rewrites:
+            payload = _rewrite_path_strings(payload, path_rewrites)
         if (
             payload.get("tool") != "ast-outline"
             or payload.get("schema_version") != self.config.schema_version
@@ -602,13 +1317,25 @@ class AstOutlineAdapter:
             ]
         except (OSError, ValueError) as exc:
             return self._path_error(operation, exc)
-        argv = ["digest", "--format", density]
-        if include_imports:
-            argv.append("--imports")
-        argv.extend(["--json", "--", *safe_paths])
-        return self._invoke(
-            operation, "digest", argv, root, include_imports=include_imports
-        )
+        try:
+            with self._snapshot_workspace_paths(
+                root, (Path(path) for path in safe_paths)
+            ) as frozen:
+                snapshot_paths, replacements = frozen
+                argv = ["digest", "--format", density]
+                if include_imports:
+                    argv.append("--imports")
+                argv.extend(["--json", "--", *(str(path) for path in snapshot_paths)])
+                return self._invoke(
+                    operation,
+                    "digest",
+                    argv,
+                    root,
+                    include_imports=include_imports,
+                    path_rewrites=replacements,
+                )
+        except (OSError, ValueError) as exc:
+            return self._path_error(operation, exc)
 
     def file_outline(
         self,
@@ -629,17 +1356,29 @@ class AstOutlineAdapter:
             ]
         except (OSError, ValueError) as exc:
             return self._path_error(operation, exc)
-        argv = ["outline"]
-        if view in {"public", "minimal"}:
-            argv.append("--no-private")
-        if view == "minimal":
-            argv.extend(["--no-fields", "--no-docs", "--no-attrs"])
-        if include_imports:
-            argv.append("--imports")
-        argv.extend(["--json", "--", *safe_paths])
-        return self._invoke(
-            operation, "outline", argv, root, include_imports=include_imports
-        )
+        try:
+            with self._snapshot_workspace_paths(
+                root, (Path(path) for path in safe_paths)
+            ) as frozen:
+                snapshot_paths, replacements = frozen
+                argv = ["outline"]
+                if view in {"public", "minimal"}:
+                    argv.append("--no-private")
+                if view == "minimal":
+                    argv.extend(["--no-fields", "--no-docs", "--no-attrs"])
+                if include_imports:
+                    argv.append("--imports")
+                argv.extend(["--json", "--", *(str(path) for path in snapshot_paths)])
+                return self._invoke(
+                    operation,
+                    "outline",
+                    argv,
+                    root,
+                    include_imports=include_imports,
+                    path_rewrites=replacements,
+                )
+        except (OSError, ValueError) as exc:
+            return self._path_error(operation, exc)
 
     def show_symbol(
         self,
@@ -652,15 +1391,68 @@ class AstOutlineAdapter:
         operation = "show_symbol"
         try:
             root = self._workspace(workspace)
-            safe_target = self._safe_path(root, path_or_glob, allow_glob=True)
             safe_symbols = self._validate_strings(symbols, "symbols")
+            if not isinstance(path_or_glob, str):
+                raise ValueError("path_or_glob must be a string")
+            if any(char in path_or_glob for char in _GLOB_CHARS):
+                targets = self._safe_glob_paths(root, path_or_glob)
+                if not targets:
+                    return AstContextResult(
+                        "no_match",
+                        operation,
+                        data={"matches": []},
+                        message="basename glob matched no workspace files",
+                    )
+                if len(targets) > 1:
+                    visible: list[str] = []
+                    visible_bytes = 0
+                    for target in targets:
+                        relative = str(Path(target).relative_to(root))
+                        encoded = len(relative.encode("utf-8"))
+                        if (
+                            len(visible) >= _MAX_AMBIGUOUS_MATCHES
+                            or visible_bytes + encoded > _MAX_AMBIGUOUS_BYTES
+                        ):
+                            break
+                        visible.append(relative)
+                        visible_bytes += encoded
+                    truncated = len(visible) < len(targets)
+                    return AstContextResult(
+                        "ambiguous",
+                        operation,
+                        data={
+                            "matches": visible,
+                            "total_match_count": len(targets),
+                            "truncated": truncated,
+                        },
+                        message=(
+                            f"basename glob matched {len(targets)} files; "
+                            "choose one explicit path"
+                        ),
+                    )
+                safe_target = targets[0]
+            else:
+                safe_target = self._safe_path(root, path_or_glob)
         except (OSError, ValueError) as exc:
             return self._path_error(operation, exc)
-        argv = ["show"]
-        if signature_only:
-            argv.append("--signature")
-        argv.extend(["--json", "--", safe_target, *safe_symbols])
-        return self._invoke(operation, "show", argv, root)
+        try:
+            with self._snapshot_workspace_file(
+                root, Path(safe_target)
+            ) as frozen:
+                snapshot, replacements = frozen
+                argv = ["show"]
+                if signature_only:
+                    argv.append("--signature")
+                argv.extend(["--json", "--", str(snapshot), *safe_symbols])
+                return self._invoke(
+                    operation,
+                    "show",
+                    argv,
+                    root,
+                    path_rewrites=replacements,
+                )
+        except (OSError, ValueError) as exc:
+            return self._path_error(operation, exc)
 
     def symbol_references(
         self,
@@ -700,16 +1492,46 @@ class AstOutlineAdapter:
         except (OSError, TypeError, ValueError) as exc:
             return self._path_error(operation, exc)
 
-        argv = ["grep", "--json"]
-        if safe_kinds:
-            argv.append(f"--kind={','.join(safe_kinds)}")
-        if max_per_file is not None:
-            argv.append(f"--max-count={max_per_file}")
-        # Attached -e values remain one argv even if a pattern begins with '-'.
-        # The first -e is promoted by ast-outline's documented normalizer.
-        argv.extend(f"--expression={pattern}" for pattern in safe_patterns)
-        argv.extend(["--", *safe_paths])
-        return self._invoke(operation, "grep", argv, root)
+        try:
+            with self._snapshot_workspace_paths(
+                root, (Path(path) for path in safe_paths)
+            ) as frozen:
+                snapshot_paths, replacements = frozen
+                argv = ["grep", "--json"]
+                if safe_kinds:
+                    argv.append(f"--kind={','.join(safe_kinds)}")
+                if max_per_file is not None:
+                    argv.append(f"--max-count={max_per_file}")
+                # Attached -e values remain one argv even if a pattern begins with '-'.
+                # The first -e is promoted by ast-outline's documented normalizer.
+                argv.extend(f"--expression={pattern}" for pattern in safe_patterns)
+                argv.extend(["--", *(str(path) for path in snapshot_paths)])
+                return self._invoke(
+                    operation,
+                    "grep",
+                    argv,
+                    root,
+                    path_rewrites=replacements,
+                )
+        except (OSError, ValueError) as exc:
+            return self._path_error(operation, exc)
+
+
+def _rewrite_path_strings(value: Any, replacements: tuple[tuple[str, str], ...]) -> Any:
+    """Remove harness-private snapshot paths from an ast-outline JSON payload."""
+
+    if isinstance(value, str):
+        for source, target in replacements:
+            value = value.replace(source, target)
+        return value
+    if isinstance(value, list):
+        return [_rewrite_path_strings(item, replacements) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: _rewrite_path_strings(item, replacements)
+            for key, item in value.items()
+        }
+    return value
 
 
 def _metric_total(value: Any, keys: set[str]) -> int:
@@ -796,7 +1618,7 @@ _SHOW_SYMBOL_SCHEMA = {
             "type": "string",
             "maxLength": _MAX_INPUT_CHARS,
             "description": (
-                "Workspace path, or a non-recursive basename glob in a static "
+                "Workspace source file, or a non-recursive basename glob in a static "
                 "workspace directory; '**' and intermediate wildcards are rejected."
             ),
         },
@@ -899,7 +1721,7 @@ def install_ast_context_tools(
         ),
         (
             "show_symbol",
-            "Read exact source or signature for named symbols inside one workspace path, directory, or non-recursive basename glob.",
+            "Read exact source or signature for named symbols inside one workspace source file or non-recursive basename glob.",
             _SHOW_SYMBOL_SCHEMA,
             show_symbol,
             "repo.symbol",
