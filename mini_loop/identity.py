@@ -137,18 +137,20 @@ def posture(manager, auth=None) -> dict[str, Any]:
         "sandbox_reason": getattr(sandbox, "reason", None),
         "cache_policy": _name(getattr(agent, "cache_policy", None)),
         "stuck_detector": _name(getattr(agent, "stuck_detector", None)),
+        "user_resources": getattr(manager, "user_resources", None) is not None,
         "workflows": bool(manager.enable_workflows),
         "trajectories": manager.trajectories is not None,
     }
 
 
 def _probe_agent(manager):
-    """An agent built exactly as a session's would be, for reading defaults off.
+    """An agent built with the same reported runtime seams as a real session.
 
-    Cheap and side-effect free: `_build_agent` only wires objects together. If a
-    manager ever makes that expensive, this should read a live session instead
-    -- but it must not go back to reading configuration fields, which is what
-    made the report disagree with reality.
+    Cheap and side-effect free: owner resources are reported directly from the
+    manager and deliberately not resolved for this synthetic probe. If building
+    the remaining seams ever becomes expensive, this should read a live session
+    instead -- but it must not go back to reading configuration fields, which
+    is what made the report disagree with reality.
     """
 
     live = next(iter(getattr(manager, "_sessions", {}).values()), None)
@@ -164,7 +166,15 @@ def _probe_agent(manager):
         # persisting a real session just to report runtime posture.
         permission_mode = "interactive"
 
-    return manager._build_agent(_Probe(), settings=manager.settings, extra_state={})
+    # Posture reports whether the resolver is active directly from the manager;
+    # resolving a synthetic anonymous owner here would create an owner directory
+    # merely because an operator inspected the process.
+    return manager._build_agent(
+        _Probe(),
+        settings=manager.settings,
+        extra_state={},
+        resolve_user_resources=False,
+    )
 
 
 def runtime_identity(manager=None, auth=None) -> dict[str, Any]:

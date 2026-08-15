@@ -200,7 +200,9 @@ def runtime_facts(agent) -> str:
     # real model said about it: "I don't actually have a dedicated memory tool
     # in my available toolset."
     if memory is not None and memory.list() and "recall" in agent.tools:
-        parts.append(f"Known memories (use `recall` for full text):\n{memory.index()}")
+        parts.append(
+            f"Known user memories (use `recall` for full text):\n{memory.index()}"
+        )
     return "\n\n".join(parts)
 
 

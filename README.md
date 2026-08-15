@@ -33,7 +33,8 @@ if untrusted users can submit prompts.
 
 ## Architecture
 
-Architecture review baseline: **hardening round 187**. Every implementation
+Architecture review baseline: **hardening round 188**; user-resource scoping
+reviewed **2026-08-15**. Every implementation
 iteration must review this map; update the baseline in the same commit, and
 update the affected nodes, edges, boundaries, and capability labels whenever
 the runtime changes.
@@ -46,14 +47,14 @@ flowchart LR
     subgraph Control["Control plane"]
         Entry["FastAPI / CLI / console<br/>server.py · __main__.py"]
         Trust["Authentication + ownership<br/>auth.py · RunContext"]
-        Manager["SessionManager<br/>composition · shared semaphores"]
+        Manager["SessionManager<br/>composition · scoped resources · shared semaphores"]
         Entry --> Trust --> Manager
     end
 
     subgraph Runtime["Per-session runtime"]
         Session["AgentSession<br/>lock · transcript · event stream · lease"]
         Agent["Agent._loop<br/>model ↔ tool loop · stop semantics"]
-        Context["Context pipeline<br/>prompt · skills · memory · compaction<br/>cache · metering · token efficiency"]
+        Context["Context pipeline<br/>agent skills · owner skills / memory<br/>compaction · cache · metering · token efficiency"]
         Catalog["Immutable tool view<br/>ToolCatalogSnapshot · RoleToolPolicy"]
         Gate["Execution pipeline<br/>before → guard → permission → execute<br/>after → result observers"]
 
@@ -77,7 +78,7 @@ flowchart LR
     end
 
     Caller --> Entry
-    Manager -->|create / restore / route| Session
+    Manager -->|bind owner · create / restore / route| Session
     Context -->|model request| Provider
     Provider -->|text / tool_use| Agent
     Gate -->|guarded dispatch| Backends
@@ -100,7 +101,10 @@ most feature bundles are opt-in, and the experimental workflow store,
 workflow-local journal, and outbox remain process-local. SQLite durability
 applies to session epochs, events, leases, actions, and approvals only when a
 real `StateStore` is configured; the default server still uses the documented
-`Null*` boundaries.
+`Null*` boundaries. Agent skills are deployment-managed policy input. When
+`MINILOOP_USER_RESOURCES_ROOT` is configured, user skills and Markdown memory
+resolve from a digest-only owner directory before the Agent is built; they are
+not SQLite state and do not imply host-level tenant isolation.
 
 For an explorable version with guided request, tool, and orchestration views,
 open the [interactive architecture](docs/mini-loop-system.architecture.html).
@@ -168,7 +172,9 @@ mini_loop/
   tool_policy.py capability-based Explore/Worker tool inheritance
   permissions.py deny-list + PermissionRule + async approval callback
   builtins.py    the built-in tools as Tools; default/explore/worker registries
-  skills.py      SkillLoader — index descriptions, load bodies on demand
+  skills.py      SkillLoader + layered agent/user catalogue and provenance
+  user_resources.py
+                 digest-only owner namespaces for user skills and memory
   prompts.py     system_builder (default + sections_builder)
   compaction.py  Compactor protocol + budget / snip / micro / auto layers
   run_context.py immutable per-message provenance + capability approvals
@@ -208,7 +214,9 @@ modules exist, the traps they close, and what is still open),
 [Claude Code dynamic workflows research](docs/CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md),
 [token-efficiency tools and harness components](docs/TOKEN_EFFICIENCY_COMPONENTS.md),
 [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md), and
-[trajectory/recovery boundary](docs/TRAJECTORIES.md). Source-level external
+[trajectory/recovery boundary](docs/TRAJECTORIES.md). The local resource-scope
+contract is [user-scoped skills and memory](docs/USER_SCOPED_SKILLS_MEMORY_DESIGN.md).
+Source-level external
 architecture reviews include
 [TencentDB Agent Memory](docs/TENCENTDB_AGENT_MEMORY_RESEARCH.md).
 
@@ -254,7 +262,8 @@ app = create_app(manager=manager)            # same REST + SSE + console
 | `SecretRegistry` | `secrets=` | which credentials a tool can see or print |
 | `Sandbox` | `sandbox=` | what the shell can reach on the host |
 | `StuckDetector` | `stuck_detector=` | when a repeating agent is nudged or halted |
-| `SkillLoader` + `skills/` | `skills=` | on-demand domain knowledge |
+| `SkillLoader` + `skills/` | `skills=` | deployment-managed Agent knowledge |
+| `UserResourceResolver` | `user_resources=` | owner-scoped user skills and memory |
 | LLM client | `client=` / env | model / provider / base_url |
 | `workspace_factory` | `workspace_factory=` | where/how the sandbox is provisioned |
 | `event_sink` | `event_sink=` | global metrics / logging / persistence |
@@ -276,7 +285,7 @@ with `MINILOOP_FEATURES=all` (or `SessionManager(enable_features=True)` /
 | s04 | lifecycle hooks ✅ | s14 | durable cron ✅ (asyncio scheduler) |
 | s05 | TodoWrite ✅ | s15–17 | teams + protocols + autonomy ✅ |
 | s06 | subagent ✅ | s18 | task-bound worktrees ✅ |
-| s07 | skills ✅ | s19 | MCP ✅ (`connect_mcp`, in-process + stdio) |
+| s07 | agent + user-scoped skills ✅ | s19 | MCP ✅ (`connect_mcp`, in-process + stdio) |
 | s08 | four-layer compaction ✅ | s20 | comprehensive ✅ (`full_registry`) |
 | s09 | auto memory lifecycle ✅ | s10 | per-call runtime prompt ✅ |
 
@@ -312,6 +321,9 @@ and trajectories are all scoped to the owner. Someone else's session answers
 **404, not 403** — 403 confirms the id exists. Tokens are compared with
 `hmac.compare_digest`, and `python -m mini_loop` **refuses to start** on a
 non-loopback bind with no tokens configured rather than warning about it.
+With `MINILOOP_USER_RESOURCES_ROOT`, that same trusted owner is bound before
+Agent construction and selects a digest-only user skill/memory namespace.
+Agent-provided skills remain a separate, shared, read-only source.
 
 ### What is actually switched on
 
@@ -589,7 +601,7 @@ All via env (see `.env.example`): `ANTHROPIC_API_KEY`, `MODEL_ID`,
 Kimi / DeepSeek), plus `MINILOOP_*` knobs for concurrency cap, turn limits,
 token budget, compaction threshold, bash timeout, and the workspace/skills
 directories. Comprehensive-mode settings also include `MINILOOP_MEMORY_ROOT`,
-`MINILOOP_REPO_ROOT`, `MINILOOP_TEAM_IDLE_POLL`, and
+`MINILOOP_USER_RESOURCES_ROOT`, `MINILOOP_REPO_ROOT`, `MINILOOP_TEAM_IDLE_POLL`, and
 `MINILOOP_TEAM_IDLE_TIMEOUT`. Trajectory settings are
 `MINILOOP_TRAJECTORIES`, `MINILOOP_TRAJECTORY_ROOT`, and
 `MINILOOP_TRAJECTORY_CAPTURE_CONTENT`; recording is enabled locally by default.

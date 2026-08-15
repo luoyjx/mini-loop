@@ -57,8 +57,18 @@ TASK = {
 }
 LOAD_SKILL = {
     "name": "load_skill",
-    "description": "Load a named skill's full instructions into context.",
-    "input_schema": {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]},
+    "description": (
+        "Load a named skill's full instructions. Use scope=agent for "
+        "deployment-provided skills or scope=user for the current owner's skills."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "name": {"type": "string"},
+            "scope": {"type": "string", "enum": ["agent", "user"]},
+        },
+        "required": ["name"],
+    },
 }
 COMPRESS = {
     "name": "compress",
@@ -149,8 +159,19 @@ async def _task(ctx: ToolContext, prompt: str, agent_type: str = "Explore") -> s
     return await ctx.agent._run_subagent(prompt, agent_type)
 
 
-def _load_skill(ctx: ToolContext, name: str) -> str:
-    return ctx.agent.skills.load(name)
+def _load_skill(ctx: ToolContext, name: str, scope: str | None = None) -> str:
+    if scope is None:
+        # Preserve the two-method SkillLoader extension contract: a custom
+        # loader written before scoped sources existed still receives exactly
+        # `load(name)` for an ordinary call.
+        return ctx.agent.skills.load(name)
+    try:
+        return ctx.agent.skills.load(name, scope=scope)
+    except TypeError:
+        return (
+            "Error: this custom SkillLoader does not expose scoped sources; "
+            "omit scope or inject a LayeredSkillLoader"
+        )
 
 
 def _compress(ctx: ToolContext) -> str:

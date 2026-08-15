@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Concurrent session control plane, per-session agent loop, guarded tools, optional orchestration, and durable evidence",
+    "subtitle": "Concurrent session control plane, owner-scoped skills and memory, guarded tools, optional orchestration, and durable evidence",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -14,7 +14,7 @@
         "id": "turn-path",
         "label": "One agent turn",
         "focus": ["clients", "entry", "authority", "manager", "session", "agent", "context", "provider"],
-        "note": "Follow an authenticated request into one serialized session and out to the model provider."
+        "note": "Follow an authenticated request through owner binding into one serialized session and out to the model provider."
       },
       {
         "id": "tool-path",
@@ -27,6 +27,12 @@
         "label": "Optional orchestration",
         "focus": ["manager", "coordination", "session", "state"],
         "note": "Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."
+      },
+      {
+        "id": "resource-path",
+        "label": "Scoped skills and memory",
+        "focus": ["authority", "manager", "context", "state"],
+        "note": "Agent skills remain trusted manager policy; user skills and memory enter context only inside the authenticated owner's namespace."
       }
     ]
   },
@@ -37,12 +43,12 @@
     { "id": "manager", "type": "backend", "label": "SessionManager", "sublabel": "fleet composition + shared limits", "pos": [1030, 260], "size": [200, 72] },
     { "id": "session", "type": "backend", "label": "AgentSession", "sublabel": "lock + transcript + events", "pos": [1410, 260], "size": [190, 72], "tag": "per session" },
     { "id": "agent", "type": "backend", "label": "Agent Loop", "sublabel": "model / tools / stop", "pos": [1780, 260], "size": [180, 72], "tag": "async" },
-    { "id": "context", "type": "backend", "label": "Context Pipeline", "sublabel": "prompt + skills + compact + cache", "pos": [2110, 100], "size": [220, 76] },
+    { "id": "context", "type": "backend", "label": "Context Pipeline", "sublabel": "agent + owner skills / memory + cache", "pos": [2110, 100], "size": [220, 76] },
     { "id": "provider", "type": "external", "label": "Model Provider", "sublabel": "streaming transport", "pos": [2110, 410], "size": [200, 72] },
     { "id": "toolPolicy", "type": "security", "label": "Tool Execution Gate", "sublabel": "catalog + hooks + permissions", "pos": [1780, 540], "size": [210, 76], "tag": "deny is final" },
     { "id": "toolBackends", "type": "backend", "label": "Tool Backends", "sublabel": "files / shell / MCP / sandbox", "pos": [2110, 700], "size": [215, 76] },
     { "id": "coordination", "type": "messagebus", "label": "Async Coordination", "sublabel": "background / cron / teams / workflows", "pos": [1030, 540], "size": [230, 76], "tag": "opt-in surfaces" },
-    { "id": "state", "type": "database", "label": "State + Evidence", "sublabel": "SQLite / journal / trajectory / trace", "pos": [1390, 800], "size": [235, 78] }
+    { "id": "state", "type": "database", "label": "State + Evidence", "sublabel": "user resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] }
   ],
   "boundaries": [
     { "kind": "region", "label": "Control plane", "wraps": ["entry", "authority", "manager"], "pad": 24 },
@@ -67,7 +73,7 @@
   ],
   "cards": [
     { "dot": "cyan", "title": "Concurrency", "items": ["One lock serializes each session", "Fleet-wide LLM and tool semaphores bound parallel work", "Parallel-safe tool results retain model-call order"] },
-    { "dot": "rose", "title": "Trust", "items": ["Authority is stamped at the run boundary", "Tool guards can only deny or abstain", "Host effects remain sandbox- and permission-gated"] },
-    { "dot": "emerald", "title": "Durability boundary", "items": ["SQLite can persist session epochs, events, leases, actions, and approvals", "Trajectories are append-only evidence", "Experimental workflows remain process-local and default-off"] }
+    { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Agent and user skills retain explicit provenance", "Host effects remain sandbox- and permission-gated"] },
+    { "dot": "emerald", "title": "Durability boundary", "items": ["SQLite can persist session epochs, events, leases, actions, and approvals", "User memory is durable inside its owner namespace", "Experimental workflows remain process-local and default-off"] }
   ]
 }

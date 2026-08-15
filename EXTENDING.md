@@ -46,7 +46,8 @@ A complete, runnable example combining all of the below:
 | `token_efficiency.py` | `TokenEfficiencyRuntime` | `token_efficiency=` | post-mask observations, request copies, and response policy |
 | `ast_context.py` | `AstOutlineAdapter` | settings or `install_ast_context_tools()` | typed, bounded semantic code reads |
 | `agent.py` | `injectors` (`async (agent)->msgs`) | `injectors=` | splice messages into each turn (background, cron) |
-| `skills.py` | `SkillLoader` | `skills=` + `skills/` dir | on-demand domain knowledge |
+| `skills.py` | `SkillLoader` | `skills=` + `skills/` dir | deployment-managed Agent knowledge |
+| `user_resources.py` | `UserResourceResolver` | `user_resources=` or `MINILOOP_USER_RESOURCES_ROOT` | owner-scoped user skills and Markdown memory |
 | `config.py` | LLM client | `build_client` / `client=` | model / provider / base_url |
 | `manager.py` | `workspace_factory(id)->Path` | `workspace_factory=` | where/how the sandbox is provisioned |
 | `session.py` | `event_sink(event)` | `event_sink=` | global metrics / logging / persistence |
@@ -847,10 +848,11 @@ contract.
 
 ---
 
-## 5. Skills — on-demand knowledge
+## 5. Skills and user-scoped knowledge
 
-Drop a `skills/<name>/SKILL.md` with frontmatter; it's indexed by description
-and injected only when the model calls `load_skill`.
+Drop a deployment-managed `skills/<name>/SKILL.md` with frontmatter; it is
+indexed by description and injected only when the model calls `load_skill`.
+This is the `agent` source shared by the manager.
 
 ```markdown
 ---
@@ -862,8 +864,50 @@ description: Company refund policy and the steps to issue one.
 ```
 
 Point the loader at your directory (`MINILOOP_SKILLS_DIR` or
-`SkillLoader(path)`), or subclass `SkillLoader` to source skills from a DB/CMS
-— it only needs `descriptions()` and `load(name)`.
+`SkillLoader(path)`), or subclass `SkillLoader` to source skills from a DB/CMS.
+Manager-wide use only calls `descriptions()` and `load(name)`. Layering a user
+source additionally requires the construction snapshot exposed by
+`SkillLoader.skills` and its `problems` log, because collision detection cannot
+be inferred safely from rendered description text.
+
+For per-principal user skills and memory, configure one owner root:
+
+```sh
+MINILOOP_USER_RESOURCES_ROOT=/srv/mini-loop/users
+```
+
+The authenticated owner is bound before Agent construction and mapped to a
+digest-only directory; raw principal IDs never become path components:
+
+```text
+/srv/mini-loop/users/u-<owner-digest>/
+  skills/<name>/SKILL.md
+  memory/*.md
+```
+
+An owner's first resolution snapshots that skill directory for the lifetime
+of the resolver. Restart the manager or inject a replacement resolver after a
+deployment changes those files; live sessions are never silently rebound.
+
+The effective catalogue names both sources. `load_skill` accepts
+`scope="agent"|"user"`, and `agent:<name>` / `user:<name>` are equivalent
+qualified names. An unqualified name still works when it is unique; a name in
+both sources is an error rather than a user skill shadowing Agent policy.
+
+User memory is the only writable memory layer in this version. When the
+existing memory tools/lifecycle feature is enabled, `remember`, `recall`,
+automatic selection, extraction, and consolidation all use the bound owner
+store; configuring the root does not itself add tools. `readonly` may recall
+but skips automatic extraction. Without the owner root, user skills are absent
+and the existing shared `MemoryStore` remains as a compatibility fallback with
+owner-filtered, collision-safe keys.
+
+This is application-level scoping, not host tenancy. A user skill is still
+instruction-like model input and a Markdown memory is still a host file. They
+cannot grant tools or bypass hooks, but an unconfined shell can read host paths;
+use a real sandbox/container for an untrusted multi-user deployment. The full
+contract and inheritance matrix are in
+[`docs/USER_SCOPED_SKILLS_MEMORY_DESIGN.md`](docs/USER_SCOPED_SKILLS_MEMORY_DESIGN.md).
 
 ---
 
@@ -1015,9 +1059,11 @@ Notes:
   `ctx.state`, the cloned `ToolRegistry`, the run `Lock`.
 * **Shared across the fleet:** the LLM client, the `LLM semaphore` (caps
   simultaneous requests — `MINILOOP_MAX_CONCURRENT_LLM`), the parallel-tool
-  semaphore (`MINILOOP_MAX_CONCURRENT_TOOLS`), the `SkillLoader` (read-only),
-  long-term `MemoryStore`, JSONL team mailboxes, and your `Hooks` /
+  semaphore (`MINILOOP_MAX_CONCURRENT_TOOLS`), the Agent `SkillLoader`
+  (read-only), JSONL team mailboxes, and your `Hooks` /
   `event_sink`. Keep custom shared objects stateless or concurrency-safe.
+* **Shared only within one owner:** the resolved user skill snapshot,
+  `MemoryStore`, and its lifecycle lock when `UserResourceResolver` is active.
 * A session's runs are serialized by its `Lock` (one conversation = one
   history); different sessions run truly in parallel on the event loop. Make
   custom tools **non-blocking** — `await` real I/O, or wrap blocking calls in

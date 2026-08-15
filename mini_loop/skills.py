@@ -1,9 +1,10 @@
 """On-demand skill loading (s07).
 
 A skill is a `SKILL.md` file with YAML-ish frontmatter (`name`, `description`)
-plus a markdown body. At startup we index only the *descriptions* -- cheap, a
-line each -- and inject a full body into context only when the model asks via
-the `load_skill` tool. Knowledge on demand, not upfront.
+plus a markdown body. At construction a loader snapshots each accepted file,
+including its bounded body. The prompt pays only for descriptions and short
+content digests; a full body is emitted only when the model asks via the
+`load_skill` tool. Knowledge on demand, not upfront.
 
 The loader is read-only, so a single instance is safely shared by every
 concurrent session.
@@ -11,11 +12,19 @@ concurrent session.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+import hashlib
 import re
 from pathlib import Path
 
 from .problems import ProblemLog
-__all__ = ["SkillLoader", "SKILL_NAME", "MAX_SKILL_BODY", "SkillProblem"]
+__all__ = [
+    "LayeredSkillLoader",
+    "SkillLoader",
+    "SKILL_NAME",
+    "MAX_SKILL_BODY",
+    "SkillProblem",
+]
 
 _FRONTMATTER = re.compile(r"^---\n(.*?)\n---\n(.*)", re.DOTALL)
 
@@ -49,6 +58,31 @@ MAX_SKILL_DESCRIPTION = 200
 MAX_SKILL_CATALOGUE = 8_000
 
 
+def _bounded_available(names) -> str:
+    """Render candidate identifiers without rebuilding an unbounded catalogue."""
+
+    candidates = [str(name) for name in names]
+    if not candidates:
+        return "(none)"
+    # Leave room for the surrounding error sentence and the omission receipt,
+    # so an unknown-name response obeys the same practical bound as the prompt
+    # catalogue even when a provisioned directory contains thousands of files.
+    budget = max(256, MAX_SKILL_CATALOGUE - 256)
+    kept: list[str] = []
+    used = 0
+    for candidate in candidates:
+        added = len(candidate) + (2 if kept else 0)
+        if used + added > budget:
+            break
+        kept.append(candidate)
+        used += added
+    dropped = len(candidates) - len(kept)
+    rendered = ", ".join(kept)
+    if dropped:
+        rendered += f", ... ({dropped} more omitted)"
+    return rendered
+
+
 class SkillProblem(str):
     """A skill that was rejected or shadowed, kept for reporting."""
 
@@ -62,7 +96,15 @@ class SkillLoader:
         self.problems = ProblemLog()
         if not skills_dir.exists():
             return
+        root = skills_dir.resolve()
         for path in sorted(skills_dir.rglob("SKILL.md")):
+            try:
+                path.resolve().relative_to(root)
+            except (OSError, ValueError):
+                self.problems.append(SkillProblem(
+                    f"{path}: refused, skill file resolves outside its source root"
+                ))
+                continue
             try:
                 text = path.read_text()
             except (OSError, UnicodeDecodeError) as exc:
@@ -114,7 +156,14 @@ class SkillLoader:
                     f"{MAX_SKILL_DESCRIPTION:,} characters"
                 ))
                 meta = {**meta, "description": description[:MAX_SKILL_DESCRIPTION] + "..."}
-            self.skills[name] = {"meta": meta, "body": body, "path": str(path)}
+            self.skills[name] = {
+                "meta": meta,
+                "body": body,
+                "path": str(path),
+                # Digest exactly what the model receives, including a
+                # truncation marker when the source exceeded the body bound.
+                "digest": hashlib.sha256(body.encode("utf-8")).hexdigest(),
+            }
 
     def descriptions(self) -> str:
         """One line per skill, for the system prompt of every request."""
@@ -139,14 +188,257 @@ class SkillLoader:
             ))
         return "\n".join(lines)
 
-    def load(self, name: str) -> str:
-        s = self.skills.get(name)
+    def load(self, name: str, scope: str | None = None) -> str:
+        """Load from the legacy agent-only catalogue.
+
+        ``scope`` is accepted so the scoped ``load_skill`` tool can keep one
+        call shape when user resources are disabled.  This loader cannot widen
+        itself into a user source.
+        """
+
+        if not isinstance(name, str) or not name:
+            return "Error: Skill name must be a non-empty valid identifier"
+        normalized_scope = None if scope is None else str(scope).strip().lower()
+        short_name = name
+        prefix, separator, remainder = name.partition(":")
+        if separator and prefix in ("agent", "user"):
+            if normalized_scope is not None and normalized_scope != prefix:
+                return (
+                    f"Error: Skill {name!r} selects source {prefix!r}, "
+                    f"which conflicts with scope {normalized_scope!r}"
+                )
+            normalized_scope, short_name = prefix, remainder
+        if not SKILL_NAME.fullmatch(short_name):
+            return "Error: Skill name must match [A-Za-z0-9][A-Za-z0-9._-]{0,63}"
+        if normalized_scope == "user":
+            return "Error: User-scoped skills are unavailable in this session"
+        if normalized_scope not in (None, "agent"):
+            return (
+                f"Error: Unknown skill scope {scope!r}. "
+                "Expected one of: agent, user"
+            )
+
+        s = self.skills.get(short_name)
         if not s:
-            available = ", ".join(self.skills) or "(none)"
-            return f"Error: Unknown skill '{name}'. Available: {available}"
-        return f'<skill name="{name}">\n{s["body"]}\n</skill>'
+            available = _bounded_available(self.skills)
+            return f"Error: Unknown skill '{short_name}'. Available: {available}"
+        return f'<skill name="{short_name}">\n{s["body"]}\n</skill>'
+
+
+class LayeredSkillLoader:
+    """One model-visible catalogue over agent and current-user snapshots.
+
+    The loaders remain separate authorities.  This view never copies a user
+    entry into the deployment-managed namespace and never resolves a collision
+    by ordering: callers must name the source when both layers define a name.
+    """
+
+    SOURCES = ("agent", "user")
+
+    def __init__(
+        self,
+        agent_loader: SkillLoader,
+        user_loader: SkillLoader,
+        problems: ProblemLog | None = None,
+    ) -> None:
+        for source, loader in (("agent", agent_loader), ("user", user_loader)):
+            if (
+                not isinstance(getattr(loader, "skills", None), Mapping)
+                or not hasattr(loader, "problems")
+            ):
+                raise TypeError(
+                    "LayeredSkillLoader requires each source to expose the "
+                    "SkillLoader construction snapshot ('skills' and 'problems'); "
+                    f"{source} does not"
+                )
+        self.agent_loader = agent_loader
+        self.user_loader = user_loader
+        self.problems = problems if problems is not None else ProblemLog()
+        for source, loader in self._loaders():
+            for problem in loader.problems:
+                self.problems.append(SkillProblem(f"{source}: {problem}"))
+
+    def _loaders(self):
+        return (
+            ("agent", self.agent_loader),
+            ("user", self.user_loader),
+        )
+
+    def _loader(self, source: str) -> SkillLoader:
+        return self.agent_loader if source == "agent" else self.user_loader
+
+    @staticmethod
+    def _digest(skill: dict) -> str:
+        digest = skill.get("digest")
+        if isinstance(digest, str) and digest:
+            return digest
+        return hashlib.sha256(str(skill.get("body", "")).encode("utf-8")).hexdigest()
+
+    @classmethod
+    def _line(cls, source: str, name: str, skill: dict) -> str:
+        description = skill.get("meta", {}).get("description", "-") or "-"
+        return (
+            f"  - {source}:{name} [digest={cls._digest(skill)[:16]}]: "
+            f"{description}"
+        )
+
+    @staticmethod
+    def _omitted_notice(count: int) -> str:
+        return f"  [{count} more skill(s) omitted; catalogue is full]"
+
+    @staticmethod
+    def _render_catalogue(
+        agent_lines: list[str],
+        user_lines: list[str],
+        *,
+        agent_exists: bool,
+        user_exists: bool,
+        notice: str | None = None,
+    ) -> str:
+        lines = ["Agent-provided skills:"]
+        if agent_exists:
+            lines.extend(agent_lines)
+        else:
+            lines.append("  (none)")
+        lines.append("User-scoped skills:")
+        if user_exists:
+            lines.extend(user_lines)
+        else:
+            lines.append("  (none)")
+        if notice is not None:
+            lines.append(notice)
+        return "\n".join(lines)
+
+    def descriptions(self) -> str:
+        """Both sources, under one total prompt budget with stable precedence."""
+
+        candidates = {
+            source: [
+                self._line(source, name, skill)
+                for name, skill in loader.skills.items()
+            ]
+            for source, loader in self._loaders()
+        }
+        full = self._render_catalogue(
+            candidates["agent"],
+            candidates["user"],
+            agent_exists=bool(self.agent_loader.skills),
+            user_exists=bool(self.user_loader.skills),
+        )
+        if len(full) <= MAX_SKILL_CATALOGUE:
+            return full
+
+        total = len(candidates["agent"]) + len(candidates["user"])
+        # Reserve the largest possible omission notice up front.  Agent lines
+        # are considered first, while both source headings are present in every
+        # trial, so user flooding cannot erase agent provenance or overflow the
+        # combined prompt budget.
+        reserve = self._omitted_notice(total)
+        kept: dict[str, list[str]] = {"agent": [], "user": []}
+        for source in self.SOURCES:
+            for line in candidates[source]:
+                trial = {key: list(value) for key, value in kept.items()}
+                trial[source].append(line)
+                rendered = self._render_catalogue(
+                    trial["agent"],
+                    trial["user"],
+                    agent_exists=bool(self.agent_loader.skills),
+                    user_exists=bool(self.user_loader.skills),
+                    notice=reserve,
+                )
+                if len(rendered) <= MAX_SKILL_CATALOGUE:
+                    kept = trial
+
+        dropped = total - len(kept["agent"]) - len(kept["user"])
+        notice = self._omitted_notice(dropped)
+        self.problems.append(SkillProblem(
+            f"{dropped} skill(s) omitted from the catalogue at the combined "
+            f"{MAX_SKILL_CATALOGUE:,}-character limit"
+        ))
+        return self._render_catalogue(
+            kept["agent"],
+            kept["user"],
+            agent_exists=bool(self.agent_loader.skills),
+            user_exists=bool(self.user_loader.skills),
+            notice=notice,
+        )
+
+    def _available(self, source: str | None = None) -> str:
+        names = []
+        for candidate_source, loader in self._loaders():
+            if source is not None and candidate_source != source:
+                continue
+            names.extend(
+                f"{candidate_source}:{name}" for name in loader.skills
+            )
+        return _bounded_available(names)
+
+    def load(self, name: str, scope: str | None = None) -> str:
+        """Load one visible skill, refusing cross-source ambiguity."""
+
+        if not isinstance(name, str) or not name:
+            return "Error: Skill name must be a non-empty valid identifier"
+
+        qualified_scope: str | None = None
+        short_name = name
+        prefix, separator, remainder = name.partition(":")
+        if separator and prefix in self.SOURCES:
+            qualified_scope, short_name = prefix, remainder
+
+        normalized_scope: str | None = None
+        if scope is not None:
+            normalized_scope = str(scope).strip().lower()
+            if normalized_scope not in self.SOURCES:
+                return (
+                    f"Error: Unknown skill scope {scope!r}. "
+                    "Expected one of: agent, user"
+                )
+        if qualified_scope is not None:
+            if normalized_scope is not None and normalized_scope != qualified_scope:
+                return (
+                    f"Error: Skill {name!r} selects source {qualified_scope!r}, "
+                    f"which conflicts with scope {normalized_scope!r}"
+                )
+            normalized_scope = qualified_scope
+
+        if not SKILL_NAME.fullmatch(short_name):
+            return "Error: Skill name must match [A-Za-z0-9][A-Za-z0-9._-]{0,63}"
+
+        if normalized_scope is None:
+            matches = [
+                source
+                for source, loader in self._loaders()
+                if short_name in loader.skills
+            ]
+            if len(matches) > 1:
+                choices = " or ".join(f"{source}:{short_name}" for source in matches)
+                return (
+                    f"Error: Ambiguous skill {short_name!r}; choose {choices} "
+                    "or pass scope='agent'/'user'"
+                )
+            if not matches:
+                return (
+                    f"Error: Unknown skill {short_name!r}. "
+                    f"Available: {self._available()}"
+                )
+            normalized_scope = matches[0]
+
+        loader = self._loader(normalized_scope)
+        skill = loader.skills.get(short_name)
+        if skill is None:
+            available = self._available(normalized_scope)
+            return (
+                f"Error: Unknown {normalized_scope} skill {short_name!r}. "
+                f"Available: {available}"
+            )
+        digest = self._digest(skill)
+        return (
+            f'<skill name="{short_name}" source="{normalized_scope}" '
+            f'digest="{digest}">\n{skill["body"]}\n</skill>'
+        )
+
 
 #: The module's runtime-invariant posture (tools/verify_invariants.py).
 NO_RUNTIME_INVARIANT = (
-    "No runtime invariant: skills are read fresh from disk on each load call; there is no cached index to fall out of step."
+    "No runtime invariant: skill loaders are construction-time catalogue snapshots; later filesystem edits are intentionally not mirrored into a live session."
 )

@@ -2,8 +2,9 @@
 
 Compaction (s08) is lossy and dies with the session. Memory is a filesystem
 layer that survives both: each memory is a Markdown file with frontmatter under
-a memory dir, indexed by `MEMORY.md`. The index is cheap, so it's injected into
-the system prompt; full bodies are pulled in on demand via `recall`.
+a memory dir, indexed by `MEMORY.md`. The bounded index is delivered through
+the runtime-facts message stream; full bodies are pulled in on demand via
+`recall`.
 
 Unlike the per-session workspace, a memory dir can be shared across sessions
 (per user/tenant) to give an agent long-term recall. Enable at the manager
@@ -14,8 +15,10 @@ from __future__ import annotations
 
 from .durable import atomic_write_text
 from .problems import ProblemLog
-from .blocks import block_text
+from .blocks import block_field, block_text
 import asyncio
+import hashlib
+import html
 import json
 import re
 import threading
@@ -24,7 +27,17 @@ from pathlib import Path
 from .registry import Tool, ToolContext, ToolRegistry
 
 MEMORY_TYPES = ("user", "feedback", "project", "reference")
+MEMORY_ORIGINS = ("explicit", "auto_extracted", "consolidated", "imported")
 _FRONTMATTER = re.compile(r"^---\n(.*?)\n---\n(.*)", re.DOTALL)
+_OWNER_KEY = re.compile(r"^[0-9a-f]{64}$")
+_MEMORY_CONTEXT_PREFIX = re.compile(
+    r"\A<memory_context>\n.*\n</memory_context>\n\n",
+    re.DOTALL,
+)
+_RUNTIME_FACTS_MESSAGE = re.compile(
+    r"\A<runtime-state>\n.*\n</runtime-state>\Z",
+    re.DOTALL,
+)
 
 
 #: A slug becomes a filename. Uncapped, a long name raised `OSError: File name
@@ -48,6 +61,91 @@ def _slug(name: str) -> str:
 
 def _header(value: object) -> str:
     return " ".join(str(value).splitlines()).strip()
+
+
+def _owner_key(owner: object) -> str:
+    """Opaque identity key; the raw principal never becomes a path segment."""
+
+    return hashlib.sha256(str(owner).encode("utf-8")).hexdigest()
+
+
+def _memory_key(owner: object, normalized_name: str) -> str:
+    """Collision-safe physical key over the exact owner and normalized name."""
+
+    digest = hashlib.sha256()
+    for value in (str(owner), normalized_name):
+        encoded = value.encode("utf-8")
+        digest.update(len(encoded).to_bytes(8, "big"))
+        digest.update(encoded)
+    return digest.hexdigest()
+
+
+def _origin(value: object, *, default: str = "imported") -> str:
+    normalized = _header(value)
+    return normalized if normalized in MEMORY_ORIGINS else default
+
+
+def _belongs_to_owner(memory: dict, owner: object) -> bool:
+    """Match new records by opaque key and legacy records by their owner line."""
+
+    stored_key = memory.get("owner_key", "")
+    if stored_key:
+        return stored_key == _owner_key(owner)
+    return memory.get("owner", "anonymous") == str(owner)
+
+
+def _memory_block(memory: dict) -> str:
+    """Model-visible reference block with explicit access/provenance labels."""
+
+    name = html.escape(str(memory.get("name", "memory")), quote=True)
+    mem_type = html.escape(str(memory.get("type", "project")), quote=True)
+    origin = html.escape(_origin(memory.get("origin")), quote=True)
+    body = str(memory.get("body", ""))
+    return (
+        f'<memory scope="user" origin="{origin}" name="{name}" '
+        f'type="{mem_type}">\n{body}\n</memory>'
+    )
+
+
+def _strip_injected_context(text: str) -> str:
+    """Remove model-facing context that must never feed memory extraction."""
+
+    if _RUNTIME_FACTS_MESSAGE.fullmatch(text):
+        return ""
+    return _MEMORY_CONTEXT_PREFIX.sub("", text, count=1)
+
+
+def _clean_memory_messages(messages: list) -> list[dict]:
+    """A transcript projection without recalled memory or tool-result bodies."""
+
+    cleaned: list[dict] = []
+    for message in messages:
+        if not isinstance(message, dict):
+            continue
+        content = message.get("content")
+        if isinstance(content, str):
+            content = _strip_injected_context(content)
+            if not content:
+                continue
+        elif isinstance(content, list):
+            parts = []
+            for part in content:
+                if block_field(part, "type", "") == "tool_result":
+                    continue
+                if isinstance(part, dict) and part.get("type") == "text":
+                    text = _strip_injected_context(str(part.get("text", "")))
+                    if not text:
+                        continue
+                    part = {**part, "text": text}
+                parts.append(part)
+            if not parts:
+                continue
+            content = parts
+        elif isinstance(content, dict):
+            if block_field(content, "type", "") == "tool_result":
+                continue
+        cleaned.append({**message, "content": content})
+    return cleaned
 
 
 class MemoryStore:
@@ -74,11 +172,15 @@ class MemoryStore:
         self.lifecycle_lock = asyncio.Lock()
 
     def write(self, name: str, mem_type: str, description: str, body: str,
-              owner: str = "anonymous") -> str:
+              owner: str = "anonymous", *, origin: str = "explicit") -> str:
         with self._lock:
             if mem_type not in MEMORY_TYPES:
                 mem_type = "project"
             name, description = _header(name) or "memory", _header(description)
+            owner = str(owner)
+            owner_key = _owner_key(owner)
+            owner_display = _header(owner) or "anonymous"
+            origin = _origin(origin, default="explicit")
             slug = _slug(name)
             if len(body) > MAX_BODY:
                 self.problems.append(
@@ -87,11 +189,36 @@ class MemoryStore:
                 body = body[:MAX_BODY] + "\n[memory truncated]"
             text = (
                 f"---\nname: {name}\ndescription: {description}\n"
-                f"type: {mem_type}\nowner: {owner}\n---\n\n{body}\n"
+                f"type: {mem_type}\nscope: user\nowner_key: {owner_key}\n"
+                f"owner: {owner_display}\norigin: {origin}\n---\n\n{body}\n"
             )
             if self.secrets is not None:
                 text = self.secrets.mask(text)
-            atomic_write_text(self.dir / f"{slug}.md", text)
+            # Anonymous is the pre-scope single-user namespace. Preserve its
+            # exact filenames; authenticated owners use a digest over both the
+            # exact owner and exact normalized name, so neither cross-owner
+            # equality nor same-slug names such as `a b` / `a-b` can collide.
+            filename = (
+                f"{slug}.md"
+                if owner == "anonymous"
+                else f"u-{_memory_key(owner, name)}-{slug}.md"
+            )
+            target = self.dir / filename
+            self._parsed.pop(target.name, None)
+            atomic_write_text(target, text)
+
+            # Lazily migrate the exact legacy record this write supersedes.
+            # A different normalized name may share its slug and must survive.
+            legacy = self.dir / f"{slug}.md"
+            if target != legacy and legacy.exists():
+                prior = self._parse(legacy)
+                if (
+                    prior is not None
+                    and _belongs_to_owner(prior, owner)
+                    and prior.get("name") == name
+                ):
+                    legacy.unlink(missing_ok=True)
+                    self._parsed.pop(legacy.name, None)
             # Deferred. Caching the parses made the *reads* linear and left the
             # time quadratic, because every write still materialised the whole
             # `MEMORY.md`. An agent that remembers ten things and then looks at
@@ -167,24 +294,48 @@ class MemoryStore:
                     k, v = line.split(":", 1)
                     meta[k.strip()] = v.strip()
             body = m.group(2).strip()
-        return {"file": path.name, "name": meta.get("name", path.stem),
-                "owner": meta.get("owner", "anonymous"),
-                "description": meta.get("description", ""), "type": meta.get("type", "project"),
-                "body": body}
+        stored_owner_key = meta.get("owner_key", "").lower()
+        if not _OWNER_KEY.fullmatch(stored_owner_key):
+            stored_owner_key = ""
+        return {
+            "file": path.name,
+            "name": meta.get("name", path.stem),
+            "owner": meta.get("owner", "anonymous"),
+            "owner_key": stored_owner_key,
+            "scope": "user",
+            "origin": _origin(meta.get("origin"), default="imported"),
+            "description": meta.get("description", ""),
+            "type": meta.get("type", "project"),
+            "body": body,
+        }
 
     def list(self, owner: str | None = None) -> list[dict]:
         """Memories, optionally only one owner's.
 
-        One `MemoryStore` serves every session on a manager, which is right for
-        a single user carrying knowledge between sessions and wrong the moment
-        two callers share a process: every memory was injected into every
-        agent's context. Records written before this field are `anonymous`, so
-        an unauthenticated single-user deployment still sees its own.
+        The compatibility store may serve every session on a manager, so its
+        owner filter is a required isolation boundary.  With
+        `UserResourceResolver`, each owner also has a separate physical store;
+        keeping this logical filter in place makes accidental rebinding fail
+        closed. Records written before owner metadata are `anonymous`, so an
+        unauthenticated single-user deployment still sees its own.
         """
 
         with self._lock:
             found = [m for m in (self._parse(p) for p in sorted(self.dir.glob("*.md"))
                                  if p.name != "MEMORY.md") if m is not None]
+            if owner is not None:
+                expected_key = _owner_key(owner)
+                # Normalize keyed records onto the exact requested identity
+                # only after their digest matches. Non-matches get a sentinel,
+                # so they cannot fall through the legacy display-owner check.
+                found = [
+                    ({**memory, "owner": str(owner)}
+                     if memory.get("owner_key") == expected_key
+                     else {**memory, "owner": None}
+                     if memory.get("owner_key")
+                     else memory)
+                    for memory in found
+                ]
             if owner is None:
                 return found
             return [m for m in found if m.get("owner", "anonymous") == owner]
@@ -240,7 +391,8 @@ class MemoryStore:
                 scored.append((score, memory))
             return [m for score, m in sorted(scored, key=lambda x: -x[0]) if score][:limit]
 
-    def replace_all(self, memories: list[dict], owner: str | None = None) -> None:
+    def replace_all(self, memories: list[dict], owner: str | None = None, *,
+                    origin: str = "imported") -> None:
         """Replace stored memories.
 
         Scoped by `owner`: only that owner's files are removed and the new ones
@@ -257,15 +409,23 @@ class MemoryStore:
             for path in self.dir.glob("*.md"):
                 if path.name == "MEMORY.md":
                     continue
-                if owner is None or (self._parse(path) or {}).get(
-                    "owner", "anonymous"
-                ) == owner:
+                parsed = self._parse(path)
+                if owner is None or (
+                    parsed is not None and _belongs_to_owner(parsed, owner)
+                ):
                     path.unlink(missing_ok=True)
+                    self._parsed.pop(path.name, None)
+            default_origin = _origin(origin, default="imported")
+            replacement_owner = "anonymous" if owner is None else owner
             for memory in memories:
                 self.write(memory["name"], memory.get("type", "project"),
                            memory.get("description", ""), memory.get("body", ""),
-                           owner=owner or "anonymous")
+                           owner=replacement_owner,
+                           origin=_origin(
+                               memory.get("origin"), default=default_origin
+                           ))
             self._rebuild_index()
+            self._index_dirty = False
 
 
 def memory_system_builder(base_builder, store: MemoryStore):
@@ -280,7 +440,10 @@ def memory_system_builder(base_builder, store: MemoryStore):
     """
     def build(agent) -> str:
         base = base_builder(agent)
-        return f"{base}\n\nKnown memories (use `recall` to load full text):\n{store.index()}"
+        return (
+            f"{base}\n\nKnown user memories "
+            f"(use `recall` to load full text):\n{store.index()}"
+        )
     return build
 
 
@@ -303,49 +466,82 @@ class ScopedMemory:
 
     def __init__(self, store: MemoryStore, owner: str) -> None:
         self._store = store
-        self.owner = owner
+        self.owner = str(owner)
 
-    def write(self, name, mem_type, description, body, owner=None):
+    def _bound_owner(self, owner):
+        if owner is not None and str(owner) != self.owner:
+            raise ValueError("scoped memory owner cannot be overridden")
+        return self.owner
+
+    def write(self, name, mem_type, description, body, owner=None, *,
+              origin="explicit"):
         return self._store.write(name, mem_type, description, body,
-                                 owner=owner or self.owner)
+                                 owner=self._bound_owner(owner), origin=origin)
 
     def list(self, owner=None):
-        return self._store.list(owner or self.owner)
+        return self._store.list(self._bound_owner(owner))
 
     def index(self, owner=None):
-        return self._store.index(owner or self.owner)
+        return self._store.index(self._bound_owner(owner))
 
     def search(self, query=None, limit=5, owner=None):
-        return self._store.search(query, limit, owner=owner or self.owner)
+        return self._store.search(
+            query, limit, owner=self._bound_owner(owner)
+        )
 
-    def replace_all(self, memories, owner=None):
+    def replace_all(self, memories, owner=None, *, origin="imported"):
         # Scoped, or consolidation deletes every tenant's memories, not this
         # owner's: `replace_all` is destructive, and `__getattr__` would send it
         # to the raw store unscoped. The one operation `ScopedMemory` cannot
         # afford to leave to delegation.
-        return self._store.replace_all(memories, owner=owner or self.owner)
+        return self._store.replace_all(
+            memories, owner=self._bound_owner(owner), origin=origin
+        )
 
     def __getattr__(self, name):
         return getattr(self._store, name)
 
 
 def _owner_of(agent) -> str:
-    session = (getattr(agent, "state", None) or {}).get("session")
-    return getattr(session, "owner", None) or "anonymous"
+    state = getattr(agent, "state", None) or {}
+    # SessionManager binds user resources before Agent construction. Prefer
+    # that immutable construction-time authority; the session fallback keeps
+    # bare/legacy agents compatible. A default anonymous binding may still be
+    # followed by the historical direct `session.owner = ...` pattern; honour
+    # that only for the compatibility sentinel, never for a real bound owner.
+    resource_owner = state.get("resource_owner")
+    session = state.get("session")
+    session_owner = getattr(session, "owner", None)
+    if resource_owner not in (None, "", "anonymous"):
+        return str(resource_owner)
+    if session_owner not in (None, "", "anonymous"):
+        return str(session_owner)
+    return str(resource_owner or session_owner or "anonymous")
 
 
-def memory_store_for(agent) -> MemoryStore:
+def memory_store_for(agent) -> ScopedMemory:
     store = agent.state.get("memory")
     if store is None:
         root = agent.state.get("memory_root") or (agent.workspace / ".memory")
         store = agent.state["memory"] = MemoryStore(
             root, secrets=getattr(agent, "secrets", None)
         )
-    # Bound to this agent's owner. The manager builds one store for every
-    # session, which is right for one user carrying knowledge between their own
-    # sessions and wrong the moment two callers share the process: every memory
-    # was going into every agent's context, automatically, each turn.
+    # Bind the logical view even when UserResourceResolver has already selected
+    # a per-owner physical store.  The same seam also protects the legacy
+    # manager-wide store, so every call site gets one owner and cannot override
+    # it through a method argument.
     if isinstance(store, ScopedMemory):
+        state = getattr(agent, "state", None) or {}
+        resource_owner = state.get("resource_owner")
+        session_owner = getattr(state.get("session"), "owner", None)
+        expected_owner = _owner_of(agent)
+        if (
+            resource_owner not in (None, "")
+            or session_owner not in (None, "")
+        ) and store.owner != expected_owner:
+            raise ValueError(
+                "agent memory scope does not match its bound resource owner"
+            )
         return store
     return ScopedMemory(store, _owner_of(agent))
 
@@ -403,11 +599,7 @@ async def prepare_memory_context(agent, user_text: str) -> str:
         # Still create the store so the dynamic prompt can expose its index.
         memory_store_for(agent)
         return user_text
-    bodies = "\n\n".join(
-        f'<memory name="{memory["name"]}" type="{memory["type"]}">\n'
-        f'{memory["body"]}\n</memory>'
-        for memory in selected
-    )
+    bodies = "\n\n".join(_memory_block(memory) for memory in selected)
     await agent._send("memory", action="load", count=len(selected))
     return f"<memory_context>\n{bodies}\n</memory_context>\n\n{user_text}"
 
@@ -416,11 +608,14 @@ async def extract_memories(store: MemoryStore, messages: list, client, model: st
                            max_items: int = 5, create=None) -> int:
     """Side LLM query: pull durable facts out of a conversation and store them.
 
-    Call at session end (or from a tool). Returns count written. Best-effort:
-    any failure is swallowed so it never breaks a session.
+    Called after a normal final turn (or from an explicit lifecycle adapter),
+    not at true session close. Returns count written. Best-effort: any failure
+    is swallowed so it never breaks a session.
     """
     try:
-        convo = json.dumps(messages, default=str)[-40_000:]
+        convo = json.dumps(
+            _clean_memory_messages(messages), default=str
+        )[-40_000:]
         existing = "\n".join(f"- {item['name']}: {item['description']}" for item in store.list())
         prompt = (
             "From this conversation, extract durable facts worth remembering across sessions "
@@ -433,7 +628,11 @@ async def extract_memories(store: MemoryStore, messages: list, client, model: st
                 else await client.messages.create(model=model, max_tokens=1500, messages=request))
         items = _json_array(_response_text(resp))
         for m in items[:max_items]:
-            store.write(m["name"], m.get("type", "project"), m.get("description", ""), m.get("body", ""))
+            store.write(
+                m["name"], m.get("type", "project"),
+                m.get("description", ""), m.get("body", ""),
+                origin="auto_extracted",
+            )
         return len(items[:max_items])
     except Exception:
         return 0
@@ -456,14 +655,48 @@ async def consolidate_memories(store: MemoryStore, agent, threshold: int = 10) -
         consolidated = _json_array(_response_text(response))
         if not consolidated:
             return 0
-        store.replace_all(consolidated)
-        return len(consolidated)
+        unchanged_origins = {
+            (
+                memory.get("name"),
+                memory.get("type", "project"),
+                memory.get("description", ""),
+                memory.get("body", ""),
+            ): _origin(memory.get("origin"), default="imported")
+            for memory in memories
+        }
+        normalized = []
+        for memory in consolidated:
+            if not isinstance(memory, dict) or "name" not in memory:
+                continue
+            identity = (
+                memory.get("name"),
+                memory.get("type", "project"),
+                memory.get("description", ""),
+                memory.get("body", ""),
+            )
+            normalized.append({
+                **memory,
+                "origin": unchanged_origins.get(identity, "consolidated"),
+            })
+        if not normalized:
+            return 0
+        store.replace_all(normalized, origin="consolidated")
+        return len(normalized)
     except Exception:
         return 0
 
 
 async def memory_on_stop(agent) -> None:
     if not memory_enabled(agent):
+        return
+    # Readonly agents may use `recall`, but an automatic extraction is a
+    # durable write that must obey the same posture as every explicit tool.
+    session = agent.state.get("session")
+    permission_mode = (
+        getattr(session, "permission_mode", None)
+        or agent.state.get("permission_mode")
+    )
+    if permission_mode == "readonly":
         return
     store = memory_store_for(agent)
     async with store.lifecycle_lock:
@@ -501,19 +734,35 @@ def install_memory(registry: ToolRegistry) -> ToolRegistry:
         # is the intended one-user behaviour; distinct HTTP owners are isolated.
         store = memory_store_for(ctx.agent)
         async with store.lifecycle_lock:
-            return await asyncio.to_thread(store.write, name, type, description or name, content)
+            return await asyncio.to_thread(
+                store.write, name, type, description or name, content,
+                origin="explicit",
+            )
 
     async def recall(ctx, query=None):
         hits = await asyncio.to_thread(memory_store_for(ctx.agent).search, query)
         if not hits:
             return "(no matching memories)"
-        return "\n\n".join(f"<memory name=\"{m['name']}\" type=\"{m['type']}\">\n{m['body']}\n</memory>" for m in hits)
+        return "\n\n".join(_memory_block(memory) for memory in hits)
 
-    registry.register(Tool("remember", "Save a durable fact to long-term memory (survives across sessions).", _REMEMBER, remember, risk="write"))
-    registry.register(Tool("recall", "Recall memories matching a query (or list all if no query).", _RECALL, recall, readonly=True, risk="read"))
+    registry.register(Tool(
+        "remember",
+        "Save a durable fact to the current user's memory (survives across sessions).",
+        _REMEMBER,
+        remember,
+        risk="write",
+    ))
+    registry.register(Tool(
+        "recall",
+        "Recall the current user's memories matching a query (or list all).",
+        _RECALL,
+        recall,
+        readonly=True,
+        risk="read",
+    ))
     return registry
 
 #: The module's runtime-invariant posture (tools/verify_invariants.py).
 NO_RUNTIME_INVARIANT = (
-    "No runtime invariant: memory files are re-read from disk each selection, so there is no in-memory mirror to diverge from the store."
+    "No runtime invariant: directory entries remain authority; cached parses are validated by file stat and the bounded index is delivered through the runtime-facts message stream."
 )

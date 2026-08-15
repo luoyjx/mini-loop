@@ -440,8 +440,8 @@ def _register_routes(app: FastAPI) -> None:
         session = _manager(request).create(
             system=req.system, model=req.model,
             permission_mode=req.mode or "interactive",
+            owner=caller.id,
         )
-        session.owner = caller.id
         return session.info()
 
     @app.post("/sessions/{session_id}/mode")

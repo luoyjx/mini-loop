@@ -1581,13 +1581,29 @@ MUTATIONS = [
         "restart resurrects everything a user ever deleted",
     ),
     Mutation(
-        "restart-orphans-the-session-owner", 138, "mini_loop/manager.py",
-        "        session.owner = record.owner\n        session.restore()",
-        "        session.restore()",
-        "tests/test_restart_continuity.py::test_a_session_keeps_its_owner_across_a_restart",
-        "a restored session keeps its tenant owner: dropped, it comes back "
-        "anonymous and its owner is refused access to their own session under "
-        "authentication",
+        "restart-builds-before-binding-the-session-owner", 188,
+        "mini_loop/manager.py",
+        "            session.owner = record.owner\n"
+        "            session.agent = self._build_agent(",
+        "            session.agent = self._build_agent(",
+        "tests/test_user_resource_lifecycle.py::"
+        "test_owner_is_recorded_before_first_run_and_restored_before_build",
+        "startup restore binds the persisted owner before Agent construction; "
+        "otherwise its skill and memory sources are frozen to anonymous",
+    ),
+    Mutation(
+        "cron-restore-builds-before-binding-the-session-owner", 188,
+        "mini_loop/manager.py",
+        "        if record is not None:\n"
+        "            session.owner = record.owner\n"
+        "        session.agent = self._build_agent(",
+        "        if record is not None:\n"
+        "            pass\n"
+        "        session.agent = self._build_agent(",
+        "tests/test_user_resource_lifecycle.py::"
+        "test_owner_is_recorded_before_first_run_and_restored_before_build",
+        "cron restore binds the persisted owner before Agent construction; "
+        "otherwise unattended runs use the anonymous skill and memory scope",
     ),
     Mutation(
         "shared-mcp-client-closed-with-first-session", 94, "mini_loop/manager.py",
@@ -1779,8 +1795,12 @@ MUTATIONS = [
     ),
     Mutation(
         "consolidation-wipes-every-tenant", 136, "mini_loop/memory.py",
-        "        return self._store.replace_all(memories, owner=owner or self.owner)",
-        "        return self._store.replace_all(memories, owner=None)",
+        "        return self._store.replace_all(\n"
+        "            memories, owner=self._bound_owner(owner), origin=origin\n"
+        "        )",
+        "        return self._store.replace_all(\n"
+        "            memories, owner=None, origin=origin\n"
+        "        )",
         "tests/test_memory_tenant_isolation.py::test_one_owners_consolidation_does_not_wipe_anothers",
         "replace_all is owner-scoped: unscoped, one tenant's turn-end "
         "consolidation deletes every tenant's memory files, the round-117 leak "

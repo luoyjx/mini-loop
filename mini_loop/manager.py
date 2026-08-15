@@ -50,6 +50,7 @@ from .token_efficiency import (
 )
 from .tool_policy import DEFAULT_ROLE_TOOL_POLICY
 from .token_tools import install_token_efficiency_tools
+from .user_resources import UserResourceResolver
 from .worktrees import WorktreeManager
 from .workflows.service import WorkflowService, workflow_injector
 from .workflows.tools import install_workflows
@@ -137,6 +138,7 @@ class SessionManager:
         llm_semaphore=None,
         tool_semaphore=None,
         skills: SkillLoader | None = None,
+        user_resources: UserResourceResolver | None = None,
         tool_registry: ToolRegistry | None = None,
         hooks: Hooks | None = None,
         system_builder: Callable[[Agent], str] | None = None,
@@ -382,6 +384,16 @@ class SessionManager:
             settings.memory_root or (settings.workspace_root / ".memory"),
             secrets=self.secrets,
         )
+        self.user_resources = user_resources
+        if (
+            self.user_resources is None
+            and settings.user_resources_root is not None
+        ):
+            self.user_resources = UserResourceResolver(
+                settings.user_resources_root,
+                self.skills,
+                secrets=self.secrets,
+            )
         self.worktrees = WorktreeManager(settings.repo_root) if settings.repo_root else None
         self.cron = CronScheduler(
             self,
@@ -558,9 +570,24 @@ class SessionManager:
                 )
 
     # -- internal: build an Agent with services seeded into its state --
-    def _build_agent(self, session: AgentSession, *, settings: Settings, extra_state: dict,
-                     label: str = "main") -> Agent:
+    def _build_agent(
+        self,
+        session: AgentSession,
+        *,
+        settings: Settings,
+        extra_state: dict,
+        label: str = "main",
+        resolve_user_resources: bool = True,
+    ) -> Agent:
         registry = self.tool_registry.clone() if self.tool_registry is not None else None
+        resource_owner = getattr(session, "owner", "anonymous")
+        resources = (
+            self.user_resources.for_owner(resource_owner)
+            if self.user_resources is not None and resolve_user_resources
+            else None
+        )
+        skills = resources.skills if resources is not None else self.skills
+        memory = resources.memory if resources is not None else self.memory
         state = {
             "manager": self,
             "session": session,
@@ -570,8 +597,9 @@ class SessionManager:
             "team_id": session.id,
             "agent_name": "lead",
             "action_journal": self.actions,
-            "memory": self.memory,
-            "memory_root": self.memory.dir,
+            "memory": memory,
+            "memory_root": memory.dir,
+            "resource_owner": resource_owner,
             "worktrees": self.worktrees,
             "workflow_service": self.workflows,
             "permission_mode": session.permission_mode,
@@ -584,7 +612,7 @@ class SessionManager:
             system=session.system,
             harness=self.harness.derive(
                 tools=registry,
-                skills=self.skills,
+                skills=skills,
                 injectors=tuple(self.injectors),
             ),
             emit=session.emit,
@@ -600,11 +628,14 @@ class SessionManager:
         system: str | None = None,
         model: str | None = None,
         permission_mode: str = "interactive",
+        owner: str = "anonymous",
     ) -> AgentSession:
         if self._manager_stopped:
             raise RuntimeError("session manager is stopped")
         from .permissions import PERMISSION_MODES
 
+        if not isinstance(owner, str) or not owner:
+            raise ValueError("owner must be a non-empty string")
         if permission_mode not in PERMISSION_MODES:
             raise ValueError(
                 f"unknown permission mode {permission_mode!r}; "
@@ -623,6 +654,7 @@ class SessionManager:
             state_store=self.state_store,
         )
         session.permission_mode = permission_mode
+        session.owner = owner
         settings = self.settings if model is None else dataclasses.replace(self.settings, model=model)
         session.agent = self._build_agent(session, settings=settings, extra_state={})
         self._sessions[session_id] = session
@@ -693,10 +725,11 @@ class SessionManager:
                 trajectory_store=self.trajectories,
                 state_store=self.state_store,
             )
+            session.owner = record.owner
             session.agent = self._build_agent(
                 session, settings=self.settings, extra_state={}
             )
-            self._rehydrate(session)
+            self._rehydrate(session, record)
             self._claim(session)
             self._sessions[record.session_id] = session
             restored.append(session)
@@ -709,6 +742,14 @@ class SessionManager:
         existing = self.get(session_id)
         if existing is not None:
             return existing
+        record = next(
+            (
+                item
+                for item in self.state_store.load_sessions()
+                if item.session_id == session_id
+            ),
+            None,
+        )
         workspace = Path(self.workspace_factory(session_id))
         workspace.mkdir(parents=True, exist_ok=True)
         session = AgentSession(
@@ -718,30 +759,37 @@ class SessionManager:
             trajectory_store=self.trajectories,
             state_store=self.state_store,
         )
+        if record is not None:
+            session.owner = record.owner
         session.agent = self._build_agent(session, settings=self.settings, extra_state={})
         # Same rehydration as `restore_sessions`: without it the handle starts
         # with an empty transcript while the store already holds one, and the
         # next flush appends into that same epoch -- splicing two histories.
-        self._rehydrate(session)
+        self._rehydrate(session, record)
         self._claim(session)
         self._sessions[session_id] = session
         return session
 
-    def _rehydrate(self, session: AgentSession) -> None:
+    def _rehydrate(
+        self,
+        session: AgentSession,
+        record: SessionRecord | None = None,
+    ) -> None:
         """Rebuild a session's durable state onto a freshly built handle."""
-        record = next(
-            (r for r in self.state_store.load_sessions() if r.session_id == session.id),
-            None,
-        )
+        if record is None:
+            record = next(
+                (
+                    item
+                    for item in self.state_store.load_sessions()
+                    if item.session_id == session.id
+                ),
+                None,
+            )
         if record is None:
             return
         session.created_at = record.created_at
         session.run_count = record.run_count
         session.status = record.status
-        # Restore the tenant owner here, so both restore paths -- startup and a
-        # cron job's `restore_scheduled_session` -- carry it, or the handle comes
-        # back `anonymous` and its owner is refused access to it (round 138).
-        session.owner = record.owner
         session.restore()
         if record.todos and session.agent is not None:
             session.agent.todo.items = [dict(t) for t in record.todos]
@@ -767,7 +815,9 @@ class SessionManager:
         if not re.fullmatch(r"[A-Za-z0-9._-]{1,64}", name):
             return "Error: teammate name must match [A-Za-z0-9._-]{1,64}"
         session_id = uuid.uuid4().hex[:12]
-        # Shares the parent's workspace -> shared .tasks board + .memory + mailbox group.
+        # Shares the parent's workspace -> shared task board and mailbox group.
+        # User memory is inherited through the owner-bound resource resolver;
+        # the legacy fallback may still live under the shared workspace root.
         session = AgentSession(
             session_id,
             parent.workspace,
@@ -775,6 +825,7 @@ class SessionManager:
             trajectory_store=self.trajectories,
             state_store=self.state_store,
         )
+        session.owner = parent.owner
         session.agent = self._build_agent(
             session, settings=self.settings,
             extra_state={

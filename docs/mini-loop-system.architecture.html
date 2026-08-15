@@ -4498,10 +4498,10 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Concurrent session control plane, per-session agent loop, guarded tools, optional orchestration, and durable evidence</p>
+      <p class="subtitle">Concurrent session control plane, owner-scoped skills and memory, guarded tools, optional orchestration, and durable evidence</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state"],"note":"Tool calls cross immutable catalog, policy, hook, permission, masking, and journaling boundaries."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state"],"note":"Tool calls cross immutable catalog, policy, hook, permission, masking, and journaling boundaries."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"resource-path","label":"Scoped skills and memory","focus":["authority","manager","context","state"],"note":"Agent skills remain trusted manager policy; user skills and memory enter context only inside the authenticated owner's namespace."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4546,7 +4546,7 @@
     <div class="diagram-container" data-detail-level="read">
       <svg viewBox="0 0 2500 1100" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Concurrent session control plane, per-session agent loop, guarded tools, optional orchestration, and durable evidence</desc>
+        <desc id="archify-diagram-description">Concurrent session control plane, owner-scoped skills and memory, guarded tools, optional orchestration, and durable evidence</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -4670,15 +4670,15 @@
         <text data-detail="fine" x="1870" y="324" class="t-backend" font-size="7" text-anchor="middle">async</text>
         </g>
 
-        <g id="node-context" data-node-id="context" data-node-label="Context Pipeline" tabindex="0" role="button" aria-label="Focus Context Pipeline, prompt + skills + compact + cache, Per-session runtime" aria-pressed="false" data-node-kind="backend" data-node-sublabel="prompt + skills + compact + cache" data-node-context="Per-session runtime">
-          <title>Context Pipeline · prompt + skills + compact + cache · Per-session runtime</title>
+        <g id="node-context" data-node-id="context" data-node-label="Context Pipeline" tabindex="0" role="button" aria-label="Focus Context Pipeline, agent + owner skills / memory + cache, Per-session runtime" aria-pressed="false" data-node-kind="backend" data-node-sublabel="agent + owner skills / memory + cache" data-node-context="Per-session runtime">
+          <title>Context Pipeline · agent + owner skills / memory + cache · Per-session runtime</title>
           <rect x="2110" y="100" width="220" height="76" rx="6" class="c-mask"/>
           <rect x="2110" y="100" width="220" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(2116 106) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="2220" y="136" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Context Pipeline</text>
-        <text data-detail="context" x="2220" y="152" class="t-muted" font-size="9" text-anchor="middle">prompt + skills + compact + cache</text>
+        <text data-detail="context" x="2220" y="152" class="t-muted" font-size="9" text-anchor="middle">agent + owner skills / memory + cache</text>
         </g>
 
         <g id="node-provider" data-node-id="provider" data-node-label="Model Provider" tabindex="0" role="button" aria-label="Focus Model Provider, streaming transport, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="streaming transport" data-node-context="Architecture component">
@@ -4732,8 +4732,8 @@
         <text data-detail="fine" x="1145" y="608" class="t-messagebus" font-size="7" text-anchor="middle">opt-in surfaces</text>
         </g>
 
-        <g id="node-state" data-node-id="state" data-node-label="State + Evidence" tabindex="0" role="button" aria-label="Focus State + Evidence, SQLite / journal / trajectory / trace, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="SQLite / journal / trajectory / trace" data-node-context="Architecture component">
-          <title>State + Evidence · SQLite / journal / trajectory / trace · Architecture component</title>
+        <g id="node-state" data-node-id="state" data-node-label="State + Evidence" tabindex="0" role="button" aria-label="Focus State + Evidence, user resources / SQLite / trajectory, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="user resources / SQLite / trajectory" data-node-context="Architecture component">
+          <title>State + Evidence · user resources / SQLite / trajectory · Architecture component</title>
           <rect x="1390" y="800" width="235" height="78" rx="6" class="c-mask"/>
           <rect x="1390" y="800" width="235" height="78" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1396 806) scale(0.6875)">
@@ -4741,7 +4741,7 @@
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-detail-anchor x="1507.5" y="837" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">State + Evidence</text>
-        <text data-detail="context" x="1507.5" y="853" class="t-muted" font-size="9" text-anchor="middle">SQLite / journal / trajectory / trace</text>
+        <text data-detail="context" x="1507.5" y="853" class="t-muted" font-size="9" text-anchor="middle">user resources / SQLite / trajectory</text>
         </g>
 
         <!-- Connection labels -->
@@ -5022,8 +5022,8 @@
           <h3>Trust</h3>
         </div>
         <ul>
-          <li>&bull; Authority is stamped at the run boundary</li>
-          <li>&bull; Tool guards can only deny or abstain</li>
+          <li>&bull; Authority is stamped before resources are resolved</li>
+          <li>&bull; Agent and user skills retain explicit provenance</li>
           <li>&bull; Host effects remain sandbox- and permission-gated</li>
         </ul>
       </div>
@@ -5035,7 +5035,7 @@
         </div>
         <ul>
           <li>&bull; SQLite can persist session epochs, events, leases, actions, and approvals</li>
-          <li>&bull; Trajectories are append-only evidence</li>
+          <li>&bull; User memory is durable inside its owner namespace</li>
           <li>&bull; Experimental workflows remain process-local and default-off</li>
         </ul>
       </div>

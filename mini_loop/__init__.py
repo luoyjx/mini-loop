@@ -90,7 +90,7 @@ from .secrets import (
     NullSecretRegistry,
     SecretRegistry,
 )
-from .skills import SkillLoader
+from .skills import LayeredSkillLoader, SkillLoader
 from .stuck import (
     DefaultStuckDetector,
     NullStuckDetector,
@@ -138,6 +138,7 @@ from .tool_policy import (
 from .tools import CommandResult, Toolset
 from .trajectory import SCHEMA_VERSION as TRAJECTORY_SCHEMA_VERSION
 from .trajectory import TrajectoryStore
+from .user_resources import UserResourceResolver, UserResources
 from .worktrees import WorktreeManager, install_worktrees, remove_worktree, worktree_workspace_factory
 from .workflows import (
     FreshAgentRunner,
@@ -219,6 +220,9 @@ __all__ = [
     "SessionRecord",
     "StorageSchemaError",
     "STORAGE_SCHEMA_VERSION",
+    "UserResourceResolver",
+    "UserResources",
+    "LayeredSkillLoader",
     "SkillLoader",
     "Toolset",
     "CommandResult",
