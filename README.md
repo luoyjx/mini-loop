@@ -212,6 +212,8 @@ mini_loop/
 docs/
   CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md
                  Claude Code dynamic workflows research + mini-loop design
+  LONGHORIZON_HARNESS_RESEARCH.md
+                 LongHorizon-Harness source audit + mini-loop adoption boundary
   TOKEN_EFFICIENCY_COMPONENTS.md
                  token-efficient tools, harness contracts, and rollout design
   AGENT_PLATFORM_ROADMAP.md
@@ -227,6 +229,7 @@ Design docs: [hardening notes](docs/HARDENING_NOTES.md) (why the non-curriculum
 modules exist, the traps they close, and what is still open),
 [DeepSeek Harness adoption plan](docs/DEEPSEEK_HARNESS_PLAN.md),
 [Claude Code dynamic workflows research](docs/CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md),
+[LongHorizon-Harness research](docs/LONGHORIZON_HARNESS_RESEARCH.md),
 [token-efficiency tools and harness components](docs/TOKEN_EFFICIENCY_COMPONENTS.md),
 [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md), and
 [trajectory/recovery boundary](docs/TRAJECTORIES.md). The local resource-scope
