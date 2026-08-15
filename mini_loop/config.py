@@ -26,25 +26,58 @@ if os.getenv("ANTHROPIC_BASE_URL"):
     os.environ.pop("ANTHROPIC_AUTH_TOKEN", None)
 
 
+# A value the parser does not recognize is refused at boot, never guessed
+# around. These helpers used to fall back to the default on any parse failure
+# (`MINILOOP_MAX_TOKENS=8k` silently meant 8000) and to read any unknown
+# boolean spelling as True (`MINILOOP_TRAJECTORY_CAPTURE_CONTENT=flase` kept
+# recording full content for an operator who had turned it off). An accepted-
+# but-misread setting runs with someone else's configuration; dsh's
+# post-mortem 0002 is the same defect class at Loader scope, and its guardrail
+# is the same: reject at the boundary. Missing stays the default, and the
+# empty string keeps its historical meaning (default for numbers, False for
+# booleans) because deployment tooling routinely exports empty vars.
+
+def _reject(name: str, value: str, expected: str) -> None:
+    raise ValueError(
+        f"{name}={value!r} is not {expected}; refusing to guess. "
+        f"Unset {name} to use the default."
+    )
+
+
 def _env_int(name: str, default: int) -> int:
-    try:
-        return int(os.environ[name])
-    except (KeyError, ValueError):
+    value = os.getenv(name)
+    if value is None or not value.strip():
         return default
+    try:
+        return int(value)
+    except ValueError:
+        _reject(name, value, "an integer")
 
 
 def _env_float(name: str, default: float) -> float:
-    try:
-        return float(os.getenv(name, str(default)))
-    except (TypeError, ValueError):
+    value = os.getenv(name)
+    if value is None or not value.strip():
         return default
+    try:
+        return float(value)
+    except ValueError:
+        _reject(name, value, "a number")
+
+
+_TRUE = ("1", "true", "yes", "on")
+_FALSE = ("", "0", "false", "no", "off")
 
 
 def _env_bool(name: str, default: bool) -> bool:
     value = os.getenv(name)
     if value is None:
         return default
-    return value.strip().lower() not in ("", "0", "false", "no", "off")
+    normalized = value.strip().lower()
+    if normalized in _TRUE:
+        return True
+    if normalized in _FALSE:
+        return False
+    _reject(name, value, f"a boolean ({'/'.join(_TRUE)} or 0/false/no/off)")
 
 
 @dataclass(frozen=True)
@@ -149,6 +182,15 @@ class Settings:
 
     workspace_root: Path = field(
         default_factory=lambda: Path(os.getenv("MINILOOP_WORKSPACE_ROOT", "./workspaces")).resolve()
+    )
+    # Where oversized tool output is preserved when truncated. Empty string
+    # disables preservation (truncation reverts to drop-the-middle).
+    spill_dir: Path | None = field(
+        default_factory=lambda: (
+            Path(os.getenv("MINILOOP_SPILL_DIR", "./var/spill")).resolve()
+            if os.getenv("MINILOOP_SPILL_DIR", "./var/spill").strip()
+            else None
+        )
     )
     skills_dir: Path = field(
         default_factory=lambda: Path(os.getenv("MINILOOP_SKILLS_DIR", "./skills")).resolve()
@@ -342,3 +384,8 @@ def build_client(settings: Settings):
     if settings.api_key:
         kwargs["api_key"] = settings.api_key
     return AsyncAnthropic(**kwargs)
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: settings are a frozen dataclass resolved once from the environment; immutable state cannot drift after validation."
+)

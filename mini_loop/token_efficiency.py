@@ -2292,3 +2292,8 @@ __all__ = [
     "TokenEfficiencyRegistry",
     "TokenEfficiencyRuntime",
 ]
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: every reducer receipt carries digests of what it replaced, so accountability is per-operation data, not a global probe."
+)

@@ -79,3 +79,8 @@ __all__ = [
     "RoleToolPolicy",
     "WORKER_CAPABILITIES",
 ]
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: a static mapping consulted at composition; a wrong entry is a review problem, invisible to the process running under it."
+)

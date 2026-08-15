@@ -256,3 +256,8 @@ def install_worktrees(registry: ToolRegistry) -> ToolRegistry:
     registry.register(Tool("list_worktrees", "List git worktrees.", _EMPTY, list_worktrees_tool, readonly=True, risk="read"))
     registry.register(Tool("enter_worktree", "Switch this agent's file tools into a worktree.", _NAME, enter_worktree, risk="write"))
     return registry
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: worktree state lives in git's own metadata, which git enforces; duplicating its bookkeeping would drift from the authority."
+)

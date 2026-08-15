@@ -806,3 +806,8 @@ class InMemoryWorkflowStore:
                     claim_token=None,
                     claimed_at=None,
                 )
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: every transition is CAS-guarded (VersionConflict) inside one lock; an illegal state cannot be committed to observe."
+)

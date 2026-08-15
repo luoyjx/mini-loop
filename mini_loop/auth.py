@@ -177,3 +177,8 @@ def refuse_open_bind(host: str, auth: Authenticator) -> str | None:
         "session creation, shell execution and every recorded transcript to "
         "any caller. Set MINILOOP_API_TOKEN, or bind 127.0.0.1."
     )
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: constant-time comparison is a structural property pinned by AST tests (test_timing_safety), which runtime observation cannot see."
+)

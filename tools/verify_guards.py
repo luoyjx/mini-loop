@@ -112,8 +112,8 @@ MUTATIONS = [
     ),
     Mutation(
         "compaction-uses-the-estimate", 29, "mini_loop/compaction.py",
-        "    meter = getattr(agent, \"token_meter\", None)\n    if meter is None:\n        return estimate_tokens(agent.messages)\n    return meter.used(agent.messages)",
-        "    return estimate_tokens(agent.messages)",
+        "    meter = getattr(agent, \"token_meter\", None)\n    if meter is None:\n        return estimate_tokens(agent.messages)",
+        "    return estimate_tokens(agent.messages)\n    meter = getattr(agent, \"token_meter\", None)\n    if meter is None:\n        return estimate_tokens(agent.messages)",
         "tests/test_metering.py",
         "compaction fires on the provider's count, not a guess",
     ),
@@ -1015,9 +1015,9 @@ MUTATIONS = [
         "trajectory and durable tables as an unmasked key",
     ),
     Mutation(
-        "explore-subagent-not-read-only", 155, "mini_loop/agent.py",
-        '                {"permission_mode": "readonly"}',
-        '                {"permission_mode": "interactive"}',
+        "explore-subagent-not-read-only", 155, "mini_loop/subagents.py",
+        '            state["permission_mode"] = "readonly"',
+        '            state["permission_mode"] = "interactive"',
         "tests/test_extension_contracts.py::test_an_explore_subagent_is_read_only",
         "an Explore subagent runs read-only: the task tool promises the model it "
         "is, but interactive mode runs a plain `echo x > file` via bash with no "
@@ -1208,9 +1208,22 @@ MUTATIONS = [
     ),
     Mutation(
         "trajectory-readable-by-anyone", 74, "mini_loop/server.py",
+        # Anchored through the JSON-document wording: round 185's HTML view
+        # route repeats the ownership-then-size prefix, and a two-line anchor
+        # started matching both routes.
         "            await _owned_trajectory_summary(request, store, trajectory_id)\n"
-        "            size = await asyncio.to_thread(store.byte_size, trajectory_id)",
-        "            size = await asyncio.to_thread(store.byte_size, trajectory_id)",
+        "            size = await asyncio.to_thread(store.byte_size, trajectory_id)\n"
+        "            if size > MAX_TRAJECTORY_JSON_BYTES:\n"
+        "                raise HTTPException(\n"
+        "                    status_code=413,\n"
+        "                    detail=(\n"
+        '                        f"trajectory is {size:,} bytes; too large to render as one "',
+        "            size = await asyncio.to_thread(store.byte_size, trajectory_id)\n"
+        "            if size > MAX_TRAJECTORY_JSON_BYTES:\n"
+        "                raise HTTPException(\n"
+        "                    status_code=413,\n"
+        "                    detail=(\n"
+        '                        f"trajectory is {size:,} bytes; too large to render as one "',
         "tests/test_trajectory_ownership.py",
         "a recorded conversation is readable only by whoever made it (round 151: "
         "the check moved into `_owned_trajectory_summary`, which enforces it from "
@@ -2075,6 +2088,549 @@ MUTATIONS = [
         "tests/test_canonical_history.py::test_the_canonical_record_is_readable_over_http",
         "the transcript endpoint is owner-scoped like every other session "
         "surface: a stranger reads 404, not someone else's conversation",
+    ),
+    Mutation(
+        "spill-save-failure-breaks-the-tool-call", 171, "mini_loop/tools.py",
+        '        except Exception:\n'
+        '            return ""\n'
+        '        return (\n'
+        '            f"\\n[full output preserved: {ref.locator} ({ref.bytes:,} bytes); "\n'
+        '            f"{ref.retrieval_hint}]"\n'
+        '        )',
+        '        except Exception as exc:\n'
+        '            return f"\\nError: spill failed: {exc}"\n'
+        '        return (\n'
+        '            f"\\n[full output preserved: {ref.locator} ({ref.bytes:,} bytes); "\n'
+        '            f"{ref.retrieval_hint}]"\n'
+        '        )',
+        "tests/test_spill.py::test_a_failing_store_keeps_the_preview",
+        "preservation is best-effort: a broken spill store keeps the truncated "
+        "preview and never turns a successful tool call into an error",
+    ),
+    Mutation(
+        "spill-artifact-is-world-readable", 171, "mini_loop/spill.py",
+        '        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)',
+        '        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)',
+        "tests/test_spill.py::test_storage_is_private",
+        "a spill artifact holds command output that can carry sensitive data; "
+        "it is created owner-only, never world-readable",
+    ),
+    Mutation(
+        "spill-follows-a-planted-symlink", 171, "mini_loop/spill.py",
+        '        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)\n'
+        '        try:\n'
+        '            os.write(fd, data)',
+        '        fd = os.open(path, os.O_WRONLY | os.O_CREAT, 0o600)\n'
+        '        try:\n'
+        '            os.write(fd, data)',
+        "tests/test_spill.py::test_a_planted_symlink_cannot_redirect_the_write",
+        "exclusive create refuses anything already at the path, including a "
+        "planted symlink, instead of following it",
+    ),
+    Mutation(
+        "guard-abstention-short-circuits", 172, "mini_loop/registry.py",
+        '        for h in self._hooks:\n'
+        '            denial = await h.guard_tool(ctx, call)\n'
+        '            if denial is not None:\n'
+        '                return str(denial)\n'
+        '        return None',
+        '        for h in self._hooks:\n'
+        '            return await h.guard_tool(ctx, call)\n'
+        '        return None',
+        "tests/test_tool_pipeline.py::test_every_guard_runs_an_abstention_cannot_allow",
+        "every guard runs: an abstention delegates to the next guard instead "
+        "of short-circuiting a stricter one, so no ordering widens policy",
+    ),
+    Mutation(
+        "post-rewrites-a-denial", 172, "mini_loop/registry.py",
+        '        if denied:\n'
+        '            # A deny is final. Post hooks used to receive denials through the\n'
+        '            # same replacement path as successes, so a later hook returning a\n'
+        '            # string rewrote the denial into whatever it pleased -- policy\n'
+        '            # ordering was policy. Observers see the denial via `result`.\n'
+        '            return output',
+        '        if False:\n'
+        '            return output',
+        "tests/test_tool_pipeline.py::test_post_cannot_replace_a_denied_result",
+        "a deny is final: the post layer structurally cannot replace a denied "
+        "result with a fabricated success",
+    ),
+    Mutation(
+        "result-observer-breaks-the-call", 172, "mini_loop/registry.py",
+        '            try:\n'
+        '                await h.on_result(ctx, call, output, denied=denied, failed=failed)\n'
+        '            except Exception as error:\n'
+        '                self.problems.append(',
+        '            try:\n'
+        '                await h.on_result(ctx, call, output, denied=denied, failed=failed)\n'
+        '            except Exception:\n'
+        '                raise\n'
+        '            if False:\n'
+        '                self.problems.append(',
+        "tests/test_tool_pipeline.py::test_a_throwing_observer_is_contained_and_the_next_still_runs",
+        "the result dispatcher contains observer exceptions: one bad "
+        "subscriber never breaks the tool call it observes",
+    ),
+    Mutation(
+        "agent-skips-the-guard-layer", 172, "mini_loop/agent.py",
+        '                decision = await self.hooks.guard_tool(ctx, call)',
+        '                decision = None',
+        "tests/test_tool_pipeline.py::test_the_agent_runs_guards_and_a_guard_denial_reaches_the_model",
+        "the agent consults the monotonic guard layer on the final rewritten "
+        "arguments before every tool body",
+    ),
+    Mutation(
+        "injected-input-rides-unlogged", 173, "mini_loop/session.py",
+        '        try:\n'
+        '            self._flush_messages()\n'
+        '        except LeaseLost:\n'
+        '            raise',
+        '        try:\n'
+        '            pass\n'
+        '        except LeaseLost:\n'
+        '            raise',
+        "tests/test_transcript_invariant.py::test_an_injected_message_is_durable_before_the_model_sees_it",
+        "the transcript guard flushes injected input to the durable log "
+        "before the model request that carries it",
+    ),
+    Mutation(
+        "transcript-coverage-not-asserted", 173, "mini_loop/session.py",
+        '        count = self.state_store.message_count(self.id)\n'
+        '        if count != len(messages):',
+        '        count = self.state_store.message_count(self.id)\n'
+        '        if False:',
+        "tests/test_transcript_invariant.py::test_a_model_visible_input_that_bypasses_the_log_fails_loud",
+        "model-visible means logged: a request the durable epoch does not "
+        "cover raises an attributed invariant error instead of proceeding",
+    ),
+    Mutation(
+        "agent-skips-the-transcript-guard", 173, "mini_loop/agent.py",
+        '            if self.transcript_guard is not None:\n'
+        '                self.transcript_guard(self.messages)',
+        '            if False:\n'
+        '                self.transcript_guard(self.messages)',
+        "tests/test_transcript_invariant.py::test_a_model_visible_input_that_bypasses_the_log_fails_loud",
+        "the agent consults the transcript guard before every model request; "
+        "skipping it silently retires the model-visible-means-logged rule",
+    ),
+    Mutation(
+        "restored-cron-fires-unattended", 174, "mini_loop/cron.py",
+        '                if job.id not in self._armed:',
+        '                if False:',
+        "tests/test_cron_activation.py::test_a_restored_job_is_disarmed_and_does_not_fire",
+        "a durable cron job restored from disk is a schedule, not an "
+        "authorization: it does not fire until an operator re-arms it",
+    ),
+    Mutation(
+        "cron-activation-rides-the-load-path", 174, "mini_loop/cron.py",
+        '                self.jobs[job.id] = job\n'
+        '\n'
+        '\n'
+        '_SCHEDULE = {',
+        '                self.jobs[job.id] = job\n'
+        '                self._armed.add(job.id)\n'
+        '\n'
+        '\n'
+        '_SCHEDULE = {',
+        "tests/test_cron_activation.py::test_a_restored_job_is_disarmed_and_does_not_fire",
+        "activation never rides the durable load path: a restart must not "
+        "trust yesterday's authorization edge",
+    ),
+    Mutation(
+        "stranger-arms-someone-elses-cron", 174, "mini_loop/cron.py",
+        '        if session_id is not None and job.session_id != session_id:\n'
+        '            return f"Error: no such job {job_id}"\n'
+        '        self._armed.add(job_id)',
+        '        self._armed.add(job_id)',
+        "tests/test_cron_activation.py::test_arm_is_session_scoped_like_cancel",
+        "arm is scoped like cancel: a caller can only re-authorize jobs that "
+        "belong to its own session",
+    ),
+    Mutation(
+        "retry-without-a-smaller-surface", 175, "mini_loop/recovery.py",
+        '                    cost_before = estimate_tokens(kwargs["messages"])\n'
+        '                    compacted = reactive_compact(kwargs["messages"])\n'
+        '                    if estimate_tokens(compacted) >= cost_before:',
+        '                    cost_before = estimate_tokens(kwargs["messages"])\n'
+        '                    compacted = reactive_compact(kwargs["messages"])\n'
+        '                    if False:',
+        "tests/test_retry_requires_progress.py::test_an_unshrinkable_surface_fails_without_a_retry",
+        "a context-overflow retry is issued only when compaction actually "
+        "shrank the surface; an identical retry is a guaranteed second "
+        "overflow billed as recovery",
+    ),
+    Mutation(
+        "stale-envelope-anchor-trusted", 176, "mini_loop/metering.py",
+        '        if (\n'
+        '            envelope is not None\n'
+        '            and self._anchor_envelope is not None\n'
+        '            and envelope != self._anchor_envelope\n'
+        '        ):\n'
+        '            return estimate_tokens(messages)\n'
+        '        return self.used(messages)',
+        '        return self.used(messages)',
+        "tests/test_metering.py::test_an_envelope_change_sets_the_anchor_aside",
+        "an anchor read under one request envelope is set aside when the "
+        "envelope changes; trusting it under-counts, the direction that ends "
+        "in a hard overflow",
+    ),
+    Mutation(
+        "calibration-poisoned-across-envelopes", 176, "mini_loop/metering.py",
+        '        same_envelope = (\n'
+        '            envelope is None\n'
+        '            or self._anchor_envelope is None\n'
+        '            or envelope == self._anchor_envelope\n'
+        '        )',
+        '        same_envelope = True',
+        "tests/test_metering.py::test_calibration_is_not_learned_across_an_envelope_change",
+        "the calibration ratio is learned only from readings under one "
+        "envelope; a cross-envelope delta contains schema bytes, not growth",
+    ),
+    Mutation(
+        "summary-failure-kills-the-turn", 177, "mini_loop/compaction.py",
+        '            try:\n'
+        '                await self.compact(agent)\n'
+        '            except asyncio.CancelledError:\n'
+        '                raise\n'
+        '            except Exception as error:',
+        '            try:\n'
+        '                await self.compact(agent)\n'
+        '            except asyncio.CancelledError:\n'
+        '                raise\n'
+        '            except Exception as error:\n'
+        '                raise\n'
+        '            if False:',
+        "tests/test_compaction_failure.py::test_a_failed_summary_keeps_the_transcript_and_reports",
+        "a failed summary closes the attempt with the surface unchanged and "
+        "the turn alive; the next request's own error stays authoritative",
+    ),
+    Mutation(
+        "empty-summary-replaces-the-transcript", 177, "mini_loop/compaction.py",
+        '        if not summary.strip():',
+        '        if False:',
+        "tests/test_compaction_failure.py::test_an_empty_summary_is_a_failure_not_a_replacement",
+        "an empty summary is a failed attempt, never a license to replace "
+        "the whole transcript with a file path",
+    ),
+    Mutation(
+        "broken-classifier-goes-parallel", 178, "mini_loop/registry.py",
+        '        if self.mode_for is not None:\n'
+        '            try:\n'
+        '                mode = self.mode_for(call)\n'
+        '            except Exception:\n'
+        '                return "exclusive"\n'
+        '            return mode if mode in ("parallel", "exclusive") else "exclusive"',
+        '        if self.mode_for is not None:\n'
+        '            try:\n'
+        '                mode = self.mode_for(call)\n'
+        '            except Exception:\n'
+        '                return "parallel"\n'
+        '            return mode if mode in ("parallel", "exclusive") else "parallel"',
+        "tests/test_execution_mode.py::test_a_broken_classifier_degrades_to_a_barrier",
+        "a classifier that fails degrades to exclusive: a barrier cannot lose "
+        "an update, a wrongly-parallel write can",
+    ),
+    Mutation(
+        "foreground-bash-classified-parallel", 178, "mini_loop/builtins.py",
+        '            bash_tool.mode_for = (\n'
+        '                lambda call: "parallel"\n'
+        '                if call.input.get("run_in_background")\n'
+        '                else "exclusive"\n'
+        '            )',
+        '            bash_tool.mode_for = lambda call: "parallel"',
+        "tests/test_execution_mode.py::test_background_bash_is_parallel_only_when_backgrounding_exists",
+        "only a bash call that will actually background is parallel; a "
+        "foreground bash owns the workspace and must barrier the batch",
+    ),
+    Mutation(
+        "rejected-plan-still-exits", 179, "mini_loop/plan_mode.py",
+        '            approved, feedback = await approval(ctx, text)\n'
+        '            if not approved:',
+        '            approved, feedback = await approval(ctx, text)\n'
+        '            if False:',
+        "tests/test_plan_mode.py::test_keep_planning_is_a_failed_call_with_feedback",
+        "keep-planning is a failed call carrying reviewer feedback; a "
+        "rejected plan must not silently leave plan mode",
+    ),
+    Mutation(
+        "exit-outside-plan-mode-flips-state", 179, "mini_loop/plan_mode.py",
+        '        if not plan_mode_active(agent):',
+        '        if False:',
+        "tests/test_plan_mode.py::test_exit_outside_plan_mode_fails_without_changing_anything",
+        "exit_plan_mode stays registered for catalog stability; calling it "
+        "outside plan mode is a readable error, not a state flip",
+    ),
+    Mutation(
+        "restore-forgets-plan-mode", 179, "mini_loop/session.py",
+        '        agent.state["plan_mode"] = fold_plan_mode(logged_events)',
+        '        agent.state["plan_mode"] = False',
+        "tests/test_plan_mode.py::test_restore_folds_plan_mode_from_the_log",
+        "plan mode is log-only whole-value state: restore folds the last "
+        "logged flip instead of silently resetting it",
+    ),
+    Mutation(
+        "goal-mutation-ignores-the-revision", 180, "mini_loop/goals.py",
+        '    if int(revision) != goal["revision"]:',
+        '    if False:',
+        "tests/test_goals.py::test_mutations_are_compare_and_set",
+        "every goal mutation is compare-and-set: a stale writer is refused "
+        "and told the current revision, so two consumers cannot fight blind",
+    ),
+    Mutation(
+        "goal-continues-past-the-round-cap", 180, "mini_loop/goals.py",
+        '        if goal["rounds_started"] >= goal["max_rounds"]:\n'
+        '            goal["revision"] += 1\n'
+        '            goal["phase"] = "blocked"',
+        '        if False:\n'
+        '            goal["revision"] += 1\n'
+        '            goal["phase"] = "blocked"',
+        "tests/test_goals.py::test_continuation_consumes_rounds_and_blocks_at_the_cap",
+        "the round budget is a hard cap: exhausting it blocks the goal with "
+        "a stable code instead of continuing forever",
+    ),
+    Mutation(
+        "untrusted-turn-arms-a-goal", 180, "mini_loop/goals.py",
+        '        if ctx.run_context is None or ctx.run_context.authority != EXPLICIT_HUMAN:',
+        '        if False:',
+        "tests/test_goals.py::test_arming_mutations_require_explicit_human_authority",
+        "create and resume arm unattended continuation; that edge belongs to "
+        "an authenticated human, never a cron-fired or delegated turn",
+    ),
+    Mutation(
+        "restored-goal-comes-back-armed", 180, "mini_loop/session.py",
+        '        agent.state["goal_armed"] = False',
+        '        agent.state["goal_armed"] = True',
+        "tests/test_goals.py::test_restore_folds_the_goal_but_comes_back_disarmed",
+        "a restored goal is a fact, not an authorization: activation never "
+        "survives restore",
+    ),
+    Mutation(
+        "timeout-hides-the-diagnostic-output", 181, "mini_loop/tools.py",
+        '        if self.error is not None:\n'
+        '            return f"{rendered}\\n{self.error}" if rendered else self.error\n'
+        '        return rendered or "(no output)"',
+        '        if self.error is not None:\n'
+        '            return self.error\n'
+        '        return rendered or "(no output)"',
+        "tests/test_command_result.py::test_timeout_retains_metadata_and_masked_partial_streams",
+        "orthogonal outcomes report independently: a timeout carries the "
+        "partial output that explains it, never the error alone",
+    ),
+    Mutation(
+        "workspace-removal-follows-a-link", 181, "mini_loop/manager.py",
+        '        if path.is_symlink():\n'
+        '            path.unlink()\n'
+        '            return\n'
+        '        shutil.rmtree(path, ignore_errors=True)',
+        '        shutil.rmtree(path.resolve(), ignore_errors=True)',
+        "tests/test_defensive_patterns.py::test_a_link_shaped_workspace_is_unlinked_never_followed",
+        "a link-shaped workspace is unlinked, never resolved and deleted "
+        "through: recursive removal is reserved for known real directories",
+    ),
+    Mutation(
+        "event-sink-failure-kills-the-turn", 181, "mini_loop/session.py",
+        '            try:\n'
+        '                res = self._event_sink(event)\n'
+        '                if inspect.isawaitable(res):\n'
+        '                    await res\n'
+        '            except Exception as error:\n'
+        '                self.sink_error = f"{type(error).__name__}: {error}"',
+        '            res = self._event_sink(event)\n'
+        '            if inspect.isawaitable(res):\n'
+        '                await res',
+        "tests/test_defensive_patterns.py::test_a_throwing_event_sink_cannot_kill_the_turn",
+        "the event sink is a contained observer: one that throws is reported "
+        "through info(), never allowed to kill the turn it observes",
+    ),
+    Mutation(
+        "posture-boilerplate-accepted", 182, "tools/verify_invariants.py",
+        '            twin = explanations.get(explanation)\n'
+        '            if twin:',
+        '            twin = explanations.get(explanation)\n'
+        '            if False:',
+        "tests/test_invariant_posture.py::test_duplicated_boilerplate_is_rejected",
+        "two modules sharing one explanation is the signature of pasted "
+        "boilerplate, which the posture verifier must refuse",
+    ),
+    Mutation(
+        "posture-declaration-points-at-nothing", 182, "tools/verify_invariants.py",
+        '            symbol = match.group(1).split(".")[-1]\n'
+        '            if symbol not in _module_names(tree):',
+        '            symbol = match.group(1).split(".")[-1]\n'
+        '            if False:',
+        "tests/test_invariant_posture.py::test_a_declaration_pointing_at_nothing_is_rejected",
+        "a RUNTIME_INVARIANT must name a symbol that exists in its module; a "
+        "declaration pointing at nothing is the lie the verifier exists to catch",
+    ),
+    Mutation(
+        "task-tool-bypasses-the-provider-seam", 183, "mini_loop/agent.py",
+        '        summary = await self.subagents.run(\n'
+        '            self,\n'
+        '            prompt=prompt,\n'
+        '            agent_type=agent_type,\n'
+        '            run_context=parent_context,\n'
+        '        )',
+        '        from .subagents import InProcessSubagents\n'
+        '        summary = await InProcessSubagents().run(\n'
+        '            self,\n'
+        '            prompt=prompt,\n'
+        '            agent_type=agent_type,\n'
+        '            run_context=parent_context,\n'
+        '        )',
+        "tests/test_subagent_provider.py::test_a_custom_provider_substitutes_and_telemetry_still_fires",
+        "the task tool executes through the injected subagent provider, not "
+        "a hard-wired in-process construction",
+    ),
+    Mutation(
+        "subagent-lineage-dropped", 183, "mini_loop/subagents.py",
+        '        lineage = {\n'
+        '            "parent": parent.label,\n'
+        '            "delegation_depth": parent.depth + 1,\n'
+        '        }',
+        '        lineage = {}',
+        "tests/test_subagent_provider.py::test_the_default_provider_records_lineage_as_data",
+        "lineage is carried as data on the child (who delegated, at what "
+        "depth) so accountability survives without scope inheritance",
+    ),
+    Mutation(
+        "diagnostics-escapes-the-workspace", 184, "mini_loop/diagnostics.py",
+        '            try:\n'
+        '                # The same confinement every file tool has: a diagnostics\n'
+        '                # request must not become a read primitive outside the\n'
+        '                # workspace.\n'
+        '                target = ctx.agent.toolset.safe_path(path)\n'
+        '            except ValueError as error:\n'
+        '                return f"Error: {error}"',
+        '            from pathlib import Path\n'
+        '            target = Path(ctx.agent.toolset.workspace / path).resolve()',
+        "tests/test_diagnostics_and_query.py::test_the_tool_names_its_scope_and_confines_paths",
+        "a diagnostics request is workspace-confined like every file tool; "
+        "it must not become a read primitive outside the workspace",
+    ),
+    Mutation(
+        "transcript-search-unbounded", 184, "mini_loop/session_query.py",
+        '            if len(matches) >= MAX_MATCHES:\n'
+        '                return matches',
+        '            if False:\n'
+        '                return matches',
+        "tests/test_diagnostics_and_query.py::test_search_is_bounded",
+        "a transcript search returns a bounded match list; an unbounded one "
+        "re-floods the context the epochs exist to relieve",
+    ),
+    Mutation(
+        "trace-viewer-renders-raw-content", 185, "mini_loop/trace_view.py",
+        '    return html.escape(str(value), quote=True)',
+        '    return str(value)',
+        "tests/test_trace_view.py::test_tool_output_script_is_escaped",
+        "every string on the trace page passes the escaping chokepoint; a "
+        "tool result containing <script> renders as text, never as markup",
+    ),
+    Mutation(
+        "trace-viewer-fabricates-a-duration", 185, "mini_loop/trace_view.py",
+        '    if duration_ms is None:\n'
+        '        return "in flight"',
+        '    if duration_ms is None:\n'
+        '        return "0 ms"',
+        "tests/test_trace_view.py::test_an_unfinished_span_reports_in_flight_not_a_duration",
+        "a span with no end event says `in flight`; the viewer never invents "
+        "a duration for work whose end was not recorded",
+    ),
+    Mutation(
+        "trace-viewer-cap-goes-silent", 185, "mini_loop/trace_view.py",
+        '    omitted = 0\n'
+        '    if len(rows) > MAX_ROWS:',
+        '    omitted = 0\n'
+        '    if False:',
+        "tests/test_trace_view.py::test_long_ledger_keeps_tail_and_names_the_omission",
+        "a ledger longer than MAX_ROWS keeps the tail and states the "
+        "omission; a cap nobody mentions reads as full coverage",
+    ),
+    Mutation(
+        "trace-view-route-skips-ownership", 185, "mini_loop/server.py",
+        '            await _owned_trajectory_summary(request, store, trajectory_id)\n'
+        '            size = await asyncio.to_thread(store.byte_size, trajectory_id)\n'
+        '            if size > MAX_TRAJECTORY_JSON_BYTES:\n'
+        '                raise HTTPException(\n'
+        '                    status_code=413,\n'
+        '                    detail=(\n'
+        '                        f"trajectory is {size:,} bytes; too large to render as "\n'
+        '                        f"one page (limit {MAX_TRAJECTORY_JSON_BYTES:,}). "',
+        '            size = await asyncio.to_thread(store.byte_size, trajectory_id)\n'
+        '            if size > MAX_TRAJECTORY_JSON_BYTES:\n'
+        '                raise HTTPException(\n'
+        '                    status_code=413,\n'
+        '                    detail=(\n'
+        '                        f"trajectory is {size:,} bytes; too large to render as "\n'
+        '                        f"one page (limit {MAX_TRAJECTORY_JSON_BYTES:,}). "',
+        "tests/test_trace_view.py::test_view_route_is_scoped_like_its_json_siblings",
+        "the HTML view is scoped exactly like the JSON routes beside it: "
+        "someone else's trajectory is 404 before any bulk read",
+    ),
+    Mutation(
+        "config-guesses-a-number", 186, "mini_loop/config.py",
+        '    try:\n'
+        '        return int(value)\n'
+        '    except ValueError:\n'
+        '        _reject(name, value, "an integer")',
+        '    try:\n'
+        '        return int(value)\n'
+        '    except ValueError:\n'
+        '        return default',
+        "tests/test_config_validation.py::test_a_unit_suffixed_integer_refuses_to_boot",
+        "an unparseable numeric setting refuses to boot; falling back to the "
+        "default runs with a configuration nobody wrote",
+    ),
+    Mutation(
+        "config-guesses-a-duration", 186, "mini_loop/config.py",
+        '    try:\n'
+        '        return float(value)\n'
+        '    except ValueError:\n'
+        '        _reject(name, value, "a number")',
+        '    try:\n'
+        '        return float(value)\n'
+        '    except ValueError:\n'
+        '        return default',
+        "tests/test_config_validation.py::test_a_garbled_float_refuses_to_boot",
+        "an unparseable float setting refuses to boot instead of silently "
+        "meaning the default",
+    ),
+    Mutation(
+        "config-reads-a-typo-as-true", 186, "mini_loop/config.py",
+        '    if normalized in _FALSE:\n'
+        '        return False\n'
+        '    _reject(name, value, f"a boolean ({\'/\'.join(_TRUE)} or 0/false/no/off)")',
+        '    if normalized in _FALSE:\n'
+        '        return False\n'
+        '    return True',
+        "tests/test_config_validation.py::test_a_typoed_boolean_refuses_to_boot",
+        "an unknown boolean spelling refuses to boot; reading it as True made "
+        "a typo silently keep full-content recording on for an operator who "
+        "had turned it off",
+    ),
+    Mutation(
+        "early-stop-swallowed-by-commentary", 187, "mini_loop/agent.py",
+        '        self.last_text = (\n'
+        '            f"{headline}\\nPartial output before the stop:\\n{self.last_text}"\n'
+        '            if self.last_text else headline\n'
+        '        )',
+        '        self.last_text = self.last_text or headline',
+        "tests/test_round_exhaustion.py::test_an_exhausted_run_reports_the_stop_before_the_partial_text",
+        "an early-stopped run leads with the stop headline and appends the "
+        "partial text; `last_text or marker` showed the marker only to runs "
+        "that had nothing to mislead with",
+    ),
+    Mutation(
+        "stuck-halt-bypasses-the-stop-rule", 187, "mini_loop/agent.py",
+        '        if halted:\n'
+        '            self._mark_stopped(f"[stopped: {signal.detail}]")\n'
+        '            return False',
+        '        if halted:\n'
+        '            self.last_text = self.last_text or f"[stopped: {signal.detail}]"\n'
+        '            return False',
+        "tests/test_round_exhaustion.py::test_an_exhausted_subagent_is_not_a_clean_summary",
+        "the stuck halt reports through the same one-owner stop rule as round "
+        "exhaustion; a second private fallback re-creates the defect the rule "
+        "exists to remove",
     ),
 ]
 

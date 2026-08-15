@@ -50,6 +50,8 @@ class Harness:
     cache_policy: Any = None
     secrets: Any = None
     sandbox: Any = None
+    spill: Any = None
+    subagents: Any = None
     token_efficiency: Any = None
     role_tool_policy: Any = None
     injectors: Sequence[Any] = field(default_factory=tuple)
@@ -75,3 +77,8 @@ class Harness:
         """
 
         return explicit if explicit is not None else getattr(self, name)
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: a frozen value object with no behavior beyond derive/resolve; immutability is the guarantee and dataclasses enforce it."
+)

@@ -282,7 +282,32 @@ class DefaultRecovery:
                     # stopped holding. `live_history` is now passed explicitly:
                     # shrink the retry *and* the conversation, or the next turn
                     # rebuilds the same oversized prompt.
+                    from .compaction import estimate_tokens
+
+                    cost_before = estimate_tokens(kwargs["messages"])
                     compacted = reactive_compact(kwargs["messages"])
+                    if estimate_tokens(compacted) >= cost_before:
+                        # Retry only when the surface actually shrank (the
+                        # DeepSeek Harness rule: `agent/request-error` returns
+                        # a retry action only when the surface replacement
+                        # generation advanced; otherwise the original error
+                        # stays authoritative). Two ways to get here: a
+                        # transcript already at/below `keep` messages, where
+                        # `reactive_compact` is the identity; and the pairing
+                        # adjustment walking `start` back to 0, where the
+                        # "compacted" prompt is the whole history PLUS a
+                        # marker -- strictly larger than what just overflowed.
+                        # Either way an immediate retry is the same request
+                        # again: a guaranteed second overflow billed as
+                        # recovery.
+                        await agent._send(
+                            "recovery", action="failed",
+                            error=f"{type(e).__name__}: {e}",
+                            reason="context overflow, and compaction could "
+                                   "not shrink the surface; retrying the "
+                                   "same prompt would fail identically",
+                        )
+                        raise
                     kwargs["messages"][:] = compacted
                     if live_history is not None:
                         live_history[:] = reactive_compact(live_history)
@@ -363,3 +388,8 @@ class DefaultRecovery:
                 # Hand back the whole answer, not the tail of it.
                 return ContinuedResponse([*chunks, _content_payload(resp.content)], resp)
             return resp
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: retry decisions are gated on measured progress (estimate comparison) at the call site; the gate is the check."
+)

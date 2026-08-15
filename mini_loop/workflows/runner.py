@@ -171,3 +171,8 @@ class FreshAgentRunner:
                 f"workflow node {node.id} did not call return_artifact"
             )
         return captured[0]
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: worker agents are composed with a read-only harness whose policy the tool tests pin; the runner keeps no state past a run."
+)

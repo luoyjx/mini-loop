@@ -92,6 +92,10 @@ class AgentSession:
         #: so a store that opened fine and then failed every write left the agent
         #: running, the console clean, and the session unrecoverable.
         self.persist_error: str | None = None
+        #: Why the injected event sink stopped receiving events, or None --
+        #: the sink's failures are contained (an observer must not kill the
+        #: turn it observes) but never silent.
+        self.sink_error: str | None = None
         # Tool calls whose outcome the crash left unknown.
         self._unknown_tool_uses: tuple[str, ...] = ()
         # Set by the manager when a durable store makes concurrent processes
@@ -129,7 +133,72 @@ class AgentSession:
         self._backlog: deque[dict] = deque(maxlen=BACKLOG)
         self._seq = 0
 
-        self.agent: Agent | None = None  # attached by the manager after construction
+        self._agent: Agent | None = None  # attached by the manager after construction
+
+    @property
+    def agent(self) -> "Agent | None":
+        return self._agent
+
+    @agent.setter
+    def agent(self, value: "Agent | None") -> None:
+        """Attach the agent; the transcript guard rides along.
+
+        A property rather than a bare attribute because the manager attaches
+        agents at four different sites (build, restore, teammate spawn,
+        workflow worker) and each future one would otherwise have to remember
+        the guard -- the round-144 "a new path inherits the need" defect
+        class, avoided structurally.
+        """
+
+        self._agent = value
+        if value is not None:
+            value.transcript_guard = self._transcript_guard
+
+    def _transcript_guard(self, messages: list) -> None:
+        """Model-visible means logged -- enforced, not assumed.
+
+        DeepSeek Harness states this as an architecture rule with a runtime
+        invariant behind it: anything that reaches a model request must be
+        reconstructable from the durable log. Our injectors and steering
+        extend `agent.messages` between event beats, so the log could lag the
+        request by exactly the injected input; a crash then left a transcript
+        whose next assistant message answers content the record never held.
+
+        Flush first -- that is the fix (the injected tail becomes durable
+        before the model sees it). Then assert coverage: the current epoch
+        must hold as many messages as the request carries. Values on disk are
+        masked, so the assertion compares counts, not bytes; the *shape* of
+        the request must be reconstructable, while secrets stay maskable.
+        """
+
+        if isinstance(self.state_store, NullStateStore):
+            return  # no log to cover the request; nothing is claimed durable
+        if self.persist_error is not None:
+            return  # persistence already degraded and reported; keep running
+        if not self._accepting_runs:
+            # Teardown: `delete()` discards the durable rows *on purpose* while
+            # the cancelled turn may still reach one more request. A log that
+            # is being deleted cannot and need not cover it.
+            return
+        try:
+            self._flush_messages()
+        except LeaseLost:
+            raise
+        except Exception as error:
+            # Same degrade contract as the event path: a persistence fault is
+            # reported, never a stalled agent.
+            self.persist_error = f"{type(error).__name__}: {error}"
+            return
+        count = self.state_store.message_count(self.id)
+        if count != len(messages):
+            from .invariants import InvariantError
+
+            raise InvariantError(
+                "mini_loop.session",
+                f"model request carries {len(messages)} messages but the "
+                f"durable epoch holds {count}; a model-visible input bypassed "
+                "the log",
+            )
 
     # -- event bus --
     async def _capture_event(self, event: dict) -> dict:
@@ -537,6 +606,20 @@ class AgentSession:
         self._transcript_epoch = max(1, self.state_store.transcript_epoch(self.id))
         self._persisted_refs = list(agent.messages)
         self._seq = self.state_store.event_cursor(self.id)
+        # Plan mode and the goal are log-only, whole-value state: the value in
+        # force is the last logged snapshot, folded here -- no mirror to
+        # drift. The goal's ACTIVATION is deliberately not folded: a restored
+        # goal is a fact; firing unattended again needs a new human edge
+        # (goal_resume), same rule as restored cron jobs.
+        from .goals import fold_goal
+        from .plan_mode import fold_plan_mode
+
+        logged_events = self.state_store.load_events(self.id)
+        agent.state["plan_mode"] = fold_plan_mode(logged_events)
+        restored_goal = fold_goal(logged_events)
+        if restored_goal is not None:
+            agent.state["goal"] = restored_goal
+        agent.state["goal_armed"] = False
         # Repair before the transcript is ever sent: the provider rejects an
         # unanswered tool_use, so an unrepaired session fails on every turn.
         # Calls that were parked on an approval when the process died are
@@ -591,9 +674,17 @@ class AgentSession:
                 with contextlib.suppress(asyncio.QueueFull):
                     q.put_nowait(event)
         if self._event_sink is not None:
-            res = self._event_sink(event)
-            if inspect.isawaitable(res):
-                await res
+            # Contained like every other observer: the sink is user-supplied
+            # (metrics, logging), and one that throws must not kill the turn
+            # that emitted -- the dispatcher-containment rule the hook chain
+            # already follows (registry.Hooks.result). Reported, not
+            # swallowed: a sink that stopped working is visible in info().
+            try:
+                res = self._event_sink(event)
+                if inspect.isawaitable(res):
+                    await res
+            except Exception as error:
+                self.sink_error = f"{type(error).__name__}: {error}"
 
     async def emit(self, event: dict) -> None:
         # Parallel tool calls may emit concurrently. Keep sequence assignment,
@@ -810,6 +901,7 @@ class AgentSession:
             "active_trajectory_id": self._active_trajectory_id,
             "trajectory_count": self._trajectory_count,
             "trajectory_recording_error": self._trajectory_recording_error,
+            "sink_error": self.sink_error,
         }
         workflow_service = agent.state.get("workflow_service") if agent else None
         info["workflows"] = (
@@ -840,3 +932,8 @@ async def steering_injector(agent) -> list[dict]:
         "role": "user",
         "content": f"<user_interjection>\n{body}\n</user_interjection>",
     }]
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+RUNTIME_INVARIANT = (
+    "enforced by _transcript_guard: the message list sent to the model is covered by the durable transcript epoch (model-visible means logged); a gap raises InvariantError instead of proceeding"
+)

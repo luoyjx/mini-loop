@@ -254,6 +254,10 @@ def full_registry(
     background: bool = True,
     memory: bool = True,
     cron: bool = True,
+    plan: bool = True,
+    goals: bool = True,
+    diagnostics: bool = True,
+    session_query: bool = True,
     teams: bool = True,
     worktrees: bool = True,
     mcp: bool = True,
@@ -273,6 +277,20 @@ def full_registry(
         install_tasks(reg)
     if background:
         install_background(reg)
+        # With backgrounding available, `bash` + `run_in_background=true`
+        # only enqueues a task and returns -- it does not own the workspace
+        # for its duration, so it need not barrier the batch. Classified per
+        # call (registry.Tool.execution_mode); everything else about bash
+        # stays an ordering barrier. Installed HERE, not on the base tool:
+        # without `background_run` the flag is ignored and the command runs
+        # foreground, where a parallel classification would race real writes.
+        bash_tool = reg.get("bash")
+        if bash_tool is not None:
+            bash_tool.mode_for = (
+                lambda call: "parallel"
+                if call.input.get("run_in_background")
+                else "exclusive"
+            )
     if memory:
         install_memory(reg)
     if cron:
@@ -283,6 +301,22 @@ def full_registry(
         install_worktrees(reg)
     if mcp:
         install_mcp(reg, mcp_servers or {})
+    if plan:
+        from .plan_mode import install_plan_mode
+
+        install_plan_mode(reg)
+    if goals:
+        from .goals import install_goals
+
+        install_goals(reg)
+    if diagnostics:
+        from .diagnostics import install_diagnostics
+
+        install_diagnostics(reg)
+    if session_query:
+        from .session_query import install_session_query
+
+        install_session_query(reg)
     return reg
 
 
@@ -297,3 +331,8 @@ def default_injectors(*, background: bool = True, teams: bool = True) -> list:
     if teams:
         injectors.append(team_injector)
     return injectors
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: registration happens once at composition time and duplicate names already raise; nothing changes afterwards to observe."
+)

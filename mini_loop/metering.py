@@ -90,6 +90,14 @@ class TokenMeter:
     def __init__(self, *, calibration: float = 1.0, smoothing: float = 0.5) -> None:
         self._anchor_actual: int | None = None
         self._anchor_estimate: int = 0
+        #: Fingerprint of the request envelope (system prompt + tool catalog)
+        #: the anchor was read under. The anchor models the prompt as
+        #: `overhead + transcript * calibration` with the overhead FIXED --
+        #: an assumption the session breaks whenever tools are registered
+        #: (MCP connect), unregistered (teammate spawn), or the system prompt
+        #: is rebuilt. DeepSeek Harness's token meter reuses provider usage
+        #: only while "the canonical request envelope matches"; same rule here.
+        self._anchor_envelope: str | None = None
         self._calibration = calibration
         self.smoothing = smoothing
         self.observations = 0
@@ -109,13 +117,21 @@ class TokenMeter:
         """The last exact prompt size the provider reported."""
         return self._anchor_actual
 
-    def observe(self, usage: Any, messages: list) -> int | None:
+    def observe(
+        self, usage: Any, messages: list, *, envelope: str | None = None
+    ) -> int | None:
         """Record what the provider counted for `messages`. Returns that count.
 
         The calibration is learned from the *difference* between consecutive
         readings. A ratio taken from a single absolute reading would fold the
         system prompt and tool schemas into a multiplier and then inflate them
         again as the transcript grows; a difference contains only what was added.
+
+        `envelope` identifies the system prompt + tool catalog this reading was
+        taken under. When it differs from the previous reading's, the delta
+        between the two readings contains the envelope change as well as
+        transcript growth, so the calibration update is skipped -- the reading
+        still re-anchors.
         """
 
         actual = prompt_tokens(usage)
@@ -124,14 +140,25 @@ class TokenMeter:
         estimate = estimate_tokens(messages)
 
         previous_actual, previous_estimate = self._anchor_actual, self._anchor_estimate
+        same_envelope = (
+            envelope is None
+            or self._anchor_envelope is None
+            or envelope == self._anchor_envelope
+        )
         grew = estimate - previous_estimate
-        if previous_actual is not None and grew > 0 and actual > previous_actual:
+        if (
+            previous_actual is not None
+            and same_envelope
+            and grew > 0
+            and actual > previous_actual
+        ):
             ratio = (actual - previous_actual) / grew
             blended = (1 - self.smoothing) * self._calibration + self.smoothing * ratio
             self._calibration = min(MAX_CALIBRATION, max(MIN_CALIBRATION, blended))
 
         self._anchor_actual = actual
         self._anchor_estimate = estimate
+        self._anchor_envelope = envelope
         self.observations += 1
         return actual
 
@@ -160,12 +187,38 @@ class TokenMeter:
         delta = estimate - self._anchor_estimate
         return max(0, int(self._anchor_actual + delta * self._calibration))
 
+    def used_for(self, messages: list, *, envelope: str | None = None) -> int:
+        """`used`, but honest about a changed request envelope.
+
+        An anchor read under one envelope misprices another: connecting an MCP
+        server can add tens of thousands of schema tokens that neither the
+        estimator nor the stale anchor sees -- under-counting, the direction
+        that ends in a hard overflow. On mismatch the anchored model is set
+        aside and the raw estimate answers, until the next response re-anchors
+        under the new envelope. Callers that cannot name their envelope get
+        `used`'s behavior unchanged.
+        """
+
+        if (
+            envelope is not None
+            and self._anchor_envelope is not None
+            and envelope != self._anchor_envelope
+        ):
+            return estimate_tokens(messages)
+        return self.used(messages)
+
     def snapshot(self) -> dict[str, Any]:
         """What the meter knows, for events and the console."""
 
         return {
             "calibrated": self.calibrated,
             "anchor_tokens": self._anchor_actual,
+            "anchor_envelope": self._anchor_envelope,
             "calibration": round(self._calibration, 3),
             "observations": self.observations,
         }
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: the meter is advisory measurement; a wrong reading degrades compaction timing, and accuracy is characterized by tests, not assertable at runtime."
+)

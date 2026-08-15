@@ -53,3 +53,8 @@ def verification_status_from_value(value: Any) -> VerificationStatus:
         return VerificationStatus(raw)
     except ValueError:
         return VerificationStatus.UNVERIFIED
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: artifact status conversions are total functions over enum values; invalid inputs raise at the boundary."
+)

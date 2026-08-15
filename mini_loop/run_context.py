@@ -144,3 +144,8 @@ __all__ = [
     "WORKFLOW_MANAGE",
     "RunContext",
 ]
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: an immutable provenance record; authority cannot be widened after construction because nothing is writable."
+)

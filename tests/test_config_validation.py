@@ -204,3 +204,48 @@ def test_enabled_ast_outline_requires_absolute_digest_pinned_binary(tmp_path):
         )
     with pytest.raises(ValueError, match="64 lowercase hex"):
         _settings(tmp_path, ast_outline_sha256="not-a-digest")
+
+
+# --- misread environment values (round 186) --------------------------------
+# dsh post-mortem 0002: a syntactically accepted configuration value was not
+# evaluated where the author believed, and everything downstream ran with a
+# configuration nobody wrote. Our parsers had the same class in miniature:
+# any unparseable number silently fell back to the default, and any unknown
+# boolean spelling read as True -- so MINILOOP_TRAJECTORY_CAPTURE_CONTENT=
+# "flase" kept recording full content for an operator who had turned it off.
+# Measured before the fix: capture_content=True, max_tokens=8000 for "8k".
+
+def test_a_typoed_boolean_refuses_to_boot(tmp_path, monkeypatch):
+    monkeypatch.setenv("MINILOOP_TRAJECTORY_CAPTURE_CONTENT", "flase")
+    with pytest.raises(ValueError, match="MINILOOP_TRAJECTORY_CAPTURE_CONTENT"):
+        _settings(tmp_path)
+
+
+def test_a_unit_suffixed_integer_refuses_to_boot(tmp_path, monkeypatch):
+    monkeypatch.setenv("MINILOOP_MAX_TOKENS", "8k")
+    with pytest.raises(ValueError, match="MINILOOP_MAX_TOKENS"):
+        _settings(tmp_path)
+
+
+def test_a_garbled_float_refuses_to_boot(tmp_path, monkeypatch):
+    monkeypatch.setenv("MINILOOP_TEAM_IDLE_POLL", "1s")
+    with pytest.raises(ValueError, match="MINILOOP_TEAM_IDLE_POLL"):
+        _settings(tmp_path)
+
+
+def test_recognized_spellings_parse_case_insensitively(tmp_path, monkeypatch):
+    monkeypatch.setenv("MINILOOP_TRAJECTORIES", " OFF ")
+    assert _settings(tmp_path).trajectory_enabled is False
+    monkeypatch.setenv("MINILOOP_TRAJECTORIES", "Yes")
+    assert _settings(tmp_path).trajectory_enabled is True
+
+
+def test_missing_and_empty_keep_their_historical_meaning(tmp_path, monkeypatch):
+    """Deployment tooling exports empty vars; those never meant "guess"."""
+    monkeypatch.setenv("MINILOOP_MAX_TOKENS", "")
+    monkeypatch.setenv("MINILOOP_TEAM_IDLE_POLL", " ")
+    monkeypatch.setenv("MINILOOP_TRAJECTORIES", "")
+    settings = _settings(tmp_path)
+    assert settings.max_tokens == 8000
+    assert settings.team_idle_poll == 1.0
+    assert settings.trajectory_enabled is False

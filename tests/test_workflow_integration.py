@@ -832,17 +832,24 @@ def test_observability_failure_does_not_change_workflow_state(tmp_path):
             action_input={"definition": definition.to_dict(), "args": {}},
         )
         result = await manager.workflows.wait(launched.run_id)
-        errors = manager.workflows.observability_errors
+        sink_errors = [
+            s.sink_error
+            for s in manager._sessions.values()
+            if s.sink_error is not None
+        ]
         await manager.stop()
-        return result, errors
+        return result, sink_errors
 
-    result, errors = asyncio.run(main())
+    result, sink_errors = asyncio.run(main())
     assert result.status.value == "COMPLETED"
     assert started_state and started_state[0] is not None
-    assert {error["kind"] for error in errors} >= {
-        "workflow_started",
-        "workflow_agent_progress",
-    }
+    # The sink's failure is contained one layer earlier now -- inside the
+    # session's dispatcher (the round-181 observer-containment rule), so the
+    # workflow service never sees an emit failure. The claims survive: the
+    # run completed untouched, and the broken sink is diagnosable, on
+    # `session.sink_error` instead of the workflow observability list (which
+    # still covers storage/capture failures inside emit itself).
+    assert sink_errors and any("sink failed" in e for e in sink_errors)
 
 
 def test_outbox_ack_happens_only_after_parent_append(tmp_path):

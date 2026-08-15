@@ -649,3 +649,8 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry
     sys.exit(main())
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: the audit IS the diagnostic surface -- it reports on other modules and holds no mutable state of its own to assert."
+)

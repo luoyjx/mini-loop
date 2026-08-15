@@ -397,3 +397,8 @@ class TrajectoryStore:
                 if not chunk:
                     break
                 yield chunk
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: recording failures degrade to a reported error field by contract; the field is the diagnostic."
+)

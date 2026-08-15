@@ -234,3 +234,8 @@ def validate_definition(definition: WorkflowDefinition) -> WorkflowDefinition:
                 queue.append(child)
     _require(visited == len(by_id), "workflow graph must be acyclic")
     return definition
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: validators are pure functions that raise on bad definitions; nothing validated is retained."
+)

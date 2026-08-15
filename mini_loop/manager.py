@@ -71,6 +71,31 @@ MAX_REMEMBERED_OWNERS = 10_000
 MAX_PROTOCOLS = 200
 
 
+def _remove_workspace(path) -> None:
+    """Remove a workspace: unlink a link-shaped path, rmtree a real directory.
+
+    `shutil.rmtree` refuses a path that is itself a symlink, and every removal
+    site passed `ignore_errors=True` -- so a workspace replaced by a symlink
+    (possible without an OS sandbox, where nothing stops a rename against the
+    parent) was silently never reclaimed, and worse, whether the link's TARGET
+    survived depended on Python internals rather than on a stated rule. The
+    rule, from DeepSeek Harness's defensive patterns: unlink deletes only the
+    link and never follows it; recursive deletion is reserved for known real
+    directories.
+    """
+
+    from pathlib import Path
+
+    path = Path(path)
+    try:
+        if path.is_symlink():
+            path.unlink()
+            return
+        shutil.rmtree(path, ignore_errors=True)
+    except OSError:
+        pass
+
+
 class SessionManager:
     @property
     def session_owners(self) -> dict:
@@ -123,6 +148,7 @@ class SessionManager:
         state_store: StateStore | None = None,
         secrets=None,
         sandbox=None,
+        spill=None,
         injectors: list | None = None,
         workspace_factory: Callable[[str], Path] | None = None,
         event_sink: Callable[[dict], object] | None = None,
@@ -203,6 +229,19 @@ class SessionManager:
         # a registered secret in it must be masked there like every other sink.
         self.approvals.secrets = self.secrets
         self.sandbox = sandbox
+        # Preserve-on-truncate: oversized tool output is spilled to a private
+        # per-session store instead of being destroyed. `spill_dir=None`
+        # (MINILOOP_SPILL_DIR="") disables it; an explicit `spill` object wins.
+        if spill is None and settings.spill_dir is not None:
+            from .spill import LocalSpillStore
+
+            try:
+                spill = LocalSpillStore(settings.spill_dir)
+            except OSError:
+                # A store that cannot be created must not stop the manager:
+                # preservation is best-effort all the way down.
+                spill = None
+        self.spill = spill
         if token_efficiency is None:
             efficiency_registry = TokenEfficiencyRegistry()
             efficiency_mode = OptimizationMode(settings.token_efficiency_mode)
@@ -246,6 +285,7 @@ class SessionManager:
             transport=transport,
             secrets=self.secrets,
             sandbox=sandbox,
+            spill=self.spill,
             token_efficiency=self.token_efficiency,
             role_tool_policy=self.role_tool_policy,
         )
@@ -1044,7 +1084,7 @@ class SessionManager:
             for session in self._sessions.values()
         ):
             return False
-        shutil.rmtree(workspace, ignore_errors=True)
+        _remove_workspace(workspace)
         self._deferred_workspace_cleanup.pop(session_id, None)
         return True
 
@@ -1202,7 +1242,7 @@ class SessionManager:
                         if callable(close_store):
                             close_store()
                         if remove_now:
-                            shutil.rmtree(session.workspace, ignore_errors=True)
+                            _remove_workspace(session.workspace)
 
                     running_turn.add_done_callback(_revoke_after_turn)
                 else:
@@ -1210,7 +1250,7 @@ class SessionManager:
                     if callable(close_store):
                         close_store()
                     if remove_now:
-                        shutil.rmtree(session.workspace, ignore_errors=True)
+                        _remove_workspace(session.workspace)
             else:
                 async def _close_services() -> None:
                     if running_turn is not None and not running_turn.done():
@@ -1235,12 +1275,12 @@ class SessionManager:
                     # Only after the shell is dead: removing the directory a
                     # live process has as its cwd is a race, not a cleanup.
                     if remove_now:
-                        shutil.rmtree(session.workspace, ignore_errors=True)
+                        _remove_workspace(session.workspace)
                 cleanup = asyncio.create_task(_close_services())
                 self._cleanup_tasks.add(cleanup)
                 cleanup.add_done_callback(self._cleanup_tasks.discard)
         elif remove_now:
-            shutil.rmtree(session.workspace, ignore_errors=True)
+            _remove_workspace(session.workspace)
         # A process-local workflow may still have a read in flight while its
         # cooperative cancellation task drains.
         if remove_workspace and not shared and workflow_active:
@@ -1255,3 +1295,8 @@ class SessionManager:
                 self._cleanup_tasks.add(cleanup)
                 cleanup.add_done_callback(self._cleanup_tasks.discard)
         return True
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: fleet bookkeeping is bounded by explicit caps (owners, protocols) whose overflow behavior tests pin; a runtime census would rescan every session per request."
+)

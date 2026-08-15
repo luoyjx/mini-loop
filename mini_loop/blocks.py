@@ -58,3 +58,8 @@ def blocks_of_type(content: Any, kind: str) -> list:
     if not content:
         return []
     return [block for block in content if block_field(block, "type", "") == kind]
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: pure readers over provider content blocks; stateless code has no mutable data for an invariant to watch."
+)

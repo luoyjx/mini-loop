@@ -129,6 +129,13 @@ class Tool:
     #: Stable capability names used when a child agent receives a role-specific
     #: subset of its parent's tools. Empty means "do not inherit by capability".
     capabilities: frozenset[str] = field(default_factory=frozenset)
+    #: Optional per-CALL classifier: `(call) -> "parallel" | "exclusive"`.
+    #: A static flag cannot express a tool whose safety depends on its
+    #: arguments -- `bash` with `run_in_background=true` only enqueues and
+    #: returns, while foreground `bash` mutates the workspace for its whole
+    #: duration. DeepSeek Harness models this as `executionMode(input)`, a
+    #: function of the call; `None` falls back to `parallel_safe`.
+    mode_for: Callable[[ToolCall], str] | None = None
 
     def __post_init__(self) -> None:
         # Accept any iterable at the public construction boundary, then keep
@@ -138,6 +145,23 @@ class Tool:
     @property
     def schema(self) -> dict:
         return {"name": self.name, "description": self.description, "input_schema": self.input_schema}
+
+    def execution_mode(self, call: ToolCall) -> str:
+        """`"parallel"` or `"exclusive"` for THIS call.
+
+        The classifier sees the final arguments, so it runs at scheduling
+        time, immediately before dispatch. A classifier that fails or answers
+        nonsense degrades to `"exclusive"` -- a barrier is the direction that
+        cannot lose an update.
+        """
+
+        if self.mode_for is not None:
+            try:
+                mode = self.mode_for(call)
+            except Exception:
+                return "exclusive"
+            return mode if mode in ("parallel", "exclusive") else "exclusive"
+        return "parallel" if self.parallel_safe else "exclusive"
 
     async def already_took_effect(self, ctx: ToolContext, call: ToolCall):
         """Ask the reconciler whether this call already landed.
@@ -404,7 +428,18 @@ class Hook:
     `before_tool` -> return a string to DENY/short-circuit (it becomes the tool
                      result); mutate `call.input` in place to rewrite arguments;
                      return None to allow.
+    `guard_tool`  -> return a string to DENY; return None to ABSTAIN. A guard
+                     cannot allow, rewrite arguments, or fabricate a result:
+                     its returned string is always recorded as a denial. This
+                     is the layer for owner policy that must hold regardless
+                     of how other hooks are ordered (DeepSeek Harness's
+                     "monotonic guards").
     `after_tool`  -> return a string to REPLACE the output; return None to keep.
+                     Never invoked for a denied call -- a deny is final.
+    `on_result`   -> observe the FINAL, already-masked outcome. Read-only:
+                     the return value is ignored and an exception is contained
+                     by the dispatcher, so an observer can never alter a
+                     result or break the loop.
     `on_user_prompt` -> return a string to rewrite the submitted prompt.
     `on_stop` -> return a continuation prompt to keep the loop running.
     """
@@ -412,7 +447,21 @@ class Hook:
     async def before_tool(self, ctx: ToolContext, call: ToolCall) -> str | None:
         return None
 
+    async def guard_tool(self, ctx: ToolContext, call: ToolCall) -> str | None:
+        return None
+
     async def after_tool(self, ctx: ToolContext, call: ToolCall, output: str) -> str | None:
+        return None
+
+    async def on_result(
+        self,
+        ctx: ToolContext,
+        call: ToolCall,
+        output: str,
+        *,
+        denied: bool = False,
+        failed: bool = False,
+    ) -> None:
         return None
 
     async def on_user_prompt(self, agent: Any, text: str) -> str | None:
@@ -431,6 +480,9 @@ class Hooks:
 
     def __init__(self, hooks: Iterable[Hook] | None = None) -> None:
         self._hooks: list[Hook] = list(hooks or [])
+        #: Contained observer failures, deduplicated and bounded, so a broken
+        #: `on_result` listener is visible without being able to break a call.
+        self.problems = ProblemLog()
 
     def add(self, hook: Hook) -> "Hooks":
         self._hooks.append(hook)
@@ -446,12 +498,62 @@ class Hooks:
                 return decision  # first hook to object wins
         return None
 
-    async def after_tool(self, ctx: ToolContext, call: ToolCall, output: str) -> str:
+    async def guard_tool(self, ctx: ToolContext, call: ToolCall) -> str | None:
+        """The monotonic layer: every guard runs; any one can only deny.
+
+        Unlike `before_tool` -- where the first hook to return short-circuits
+        the ones after it -- a guard's abstention delegates to the next guard
+        and a guard's denial is final. There is no return value that means
+        "allow", so no ordering of guards can widen what a stricter guard
+        would have refused.
+        """
+
+        for h in self._hooks:
+            denial = await h.guard_tool(ctx, call)
+            if denial is not None:
+                return str(denial)
+        return None
+
+    async def after_tool(
+        self, ctx: ToolContext, call: ToolCall, output: str, *, denied: bool = False
+    ) -> str:
+        if denied:
+            # A deny is final. Post hooks used to receive denials through the
+            # same replacement path as successes, so a later hook returning a
+            # string rewrote the denial into whatever it pleased -- policy
+            # ordering was policy. Observers see the denial via `result`.
+            return output
         for h in self._hooks:
             replaced = await h.after_tool(ctx, call, output)
             if replaced is not None:
                 output = replaced
         return output
+
+    async def result(
+        self,
+        ctx: ToolContext,
+        call: ToolCall,
+        output: str,
+        *,
+        denied: bool = False,
+        failed: bool = False,
+    ) -> None:
+        """Notify observers of the final outcome; contain their failures.
+
+        A user-supplied listener that throws must not reject the call it runs
+        inside or starve the listeners after it -- one bad subscriber never
+        breaks core lifecycle (the dispatcher-containment rule from DeepSeek
+        Harness's defensive patterns).
+        """
+
+        for h in self._hooks:
+            try:
+                await h.on_result(ctx, call, output, denied=denied, failed=failed)
+            except Exception as error:
+                self.problems.append(
+                    f"{type(h).__name__}.on_result raised "
+                    f"{type(error).__name__} for {call.name}"
+                )
 
     async def user_prompt(self, agent: Any, text: str) -> str:
         for h in self._hooks:
@@ -466,3 +568,8 @@ class Hooks:
             if continuation is not None:
                 return str(continuation)
         return None
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: catalog snapshots are immutable by construction (byte-stable JSON), and hook containment failures land in the chain's ProblemLog."
+)

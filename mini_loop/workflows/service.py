@@ -863,3 +863,8 @@ async def workflow_injector(agent) -> list[dict] | None:
         claim_token=claim_token,
     )
     return None
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: launch authority is checked per call against the run context; the refusal string is the observable outcome."
+)

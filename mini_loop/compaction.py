@@ -218,6 +218,14 @@ def context_used(agent) -> int:
     meter = getattr(agent, "token_meter", None)
     if meter is None:
         return estimate_tokens(agent.messages)
+    envelope_of = getattr(agent, "_request_envelope", None)
+    if callable(envelope_of):
+        # An anchor read under one system-prompt/tool-catalog envelope
+        # misprices another (an MCP connect alone can add tens of thousands
+        # of schema tokens the anchor never saw). `used_for` sets the anchor
+        # aside on mismatch and answers with the estimate until the next
+        # response re-anchors.
+        return meter.used_for(agent.messages, envelope=envelope_of())
     return meter.used(agent.messages)
 
 
@@ -281,7 +289,25 @@ class DefaultCompactor:
             await agent._send("compact", kind="micro", cleared=cleared)
         threshold = self.token_threshold or agent.settings.token_threshold
         if context_used(agent) > threshold:
-            await self.compact(agent)
+            # The summary stage is itself a model call and can fail like one
+            # (rate limits, overload, a provider error). It used to propagate:
+            # the turn died on its *context-management* step, before the
+            # request the user was waiting on was even attempted. DeepSeek
+            # Harness's compaction taxonomy is explicit that a failed summary
+            # closes the attempt with the surface unchanged -- the next
+            # request either fits anyway or fails as itself, and *that* error
+            # stays authoritative. Cancellation still wins.
+            import asyncio
+
+            try:
+                await self.compact(agent)
+            except asyncio.CancelledError:
+                raise
+            except Exception as error:
+                await agent._send(
+                    "compact", kind="failed",
+                    error=f"{type(error).__name__}: {error}"[:500],
+                )
 
     async def compact(self, agent) -> None:
         from .storage import _json_safe
@@ -313,6 +339,16 @@ class DefaultCompactor:
         # replacing the *entire* transcript, so the agent lost everything and
         # got a file path in return.
         summary = block_text(resp.content)
+        if not summary.strip():
+            # The next line replaces the ENTIRE transcript. An empty summary
+            # would trade the whole working context for a file path -- refuse,
+            # so the pressure path reports a failed attempt with the surface
+            # unchanged and an explicit `compress` returns an error the model
+            # can read.
+            raise RuntimeError(
+                "compaction summary came back empty; refusing to replace the "
+                "transcript with nothing"
+            )
         # The summary is model-written prose about a transcript that may hold a
         # credential, and it becomes the *permanent* history -- every later turn
         # carries it. Masking it is the one case of "prose the model wrote about
@@ -323,3 +359,8 @@ class DefaultCompactor:
             {"role": "user", "content": f"[Context compressed. Full transcript: {path}]\n{summary}"}
         ]
         await agent._send("compact", kind="auto", transcript=str(path))
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: every compaction layer replaces objects rather than mutating them, which the transcript-mirror tests pin; runtime re-checking would re-read the whole log per pass."
+)

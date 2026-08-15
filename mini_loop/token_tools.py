@@ -121,3 +121,8 @@ __all__ = [
     "install_token_efficiency_tools",
     "render_recovery_marker",
 ]
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: thin tool wrappers over the runtime's own validated operations; errors surface as tool results."
+)

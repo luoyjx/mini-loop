@@ -45,6 +45,10 @@ SKILLS = pathlib.Path(__file__).resolve().parent.parent / "skills"
 MAY_BYPASS_THE_SESSION = {
     "agent.py": "spawning a subagent, which is an agent with no session",
     "runner.py": "a workflow node runs on a worker agent with no session",
+    "subagents.py": (
+        "the in-process provider extracted from agent.py (round 183); the "
+        "child is deliberately sessionless, same rationale as agent.py"
+    ),
 }
 
 

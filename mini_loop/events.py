@@ -115,3 +115,8 @@ class WorkflowEvent:
             if value is not None:
                 event[name] = value
         return event
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: workflow payloads are validated at construction and rejected before entering the stream; invalid ones never exist to detect."
+)

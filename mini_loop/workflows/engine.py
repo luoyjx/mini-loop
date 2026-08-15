@@ -309,3 +309,8 @@ class WorkflowEngine:
                 node_status=NodeStatus.FAILED,
                 error=f"{type(error).__name__}: {error}",
             )
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: the engine advances runs only through store transitions that already refuse illegal moves (InvalidTransition)."
+)

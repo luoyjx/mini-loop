@@ -179,3 +179,55 @@ def runtime_identity(manager=None, auth=None) -> dict[str, Any]:
     if manager is not None:
         identity["posture"] = posture(manager, auth)
     return identity
+
+
+def dump_config(manager, settings, auth=None) -> dict[str, Any]:
+    """The composition this process actually boots, as one printable value.
+
+    DeepSeek Harness's `--dump-config` prints the plugin tree the machine
+    really runs, so an operator debugs the actual composition instead of the
+    one they believe they configured. Same rule as `posture`: read off a
+    probe agent built the way real agents are, never off configuration
+    fields, and redact anything credential-shaped rather than trusting the
+    caller to.
+    """
+
+    import dataclasses
+
+    redacted = {}
+    for field in dataclasses.fields(settings):
+        value = getattr(settings, field.name)
+        if (
+            field.name.endswith(("_key", "_token", "_secret", "_password"))
+            or field.name in ("api_key",)
+            or "secret" in field.name
+        ):
+            # Credential-shaped names show presence, never the value.
+            # Suffix-matched, not substring: `token_threshold` is a budget
+            # and `token_efficiency_mode` is a mode, not a credential.
+            if isinstance(value, str) or value is None:
+                value = "<set>" if value else None
+        redacted[field.name] = value
+
+    agent = _probe_agent(manager)
+    harness = {
+        field.name: _name(getattr(manager.harness, field.name))
+        for field in dataclasses.fields(manager.harness)
+        if field.name != "injectors"
+    }
+    return {
+        "settings": redacted,
+        "harness": harness,
+        "tools": sorted(agent.tools._tools) if agent.tools else [],
+        "injectors": len(manager.harness.injectors or ()),
+        "features": {
+            "enable_features": bool(getattr(manager, "enable_features", False)),
+            "enable_workflows": bool(getattr(manager, "enable_workflows", False)),
+        },
+        "posture": posture(manager, auth),
+    }
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: the build id is derived from package source at import; staleness is a test-time question (test_identity), not a runtime one."
+)

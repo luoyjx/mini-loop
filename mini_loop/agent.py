@@ -523,6 +523,8 @@ class Agent:
         cache_policy: CachePolicy | None = None,
         secrets=None,
         sandbox=None,
+        spill=None,
+        subagents=None,
         token_efficiency: TokenEfficiencyRuntime | None = None,
         role_tool_policy: RoleToolPolicy | None = None,
         harness: Harness | None = None,
@@ -561,6 +563,8 @@ class Agent:
         cache_policy = self.harness.resolve("cache_policy", cache_policy)
         secrets = self.harness.resolve("secrets", secrets)
         sandbox = self.harness.resolve("sandbox", sandbox)
+        spill = self.harness.resolve("spill", spill)
+        subagents = self.harness.resolve("subagents", subagents)
         token_efficiency = self.harness.resolve(
             "token_efficiency", token_efficiency
         )
@@ -578,11 +582,18 @@ class Agent:
         # Assigned before the Toolset that consumes it.
         self.secrets = secrets if secrets is not None else NullSecretRegistry()
         self.sandbox = sandbox if sandbox is not None else NullSandbox()
+        self.spill = spill
+        if subagents is None:
+            from .subagents import InProcessSubagents
+
+            subagents = InProcessSubagents()
+        self.subagents = subagents
         self.toolset = Toolset(
             self.workspace,
             bash_timeout=settings.bash_timeout,
             secrets=self.secrets,
             sandbox=self.sandbox,
+            spill=self.spill,
         )
         self.todo = TodoManager()
         self.tools = tools if tools is not None else default_registry()
@@ -662,6 +673,10 @@ class Agent:
         self.stuck_detector = stuck_detector or DefaultStuckDetector()
         self.cache_policy = cache_policy or DefaultCachePolicy()
         self.injectors: list[Injector] = list(injectors or [])
+        # Installed by AgentSession when a durable store exists: called with
+        # the outgoing message list right before each model request, to make
+        # anything model-visible durable and assert the log covers it.
+        self.transcript_guard: Callable[[list], None] | None = None
         # Volatile runtime state rides the message stream instead of the system
         # prompt, so the cached prefix survives a changing todo board.
         if runtime_facts_injector not in self.injectors:
@@ -738,6 +753,7 @@ class Agent:
             bash_timeout=self.settings.bash_timeout,
             secrets=self.secrets,
             sandbox=self.sandbox,
+            spill=self.spill,
         )
         self.workspace = self.toolset.workspace
         background = self.state.get("background")
@@ -782,6 +798,20 @@ class Agent:
                 parent_span_id=parent_span_id,
                 **payload,
             )
+
+    def _request_envelope(self) -> str:
+        """Fingerprint of the system prompt + tool catalog the request rides.
+
+        The token meter's anchor prices `overhead + transcript` with the
+        overhead assumed fixed; this is how it learns when that assumption
+        broke -- an MCP connect, a teammate spawn unregistering tools, a
+        rebuilt system prompt all change the envelope mid-session.
+        """
+
+        catalog = getattr(self, "_request_tool_catalog", None)
+        fingerprint = getattr(catalog, "fingerprint", "") if catalog else ""
+        system = self._system or ""
+        return f"{fingerprint}:{hashlib.sha256(system.encode('utf-8')).hexdigest()[:16]}"
 
     async def _create(
         self,
@@ -967,7 +997,9 @@ class Agent:
         # a different request shape. Their own usage still belongs on the
         # model_end event, just not in the live conversation meter.
         if purpose == "agent_turn" and live_history is not None:
-            self.token_meter.observe(usage, live_history)
+            self.token_meter.observe(
+                usage, live_history, envelope=self._request_envelope()
+            )
         await self._send(
             "model_end",
             span_id=span_id,
@@ -1127,6 +1159,16 @@ class Agent:
             # pipeline before the model sees it.
             await self.compactor.maybe_compact(self)  # s08, pluggable
 
+            # Model-visible means logged. Injectors and steering extend
+            # `self.messages` between event beats, so at this exact point the
+            # durable transcript can lag what the model is about to see; the
+            # guard (installed by AgentSession when a durable store exists)
+            # flushes that gap and then asserts the log covers the request.
+            # After compaction, before the request: the one moment both the
+            # final surface and the log can be compared.
+            if self.transcript_guard is not None:
+                self.transcript_guard(self.messages)
+
             catalog = self.tools.snapshot(report=True)
             self._request_tool_catalog = catalog
             try:
@@ -1278,7 +1320,27 @@ class Agent:
                 continue
 
         await self._send("error", error=f"Hit max_rounds ({self.max_rounds}) without finishing")
-        self.last_text = self.last_text or f"[stopped after {self.max_rounds} rounds]"
+        self._mark_stopped(
+            f"[stopped after {self.max_rounds} rounds without finishing]"
+        )
+
+    def _mark_stopped(self, headline: str) -> None:
+        """Report an early stop *before* the partial text, at the source.
+
+        Every consumer of `run()` -- the task tool wrapping a subagent, a
+        workflow node, the HTTP caller behind session.run -- receives both
+        facts. The two early-stop paths (round exhaustion, stuck halt) each
+        used `last_text or marker`, which kept whatever commentary the model
+        said last ("I'll check the workspace first.") as the entire return
+        value whenever any existed -- a half-done delegation read as a
+        completed summary, and the marker appeared only on the runs that had
+        nothing to mislead with.
+        """
+
+        self.last_text = (
+            f"{headline}\nPartial output before the stop:\n{self.last_text}"
+            if self.last_text else headline
+        )
 
     async def _nudge_or_halt(self, signal: StuckSignal) -> bool:
         """Report a stuck pattern. Return True to nudge, False to halt.
@@ -1298,7 +1360,7 @@ class Agent:
             nudges_used=self._stuck_nudges,
         )
         if halted:
-            self.last_text = self.last_text or f"[stopped: {signal.detail}]"
+            self._mark_stopped(f"[stopped: {signal.detail}]")
             return False
         self._stuck_nudges += 1
         # The pattern has been answered. Drop the evidence so the very next
@@ -1370,7 +1432,14 @@ class Agent:
 
         for call in calls:
             tool = self.tools.get(call.name)
-            if tool is not None and tool.parallel_safe:
+            # Classified per CALL, at scheduling time: `execution_mode` sees
+            # the final arguments, so a tool can be a barrier for one input
+            # and parallel-safe for another (background bash enqueues and
+            # returns; foreground bash owns the workspace for its duration).
+            # The walk interleaves with execution, so each classification
+            # happens after every earlier barrier completed -- fresh, not
+            # batch-start stale.
+            if tool is not None and tool.execution_mode(call) == "parallel":
                 parallel_group.append(call)
                 continue
 
@@ -1435,6 +1504,16 @@ class Agent:
         command_result: CommandResult | None = None
         try:
             decision = await self.hooks.before_tool(ctx, call)
+            if decision is None:
+                # Monotonic guards run after the whole pre layer, so they see
+                # the FINAL arguments: `before_tool` hooks may rewrite
+                # `call.input` after the permission hook approved it, which
+                # left approval judging arguments that were not necessarily
+                # the ones executed. A guard can only deny or abstain --
+                # there is no allow, and every guard runs -- so neither hook
+                # ordering nor an argument rewrite can widen what a stricter
+                # guard would refuse.
+                decision = await self.hooks.guard_tool(ctx, call)
             if decision is not None:
                 out = str(decision)
                 denied = True
@@ -1516,7 +1595,10 @@ class Agent:
                             # Tool errors are data the model reacts to, not crashes.
                             out = f"Error: {error}"
                             failed = True
-                out = str(await self.hooks.after_tool(ctx, call, out))
+            # Replacement is structurally impossible for a denied call: the
+            # chain returns the denial untouched rather than trusting every
+            # post hook to check a flag.
+            out = str(await self.hooks.after_tool(ctx, call, out, denied=denied))
         except asyncio.CancelledError:
             if journal is not None and journal_started:
                 journal.finish(action_id, status="cancelled")
@@ -1669,6 +1751,11 @@ class Agent:
                 result=authoritative_out,
             )
 
+        # Final-outcome notification: observers see exactly what the model
+        # will -- already masked, already reduced -- and can neither change it
+        # nor break the call (their exceptions are contained by the chain).
+        await self.hooks.result(ctx, call, out, denied=denied, failed=failed)
+
         result_fields = {
             "name": call.name,
             "output": out[:DISPLAY_CAP],
@@ -1721,60 +1808,22 @@ class Agent:
         parent_context = (
             run_context or self.current_run_context or RunContext.default()
         )
-        child_context = parent_context.derive_peer_agent(
-            delegated_by=self.label,
-        )
-        is_explore = agent_type.strip().lower() == "explore"
-        registry = self.role_tool_policy.select(agent_type, self.tools)
-        verb = "explore and report" if is_explore else "complete the task"
-        child = Agent(
-            client=self.client,
-            settings=self.settings,
-            workspace=self.workspace,
-            # Derive, do not re-list: the child inherits every seam the parent
-            # has, including ones added after this line was written.
-            harness=self.harness.derive(
-                tools=registry,
-                hooks=self.hooks,
-                skills=self.skills,
-                compactor=self.compactor,
-                recovery=self.recovery,
-                stuck_detector=self.stuck_detector,
-                cache_policy=self.cache_policy,
-                secrets=self.secrets,
-                sandbox=self.sandbox,
-                transport=self.transport,
-            ),
-            system=f"You are a {agent_type} subagent in {self.workspace}. "
-                   f"Use tools to {verb}, then give a concise final summary. No preamble.",
-            emit=self.emit,
-            llm_semaphore=self.semaphore,
-            tool_semaphore=self.tool_semaphore,
-            label=f"{self.label}>{agent_type.lower()}",
-            depth=self.depth + 1,
-            max_rounds=self.settings.subagent_max_rounds,
-            state=(
-                {"permission_mode": "readonly"}
-                if is_explore
-                else None
-            ),
-        )
-        if is_explore:
-            # "Explore is read-only" is a promise the `task` tool makes to the
-            # model, and it was only a tool-list convention: the default
-            # interactive mode runs a plain `echo x > file` via bash with no
-            # approval (only *destructive* shell asks), so an Explore subagent
-            # could mutate the workspace a caller delegated as read-only.
-            # Read-only mode denies every mutating-risk tool -- bash included --
-            # so the promise holds by construction, whatever the registry carries.
-            assert child.state["permission_mode"] == "readonly"
+        # WHO executes the delegation is a seam (subagents.py): the default
+        # builds a fresh in-process child, and an embedder can swap in a
+        # forked, containerized, or remote worker without touching the loop.
+        # Telemetry stays here so every provider's runs look the same.
         await self._send(
             "subagent_start",
             agent_type=agent_type,
             prompt=prompt[:DISPLAY_CAP],
             _trajectory_fields={"prompt": prompt},
         )
-        summary = await child.run(prompt, run_context=child_context)
+        summary = await self.subagents.run(
+            self,
+            prompt=prompt,
+            agent_type=agent_type,
+            run_context=parent_context,
+        )
         await self._send(
             "subagent_end",
             agent_type=agent_type,
@@ -1782,3 +1831,8 @@ class Agent:
             _trajectory_fields={"summary": summary},
         )
         return summary or "(subagent produced no summary)"
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+RUNTIME_INVARIANT = (
+    "enforced by transcript_guard: the loop consults the session-installed guard before every model request, so anything model-visible is durable at the moment it matters"
+)

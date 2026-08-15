@@ -394,3 +394,8 @@ def default_sandbox(
     if require:
         raise SandboxUnavailable(reason)
     return UnavailableSandbox(reason)
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: confinement is enforced by the operating system, which cannot be asserted from inside the process it confines."
+)

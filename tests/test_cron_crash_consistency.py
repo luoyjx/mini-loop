@@ -96,6 +96,11 @@ def test_a_later_minute_still_fires_after_restart(tmp_path):
 
     restarted = _RecordingScheduler(manager=None, durable_path=durable)
     restarted.fires = []
+    # A restored job carries the schedule, not the authorization: activation
+    # is process-local (test_cron_activation.py), so the operator re-arms
+    # before unattended firing resumes. What this test pins is unchanged --
+    # the persisted mark blocks only the *same* minute, never later ones.
+    restarted.arm_all()
     restarted._tick_once(datetime(2026, 8, 5, 10, 1))  # the next minute
 
     assert len(restarted.fires) == 1

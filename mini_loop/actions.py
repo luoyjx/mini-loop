@@ -381,3 +381,8 @@ class DurableActionJournal:
 
     def mark_inflight_unknown(self, session_id: str | None = None) -> list[str]:
         return self.store.mark_inflight_unknown(session_id)
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: journal transitions are refused inline (begin/finish/reconcile); no separate diagnostic assertion has earned its keep yet."
+)

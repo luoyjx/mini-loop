@@ -49,7 +49,10 @@ def test_timeout_retains_metadata_and_masked_partial_streams(tmp_path):
     assert result.timed_out is True
     assert result.overflowed is False
     assert result.duration_ms >= 900
-    assert result.render() == "Error: Timeout (1s)"
+    # Orthogonal outcomes, independently reported: the partial output IS the
+    # diagnostic for a hang (the last line before it stopped), so the render
+    # carries both facts -- never the error alone while output exists.
+    assert result.render() == "partial out\npartial err\nError: Timeout (1s)"
 
 
 def test_stdout_and_stderr_share_one_aggregate_capture_cap(tmp_path, monkeypatch):

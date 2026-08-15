@@ -349,3 +349,8 @@ def install_mcp(registry: ToolRegistry, servers: dict) -> ToolRegistry:
         # a tool surface from it.
         _CONNECT, connect_mcp, risk="external"))
     return registry
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: the liveness check on _start is the recovery path itself; asserting the child process state separately would race it."
+)

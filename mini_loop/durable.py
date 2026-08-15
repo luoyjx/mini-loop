@@ -86,3 +86,8 @@ def _fsync_directory(directory: Path) -> None:
         pass
     finally:
         os.close(fd)
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: the atomic-write primitive is exactly one syscall sequence (temp, fsync, replace); there is no intermediate state to observe."
+)

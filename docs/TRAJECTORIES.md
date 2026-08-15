@@ -54,6 +54,25 @@ curl -s "localhost:8000/trajectories/$TRAJECTORY_ID/export?format=jsonl" \
 active session and its workspace have been deleted. By default, files live in
 `MINILOOP_WORKSPACE_ROOT/.trajectories`.
 
+## Trace viewer
+
+`GET /trajectories/{id}/view` renders one recording as a self-contained HTML
+ledger (dsh-style): turn and step boundaries, one row per record with an
+expandable inspector (input, output, timing, token usage), an overview strip
+projecting each span's real start and duration, and a client-side filter.
+Spans that never closed render as `in flight` -- the page never invents a
+duration. The same page can be produced offline, including from an exported
+JSONL file or for a whole session (one turn per run):
+
+```sh
+python -m mini_loop.trace_view traj_abc123            # one run, by id
+python -m mini_loop.trace_view $SESSION_ID            # every run in a session
+python -m mini_loop.trace_view export.jsonl -o t.html # an exported file
+```
+
+The output file is created `0600`: it carries the same prompts and tool
+output the recording does, so it inherits the recording's mode.
+
 ## Privacy and retention
 
 Trajectories are local, but they contain user prompts, system prompts, tool

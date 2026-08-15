@@ -106,3 +106,8 @@ class ProblemLog(list):
         self.counts.clear()
         self._total = 0
         self.dropped = 0
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: a bounded deduplicating list about OTHER modules' failures; watching the watcher adds recursion, not safety."
+)

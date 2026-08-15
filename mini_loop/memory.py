@@ -512,3 +512,8 @@ def install_memory(registry: ToolRegistry) -> ToolRegistry:
     registry.register(Tool("remember", "Save a durable fact to long-term memory (survives across sessions).", _REMEMBER, remember, risk="write"))
     registry.register(Tool("recall", "Recall memories matching a query (or list all if no query).", _RECALL, recall, readonly=True, risk="read"))
     return registry
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: memory files are re-read from disk each selection, so there is no in-memory mirror to diverge from the store."
+)

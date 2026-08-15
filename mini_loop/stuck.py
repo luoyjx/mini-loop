@@ -285,3 +285,8 @@ class DefaultStuckDetector:
                 "tool call, and a stop hook keeps resuming it."
             ),
         )
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: the detector is itself the observer of agent progress; an invariant about the observer would watch the watcher."
+)

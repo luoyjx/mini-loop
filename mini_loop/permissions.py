@@ -211,6 +211,15 @@ class PermissionHook(Hook):
 
 def default_hooks(*, approval: Approval | None = None) -> "Hooks":
     # Local import avoids a registry -> permissions -> registry import cycle.
+    from .goals import GoalContinuation
     from .registry import Hooks
 
-    return Hooks([PermissionHook(approval=approval)])
+    # GoalContinuation is inert until a session actually creates a goal; it
+    # rides the default chain so the goal tools work wherever the default
+    # permission stack does.
+    return Hooks([PermissionHook(approval=approval), GoalContinuation()])
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: rules are evaluated per call and their refusals are the visible outcome; the hook holds no state between calls."
+)

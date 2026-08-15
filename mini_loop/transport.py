@@ -165,3 +165,8 @@ class StreamingTransport:
             # (duplicating the round, or surfacing "[summary]" as the answer).
             agent.streamed_text = ""
             return final
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: both transports normalize failure to exceptions at the seam; a divergent second channel would be a type error, not a state."
+)

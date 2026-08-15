@@ -271,3 +271,46 @@ def test_side_queries_report_usage_without_reanchoring_the_live_meter(tmp_path):
     ]
     assert side_events
     assert all(event.get("prompt_tokens") for event in side_events)
+
+
+# --- the envelope, which is the anchor's hidden assumption -----------------
+
+def test_an_envelope_change_sets_the_anchor_aside():
+    """The anchor prices `overhead + transcript` with the overhead FIXED.
+
+    Connecting an MCP server, spawning a teammate (which unregisters tools),
+    or rebuilding the system prompt changes that overhead mid-session; an
+    anchor read under the old envelope then under-counts the new request --
+    the direction that ends in a hard overflow. On mismatch, `used_for`
+    answers with the raw estimate until the next response re-anchors.
+    """
+    meter = TokenMeter()
+    messages = _messages(10)
+    meter.observe({"input_tokens": 5_000}, messages, envelope="env-a")
+    anchored = meter.used_for(messages, envelope="env-a")
+    assert anchored == 5_000
+    # Same transcript, different envelope: the anchor no longer applies.
+    repriced = meter.used_for(messages, envelope="env-b")
+    assert repriced == estimate_tokens(messages)
+
+
+def test_a_matching_or_unnamed_envelope_keeps_the_anchor():
+    meter = TokenMeter()
+    messages = _messages(10)
+    meter.observe({"input_tokens": 5_000}, messages, envelope="env-a")
+    assert meter.used_for(messages, envelope="env-a") == 5_000
+    # A caller that cannot name its envelope gets the anchored answer.
+    assert meter.used_for(messages) == 5_000
+
+
+def test_calibration_is_not_learned_across_an_envelope_change():
+    """The delta between readings under different envelopes contains the
+    envelope change itself; feeding it to the calibration would poison the
+    ratio with schema bytes that are not transcript growth."""
+    meter = TokenMeter()
+    meter.observe({"input_tokens": 1_000}, _messages(5), envelope="env-a")
+    before = meter.calibration
+    # A big jump in actual tokens caused by a fatter envelope, not by growth.
+    meter.observe({"input_tokens": 40_000}, _messages(6), envelope="env-b")
+    assert meter.calibration == before  # re-anchored, not re-calibrated
+    assert meter.anchor == 40_000

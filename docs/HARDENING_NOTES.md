@@ -5970,3 +5970,186 @@ Verification: the previously-surviving mutation now targets the async close site
 and is caught; all three formerly-ambiguous anchors caught individually; a scan
 confirms all 247 anchors match exactly once; the meta-test was shown to fail on
 a deliberately duplicated anchor; full guard sweep clean.
+
+### 8es — the DeepSeek Harness adoption batch (rounds 171–184)
+
+One planning pass over deepseek-ai/deepseek-harness (`docs/DEEPSEEK_HARNESS_PLAN.md`),
+then fourteen rounds executing it. Each round kept the usual shape -- probe,
+fix, tests, mutations verified caught -- and each is one dsh idea landed in
+mini-loop's terms. Summary, one line per round; the module docstrings carry
+the full reasoning.
+
+* **171 spill (`spill.py`)** — truncation preserves instead of destroys:
+  oversized bash output is saved verbatim (private 0700/0600, `O_EXCL`,
+  random names) and the preview carries a locator + retrieval hint;
+  best-effort by contract, a failing store keeps the plain preview.
+* **172 pipeline layering (`registry.py`)** — monotonic `guard_tool` layer
+  (deny or abstain, never allow, every guard runs, judged on the FINAL
+  rewritten arguments), deny-is-final in `after_tool`, and a contained
+  read-only `on_result` observer notification.
+* **173 model-visible-means-logged (`session.py`, `invariants.py`)** — the
+  transcript guard flushes injected/steered input before every model request
+  and asserts the durable epoch covers it; violations raise an attributed
+  `InvariantError`. Installed through the `agent` property setter so all
+  four attach sites (and future ones) inherit it.
+* **174 cron activation (`cron.py`)** — a durable job restored from disk is
+  a schedule, not an authorization: process-local armed set, never
+  persisted; scheduling arms, restore disarms, `arm` is operator-only and
+  session-scoped like cancel. Fixes "one model turn becomes unattended
+  authority surviving every restart".
+* **175 retry-requires-progress (`recovery.py`)** — a context-overflow
+  retry is issued only when reactive compaction measurably shrank the
+  surface; the ≤keep identity case and the pairing-walkback *inflation*
+  case both now fail loud instead of re-sending the same prompt.
+* **176 envelope-aware metering (`metering.py`)** — the usage anchor is
+  reused only under the same system-prompt/tool-catalog envelope
+  (`used_for`); calibration is never learned across an envelope change.
+* **177 compaction failure taxonomy (`compaction.py`)** — a failed or empty
+  summary closes the attempt with the surface unchanged and the turn alive;
+  it used to kill the turn on its own context-management step.
+* **178 per-call execution mode (`registry.py`, `builtins.py`)** —
+  `Tool.mode_for(call)`: background bash is parallel exactly when
+  backgrounding is requested AND available; a broken classifier degrades to
+  a barrier.
+* **179 plan mode (`plan_mode.py`)** — log-only whole-value state folded on
+  restore; soft guidance (sandbox/permissions never read it); stable
+  catalog (`exit_plan_mode` registered while off); keep-planning is a
+  failed call carrying reviewer feedback.
+* **180 goal domain (`goals.py`)** — one durable objective with CAS by
+  revision, a round budget consumed only by goal-sourced continuations
+  (exhaustion blocks with `round-cap-exhausted`), kebab-case blocked codes,
+  and arming mutations gated on EXPLICIT_HUMAN authority; restore folds the
+  snapshot but comes back disarmed.
+* **181 defensive-patterns audit** — three live defects from dsh's list:
+  `CommandResult.render` nested the whole report inside the error branch
+  (timeout hid the diagnostic output); workspace removal silently no-op'd
+  on a link-shaped path (`_remove_workspace`: unlink the link, rmtree only
+  real directories); the event sink was an uncontained observer that could
+  kill the turn it observed (contained + reported via `info()`).
+* **182 invariant posture (`tools/verify_invariants.py`)** — the third
+  instrument: every module declares `RUNTIME_INVARIANT` (must name a real
+  symbol) or `NO_RUNTIME_INVARIANT` (exact prefix, module-specific reason,
+  duplicates rejected as boilerplate).
+* **183 subagent provider seam (`subagents.py`)** — who executes a
+  delegation is a Harness seam; the in-process default carries lineage as
+  data (parent label, delegation depth); telemetry stays in the loop so all
+  providers look the same.
+* **184 diagnostics + session query (`diagnostics.py`,
+  `session_query.py`)** — a provider seam a real LSP can fill (built-in:
+  bounded `ast.parse`, scope named in every result) and
+  `transcript_search` over every durable epoch of the calling session,
+  reaching history that compaction summarized away; bounded and
+  session-scoped by construction.
+
+Lesson, batch-wide: most of what dsh does better was not missing machinery
+but missing *statements* -- which layer may deny, what an anchor prices,
+whether a restored fact is an authorization, who is allowed to rewrite a
+result. Writing the statement down usually made the defect obvious and the
+fix small.
+
+Verification: full suite green (1549 passed, 14 skipped), 19 scanning guards anchored,
+59 modules declare posture, and the guard list grew 247 → 283 with each new
+mutation verified caught individually; full sweep clean.
+
+### 8et — the recorded run had no reader (round 185)
+
+A trajectory records everything -- model spans, tool spans, compaction,
+recovery -- and the only ways to read one were raw JSON (`GET
+/trajectories/{id}`) or replaying events into the console panel. dsh ships a
+trajectory ledger (`ui-trajectory`): turn-aware rows, a local inspector for
+input/output/timing/usage, an overview strip projecting real start/duration.
+Asked for the same tool, the answer was not to rewrite dsh's 73k-line web
+client but to render the same information structure from our existing JSONL:
+`trace_view.py` builds a turn ledger (span pairs correlated by `span_id`,
+steps marked per agent-turn model call, unknown event kinds rendered
+generically rather than dropped) and emits one self-contained HTML page --
+CLI (`python -m mini_loop.trace_view <file|traj_id|session_id>`, 0600 like
+the recording it renders) and `GET /trajectories/{id}/view` (owner-scoped,
+size-bounded, exactly like its JSON siblings).
+
+The viewer is the first place recorded transcript content becomes markup
+again, so the harness's rules apply to a renderer verbatim: every string
+through one escaping chokepoint (`_esc`); no fabricated duration -- an
+unclosed span says `in flight` and the overview draws a start marker, a
+detail dsh states explicitly and we copied deliberately; the row cap keeps
+the tail and names the omission, with totals folded before the cap so the
+summary never shrinks with the page. Session bookkeeping events
+(`trajectory_start`/`end`, mirrored `done`) collapse as duplicates of the
+turn header -- but `done` keeps its row when there is no assembled output to
+mirror it, so the answer cannot disappear.
+
+Two instrument reactions worth recording: the write-site scan refused the
+new file until it was classified (RECORDED -- it renders rows masked once at
+`_capture_event`), and the new view route made round 74's
+`trajectory-readable-by-anyone` anchor ambiguous (two routes now share the
+ownership-then-size prefix) -- caught by `test_timing_safety`, re-anchored
+through the JSON-document wording. Guards 283 → 287: escaping stripped,
+duration fabricated, cap silenced, ownership skipped -- each caught by a
+named test individually.
+
+### 8eu — an accepted setting silently meant something else (round 186)
+
+Round sourced from dsh's postmortem directory (four production incident
+reports) rather than its subsystem docs: an incident report names the defect
+class *and* proves it ships. Each was translated into a mini-loop probe.
+0001 (test the real entry path) and 0003 (acceptance against a replacement
+server) came back clean here -- server tests boot the real `create_app`
+composition, and there is no GUI process to misattribute. 0004's launcher
+half does not apply (our sandbox builds argv; nothing parses child stderr
+for infra signatures) and its adapter half is already held by the
+discarded-results scan. 0002 was live.
+
+dsh 0002: a `!!js` expression in a Loader field that is never interpolated
+-- syntactically accepted, evaluated as a truthy object, filesystem tools
+permanently disabled, and the snapshot refresh then enshrined the regression
+as expected output. Our miniature, measured before the fix: every
+unparseable numeric env fell back to its default (`MINILOOP_MAX_TOKENS=8k`
+-> 8000, `MINILOOP_BASH_TIMEOUT=30s` -> 120), and any unknown boolean
+spelling read as True -- so `MINILOOP_TRAJECTORY_CAPTURE_CONTENT=flase`
+kept recording *full conversation content* for an operator who had followed
+the docs' own privacy advice and believed it off. The parsers accepted the
+value and replaced its meaning.
+
+Fix in `config.py`: the three env parsers reject unrecognized values at
+construction with the variable name, the offending value, and the accepted
+forms -- the same boundary dsh's `verify-cordis-config` enforces. Missing
+stays the default; the empty string keeps its historical meaning (default
+for numbers, False for booleans) because deployment tooling routinely
+exports empty vars. Five tests in `test_config_validation.py` (whose theme
+this already was: a config that hangs or no-ops the agent fails loudly at
+construction -- misread now joins hangs and no-ops). Guards 287 → 290:
+number guessed, duration guessed, typo read as True -- each caught by a
+named test individually.
+
+### 8ev — a cut-off run read as a completed one (round 187)
+
+Source: dsh's `.agents/notes/implemented/bug-fix/` -- the layer below its
+postmortems. The 2026-08-10 note (subagent empty terminal message) describes
+three consumers independently selecting a child's output, an empty terminal
+message shadowing the real partial answer, and the fix: one canonical
+selection rule owned at the source, with a non-completed run reporting "the
+stop-reason headline first, the partial text after it."
+
+mini-loop's selection was already last-non-empty (`if text: self.last_text =
+text`), so dsh's exact bug does not reproduce. Its mirror image did, in both
+early-stop paths. `_loop` round exhaustion ran `last_text = last_text or
+"[stopped after N rounds]"` -- so a child that spent its whole budget on
+tools returned its last mid-run commentary line ("I'll check the workspace
+first.") as the delegation's completed summary, and the parent's tool result
+carried no cut-off signal at all. The marker appeared only on runs that had
+nothing to mislead with. The same line serves the main agent: an HTTP caller
+behind `session.run` got the same silent truncation at max_turns.
+
+Writing the subagent probe surfaced a second site by accident: the child
+never reached its round budget because the stuck detector halted its
+repeating bash first -- and the halt path used the identical `last_text or
+marker` fallback. Same class, second instance, found because the probe ran
+the real delegation path rather than unit-testing the loop (dsh postmortem
+0001's lesson, paying off one round later).
+
+Fix: one owner, `Agent._mark_stopped(headline)` -- headline first, "Partial
+output before the stop:" after, used by both round exhaustion and the stuck
+halt. Every consumer of `run()` (task tool, workflow node, HTTP caller) is
+repaired at once. Four tests in `test_round_exhaustion.py`; guards 290 → 292
+(the `or` fallback restored in the helper; the halt bypassing the rule),
+each caught by a named test individually.

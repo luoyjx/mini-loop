@@ -291,3 +291,8 @@ def install_tasks(registry: ToolRegistry) -> ToolRegistry:
     registry.register(Tool("claim_task", "Claim a pending, unblocked task (sets you as owner).", _BY_ID, claim_task, risk="write"))
     registry.register(Tool("complete_task", "Mark a task completed; reports newly-unblocked tasks.", _BY_ID, complete_task, risk="write"))
     return registry
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: board mutations validate dependencies inline and refuse cycles at write time, so no inconsistent board state survives to observe."
+)

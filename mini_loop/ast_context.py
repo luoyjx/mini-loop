@@ -1759,3 +1759,8 @@ __all__ = [
     "AstOutlineAdapter",
     "install_ast_context_tools",
 ]
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: each invocation re-verifies the pinned binary hash before spawning; the check is the operation, not an observer of it."
+)

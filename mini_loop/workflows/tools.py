@@ -136,3 +136,8 @@ def install_workflows(registry: ToolRegistry) -> ToolRegistry:
         )
     )
     return registry
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: each tool re-checks EXPLICIT_HUMAN authority on entry; the check runs where the risk is, per call."
+)

@@ -798,3 +798,8 @@ class SQLiteStateStore:
     def close(self) -> None:
         with self._lock:
             self._db.close()
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: schema shape is validated at open (StorageSchemaError) and rows are append-only afterwards; the open-time check is the assertion."
+)

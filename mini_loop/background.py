@@ -299,3 +299,8 @@ def install_background(registry: ToolRegistry) -> ToolRegistry:
                                              "Results arrive later as a <task_notification>.", _RUN, background_run, risk="exec"))
     registry.register(Tool("check_background", "Check background task status (all, or one bg_id).", _CHECK, check_background, readonly=True, risk="read"))
     return registry
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: task lifecycle ends in cancel_all/close which await quiescence; a leaked handle would be visible to tests, not to a runtime probe."
+)

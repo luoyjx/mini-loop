@@ -110,6 +110,14 @@ def default_system_builder(agent) -> str:
             f"Team identity: {agent.state['agent_name']}"
             f" (role: {agent.state.get('role', 'lead')}, team: {agent.state.get('team_id', '-')})"
         )
+
+    if agent.state.get("plan_mode"):
+        # Soft guidance only: what the model is TOLD, never what it is
+        # ALLOWED -- sandbox and permission policy enforce independently
+        # and neither reads plan state (plan_mode.py).
+        from .plan_mode import PLAN_SECTION
+
+        parts.append(PLAN_SECTION)
     return "\n\n".join(parts)
 
 
@@ -209,3 +217,8 @@ def sections_builder(*sections):
             parts.append(s(agent) if callable(s) else str(s))
         return "\n\n".join(p for p in parts if p)
     return build
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: the builder is a pure function of agent state re-run per request; nothing persists between calls to drift."
+)

@@ -127,6 +127,16 @@ class CronScheduler:
         self.durable_path = durable_path
         self._task: asyncio.Task | None = None
         self._running: set[asyncio.Task] = set()
+        #: Process-local activation, deliberately NOT persisted (DeepSeek
+        #: Harness's goal-domain rule: durable state answers "what was
+        #: scheduled", activation answers "may THIS process fire it
+        #: unattended"). A job scheduled in this process is armed by the act
+        #: of scheduling -- the authorization edge just happened. A job
+        #: restored from disk is disarmed until `arm()` records a new edge:
+        #: without this, one model turn that scheduled a durable job became
+        #: unattended authority surviving every restart, with no human in the
+        #: loop ever again -- "held" quietly replaced by "once held".
+        self._armed: set[str] = set()
         self._load()
 
     # -- lifecycle --
@@ -165,6 +175,16 @@ class CronScheduler:
         for job in list(self.jobs.values()):
             try:
                 if not cron_matches(job.cron, now) or job.last_fired == marker:
+                    continue
+                if job.id not in self._armed:
+                    # Restored but not re-authorized. The occurrence is NOT
+                    # consumed (`last_fired` untouched): once armed, the next
+                    # matching minute fires normally. Reported so a disarmed
+                    # schedule is visible, not indistinguishable from a dead one.
+                    self.problems.append(
+                        f"{job.id}: restored from disk and not re-armed; "
+                        "skipping until arm() records a new authorization"
+                    )
                     continue
                 job.last_fired = marker
                 if not job.recurring:
@@ -223,6 +243,35 @@ class CronScheduler:
         self._running.add(task)
         task.add_done_callback(self._running.discard)
 
+    # -- activation (process-local, never persisted) --
+    def armed(self, job_id: str) -> bool:
+        return job_id in self._armed
+
+    def arm(self, job_id: str, session_id: str | None = None) -> str:
+        """Record a new authorization edge for a restored job.
+
+        Exposed at the operator surface (the HTTP API), scoped like `cancel`:
+        with `session_id` given, a caller can only arm jobs that belong to
+        that session. Deliberately NOT a model-facing tool -- a model that
+        could re-arm its own restored schedule would erase the distinction
+        this bit exists to draw.
+        """
+
+        job = self.jobs.get(job_id)
+        if job is None:
+            return f"Error: no such job {job_id}"
+        if session_id is not None and job.session_id != session_id:
+            return f"Error: no such job {job_id}"
+        self._armed.add(job_id)
+        return f"Armed {job_id}"
+
+    def arm_all(self) -> int:
+        """Arm every restored job in one deliberate operator act; the count."""
+
+        disarmed = [job_id for job_id in self.jobs if job_id not in self._armed]
+        self._armed.update(disarmed)
+        return len(disarmed)
+
     # -- ops (used by tools) --
     def schedule(self, session_id: str, cron: str, prompt: str, *, recurring: bool = True,
                  durable: bool = True) -> str:
@@ -241,6 +290,9 @@ class CronScheduler:
         job = CronJob(id=uuid.uuid4().hex[:8], cron=cron, prompt=prompt,
                       session_id=session_id, recurring=recurring, durable=durable)
         self.jobs[job.id] = job
+        # Scheduling IS the authorization edge for this process; only a
+        # restart erases it (activation is never persisted).
+        self._armed.add(job.id)
         # `install_cron()` also works à la carte, without comprehensive mode.
         # Scheduling from a running agent lazily starts the ticker.
         try:
@@ -274,6 +326,7 @@ class CronScheduler:
         if job is None or (session_id is not None and job.session_id != session_id):
             return f"No cron {job_id}"
         del self.jobs[job_id]
+        self._armed.discard(job_id)
         self._save()
         return f"Cancelled cron {job_id}"
 
@@ -297,6 +350,7 @@ class CronScheduler:
         persist = any(self.jobs[jid].durable for jid in removed)
         for jid in removed:
             self.jobs.pop(jid, None)
+            self._armed.discard(jid)
         if persist:
             self._save()
         return len(removed)
@@ -307,7 +361,9 @@ class CronScheduler:
             return "No scheduled jobs."
         return "\n".join(
             f"{j.id}: '{j.cron}' [{'recurring' if j.recurring else 'one-shot'}"
-            f"{', durable' if j.durable else ''}] -> {j.prompt[:50]}" for j in jobs)
+            f"{', durable' if j.durable else ''}"
+            f"{', DISARMED (restored; needs operator arm)' if j.id not in self._armed else ''}"
+            f"] -> {j.prompt[:50]}" for j in jobs)
 
     # -- durability --
     def _save(self) -> None:
@@ -393,3 +449,8 @@ def install_cron(registry: ToolRegistry) -> ToolRegistry:
     registry.register(Tool("list_crons", "List this session's scheduled cron jobs.", _EMPTY, list_crons, readonly=True, risk="read"))
     registry.register(Tool("cancel_cron", "Cancel a scheduled cron job by id.", _CANCEL, cancel_cron, risk="write"))
     return registry
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: activation is process-local by construction (_armed never rides _save/_load), pinned by mutation guards rather than a runtime probe."
+)

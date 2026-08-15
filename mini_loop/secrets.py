@@ -345,3 +345,8 @@ class SecretRegistry:
             # replacement so custom mask strings containing ``\\`` stay literal.
             text = _mask_ansi_interleaved(text, value, self.mask_with)
         return text
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: masking correctness is characterized by round-trip tests; a runtime self-check would need the plaintext it exists to hide."
+)

@@ -52,6 +52,16 @@ RECORDED = {
         "expiring parked approval rows on restore: rewrites rows the broker "
         "already masked, adding only a status and timestamp"
     ),
+    "spill.py": (
+        "preserved oversized tool output: callers save the already-masked "
+        "projection (run_bash masks each stream before any truncation), so "
+        "the spill file records what the model saw, never raw bytes"
+    ),
+    "trace_view.py": (
+        "the rendered trace page: a read-side projection of trajectory rows "
+        "that were masked once at _capture_event before they reached the "
+        "store, written 0600 like the recording it renders"
+    ),
 }
 
 #: Writes that *perform* the thing the caller asked for. Masking these would

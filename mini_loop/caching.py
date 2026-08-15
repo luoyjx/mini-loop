@@ -243,3 +243,8 @@ async def runtime_facts_injector(agent) -> list | None:
             "content": f"{RUNTIME_FACTS_OPEN}\n{facts}\n{RUNTIME_FACTS_CLOSE}",
         }
     ]
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: cache annotations are advisory to the provider; a wrong one costs money, not correctness, and money is metered elsewhere."
+)

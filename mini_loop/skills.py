@@ -145,3 +145,8 @@ class SkillLoader:
             available = ", ".join(self.skills) or "(none)"
             return f"Error: Unknown skill '{name}'. Available: {available}"
         return f'<skill name="{name}">\n{s["body"]}\n</skill>'
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: skills are read fresh from disk on each load call; there is no cached index to fall out of step."
+)

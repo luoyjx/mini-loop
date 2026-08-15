@@ -364,3 +364,8 @@ def install_teams(registry: ToolRegistry) -> ToolRegistry:
     registry.register(Tool("review_plan", "Approve or reject a submitted teammate plan.", _REVIEW, review_plan, risk="write"))
     registry.register(Tool("list_protocols", "List protocol request states.", _EMPTY, list_protocols, readonly=True, risk="read"))
     return registry
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: inbox bounds are applied at send time and pinned by shed tests; the bus holds no derived state beyond the lists themselves."
+)

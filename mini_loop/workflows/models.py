@@ -423,3 +423,8 @@ class OutboxMessage:
     claim_token: str | None = None
     claimed_at: float | None = None
     delivered_at: float | None = None
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: frozen dataclasses and enums; canonical_json/content_hash are pure and characterized by tests."
+)

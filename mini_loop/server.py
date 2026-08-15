@@ -31,6 +31,7 @@ Endpoints
   GET    /sessions/{id}/events      SSE: observe a session's event stream
   GET    /sessions/{id}/trajectories      list durable runs for one session
   GET    /trajectories/{id}         inspect one recorded trajectory
+  GET    /trajectories/{id}/view    dsh-style HTML ledger of one trajectory
   GET    /trajectories/{id}/export  download JSON or JSONL
 """
 
@@ -493,6 +494,24 @@ def _register_routes(app: FastAPI) -> None:
         stopped = await session.cancel("cancelled over HTTP")
         return {"session": session_id, "cancelled": stopped, "info": session.info()}
 
+    @app.post("/sessions/{session_id}/cron/{job_id}/arm")
+    async def arm_cron(request: Request, session_id: str, job_id: str):
+        """Re-authorize a cron job restored from disk.
+
+        Activation is process-local and never persisted: a durable job
+        survives a restart as a *fact*, but firing unattended again needs a
+        new authorization edge, which this operator call records. Scoped to
+        the caller's own session, like cancel. Deliberately not a model tool.
+        """
+        _require(request, session_id)
+        scheduler = getattr(_manager(request), "cron", None)
+        if scheduler is None:
+            raise HTTPException(status_code=404, detail="cron is not enabled")
+        outcome = scheduler.arm(job_id, session_id)
+        if outcome.startswith("Error"):
+            raise HTTPException(status_code=404, detail=outcome)
+        return {"session": session_id, "job": job_id, "armed": True}
+
     @app.get("/sessions/{session_id}/transcript")
     async def read_transcript(request: Request, session_id: str,
                               epoch: int | None = None):
@@ -716,6 +735,41 @@ def _register_routes(app: FastAPI) -> None:
             media_type="application/json",
             headers={"Content-Disposition": disposition},
         )
+
+    @app.get("/trajectories/{trajectory_id}/view", response_class=HTMLResponse)
+    async def view_trajectory(request: Request, trajectory_id: str):
+        """The dsh-style ledger for one recorded run, as one HTML page.
+
+        Same access order as the JSON route below: ownership from the header
+        before any bulk read, then the size bound -- rendering is a whole-file
+        materialisation, so it inherits the JSON route's ceiling rather than
+        inventing a second one.
+        """
+        from .trace_view import build_ledger, render_html
+
+        store = _trajectory_store(request)
+        try:
+            await _owned_trajectory_summary(request, store, trajectory_id)
+            size = await asyncio.to_thread(store.byte_size, trajectory_id)
+            if size > MAX_TRAJECTORY_JSON_BYTES:
+                raise HTTPException(
+                    status_code=413,
+                    detail=(
+                        f"trajectory is {size:,} bytes; too large to render as "
+                        f"one page (limit {MAX_TRAJECTORY_JSON_BYTES:,}). "
+                        "Download it with /export?format=jsonl, which streams."
+                    ),
+                )
+            trajectory = await asyncio.to_thread(store.get, trajectory_id)
+        except (KeyError, ValueError):
+            raise HTTPException(
+                status_code=404, detail=f"No trajectory '{trajectory_id}'"
+            ) from None
+        return HTMLResponse(await asyncio.to_thread(
+            render_html,
+            [build_ledger(trajectory)],
+            title=f"mini-loop trace · {trajectory_id}",
+        ))
 
     @app.get("/trajectories/{trajectory_id}")
     async def get_trajectory(request: Request, trajectory_id: str):
@@ -1062,3 +1116,8 @@ window.addEventListener('beforeunload',()=>eventSource?.close());
 </body>
 </html>
 """
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: every route re-derives ownership per request and refuses with 404; the refusal path is exercised by ownership tests per endpoint."
+)

@@ -140,22 +140,26 @@ class CommandResult:
     capture_limit: int = MAX_BASH_CAPTURE
 
     def render(self) -> str:
-        if self.error is not None:
-            return self.error
+        # Orthogonal outcomes, independently reported: a command can time out
+        # AND have printed the diagnostic that explains why (the last line of
+        # a spinning loop, a stack trace before a hang). The old projection
+        # nested the whole report inside the error branch -- `Error: Timeout`
+        # with the captured output silently discarded, though the structured
+        # fields carried it. Each fact now reports on its own.
         out = (
             self.projection
             if self.projection is not None
             else self.stdout + self.stderr
         ).strip()
-        if not out:
-            return "(no output)"
-        rendered = capped(out, keep_tail=True)
-        if self.overflowed:
+        rendered = capped(out, keep_tail=True) if out else ""
+        if self.overflowed and rendered:
             rendered += (
                 f"\n[output exceeded {self.capture_limit:,} bytes; capture "
                 "stopped and the command was ended]"
             )
-        return rendered
+        if self.error is not None:
+            return f"{rendered}\n{self.error}" if rendered else self.error
+        return rendered or "(no output)"
 
     def __str__(self) -> str:
         return self.render()
@@ -310,6 +314,7 @@ class Toolset:
         bash_timeout: int = 120,
         secrets=None,
         sandbox=None,
+        spill=None,
     ) -> None:
         self.workspace = workspace.resolve()
         self.workspace.mkdir(parents=True, exist_ok=True)
@@ -323,6 +328,10 @@ class Toolset:
         # writable root still points at a previous workspace denies every write.
         base = sandbox if sandbox is not None else NullSandbox()
         self.sandbox = base.for_workspace(self.workspace)
+        # Optional spill store: when present, an output too large to inline is
+        # preserved verbatim and the preview carries a locator; when absent,
+        # truncation keeps its old drop-the-middle behavior.
+        self.spill = spill
         # Foreground shells currently executing, so a cancelled turn can end
         # them. `run_bash` runs in worker threads; the lock keeps the set
         # coherent if a misdeclared parallel-safe tool ever runs two at once.
@@ -330,6 +339,43 @@ class Toolset:
 
         self._live_lock = threading.Lock()
         self._live: set = set()
+
+    def _spill_note(self, text: str, *, tool: str, label: str = "result") -> str:
+        """Preserve an over-cap `text`; return the locator note, or "".
+
+        Truncation used to *destroy* the overflow: `capped` kept a preview and
+        the rest was gone, unrecoverable, even though the model was told it
+        existed. With a spill store configured the full (already masked) text
+        is saved first and the preview gains a locator plus the backend's own
+        retrieval hint. Preservation is best-effort by contract: a failed save
+        returns "" and the caller keeps the plain preview -- it never turns a
+        successful tool call into an error, and never costs the model the
+        preview it already had.
+
+        `read_file` deliberately does not spill: its source of truth is a
+        model-reachable file and the truncation notice already says how to
+        read further (`offset`); a spill copy would add disk cost and a second
+        divergent copy without adding any capability. `glob` does not spill
+        either -- round 167 bounded its *enumeration*, so the overflow is
+        never collected in the first place.
+        """
+
+        if len(text) <= OUTPUT_CAP or self.spill is None:
+            return ""
+        try:
+            ref = self.spill.save_text(
+                session_id=self.workspace.name,
+                tool_name=tool,
+                label=label,
+                suggested_name=f"{tool}.txt",
+                content=text,
+            )
+        except Exception:
+            return ""
+        return (
+            f"\n[full output preserved: {ref.locator} ({ref.bytes:,} bytes); "
+            f"{ref.retrieval_hint}]"
+        )
 
     # -- path safety: nothing may escape the session's workspace --
     def safe_path(self, p: str) -> Path:
@@ -472,7 +518,18 @@ class Toolset:
     def run_bash(self, command: str) -> str:
         """Compatibility projection used by the existing ``bash`` tool."""
 
-        return self.run_bash_result(command).render()
+        result = self.run_bash_result(command)
+        rendered = result.render()
+        if result.error is not None and result.projection is None:
+            return rendered
+        # The projection is already masked (run_bash_result masks each whole
+        # stream before any truncation), so the spilled copy is safe to keep.
+        full = (
+            result.projection
+            if result.projection is not None
+            else result.stdout + result.stderr
+        ).strip()
+        return rendered + self._spill_note(full, tool="bash", label="output")
 
     def run_read(self, path: str, limit: int | None = None, offset: int = 0) -> str:
         try:
@@ -631,3 +688,8 @@ class Toolset:
 
     def handles(self, name: str) -> bool:
         return name in ("bash", "read_file", "write_file", "edit_file", "glob")
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: output bounds are enforced inside each operation (capped, _BoundedCapture) where the data flows; there is no post-hoc state to measure."
+)

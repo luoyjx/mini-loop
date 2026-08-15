@@ -456,3 +456,8 @@ class FakeAsyncAnthropic:
         self.delay = delay if delay is not None else float(os.getenv("MINILOOP_FAKE_DELAY", "0") or 0)
         self.calls = 0
         self.messages = _Messages(self)
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: a test double asserts on test traffic (validate_transcript) and must never observe production state."
+)

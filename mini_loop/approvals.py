@@ -290,3 +290,8 @@ class ApprovalBroker:
     def cancel_all(self) -> int:
         return sum(self.cancel_session(p.session_id)
                    for p in list(self._pending.values()))
+
+#: The module's runtime-invariant posture (tools/verify_invariants.py).
+NO_RUNTIME_INVARIANT = (
+    "No runtime invariant: the broker's state machine refuses bad transitions itself; a resolved row cannot flip back by construction, leaving nothing to assert."
+)
