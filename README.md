@@ -31,6 +31,98 @@ if untrusted users can submit prompts.
 
 ---
 
+## Architecture
+
+Architecture review baseline: **hardening round 187**. Every implementation
+iteration must review this map; update the baseline in the same commit, and
+update the affected nodes, edges, boundaries, and capability labels whenever
+the runtime changes.
+
+<!-- architecture-map:start -->
+```mermaid
+flowchart LR
+    Caller["Callers<br/>Python · REST · SSE"]
+
+    subgraph Control["Control plane"]
+        Entry["FastAPI / CLI / console<br/>server.py · __main__.py"]
+        Trust["Authentication + ownership<br/>auth.py · RunContext"]
+        Manager["SessionManager<br/>composition · shared semaphores"]
+        Entry --> Trust --> Manager
+    end
+
+    subgraph Runtime["Per-session runtime"]
+        Session["AgentSession<br/>lock · transcript · event stream · lease"]
+        Agent["Agent._loop<br/>model ↔ tool loop · stop semantics"]
+        Context["Context pipeline<br/>prompt · skills · memory · compaction<br/>cache · metering · token efficiency"]
+        Catalog["Immutable tool view<br/>ToolCatalogSnapshot · RoleToolPolicy"]
+        Gate["Execution pipeline<br/>before → guard → permission → execute<br/>after → result observers"]
+
+        Session --> Agent
+        Agent -->|build bounded request| Context
+        Agent -->|ordered ToolCall batch| Catalog --> Gate
+    end
+
+    Provider["Model provider<br/>streaming transport · recovery"]
+    Backends["Tool backends<br/>files · shell · AST · diagnostics · MCP<br/>sandbox · secrets · spill"]
+
+    subgraph Async["Optional orchestration"]
+        Coordination["Background · cron · tasks · teams<br/>worktrees · subagent provider"]
+        Workflow["WorkflowService<br/>fixed AGENT / VERIFY / REDUCE DAG<br/>read-only fresh workers"]
+    end
+
+    subgraph Evidence["State and evidence"]
+        State["SQLiteStateStore<br/>session epochs · events · leases"]
+        Journal["Action / approval / goal / plan logs<br/>replay · CAS · recovery state"]
+        Trace["Events · trajectory JSONL · trace viewer<br/>audit · problems · runtime posture"]
+    end
+
+    Caller --> Entry
+    Manager -->|create / restore / route| Session
+    Context -->|model request| Provider
+    Provider -->|text / tool_use| Agent
+    Gate -->|guarded dispatch| Backends
+    Backends -->|masked result| Agent
+
+    Manager -. owns shared services .-> Coordination
+    Coordination -. bounded next-turn injection .-> Session
+    Gate -. explicit-human launch / manage .-> Workflow
+    Workflow -. process-local read-only workers .-> Provider
+
+    Session -->|persist transcript + cursor| State
+    Gate -->|record action outcome| Journal
+    Agent -->|emit spans + lifecycle| Trace
+    Entry -. SSE / inspect / trace view .-> Trace
+```
+<!-- architecture-map:end -->
+
+The solid path is one ordinary turn. Dotted paths are optional or asynchronous:
+most feature bundles are opt-in, and the experimental workflow store,
+workflow-local journal, and outbox remain process-local. SQLite durability
+applies to session epochs, events, leases, actions, and approvals only when a
+real `StateStore` is configured; the default server still uses the documented
+`Null*` boundaries.
+
+For an explorable version with guided request, tool, and orchestration views,
+open the [interactive architecture](docs/mini-loop-system.architecture.html).
+Its frozen source is
+[`docs/mini-loop-system.architecture.json`](docs/mini-loop-system.architecture.json).
+The Mermaid block above is the canonical GitHub view.
+
+### Architecture maintenance contract
+
+- Every implementation iteration updates the review baseline above, even when
+  topology is unchanged.
+- If module ownership, control/data flow, authority, persistence, public entry
+  points, or default-on/default-off behavior changes, update the Mermaid and the
+  boundary explanation in the same commit.
+- Keep capability status explicit: `default-on`, `default-off`, `process-local`,
+  and `durable` are different claims.
+- Regenerate the interactive HTML from its JSON specification; do not hand-edit
+  generated HTML. Report when the Mermaid is current but the companion artifact
+  could not be regenerated.
+
+---
+
 ## Why it's actually concurrent
 
 The agent loop is `async`. LLM calls go through `AsyncAnthropic`
@@ -66,6 +158,7 @@ mutation tools remain sequential.
 ```
 mini_loop/
   config.py      env + LLM-client factory (anthropic import is lazy)
+  harness.py     immutable policy/seam bundle inherited by child agents
   tools.py       per-workspace tools + structured CommandResult + safe_path
   registry.py    Tool / immutable ToolCatalogSnapshot / Hook / Hooks
   ast_context.py ast-outline 1.9.x adapter + four typed semantic-read tools
@@ -79,9 +172,16 @@ mini_loop/
   prompts.py     system_builder (default + sections_builder)
   compaction.py  Compactor protocol + budget / snip / micro / auto layers
   run_context.py immutable per-message provenance + capability approvals
-  actions.py     process-local action journal + replay/conflict binding
+  actions.py     in-memory/durable action journal + replay/conflict binding
+  storage.py     optional SQLite WAL session epochs, events, leases, approvals
+  trajectory.py append-only JSONL run evidence; trace_view.py renders it
+  sandbox.py     host-effect boundary; secrets.py masks credentials
+  spill.py       optional private recovery for bounded, already-masked output
   events.py      validated workflow event payloads for the session stream
   workflows/     experimental read-only declarative workflow runtime
+  goals.py       durable objective/CAS state; plan_mode.py is soft log state
+  diagnostics.py bounded syntax diagnostics; session_query.py searches epochs
+  subagents.py   replaceable delegation provider with explicit lineage
   agent.py       the async loop: dispatch via registry + hooks + compactor
   session.py     AgentSession — history, status, event pub/sub, per-session lock
   manager.py     SessionManager — injects every seam, shared client + semaphore
@@ -104,6 +204,7 @@ tests/           offline tests (no key): loop, sandbox, subagent, compaction,
 
 Design docs: [hardening notes](docs/HARDENING_NOTES.md) (why the non-curriculum
 modules exist, the traps they close, and what is still open),
+[DeepSeek Harness adoption plan](docs/DEEPSEEK_HARNESS_PLAN.md),
 [Claude Code dynamic workflows research](docs/CLAUDE_CODE_DYNAMIC_WORKFLOW_RESEARCH.md),
 [token-efficiency tools and harness components](docs/TOKEN_EFFICIENCY_COMPONENTS.md),
 [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md), and

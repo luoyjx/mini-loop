@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "mini-loop Runtime Architecture",
+    "subtitle": "Concurrent session control plane, per-session agent loop, guarded tools, optional orchestration, and durable evidence",
+    "output": "mini-loop-system.architecture.html",
+    "animation": "none",
+    "visual_preset": "blueprint",
+    "quality_profile": "showcase",
+    "viewBox": [2500, 1100],
+    "views": [
+      {
+        "id": "turn-path",
+        "label": "One agent turn",
+        "focus": ["clients", "entry", "authority", "manager", "session", "agent", "context", "provider"],
+        "note": "Follow an authenticated request into one serialized session and out to the model provider."
+      },
+      {
+        "id": "tool-path",
+        "label": "Guarded tool execution",
+        "focus": ["agent", "toolPolicy", "toolBackends", "state"],
+        "note": "Tool calls cross immutable catalog, policy, hook, permission, masking, and journaling boundaries."
+      },
+      {
+        "id": "async-path",
+        "label": "Optional orchestration",
+        "focus": ["manager", "coordination", "session", "state"],
+        "note": "Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."
+      }
+    ]
+  },
+  "components": [
+    { "id": "clients", "type": "external", "label": "Callers", "sublabel": "Python / REST / SSE", "pos": [60, 260], "size": [150, 72] },
+    { "id": "entry", "type": "frontend", "label": "Entry Surface", "sublabel": "FastAPI + CLI + console", "pos": [330, 260], "size": [170, 72] },
+    { "id": "authority", "type": "security", "label": "Trust Boundary", "sublabel": "Auth + ownership + RunContext", "pos": [650, 260], "size": [210, 72], "tag": "fail closed" },
+    { "id": "manager", "type": "backend", "label": "SessionManager", "sublabel": "fleet composition + shared limits", "pos": [1030, 260], "size": [200, 72] },
+    { "id": "session", "type": "backend", "label": "AgentSession", "sublabel": "lock + transcript + events", "pos": [1410, 260], "size": [190, 72], "tag": "per session" },
+    { "id": "agent", "type": "backend", "label": "Agent Loop", "sublabel": "model / tools / stop", "pos": [1780, 260], "size": [180, 72], "tag": "async" },
+    { "id": "context", "type": "backend", "label": "Context Pipeline", "sublabel": "prompt + skills + compact + cache", "pos": [2110, 100], "size": [220, 76] },
+    { "id": "provider", "type": "external", "label": "Model Provider", "sublabel": "streaming transport", "pos": [2110, 410], "size": [200, 72] },
+    { "id": "toolPolicy", "type": "security", "label": "Tool Execution Gate", "sublabel": "catalog + hooks + permissions", "pos": [1780, 540], "size": [210, 76], "tag": "deny is final" },
+    { "id": "toolBackends", "type": "backend", "label": "Tool Backends", "sublabel": "files / shell / MCP / sandbox", "pos": [2110, 700], "size": [215, 76] },
+    { "id": "coordination", "type": "messagebus", "label": "Async Coordination", "sublabel": "background / cron / teams / workflows", "pos": [1030, 540], "size": [230, 76], "tag": "opt-in surfaces" },
+    { "id": "state", "type": "database", "label": "State + Evidence", "sublabel": "SQLite / journal / trajectory / trace", "pos": [1390, 800], "size": [235, 78] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Control plane", "wraps": ["entry", "authority", "manager"], "pad": 24 },
+    { "kind": "region", "label": "Per-session runtime", "wraps": ["session", "agent", "context", "toolPolicy"], "pad": 28 },
+    { "kind": "security-group", "label": "Guarded host effects", "wraps": ["toolPolicy", "toolBackends"], "pad": 20 }
+  ],
+  "connections": [
+    { "id": "request", "from": "clients", "to": "entry", "label": "request", "variant": "emphasis" },
+    { "id": "authenticate", "from": "entry", "to": "authority", "label": "auth + scope", "variant": "security" },
+    { "id": "route", "from": "authority", "to": "manager", "variant": "security" },
+    { "id": "resolve", "from": "manager", "to": "session", "label": "create / restore", "route": "straight" },
+    { "id": "serialize", "from": "session", "to": "agent", "label": "serialized turn", "variant": "emphasis" },
+    { "id": "buildContext", "from": "agent", "to": "context" },
+    { "id": "modelRequest", "from": "context", "to": "provider", "label": "model request", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
+    { "id": "modelResponse", "from": "provider", "to": "agent", "label": "text / tools", "variant": "emphasis" },
+    { "id": "toolCalls", "from": "agent", "to": "toolPolicy", "label": "ToolCall batch", "variant": "security", "fromSide": "bottom", "toSide": "top" },
+    { "id": "dispatch", "from": "toolPolicy", "to": "toolBackends", "label": "guarded dispatch", "variant": "security" },
+    { "id": "coordinationOwned", "from": "manager", "to": "coordination", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "inject", "from": "coordination", "to": "session", "label": "inject next turn", "variant": "dashed" },
+    { "id": "persist", "from": "session", "to": "state", "label": "epochs / events", "fromSide": "bottom", "toSide": "top" },
+    { "id": "recordEffects", "from": "toolPolicy", "to": "state", "label": "action outcomes", "fromSide": "left", "toSide": "right" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Concurrency", "items": ["One lock serializes each session", "Fleet-wide LLM and tool semaphores bound parallel work", "Parallel-safe tool results retain model-call order"] },
+    { "dot": "rose", "title": "Trust", "items": ["Authority is stamped at the run boundary", "Tool guards can only deny or abstain", "Host effects remain sandbox- and permission-gated"] },
+    { "dot": "emerald", "title": "Durability boundary", "items": ["SQLite can persist session epochs, events, leases, actions, and approvals", "Trajectories are append-only evidence", "Experimental workflows remain process-local and default-off"] }
+  ]
+}
