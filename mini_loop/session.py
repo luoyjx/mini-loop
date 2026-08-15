@@ -820,6 +820,17 @@ class AgentSession:
             },
             output=final,
         )
+        if resolved_context.allows("personal_skill.capture_source"):
+            try:
+                from .skill_capture import record_personal_skill_turn
+
+                record_personal_skill_turn(self.agent, message, final)
+            except Exception as error:
+                # Capturing provenance is optional read-side state; it must
+                # never turn a durably completed user turn into an error.
+                self.agent.state["personal_skill_capture_error"] = (
+                    type(error).__name__
+                )
         return final
 
     async def _finish_trajectory(

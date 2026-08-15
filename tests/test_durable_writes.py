@@ -25,7 +25,13 @@ from mini_loop.durable import atomic_write_text
 PACKAGE = pathlib.Path(__file__).resolve().parent.parent / "mini_loop"
 
 #: Modules that keep state meant to outlive the turn that wrote it.
-DURABLE_MODULES = ("memory.py", "tasks.py", "cron.py", "compaction.py")
+DURABLE_MODULES = (
+    "memory.py",
+    "tasks.py",
+    "cron.py",
+    "compaction.py",
+    "user_resources.py",
+)
 
 
 def _scratch(directory):
@@ -138,14 +144,20 @@ def _direct_writes(path):
 
 
 def _helper_writes(path):
-    """`atomic_write_text` / `atomic_write_bytes` calls in `path`, by line."""
+    """Calls through one of the durable atomic helpers, by line."""
 
     tree = ast.parse(path.read_text())
     for node in ast.walk(tree):
         if (
             isinstance(node, ast.Call)
             and isinstance(node.func, ast.Name)
-            and node.func.id in ("atomic_write_text", "atomic_write_bytes")
+            and node.func.id
+            in (
+                "atomic_create_text",
+                "atomic_create_bytes",
+                "atomic_write_text",
+                "atomic_write_bytes",
+            )
         ):
             yield node.lineno, ast.unparse(node)[:70]
 

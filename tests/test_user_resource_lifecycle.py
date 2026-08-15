@@ -201,7 +201,10 @@ def test_teammate_inherits_parent_resources_before_build(tmp_path):
         )
         teammate = next(item for item in manager.list() if item.id != parent.id)
         try:
-            assert resolver.calls == ["alice", "alice"]
+            # The child inherits the parent's immutable resource generation;
+            # a publication between parent/child construction must not give
+            # the teammate a catalogue the parent never saw.
+            assert resolver.calls == ["alice"]
             assert teammate.owner == "alice"
             assert teammate.agent.state["resource_owner"] == "alice"
             assert teammate.agent.skills is resolver.resolved["alice"].skills

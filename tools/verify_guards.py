@@ -1334,15 +1334,19 @@ MUTATIONS = [
     ),
     Mutation(
         "durable-write-is-not-flushed", 82, "mini_loop/durable.py",
-        "            os.fsync(handle.fileno())",
-        "            pass",
+        "            os.fsync(handle.fileno())\n"
+        "        os.replace(temporary, path)",
+        "            pass\n"
+        "        os.replace(temporary, path)",
         "tests/test_durable_writes.py::test_the_write_is_actually_durable_not_just_renamed",
         "the temp file is on disk before the rename makes it the target",
     ),
     Mutation(
         "scratch-file-survives-an-interrupt", 82, "mini_loop/durable.py",
-        "    except BaseException:",
-        "    except Exception:",
+        "    except BaseException:\n"
+        "        # Including KeyboardInterrupt and SystemExit:",
+        "    except Exception:\n"
+        "        # Including KeyboardInterrupt and SystemExit:",
         "tests/test_durable_writes.py::test_an_interrupt_leaves_no_scratch_file",
         "Ctrl-C during a write strands no .tmp for a later glob to find",
     ),
@@ -1355,8 +1359,12 @@ MUTATIONS = [
     ),
     Mutation(
         "refactor-shrinks-the-write-inventory", 82, "tests/test_write_sites.py",
-        '               "atomic_write_text", "atomic_write_bytes"}',
-        "               }",
+        '    "atomic_create_text",\n'
+        '    "atomic_create_bytes",\n'
+        '    "atomic_write_text",\n'
+        '    "atomic_write_bytes",\n'
+        '}',
+        '}',
         "tests/test_write_sites.py::test_the_classification_has_no_dead_entries",
         "routing writes through a helper does not remove them from the masking "
         "inventory -- the refactor in this round did exactly that",
@@ -1477,8 +1485,14 @@ MUTATIONS = [
     ),
     Mutation(
         "route-bypasses-the-session", 89, "mini_loop/server.py",
-        "        final = await session.run(req.message)",
-        "        final = await session.agent.run(req.message)",
+        "        final = await session.run(\n"
+        "            req.message,\n"
+        "            run_context=_authenticated_message_context(caller),\n"
+        "        )",
+        "        final = await session.agent.run(\n"
+        "            req.message,\n"
+        "            run_context=_authenticated_message_context(caller),\n"
+        "        )",
         "tests/test_entry_points.py::test_only_sessionless_callers_bypass_the_session",
         "a caller serving a user goes through the session, so its turns are "
         "counted, recorded to a trajectory and serialized",

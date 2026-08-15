@@ -43,6 +43,10 @@ RECORDED = {
     "tasks.py": "task subjects and descriptions, model-authored",
     "teams.py": "messages delivered to another agent's inbox",
     "trajectory.py": "the recorded event log",
+    "user_resources.py": (
+        "canonical personal skills explicitly committed into an owner-bound "
+        "resource directory after secret screening"
+    ),
     "worktrees.py": "worktree lifecycle events",
     "approvals.py": (
         "the durable approval trail: input_preview is masked in ask() before "
@@ -86,8 +90,16 @@ EXECUTED = {
 #: four durable writers through it, and that silently removed them from this
 #: scan -- cron.py and tasks.py stopped containing a syntactic write and so
 #: stopped being classified at all. A refactor must not shrink the inventory.
-WRITE_CALLS = {"write_text", "write_bytes", "writelines", "write",
-               "atomic_write_text", "atomic_write_bytes"}
+WRITE_CALLS = {
+    "write_text",
+    "write_bytes",
+    "writelines",
+    "write",
+    "atomic_create_text",
+    "atomic_create_bytes",
+    "atomic_write_text",
+    "atomic_write_bytes",
+}
 
 
 def _write_sites() -> dict[str, list[int]]:

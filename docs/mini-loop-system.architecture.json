@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Concurrent session control plane, owner-scoped skills and memory, guarded tools, optional orchestration, and durable evidence",
+    "subtitle": "Concurrent sessions, owner-scoped knowledge, explicit personal-skill publication, guarded tools, and durable evidence",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -31,8 +31,14 @@
       {
         "id": "resource-path",
         "label": "Scoped skills and memory",
-        "focus": ["authority", "manager", "context", "state"],
-        "note": "Agent skills remain trusted manager policy; user skills and memory enter context only inside the authenticated owner's namespace."
+        "focus": ["authority", "manager", "session", "skillDrafts", "state", "context"],
+        "note": "Preview is process-local; an exact digest commit creates an owner skill that only future session snapshots can load."
+      },
+      {
+        "id": "personal-skill",
+        "label": "Capture a personal skill",
+        "focus": ["clients", "entry", "authority", "manager", "session", "skillDrafts", "state", "context"],
+        "note": "Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."
       }
     ]
   },
@@ -41,17 +47,18 @@
     { "id": "entry", "type": "frontend", "label": "Entry Surface", "sublabel": "FastAPI + CLI + console", "pos": [330, 260], "size": [170, 72] },
     { "id": "authority", "type": "security", "label": "Trust Boundary", "sublabel": "Auth + ownership + RunContext", "pos": [650, 260], "size": [210, 72], "tag": "fail closed" },
     { "id": "manager", "type": "backend", "label": "SessionManager", "sublabel": "fleet composition + shared limits", "pos": [1030, 260], "size": [200, 72] },
+    { "id": "skillDrafts", "type": "backend", "label": "Personal-skill Preview", "sublabel": "auth turn ledger + TTL draft", "pos": [700, 440], "size": [230, 76], "tag": "process-local" },
     { "id": "session", "type": "backend", "label": "AgentSession", "sublabel": "lock + transcript + events", "pos": [1410, 260], "size": [190, 72], "tag": "per session" },
     { "id": "agent", "type": "backend", "label": "Agent Loop", "sublabel": "model / tools / stop", "pos": [1780, 260], "size": [180, 72], "tag": "async" },
     { "id": "context", "type": "backend", "label": "Context Pipeline", "sublabel": "agent + owner skills / memory + cache", "pos": [2110, 100], "size": [220, 76] },
     { "id": "provider", "type": "external", "label": "Model Provider", "sublabel": "streaming transport", "pos": [2110, 410], "size": [200, 72] },
     { "id": "toolPolicy", "type": "security", "label": "Tool Execution Gate", "sublabel": "catalog + hooks + permissions", "pos": [1780, 540], "size": [210, 76], "tag": "deny is final" },
     { "id": "toolBackends", "type": "backend", "label": "Tool Backends", "sublabel": "files / shell / MCP / sandbox", "pos": [2110, 700], "size": [215, 76] },
-    { "id": "coordination", "type": "messagebus", "label": "Async Coordination", "sublabel": "background / cron / teams / workflows", "pos": [1030, 540], "size": [230, 76], "tag": "opt-in surfaces" },
-    { "id": "state", "type": "database", "label": "State + Evidence", "sublabel": "user resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] }
+    { "id": "coordination", "type": "messagebus", "label": "Async Coordination", "sublabel": "background / cron / teams / workflows", "pos": [1030, 620], "size": [230, 76], "tag": "opt-in surfaces" },
+    { "id": "state", "type": "database", "label": "Durable State + Files", "sublabel": "owner resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] }
   ],
   "boundaries": [
-    { "kind": "region", "label": "Control plane", "wraps": ["entry", "authority", "manager"], "pad": 24 },
+    { "kind": "region", "label": "Control plane", "wraps": ["entry", "authority", "manager", "skillDrafts"], "pad": 24 },
     { "kind": "region", "label": "Per-session runtime", "wraps": ["session", "agent", "context", "toolPolicy"], "pad": 28 },
     { "kind": "security-group", "label": "Guarded host effects", "wraps": ["toolPolicy", "toolBackends"], "pad": 20 }
   ],
@@ -60,6 +67,9 @@
     { "id": "authenticate", "from": "entry", "to": "authority", "label": "auth + scope", "variant": "security" },
     { "id": "route", "from": "authority", "to": "manager", "variant": "security" },
     { "id": "resolve", "from": "manager", "to": "session", "label": "create / restore", "route": "straight" },
+    { "id": "previewSkill", "from": "manager", "to": "skillDrafts", "label": "auth-turn preview", "variant": "dashed", "fromSide": "left", "toSide": "right", "via": [[970, 296], [970, 478]], "labelAt": [955, 382] },
+    { "id": "commitSkill", "from": "skillDrafts", "to": "state", "label": "explicit digest commit", "variant": "security", "fromSide": "bottom", "toSide": "left", "via": [[815, 760], [1360, 760], [1360, 839]], "labelAt": [1100, 744] },
+    { "id": "activateSkill", "from": "state", "to": "context", "label": "future-session snapshot", "variant": "dashed", "fromSide": "right", "toSide": "right", "via": [[1660, 839], [1660, 930], [2410, 930], [2410, 138]], "labelAt": [2030, 914] },
     { "id": "serialize", "from": "session", "to": "agent", "label": "serialized turn", "variant": "emphasis" },
     { "id": "buildContext", "from": "agent", "to": "context" },
     { "id": "modelRequest", "from": "context", "to": "provider", "label": "model request", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
@@ -73,7 +83,7 @@
   ],
   "cards": [
     { "dot": "cyan", "title": "Concurrency", "items": ["One lock serializes each session", "Fleet-wide LLM and tool semaphores bound parallel work", "Parallel-safe tool results retain model-call order"] },
-    { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Agent and user skills retain explicit provenance", "Host effects remain sandbox- and permission-gated"] },
-    { "dot": "emerald", "title": "Durability boundary", "items": ["SQLite can persist session epochs, events, leases, actions, and approvals", "User memory is durable inside its owner namespace", "Experimental workflows remain process-local and default-off"] }
+    { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Only authenticated HTTP user/final turns enter preview", "Preview cannot publish; commit is a separate caller action", "Agent and user skills retain explicit provenance"] },
+    { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] }
   ]
 }

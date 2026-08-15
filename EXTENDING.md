@@ -64,10 +64,12 @@ rebuild the same oversized prompt.
 
 ## 0a. Who is calling — `Authenticator`
 
-`app.state.auth` is resolved per request, so rotating a token takes effect
-without restarting or re-registering routes. `NullAuth` (the default) makes every
-caller one anonymous principal, which is why `refuse_open_bind` turns a
-non-loopback bind without tokens into a startup failure rather than a warning.
+`app.state.auth` is resolved once at request admission, so rotating a token
+takes effect on the next request without letting one in-flight request change
+identity between its handler, ownership check, and capture stamp. `NullAuth`
+(the default) makes every caller one anonymous principal, which is why
+`refuse_open_bind` turns a non-loopback bind without tokens into a startup
+failure rather than a warning.
 
 Shape from the OpenHands agent server: authentication as a dependency on the
 router rather than a check repeated per handler, config read at request time,
@@ -885,9 +887,12 @@ digest-only directory; raw principal IDs never become path components:
   memory/*.md
 ```
 
-An owner's first resolution snapshots that skill directory for the lifetime
-of the resolver. Restart the manager or inject a replacement resolver after a
-deployment changes those files; live sessions are never silently rebound.
+An owner's resolved skill catalogue is an immutable Agent-lifetime snapshot.
+External deployment edits still require a manager restart or replacement
+resolver. The personal-skill publication API described below is the supported
+in-process refresh seam: it validates a complete new catalogue and atomically
+swaps only the resolver's snapshot for future sessions. Live sessions are
+never silently rebound.
 
 The effective catalogue names both sources. `load_skill` accepts
 `scope="agent"|"user"`, and `agent:<name>` / `user:<name>` are equivalent
@@ -901,6 +906,54 @@ store; configuring the root does not itself add tools. `readonly` may recall
 but skips automatic extraction. Without the owner root, user skills are absent
 and the existing shared `MemoryStore` remains as a compatibility fallback with
 owner-filtered, collision-safe keys.
+
+An authenticated user can deliberately capture a reusable procedure from the
+current live session through two separate REST calls:
+
+1. `POST /sessions/{id}/personal-skills/preview` accepts a lower-kebab `name`
+   and optional `focus`. Its authoritative source is a provenance ledger of the
+   raw authenticated HTTP user input and the final answer returned for each
+   successfully completed turn. Admission happens only after terminal
+   trajectory/event persistence succeeds. It therefore excludes tool traffic,
+   injected runtime/skill/memory text, background work, internal continuations, and
+   restored history by construction. The ledger is capped at 64 messages and
+   40,000 serialized characters, masked before storage, and re-masked before
+   synthesis. A preview draft is process-local, owner/session-bound, expires
+   after 15 minutes, and writes no skill file. Draft storage is capped at 64
+   globally, 16 per owner, and 4 per session; a full global store never evicts
+   another owner's reviewed draft.
+   The synthesis call sets an immutable-message boundary: request optimizers,
+   cache annotation, and recovery retries cannot replace the admitted ledger
+   payload before provider dispatch.
+2. After inspecting the returned description, body, coverage receipt, and
+   digest, the user calls
+   `POST /sessions/{id}/personal-skills/{draft_id}/commit` with only that
+   digest. The authenticated route publishes the exact server-held draft into
+   the already-bound owner root. It never accepts an owner, path, or Markdown
+   body. The canonical-document `digest` is identical in preview and commit
+   receipts; `content_digest` separately identifies the loaded body.
+
+Publication is create-only. Repeating identical canonical content is
+idempotent; different content under an existing user name conflicts. A name
+shared with an Agent skill is allowed but must be loaded as `user:<name>`.
+Commit is refused in `readonly`, and successful receipts say
+`activation=next_session`: the authoring session and every other live session
+keep their original catalogue, while subsequently created sessions see the new
+skill. A teammate spawned from an older live parent explicitly inherits that
+parent's pinned snapshot; it does not silently refresh. Editing, replacement,
+rollback, cross-process cache refresh, and a model-callable publish tool are
+intentionally outside this version.
+
+Publication builds and validates the complete future-session snapshot before
+the no-replace hard link. That link is the irreversible commit point: no later
+validation or rollback may turn another resolver's already-confirmed
+idempotent success into a missing file. Short or unavailable registered secret
+values make preview and publication fail closed rather than enter a durable
+instruction file.
+Canonical publication normalizes frontmatter whitespace and newlines exactly as
+`SkillLoader` will read them, then orders the in-memory entries by source path;
+the future-session snapshot, an idempotent retry, and a restart therefore share
+the same descriptions, bodies, digests, and catalogue order.
 
 This is application-level scoping, not host tenancy. A user skill is still
 instruction-like model input and a Markdown memory is still a host file. They

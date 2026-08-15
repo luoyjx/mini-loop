@@ -34,7 +34,7 @@ if untrusted users can submit prompts.
 ## Architecture
 
 Architecture review baseline: **hardening round 188**; user-resource scoping
-reviewed **2026-08-15**. Every implementation
+and personal-skill publication reviewed **2026-08-15**. Every implementation
 iteration must review this map; update the baseline in the same commit, and
 update the affected nodes, edges, boundaries, and capability labels whenever
 the runtime changes.
@@ -48,6 +48,7 @@ flowchart LR
         Entry["FastAPI / CLI / console<br/>server.py · __main__.py"]
         Trust["Authentication + ownership<br/>auth.py · RunContext"]
         Manager["SessionManager<br/>composition · scoped resources · shared semaphores"]
+        Drafts["Personal-skill drafts<br/>sanitized preview · TTL · process-local"]
         Entry --> Trust --> Manager
     end
 
@@ -73,12 +74,16 @@ flowchart LR
 
     subgraph Evidence["State and evidence"]
         State["SQLiteStateStore<br/>session epochs · events · leases"]
+        Resources["Owner resource files<br/>user skills · Markdown memory"]
         Journal["Action / approval / goal / plan logs<br/>replay · CAS · recovery state"]
         Trace["Events · trajectory JSONL · trace viewer<br/>audit · problems · runtime posture"]
     end
 
     Caller --> Entry
     Manager -->|bind owner · create / restore / route| Session
+    Manager -. preview current session .-> Drafts
+    Manager -. explicit digest commit .-> Resources
+    Resources -. new-session snapshot .-> Context
     Context -->|model request| Provider
     Provider -->|text / tool_use| Agent
     Gate -->|guarded dispatch| Backends
@@ -104,7 +109,15 @@ real `StateStore` is configured; the default server still uses the documented
 `Null*` boundaries. Agent skills are deployment-managed policy input. When
 `MINILOOP_USER_RESOURCES_ROOT` is configured, user skills and Markdown memory
 resolve from a digest-only owner directory before the Agent is built; they are
-not SQLite state and do not imply host-level tenant isolation.
+not SQLite state and do not imply host-level tenant isolation. An authenticated
+owner may preview a personal skill from a bounded, masked ledger of completed
+authenticated HTTP turns, then explicitly commit that exact short-lived draft
+by digest.
+Preview authority is process-local, while a committed `SKILL.md` is a durable
+local file. Publication never replaces an existing user skill and activates
+only in future independently resolved sessions, preserving every live Agent's
+prompt/catalogue snapshot; a later teammate still inherits its live parent's
+pinned snapshot. The feature remains default-off with the owner-resource root.
 
 For an explorable version with guided request, tool, and orchestration views,
 open the [interactive architecture](docs/mini-loop-system.architecture.html).
@@ -175,6 +188,8 @@ mini_loop/
   skills.py      SkillLoader + layered agent/user catalogue and provenance
   user_resources.py
                  digest-only owner namespaces for user skills and memory
+  skill_capture.py
+                 authenticated-turn ledger + short-lived personal-skill drafts
   prompts.py     system_builder (default + sections_builder)
   compaction.py  Compactor protocol + budget / snip / micro / auto layers
   run_context.py immutable per-message provenance + capability approvals
@@ -543,6 +558,8 @@ or JSONL. See [Agent trajectories](docs/TRAJECTORIES.md).
 | DELETE | `/sessions/{id}`                 | — | drop session + workspace |
 | POST   | `/sessions/{id}/messages`        | `{message}` | run to completion → final text |
 | POST   | `/sessions/{id}/messages/stream` | `{message}` | run, stream live events (SSE) |
+| POST   | `/sessions/{id}/personal-skills/preview` | `{name, focus?}` | build a reviewable, short-lived personal-skill draft without writing a file |
+| POST   | `/sessions/{id}/personal-skills/{draft_id}/commit` | `{digest}` | explicitly publish the exact reviewed draft for future sessions |
 | GET    | `/sessions/{id}/events`          | — | persistent session event feed (SSE; `?envelope=true` emits one generic event name) |
 | GET    | `/sessions/{id}/trajectories`    | — | list durable runs for a session |
 | GET    | `/trajectories`                  | — | list all durable runs; filter with `?session_id=` |
@@ -559,6 +576,45 @@ curl -s -XPOST localhost:8000/sessions/$SID/messages \
 curl -sN -XPOST localhost:8000/sessions/$SID/messages/stream \
      -H content-type:application/json -d '{"message":"now add tests"}'
 ```
+
+Personal-skill publication additionally requires token authentication and
+`MINILOOP_USER_RESOURCES_ROOT`. Preview does not write a skill file; inspect the
+returned `description`, `body`, coverage receipt, and digest before the separate
+commit. The server never accepts an owner, path, or replacement body here:
+
+```sh
+TOKEN="${TOKEN:?set TOKEN to a value configured in MINILOOP_API_TOKENS}"
+AUTH="Authorization: Bearer $TOKEN"
+PERSONAL_SID=$(curl -s -XPOST localhost:8000/sessions \
+  -H "$AUTH" -H content-type:application/json -d '{}' | jq -r .id)
+
+# Send the authenticated turns that may become source evidence, then preview.
+curl -s -XPOST localhost:8000/sessions/$PERSONAL_SID/messages \
+  -H "$AUTH" -H content-type:application/json \
+  -d '{"message":"review this workflow and verify the reusable steps"}' | jq
+PREVIEW=$(curl -s -XPOST \
+  localhost:8000/sessions/$PERSONAL_SID/personal-skills/preview \
+  -H "$AUTH" -H content-type:application/json \
+  -d '{"name":"review-helper","focus":"the reusable review workflow"}')
+echo "$PREVIEW" | jq \
+  '{description, body, coverage, omitted, compacted_history_excluded, expires_at, digest}'
+
+DRAFT_ID=$(echo "$PREVIEW" | jq -r .draft_id)
+DIGEST=$(echo "$PREVIEW" | jq -r .digest)
+curl -s -XPOST \
+  "localhost:8000/sessions/$PERSONAL_SID/personal-skills/$DRAFT_ID/commit" \
+  -H "$AUTH" -H content-type:application/json \
+  -d "{\"digest\":\"$DIGEST\"}" | jq
+```
+
+The receipt reports `activation: next_session` for the next independently
+resolved session. `readonly` sessions may
+preview but cannot commit, and an existing skill name is never overwritten.
+Only successfully completed authenticated HTTP message turns from the current
+process are source evidence; tool traffic, injected runtime text, restored
+history, and internal continuations are excluded by construction. The preview
+`digest` is the canonical `SKILL.md` identity and remains the commit receipt's
+`digest`; `content_digest` identifies only the model-visible body.
 
 SSE event types include `status`, `model_start`, `model_end`, `assistant_text`,
 `tool_use`, `tool_result`, `trajectory_start`, `trajectory_end`,

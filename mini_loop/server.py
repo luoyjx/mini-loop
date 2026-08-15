@@ -28,6 +28,8 @@ Endpoints
   DELETE /sessions/{id}             drop session + workspace
   POST   /sessions/{id}/messages    {message} -> run to completion, return final text
   POST   /sessions/{id}/messages/stream   {message} -> SSE of live events
+  POST   /sessions/{id}/personal-skills/preview   {name, focus?} -> pending draft
+  POST   /sessions/{id}/personal-skills/{draft_id}/commit   {digest} -> publish
   GET    /sessions/{id}/events      SSE: observe a session's event stream
   GET    /sessions/{id}/trajectories      list durable runs for one session
   GET    /trajectories/{id}         inspect one recorded trajectory
@@ -47,14 +49,16 @@ from typing import Literal
 from fastapi.responses import JSONResponse
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response, StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 from sse_starlette.sse import EventSourceResponse
 
 from .config import Settings, build_client, load_settings
 from .manager import SessionManager
 from .auth import ANONYMOUS, NullAuth, Principal, load_auth
 from .identity import runtime_identity
+from .run_context import UNTRUSTED, RunContext
 from .session import AgentSession
+from .skill_capture import PERSONAL_SKILL_CAPTURE_SOURCE, PersonalSkillError
 
 
 class CreateSessionReq(BaseModel):
@@ -75,6 +79,23 @@ class ApprovalReq(BaseModel):
     decision: Literal["allow", "deny"]
     #: For kind="question" pendings: the reply text. Ignored for approvals.
     answer: str | None = None
+
+
+class PersonalSkillPreviewReq(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(
+        min_length=1,
+        max_length=64,
+        pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$",
+    )
+    focus: str = Field(default="", max_length=2_000)
+
+
+class PersonalSkillCommitReq(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    digest: str = Field(min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")
 
 
 def _manager(request: Request) -> SessionManager:
@@ -112,8 +133,12 @@ def _credential(request: Request) -> str | None:
 
 
 def _principal(request: Request) -> Principal:
-    """Authenticate at request time so a rotated token takes effect at once."""
+    """Authenticate once per request so identity cannot drift mid-handler."""
 
+    missing = object()
+    cached = getattr(request.state, "mini_loop_principal", missing)
+    if cached is not missing:
+        return cached
     caller = _auth(request).authenticate(_credential(request))
     if caller is None:
         raise HTTPException(
@@ -121,6 +146,7 @@ def _principal(request: Request) -> Principal:
             detail="a bearer token is required",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    request.state.mini_loop_principal = caller
     return caller
 
 
@@ -136,6 +162,28 @@ def _require(request: Request, session_id: str) -> AgentSession:
     if session is None or getattr(session, "owner", ANONYMOUS.id) != caller.id:
         raise HTTPException(status_code=404, detail=f"No session '{session_id}'")
     return session
+
+
+def _personal_skill_http_error(error: PersonalSkillError) -> HTTPException:
+    """Keep personal-skill failures stable without echoing draft content."""
+
+    return HTTPException(
+        status_code=error.status_code,
+        detail={"code": error.code, "message": str(error)},
+    )
+
+
+def _authenticated_message_context(caller: Principal) -> RunContext:
+    """Mark an HTTP input as captureable without widening tool authority."""
+
+    return RunContext(
+        origin="authenticated_http",
+        actor_id=caller.id,
+        channel="http",
+        authority=UNTRUSTED,
+        stamped_by="mini_loop.server",
+        approved_capabilities=(PERSONAL_SKILL_CAPTURE_SOURCE,),
+    )
 
 
 def _owned_session_ids(request: Request, caller) -> set[str]:
@@ -451,6 +499,47 @@ def _register_routes(app: FastAPI) -> None:
         session.permission_mode = req.mode
         return {"session": session_id, "permission_mode": req.mode}
 
+    @app.post("/sessions/{session_id}/personal-skills/preview")
+    async def preview_personal_skill(
+        request: Request,
+        session_id: str,
+        req: PersonalSkillPreviewReq,
+    ):
+        """Create a reviewable, expiring draft without writing a skill."""
+
+        caller = _principal(request)
+        _require(request, session_id)
+        try:
+            return await _manager(request).preview_personal_skill(
+                session_id,
+                caller.id,
+                req.name,
+                req.focus,
+            )
+        except PersonalSkillError as error:
+            raise _personal_skill_http_error(error) from error
+
+    @app.post("/sessions/{session_id}/personal-skills/{draft_id}/commit")
+    async def commit_personal_skill(
+        request: Request,
+        session_id: str,
+        draft_id: str,
+        req: PersonalSkillCommitReq,
+    ):
+        """Publish exactly the authenticated caller's reviewed pending draft."""
+
+        caller = _principal(request)
+        _require(request, session_id)
+        try:
+            return await _manager(request).commit_personal_skill(
+                session_id,
+                caller.id,
+                draft_id,
+                req.digest,
+            )
+        except PersonalSkillError as error:
+            raise _personal_skill_http_error(error) from error
+
     @app.get("/sessions")
     async def list_sessions(request: Request):
         caller = _principal(request)
@@ -558,6 +647,7 @@ def _register_routes(app: FastAPI) -> None:
 
     @app.post("/sessions/{session_id}/messages")
     async def post_message(request: Request, session_id: str, req: MessageReq):
+        caller = _principal(request)
         session = _require(request, session_id)
         if session.busy:
             # Queueing on the session lock would hold the connection open with
@@ -572,16 +662,25 @@ def _register_routes(app: FastAPI) -> None:
                     f"/sessions/{session_id}/cancel to stop it, or retry"
                 ),
             )
-        final = await session.run(req.message)
+        final = await session.run(
+            req.message,
+            run_context=_authenticated_message_context(caller),
+        )
         return {"session": session_id, "final": final, "info": session.info()}
 
     @app.post("/sessions/{session_id}/messages/stream")
     async def post_message_stream(request: Request, session_id: str, req: MessageReq):
+        caller = _principal(request)
         session = _require(request, session_id)
 
         async def gen():
             q = session.subscribe(replay=False)
-            run_task = asyncio.create_task(session.run(req.message))
+            run_task = asyncio.create_task(
+                session.run(
+                    req.message,
+                    run_context=_authenticated_message_context(caller),
+                )
+            )
             try:
                 while True:
                     getter = asyncio.ensure_future(q.get())

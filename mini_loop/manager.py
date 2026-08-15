@@ -34,8 +34,13 @@ from .harness import Harness
 from .memory import MemoryStore
 from .registry import Hooks, ToolRegistry
 from .run_context import RunContext
-from .session import AgentSession
+from .session import AgentSession, LeaseLost
 from .secrets import NullSecretRegistry
+from .skill_capture import (
+    PersonalSkillDraftStore,
+    PersonalSkillError,
+    preview_personal_skill,
+)
 from .skills import SkillLoader
 from .storage import NullStateStore, SessionRecord, StateStore
 from .tasks import TaskStore
@@ -50,7 +55,12 @@ from .token_efficiency import (
 )
 from .tool_policy import DEFAULT_ROLE_TOOL_POLICY
 from .token_tools import install_token_efficiency_tools
-from .user_resources import UserResourceResolver
+from .user_resources import (
+    UserResourceResolver,
+    UserSkillConflict,
+    UserSkillPublicationError,
+    UserSkillValidationError,
+)
 from .worktrees import WorktreeManager
 from .workflows.service import WorkflowService, workflow_injector
 from .workflows.tools import install_workflows
@@ -394,6 +404,10 @@ class SessionManager:
                 self.skills,
                 secrets=self.secrets,
             )
+        # Pending previews are process-local authorization artifacts.  One
+        # bounded store covers the fleet so opening more sessions cannot turn
+        # the per-session cap into an unbounded manager-level cache.
+        self.personal_skill_drafts = PersonalSkillDraftStore()
         self.worktrees = WorktreeManager(settings.repo_root) if settings.repo_root else None
         self.cron = CronScheduler(
             self,
@@ -578,16 +592,30 @@ class SessionManager:
         extra_state: dict,
         label: str = "main",
         resolve_user_resources: bool = True,
+        resource_skills=None,
+        resource_memory=None,
     ) -> Agent:
         registry = self.tool_registry.clone() if self.tool_registry is not None else None
         resource_owner = getattr(session, "owner", "anonymous")
         resources = (
             self.user_resources.for_owner(resource_owner)
-            if self.user_resources is not None and resolve_user_resources
+            if (
+                self.user_resources is not None
+                and resolve_user_resources
+                and (resource_skills is None or resource_memory is None)
+            )
             else None
         )
-        skills = resources.skills if resources is not None else self.skills
-        memory = resources.memory if resources is not None else self.memory
+        skills = (
+            resource_skills
+            if resource_skills is not None
+            else resources.skills if resources is not None else self.skills
+        )
+        memory = (
+            resource_memory
+            if resource_memory is not None
+            else resources.memory if resources is not None else self.memory
+        )
         state = {
             "manager": self,
             "session": session,
@@ -600,6 +628,9 @@ class SessionManager:
             "memory": memory,
             "memory_root": memory.dir,
             "resource_owner": resource_owner,
+            "personal_skill_drafts": self.personal_skill_drafts,
+            "personal_skill_turns": [],
+            "personal_skill_turns_omitted": 0,
             "worktrees": self.worktrees,
             "workflow_service": self.workflows,
             "permission_mode": session.permission_mode,
@@ -661,6 +692,162 @@ class SessionManager:
         self._record(session)
         self._claim(session)
         return session
+
+    def _personal_skill_target(self, session_id: str, owner: str):
+        """Resolve the trusted session and publisher for one API operation."""
+
+        session = self.get(session_id)
+        if session is None or getattr(session, "owner", "anonymous") != owner:
+            raise PersonalSkillError(
+                "session_not_found",
+                404,
+                f"No session '{session_id}'",
+            )
+        if owner == "anonymous":
+            raise PersonalSkillError(
+                "authenticated_owner_required",
+                403,
+                "personal skill publication requires an authenticated owner",
+            )
+        resolver = self.user_resources
+        if resolver is None or not callable(getattr(resolver, "publish_skill", None)):
+            raise PersonalSkillError(
+                "personal_skills_disabled",
+                404,
+                "personal skill publication is not enabled",
+            )
+        if session.agent is None:
+            raise PersonalSkillError(
+                "session_not_ready",
+                409,
+                "session agent is not ready",
+            )
+        return session, resolver
+
+    @staticmethod
+    def _require_personal_skill_lease(session: AgentSession) -> None:
+        """Map process-lease loss to a stable, non-sensitive API error."""
+
+        try:
+            session._require_lease()
+        except LeaseLost as error:
+            raise PersonalSkillError(
+                "session_lease_lost",
+                409,
+                "session lease was lost",
+            ) from error
+
+    async def preview_personal_skill(
+        self,
+        session_id: str,
+        owner: str,
+        name: str,
+        focus: str = "",
+    ) -> dict:
+        """Synthesize a bounded owner/session-bound draft without publishing."""
+
+        session, _resolver = self._personal_skill_target(session_id, owner)
+        async with session.lock:
+            if self.get(session_id) is not session or not getattr(
+                session, "_accepting_runs", False
+            ):
+                raise PersonalSkillError("session_not_found", 404)
+            self._require_personal_skill_lease(session)
+            assert session.agent is not None
+            if not isinstance(
+                session.agent.state.get("personal_skill_turns"), list
+            ):
+                raise PersonalSkillError("capture_source_unavailable", 503)
+            draft = await preview_personal_skill(
+                session.agent,
+                owner,
+                name,
+                focus,
+            )
+        return draft.public_dict()
+
+    async def commit_personal_skill(
+        self,
+        session_id: str,
+        owner: str,
+        draft_id: str,
+        digest: str,
+    ) -> dict:
+        """Publish exactly one reviewed draft for activation in a new session."""
+
+        session, resolver = self._personal_skill_target(session_id, owner)
+        async with session.lock:
+            if self.get(session_id) is not session or not getattr(
+                session, "_accepting_runs", False
+            ):
+                raise PersonalSkillError("session_not_found", 404)
+            self._require_personal_skill_lease(session)
+            if session.permission_mode == "readonly":
+                raise PersonalSkillError(
+                    "readonly_session",
+                    403,
+                    "readonly sessions cannot publish personal skills",
+                )
+            draft = self.personal_skill_drafts.peek(
+                draft_id,
+                owner=owner,
+                session_id=session_id,
+                digest=digest,
+            )
+            fields = {
+                "name": draft.name,
+                "description": draft.description,
+                "body": draft.body,
+            }
+            try:
+                publication = await asyncio.to_thread(
+                    resolver.publish_skill,
+                    owner,
+                    fields,
+                )
+                receipt = {
+                    "session": session_id,
+                    "draft_id": draft_id,
+                    "source": publication.source,
+                    "name": publication.name,
+                    "digest": draft.digest,
+                    "content_digest": publication.content_digest,
+                    "warning": publication.warning,
+                    "idempotent": publication.idempotent,
+                    "activation": "next_session",
+                }
+            except UserSkillConflict as error:
+                raise PersonalSkillError(
+                    error.code,
+                    409,
+                    str(error),
+                ) from error
+            except UserSkillValidationError as error:
+                raise PersonalSkillError(
+                    error.code,
+                    422,
+                    str(error),
+                ) from error
+            except UserSkillPublicationError as error:
+                raise PersonalSkillError(
+                    error.code,
+                    500,
+                    str(error),
+                ) from error
+            except Exception as error:
+                # Resolver errors have safe typed messages.  An injected
+                # publisher may not, so never reflect its host exception into
+                # the authenticated HTTP response.
+                raise PersonalSkillError(
+                    "publication_failed",
+                    500,
+                    "personal skill publication failed",
+                ) from error
+            # Publication is already durable. Expiry or global-cache eviction
+            # during the filesystem operation must not turn success into an
+            # ambiguous HTTP failure; remove only the exact object we peeked.
+            self.personal_skill_drafts.discard_committed(draft)
+        return receipt
 
     def _claim(self, session: AgentSession) -> None:
         """Take the session's lease, if the store supports one."""
@@ -790,7 +977,14 @@ class SessionManager:
         session.created_at = record.created_at
         session.run_count = record.run_count
         session.status = record.status
-        session.restore()
+        restored_messages = session.restore()
+        if restored_messages and session.agent is not None:
+            # Historical rows have no per-message trusted HTTP provenance, so
+            # never reconstruct the personal-skill ledger from them. Name the
+            # excluded history in the next preview receipt instead.
+            session.agent.state["personal_skill_turns_omitted"] = (
+                restored_messages
+            )
         if record.todos and session.agent is not None:
             session.agent.todo.items = [dict(t) for t in record.todos]
 
@@ -816,8 +1010,9 @@ class SessionManager:
             return "Error: teammate name must match [A-Za-z0-9._-]{1,64}"
         session_id = uuid.uuid4().hex[:12]
         # Shares the parent's workspace -> shared task board and mailbox group.
-        # User memory is inherited through the owner-bound resource resolver;
-        # the legacy fallback may still live under the shared workspace root.
+        # Skills and memory below come from the parent's immutable snapshot,
+        # not a fresh resolver generation: publication must not silently give
+        # a child capabilities/context its parent did not have.
         session = AgentSession(
             session_id,
             parent.workspace,
@@ -837,6 +1032,9 @@ class SessionManager:
                 "tasks": TaskStore(parent.workspace, secrets=self.secrets),
             },
             label=name,
+            resolve_user_resources=False,
+            resource_skills=parent.agent.skills,
+            resource_memory=parent.agent.state["memory"],
         )
         teammate_identity = f"You are teammate '{name}' (role: {role})"
         teammate_guidance = (

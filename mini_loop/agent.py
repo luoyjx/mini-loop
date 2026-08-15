@@ -822,6 +822,7 @@ class Agent:
         max_tokens=None,
         purpose: str = "agent_turn",
         tool_catalog_fingerprint: str | None = None,
+        immutable_messages: bool = False,
     ):
         # Recorded before annotation: the policy hands back a copy, so this is
         # the only point where "is this request the live conversation?" is knowable.
@@ -876,59 +877,72 @@ class Agent:
                 if key in valid_keys
             }
 
-        # Request optimizers receive a detached message copy and may only
-        # transform the newest delta. The runtime protects the frozen prefix;
-        # this provider-facing guard additionally preserves role count and
-        # tool-use/result identities so an optimizer cannot break pairing.
-        original_shape = _message_protocol_shape(provider_messages)
-        latest_role = (
-            messages[-1].get("role")
-            if messages and isinstance(messages[-1], dict)
-            else None
-        )
-        frozen_prefix_messages = (
-            len(messages)
-            if latest_role == "assistant"
-            else max(0, len(messages) - 1)
-        )
-        request_outcome = await self.token_efficiency.optimize_request(
-            RequestContext(
-                request={"messages": provider_messages},
-                frozen_prefix_messages=frozen_prefix_messages,
-            ),
-            budget_tokens=self.settings.token_threshold,
-        )
-        await self._send_optimization_receipts(request_outcome.receipts)
-        optimized_messages = request_outcome.context.request.get("messages")
-        if (
-            original_shape is not None
-            and _message_protocol_shape(optimized_messages) == original_shape
-        ):
-            messages = optimized_messages
+        if immutable_messages:
+            # Security-sensitive side queries have already selected and
+            # bounded their authoritative source. Request optimizers and cache
+            # policies are valid projections for an ordinary model turn, but
+            # are injection seams here. Re-mask a detached copy and dispatch
+            # those exact messages without either mutable projection layer.
+            messages = self.secrets.mask_payload(copy.deepcopy(provider_messages))
         else:
-            await self._send(
-                "request_optimization_rejected",
-                reason="message_protocol_guard",
+            # Request optimizers receive a detached message copy and may only
+            # transform the newest delta. The runtime protects the frozen
+            # prefix; this provider-facing guard additionally preserves role
+            # count and tool-use/result identities so an optimizer cannot
+            # break pairing.
+            original_shape = _message_protocol_shape(provider_messages)
+            latest_role = (
+                messages[-1].get("role")
+                if messages and isinstance(messages[-1], dict)
+                else None
             )
-            messages = provider_messages
-        if purpose == "agent_turn" and live_history is not None:
-            for index, (authoritative, projected) in enumerate(
-                zip(live_history, messages, strict=False)
+            frozen_prefix_messages = (
+                len(messages)
+                if latest_role == "assistant"
+                else max(0, len(messages) - 1)
+            )
+            request_outcome = await self.token_efficiency.optimize_request(
+                RequestContext(
+                    request={"messages": provider_messages},
+                    frozen_prefix_messages=frozen_prefix_messages,
+                ),
+                budget_tokens=self.settings.token_threshold,
+            )
+            await self._send_optimization_receipts(request_outcome.receipts)
+            optimized_messages = request_outcome.context.request.get("messages")
+            if (
+                original_shape is not None
+                and _message_protocol_shape(optimized_messages) == original_shape
             ):
-                if not isinstance(authoritative, dict) or not isinstance(projected, dict):
-                    continue
-                key = (index, _canonical_message_digest(authoritative))
-                if _canonical_message_digest(projected) == key[1]:
-                    self._request_projection_ledger.pop(key, None)
-                else:
-                    self._request_projection_ledger[key] = copy.deepcopy(projected)
-        # Breakpoints are placed on per-request copies; `self.messages` stays
-        # free of provider-specific keys so history remains portable.
-        system, tools, messages = self.cache_policy.annotate(
-            system=system,
-            tools=tools,
-            messages=messages,
-        )
+                messages = optimized_messages
+            else:
+                await self._send(
+                    "request_optimization_rejected",
+                    reason="message_protocol_guard",
+                )
+                messages = provider_messages
+            if purpose == "agent_turn" and live_history is not None:
+                for index, (authoritative, projected) in enumerate(
+                    zip(live_history, messages, strict=False)
+                ):
+                    if not isinstance(authoritative, dict) or not isinstance(
+                        projected, dict
+                    ):
+                        continue
+                    key = (index, _canonical_message_digest(authoritative))
+                    if _canonical_message_digest(projected) == key[1]:
+                        self._request_projection_ledger.pop(key, None)
+                    else:
+                        self._request_projection_ledger[key] = copy.deepcopy(
+                            projected
+                        )
+            # Breakpoints are placed on per-request copies; `self.messages`
+            # stays free of provider-specific keys so history remains portable.
+            system, tools, messages = self.cache_policy.annotate(
+                system=system,
+                tools=tools,
+                messages=messages,
+            )
         kwargs: dict = {
             "model": self.state.get("recovery_model", self.settings.model),
             "messages": messages,
@@ -938,10 +952,19 @@ class Agent:
             kwargs["system"] = system
         if tools is not None:
             kwargs["tools"] = tools
+        protected_messages = (
+            copy.deepcopy(messages) if immutable_messages else None
+        )
 
         async def call(kw: dict):
+            dispatch = kw
+            if protected_messages is not None:
+                dispatch = dict(kw)
+                dispatch["messages"] = self.secrets.mask_payload(
+                    copy.deepcopy(protected_messages)
+                )
             async with self.semaphore:   # backoff sleeps happen OUTSIDE the slot
-                return await self.transport.send(self, kw)
+                return await self.transport.send(self, dispatch)
 
         span_id = f"model_{uuid.uuid4().hex[:16]}"
         self._last_model_span_id = span_id
