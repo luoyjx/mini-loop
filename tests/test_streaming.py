@@ -122,6 +122,34 @@ def test_streaming_emits_progress(tmp_path):
     assert seen, "a streamed turn emitted no progress at all"
 
 
+def test_streaming_progress_is_correlated_with_authoritative_phases(tmp_path):
+    session = _session(tmp_path, transport=StreamingTransport())
+    seen = []
+    original = session._capture_event
+
+    async def spy(event):
+        if event.get("type") in {"assistant_delta", "assistant_text"}:
+            seen.append(dict(event))
+        return await original(event)
+
+    session._capture_event = spy
+    asyncio.run(session.agent.run("hello"))
+
+    deltas = [event for event in seen if event["type"] == "assistant_delta"]
+    complete = [event for event in seen if event["type"] == "assistant_text"]
+    assert deltas and complete
+    assert [event["phase"] for event in complete] == [
+        "commentary",
+        "final_answer",
+    ]
+    assert all(
+        event["phase"] == "commentary" and event["provisional"] is True
+        for event in deltas
+    )
+    authoritative_streams = {event["stream_id"] for event in complete}
+    assert all(event["stream_id"] in authoritative_streams for event in deltas)
+
+
 def test_deltas_are_coalesced_not_one_per_token(tmp_path):
     long_text = "word " * 400
     session = _session(

@@ -89,6 +89,8 @@ __all__ = ["Agent", "TodoManager", "microcompact", "estimate_tokens"]
 
 EmitFn = Callable[[dict], Awaitable[None]]
 DISPLAY_CAP = 2000   # how much of a tool result to surface in an event
+COMMENTARY_PHASE = "commentary"
+FINAL_ANSWER_PHASE = "final_answer"
 
 #: Stop reasons this harness knows how to act on. The loop decides by *content*
 #: -- run the tool_use blocks, stop when there are none -- which is right when a
@@ -653,6 +655,9 @@ class Agent:
         #: Text a streaming transport has emitted for the current generation.
         #: Empty for `DirectTransport`, which shows nothing before it finishes.
         self.streamed_text = ""
+        #: Correlates ephemeral deltas with the authoritative assistant_text
+        #: event that classifies the completed provider response.
+        self._last_stream_id: str | None = None
         self.recovery = recovery or DefaultRecovery()
         self.stuck_detector = stuck_detector or DefaultStuckDetector()
         self.cache_policy = cache_policy or DefaultCachePolicy()
@@ -1157,11 +1162,6 @@ class Agent:
                 {"role": "assistant", "content": _content_payload(response.content)}
             )
 
-            text = block_text(response.content)
-            if text:
-                self.last_text = text
-                await self._send("assistant_text", text=text)
-
             # Providers occasionally report an inconsistent stop_reason. The
             # protocol contract is the content itself: execute actual tool_use
             # blocks, and stop when none are present.
@@ -1169,6 +1169,18 @@ class Agent:
                 block for block in response.content
                 if _block(block, "type", "") == "tool_use"
             ]
+            text = block_text(response.content)
+            if text:
+                self.last_text = text
+            stream_id = self._last_stream_id
+
+            async def emit_text(phase: str) -> None:
+                if not text:
+                    return
+                fields = {"text": text, "phase": phase}
+                if stream_id is not None:
+                    fields["stream_id"] = stream_id
+                await self._send("assistant_text", **fields)
 
             # ...but "no tool blocks" is not the same claim as "the turn is
             # over", and treating them as one made every stop reason outside an
@@ -1180,6 +1192,7 @@ class Agent:
             if not tool_blocks and reason in RESUMABLE_STOP_REASONS:
                 self._resumptions += 1
                 if self._resumptions <= MAX_RESUMPTIONS:
+                    await emit_text(COMMENTARY_PHASE)
                     await self._send("turn_paused", stop_reason=reason,
                                      resumption=self._resumptions)
                     # The protocol resumption: hand the partial turn straight
@@ -1214,6 +1227,7 @@ class Agent:
                 self._rounds_without_tools += 1
                 continuation = await self.hooks.stop(self, self.messages, self.last_text)
                 if continuation is not None:
+                    await emit_text(COMMENTARY_PHASE)
                     signal = self.stuck_detector.inspect(self)
                     if signal is not None:
                         if not await self._nudge_or_halt(signal):
@@ -1225,9 +1239,11 @@ class Agent:
                     continue
                 from .memory import memory_on_stop
 
+                await emit_text(FINAL_ANSWER_PHASE)
                 await memory_on_stop(self)
                 return
 
+            await emit_text(COMMENTARY_PHASE)
             self._rounds_without_tools = 0
             used_todo = any(_block(b, "name") == "TodoWrite" for b in tool_blocks)
             self._pending_compact = False

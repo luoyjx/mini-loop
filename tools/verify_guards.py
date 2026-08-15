@@ -302,7 +302,13 @@ MUTATIONS = [
     ),
     Mutation(
         "retry-does-not-announce-itself", 40, "mini_loop/transport.py",
-        'await agent._send("stream_start", _ephemeral=True)',
+        'await agent._send(\n'
+        '            "stream_start",\n'
+        '            stream_id=stream_id,\n'
+        '            phase="commentary",\n'
+        '            provisional=True,\n'
+        '            _ephemeral=True,\n'
+        '        )',
         "pass",
         "tests/test_streaming_failures.py",
         "a regenerating retry tells the console to start over",

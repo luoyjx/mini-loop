@@ -29,6 +29,7 @@ console. Progress is worth showing and is not worth keeping.
 from __future__ import annotations
 
 import time
+import uuid
 from typing import Any, Protocol, runtime_checkable
 
 __all__ = [
@@ -61,6 +62,7 @@ class DirectTransport:
     streaming = False
 
     async def send(self, agent, kwargs: dict) -> Any:
+        agent._last_stream_id = None
         return await agent.client.messages.create(**kwargs)
 
 
@@ -87,7 +89,15 @@ class StreamingTransport:
         # Every send is a fresh generation. When a retry follows a stream that
         # already emitted text, a console holding those deltas must discard them
         # or it renders the first attempt spliced onto the second.
-        await agent._send("stream_start", _ephemeral=True)
+        stream_id = f"stream_{uuid.uuid4().hex[:16]}"
+        agent._last_stream_id = stream_id
+        await agent._send(
+            "stream_start",
+            stream_id=stream_id,
+            phase="commentary",
+            provisional=True,
+            _ephemeral=True,
+        )
         # Reset per send, because each send is a fresh generation. Held so that
         # an interrupted turn can record what the user was actually shown: the
         # console had rendered it, and a transcript that does not know it exists
@@ -117,6 +127,13 @@ class StreamingTransport:
             await agent._send(
                 "assistant_delta",
                 text=agent.secrets.mask(text),
+                stream_id=stream_id,
+                # The provider does not reveal whether later content blocks
+                # contain a tool call. Treat live fragments as provisional
+                # commentary; the following assistant_text event carries the
+                # authoritative commentary/final_answer classification.
+                phase="commentary",
+                provisional=True,
                 _ephemeral=True,
             )
 

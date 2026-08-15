@@ -77,6 +77,7 @@ def test_sse_stream_emits_events(tmp_path, monkeypatch):
         assert "model_start" in seen and "model_end" in seen
         assert "trajectory_start" in seen and "trajectory_end" in seen
         assert seen[-1] == "done"
+        assert payloads[-1]["phase"] == "final_answer"
         assert payloads[-1]["trajectory_id"].startswith("traj_")
         assert payloads[-1]["trajectory_persisted"] is True
         assert event_ids == sorted(event_ids) and len(event_ids) == len(set(event_ids))

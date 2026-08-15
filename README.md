@@ -455,6 +455,13 @@ custom hook events. Every event carries `seq`, `ts`, `session`, and `type`;
 agent-originated events also carry `agent` + `depth`. Event IDs support safe
 reconnection with `Last-Event-ID`.
 
+`assistant_text.phase` is authoritative: `commentary` means the same user turn
+will continue with tools, a provider resumption, or a stop-hook continuation;
+`final_answer` means the agent is returning. Streaming `assistant_delta` events
+arrive immediately as provisional `commentary` and carry a `stream_id`; the
+following `assistant_text` with the same `stream_id` supplies the final phase.
+The terminal `done` event is always `phase: final_answer`.
+
 ---
 
 ## Tests

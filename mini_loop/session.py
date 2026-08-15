@@ -722,7 +722,11 @@ class AgentSession:
         outcome = "error" if self._trajectory_had_error else "completed"
         await self._finish_trajectory(
             outcome,
-            terminal_event={"type": "done", "text": final},
+            terminal_event={
+                "type": "done",
+                "text": final,
+                "phase": "final_answer",
+            },
             output=final,
         )
         return final

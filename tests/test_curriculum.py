@@ -98,10 +98,20 @@ def test_user_prompt_and_stop_hooks_are_in_the_loop(tmp_path):
         return [text("done")], "end_turn"
 
     lifecycle = Lifecycle()
+    events = []
+
+    async def emit(event):
+        events.append(event)
+
     agent = _agent(tmp_path, FakeAsyncAnthropic(responder=responder),
-                   hooks=Hooks([lifecycle]))
+                   hooks=Hooks([lifecycle]), emit=emit)
     asyncio.run(agent.run("hello"))
     assert seen == ["hello [hooked]", "continue once"]
+    assert [
+        event["phase"]
+        for event in events
+        if event["type"] == "assistant_text"
+    ] == ["commentary", "final_answer"]
 
 
 def test_loop_uses_actual_tool_blocks_instead_of_stop_reason(tmp_path):

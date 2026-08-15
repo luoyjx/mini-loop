@@ -52,10 +52,22 @@ def test_basic_loop_runs_one_tool_then_finishes(tmp_path):
         "assistant_text", "tool_use", "tool_result", "assistant_text",
     ]
     assert types.count("model_start") == types.count("model_end") == 2
+    assistant_events = [e for e in events if e["type"] == "assistant_text"]
+    assert [e["phase"] for e in assistant_events] == [
+        "commentary",
+        "final_answer",
+    ]
     tool_use = next(event for event in events if event["type"] == "tool_use")
     tool_result = next(event for event in events if event["type"] == "tool_result")
     assert tool_use["name"] == "bash"
     assert "handled: hello" in tool_result["output"]
+
+
+def test_default_prompt_requests_commentary_before_tools(tmp_path):
+    agent, _events = _agent(tmp_path, FakeAsyncAnthropic())
+
+    assert "Before calling tools" in agent.system
+    assert "commentary, not the final answer" in agent.system
 
 
 def test_max_turns_guard(tmp_path):

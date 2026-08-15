@@ -75,6 +75,9 @@ def default_system_builder(agent) -> str:
     parts = [
         f"You are a coding agent working in {agent.workspace}.\n"
         "Use the provided tools to act; prefer doing over explaining.\n"
+        "Before calling tools, send one concise user-facing progress update; "
+        "it is commentary, not the final answer. After the work is complete, "
+        "send a concise final answer.\n"
         "For multi-step work, lay out a plan with TodoWrite and keep it updated.\n"
         "Delegate large side-quests to a subagent via `task` to keep your context clean.\n"
         "Pull in specialized knowledge with `load_skill` only when you need it.\n"
