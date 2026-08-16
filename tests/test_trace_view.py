@@ -282,3 +282,86 @@ def test_view_route_is_scoped_like_its_json_siblings(client, alices_trajectory):
                           headers=BOB)
     assert response.status_code == 404
     assert "ALICE-PRIVATE-QUESTION" not in response.text
+
+
+# -- subagent nesting and request numbering (round 189) ---------------------
+# dsh's trajectory ledger indents nested subtool records and numbers every
+# request in one chronological space across purposes. Before this round the
+# viewer flattened child-agent events into the parent's rows (a subagent's
+# bash was indistinguishable from the main agent's) and the child's model
+# calls advanced the parent's step counter.
+
+def _nested_events():
+    return [
+        {"type": "model_start", "seq": 1, "ts": 1000.5, "span_id": "m1",
+         "purpose": "agent_turn", "model": "fake", "agent": "main", "depth": 0},
+        {"type": "model_start", "seq": 2, "ts": 1001.0, "span_id": "m2",
+         "purpose": "agent_turn", "model": "fake",
+         "agent": "main>explore", "depth": 1},
+        {"type": "tool_use", "seq": 3, "ts": 1001.5, "span_id": "t1",
+         "name": "bash", "input": {"command": "ls"}, "id": "c1",
+         "agent": "main>explore", "depth": 1},
+        {"type": "model_start", "seq": 4, "ts": 1002.0, "span_id": "m3",
+         "purpose": "compaction_summary", "model": "fake",
+         "agent": "main", "depth": 0},
+    ]
+
+
+def test_subagent_rows_are_nested_not_flattened():
+    ledger = build_ledger(_trajectory(_nested_events()))
+    child = [r for r in ledger["rows"] if r.get("depth")]
+    assert child, "child-agent rows lost their depth"
+    assert all(r["agent"] == "main>explore" for r in child)
+    page = render_html([ledger])
+    assert "padding-left:1.4rem" in page
+    assert "main&gt;explore" in page  # the agent chip, escaped
+
+
+def test_step_markers_ignore_subagent_model_calls():
+    ledger = build_ledger(_trajectory(_nested_events()))
+    steps = [r["label"] for r in ledger["rows"] if r["kind"] == "step"]
+    assert steps == ["step 1"], (
+        "a child's model call must not advance the parent's step count"
+    )
+
+
+def test_requests_share_one_numbering_space():
+    """Ordinary turns and compaction summaries number chronologically."""
+    ledger = build_ledger(_trajectory(_nested_events()))
+    labels = [r["label"] for r in ledger["rows"] if r["kind"] == "model"]
+    assert [l.split()[0] for l in labels] == ["#1", "#2", "#3"]
+
+
+def test_steering_renders_as_a_first_class_row():
+    """The reader sees the interjection at the position it entered the turn."""
+    ledger = build_ledger(_trajectory([
+        {"type": "steering_delivered", "seq": 5, "ts": 1002.0,
+         "count": 2, "text": "first redirect\n\nsecond redirect"},
+    ]))
+    row = next(r for r in ledger["rows"] if r["kind"] == "steer")
+    assert row["label"] == "steer x2"
+    assert "first redirect" in row["content"]
+    page = render_html([ledger])
+    assert "steer x2" in page and "second redirect" in page
+
+
+def test_reference_events_render_compactly():
+    """Catalog and system-prompt events are reference data: one line in the
+    ledger, the payload behind the inspector -- not a schema dump drowning
+    the conversation rows."""
+    big_schemas = [{"name": f"tool_{i}", "input_schema": {"type": "object"}}
+                   for i in range(40)]
+    ledger = build_ledger(_trajectory([
+        {"type": "tool_catalog", "seq": 2, "ts": 1000.2,
+         "fingerprint": "abc123", "schemas": big_schemas},
+        {"type": "system_prompt", "seq": 3, "ts": 1000.3,
+         "hash": "def456", "text": "You are an agent. " * 200},
+    ]))
+    catalog, system = [r for r in ledger["rows"] if r["kind"] == "reference"]
+    assert catalog["content"] == "40 tools · fingerprint abc123"
+    assert system["content"].endswith("hash def456")
+    assert "tool_0" not in catalog["content"]
+    # The payload survives, one layer down.
+    assert catalog["detail"]["Schemas"] == big_schemas
+    page = render_html([ledger])
+    assert "40 tools" in page

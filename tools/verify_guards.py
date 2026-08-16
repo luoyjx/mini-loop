@@ -2097,10 +2097,12 @@ MUTATIONS = [
     ),
     Mutation(
         "a-stranger-steers-the-session", 101, "mini_loop/server.py",
+        # Re-anchored in round 194: the route gained an idle branch, so the
+        # ownership check now sits before `if not session.busy:`.
         '        session = _require(request, session_id)\n'
-        '        queued = session.steer(req.message)',
+        '        if not session.busy:',
         '        session = _manager(request).get(session_id)\n'
-        '        queued = session.steer(req.message)',
+        '        if not session.busy:',
         "tests/test_steering.py::test_steering_over_http_is_owner_scoped",
         "steering injects text into someone's running turn: unscoped, it is "
         "prompt injection as a service",
@@ -2543,10 +2545,12 @@ MUTATIONS = [
     ),
     Mutation(
         "transcript-search-unbounded", 184, "mini_loop/session_query.py",
+        # Re-anchored in round 188: the search now returns a coverage-carrying
+        # dict, so the early exit hands back `result` rather than `matches`.
         '            if len(matches) >= MAX_MATCHES:\n'
-        '                return matches',
+        '                return result',
         '            if False:\n'
-        '                return matches',
+        '                return result',
         "tests/test_diagnostics_and_query.py::test_search_is_bounded",
         "a transcript search returns a bounded match list; an unbounded one "
         "re-floods the context the epochs exist to relieve",
@@ -2665,6 +2669,276 @@ MUTATIONS = [
         "the stuck halt reports through the same one-owner stop rule as round "
         "exhaustion; a second private fallback re-creates the defect the rule "
         "exists to remove",
+    ),
+    Mutation(
+        "session-query-scan-cap-goes-silent", 188, "mini_loop/session_query.py",
+        '        coverage = ""\n'
+        '        if result["epochs_skipped"]:',
+        '        coverage = ""\n'
+        '        if False:',
+        "tests/test_diagnostics_and_query.py::test_the_tool_renders_the_coverage_caveat",
+        "a transcript search that skipped epochs says so in the answer "
+        "itself; a bare 'No matches' over a partial scan reads as 'nothing "
+        "anywhere in history'",
+    ),
+    Mutation(
+        "trace-viewer-flattens-subagents", 189, "mini_loop/trace_view.py",
+        '        depth = int(event.get("depth") or 0)\n'
+        '        nest = {"depth": depth, "agent": event.get("agent")} if depth else {}',
+        '        depth = int(event.get("depth") or 0)\n'
+        '        nest = {}',
+        "tests/test_trace_view.py::test_subagent_rows_are_nested_not_flattened",
+        "child-agent rows keep their delegation depth and label; flattened, "
+        "a subagent's bash is indistinguishable from the parent's",
+    ),
+    Mutation(
+        "trace-viewer-steps-count-subagent-rounds", 189, "mini_loop/trace_view.py",
+        '            if event.get("purpose") == "agent_turn" and depth == 0:',
+        '            if event.get("purpose") == "agent_turn":',
+        "tests/test_trace_view.py::test_step_markers_ignore_subagent_model_calls",
+        "steps are the parent loop's structure; a child's model calls must "
+        "not advance the turn's step count",
+    ),
+    Mutation(
+        "transcript-guard-checks-count-not-content", 190, "mini_loop/session.py",
+        '        for index, recorded in enumerate(self._persisted_digests):\n'
+        '            if _row_digest(messages[index]) != recorded:',
+        '        for index, recorded in enumerate(()):\n'
+        '            if _row_digest(messages[index]) != recorded:',
+        "tests/test_transcript_invariant.py::test_a_flushed_row_mutated_in_place_fails_loud",
+        "the transcript invariant verifies content, not only count: a flushed "
+        "row mutated in place would let the model see text the durable "
+        "record never held",
+    ),
+    Mutation(
+        "restore-forgets-the-digests", 190, "mini_loop/session.py",
+        '        self._persisted_digests = [_row_digest(m) for m in agent.messages]',
+        '        self._persisted_digests = []',
+        "tests/test_transcript_invariant.py::test_restore_seeds_the_digests",
+        "the content check survives a restart; unseeded digests would watch "
+        "only rows flushed in the current process life",
+    ),
+    Mutation(
+        "user-resource-root-world-readable", 191, "mini_loop/user_resources.py",
+        '        self.root.mkdir(parents=True, exist_ok=True, mode=0o700)\n'
+        '        self.root.chmod(0o700)',
+        '        self.root.mkdir(parents=True, exist_ok=True)',
+        "tests/test_user_resource_lifecycle.py::test_a_preexisting_lax_root_is_tightened",
+        "the resolver root is private and re-tightened on reuse; a "
+        "default-mode tree reads as world-readable memories",
+    ),
+    Mutation(
+        "owner-directories-world-readable", 191, "mini_loop/user_resources.py",
+        '        path.mkdir(parents=True, exist_ok=True, mode=0o700)\n'
+        '        path.chmod(0o700)',
+        '        path.mkdir(parents=True, exist_ok=True)',
+        "tests/test_user_resource_lifecycle.py::test_resource_directories_are_private",
+        "every per-owner directory (owner root, skills, memory) is 0700 like "
+        "the spill and trajectory trees that set the standard",
+    ),
+    Mutation(
+        "steer-promises-queued-without-durability", 192, "mini_loop/session.py",
+        '        try:\n'
+        '            self._persist_session_record()\n'
+        '        except Exception as error:\n'
+        '            self.persist_error = f"{type(error).__name__}: {error}"\n'
+        '        return len(self._steering)',
+        '        return len(self._steering)',
+        "tests/test_steering.py::test_a_queued_steer_survives_a_restart",
+        "steer() answers 'queued' only after the queue is durable; an idle "
+        "session's steer must survive the process that accepted it",
+    ),
+    Mutation(
+        "restore-forgets-queued-steers", 192, "mini_loop/manager.py",
+        '        if record.pending_steering:',
+        '        if False:',
+        "tests/test_steering.py::test_a_queued_steer_survives_a_restart",
+        "restore reseeds the undelivered steering queue from the session "
+        "record; the promise survives the process",
+    ),
+    Mutation(
+        "steer-record-holds-raw-text", 192, "mini_loop/session.py",
+        '                pending_steering=tuple(\n'
+        '                    self._mask(queued) for queued in self._steering\n'
+        '                ),',
+        '                pending_steering=tuple(self._steering),',
+        "tests/test_steering.py::test_the_durable_queue_holds_the_masked_form",
+        "the durable steering queue is masked like every other durable "
+        "projection; a pasted secret must not reach the sessions table raw",
+    ),
+    Mutation(
+        "idle-steer-parks-forever", 194, "mini_loop/server.py",
+        '        if not session.busy:',
+        '        if False:',
+        "tests/test_steering.py::test_an_idle_http_steer_starts_a_turn",
+        "an idle agent hears an HTTP steer by running it as a turn (dsh: "
+        "steer carries wakeup; OpenWorker: an idle session starts a fresh "
+        "turn); parking it durably could wait forever",
+    ),
+    Mutation(
+        "steering-event-drops-the-words", 196, "mini_loop/session.py",
+        '    await agent._send(\n'
+        '        "steering_delivered",\n'
+        '        count=len(drained),\n'
+        '        text=body[:DISPLAY_CAP],\n'
+        '        _trajectory_fields={"text": body},\n'
+        '    )',
+        '    await agent._send("steering_delivered", count=len(drained))',
+        "tests/test_steering.py::test_the_delivery_event_carries_the_words",
+        "the delivery event carries what was steered, not only that steering "
+        "happened; observers should not dig words out of model_input",
+    ),
+    Mutation(
+        "trace-viewer-hides-the-steer", 196, "mini_loop/trace_view.py",
+        '        elif etype == "steering_delivered":',
+        '        elif etype == "steering_delivered_disabled":',
+        "tests/test_trace_view.py::test_steering_renders_as_a_first_class_row",
+        "a steering delivery renders as a first-class ledger row at the "
+        "position it entered the turn, not a generic payload dump",
+    ),
+    Mutation(
+        "catalog-schemas-never-logged", 197, "mini_loop/agent.py",
+        '                self._logged_catalogs.add(catalog.fingerprint)\n'
+        '                await self._send(\n'
+        '                    "tool_catalog",\n'
+        '                    fingerprint=catalog.fingerprint,\n'
+        '                    schemas=catalog.schemas(),\n'
+        '                )',
+        '                self._logged_catalogs.add(catalog.fingerprint)',
+        "tests/test_reconstructable_requests.py::test_the_catalog_is_recoverable_by_fingerprint",
+        "tool schemas are model-visible input; the log carries each distinct "
+        "catalog so a past request can be rebuilt after the catalog changes",
+    ),
+    Mutation(
+        "catalog-relogged-every-round", 197, "mini_loop/agent.py",
+        '            if catalog.fingerprint not in self._logged_catalogs:',
+        '            if True:',
+        "tests/test_reconstructable_requests.py::test_one_event_per_distinct_catalog",
+        "an unchanged catalog is written once per fingerprint, not once per "
+        "round -- the log stores schemas, not schema spam",
+    ),
+    Mutation(
+        "events-forget-their-epoch", 198, "mini_loop/session.py",
+        '            "transcript_epoch": self._transcript_epoch,\n'
+        '        }',
+        '        }',
+        "tests/test_reconstructable_requests.py::test_a_superseded_epoch_request_still_reconstructs",
+        "every event names the transcript epoch it belonged to; without the "
+        "stamp a pre-compaction request joins against the wrong transcript",
+    ),
+    Mutation(
+        "system-prompt-never-logged", 198, "mini_loop/agent.py",
+        '                self._logged_system_hashes.add(system_hash)\n'
+        '                await self._send("system_prompt", hash=system_hash, text=system)',
+        '                self._logged_system_hashes.add(system_hash)',
+        "tests/test_reconstructable_requests.py::test_the_round_trip_is_exact",
+        "the dynamic system prompt is model-visible input; one event per "
+        "distinct hash keeps requests reconstructable",
+    ),
+    Mutation(
+        "reference-events-dumped-raw", 199, "mini_loop/trace_view.py",
+        '        elif etype == "tool_catalog":',
+        '        elif etype == "tool_catalog_disabled":',
+        "tests/test_trace_view.py::test_reference_events_render_compactly",
+        "catalog and system-prompt events are reference data: one compact "
+        "ledger line with the payload behind the inspector, never a schema "
+        "dump drowning the conversation rows",
+    ),
+    Mutation(
+        "fork-cuts-an-open-turn", 201, "mini_loop/manager.py",
+        '        if source.busy:\n'
+        '            raise RuntimeError(',
+        '        if False:\n'
+        '            raise RuntimeError(',
+        "tests/test_session_fork.py::test_a_busy_session_refuses_to_fork",
+        "a fork is valid only at a completed turn boundary (dsh's "
+        "eligibility rule); a mid-turn prefix need not be a valid provider "
+        "transcript",
+    ),
+    Mutation(
+        "fork-shares-mutable-rows", 201, "mini_loop/manager.py",
+        '            child_agent.messages[:] = _copy.deepcopy(source_agent.messages)',
+        '            child_agent.messages[:] = list(source_agent.messages)',
+        "tests/test_session_fork.py::test_the_transcripts_share_no_mutable_row",
+        "the two transcripts share no mutable row; a shallow copy lets an "
+        "edit in one appear in both and trips the digest guard in whichever "
+        "flushed first",
+    ),
+    Mutation(
+        "a-stranger-forks-the-session", 201, "mini_loop/server.py",
+        # Re-anchored in round 202 when fork_session became async.
+        '        _require(request, session_id)\n'
+        '        try:\n'
+        '            child = await _manager(request).fork_session(session_id)',
+        '        try:\n'
+        '            child = await _manager(request).fork_session(session_id)',
+        "tests/test_session_fork.py::test_fork_over_http_is_owner_scoped",
+        "a fork duplicates someone's whole conversation; unscoped, it is "
+        "transcript exfiltration as a service",
+    ),
+    Mutation(
+        "fork-leaves-no-trace-in-the-source", 202, "mini_loop/manager.py",
+        '            await source.emit({\n'
+        '                "type": "session_forked",\n'
+        '                "child": child.id,\n'
+        '                "message_count": len(source_agent.messages),\n'
+        '            })',
+        '            pass',
+        "tests/test_session_fork.py::test_the_source_stream_records_the_fork",
+        "a duplicated conversation says so in its own record; a fork the "
+        "source log never mentions is an invisible copy of everything",
+    ),
+    Mutation(
+        "checkpoint-cas-removed", 203, "mini_loop/verified_loop.py",
+        '    _require(\n'
+        '        patch.base_revision == checkpoint.state_revision,',
+        '    _require(\n'
+        '        True,',
+        "tests/test_verified_loop_contracts.py::test_cas_refuses_a_stale_base_revision",
+        "a patch applies only against the exact revision it was proposed "
+        "for; without CAS two proposers silently overwrite each other",
+    ),
+    Mutation(
+        "verified-without-a-receipt", 203, "mini_loop/verified_loop.py",
+        '            if status == "verified":',
+        '            if False:',
+        "tests/test_verified_loop_contracts.py::test_verified_is_unreachable_without_a_covering_clean_receipt",
+        "unverified never completes: a requirement reaches verified solely "
+        "through a clean complete receipt naming it (authority rule 6)",
+    ),
+    Mutation(
+        "shadow-trusts-terminal-status", 204, "mini_loop/verified_shadow.py",
+        '    saw_error = any(\n'
+        '        event.get("type") == "error"\n'
+        '        or (event.get("type") == "stuck" and event.get("halted"))\n'
+        '        for event in events\n'
+        '    )',
+        '    saw_error = any(\n'
+        '        event.get("type") == "error"\n'
+        '        for event in events\n'
+        '    )',
+        "tests/test_verified_shadow.py::test_an_errored_run_taints_integrity_and_never_verifies",
+        "the shadow gate is stricter than terminal status: a stuck-halted "
+        "run returns normally and reads completed, but its typed halt event "
+        "taints integrity -- an audit must not verify a run the harness "
+        "gave up on",
+    ),
+    Mutation(
+        "shadow-counts-subagent-rounds", 204, "mini_loop/verified_shadow.py",
+        '        and event.get("purpose") == "agent_turn"\n'
+        '        and not event.get("depth")',
+        '        and event.get("purpose") == "agent_turn"',
+        "tests/test_verified_shadow.py::test_subagent_rounds_stay_out_of_the_shadow",
+        "round plans mirror the parent loop's rounds; a child's model calls "
+        "are its own story (round 189's lesson, one layer up)",
+    ),
+    Mutation(
+        "evidence-gate-accepts-dangling-refs", 205, "mini_loop/verified_shadow.py",
+        '        dangling = [ref for ref in receipt.evidence_refs if ref not in recorded]',
+        '        dangling = []',
+        "tests/test_verified_shadow.py::test_dangling_evidence_is_named",
+        "an audit citing evidence nobody recorded is indistinguishable from "
+        "one citing everything; the coverage gate names every dangling ref",
     ),
 ]
 

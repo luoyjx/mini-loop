@@ -117,6 +117,7 @@ def build_ledger(trajectory: dict) -> dict:
     rows: list[dict] = []
     open_spans: dict[str, dict] = {}
     step = 0
+    request_no = 0
 
     user_input = trajectory.get("input")
     if user_input is not None:
@@ -130,22 +131,38 @@ def build_ledger(trajectory: dict) -> dict:
         etype = str(event.get("type", "event"))
         seq, ts = event.get("seq"), event.get("ts")
         span_id = event.get("span_id")
+        # Subagent activity arrives in the same event stream, tagged with the
+        # child's label and delegation depth. Carried onto every row so the
+        # renderer can nest it -- flattened, a child's bash rows are
+        # indistinguishable from the parent's (dsh indents nested subtools
+        # for the same reason).
+        depth = int(event.get("depth") or 0)
+        nest = {"depth": depth, "agent": event.get("agent")} if depth else {}
         if etype == "model_start":
-            if event.get("purpose") == "agent_turn":
+            # One chronological numbering space across every purpose --
+            # ordinary turns and compaction summaries alike -- as in dsh's
+            # Request projection.
+            request_no += 1
+            # Steps are the *parent* loop's structure; a child's model calls
+            # advance its own story, not the turn's step count.
+            if event.get("purpose") == "agent_turn" and depth == 0:
                 step += 1
                 rows.append({"kind": "step", "label": f"step {step}", "seq": seq})
             row = {
-                "kind": "model", "label": str(event.get("model", "model")),
+                "kind": "model",
+                "label": f"#{request_no} {event.get('model', 'model')}",
                 "seq": seq, "ts": ts, "duration_ms": None, "status": "in flight",
                 "content": f"purpose={event.get('purpose')} "
                            f"messages={event.get('message_count')}",
                 "detail": {
+                    "Request": request_no,
                     "Purpose": event.get("purpose"),
                     "Model": event.get("model"),
                     "Messages": event.get("message_count"),
                     "Tool catalog": event.get("tool_count"),
                     "Max tokens": event.get("max_tokens"),
                 },
+                **nest,
             }
             rows.append(row)
             if span_id:
@@ -181,6 +198,7 @@ def build_ledger(trajectory: dict) -> dict:
                     "Call id": event.get("id"),
                     "Action id": event.get("action_id"),
                 },
+                **nest,
             }
             rows.append(row)
             if span_id:
@@ -208,20 +226,56 @@ def build_ledger(trajectory: dict) -> dict:
             text = str(event.get("text", ""))
             rows.append({
                 "kind": "assistant", "label": "assistant", "seq": seq, "ts": ts,
-                "content": text, "detail": {"Text": text},
+                "content": text, "detail": {"Text": text}, **nest,
+            })
+        elif etype == "tool_catalog":
+            # Reference data, not conversation: one compact line in the
+            # ledger, the full schemas behind the inspector. Dumped through
+            # the generic branch these drowned the rows around them.
+            schemas = event.get("schemas") or []
+            rows.append({
+                "kind": "reference", "label": "catalog",
+                "seq": seq, "ts": ts,
+                "content": f"{len(schemas)} tools · fingerprint "
+                           f"{event.get('fingerprint', '?')}",
+                "detail": {"Fingerprint": event.get("fingerprint"),
+                           "Schemas": schemas},
+                **nest,
+            })
+        elif etype == "system_prompt":
+            text = str(event.get("text", ""))
+            rows.append({
+                "kind": "reference", "label": "system",
+                "seq": seq, "ts": ts,
+                "content": f"{len(text):,} chars · hash "
+                           f"{event.get('hash', '?')}",
+                "detail": {"Hash": event.get("hash"),
+                           "System prompt": event.get("text")},
+                **nest,
+            })
+        elif etype == "steering_delivered":
+            # A first-class row, as in dsh's ledger: the reader sees what was
+            # steered at the position it entered the turn, not a bare count.
+            text = str(event.get("text", ""))
+            rows.append({
+                "kind": "steer", "label": f"steer x{event.get('count', 1)}",
+                "seq": seq, "ts": ts, "content": text,
+                "detail": {"Interjection": text,
+                           "Steers delivered": event.get("count")},
+                **nest,
             })
         elif etype == "compact":
             rows.append({
                 "kind": "compaction", "label": f"compact/{event.get('kind')}",
                 "seq": seq, "ts": ts, "content": _pretty(_payload(event)),
                 "detail": {"Compaction": _payload(event)},
-                "error": event.get("kind") == "failed",
+                "error": event.get("kind") == "failed", **nest,
             })
         elif etype == "error":
             rows.append({
                 "kind": "error", "label": "error", "seq": seq, "ts": ts,
                 "content": _pretty(_payload(event)), "error": True,
-                "detail": {"Error": _payload(event)},
+                "detail": {"Error": _payload(event)}, **nest,
             })
         elif etype in ("trajectory_start", "trajectory_end") or (
             etype == "done" and trajectory.get("output") is not None
@@ -236,7 +290,7 @@ def build_ledger(trajectory: dict) -> dict:
             rows.append({
                 "kind": "event", "label": etype, "seq": seq, "ts": ts,
                 "content": _pretty(_payload(event)),
-                "detail": {"Payload": _payload(event)},
+                "detail": {"Payload": _payload(event)}, **nest,
             })
 
     status = str(trajectory.get("status", "completed"))
@@ -323,16 +377,21 @@ details.row[open] { background:var(--panel); }
 .idx { color:var(--dim); min-width:3.2rem; text-align:right; }
 .off { color:var(--dim); min-width:4.2rem; }
 .badge { min-width:6.2rem; font-weight:600; }
-.kind-user .badge{color:var(--user)} .kind-model .badge{color:var(--model)}
+.kind-user .badge,.kind-steer .badge{color:var(--user)} .kind-model .badge{color:var(--model)}
 .kind-tool .badge{color:var(--tool)} .kind-assistant .badge{color:var(--assist)}
 .kind-error .badge,.row.err .badge{color:var(--err)}
-.kind-compaction .badge,.kind-event .badge,.kind-final .badge{color:var(--dim)}
+.kind-compaction .badge,.kind-event .badge,.kind-final .badge,
+.kind-reference .badge{color:var(--dim)}
+.kind-reference summary{opacity:.75}
 .prev { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
   color:var(--fg); }
 .dur { color:var(--dim); white-space:nowrap; }
 .row.err .dur { color:var(--err); }
 .step-rule { border:0; border-top:1px dashed var(--line); margin:.15rem 0; }
 .step-label { color:var(--dim); font-size:.85em; padding-left:3.9rem; }
+.agent-chip { color:var(--dim); font-size:.85em; border:1px solid var(--line);
+  border-radius:3px; padding:0 .3rem; white-space:nowrap; }
+.overview .sp.nested { opacity:.45; }
 .inspector { padding:.4rem .6rem .8rem 3.9rem; }
 .inspector h4 { margin:.7rem 0 .2rem; font-size:.85em; color:var(--dim);
   text-transform:uppercase; letter-spacing:.05em; }
@@ -363,6 +422,8 @@ def _overview(ledger: dict) -> list[str]:
             continue
         left = max(0.0, (float(row["ts"]) - float(base)) / total * 100)
         classes = f"sp {row['kind']}"
+        if row.get("depth"):
+            classes += " nested"
         title = _esc(f"{row['label']} · {_fmt_ms(row.get('duration_ms'))}")
         if row.get("duration_ms") is None:
             # An open span gets a start marker; a bar would be an invented
@@ -385,6 +446,11 @@ def _overview(ledger: dict) -> list[str]:
 
 def _inspector(row: dict) -> list[str]:
     parts = ['<div class="inspector">']
+    if row.get("depth"):
+        parts.append(
+            f"<h4>Agent</h4><pre>{_esc(row.get('agent'))} "
+            f"(delegation depth {row['depth']})</pre>"
+        )
     for name, value in (row.get("detail") or {}).items():
         if value is None:
             continue
@@ -407,10 +473,14 @@ def _row_html(row: dict, base) -> list[str]:
         dur = _fmt_ms(row.get("duration_ms"))
     elif row.get("status"):
         dur = str(row["status"])
-    parts = [f'<details class="{classes}">', "<summary>"]
+    depth = int(row.get("depth") or 0)
+    indent = f' style="padding-left:{depth * 1.4:.1f}rem"' if depth else ""
+    parts = [f'<details class="{classes}"{indent}>', "<summary>"]
     parts.append(f'<span class="idx">{seq if seq is not None else ""}</span>')
     parts.append(f'<span class="off">{_esc(_fmt_offset(row.get("ts"), base))}</span>')
     parts.append(f'<span class="badge">{_esc(row["label"])}</span>')
+    if depth and row.get("agent"):
+        parts.append(f'<span class="agent-chip">{_esc(row["agent"])}</span>')
     parts.append(f'<span class="prev">{_esc(_preview(row.get("content", "")))}</span>')
     if dur:
         parts.append(f'<span class="dur">{_esc(dur)}</span>')

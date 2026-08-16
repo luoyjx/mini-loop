@@ -2283,6 +2283,12 @@ Each one exists because the corresponding mistake was actually made here.
 | Lenient endpoint | a contract inferred from the loosest provider tried | `tests/test_strictest_provider.py` |
 | Instructions as data | content the model obeys, loaded without checks | `tests/test_skill_loading.py` |
 | Ambiguous namespace | a separator that is legal inside the names it joins | `tests/test_mcp_boundary.py` |
+| Misread config | an accepted setting silently meaning something else | `tests/test_config_validation.py` (r186) |
+| Silent cap | a bound nobody mentions read as full coverage | `tests/test_trace_view.py`, `test_diagnostics_and_query.py` (r185/188) |
+| Swallowed early stop | a cut-off run returning its last commentary as a completed answer | `tests/test_round_exhaustion.py` (r187) |
+| In-place mutation | a flushed row changed under its own pointer | `tests/test_transcript_invariant.py` (r190) |
+| Broken promise | an API answer whose fact does not survive the process | `tests/test_steering.py` durability (r192) |
+| Unreconstructable input | model-visible input the log holds only by reference | `tests/test_reconstructable_requests.py` (r197/198) |
 
 A guard is only worth having if it fails when the thing it guards breaks. Each
 of these was verified by deliberately re-introducing the defect and watching it
@@ -2309,13 +2315,19 @@ Named here so they are not mistaken for done:
   effect out of `bash` is what makes it recoverable.
 * **No resource limits.** Seatbelt bounds access, not consumption; a fork bomb
   needs a container.
-* **No queueing or hand-off.** A second caller is refused — across processes by
-  the lease, within one by a 409 — never queued, and there is still no notion of
-  a *run* within a session to address, resume or steer. Cancellation stops the
-  turn in flight; it cannot target one of several, because there is only ever
-  one. Fairness does not exist.
-* **No tenancy.** Sessions are scoped per principal; there is no tenant above
-  that, and no fork or snapshot.
+* **No per-run addressing.** (Narrowed from "no queueing or hand-off", which
+  rounds since closed: a second caller now queues on the turn lock with the
+  wait reported, a busy session is steered rather than 409'd, and steers are
+  durable and visible.) What remains open: there is still no notion of a
+  *run id* within a session to address, resume or cancel individually --
+  cancellation stops the turn in flight because there is only ever one.
+  Fairness between queued callers does not exist.
+* **Tenancy is partial.** Owner-bound skills and memory landed
+  (`user_resources.py`, operator rounds beside r190-193): sessions of one
+  authenticated owner now share a private digest-rooted resource tree. Still
+  absent above that: a tenant grouping multiple owners, and any fork or
+  snapshot of a session (dsh forks at completed turn boundaries; we have the
+  pieces -- epochs, turn events -- and no fork).
 * **Sandbox is macOS-only.** There is no Linux or Windows backend. Elsewhere
   `default_sandbox` returns an `UnavailableSandbox` — commands still run, but
   the posture and the audit say *why* it is inert, and `require=True` refuses to
@@ -6153,3 +6165,425 @@ halt. Every consumer of `run()` (task tool, workflow node, HTTP caller) is
 repaired at once. Four tests in `test_round_exhaustion.py`; guards 290 → 292
 (the `or` fallback restored in the helper; the halt bypassing the rule),
 each caught by a named test individually.
+
+### 8ew — "search every epoch" stopped being true at epoch 21 (round 188)
+
+Source: dsh's two transcript-projection notes (2026-07-29/30) -- the
+model-visible surface had been serving as the human transcript, so a landed
+compaction erased conversation the user had already read; the fix separates
+the projections and renders the log in log order with one marker per
+compaction. Probed for the analogue and mini-loop is structurally aligned,
+by round 99 (canonical epochs, `GET /transcript?epoch=N`), round 184
+(`transcript_search` over epochs) and round 185 (the trace viewer renders
+the append-only trajectory): no human surface here reads `agent.messages`,
+and nothing recognizes a compaction checkpoint by its text shape.
+
+The comparison surfaced one dishonest edge instead: `transcript_search`
+describes itself as "Search every durable epoch" while scanning only the
+newest MAX_EPOCHS_SCANNED (20). From the 21st compaction on, the one query
+whose answer lives in epoch 1 gets a clean "No matches" -- read by the
+model as "nothing anywhere in history". The round-185 rule ("a cap nobody
+mentions reads as full coverage") applied to a tool result rather than a
+page: same defect, different renderer.
+
+Fix: `search_transcript` returns coverage with its matches (`first_epoch`,
+`current_epoch`, `epochs_skipped`), the tool renders the caveat on every
+partial-scan answer -- including "No matches" -- and the tool description
+now states the bound instead of denying it. Three new tests; the r184
+bounded-matches mutation re-anchored (the early exit returns the coverage
+dict now) and one new guard: silencing the caveat branch fails the named
+test. Guards 292 → 293.
+
+### 8ex — the ledger flattened the delegation tree (round 189)
+
+Source: dsh's trajectory-inspection-ledger feature note (2026-07-27), read
+against our own round-185 viewer. Most of its machinery (virtualization,
+folding, TTFT split, live following) belongs to a live browser client and
+was deliberately skipped; two of its rules turned out to name live defects
+in the static page.
+
+First: "nested subtools receive a small indentation." Child-agent events
+arrive in the same trajectory stream tagged `agent` and `depth` -- the
+lineage rounds 183's provider records -- and the viewer dropped both on the
+floor, so a subagent's bash rows rendered indistinguishable from the
+parent's. Worse, the child's `agent_turn` model calls advanced the
+*parent's* step counter, so a turn with one delegation showed phantom
+steps. Second: "one chronological numbering space across ordinary and
+compaction requests" -- our model rows had no request identity at all, so
+"the third call" in a discussion of a trace had no referent on the page.
+
+Fix in `build_ledger`/renderer: every row carries `depth`/`agent` when
+delegated (indent + agent chip + dimmed overview span + inspector field),
+step markers count only depth-0 agent turns, and `#N` request numbering
+covers every `model_start` regardless of purpose. Three tests; guards
+293 → 295 (nest construction emptied, the depth-0 step condition dropped),
+each caught by a named test individually.
+
+### 8ey — the transcript invariant checked quantity, not content (round 190)
+
+Source: dsh's identified-immutable-messages architecture note (2026-07-28)
+-- every message is deep-frozen at creation, so "a producer, hook, or
+observer" structurally cannot change a value after its identity is
+established. mini-loop's transcript rows are plain mutable dicts, and the
+probe wrote the missing consequence in one line: a hook that rewrites
+`messages[0]["content"]` mid-turn sails through the round-173 guard (count
+unchanged), the run completes, memory says REWRITTEN-BY-HOOK, disk says the
+original -- and the two durable records disagree with *each other*, because
+the trajectory's `model_input` snapshot holds the mutated text while the
+messages table holds what was flushed. The flush-time rewrite check is a
+pointer comparison whose docstring states this exact limit; it was enforced
+socially (test_compaction_composition over shipped rewriters) and not at
+all against plugin code.
+
+Fix: the runtime-assertion flavor of dsh's freeze. `_flush_messages` records
+a SHA-256 of each row's in-memory form as it is flushed (`_persisted_digests`,
+reset on epoch bump, seeded on restore), and `_transcript_guard` -- already
+standing at the request boundary -- verifies every covered row before the
+model sees it. Sanctioned rewriters replace rows, which the pointer check
+turns into a mirrored epoch and rebuilt digests before the content check
+runs; a same-object content change can only be a mutation, and raises.
+
+The first restore mutation SURVIVED and taught the round its lesson: with
+unseeded digests the ledger *misaligns* rather than going quiet -- digest 0
+describes the tail row -- so the named test passed for a coincidental wrong
+reason. The test now pins both halves (an innocent restored session runs
+clean; a mutated restored row raises), and the guard gained an O(1)
+alignment assertion so a future attach path that forgets to seed fails by
+name instead of false-positiving on innocent rows.
+
+Mid-round the working tree started moving underneath the loop -- the
+operator was landing user_resources in a parallel session, manager.py
+briefly importing a module that did not exist yet -- so the round paused
+hands-off at the probe stage and resumed after their edits settled; the
+merged tree runs 1631 tests green. Guards 295 → 298: this round's two
+plus one the operator's user_resources work added in parallel -- the full
+sweep covers all of them.
+
+### 8ez — fresh code, fresh eyes: the parallel round audited (round 191)
+
+The operator landed `user_resources.py` in a parallel session mid-round-190
+-- owner-digest directories, symlink refusal, frozen bundles, its own tests
+and a guard. The instruments checked its mechanical compliance on arrival
+(posture, write sites, guard sweep); this round ran the behavioral
+checklist over it, because fresh code is where the defect classes live.
+
+Probed clean: the symlink refusal holds at every level of the tree; the
+`startswith("agent:")` problem filter matches a declared contract
+(`LayeredSkillLoader.SOURCES` labels every problem `f"{source}: ..."`),
+not an incidental shape; restore paths bind resources from the durable
+session owner, not the caller. Probed live: every directory the resolver
+creates -- root, owner root, skills, memory -- was default-mode 0755,
+world-readable memories on any shared machine, below the standard the
+spill root (round 171) and trajectory root already set. The fix is the
+spill pattern verbatim: create 0o700, chmod on reuse so a tree from
+before the fix is tightened rather than trusted. Contained entirely in
+`user_resources.py`: the parent directory's mode gates the children, so
+`memory.py` keeps its shape.
+
+Two tests appended to the operator's own lifecycle suite; guards
+298 → 300 (root left default-mode; per-owner directories left
+default-mode), each caught by a named test individually.
+
+### 8f0 — steering existed; its promise did not survive a restart (round 192)
+
+The operator asked for mid-run message injection ("what other products call
+steer"). It already existed -- OpenWorker's gateway rule, built in an
+earlier round: `POST /sessions/{id}/steer` never 409s, queued text joins
+one `<user_interjection>` at the agent's next loop round, bounded per steer
+and per queue, owner-scoped. The gap the request surfaced was durability:
+`steer()` answers "queued" -- a promise -- and the queue was memory-only.
+An idle session's steer waits for the next run, and the process that said
+"queued: 1" need not be the process that runs it; a restart silently
+dropped the caller's words after confirming them.
+
+Fix rides the machinery that already exists rather than adding an event
+kind: `SessionRecord.pending_steering` (idempotent column migration),
+persisted by `steer()` before it answers and refreshed on every flush beat
+-- which is the same sync sequence that persists a delivered interjection,
+so delivery-then-crash re-delivers (at-least-once) instead of losing words,
+and the injector needed no change at all. Restore reseeds the queue. The
+record holds the *masked* projection while the live queue keeps raw text
+for same-process delivery -- the same split the transcript itself follows.
+
+The mid-turn steer test steers from inside a *sync* fake-provider callback,
+which is why `steer()` stayed sync ("callable from any context" is
+load-bearing, not stylistic) and the durability write went through the
+sync session-record path instead of the async event bus.
+
+Three tests (survives a restart; delivered is not re-delivered; the record
+holds the masked form), three guards, each caught individually. Landed
+interleaved with the operator's parallel skill-publication rounds: the
+round paused twice while their edits were in flight, and one stale-anchor
+alarm from their WRITE_CALLS reformat was fixed by them before this round
+resumed. Merged tree: 1711 tests green.
+
+### 8f1 — the skill-publication surface audited: negative result (round 193)
+
+The operator's skill-capture batch turns model-authored content into
+durable per-owner skills that feed future sessions -- the exact authority
+class this log has been strictest about (a goal fires only on an
+EXPLICIT_HUMAN edge; a cron survives a restart disarmed). Audited with the
+standing checklist rather than assumed. The design is right at the root:
+publication is a two-step authenticated HTTP flow (preview, then commit
+bound to the previewed digest), never a model-facing tool, and "wrong
+authority is deliberately indistinguishable from absence."
+
+Every probe the checklist proposes already has a named test in their
+suite: wrong-digest and cross-session commits fail without consuming the
+draft; drafts are owner/session/digest-bound with one-shot consume;
+expiry, global and per-session bounds, and no cross-owner eviction;
+projections masked, provenance-gated (not wrapper-blacklisted -- round
+188's lesson, applied), fail-closed when screening is unavailable; atomic
+creates are 0600. Recorded so a later round does not re-walk it: the
+defect-class propagation worked -- the parallel rounds are applying the
+same discipline this log documents, and the audit's job reduced to
+verifying that claim.
+
+### 8f2 — an idle agent now hears an HTTP steer by running (round 194)
+
+Source: dsh's unified-send architecture note (2026-07-22) -- send/steer/
+inject collapsed to one primitive over (target × wakeup), and steer is
+`next-step` WITH wakeup. Read beside OpenWorker's original gateway rule
+(only a busy session's message becomes steering; an idle session starts a
+fresh turn), both references make the same claim from opposite directions:
+steering an idle agent should run it.
+
+Ours parked idle steers until the next run. That was tolerable while the
+queue was transient; round 192 made it durable, which sharpened the edge
+into a defect: an HTTP caller steering an idle session got "queued: 1" and
+the words could wait forever -- durable, confirmed, and never heard unless
+someone happened to send another message. Post-192, parking plus
+durability equals a promise held hostage.
+
+Fix at the HTTP boundary only: `/steer` on an idle session runs the text
+as an ordinary background turn (held in the manager's cleanup-task set --
+the event loop keeps only weak task references) and reports
+`delivered: "new_turn"`; busy keeps the interjection path and reports
+`delivered: "steering"`. `session.steer()` itself keeps parking semantics
+-- its sync callable-from-any-context contract is load-bearing (the
+mid-turn test steers from inside a sync provider callback), and
+process-local callers steering an idle session are the ones who know the
+next run is coming. One route rewrite, one behavior-updated test, one new
+test; the rewrite staled round 101's ownership mutation anchor
+(test_timing_safety caught it), re-anchored onto the new branch. Guards
+303 → 304.
+
+### 8f3 — the digest guard billed against its own rule (round 195)
+
+"Bounded output is not bounded work" has caught five modules in this log;
+round 190's content check was never billed against it. It recomputes
+json.dumps + SHA-256 over the whole flushed prefix at every model request,
+so a 50-round turn re-verifies the same frozen rows 50 times.
+
+Measured at compaction-threshold size (300 rows, ~230 KB): 2.24 ms per
+request, ~112 ms across a 50-round turn -- under 0.1% of what the model
+calls themselves cost. No optimization is warranted, and none is safely
+available: in-place mutation preserves pointer identity, so every cheaper
+scheme (identity caching, sampling) reintroduces exactly the blindness the
+check exists to remove. The budget is now a regression test with ~100x
+headroom (`test_the_content_check_stays_cheap_at_threshold_size`) -- it
+exists to catch an accidental O(N^2) or a serializer regression, not
+jitter. A measurement round: no behavior changed, no guard added.
+
+### 8f4 — steering became visible where people look (round 196)
+
+Closing the steer arc (192 durability, 194 idle wakeup): the delivery was
+observable only as `steering_delivered {count}` -- the words themselves
+lived nowhere an observer looks. An SSE consumer saw "1 steer arrived";
+the trace viewer rendered a generic payload row; the interjection text was
+recoverable only from a model_input snapshot in the trajectory inspector.
+dsh renders steering messages as first-class ledger rows.
+
+The event now carries the joined interjection: capped at DISPLAY_CAP for
+the live surface exactly like a tool result, full text in the trajectory
+via `_trajectory_fields`, masked by `_capture_event` like every other
+emitted string. The viewer renders `steering_delivered` as a `steer xN`
+row at the position it entered the turn, sharing the user hue. Two tests,
+two guards (the event stripped back to a count; the viewer branch
+disabled), each caught individually. Guards 304 → 306.
+
+### 8f5 — the log can now rebuild the whole request (round 197)
+
+Source: dsh's reconstructable-requests rule -- the session log is the
+authority for every model-visible input. Audited ours: messages live in
+the epoch table, the system prompt in the session record, but the tool
+schemas -- equally model-visible, equally capable of steering the model --
+were represented in the durable log only by their fingerprint. Once the
+catalog changed (an MCP connect, a role policy, a registry edit between
+process lives), a past request could never be rebuilt: the fingerprint
+named a catalog nobody stored.
+
+Fix: one `tool_catalog` event per distinct fingerprint per process life,
+carrying the full schemas; every `model_start` already references its
+catalog by fingerprint, so reconstruction is a join. An unchanged catalog
+costs one event per session; a restart writes one spare copy per catalog
+rather than risking a gap. The basic-loop event-sequence test learned the
+new first event. Three tests, two guards (schemas never logged; catalog
+re-logged every round), each caught individually. Guards 306 → 308.
+
+### 8f6 — reconstruction became a function with a round-trip proof (round 198)
+
+Round 197 made requests reconstructable in principle; a claim nobody
+executes is documentation, not a property (round 99). Two gaps stood
+between the principle and a working join. Events carried no epoch, so
+once compaction moved the transcript on, nothing could say WHICH epoch a
+past `model_start` had been looking at -- inferring it from compact-event
+counting would be shape recognition, refused on round-188 grounds. And
+the system prompt is dynamic (plan mode, tool lists), so the base prompt
+in the session record cannot reproduce what a given request carried.
+
+Fix: `_capture_event` stamps `transcript_epoch` on every event (the
+model_start stamp is correct by ordering -- the guard's flush, which is
+what bumps the epoch, runs before the emission); `system_prompt` events
+follow the round-197 catalog pattern, one per distinct hash, with
+`model_start` referencing by hash. The prompt hash canonicalizes over
+both wire shapes -- the cache policy renders `system` as a block list,
+which the first probe run discovered by crashing `.encode` on a list.
+`reconstruct_request(store, session_id, seq)` performs the join, and the
+round-trip test proves it against a spy at the request boundary --
+including a superseded-epoch request rebuilt after compaction moved on,
+which is where the stamp earns its keep. The spy sits before the cache
+policy, so the system comparison goes through `system_text`; the event
+records the post-policy form the model actually received. Five tests,
+two guards (stamp dropped; prompt never logged). Guards 308 → 310.
+
+### 8f7 — reference data stopped drowning the ledger (round 199)
+
+Rounds 197/198 added `tool_catalog` and `system_prompt` events to keep
+requests reconstructable; the trace viewer rendered both through its
+generic branch, which dumps the payload as row content -- a 40-tool
+schema blob and a full system prompt sat inline between conversation
+rows. dsh's precedent (collapse trace-only session events) and our own
+round-185 shape: these are reference data. They now render as one
+compact `reference` row each ("40 tools · fingerprint abc123",
+"3,812 chars · hash def456") with the full payload one layer down in the
+inspector, dimmed like the other non-conversation rows. One test, one
+guard (the branch disabled falls back to the raw dump). Guards 310 → 311.
+The regenerated demo shows the accumulated ledger: request numbers,
+steer rows, reference rows, spans.
+
+### 8f8 — round 200: the ledger's own summary caught up (round 200)
+
+A maintenance round for the log itself. The guards-by-kind table and the
+Still-open list had stopped at the round-169 era; thirty rounds later, two
+Still-open items had quietly become half-true -- "no queueing" (the turn
+lock queues with the wait reported; busy sessions steer; steers are
+durable and visible) and "no tenancy" (owner-bound resource trees landed
+in the operator's parallel rounds). Both are now narrowed to what is
+actually still open: per-run addressing, tenant grouping above owners,
+and session fork. The table gained the six defect kinds rounds 170-199
+introduced (misread config, silent cap, swallowed early stop, in-place
+mutation, broken promise, unreconstructable input) -- each with the round
+that named it, so the next reader inherits the vocabulary without
+re-reading the log. A stale Still-open entry is the same defect as a
+stale docstring: a claim of openness the code stopped holding reads as
+humility and works as misdirection.
+
+### 8f9 — session fork, at the boundary dsh names (round 201)
+
+The round-200 Still-open entry said it plainly: "we have the pieces --
+epochs, turn events -- and no fork." Closed at minimal correct scope.
+`fork_session(source_id)` branches a new session (same owner, same
+system, same permission mode) from an idle session's transcript;
+`POST /sessions/{id}/fork` is owner-scoped like every session route.
+
+Two rules carried over whole from dsh's fork-eligibility note
+(2026-08-02): a fork is valid only at a durable completed-turn boundary
+-- for mini-loop an *idle* session's tail is exactly that, because the
+transcript repair invariant keeps tool pairs balanced whenever no turn is
+in flight, so a busy source answers 409 rather than guessing at an inner
+boundary. And the child's transcript is deep-copied: a shared mutable row
+would let an edit in one session appear in both -- and trip the round-190
+digest guard in whichever flushed first, a composition the mutation
+proves. The conversation forks; the workspace does not (fresh, with
+lineage in state) -- `worktrees` is the file-level branching tool, and
+silently copying a working tree is the kind of surprise this codebase
+refuses. The fork is flushed durable before its first turn.
+
+Five tests (context carried + divergence, no shared rows, busy refusal,
+durability, HTTP owner scoping), three guards (open-turn cut, shallow
+copy, unscoped route). Guards 311 → 314.
+
+### 8fa — the fork became visible in both directions (round 202)
+
+Round 201's fork existed for one round with no trace in either session's
+stream: the source's log did not know its conversation had been
+duplicated, and listings could not tell a fork from an original without
+reaching into agent state. Round 196's rule applied to round 201's
+feature: what happened shows where people look -- and "someone copied
+this entire conversation" is precisely the kind of fact an audit reads a
+log for.
+
+`fork_session` is now async (no callers depended on the sync form yet --
+the cheapest moment to fix a signature is one round after it ships) and
+emits `session_forked {child, message_count}` into the source's durable
+stream; `info()` exposes `forked_from` lineage on the child. The async
+change staled round 201's route-scoping anchor within a day of writing
+it -- test_timing_safety caught it, re-anchored. Two tests, one guard.
+Guards 314 → 315.
+
+### 8fb — the verified loop begins with its types (round 203)
+
+The operator committed LONGHORIZON_HARNESS_RESEARCH.md -- a full adoption
+boundary for LongHorizon's Manage-Execute-Audit outer loop: adopt the
+mechanism, not the dependency, and build the typed verified checkpoint
+BEFORE any Manager prompt (decision 12, priority 2). This round is that
+first deliverable, at Phase-1 scope: values only, no service, no wiring,
+nothing constructs them in the default path.
+
+`verified_loop.py` carries the five V1 values the research names
+(TaskContract, VerifiedCheckpoint, RoundPlan, AuditReceipt, StatePatch)
+plus `apply_patch`, the pure fold where every authority rule the future
+coordinator must obey is enforced in types rather than prompts: prose
+carries no semantics (a requirement whose text demands verification
+changes nothing -- upstream boundary #1, task state as strings, removed
+by construction); patches apply by CAS against the exact base revision;
+`verified` is reachable solely through a clean complete receipt naming
+the requirement (rule 6: unverified never completes -- a `suspect`
+receipt can block, never verify); unknown operations refuse rather than
+skip; and the fold is replay-deterministic by construction (no clock, no
+randomness), which is Phase 1's replay gate.
+
+The discard scan flagged `blockers.remove()` on arrival -- a stdlib
+None-returning `remove` colliding with the error-returning worktree one;
+classified with the server.py `send` precedent. Eight tests, two guards
+(CAS removed; verified-without-receipt). Guards 315 → 317.
+
+### 8fc — shadow contracts over real recordings (round 204)
+
+Phase 1 of the LongHorizon adoption, as the research doc scopes it:
+generate candidate typed values from existing trajectories, execute no
+Manager suggestion, change no completion state. `verified_shadow.py`
+reads one assembled trajectory and emits a candidate TaskContractV1 (one
+deterministic requirement; the recorded request rides as projection-only
+text), one RoundPlanV1 per parent-loop agent turn (a child's model calls
+are its own story -- round 189's lesson one layer up), and DETERMINISTIC
+AuditReceiptV1 shadows whose verdict and integrity come from typed
+recorded facts alone. `fold_shadow` then pushes those receipts through
+the real `apply_patch` gate -- same CAS, same rule 6 -- so the rehearsal
+exercises the exact authority path the live coordinator will use.
+
+Writing the probe found a real semantic seam on the first run: a
+stuck-HALTED run returns normally, so its trajectory reads
+`status: "completed"` -- but the typed `stuck{halted}` event is on the
+record. A gate trusting terminal status alone would verify a run the
+harness itself gave up on. The shadow's integrity check now reads error
+events AND halted stuck events, and is deliberately stricter than the
+recording's own terminal field. Phase-1 gates rehearsed and pinned:
+prose in the recorded request cannot self-verify, and the same
+trajectory folds byte-identically on every replay. Five tests, two
+guards. Guards 317 → 319.
+
+### 8fd — the evidence-coverage gate closes Phase 1's test matrix (round 205)
+
+The research doc's Phase 1 names four test kinds: schema (round 203's
+constructors), prompt injection (203/204's prose-carries-no-authority),
+replay (203/204's byte-identical folds), and evidence coverage -- the
+last one open until now. `evidence_problems(shadow, trajectory)` reports
+every receipt whose `evidence_refs` name spans the trajectory never
+recorded (an audit citing nothing is indistinguishable from one citing
+everything) and every receipt that would verify a requirement while
+citing no evidence at all. Two tests, one guard (the dangling-ref check
+emptied). Guards 319 → 320. Phase 1's matrix is complete; what remains
+before Phase 2's coordinator is operator-gated: the Phase 0 paired
+benchmark, and the review of everything rounds 188-205 accumulated.

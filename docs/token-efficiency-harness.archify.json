@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "mini-loop Token 效率 Harness",
+    "subtitle": "结构化读取 · 安全压缩 · 稳定请求 · 可恢复投影",
+    "output": "docs/token-efficiency-harness.html",
+    "viewBox": [1180, 800],
+    "animation": "none",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase"
+  },
+  "stages": [
+    { "label": "获取 / 执行" },
+    { "label": "安全边界" },
+    { "label": "观测投影" },
+    { "label": "请求整形" },
+    { "label": "Provider" }
+  ],
+  "nodes": [
+    {
+      "id": "ast_context",
+      "type": "backend",
+      "label": "结构化代码读取",
+      "sublabel": "先取结构，再读源码",
+      "tag": "AstOutlineAdapter",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "tool_execution",
+      "type": "security",
+      "label": "受控工具执行",
+      "sublabel": "role policy · permission · sandbox",
+      "tag": "CommandResult",
+      "stage": 0,
+      "row": 3
+    },
+    {
+      "id": "secret_mask",
+      "type": "security",
+      "label": "Secret Mask",
+      "sublabel": "先脱敏，再交给插件",
+      "tag": "mandatory",
+      "stage": 1,
+      "row": 3
+    },
+    {
+      "id": "observation_reducer",
+      "type": "backend",
+      "label": "观测降噪",
+      "sublabel": "确定性降噪 / 可插拔 adapter",
+      "tag": "ObservationReducer",
+      "stage": 2,
+      "row": 3
+    },
+    {
+      "id": "masked_authority",
+      "type": "database",
+      "label": "脱敏原文",
+      "sublabel": "session 内存 · TTL / quota",
+      "tag": "paged recovery",
+      "stage": 2,
+      "row": 4
+    },
+    {
+      "id": "transcript_projection",
+      "type": "messagebus",
+      "label": "对话投影",
+      "sublabel": "短结果 + recovery marker",
+      "tag": "pairing preserved",
+      "stage": 3,
+      "row": 3
+    },
+    {
+      "id": "request_optimizer",
+      "type": "backend",
+      "label": "请求优化",
+      "sublabel": "只改副本与 newest delta",
+      "tag": "frozen prefix",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "response_policy",
+      "type": "backend",
+      "label": "响应策略",
+      "sublabel": "稳定指令 + 输出上限",
+      "tag": "concise opt-in",
+      "stage": 3,
+      "row": 4
+    },
+    {
+      "id": "cache_policy",
+      "type": "cloud",
+      "label": "CachePolicy",
+      "sublabel": "最后标注稳定请求副本",
+      "tag": "prefix stable",
+      "stage": 4,
+      "row": 1
+    },
+    {
+      "id": "model_provider",
+      "type": "external",
+      "label": "Model Provider",
+      "sublabel": "更小且协议合法的上下文",
+      "tag": "LLM",
+      "stage": 4,
+      "row": 3
+    }
+  ],
+  "flows": [
+    {
+      "id": "execution_to_mask",
+      "from": "tool_execution",
+      "to": "secret_mask",
+      "label": "工具结果",
+      "classification": "authoritative observation",
+      "variant": "security",
+      "labelAt": [208, 542]
+    },
+    {
+      "id": "mask_to_reducer",
+      "from": "secret_mask",
+      "to": "observation_reducer",
+      "label": "脱敏观测",
+      "classification": "plugin-safe input",
+      "variant": "security"
+    },
+    {
+      "id": "reducer_to_projection",
+      "from": "observation_reducer",
+      "to": "transcript_projection",
+      "label": "短投影",
+      "classification": "re-masked + receipt",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "reducer_to_authority",
+      "from": "observation_reducer",
+      "to": "masked_authority",
+      "label": "保留脱敏原文",
+      "classification": "recoverable only",
+      "variant": "security"
+    },
+    {
+      "id": "ast_to_optimizer",
+      "from": "ast_context",
+      "to": "request_optimizer",
+      "label": "结构上下文",
+      "classification": "narrow acquisition",
+      "variant": "default"
+    },
+    {
+      "id": "projection_to_optimizer",
+      "from": "transcript_projection",
+      "to": "request_optimizer",
+      "label": "下一轮 delta",
+      "classification": "provider projection ledger",
+      "variant": "emphasis"
+    },
+    {
+      "id": "optimizer_to_cache",
+      "from": "request_optimizer",
+      "to": "cache_policy",
+      "label": "请求副本",
+      "classification": "protocol shape preserved",
+      "variant": "emphasis"
+    },
+    {
+      "id": "response_to_cache",
+      "from": "response_policy",
+      "to": "cache_policy",
+      "label": "输出约束",
+      "classification": "provider-neutral",
+      "variant": "dashed"
+    },
+    {
+      "id": "cache_to_model",
+      "from": "cache_policy",
+      "to": "model_provider",
+      "label": "最终请求",
+      "classification": "cache annotated",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "不是一个 compress()",
+      "items": [
+        "Acquisition、Observation、Request、Response 四个 stage 分开插拔",
+        "Registry 绑定 descriptor、mode、lifecycle；异常默认保留安全输入",
+        "每次尝试生成内容无关的 receipt，便于度量与回滚"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Authority ≠ Projection",
+      "items": [
+        "Action journal 保存脱敏后的 authoritative result",
+        "模型只看更短的 projection；需要时用 scoped ref 分页恢复",
+        "插件输出再次 mask，并拒绝 recovery envelope 后的净膨胀"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "当前落地边界",
+      "items": [
+        "ast-outline typed tools 与本地 deterministic reducer 已落地",
+        "ConciseResponsePolicy 是 Caveman-inspired 的 opt-in 策略",
+        "RTK binary、Headroom adapter 和通用 ML compressor 尚未接入"
+      ]
+    }
+  ]
+}

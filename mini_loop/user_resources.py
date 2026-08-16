@@ -188,7 +188,12 @@ class UserResourceResolver:
         secrets=None,
     ) -> None:
         self.root = Path(root).resolve()
-        self.root.mkdir(parents=True, exist_ok=True)
+        # Private like the spill root (round 171): these trees hold one
+        # owner's memories and skills, and a default-mode directory reads as
+        # world-readable to every other local account. chmod on reuse, so a
+        # root created before this line existed is tightened, not trusted.
+        self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
+        self.root.chmod(0o700)
         self.agent_skills = agent_skills
         self.secrets = secrets
         self._resources: dict[str, UserResources] = {}
@@ -228,7 +233,8 @@ class UserResourceResolver:
         # configured root.  Refuse it rather than following it.
         if path.is_symlink():
             raise RuntimeError("user resource directory must not be a symlink")
-        path.mkdir(parents=True, exist_ok=True)
+        path.mkdir(parents=True, exist_ok=True, mode=0o700)
+        path.chmod(0o700)
         resolved = path.resolve()
         try:
             resolved.relative_to(self.root)

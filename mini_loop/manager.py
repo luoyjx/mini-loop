@@ -693,6 +693,63 @@ class SessionManager:
         self._claim(session)
         return session
 
+    async def fork_session(self, source_id: str) -> AgentSession:
+        """Branch a new session from an idle session's current transcript.
+
+        dsh's fork eligibility rule, adopted whole: a fork is valid only at a
+        durable *completed turn* boundary -- "an assistant message can sit
+        inside an open step and can contain tool calls whose results occur
+        later," so a mid-turn prefix need not be a valid provider transcript.
+        For mini-loop an idle session's tail IS that boundary (the transcript
+        repair invariant keeps tool pairs balanced at idle), so fork refuses a
+        busy session rather than guessing at an inner boundary.
+
+        The conversation forks; the workspace does not. The child gets a
+        fresh empty workspace and a lineage note in its state -- copying a
+        multi-GB working tree silently is the kind of surprise this codebase
+        refuses, and `worktrees` already exists for file-level branching.
+        """
+
+        source = self._sessions.get(source_id)
+        if source is None:
+            raise KeyError(source_id)
+        if source.busy:
+            raise RuntimeError(
+                "cannot fork a busy session: its transcript tail is an open "
+                "turn, not a completed boundary. Wait for the turn to finish "
+                "or cancel it."
+            )
+        child = self.create(
+            system=source.system,
+            permission_mode=source.permission_mode,
+            owner=source.owner,
+        )
+        source_agent, child_agent = source.agent, child.agent
+        if source_agent is not None and child_agent is not None:
+            import copy as _copy
+
+            # Deep-copied so the two transcripts never share a mutable row:
+            # an in-place edit in one would otherwise appear in both -- and
+            # trip the round-190 digest guard in whichever flushed first.
+            child_agent.messages[:] = _copy.deepcopy(source_agent.messages)
+            child_agent.state["forked_from"] = {
+                "session": source_id,
+                "message_count": len(source_agent.messages),
+            }
+            # Durable immediately: the fork's whole point is a transcript,
+            # and a crash before the first turn must not lose it.
+            child._flush_messages()
+            # The fork is visible in the SOURCE's own stream (round 196's
+            # rule: what happened shows where people look). A conversation
+            # that was duplicated should say so in its record, not only in
+            # the child's private state.
+            await source.emit({
+                "type": "session_forked",
+                "child": child.id,
+                "message_count": len(source_agent.messages),
+            })
+        return child
+
     def _personal_skill_target(self, session_id: str, owner: str):
         """Resolve the trusted session and publisher for one API operation."""
 
@@ -987,6 +1044,11 @@ class SessionManager:
             )
         if record.todos and session.agent is not None:
             session.agent.todo.items = [dict(t) for t in record.todos]
+        if record.pending_steering:
+            # Queued but undelivered when the last process stopped. The next
+            # run's injector delivers them exactly as if no restart happened;
+            # `steer()` promised "queued", and the promise survives the process.
+            session._steering = [str(s) for s in record.pending_steering]
 
     # -- s15-17: spawn a teammate = a concurrent session sharing the workspace --
     async def spawn_teammate(

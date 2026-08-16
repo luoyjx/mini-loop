@@ -104,6 +104,10 @@ class SessionRecord:
     todos: tuple[dict, ...] = ()
     # The tenant that owns the session, restored so a restart does not orphan it.
     owner: str = "anonymous"
+    # Steers queued but not yet delivered (masked). `steer()` answers "queued"
+    # -- a promise -- and an in-memory-only queue broke it across a restart:
+    # the caller was told their words would arrive and a restart lost them.
+    pending_steering: tuple[str, ...] = ()
 
 
 def _json_safe(value: Any) -> Any:
@@ -247,7 +251,8 @@ CREATE TABLE IF NOT EXISTS sessions (
     todos        TEXT NOT NULL DEFAULT '[]',
     owner        TEXT NOT NULL DEFAULT 'anonymous',
     lease_owner  TEXT,
-    lease_until  REAL NOT NULL DEFAULT 0
+    lease_until  REAL NOT NULL DEFAULT 0,
+    pending_steering TEXT NOT NULL DEFAULT '[]'
 );
 CREATE TABLE IF NOT EXISTS messages (
     session_id TEXT NOT NULL,
@@ -401,6 +406,17 @@ class SQLiteStateStore:
                 self._db.execute(
                     "ALTER TABLE sessions ADD COLUMN todos TEXT NOT NULL DEFAULT '[]'"
                 )
+        # Idempotent, unversioned: cheap PRAGMA check on every open, so a
+        # database from any earlier version gains the column.
+        session_columns = {
+            row["name"]
+            for row in self._db.execute("PRAGMA table_info(sessions)").fetchall()
+        }
+        if "pending_steering" not in session_columns:
+            self._db.execute(
+                "ALTER TABLE sessions ADD COLUMN pending_steering "
+                "TEXT NOT NULL DEFAULT '[]'"
+            )
         if found < 2:
             columns = {
                 row["name"]
@@ -579,15 +595,16 @@ class SQLiteStateStore:
             self._db.execute(
                 """
                 INSERT INTO sessions
-                    (session_id, workspace, system, created_at, run_count, status, todos, owner)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    (session_id, workspace, system, created_at, run_count, status, todos, owner, pending_steering)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(session_id) DO UPDATE SET
                     workspace = excluded.workspace,
                     system    = excluded.system,
                     run_count = excluded.run_count,
                     status    = excluded.status,
                     todos     = excluded.todos,
-                    owner     = excluded.owner
+                    owner     = excluded.owner,
+                    pending_steering = excluded.pending_steering
                 """,
                 (
                     record.session_id,
@@ -598,6 +615,7 @@ class SQLiteStateStore:
                     record.status,
                     json.dumps(_json_safe(list(record.todos)), ensure_ascii=False),
                     record.owner,
+                    json.dumps(list(record.pending_steering), ensure_ascii=False),
                 ),
             )
 
@@ -619,6 +637,9 @@ class SQLiteStateStore:
                         event_cursor=self._max_ordinal("events", row["session_id"]),
                         todos=tuple(json.loads(row["todos"] or "[]")),
                         owner=row["owner"] if "owner" in row.keys() else "anonymous",
+                        pending_steering=tuple(
+                            json.loads(row["pending_steering"] or "[]")
+                        ) if "pending_steering" in row.keys() else (),
                     )
                 )
             return out

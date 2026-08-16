@@ -234,3 +234,35 @@ def test_server_passes_the_authenticated_owner_into_create(tmp_path):
         assert session is not None
         assert session.owner == "alice"
         assert session.agent.state["resource_owner"] == "alice"
+
+
+# -- directory privacy (round 191) ------------------------------------------
+# The resolver's trees hold one owner's memories and skills. They were
+# created default-mode (0755): readable by every other local account, below
+# the standard the spill root (round 171) and the trajectory root already
+# set. Created 0o700 now, and re-tightened on reuse so a tree from before
+# the fix does not keep its old mode.
+
+def test_resource_directories_are_private(tmp_path):
+    from mini_loop.skills import SkillLoader
+    from mini_loop.user_resources import UserResourceResolver
+
+    resolver = UserResourceResolver(tmp_path / "ur", SkillLoader(tmp_path / "s"))
+    resources = resolver.for_owner("alice@example.com")
+    for directory in (
+        tmp_path / "ur",
+        resources.root,
+        resources.root / "skills",
+        resources.root / "memory",
+    ):
+        assert (directory.stat().st_mode & 0o777) == 0o700, directory
+
+
+def test_a_preexisting_lax_root_is_tightened(tmp_path):
+    from mini_loop.skills import SkillLoader
+    from mini_loop.user_resources import UserResourceResolver
+
+    lax = tmp_path / "ur"
+    lax.mkdir(mode=0o755)
+    UserResourceResolver(lax, SkillLoader(tmp_path / "s"))
+    assert (lax.stat().st_mode & 0o777) == 0o700

@@ -77,7 +77,7 @@ def test_search_reaches_superseded_epochs(tmp_path):
         {"role": "user", "content": "[Context compressed]"},
     ], epoch=2)
 
-    found = search_transcript(store, "s1", "xyzzy")
+    found = search_transcript(store, "s1", "xyzzy")["matches"]
     assert found and found[0]["epoch"] == 1
     assert "xyzzy-plugh" in found[0]["snippet"]
     store.close()
@@ -88,10 +88,74 @@ def test_search_is_bounded(tmp_path):
     store.append_messages("s1", [
         {"role": "user", "content": f"needle number {i}"} for i in range(200)
     ], epoch=1)
-    found = search_transcript(store, "s1", "needle")
+    found = search_transcript(store, "s1", "needle")["matches"]
     from mini_loop.session_query import MAX_MATCHES
 
     assert len(found) == MAX_MATCHES
+    store.close()
+
+
+def test_search_names_the_epochs_it_skipped(tmp_path):
+    """Past the epoch cap, "No matches" must not read as "nothing anywhere".
+
+    The tool used to claim "search every durable epoch" while silently
+    scanning only the newest MAX_EPOCHS_SCANNED -- so the one query whose
+    answer lived in epoch 1 of an old session got a clean, wrong report.
+    """
+    from mini_loop.session_query import MAX_EPOCHS_SCANNED
+
+    store = SQLiteStateStore(tmp_path / "state.db")
+    total = MAX_EPOCHS_SCANNED + 5
+    store.append_messages("s1", [
+        {"role": "user", "content": "the answer lives in epoch one"},
+    ], epoch=1)
+    for epoch in range(2, total + 1):
+        store.append_messages("s1", [
+            {"role": "user", "content": f"noise for epoch {epoch}"},
+        ], epoch=epoch)
+
+    result = search_transcript(store, "s1", "answer lives")
+    assert result["matches"] == []  # epoch 1 really is out of reach
+    assert result["epochs_skipped"] == 5
+    assert result["first_epoch"] == 6 and result["current_epoch"] == total
+    store.close()
+
+
+def test_the_tool_renders_the_coverage_caveat(tmp_path):
+    """The model-facing answer itself carries the partial-scan warning."""
+    from mini_loop.session_query import MAX_EPOCHS_SCANNED, install_session_query
+
+    store = SQLiteStateStore(tmp_path / "state.db")
+    manager = _manager(tmp_path, state_store=store)
+    session = manager.create()
+    agent = session.agent
+    for epoch in range(1, MAX_EPOCHS_SCANNED + 4):
+        store.append_messages(session.id, [
+            {"role": "user", "content": f"noise {epoch}"},
+        ], epoch=epoch)
+    registry = agent.tools
+    if registry.get("transcript_search") is None:
+        install_session_query(registry)
+    tool = registry.get("transcript_search")
+    ctx = ToolContext(
+        agent=agent, workspace=agent.workspace, state=agent.state,
+        call=ToolCall(name="transcript_search",
+                      input={"query": "missing-needle"}, id="q2"),
+    )
+    out = asyncio.run(tool.run(ctx, query="missing-needle"))
+    assert "No matches" in out
+    assert "were not scanned" in out, (
+        "a partial scan must not present a clean report"
+    )
+
+
+def test_a_full_scan_reports_no_caveat(tmp_path):
+    store = SQLiteStateStore(tmp_path / "state.db")
+    store.append_messages("s1", [
+        {"role": "user", "content": "plain history"},
+    ], epoch=1)
+    result = search_transcript(store, "s1", "anything")
+    assert result["epochs_skipped"] == 0
     store.close()
 
 

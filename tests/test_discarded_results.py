@@ -55,6 +55,7 @@ ALLOWED_DISCARDS = {
     ("runner.py", "run"): "workflow runner records the outcome through its own store",
     ("worktrees.py", "bind_worktree"): "binding is advisory; creation already succeeded",
     ("server.py", "send"): "the ASGI send callable returns None; it is awaited for its side effect (emitting the 413), not for a result -- a different `send` than MessageBus.send",
+    ("verified_loop.py", "remove"): "list.remove returns None (clearing a blocker in the patch fold); a different `remove` than the error-returning worktree one",
 }
 
 

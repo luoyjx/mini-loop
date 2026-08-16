@@ -697,6 +697,11 @@ class Agent:
         self._request_tool_catalog = None
         self.last_text: str = ""
         self._last_model_span_id: str | None = None
+        #: Catalog fingerprints already written to the durable log this
+        #: process life (reconstructable-requests, round 197).
+        self._logged_catalogs: set[str] = set()
+        #: System-prompt hashes already written, same rule (round 198).
+        self._logged_system_hashes: set[str] = set()
         self._rounds_without_todo = 0
         self._pending_compact = False
 
@@ -969,6 +974,28 @@ class Agent:
         span_id = f"model_{uuid.uuid4().hex[:16]}"
         self._last_model_span_id = span_id
         started = time.monotonic()
+        system_hash = None
+        if system is not None:
+            # The cache policy renders `system` as a list of text blocks (to
+            # carry a cache_control breakpoint), so the canonical form is
+            # JSON, not a bare string.
+            canonical_system = (
+                system if isinstance(system, str)
+                else json.dumps(system, sort_keys=True, ensure_ascii=False,
+                                default=str)
+            )
+            system_hash = hashlib.sha256(
+                canonical_system.encode("utf-8")
+            ).hexdigest()[:16]
+            if system_hash not in self._logged_system_hashes:
+                # Same rule as the tool catalog (round 197): the system
+                # prompt is model-visible input, and it is DYNAMIC -- plan
+                # mode, tool lists -- so the base prompt in the session
+                # record cannot reconstruct what a given request carried.
+                # One event per distinct prompt; model_start references it
+                # by hash.
+                self._logged_system_hashes.add(system_hash)
+                await self._send("system_prompt", hash=system_hash, text=system)
         await self._send(
             "model_start",
             span_id=span_id,
@@ -978,6 +1005,7 @@ class Agent:
             input_tokens_estimate=estimate_tokens(messages),
             tool_count=len(tools or []),
             tool_catalog_fingerprint=tool_catalog_fingerprint,
+            system_hash=system_hash,
             max_tokens=kwargs["max_tokens"],
             _trajectory_fields={
                 "model_input": {
@@ -1194,6 +1222,23 @@ class Agent:
 
             catalog = self.tools.snapshot(report=True)
             self._request_tool_catalog = catalog
+            if catalog.fingerprint not in self._logged_catalogs:
+                # The log is the authority for every model-visible input
+                # (dsh's reconstructable-requests rule). Messages and the
+                # system prompt are durable; the tool schemas -- equally
+                # model-visible -- were represented only by their
+                # fingerprint, so a past request could not be rebuilt once
+                # the catalog changed (an MCP connect, a role policy). One
+                # event per distinct catalog carries the schemas; every
+                # model_start already references them by fingerprint. After
+                # a restart the set is empty and one duplicate event per
+                # catalog is written -- a spare copy, never a gap.
+                self._logged_catalogs.add(catalog.fingerprint)
+                await self._send(
+                    "tool_catalog",
+                    fingerprint=catalog.fingerprint,
+                    schemas=catalog.schemas(),
+                )
             try:
                 response = await self._create(
                     self.messages,

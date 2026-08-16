@@ -566,15 +566,50 @@ def _register_routes(app: FastAPI) -> None:
 
     @app.post("/sessions/{session_id}/steer")
     async def steer_session(request: Request, session_id: str, req: MessageReq):
-        """Queue input for a running turn (or the next one). Never 409s.
+        """Deliver input to a session whatever it is doing. Never 409s.
 
-        The text reaches the model at its next loop round as a
+        Busy: the text reaches the running turn at its next loop round as a
         `<user_interjection>` -- OpenWorker's busy-session steering, on our
-        injector seam.
+        injector seam. Idle: the text starts an ordinary turn now, in the
+        background. Both references agree on the idle half (OpenWorker: an
+        idle session starts a fresh turn; dsh: steer carries wakeup), and
+        parking used to be the behavior here -- durable after round 192, so
+        a steer to an idle session could wait forever while the caller
+        believed the words were on their way. The caller who wants
+        park-until-next-turn semantics still has them through any
+        process-local `session.steer()` call; over HTTP, steering means
+        "make sure the agent hears this", and an idle agent hears it by
+        running.
         """
         session = _require(request, session_id)
+        if not session.busy:
+            manager = _manager(request)
+            task = asyncio.create_task(session.run(req.message))
+            # Held like every fire-and-forget the manager owns: the loop
+            # keeps only weak references to tasks, and an unreferenced turn
+            # can be garbage-collected mid-run.
+            manager._cleanup_tasks.add(task)
+            task.add_done_callback(manager._cleanup_tasks.discard)
+            return {"session": session_id, "queued": 0, "busy": False,
+                    "delivered": "new_turn"}
         queued = session.steer(req.message)
-        return {"session": session_id, "queued": queued, "busy": session.busy}
+        return {"session": session_id, "queued": queued, "busy": True,
+                "delivered": "steering"}
+
+    @app.post("/sessions/{session_id}/fork")
+    async def fork_session(request: Request, session_id: str):
+        """Branch a new session from an idle session's transcript.
+
+        Owner-scoped like every session route; the child belongs to the same
+        owner. A busy source is 409 -- its tail is an open turn, not a
+        completed boundary (dsh's fork eligibility rule).
+        """
+        _require(request, session_id)
+        try:
+            child = await _manager(request).fork_session(session_id)
+        except RuntimeError as error:
+            raise HTTPException(status_code=409, detail=str(error)) from None
+        return child.info()
 
     @app.post("/sessions/{session_id}/cancel")
     async def cancel_run(request: Request, session_id: str):

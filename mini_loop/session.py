@@ -52,6 +52,25 @@ class LeaseLost(RuntimeError):
     """Another process holds this session."""
 
 
+def _row_digest(message: dict) -> str:
+    """Digest of one in-memory transcript row, for mutation detection.
+
+    Computed on the raw memory form (what the model sees), not the masked
+    store row -- the invariant is "the row the model sees is the row that was
+    logged", and both sides of that comparison live in memory: the digest at
+    flush time against the digest at request time.
+    """
+
+    from .storage import _json_safe
+
+    return hashlib.sha256(
+        json.dumps(
+            _json_safe(message), sort_keys=True, ensure_ascii=False,
+            default=str,
+        ).encode("utf-8", "surrogatepass")
+    ).hexdigest()
+
+
 class AgentSession:
     def __init__(
         self,
@@ -87,6 +106,10 @@ class AgentSession:
         self._persisted_messages = 0
         self._transcript_epoch = 1
         self._persisted_refs: list = []
+        #: Content digests of the flushed prefix, in memory form. The pointer
+        #: check above catches row *replacement*; these catch the stated known
+        #: limit -- a flushed dict mutated in place, which no pointer can see.
+        self._persisted_digests: list[str] = []
         #: Why durable state is not being written, or None. Public and reported:
         #: this used to be a private field that was assigned and read by nothing,
         #: so a store that opened fine and then failed every write left the agent
@@ -199,6 +222,38 @@ class AgentSession:
                 f"durable epoch holds {count}; a model-visible input bypassed "
                 "the log",
             )
+        # Coverage by count is necessary, not sufficient. The rewrite check in
+        # `_flush_messages` is a pointer comparison, and its documented limit
+        # is exactly the remaining hole: a flushed dict mutated *in place* --
+        # by a plugin hook, an injector, anything handed the live list -- keeps
+        # its pointer and its row count while the model sees content the
+        # durable record never held. Sanctioned rewriters replace rows
+        # (`messages[:] = [...]`), which the pointer check turns into a new
+        # mirrored epoch before this line runs; a same-object content change
+        # can only be a mutation, so it raises instead of proceeding.
+        if len(self._persisted_digests) != len(messages):
+            from .invariants import InvariantError
+
+            # Positional alignment is what the loop below relies on. A future
+            # attach or restore path that forgets to seed the ledger would
+            # otherwise misalign it silently and false-positive on innocent
+            # rows -- a new path inherits the need.
+            raise InvariantError(
+                "mini_loop.session",
+                f"digest ledger covers {len(self._persisted_digests)} rows "
+                f"but the request carries {len(messages)}; a flush or "
+                "restore path failed to keep them aligned",
+            )
+        for index, recorded in enumerate(self._persisted_digests):
+            if _row_digest(messages[index]) != recorded:
+                from .invariants import InvariantError
+
+                raise InvariantError(
+                    "mini_loop.session",
+                    f"flushed transcript row {index} was mutated in place "
+                    "after it was logged; the model would see content the "
+                    "durable record never held",
+                )
 
     # -- event bus --
     async def _capture_event(self, event: dict) -> dict:
@@ -210,7 +265,14 @@ class AgentSession:
         # live and is not worth keeping.
         ephemeral = bool(event.pop("_ephemeral", False))
         self._seq += 1
-        event = {**event, "seq": self._seq, "ts": time.time(), "session": self.id}
+        event = {
+            **event, "seq": self._seq, "ts": time.time(), "session": self.id,
+            # Which transcript the moment belonged to. Compaction bumps the
+            # epoch; without this stamp no event can be joined back to the
+            # messages the model was actually seeing when it fired
+            # (reconstructable-requests, round 198).
+            "transcript_epoch": self._transcript_epoch,
+        }
         # Masked here, once, before the event reaches any of its three
         # destinations: the durable table, the trajectory, and every SSE
         # subscriber. `_flush_messages` had been masking the transcript for
@@ -470,6 +532,7 @@ class AgentSession:
             # actually saw before compaction rewrote its history.
             self._transcript_epoch += 1
             self._persisted_messages = 0
+            self._persisted_digests = []
         pending = agent.messages[self._persisted_messages:]
         if not pending:
             return
@@ -493,6 +556,7 @@ class AgentSession:
         )
         self._persisted_messages = len(agent.messages)
         self._persisted_refs = list(agent.messages)
+        self._persisted_digests.extend(_row_digest(m) for m in pending)
         self._persist_session_record()
         # Renewed on the same beat as persistence, so a long turn cannot let a
         # lease lapse under an actively working process.
@@ -521,6 +585,13 @@ class AgentSession:
                 event_cursor=0,  # derived on read
                 todos=tuple(agent.todo.snapshot()) if agent is not None else (),
                 owner=self.owner,
+                # Masked like every durable projection; the live queue keeps
+                # the raw text for same-process delivery, and a post-restart
+                # delivery hands the model the masked form -- the same rule
+                # the restored transcript follows.
+                pending_steering=tuple(
+                    self._mask(queued) for queued in self._steering
+                ),
             )
         )
 
@@ -555,6 +626,19 @@ class AgentSession:
         self._steering.append(text)
         if len(self._steering) > MAX_STEER_QUEUE:
             del self._steering[0]
+        # Durable before the answer: "queued" is a promise, and an in-memory
+        # queue broke it across a restart -- an idle session's steer waits for
+        # the next run, and the process that answered "queued: 1" may not be
+        # the one that runs it. The record write is the same sync beat every
+        # flush already performs; delivery clears the queue and the next flush
+        # (which persists the interjection in the same sequence) clears the
+        # record, so a crash between them re-delivers rather than losing the
+        # words. Best-effort like the flush path: a store fault degrades to
+        # `persist_error`, never a dropped steer for the running process.
+        try:
+            self._persist_session_record()
+        except Exception as error:
+            self.persist_error = f"{type(error).__name__}: {error}"
         return len(self._steering)
 
     def drain_steering(self) -> list[str]:
@@ -605,6 +689,7 @@ class AgentSession:
         self._persisted_messages = len(messages)
         self._transcript_epoch = max(1, self.state_store.transcript_epoch(self.id))
         self._persisted_refs = list(agent.messages)
+        self._persisted_digests = [_row_digest(m) for m in agent.messages]
         self._seq = self.state_store.event_cursor(self.id)
         # Plan mode and the goal are log-only, whole-value state: the value in
         # force is the last logged snapshot, folded here -- no mirror to
@@ -913,6 +998,12 @@ class AgentSession:
             "trajectory_count": self._trajectory_count,
             "trajectory_recording_error": self._trajectory_recording_error,
             "sink_error": self.sink_error,
+            # Lineage, when this session was branched from another (round
+            # 202): callers listing sessions can tell a fork from an
+            # original without reaching into agent state.
+            "forked_from": (
+                agent.state.get("forked_from") if agent is not None else None
+            ),
         }
         workflow_service = agent.state.get("workflow_service") if agent else None
         info["workflows"] = (
@@ -937,8 +1028,21 @@ async def steering_injector(agent) -> list[dict]:
     drained = session.drain_steering()
     if not drained:
         return []
-    await agent._send("steering_delivered", count=len(drained))
     body = "\n\n".join(drained)
+    # The event carries WHAT was steered, not only that steering happened:
+    # SSE consumers and the trace viewer render the words without digging
+    # them out of a model_input snapshot (dsh's ledger shows steering
+    # messages as first-class rows). Capped for the live surface like a tool
+    # result; the trajectory keeps the full text; masking is `_capture_event`'s
+    # job, the same as every other emitted string.
+    from .agent import DISPLAY_CAP
+
+    await agent._send(
+        "steering_delivered",
+        count=len(drained),
+        text=body[:DISPLAY_CAP],
+        _trajectory_fields={"text": body},
+    )
     return [{
         "role": "user",
         "content": f"<user_interjection>\n{body}\n</user_interjection>",
