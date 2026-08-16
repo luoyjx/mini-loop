@@ -35,8 +35,9 @@ if untrusted users can submit prompts.
 
 Architecture review baseline: **hardening round 188**; user-resource scoping
 and personal-skill publication reviewed **2026-08-15**; the separate,
-read-only research-site projection was reviewed **2026-08-16** and does not
-change runtime topology. Every implementation iteration must review this map;
+read-only research-site projection and its native-document navigation fallback
+were reviewed **2026-08-16** and do not change runtime topology. Every
+implementation iteration must review this map;
 update the baseline in the same commit, and update the affected nodes, edges,
 boundaries, and capability labels whenever the runtime changes.
 

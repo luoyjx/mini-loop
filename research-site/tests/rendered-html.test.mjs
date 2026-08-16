@@ -110,3 +110,15 @@ test("removes starter-only preview assets and dependency", async () => {
   await access(new URL("../scripts/build-research.mjs", import.meta.url));
   await access(new URL(".openai/hosting.json", siteRoot));
 });
+
+test("uses native document navigation instead of the vinext Link runtime", async () => {
+  const navigationSources = await Promise.all([
+    readFile(new URL("../app/research-index.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/site-header.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/research/[slug]/page.tsx", import.meta.url), "utf8"),
+  ]);
+
+  for (const source of navigationSources) {
+    assert.doesNotMatch(source, /from ["']next\/link["']/);
+  }
+});

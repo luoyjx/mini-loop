@@ -25,7 +25,10 @@ export type ResearchIndexItem = Omit<ResearchDocument, "markdown">;
 export const researchDocuments = generated.documents as ResearchDocument[];
 
 export const researchIndex: ResearchIndexItem[] = researchDocuments.map(
-  ({ markdown: _markdown, ...document }) => document,
+  ({ markdown: _markdown, ...document }) => {
+    void _markdown;
+    return document;
+  },
 );
 
 export function getResearchDocument(slug: string) {

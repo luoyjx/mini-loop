@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ResearchIndexItem } from "./research-data";
 import { SiteHeader } from "./site-header";
@@ -79,11 +78,11 @@ export function ResearchIndex({ documents }: ResearchIndexProps) {
               汇总 mini-loop 的源码调研、架构判断与落地边界。内容直接来自仓库原文，新增文档会在构建时进入索引。
             </p>
             {latest ? (
-              <Link className="latest-link" href={`/research/${latest.slug}`}>
+              <a className="latest-link" href={`/research/${latest.slug}`}>
                 <span>最近更新</span>
                 <strong>{latest.title}</strong>
                 <span aria-hidden="true">→</span>
-              </Link>
+              </a>
             ) : null}
           </div>
 
@@ -148,7 +147,7 @@ export function ResearchIndex({ documents }: ResearchIndexProps) {
           {visibleDocuments.length ? (
             <div className="research-grid">
               {visibleDocuments.map((document, index) => (
-                <Link
+                <a
                   className="research-card"
                   href={`/research/${document.slug}`}
                   key={document.slug}
@@ -170,7 +169,7 @@ export function ResearchIndex({ documents }: ResearchIndexProps) {
                     <span>{document.readingMinutes} 分钟</span>
                     <span>阅读全文 <span aria-hidden="true">→</span></span>
                   </div>
-                </Link>
+                </a>
               ))}
             </div>
           ) : (

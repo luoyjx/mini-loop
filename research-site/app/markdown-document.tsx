@@ -216,6 +216,7 @@ export function MarkdownDocument({ markdown, sourceCommit, sourcePath }: Markdow
         index += 1;
       }
       blocks.push(
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Horizontal table regions must remain keyboard-scrollable.
         <div className="table-scroll" key={`table-${index}`} tabIndex={0} role="region" aria-label="可横向滚动的数据表">
           <table>
             <thead>

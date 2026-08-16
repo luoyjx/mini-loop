@@ -1,5 +1,6 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- vinext Link crashes after production deployment. */
+
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MarkdownDocument } from "../../markdown-document";
 import {
@@ -55,7 +56,7 @@ export default async function ResearchPage({ params }: ResearchPageProps) {
 
       <main id="main-content">
         <nav className="breadcrumb" aria-label="面包屑导航">
-          <Link href="/">研究索引</Link>
+          <a href="/">研究索引</a>
           <span aria-hidden="true">/</span>
           <span>{document.category}</span>
         </nav>
@@ -97,9 +98,9 @@ export default async function ResearchPage({ params }: ResearchPageProps) {
                 ))}
               </nav>
             </details>
-            <Link className="back-link" href="/">
+            <a className="back-link" href="/">
               <span aria-hidden="true">←</span> 返回研究索引
-            </Link>
+            </a>
           </aside>
 
           <article className="markdown-body">
@@ -118,11 +119,11 @@ export default async function ResearchPage({ params }: ResearchPageProps) {
           </div>
           <div className="related-list">
             {related.map((item) => (
-              <Link href={`/research/${item.slug}`} key={item.slug}>
+              <a href={`/research/${item.slug}`} key={item.slug}>
                 <span>{item.category}</span>
                 <strong>{item.title}</strong>
                 <span aria-hidden="true">→</span>
-              </Link>
+              </a>
             ))}
           </div>
         </section>
