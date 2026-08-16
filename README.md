@@ -34,10 +34,11 @@ if untrusted users can submit prompts.
 ## Architecture
 
 Architecture review baseline: **hardening round 188**; user-resource scoping
-and personal-skill publication reviewed **2026-08-15**. Every implementation
-iteration must review this map; update the baseline in the same commit, and
-update the affected nodes, edges, boundaries, and capability labels whenever
-the runtime changes.
+and personal-skill publication reviewed **2026-08-15**; the separate,
+read-only research-site projection was reviewed **2026-08-16** and does not
+change runtime topology. Every implementation iteration must review this map;
+update the baseline in the same commit, and update the affected nodes, edges,
+boundaries, and capability labels whenever the runtime changes.
 
 <!-- architecture-map:start -->
 ```mermaid
@@ -224,6 +225,7 @@ skills/code_review/SKILL.md   sample skill (loadable via load_skill)
 examples/custom_agent.py      all seams composed into a domain agent + custom server
 tests/           offline tests (no key): loop, sandbox, subagent, compaction,
                  server, concurrency, and every extension seam
+research-site/   read-only Sites app generated from top-level docs/*.md
 ```
 
 Design docs: [hardening notes](docs/HARDENING_NOTES.md) (why the non-curriculum
@@ -239,6 +241,8 @@ contract is [user-scoped skills and memory](docs/USER_SCOPED_SKILLS_MEMORY_DESIG
 Source-level external
 architecture reviews include
 [TencentDB Agent Memory](docs/TENCENTDB_AGENT_MEMORY_RESEARCH.md).
+The [Research Atlas](research-site/README.md) is the browsable, searchable
+projection of every maintained top-level Markdown document under `docs/`.
 
 ---
 
