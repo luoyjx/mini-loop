@@ -45,7 +45,11 @@ test("server-renders the research index from repository documents", async () => 
 });
 
 test("detail metadata and content come from the same generated record", async () => {
-  for (const slug of ["longhorizon-harness-research", "hardening-notes"]) {
+  for (const slug of [
+    "longhorizon-harness-research",
+    "openai-codex-harness-research",
+    "hardening-notes",
+  ]) {
     const document = generated.documents.find((candidate) => candidate.slug === slug);
     assert.ok(document);
 
@@ -83,6 +87,20 @@ test("detail metadata and content come from the same generated record", async ()
     new RegExp(`github\\.com/luoyjx/mini-loop/blob/${longHorizon.sourceCommit}/mini_loop/harness\\.py`),
   );
   assert.doesNotMatch(html, /\/research\/readme-zh-cn/);
+
+  const codexHarness = generated.documents.find(
+    (candidate) => candidate.slug === "openai-codex-harness-research",
+  );
+  const codexResponse = await render("/research/" + codexHarness.slug);
+  const codexHtml = await codexResponse.text();
+  assert.match(codexHtml, /OpenAI Codex Harness 源码级调研/);
+  assert.match(codexHtml, /<figcaption>Mermaid diagram source<\/figcaption>/);
+  assert.match(
+    codexHtml,
+    /github\.com\/openai\/codex\/blob\/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0\/codex-rs\/core\/src\/tools\/spec_plan\.rs#L121-L176/,
+  );
+  assert.match(codexHtml, /openai\.com\/index\/unlocking-the-codex-harness/);
+  assert.doesNotMatch(codexHtml, /\]\[src-|~~~mermaid/);
 });
 
 test("generated content covers every top-level docs markdown file", async () => {
