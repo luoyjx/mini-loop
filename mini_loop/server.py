@@ -466,7 +466,27 @@ SECURITY_HEADERS = {
 }
 
 
+#: Cap on the per-app idempotency cache (round 231). A key is remembered
+#: only long enough to absorb a client's retry of the same submission; the
+#: bound keeps a long-lived server from growing one entry per message ever
+#: sent (bounded output is not bounded work).
+MAX_IDEMPOTENCY_KEYS = 1024
+
+
 def _register_routes(app: FastAPI) -> None:
+    #: (owner, session_id, key) -> the response already returned for it, so a
+    #: double-submit (a network retry, a double-click) returns the first
+    #: turn's result instead of running a second, possibly non-idempotent one
+    #: ("delete the file", "send the email"). Owner is in the key so one
+    #: caller's key can never read another's result.
+    idempotency: dict[tuple, dict] = {}
+
+    def _idempotency_key(request: Request, caller, session_id: str):
+        header = request.headers.get("idempotency-key")
+        if not header:
+            return None
+        return (caller.id, session_id, header)
+
     @app.get("/healthz")
     async def healthz(request: Request):
         s = request.app.state.settings
@@ -541,13 +561,20 @@ def _register_routes(app: FastAPI) -> None:
             raise _personal_skill_http_error(error) from error
 
     @app.get("/sessions")
-    async def list_sessions(request: Request):
+    async def list_sessions(request: Request, limit: int = 100):
         caller = _principal(request)
-        return [
-            s.info()
-            for s in _manager(request).list()
+        # Bounded and ordered (roadmap G4 pagination): the unbounded form
+        # returned info() -- itself real work per session (todos, the
+        # broker's pending list) -- for every session the caller ever made,
+        # so a long-lived caller's listing grew without limit in both
+        # response size and work. Most-recent-first, capped, like the
+        # trajectory routes.
+        owned = [
+            s for s in _manager(request).list()
             if getattr(s, "owner", ANONYMOUS.id) == caller.id
         ]
+        owned.sort(key=lambda s: getattr(s, "created_at", 0), reverse=True)
+        return [s.info() for s in owned[:min(max(limit, 1), 500)]]
 
     @app.get("/sessions/{session_id}")
     async def get_session(request: Request, session_id: str):
@@ -684,6 +711,12 @@ def _register_routes(app: FastAPI) -> None:
     async def post_message(request: Request, session_id: str, req: MessageReq):
         caller = _principal(request)
         session = _require(request, session_id)
+        key = _idempotency_key(request, caller, session_id)
+        if key is not None and key in idempotency:
+            # A retry of a submission that already ran: return the first
+            # result rather than execute the (possibly non-idempotent) turn
+            # again. G4 of AGENT_PLATFORM_ROADMAP.md.
+            return idempotency[key]
         if session.busy:
             # Queueing on the session lock would hold the connection open with
             # no timeout and no way to see the queue. Saying so is better than
@@ -701,7 +734,12 @@ def _register_routes(app: FastAPI) -> None:
             req.message,
             run_context=_authenticated_message_context(caller),
         )
-        return {"session": session_id, "final": final, "info": session.info()}
+        response = {"session": session_id, "final": final, "info": session.info()}
+        if key is not None:
+            if len(idempotency) >= MAX_IDEMPOTENCY_KEYS:
+                idempotency.clear()
+            idempotency[key] = response
+        return response
 
     @app.post("/sessions/{session_id}/messages/stream")
     async def post_message_stream(request: Request, session_id: str, req: MessageReq):

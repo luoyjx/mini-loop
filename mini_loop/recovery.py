@@ -62,7 +62,19 @@ def is_overloaded(e) -> bool:  # 529
 
 
 def is_rate_limit(e) -> bool:  # 429
-    return _status(e) == 429 or "ratelimit" in _name(e) or "429" in _msg(e)
+    # Symmetric with is_overloaded's message coverage (round 225): a
+    # compatible endpoint may surface a rate limit as prose ("rate limit
+    # exceeded") with no 429 digits and a generic exception class. Without
+    # the message check that error was classified non-transient and never
+    # retried, though the same shape of overload WAS retried.
+    msg = _msg(e)
+    return (
+        _status(e) == 429
+        or "ratelimit" in _name(e)
+        or "429" in msg
+        or "ratelimit" in msg
+        or "rate limit" in msg
+    )
 
 
 #: Failures of the connection rather than of the request. Retrying is safe:

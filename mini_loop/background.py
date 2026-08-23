@@ -16,9 +16,14 @@ Enable per session with `install_background(registry)` +
 from __future__ import annotations
 
 import asyncio
+import contextlib
+import json
 import os
+import time
 from collections import deque
+from pathlib import Path
 
+from .durable import atomic_write_text
 from .registry import Tool, ToolContext, ToolRegistry
 from .tools import OUTPUT_CAP, looks_dangerous
 
@@ -124,6 +129,16 @@ class BackgroundManager:
         self.secrets = secrets or NullSecretRegistry()
         base = sandbox if sandbox is not None else NullSandbox()
         self.sandbox = base.for_workspace(self.workspace)
+        #: Durable record of in-flight commands (roadmap G7). The transcript
+        #: tells the model "Started background task bg_0001" durably; the
+        #: manager holding the outcome was process memory. After a restart the
+        #: fresh manager answered "Unknown: bg_0001" while the command's
+        #: process -- its own session, deliberately -- may still be running
+        #: unsupervised. One small file per in-flight command, removed when
+        #: the task settles or is gracefully cancelled, so whatever is left
+        #: at construction is exactly the orphaned work.
+        self._ledger_dir = Path(self.workspace) / ".background"
+        self._adopt_orphans()
 
     def run(self, command: str, timeout: int | None = None) -> str:
         if looks_dangerous(command):
@@ -131,10 +146,18 @@ class BackgroundManager:
         self._counter += 1
         bg_id = f"bg_{self._counter:04d}"
         self._tasks[bg_id] = {"status": "running", "command": command, "result": None}
+        # Recorded before the return so the crash window opens *after* the
+        # durable record exists, matching the tool_result the model is about
+        # to see. If the record cannot be written the task still runs, but
+        # the caller is told a restart will lose track of it.
+        recorded = self._write_ledger(bg_id, command, pid=None)
         self._tasks[bg_id]["handle"] = asyncio.create_task(
             self._exec(bg_id, command, timeout or self.default_timeout)
         )
-        return f"Started background task {bg_id}: {command[:80]}"
+        started = f"Started background task {bg_id}: {command[:80]}"
+        if not recorded:
+            started += " (unrecorded: a restart will lose track of it)"
+        return started
 
     async def _exec(self, bg_id: str, command: str, timeout: int) -> None:
         proc = None
@@ -154,6 +177,9 @@ class BackgroundManager:
                 # precisely for commands that run long.
                 start_new_session=True,
             )
+            # Best-effort pid update: with it, an orphan report can say
+            # whether the process is still alive after a restart.
+            self._write_ledger(bg_id, command, pid=proc.pid)
             try:
                 out, _ = await asyncio.wait_for(proc.communicate(), timeout=timeout)
                 # Masked here as well as at the agent boundary: this result is
@@ -170,12 +196,102 @@ class BackgroundManager:
                 _kill_group(proc)
             result, status = "Cancelled", "cancelled"
             self._tasks[bg_id].update(status=status, result=result)
+            # A graceful cancel killed the process group: nothing is left
+            # running, so a record here would falsely report an orphan on
+            # the next start.
+            self._unledger(bg_id)
             raise
         except Exception as e:
             result, status = f"Error: {e}", "error"
         self._tasks[bg_id].update(status=status, result=result)
         self._completed.append({"bg_id": bg_id, "status": status, "result": result})
         self._settle(bg_id)
+
+    def _write_ledger(self, bg_id: str, command: str, *, pid: int | None) -> bool:
+        """Record an in-flight command durably; True when the record landed."""
+
+        try:
+            self._ledger_dir.mkdir(parents=True, exist_ok=True)
+            atomic_write_text(
+                self._ledger_dir / f"{bg_id}.json",
+                json.dumps({
+                    # Masked at the write: the ledger is a disk sink like any
+                    # other, and commands carry credentials.
+                    "bg_id": bg_id,
+                    "command": self.secrets.mask(command)[:200],
+                    "pid": pid,
+                    "started_at": time.time(),
+                }),
+            )
+            return True
+        except OSError:
+            return False
+
+    def _unledger(self, bg_id: str) -> None:
+        with contextlib.suppress(OSError):
+            (self._ledger_dir / f"{bg_id}.json").unlink(missing_ok=True)
+
+    def _adopt_orphans(self) -> None:
+        """Surface work a dead process started and nobody will ever deliver.
+
+        Whatever the ledger still holds at construction was in flight when
+        the previous process stopped: its output will never be delivered,
+        and its process -- deliberately its own session -- may still be
+        running. Adopted as terminal `orphaned` records through the normal
+        settle path, so the existing drain/injection machinery delivers the
+        news and `check_background` answers instead of "Unknown". Never
+        silently dropped, never silently re-run: the harness reports, the
+        model (or the human) decides.
+        """
+
+        try:
+            records = sorted(self._ledger_dir.glob("bg_*.json"))
+        except OSError:
+            return
+        for path in records:
+            bg_id = path.stem
+            digits = bg_id.removeprefix("bg_")
+            if digits.isdigit():
+                # Adopted ids stay reserved; without this the fresh counter
+                # reissues bg_0001 and the orphan record is overwritten.
+                self._counter = max(self._counter, int(digits))
+            command, pid = "(unreadable ledger record)", None
+            try:
+                record = json.loads(path.read_text())
+                command = str(record.get("command") or command)
+                pid = record.get("pid")
+            except (OSError, json.JSONDecodeError):
+                pass
+            alive = False
+            if isinstance(pid, int) and pid > 0:
+                try:
+                    os.kill(pid, 0)
+                    alive = True
+                except ProcessLookupError:
+                    alive = False
+                except OSError:
+                    # Alive but not ours (EPERM): still running.
+                    alive = True
+            if alive:
+                result = (
+                    f"orphaned by a restart: {command} -- a process with pid "
+                    f"{pid} is still alive and unsupervised; its output will "
+                    "never be delivered. Re-run if the work matters, or kill "
+                    "the pid if it should stop."
+                )
+            else:
+                result = (
+                    f"orphaned by a restart: {command} -- no live process; "
+                    "whether it completed is unknown. Verify its effects "
+                    "before re-running."
+                )
+            self._tasks[bg_id] = {
+                "status": "orphaned", "command": command, "result": result,
+            }
+            self._completed.append(
+                {"bg_id": bg_id, "status": "orphaned", "result": result}
+            )
+            self._settle(bg_id)
 
     def _settle(self, bg_id: str) -> None:
         """Record a finished task and release result text beyond the bound.
@@ -187,6 +303,7 @@ class BackgroundManager:
         notification still delivers the full text.
         """
 
+        self._unledger(bg_id)
         self._finished.append(bg_id)
         while len(self._finished) > self.max_results_retained:
             old = self._finished.popleft()
@@ -261,7 +378,22 @@ async def background_injector(agent) -> list:
     """Drain completed background results into the next turn (an Agent injector)."""
     mgr = agent.state.get("background")
     if mgr is None:
-        return []
+        # The manager is lazily built by the first background tool call --
+        # but after a restart, orphaned work must surface even if the model
+        # never touches a background tool again. A non-empty ledger is the
+        # signal; constructing the manager adopts it.
+        ledger = Path(agent.workspace) / ".background"
+        try:
+            has_orphans = any(ledger.iterdir())
+        except OSError:
+            has_orphans = False
+        if not has_orphans:
+            return []
+        mgr = agent.state["background"] = BackgroundManager(
+            agent.workspace,
+            secrets=getattr(agent, "secrets", None),
+            sandbox=getattr(agent, "sandbox", None),
+        )
     done = mgr.drain()
     if not done:
         return []

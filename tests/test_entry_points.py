@@ -49,6 +49,10 @@ MAY_BYPASS_THE_SESSION = {
         "the in-process provider extracted from agent.py (round 183); the "
         "child is deliberately sessionless, same rationale as agent.py"
     ),
+    "guardian.py": (
+        "the review runs on a zero-write role agent (round 211) that, like a "
+        "subagent, has no session -- it answers an approval and vanishes"
+    ),
 }
 
 

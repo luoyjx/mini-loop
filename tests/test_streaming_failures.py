@@ -176,3 +176,4 @@ def test_deltas_still_stay_out_of_the_durable_log(tmp_path):
     kinds = [event.get("type") for event in store.load_events(session.id)]
     assert "assistant_delta" not in kinds and "stream_start" not in kinds
     store.close()
+

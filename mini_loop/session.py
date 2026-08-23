@@ -52,6 +52,26 @@ class LeaseLost(RuntimeError):
     """Another process holds this session."""
 
 
+def _bare_user_tail(message: dict) -> bool:
+    """A plain user message (no tool results): the crash-mid-request shape.
+
+    A completed turn always ends with assistant content, and a crash inside
+    a tool batch leaves dangling tool_uses the repair answers explicitly --
+    so a NON-tool-result user tail at restore time can only mean the process
+    died between flushing a prompt and receiving any reply.
+    """
+
+    if message.get("role") != "user":
+        return False
+    content = message.get("content")
+    if isinstance(content, str):
+        return True
+    return isinstance(content, list) and not any(
+        isinstance(part, dict) and part.get("type") == "tool_result"
+        for part in content
+    )
+
+
 def _row_digest(message: dict) -> str:
     """Digest of one in-memory transcript row, for mutation detection.
 
@@ -716,6 +736,23 @@ class AgentSession:
         if repaired:
             self._flush_messages()
             self._unknown_tool_uses = tuple(repaired)
+        elif agent.messages and _bare_user_tail(agent.messages[-1]):
+            # Crash mid-generation (Pi's first crash window): the guard
+            # flushed the prompt, the process died before any assistant
+            # content existed. The CANCEL path has marked this shape since
+            # round 88 (`_record_interruption`: "the model saw two questions
+            # in a row with nothing between them"); the crash path never
+            # inherited the fix, so a restart reproduced the original bug.
+            # Same note shape, same reasoning; `repaired` turns stay marked
+            # by their explicit unknown results instead.
+            agent.messages.append({
+                "role": "assistant",
+                "content": [{
+                    "type": "text",
+                    "text": "[Turn interrupted: process stopped mid-generation]",
+                }],
+            })
+            self._flush_messages()
         return len(agent.messages)
 
     def _expire_parked_approvals(self) -> dict:
@@ -977,12 +1014,40 @@ class AgentSession:
             terminal["trajectory_recording_error"] = self._trajectory_recording_error
             await self._publish_event(terminal)
 
+    def _activity(self, agent) -> str:
+        """Refine `status` into what the session is actually doing.
+
+        `idle`/`error` pass through. A running turn is `awaiting_approval`
+        when the broker holds a pending approval for this session, else
+        `running`. Read from the broker's live pending list (the authority),
+        so it cannot disagree with what an operator would resolve.
+        """
+
+        if self.status != "running":
+            return self.status
+        manager = agent.state.get("manager") if agent is not None else None
+        broker = getattr(manager, "approvals", None)
+        if broker is not None:
+            try:
+                if broker.list(self.id):
+                    return "awaiting_approval"
+            except Exception:
+                pass
+        return "running"
+
     # -- introspection for the API --
     def info(self) -> dict:
         agent = self.agent
         info = {
             "id": self.id,
             "status": self.status,
+            # A refinement of `status`, not a replacement (backward compatible):
+            # a session blocked on a human approval reports `status: running`,
+            # indistinguishable from actively working. `activity` names the
+            # waiting-for-confirmation state the roadmap's G5 asks for --
+            # derived from the broker's pending list, never a second stored
+            # field that could drift from the durable approval rows.
+            "activity": self._activity(agent),
             "busy": self.busy,
             "cancel_reason": self._cancel_reason,
             "created_at": self.created_at,

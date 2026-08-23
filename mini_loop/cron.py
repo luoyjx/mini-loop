@@ -15,6 +15,8 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import json
+import os
+import re
 import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime
@@ -125,6 +127,15 @@ class CronScheduler:
         #: from one that never existed.
         self.problems = ProblemLog()
         self.durable_path = durable_path
+        #: Cross-process occurrence claims (roadmap G7). The persisted
+        #: `last_fired` mark defends a *restart* -- the fresh process loads it
+        #: before ticking. Two live processes sharing this store never reload:
+        #: each holds the stale mark in memory, both pass the same-minute
+        #: check, both dispatch. One O_EXCL file per (job, minute) is the
+        #: claim protocol: the first creator owns the occurrence.
+        self._claims_dir = (
+            durable_path.with_suffix(".claims") if durable_path else None
+        )
         self._task: asyncio.Task | None = None
         self._running: set[asyncio.Task] = set()
         #: Process-local activation, deliberately NOT persisted (DeepSeek
@@ -186,6 +197,15 @@ class CronScheduler:
                         "skipping until arm() records a new authorization"
                     )
                     continue
+                if job.durable and not self._claim(job.id, marker):
+                    # Another process sharing this store created the claim
+                    # first: the occurrence is running there, not lost.
+                    # Nothing to report -- but consume it locally so this
+                    # process does not re-attempt the claim every 20s tick
+                    # for the rest of the minute.
+                    job.last_fired = marker
+                    continue
+                previous_mark = job.last_fired
                 job.last_fired = marker
                 if not job.recurring:
                     self.jobs.pop(job.id, None)
@@ -200,13 +220,18 @@ class CronScheduler:
                 # was dispatched, so re-firing on restart is correct.
                 if job.durable:
                     self._save()
+                    # The previous occurrence's claim file is spent: the mark
+                    # on disk now supersedes it. Unclaiming here keeps the
+                    # claims directory at one live file per job by
+                    # construction, no sweep needed.
+                    self._unclaim(job.id, previous_mark)
                 self._fire(job)
             except Exception as error:
                 # One malformed or unavailable job cannot starve the rest --
-                # still true, and still not a reason to say nothing. The
-                # occurrence is already marked fired by this point, so a
-                # swallowed failure here is a scheduled run that silently did
-                # not happen.
+                # still true, and still not a reason to say nothing. By this
+                # point the occurrence is claimed or marked (or the failure is
+                # in claiming it), so a swallowed failure here is a scheduled
+                # run that silently did not happen.
                 self.problems.append(
                     f"{job.id}: firing failed ({type(error).__name__}: {error}); "
                     "the occurrence was lost"
@@ -327,6 +352,7 @@ class CronScheduler:
             return f"No cron {job_id}"
         del self.jobs[job_id]
         self._armed.discard(job_id)
+        self._unclaim(job_id, job.last_fired)
         self._save()
         return f"Cancelled cron {job_id}"
 
@@ -349,8 +375,10 @@ class CronScheduler:
             return 0
         persist = any(self.jobs[jid].durable for jid in removed)
         for jid in removed:
-            self.jobs.pop(jid, None)
+            job = self.jobs.pop(jid, None)
             self._armed.discard(jid)
+            if job is not None:
+                self._unclaim(jid, job.last_fired)
         if persist:
             self._save()
         return len(removed)
@@ -366,6 +394,42 @@ class CronScheduler:
             f"] -> {j.prompt[:50]}" for j in jobs)
 
     # -- durability --
+    def _claim_name(self, job_id: str, marker: str) -> str:
+        return re.sub(r"[^A-Za-z0-9_.-]", "-", f"{job_id}.{marker}")
+
+    def _claim(self, job_id: str, marker: str) -> bool:
+        """Atomically claim one occurrence across processes sharing the store.
+
+        O_EXCL is the whole protocol: the first process to create the claim
+        file owns the occurrence; every other process gets EEXIST and leaves
+        it alone. Any *other* failure propagates to the per-job handler --
+        skipped and reported -- because "could not claim" must fall toward a
+        lost occurrence, the direction the save path already chose, never
+        toward two.
+        """
+
+        if self._claims_dir is None:
+            return True
+        self._claims_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            fd = os.open(
+                self._claims_dir / self._claim_name(job_id, marker),
+                os.O_CREAT | os.O_EXCL | os.O_WRONLY,
+            )
+        except FileExistsError:
+            # Another process created it first: the occurrence is theirs.
+            return False
+        os.close(fd)
+        return True
+
+    def _unclaim(self, job_id: str, marker: str) -> None:
+        """Best-effort removal of a spent claim; pruning must never fire-fail."""
+
+        if self._claims_dir is None or not marker:
+            return
+        with contextlib.suppress(OSError):
+            (self._claims_dir / self._claim_name(job_id, marker)).unlink()
+
     def _save(self) -> None:
         if not self.durable_path:
             return

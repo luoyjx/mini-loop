@@ -163,6 +163,11 @@ class SkillLoader:
                 # Digest exactly what the model receives, including a
                 # truncation marker when the source exceeded the body bound.
                 "digest": hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                # Digest of the *source text* as catalogued, verified again at
+                # serve time: what descriptions() advertised (and an operator
+                # may have audited) must be what load() injects, or the load
+                # refuses loudly (roadmap G9).
+                "source_digest": hashlib.sha256(text.encode("utf-8")).hexdigest(),
             }
 
     def descriptions(self) -> str:
@@ -222,7 +227,54 @@ class SkillLoader:
         if not s:
             available = _bounded_available(self.skills)
             return f"Error: Unknown skill '{short_name}'. Available: {available}"
+        refusal = self.verify_snapshot(short_name)
+        if refusal is not None:
+            return refusal
         return f'<skill name="{short_name}">\n{s["body"]}\n</skill>'
+
+    def verify_snapshot(self, name: str) -> str | None:
+        """None when the file still matches its catalogued snapshot.
+
+        The catalogue is built once, at construction; a skill body is
+        *instructions injected into the model*, and between cataloguing and
+        loading anything that can write the skills directory -- an operator
+        mistake, another process, an owner editing user resources -- can swap
+        the body for one nobody audited. TOCTOU, for prompt content. The
+        serve-time check re-reads the file and compares source digests:
+        what was advertised is what is served, or the load refuses loudly.
+        Entries without a source digest (synthetic, test-built) are served
+        as-is -- they never had a file to diverge from.
+        """
+
+        skill = self.skills.get(name)
+        if skill is None or "source_digest" not in skill:
+            return None
+        path = Path(skill["path"])
+        try:
+            current = hashlib.sha256(
+                path.read_text().encode("utf-8")
+            ).hexdigest()
+        except (OSError, UnicodeDecodeError) as exc:
+            self.problems.append(SkillProblem(
+                f"{path}: {name!r} refused at load; the file became "
+                f"unreadable after cataloguing ({type(exc).__name__})"
+            ))
+            return (
+                f"Error: skill {name!r} was catalogued at session start but "
+                "its file is now missing or unreadable; refusing to serve "
+                "instructions that can no longer be audited"
+            )
+        if current != skill["source_digest"]:
+            self.problems.append(SkillProblem(
+                f"{path}: {name!r} refused at load; the file changed after "
+                "cataloguing (source digest mismatch)"
+            ))
+            return (
+                f"Error: skill {name!r} changed on disk after it was "
+                "catalogued; refusing to serve instructions nobody audited. "
+                "Restart the session to catalogue the new version."
+            )
+        return None
 
 
 class LayeredSkillLoader:
@@ -431,6 +483,11 @@ class LayeredSkillLoader:
                 f"Error: Unknown {normalized_scope} skill {short_name!r}. "
                 f"Available: {available}"
             )
+        # The source loader owns the snapshot, so it owns the verification;
+        # its refusal (and its problem report) pass through unchanged.
+        refusal = loader.verify_snapshot(short_name)
+        if refusal is not None:
+            return refusal
         digest = self._digest(skill)
         return (
             f'<skill name="{short_name}" source="{normalized_scope}" '

@@ -365,3 +365,20 @@ def test_reference_events_render_compactly():
     assert catalog["detail"]["Schemas"] == big_schemas
     page = render_html([ledger])
     assert "40 tools" in page
+
+
+def test_a_served_model_mismatch_is_visible_in_the_row():
+    """A compatible endpoint may alias the requested model (measured:
+    deepseek's anthropic endpoint serves deepseek-v4-flash when asked for
+    claude-sonnet-4-6). The reader learns which model actually ran without
+    opening the inspector."""
+    ledger = build_ledger(_trajectory([
+        {"type": "model_start", "seq": 1, "ts": 1000.5, "span_id": "m1",
+         "purpose": "agent_turn", "model": "claude-sonnet-4-6"},
+        {"type": "model_end", "seq": 2, "ts": 1003.0, "span_id": "m1",
+         "status": "completed", "duration_ms": 900.0,
+         "served_model": "deepseek-v4-flash"},
+    ]))
+    row = next(r for r in ledger["rows"] if r["kind"] == "model")
+    assert row["detail"]["Served by"] == "deepseek-v4-flash"
+    assert "served by deepseek-v4-flash" in row["content"]

@@ -171,6 +171,12 @@ class Settings:
     # Hard ceiling on agent-loop turns, so a misbehaving model can't spin forever.
     max_turns: int = field(default_factory=lambda: _env_int("MINILOOP_MAX_TURNS", 50))
     subagent_max_rounds: int = field(default_factory=lambda: _env_int("MINILOOP_SUBAGENT_MAX_ROUNDS", 30))
+    # How deep delegation may nest: a child at depth N may spawn one at N+1
+    # only while N+1 <= this. The `task` tool never reaches a child catalogue
+    # (it declares no capabilities), but that barrier is a side effect of the
+    # role policy, not a stated rule -- and programmatic callers and custom
+    # subagent providers bypass it entirely. The quota is the stated rule.
+    subagent_max_depth: int = field(default_factory=lambda: _env_int("MINILOOP_SUBAGENT_MAX_DEPTH", 2))
 
     bash_timeout: int = field(default_factory=lambda: _env_int("MINILOOP_BASH_TIMEOUT", 120))
 
@@ -235,6 +241,14 @@ class Settings:
     # Turn on the comprehensive s20 tool set and lifecycle injectors.
     # Env MINILOOP_FEATURES=all (or any non-empty/true) enables it on the default server.
     enable_features: bool = field(default_factory=lambda: os.getenv("MINILOOP_FEATURES", "") not in ("", "0", "false"))
+
+    # Route approvals through an agent guardian (round 221) before parking a
+    # human. Default off: unset keeps every approval on the human path. On,
+    # the manager binds an AgentGuardian to the broker's reviewer hook -- the
+    # reviewer answers the same allow/deny a human would, never escalates.
+    guardian_enabled: bool = field(
+        default_factory=lambda: _env_bool("MINILOOP_GUARDIAN", False)
+    )
 
     # Experimental Dynamic Workflow MVP. The default FastAPI server deliberately
     # does not consume this flag: callers must opt a local SessionManager into the
@@ -327,6 +341,11 @@ class Settings:
             raise ValueError("max_turns must be at least 1")
         if self.subagent_max_rounds < 1:
             raise ValueError("subagent_max_rounds must be at least 1")
+        # Zero would refuse the very first delegation and silently disable
+        # the task tool; an operator who wants that disables the tool, not
+        # the quota.
+        if self.subagent_max_depth < 1:
+            raise ValueError("subagent_max_depth must be at least 1")
         if self.workflow_max_concurrent_agents < 1:
             raise ValueError("workflow_max_concurrent_agents must be at least 1")
         if self.workflow_max_concurrent_agents > 4:
@@ -375,22 +394,16 @@ def load_settings() -> Settings:
 def build_client(settings: Settings):
     """Return an async LLM client exposing `.messages.create(...)`.
 
-    Real path: `anthropic.AsyncAnthropic`. Fake path (MINILOOP_FAKE_LLM): a
-    deterministic stand-in from `mini_loop.fake_llm`.
+    Delegates to the provider seam (`providers.provider_for`): who builds
+    the client owns the model boundary (Pi's provider contract, round 207).
+    Same behavior as always -- fake under MINILOOP_FAKE_LLM, AsyncAnthropic
+    against base_url/api_key otherwise -- with the construction owned by a
+    value the audit surface can also describe.
     """
-    if settings.fake_llm:
-        from .fake_llm import FakeAsyncAnthropic
 
-        return FakeAsyncAnthropic()
+    from .providers import provider_for
 
-    from anthropic import AsyncAnthropic
-
-    kwargs: dict = {}
-    if settings.base_url:
-        kwargs["base_url"] = settings.base_url
-    if settings.api_key:
-        kwargs["api_key"] = settings.api_key
-    return AsyncAnthropic(**kwargs)
+    return provider_for(settings).create_client()
 
 #: The module's runtime-invariant posture (tools/verify_invariants.py).
 NO_RUNTIME_INVARIANT = (

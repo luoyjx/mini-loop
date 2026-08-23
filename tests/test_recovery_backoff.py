@@ -83,3 +83,43 @@ def test_no_retry_after_header_uses_the_computed_backoff():
     """A missing or headerless error carries no delay to honor."""
     assert retry_after_seconds(_Err({})) is None
     assert retry_after_seconds(Exception("no response at all")) is None
+
+
+# -- shape-agnostic classification (round 225) ------------------------------
+# A compatible endpoint (Pi P0-1's provider variation; measured against
+# api.deepseek.com/anthropic) need not surface errors as the anthropic
+# SDK's typed exceptions. Recovery classifies by status_code read from
+# several locations AND by keyword fallback in the name/message, so a
+# retryable error is still retried whether it arrives as a status code or
+# only as text. Pinned so a status-code-only refactor cannot silently stop
+# retrying against a compatible endpoint.
+
+from mini_loop.recovery import is_overloaded, is_rate_limit, is_transient
+
+
+class _StatusErr(Exception):
+    def __init__(self, status_code):
+        super().__init__("boom")
+        self.status_code = status_code
+
+
+def test_overload_is_classified_from_status_code_alone():
+    assert is_overloaded(_StatusErr(529))
+    assert is_transient(_StatusErr(529))
+
+
+def test_overload_is_classified_from_a_message_only():
+    assert is_overloaded(Exception("the model is overloaded, try again"))
+    assert is_overloaded(Exception("upstream returned 529"))
+    assert is_transient(Exception("529 overloaded"))
+
+
+def test_rate_limit_is_classified_from_status_or_message():
+    assert is_rate_limit(_StatusErr(429))
+    assert is_rate_limit(Exception("RateLimit exceeded"))
+    assert is_rate_limit(Exception("HTTP 429 too many requests"))
+
+
+def test_a_plain_error_is_not_spuriously_retryable():
+    assert not is_transient(Exception("invalid request: bad schema"))
+    assert not is_overloaded(_StatusErr(400))

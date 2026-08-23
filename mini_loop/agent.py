@@ -110,6 +110,21 @@ RESUMABLE_STOP_REASONS = frozenset({"pause_turn"})
 #: A provider that keeps pausing must not loop forever. Each resumption is a
 #: real request, so this is a spend limit as much as a liveness one.
 MAX_RESUMPTIONS = 8
+#: Cap on each "already logged this fingerprint" dedup set (rounds
+#: 197/198/208). A long-lived session that connects and drops MCP servers,
+#: loads skills, or flips permission modes can mint distinct catalog /
+#: prompt / capability fingerprints without bound, so these sets grow with
+#: session lifetime -- the "bounded output is not bounded work" class. At
+#: the cap the set clears, which re-logs each still-active fingerprint once
+#: on its next request: a spare durable copy, never a gap (the same
+#: fail-toward-a-duplicate contract the post-restart re-log already has).
+MAX_LOGGED_FINGERPRINTS = 512
+
+
+def _remember_bounded(seen: set[str], fingerprint: str) -> None:
+    if len(seen) >= MAX_LOGGED_FINGERPRINTS:
+        seen.clear()
+    seen.add(fingerprint)
 
 #: Returned when the provider refuses and sends no content. Attributed to the
 #: harness rather than phrased as the model speaking, because the model said
@@ -702,6 +717,10 @@ class Agent:
         self._logged_catalogs: set[str] = set()
         #: System-prompt hashes already written, same rule (round 198).
         self._logged_system_hashes: set[str] = set()
+        #: Capability-plan fingerprints already written (round 208), and the
+        #: current round's plan identity for model_start to reference.
+        self._logged_capability_plans: set[str] = set()
+        self._capability_fingerprint: str | None = None
         self._rounds_without_todo = 0
         self._pending_compact = False
 
@@ -777,7 +796,21 @@ class Agent:
     async def _send(self, event_type: str, **fields) -> None:
         if self.emit is None:
             return
-        await self.emit({**fields, "type": event_type, "agent": self.label, "depth": self.depth})
+        payload = {**fields, "type": event_type, "agent": self.label, "depth": self.depth}
+        # Turn correlation (roadmap G10): the action journal knows which turn a
+        # tool ran in, but the event stream did not -- model_end usage,
+        # assistant_text, compact and steering events could only be grouped by
+        # ordering heuristics. Every event emitted inside a run carries the
+        # run's message_id; a subagent's context links back through
+        # parent_message_id, so the tree session -> turn -> span -> action is
+        # explicit in the data. setdefault, not assignment: an event that
+        # already names a turn is reporting on it, not part of it.
+        context = self.current_run_context
+        if context is not None:
+            payload.setdefault("message_id", context.message_id)
+            if context.parent_message_id is not None:
+                payload.setdefault("parent_message_id", context.parent_message_id)
+        await self.emit(payload)
 
     async def _send_optimization_receipts(
         self,
@@ -994,7 +1027,7 @@ class Agent:
                 # record cannot reconstruct what a given request carried.
                 # One event per distinct prompt; model_start references it
                 # by hash.
-                self._logged_system_hashes.add(system_hash)
+                _remember_bounded(self._logged_system_hashes, system_hash)
                 await self._send("system_prompt", hash=system_hash, text=system)
         await self._send(
             "model_start",
@@ -1006,6 +1039,9 @@ class Agent:
             tool_count=len(tools or []),
             tool_catalog_fingerprint=tool_catalog_fingerprint,
             system_hash=system_hash,
+            capability_fingerprint=(
+                self._capability_fingerprint if purpose == "agent_turn" else None
+            ),
             max_tokens=kwargs["max_tokens"],
             _trajectory_fields={
                 "model_input": {
@@ -1059,6 +1095,15 @@ class Agent:
             duration_ms=round((time.monotonic() - started) * 1000, 3),
             stop_reason=getattr(response, "stop_reason", None),
             usage=_usage_payload(response),
+            # What actually answered, not what was asked for. A compatible
+            # endpoint may alias the requested name (measured: asking
+            # api.deepseek.com/anthropic for claude-sonnet-4-6 serves
+            # deepseek-v4-flash) -- and every record keyed on the requested
+            # name is then measuring a model that never ran. Pi's provider
+            # contract: the provider owns the model catalog; until a full
+            # SPI exists, the response's own claim is recorded beside the
+            # request's.
+            served_model=getattr(response, "model", None),
             prompt_tokens=measured_prompt_tokens,
             tool_catalog_fingerprint=tool_catalog_fingerprint,
             token_meter=self.token_meter.snapshot(),
@@ -1233,11 +1278,40 @@ class Agent:
                 # model_start already references them by fingerprint. After
                 # a restart the set is empty and one duplicate event per
                 # catalog is written -- a spare copy, never a gap.
-                self._logged_catalogs.add(catalog.fingerprint)
+                _remember_bounded(self._logged_catalogs, catalog.fingerprint)
                 await self._send(
                     "tool_catalog",
                     fingerprint=catalog.fingerprint,
                     schemas=catalog.schemas(),
+                )
+            # What could actually EXECUTE this round, not only what tools
+            # exist (Codex's question: which capability plan did this turn
+            # compile?). The catalog fingerprint alone cannot tell a
+            # readonly request from an auto one -- permission_mode may flip
+            # mid-session while the catalog stays identical, leaving two
+            # requests with the same recorded identity and different
+            # effective capabilities. Same dedupe pattern as the catalog:
+            # one event per distinct plan, referenced from model_start.
+            session = self.state.get("session")
+            plan_inputs = {
+                "catalog_fingerprint": catalog.fingerprint,
+                "permission_mode": (
+                    getattr(session, "permission_mode", None)
+                    or self.state.get("permission_mode")
+                    or "interactive"
+                ),
+                "sandbox": type(self.sandbox).__name__,
+                "sandbox_confined": bool(getattr(self.sandbox, "confined", False)),
+            }
+            self._capability_fingerprint = hashlib.sha256(
+                json.dumps(plan_inputs, sort_keys=True).encode("utf-8")
+            ).hexdigest()[:16]
+            if self._capability_fingerprint not in self._logged_capability_plans:
+                _remember_bounded(self._logged_capability_plans, self._capability_fingerprint)
+                await self._send(
+                    "capability_plan",
+                    fingerprint=self._capability_fingerprint,
+                    **plan_inputs,
                 )
             try:
                 response = await self._create(
@@ -1341,16 +1415,20 @@ class Agent:
                     signal = self.stuck_detector.inspect(self)
                     if signal is not None:
                         if not await self._nudge_or_halt(signal):
+                            # A stuck halt still did real work this turn; its
+                            # memory must be captured like the happy path
+                            # (round 228). The provider is healthy here -- a
+                            # halt is our decision, not a failure -- so
+                            # extraction can run, unlike the error/cancel exits.
+                            await self._capture_memory()
                             return
                         # A stop hook is resuming the model; the correction has
                         # to ride on that continuation or it never lands.
                         continuation = f"{signal.reminder()}\n\n{continuation}"
                     self.messages.append({"role": "user", "content": continuation})
                     continue
-                from .memory import memory_on_stop
-
                 await emit_text(FINAL_ANSWER_PHASE)
-                await memory_on_stop(self)
+                await self._capture_memory()
                 return
 
             await emit_text(COMMENTARY_PHASE)
@@ -1391,6 +1469,30 @@ class Agent:
         self._mark_stopped(
             f"[stopped after {self.max_rounds} rounds without finishing]"
         )
+        # A turn that exhausted its rounds did the most work of any turn and
+        # is exactly where learned facts matter most; the happy-path-only
+        # capture lost them (round 228). Provider is healthy at this endpoint.
+        await self._capture_memory()
+
+    async def _capture_memory(self) -> None:
+        """Run end-of-turn memory extraction, contained.
+
+        Called at every endpoint where the provider is healthy and the turn
+        did real work: the happy path, a stuck halt, and round exhaustion.
+        Deliberately NOT the error exit (the provider may be down) or a
+        cancellation (the caller wants an immediate stop, not more model
+        calls). Best-effort: a memory failure must not turn an already-
+        finished turn into a failed one.
+        """
+
+        from .memory import memory_on_stop
+
+        try:
+            await memory_on_stop(self)
+        except Exception as error:
+            await self._send(
+                "memory_capture_error", detail=f"{type(error).__name__}: {error}"[:200]
+            )
 
     def _mark_stopped(self, headline: str) -> None:
         """Report an early stop *before* the partial text, at the source.
@@ -1876,6 +1978,27 @@ class Agent:
         parent_context = (
             run_context or self.current_run_context or RunContext.default()
         )
+        # The quota lives here, not in a provider: every provider -- default,
+        # forked, remote, custom -- reaches its child through this seam, and
+        # depth is loop lineage, not provider construction detail. Checked
+        # before subagent_start so a refused delegation never looks like a
+        # started one.
+        child_depth = self.depth + 1
+        if child_depth > self.settings.subagent_max_depth:
+            await self._send(
+                "subagent_refused",
+                agent_type=agent_type,
+                reason="depth",
+                # Not `depth`: _send stamps every event with the emitter's own
+                # depth, and the refused child's is one deeper.
+                child_depth=child_depth,
+                limit=self.settings.subagent_max_depth,
+            )
+            return (
+                f"(delegation refused: depth {child_depth} exceeds "
+                f"subagent_max_depth={self.settings.subagent_max_depth}; "
+                "do the work directly)"
+            )
         # WHO executes the delegation is a seam (subagents.py): the default
         # builds a fresh in-process child, and an embedder can swap in a
         # forked, containerized, or remote worker without touching the loop.

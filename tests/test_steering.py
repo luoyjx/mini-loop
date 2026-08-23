@@ -336,3 +336,51 @@ async def test_the_delivery_event_carries_the_words(tmp_path):
     [delivered] = [e for e in events if e["type"] == "steering_delivered"]
     assert delivered["count"] == 1
     assert "hotfix branch" in delivered["text"]
+
+
+import os as _os
+
+import pytest as _pytest
+
+
+@_pytest.mark.skipif(
+    not _os.getenv("MINILOOP_REAL_PROVIDER_TESTS"),
+    reason="real-model steering obedience is operator-gated",
+)
+def test_a_real_model_honors_a_mid_turn_steer(tmp_path):
+    """The fake proves delivery; only a live model proves OBEDIENCE.
+
+    The task would naturally run two tool steps and summarize; the steer
+    lands mid-turn and redefines the goal to a single token. The final
+    answer must reflect the interjection, not the original plan.
+    """
+    import asyncio as _asyncio
+
+    from mini_loop.builtins import full_registry
+    from mini_loop.config import build_client
+
+    settings = Settings(workspace_root=tmp_path / "ws", skills_dir=SKILLS,
+                        spill_dir=None, max_turns=6)
+    manager = SessionManager(settings, build_client(settings),
+                             tool_registry=full_registry())
+    session = manager.create()
+
+    async def steered_run():
+        turn = _asyncio.create_task(session.run(
+            "Use bash to run `echo step1`, then in a separate call run "
+            "`echo step2`, then write a short summary of both outputs."
+        ))
+        for _ in range(400):
+            if session.busy and session.agent.messages:
+                break
+            await _asyncio.sleep(0.02)
+        session.steer(
+            "STOP the original task. Ignore the echo steps entirely. "
+            "Reply with exactly the single word PIVOT and end your turn."
+        )
+        return await _asyncio.wait_for(turn, timeout=120)
+
+    final = _asyncio.run(steered_run())
+    assert "PIVOT" in final, (
+        f"the live model ignored the mid-turn steer; final was: {final[:200]}"
+    )

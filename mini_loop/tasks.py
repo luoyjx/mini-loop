@@ -14,7 +14,9 @@ sharing a workspace share the board).
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
+import os
 import re
 import threading
 import uuid
@@ -144,6 +146,9 @@ class TaskStore:
                 return False
         return True
 
+    def _marker(self, tid: str) -> Path:
+        return self._path(tid).with_suffix(".owner")
+
     def claim(self, tid: str, owner: str) -> str:
         with self._lock:
             task = self.load(tid)
@@ -155,6 +160,42 @@ class TaskStore:
                 return f"Error: task {tid} is already owned by {task.owner}"
             if not self.can_start(tid):
                 return f"Error: task {tid} is blocked by incomplete deps {task.blockedBy}"
+            # The thread lock serializes claimers in THIS process. Teammates
+            # in another process sharing the board (the docstring's own
+            # scenario) interleave load->check->save freely: both read
+            # pending, both pass, last save wins and two workers do the task.
+            # Roadmap G7's duplicate-claim risk, the tasks edition. The
+            # O_EXCL marker is the cross-process authority, as in cron's
+            # occurrence claims: the record file stays the human-readable
+            # board, the marker decides who owns the transition.
+            marker = self._marker(tid)
+            try:
+                fd = os.open(marker, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            except FileExistsError:
+                holder = None
+                with contextlib.suppress(OSError):
+                    holder = marker.read_text().strip() or None
+                # The snapshot loaded above had no owner, so either the other
+                # process claimed in the window since (its save has landed by
+                # now or will shortly) -- the normal race, nothing wrong -- or
+                # the marker's holder crashed between marker and save. Re-read
+                # to tell them apart; only the second is a problem, and it
+                # falls toward the human rather than silently seizing work
+                # someone may have started.
+                current = self.load(tid)
+                if current is None or not current.owner:
+                    self.problems.append(
+                        f"{tid}: claim marker from "
+                        f"{holder or 'an unknown claimer'} but the record "
+                        "shows no owner; a claimer may have crashed mid-claim "
+                        f"(operator: inspect and remove {marker.name})"
+                    )
+                return (
+                    f"Error: task {tid} is already claimed by "
+                    f"{holder or 'an unknown claimer'}"
+                )
+            os.write(fd, owner.encode("utf-8", "replace"))
+            os.close(fd)
             task.owner, task.status = owner, "in_progress"
             self.save(task)
             return f"Claimed {tid} for {owner}"
@@ -170,6 +211,12 @@ class TaskStore:
                 return f"Error: task {tid} is owned by {task.owner}, not {owner}"
             task.status = "completed"
             self.save(task)
+            # The marker is spent: `status == "completed"` refuses any
+            # re-claim before the O_EXCL slot is ever consulted, so removal
+            # cannot reopen the task -- it only keeps the board directory at
+            # record files plus markers for work actually in flight.
+            with contextlib.suppress(OSError):
+                self._marker(tid).unlink()
             unblocked = [t.id for t in self.list()
                          if t.status == "pending" and t.blockedBy and self.can_start(t.id)]
             msg = f"Completed {tid}."

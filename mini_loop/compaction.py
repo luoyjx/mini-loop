@@ -355,10 +355,27 @@ class DefaultCompactor:
         # a secret" this harness can actually reach, because it asked for it.
         if secrets is not None:
             summary = secrets.mask(summary)
+        # Provenance measured BEFORE the replacement, while the compacted
+        # transcript still exists: how many messages this summary stands in
+        # for, and the token estimate it replaced. Pi P1-4 -- summary,
+        # retained tail, original history, generation usage and provenance
+        # persisted SEPARATELY -- so an audit can answer "what did this
+        # compaction cost and what did it replace" from the log alone,
+        # never from prose inside the summary.
+        replaced_count = len(agent.messages)
+        replaced_tokens = estimate_tokens(agent.messages)
+        usage = getattr(resp, "usage", None)
         agent.messages[:] = [
             {"role": "user", "content": f"[Context compressed. Full transcript: {path}]\n{summary}"}
         ]
-        await agent._send("compact", kind="auto", transcript=str(path))
+        await agent._send(
+            "compact", kind="auto", transcript=str(path),
+            replaced_messages=replaced_count,
+            replaced_tokens_estimate=replaced_tokens,
+            summary_input_tokens=getattr(usage, "input_tokens", None),
+            summary_output_tokens=getattr(usage, "output_tokens", None),
+            summary_model=getattr(resp, "model", None),
+        )
 
 #: The module's runtime-invariant posture (tools/verify_invariants.py).
 NO_RUNTIME_INVARIANT = (

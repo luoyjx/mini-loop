@@ -778,7 +778,9 @@ MUTATIONS = [
     ),
     Mutation(
         "background-settle-not-called", 146, "mini_loop/background.py",
+        '        self._completed.append({"bg_id": bg_id, "status": status, "result": result})\n'
         "        self._settle(bg_id)",
+        '        self._completed.append({"bg_id": bg_id, "status": status, "result": result})\n'
         "        pass",
         "tests/test_background_parity.py::test_finished_task_results_do_not_accumulate_without_bound",
         "every finished task is recorded for shedding: skipping it leaves the "
@@ -1916,8 +1918,18 @@ MUTATIONS = [
     ),
     Mutation(
         "cron-fires-before-persisting-the-mark", 110, "mini_loop/cron.py",
-        "                if job.durable:\n                    self._save()\n                self._fire(job)",
-        "                self._fire(job)\n                if job.durable:\n                    self._save()",
+        "                if job.durable:\n"
+        "                    self._save()\n"
+        "                    # The previous occurrence's claim file is spent: the mark\n"
+        "                    # on disk now supersedes it. Unclaiming here keeps the\n"
+        "                    # claims directory at one live file per job by\n"
+        "                    # construction, no sweep needed.\n"
+        "                    self._unclaim(job.id, previous_mark)\n"
+        "                self._fire(job)",
+        "                self._fire(job)\n"
+        "                if job.durable:\n"
+        "                    self._save()\n"
+        "                    self._unclaim(job.id, previous_mark)",
         "tests/test_cron_crash_consistency.py::test_the_mark_is_on_disk_before_the_run_dispatches",
         "the fired mark is persisted before the run dispatches: fire-then-save "
         "leaves a crash window that re-fires the occurrence on restart",
@@ -2798,13 +2810,14 @@ MUTATIONS = [
     ),
     Mutation(
         "catalog-schemas-never-logged", 197, "mini_loop/agent.py",
-        '                self._logged_catalogs.add(catalog.fingerprint)\n'
+        # Re-anchored round 224 when the add sites moved to _remember_bounded.
+        '                _remember_bounded(self._logged_catalogs, catalog.fingerprint)\n'
         '                await self._send(\n'
         '                    "tool_catalog",\n'
         '                    fingerprint=catalog.fingerprint,\n'
         '                    schemas=catalog.schemas(),\n'
         '                )',
-        '                self._logged_catalogs.add(catalog.fingerprint)',
+        '                _remember_bounded(self._logged_catalogs, catalog.fingerprint)',
         "tests/test_reconstructable_requests.py::test_the_catalog_is_recoverable_by_fingerprint",
         "tool schemas are model-visible input; the log carries each distinct "
         "catalog so a past request can be rebuilt after the catalog changes",
@@ -2828,9 +2841,10 @@ MUTATIONS = [
     ),
     Mutation(
         "system-prompt-never-logged", 198, "mini_loop/agent.py",
-        '                self._logged_system_hashes.add(system_hash)\n'
+        # Re-anchored round 224 when the add sites moved to _remember_bounded.
+        '                _remember_bounded(self._logged_system_hashes, system_hash)\n'
         '                await self._send("system_prompt", hash=system_hash, text=system)',
-        '                self._logged_system_hashes.add(system_hash)',
+        '                _remember_bounded(self._logged_system_hashes, system_hash)',
         "tests/test_reconstructable_requests.py::test_the_round_trip_is_exact",
         "the dynamic system prompt is model-visible input; one event per "
         "distinct hash keeps requests reconstructable",
@@ -2940,14 +2954,353 @@ MUTATIONS = [
         "an audit citing evidence nobody recorded is indistinguishable from "
         "one citing everything; the coverage gate names every dangling ref",
     ),
+    Mutation(
+        "served-model-never-recorded", 206, "mini_loop/agent.py",
+        '            served_model=getattr(response, "model", None),',
+        '            served_model=None,',
+        "tests/test_agent.py::test_model_end_records_the_served_model",
+        "the response's own model claim is recorded beside the request's; "
+        "an aliasing endpoint must not leave every record naming a model "
+        "that never ran (measured: deepseek serves deepseek-v4-flash for a "
+        "claude-sonnet request)",
+    ),
+    Mutation(
+        "provider-seam-ignores-the-fake-flag", 207, "mini_loop/providers.py",
+        '    if settings.fake_llm:\n'
+        '        return FakeProvider()',
+        '    if False:\n'
+        '        return FakeProvider()',
+        "tests/test_provider_conformance.py::test_provider_for_respects_the_fake_flag",
+        "the provider seam preserves build_client's contract exactly; a "
+        "fake-flagged deployment must never construct a networked client",
+    ),
+    Mutation(
+        "describe-leaks-the-credential", 207, "mini_loop/providers.py",
+        '            "credential": "<set>" if self._api_key else "<absent>",',
+        '            "credential": self._api_key or "<absent>",',
+        "tests/test_provider_conformance.py::test_describe_never_carries_a_credential",
+        "describe() is the audit surface the posture report may quote "
+        "verbatim; a credential in it is a credential in every log",
+    ),
+    Mutation(
+        "capability-plan-ignores-permission-mode", 208, "mini_loop/agent.py",
+        '                "permission_mode": (\n'
+        '                    getattr(session, "permission_mode", None)\n'
+        '                    or self.state.get("permission_mode")\n'
+        '                    or "interactive"\n'
+        '                ),',
+        '                "permission_mode": "interactive",',
+        "tests/test_capability_plan.py::test_a_permission_flip_changes_the_recorded_identity",
+        "the capability fingerprint distinguishes requests whose catalog is "
+        "identical but whose powers are not; a mode flip must change the "
+        "recorded identity",
+    ),
+    Mutation(
+        "capability-plan-relogged-every-round", 208, "mini_loop/agent.py",
+        '            if self._capability_fingerprint not in self._logged_capability_plans:',
+        '            if True:',
+        "tests/test_capability_plan.py::test_every_agent_turn_references_one_deduped_plan",
+        "one capability_plan event per distinct plan, referenced by "
+        "fingerprint -- the log stores plans, not plan spam",
+    ),
+    Mutation(
+        "batch-results-follow-completion-order", 209, "mini_loop/agent.py",
+        '            results.extend(\n'
+        '                await asyncio.gather(\n'
+        '                    *(result_for(call, limited=True) for call in parallel_group)\n'
+        '                )\n'
+        '            )',
+        '            for done in asyncio.as_completed(\n'
+        '                [result_for(call, limited=True) for call in parallel_group]\n'
+        '            ):\n'
+        '                results.append(await done)',
+        "tests/test_tool_batch_invariants.py::test_results_keep_call_order_under_adverse_completion",
+        "transcript result order is call order, not completion order (Pi "
+        "P0-2); a provider protocol and every replay depend on it",
+    ),
+    Mutation(
+        "barrier-runs-before-the-group-settles", 209, "mini_loop/agent.py",
+        '            await flush_parallel_group()\n'
+        '            results.append(await result_for(call, limited=False))',
+        '            results.append(await result_for(call, limited=False))\n'
+        '            await flush_parallel_group()',
+        "tests/test_tool_batch_invariants.py::test_a_barrier_sequences_but_does_not_serialize_the_tail",
+        "a non-parallel call is an ordering barrier: it starts only after "
+        "the group before it completes -- reads never move across a write",
+    ),
+    Mutation(
+        "crash-restore-forgets-the-interruption", 210, "mini_loop/session.py",
+        '        elif agent.messages and _bare_user_tail(agent.messages[-1]):',
+        '        elif False:',
+        "tests/test_crash_windows.py::test_window_1_crash_mid_generation_is_marked_on_restore",
+        "a crash mid-generation is marked on restore exactly as a cancel is "
+        "marked live (round 88's fix, inherited by the crash path in round "
+        "210); two bare user turns in a row is the original bug",
+    ),
+    Mutation(
+        "role-isolation-is-only-a-prompt", 211, "mini_loop/verified_roles.py",
+        '        "permission_mode": "readonly",',
+        '        "permission_mode": "auto",',
+        "tests/test_verified_roles.py::test_a_hostile_write_is_denied_not_performed",
+        "a zero-write role's isolation lives in construction (readonly "
+        "mode), never in its prompt; an auditor that can write can "
+        "manufacture the evidence it cites",
+    ),
+    Mutation(
+        "executor-builds-as-a-readonly-role", 211, "mini_loop/verified_roles.py",
+        '    if role not in READONLY_ROLES:',
+        '    if False:',
+        "tests/test_verified_roles.py::test_the_executor_takes_no_construction_here",
+        "the executor runs with real capabilities through the ordinary "
+        "paths; a readonly-built executor would silently do nothing and "
+        "read as a working loop",
+    ),
+    Mutation(
+        "coordinator-completes-without-verification", 212,
+        "mini_loop/verified_loop_service.py",
+        '            passed = result.exit_code == 0 and not result.timed_out',
+        '            passed = True',
+        "tests/test_verified_loop_service.py::test_unverified_never_reads_as_complete",
+        "unverified never completes: only the acceptance command's exit "
+        "code can verify the requirement, never the executor's confidence",
+    ),
+    Mutation(
+        "rejection-feedback-never-lands", 212,
+        "mini_loop/verified_loop_service.py",
+        '            feedback = result.render()[-2000:]',
+        '            feedback = ""',
+        "tests/test_verified_loop_service.py::test_a_failing_command_feeds_the_next_round",
+        "a rejected round feeds evidence-backed feedback into the next "
+        "plan; a bare retry re-runs the same blindness",
+    ),
+    Mutation(
+        "auto-reviewer-abstention-becomes-approval", 215, "mini_loop/approvals.py",
+        '            if verdict is not None:\n'
+        '                decided = bool(verdict)',
+        '            if True:\n'
+        '                decided = bool(verdict)',
+        "tests/test_auto_review.py::test_an_abstaining_reviewer_falls_through_to_the_human_and_times_out",
+        "an abstaining or None-returning reviewer falls through to the "
+        "human; treating abstention as a decision turns silence into "
+        "auto-approval (Codex: Guardian substitutes the approver, never "
+        "escalates)",
+    ),
+    Mutation(
+        "auto-reviewer-crash-becomes-approval", 215, "mini_loop/approvals.py",
+        '            except Exception as error:\n'
+        '                self.problems.append(\n'
+        '                    f"auto-reviewer raised on {call.name}: "\n'
+        '                    f"{type(error).__name__}"\n'
+        '                )\n'
+        '                verdict = None',
+        '            except Exception as error:\n'
+        '                verdict = True',
+        "tests/test_auto_review.py::test_a_raising_reviewer_is_contained_and_recorded",
+        "a reviewer that raises is contained and treated as abstention; a "
+        "broken reviewer must fail toward the human, never toward approval",
+    ),
+    Mutation(
+        "guardian-guesses-when-it-cannot-parse", 216, "mini_loop/guardian.py",
+        '        if match is None:\n'
+        '            return None  # DEFER or unparseable -> the human decides',
+        '        if match is None:\n'
+        '            return (True, "assumed safe")',
+        "tests/test_guardian.py::test_an_undecidable_reply_falls_through_to_the_human",
+        "an undecidable guardian reply falls to the human (the stricter "
+        "answerer), never to an assumed approval",
+    ),
+    Mutation(
+        "compaction-provenance-measured-after-replacement", 217,
+        "mini_loop/compaction.py",
+        '        replaced_count = len(agent.messages)\n'
+        '        replaced_tokens = estimate_tokens(agent.messages)',
+        '        replaced_count = 0\n'
+        '        replaced_tokens = 0',
+        "tests/test_compaction_provenance.py::test_the_compact_event_records_usage_and_provenance",
+        "compaction records what it replaced, measured before the "
+        "replacement; a zeroed provenance cannot answer what the summary "
+        "stands in for (Pi P1-4)",
+    ),
+    Mutation(
+        "guardian-cannot-be-turned-on", 221, "mini_loop/manager.py",
+        '        if settings.guardian_enabled:',
+        '        if False:',
+        "tests/test_guardian_wiring.py::test_the_flag_binds_a_reviewer",
+        "default-off must mean opt-in, not unreachable: the guardian flag "
+        "actually binds a reviewer, or the feature is dead code with tests",
+    ),
+    Mutation(
+        "idempotency-key-ignored", 231, "mini_loop/server.py",
+        '        if key is not None and key in idempotency:\n'
+        '            # A retry of a submission that already ran: return the first\n'
+        '            # result rather than execute the (possibly non-idempotent) turn\n'
+        '            # again. G4 of AGENT_PLATFORM_ROADMAP.md.\n'
+        '            return idempotency[key]',
+        '        if False:\n'
+        '            return idempotency[key]',
+        "tests/test_idempotency.py::test_a_repeated_key_runs_the_turn_once",
+        "a repeated Idempotency-Key returns the first result rather than "
+        "running a possibly non-idempotent turn twice (roadmap G4)",
+    ),
+    Mutation(
+        "sessions-listing-unbounded", 233, "mini_loop/server.py",
+        '        return [s.info() for s in owned[:min(max(limit, 1), 500)]]',
+        '        return [s.info() for s in owned]',
+        "tests/test_sessions_pagination.py::test_the_listing_is_capped",
+        "the sessions listing is bounded; info() is real per-session work, "
+        "so an unbounded listing grows response and work with a caller's "
+        "session count (roadmap G4)",
+    ),
+    Mutation(
+        "subagent-depth-unenforced", 234, "mini_loop/agent.py",
+        '        child_depth = self.depth + 1\n'
+        '        if child_depth > self.settings.subagent_max_depth:',
+        '        child_depth = self.depth + 1\n'
+        '        if False:',
+        "tests/test_subagent_depth.py::test_delegation_at_the_quota_is_refused_without_construction",
+        "delegation depth is enforced at the seam every provider passes "
+        "through; unenforced, any programmatic caller or capability-annotated "
+        "task tool nests agents without bound (roadmap G8)",
+    ),
+    Mutation(
+        "events-lack-turn-correlation", 235, "mini_loop/agent.py",
+        '        context = self.current_run_context\n'
+        '        if context is not None:\n'
+        '            payload.setdefault("message_id", context.message_id)',
+        '        context = self.current_run_context\n'
+        '        if False:\n'
+        '            payload.setdefault("message_id", context.message_id)',
+        "tests/test_event_correlation.py::test_every_event_in_a_turn_carries_the_turn_message_id",
+        "every event emitted inside a run names its turn; unstamped, cost "
+        "and latency can only be grouped by ordering heuristics that break "
+        "under subagent interleaving and restores (roadmap G10)",
+    ),
+    Mutation(
+        "cron-occurrence-claimed-twice", 236, "mini_loop/cron.py",
+        '        except FileExistsError:\n'
+        '            # Another process created it first: the occurrence is theirs.\n'
+        '            return False',
+        '        except FileExistsError:\n'
+        '            return True',
+        "tests/test_cron_claims.py::test_two_live_processes_fire_a_shared_occurrence_once",
+        "the O_EXCL claim is what makes two live processes sharing a store "
+        "dispatch one occurrence once; treating EEXIST as ownership fires "
+        "every shared job twice (roadmap G7)",
+    ),
+    Mutation(
+        "task-claimed-twice-across-processes", 237, "mini_loop/tasks.py",
+        '                fd = os.open(marker, os.O_CREAT | os.O_EXCL | os.O_WRONLY)',
+        '                fd = os.open(marker, os.O_CREAT | os.O_WRONLY)',
+        "tests/test_task_claims.py::test_a_stale_reader_cannot_claim_a_claimed_task",
+        "the O_EXCL marker is what stops two processes sharing a board from "
+        "both claiming one task; without it the stale reader's save wins and "
+        "two workers do the work (roadmap G7)",
+    ),
+    Mutation(
+        "restart-erases-background-work", 238, "mini_loop/background.py",
+        '        try:\n'
+        '            records = sorted(self._ledger_dir.glob("bg_*.json"))\n'
+        '        except OSError:\n'
+        '            return',
+        '        try:\n'
+        '            records = sorted(self._ledger_dir.glob("bg_*.json"))\n'
+        '        except OSError:\n'
+        '            return\n'
+        '        records = []',
+        "tests/test_background_orphans.py::test_a_live_orphan_is_surfaced_with_its_pid",
+        "a restarted manager adopts the ledger's orphans; without adoption "
+        "the transcript says work started, check says Unknown, and an "
+        "unsupervised process keeps running with no record (roadmap G7)",
+    ),
+    Mutation(
+        "skill-served-after-tampering", 239, "mini_loop/skills.py",
+        '        if current != skill["source_digest"]:',
+        '        if False:',
+        "tests/test_skill_integrity.py::test_a_swapped_skill_is_refused_at_load",
+        "load_skill re-verifies the catalogued source digest at serve time; "
+        "without it, anything that can write the skills directory swaps "
+        "audited instructions for unaudited ones between catalogue and load "
+        "(roadmap G9)",
+    ),
+    Mutation(
+        "activity-hides-awaiting-approval", 232, "mini_loop/session.py",
+        '                if broker.list(self.id):\n'
+        '                    return "awaiting_approval"',
+        '                if False:\n'
+        '                    return "awaiting_approval"',
+        "tests/test_session_activity.py::test_a_pending_approval_shows_awaiting_approval",
+        "a running turn blocked on a human approval reports "
+        "awaiting_approval, not an undistinguished running (roadmap G5)",
+    ),
+    Mutation(
+        "round-exhaustion-skips-memory", 228, "mini_loop/agent.py",
+        '        self._mark_stopped(\n'
+        '            f"[stopped after {self.max_rounds} rounds without finishing]"\n'
+        '        )\n'
+        '        # A turn that exhausted its rounds did the most work of any turn and\n'
+        '        # is exactly where learned facts matter most; the happy-path-only\n'
+        '        # capture lost them (round 228). Provider is healthy at this endpoint.\n'
+        '        await self._capture_memory()',
+        '        self._mark_stopped(\n'
+        '            f"[stopped after {self.max_rounds} rounds without finishing]"\n'
+        '        )',
+        "tests/test_memory_capture_endpoints.py::test_round_exhaustion_captures",
+        "memory is captured on every healthy turn endpoint, not just the "
+        "happy path; the round-exhausted turn did the most work and is where "
+        "learned facts matter most",
+    ),
+    Mutation(
+        "memory-capture-failure-kills-the-turn", 228, "mini_loop/agent.py",
+        '        except Exception as error:\n'
+        '            await self._send(\n'
+        '                "memory_capture_error", detail=f"{type(error).__name__}: {error}"[:200]\n'
+        '            )',
+        '        except Exception as error:\n'
+        '            raise',
+        "tests/test_memory_capture_endpoints.py::test_capture_is_contained",
+        "end-of-turn memory extraction is best-effort; a memory failure must "
+        "not turn an already-finished turn into a failed one",
+    ),
+    Mutation(
+        "rate-limit-message-not-classified", 225, "mini_loop/recovery.py",
+        '        or "ratelimit" in msg\n'
+        '        or "rate limit" in msg',
+        '        or False\n'
+        '        or False',
+        "tests/test_recovery_backoff.py::test_rate_limit_is_classified_from_status_or_message",
+        "a rate limit surfaced as prose (no 429 digits) is still retried, "
+        "symmetric with overload's message coverage; a compatible endpoint "
+        "must not have its rate limits silently treated as fatal",
+    ),
+    Mutation(
+        "dedup-set-grows-unbounded", 224, "mini_loop/agent.py",
+        '    if len(seen) >= MAX_LOGGED_FINGERPRINTS:\n'
+        '        seen.clear()',
+        '    if False:\n'
+        '        seen.clear()',
+        "tests/test_dedup_set_bounds.py::test_the_set_never_exceeds_the_cap",
+        "the reconstruction dedup sets are bounded; an unbounded set grows "
+        "with session lifetime (bounded output is not bounded work)",
+    ),
 ]
 
 
-def _run(selector: str | None) -> int:
+def _run(selector: str | None, start: int = 1, end: int | None = None) -> int:
     chosen = [m for m in MUTATIONS if not selector or selector in m.name]
     if not chosen:
         print(f"no mutation matches {selector!r}")
         return 2
+    # Bounded slices (--from/--to, 1-based inclusive) exist so a full sweep
+    # can run as a few FOREGROUND chunks: background sweeps kept being
+    # reaped by the environment mid-run with nothing written, which reads
+    # as verification and is not.
+    total = len(chosen)
+    chosen = chosen[start - 1:end if end is not None else total]
+    if not chosen:
+        print(f"empty slice {start}..{end} of {total}")
+        return 2
+    if (start, end) != (1, None):
+        print(f"slice {start}..{end or total} of {total}")
 
     survived, missing = [], []
     print(f"verifying {len(chosen)} guard(s)\n")
@@ -3006,4 +3359,9 @@ def _run(selector: str | None) -> int:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-k", dest="selector", default=None)
-    raise SystemExit(_run(parser.parse_args().selector))
+    parser.add_argument("--from", dest="start", type=int, default=1,
+                        help="1-based first mutation to run (after -k filter)")
+    parser.add_argument("--to", dest="end", type=int, default=None,
+                        help="1-based last mutation to run, inclusive")
+    args = parser.parse_args()
+    raise SystemExit(_run(args.selector, start=args.start, end=args.end))

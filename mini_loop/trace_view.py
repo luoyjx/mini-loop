@@ -175,6 +175,15 @@ def build_ledger(trajectory: dict) -> dict:
             # A span closes with the duration its end event measured; a span
             # that never closes keeps `None` and renders as `in flight`.
             row["duration_ms"] = event.get("duration_ms")
+            served = event.get("served_model")
+            if served:
+                row["detail"]["Served by"] = served
+                requested = row["detail"].get("Model")
+                if requested and served != requested:
+                    # An aliasing endpoint answered with a different model
+                    # than the request named; the reader should not have to
+                    # open the inspector to learn which model actually ran.
+                    row["content"] += f" · served by {served}"
             usage = event.get("usage") or {}
             row["usage"] = usage
             row["detail"]["Stop reason"] = event.get("stop_reason")
@@ -240,6 +249,16 @@ def build_ledger(trajectory: dict) -> dict:
                            f"{event.get('fingerprint', '?')}",
                 "detail": {"Fingerprint": event.get("fingerprint"),
                            "Schemas": schemas},
+                **nest,
+            })
+        elif etype == "capability_plan":
+            rows.append({
+                "kind": "reference", "label": "capability",
+                "seq": seq, "ts": ts,
+                "content": f"{event.get('permission_mode', '?')} · "
+                           f"{'confined' if event.get('sandbox_confined') else 'unconfined'} · "
+                           f"{event.get('fingerprint', '?')}",
+                "detail": {"Capability plan": _payload(event)},
                 **nest,
             })
         elif etype == "system_prompt":

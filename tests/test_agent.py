@@ -49,10 +49,11 @@ def test_basic_loop_runs_one_tool_then_finishes(tmp_path):
     assert client.calls == 2  # fresh-prompt turn + tool-result turn
     types = [e["type"] for e in events]
     assert [kind for kind in types if not kind.startswith("model_")] == [
-        # The first request also logs the tool catalog and the system
-        # prompt once (rounds 197/198: both are model-visible input, so the
-        # log carries them and requests stay reconstructable).
-        "tool_catalog", "system_prompt",
+        # The first request also logs the tool catalog, capability plan,
+        # and system prompt once (rounds 197/198/208: all are request
+        # identity, so the log carries them and requests stay
+        # reconstructable).
+        "tool_catalog", "capability_plan", "system_prompt",
         "assistant_text", "tool_use", "tool_result", "assistant_text",
     ]
     assert types.count("model_start") == types.count("model_end") == 2
@@ -345,3 +346,19 @@ def test_sessions_are_isolated(tmp_path):
         assert a.workspace != b.workspace
 
     asyncio.run(main())
+
+
+def test_model_end_records_the_served_model(tmp_path):
+    """The response's own model claim is recorded beside the request's --
+    an aliasing endpoint must not leave every record naming a model that
+    never ran (round 206; measured against deepseek's anthropic surface)."""
+    import asyncio as _asyncio
+
+    agent, events = _agent(tmp_path, FakeAsyncAnthropic())
+    _asyncio.run(agent.run("hello"))
+    ends = [e for e in events if e["type"] == "model_end"]
+    # The fake, like a well-behaved provider, echoes the resolved model on
+    # the response; the field must carry that claim, not sit empty.
+    assert ends and all(
+        e.get("served_model") == agent.settings.model for e in ends
+    )

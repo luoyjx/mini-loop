@@ -105,7 +105,7 @@ def reconstruct_request(store: Any, session_id: str, seq: int) -> dict:
     if epoch is None:
         return {"error": "this model_start predates the epoch stamp"}
     count = int(start.get("message_count") or 0)
-    tools = system = None
+    tools = system = capability = None
     for event in events:
         if event.get("seq", 0) >= seq:
             break
@@ -115,10 +115,20 @@ def reconstruct_request(store: Any, session_id: str, seq: int) -> dict:
         elif (event.get("type") == "system_prompt"
                 and event.get("hash") == start.get("system_hash")):
             system = event.get("text")
+        elif (event.get("type") == "capability_plan"
+                and event.get("fingerprint") == start.get("capability_fingerprint")):
+            # What could execute, not only what existed (round 208): the
+            # permission mode and sandbox posture in force for this request.
+            capability = {
+                k: event.get(k)
+                for k in ("permission_mode", "sandbox", "sandbox_confined",
+                          "catalog_fingerprint")
+            }
     return {
         "messages": store.load_messages(session_id, epoch=epoch)[:count],
         "system": system,
         "tools": tools,
+        "capability": capability,
         "model": start.get("model"),
         "max_tokens": start.get("max_tokens"),
     }

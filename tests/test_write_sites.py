@@ -52,6 +52,11 @@ RECORDED = {
         "the durable approval trail: input_preview is masked in ask() before "
         "the row is built, so the write persists already-redacted text"
     ),
+    "background.py": (
+        "the in-flight command ledger (round 238): the command is masked at "
+        "the write, so a restart's orphan report re-surfaces already-redacted "
+        "text"
+    ),
     "session.py": (
         "expiring parked approval rows on restore: rewrites rows the broker "
         "already masked, adding only a status and timestamp"

@@ -211,6 +211,21 @@ class SessionManager:
         from .approvals import ApprovalBroker
 
         self.approvals = ApprovalBroker(timeout=settings.approval_timeout)
+        if settings.guardian_enabled:
+            # Opt-in auto-review (round 221). The broker is manager-wide but a
+            # guardian needs a parent agent, so the reviewer is built per call
+            # from `ctx.agent` -- the review runs on a fresh readonly role
+            # agent derived from whoever's action is under review, never on a
+            # shared handle. Off by default; this line is the whole wiring.
+            from .guardian import AgentGuardian, broker_reviewer
+
+            async def _guardian_reviewer(ctx, call, rule):
+                agent = getattr(ctx, "agent", None)
+                if agent is None:
+                    return None  # nobody to derive a reviewer from -> human
+                return await broker_reviewer(AgentGuardian(agent))(ctx, call, rule)
+
+            self.approvals.reviewer = _guardian_reviewer
         if hooks is None:
             from .permissions import default_hooks
 

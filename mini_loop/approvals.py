@@ -96,6 +96,16 @@ class ApprovalBroker:
         #: already masks it at the tool boundary; without this the approvals
         #: table was the one place it landed raw.
         self.secrets = None
+        #: Optional auto-reviewer (Codex's Guardian shape, round 215). Default
+        #: None -> every ask goes to the human, unchanged. When set, it is
+        #: consulted BEFORE parking a human request and may only answer
+        #: allow/deny/abstain for THIS action. It is an approver-substitution,
+        #: never a privilege escalation: it cannot widen the catalog, change
+        #: the permission mode, or relax the sandbox -- those are decided
+        #: before `ask` is ever reached. `None`/abstain falls through to the
+        #: human, so a broken or undecided reviewer fails toward the stricter
+        #: path, never toward silent auto-approval.
+        self.reviewer = None
         self._pending: dict[str, PendingApproval] = {}
         #: Persistence faults, surfaced by the audit's problem-channel sweep.
         #: A silently-swallowed write undoes round 100's restart guarantee --
@@ -163,6 +173,41 @@ class ApprovalBroker:
         secrets = getattr(ctx.agent, "secrets", None)
         shown = secrets.mask_payload(call.input) if secrets is not None else call.input
         preview = json.dumps(shown, default=str)[:INPUT_PREVIEW_CAP]
+        # Auto-review before parking a human (Codex's priority: hooks, then
+        # Guardian, then the user). A decisive reviewer replaces the human
+        # for THIS action only -- it decides the same allow/deny a human
+        # would, over an already-masked preview, and cannot touch the
+        # capability plan. Contained: a reviewer that raises is recorded and
+        # treated as abstention, so a broken reviewer falls through to the
+        # human rather than defaulting either way.
+        if self.reviewer is not None:
+            try:
+                verdict = await self.reviewer(ctx, call, rule)
+            except Exception as error:
+                self.problems.append(
+                    f"auto-reviewer raised on {call.name}: "
+                    f"{type(error).__name__}"
+                )
+                verdict = None
+            if verdict is not None:
+                decided = bool(verdict)
+                self._persist(
+                    PendingApproval(
+                        approval_id=f"apr_{uuid.uuid4().hex[:12]}",
+                        session_id=session_id, tool=call.name, rule=rule.name,
+                        message=rule.message, input_preview=preview,
+                        created_at=time.time(),
+                        future=asyncio.get_running_loop().create_future(),
+                        tool_use_id=getattr(call, "id", "") or "",
+                    ),
+                    "auto_allowed" if decided else "auto_denied",
+                )
+                await ctx.emit_event(
+                    "approval_auto_reviewed",
+                    tool=call.name, rule=rule.name,
+                    decision="allow" if decided else "deny",
+                )
+                return decided
         pending = PendingApproval(
             approval_id=f"apr_{uuid.uuid4().hex[:12]}",
             session_id=session_id,
