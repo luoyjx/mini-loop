@@ -180,6 +180,15 @@ class Settings:
 
     bash_timeout: int = field(default_factory=lambda: _env_int("MINILOOP_BASH_TIMEOUT", 120))
 
+    # Requests per principal per minute on the expensive HTTP routes (message,
+    # steer, fork). 0 disables (the default): loopback single-user needs no
+    # limiter, and a surprise 429 in that setting would be a regression. An
+    # operator binding beyond loopback turns it on -- the second layer G4 asks
+    # for once the host stops being the protection.
+    rate_limit_per_minute: int = field(
+        default_factory=lambda: _env_int("MINILOOP_RATE_LIMIT_PER_MINUTE", 0)
+    )
+
     # How long a turn waits on a pending tool approval before the safe
     # default -- deny -- answers instead. See mini_loop/approvals.py.
     approval_timeout: float = field(
@@ -346,6 +355,8 @@ class Settings:
         # the quota.
         if self.subagent_max_depth < 1:
             raise ValueError("subagent_max_depth must be at least 1")
+        if self.rate_limit_per_minute < 0:
+            raise ValueError("rate_limit_per_minute must be 0 (off) or positive")
         if self.workflow_max_concurrent_agents < 1:
             raise ValueError("workflow_max_concurrent_agents must be at least 1")
         if self.workflow_max_concurrent_agents > 4:

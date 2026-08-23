@@ -283,6 +283,7 @@ def full_registry(
     worktrees: bool = True,
     mcp: bool = True,
     mcp_servers: dict | None = None,
+    self_audit: bool = True,
 ) -> ToolRegistry:
     """Comprehensive s20 registry; toggle individual feature groups as needed."""
     from .background import install_background
@@ -338,6 +339,10 @@ def full_registry(
         from .session_query import install_session_query
 
         install_session_query(reg)
+    if self_audit:
+        from .self_audit import install_self_audit
+
+        install_self_audit(reg)
     return reg
 
 

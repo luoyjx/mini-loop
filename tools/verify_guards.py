@@ -2109,11 +2109,13 @@ MUTATIONS = [
     ),
     Mutation(
         "a-stranger-steers-the-session", 101, "mini_loop/server.py",
-        # Re-anchored in round 194: the route gained an idle branch, so the
-        # ownership check now sits before `if not session.busy:`.
+        # Re-anchored in round 194 (idle branch) and 242 (rate limit landed
+        # between the ownership check and the branch).
         '        session = _require(request, session_id)\n'
+        '        _enforce_rate_limit(request)\n'
         '        if not session.busy:',
         '        session = _manager(request).get(session_id)\n'
+        '        _enforce_rate_limit(request)\n'
         '        if not session.busy:',
         "tests/test_steering.py::test_steering_over_http_is_owner_scoped",
         "steering injects text into someone's running turn: unscoped, it is "
@@ -2880,10 +2882,12 @@ MUTATIONS = [
     ),
     Mutation(
         "a-stranger-forks-the-session", 201, "mini_loop/server.py",
-        # Re-anchored in round 202 when fork_session became async.
+        # Re-anchored in round 202 (async) and 242 (rate limit).
         '        _require(request, session_id)\n'
+        '        _enforce_rate_limit(request)\n'
         '        try:\n'
         '            child = await _manager(request).fork_session(session_id)',
+        '        _enforce_rate_limit(request)\n'
         '        try:\n'
         '            child = await _manager(request).fork_session(session_id)',
         "tests/test_session_fork.py::test_fork_over_http_is_owner_scoped",
@@ -3221,6 +3225,51 @@ MUTATIONS = [
         "without it, anything that can write the skills directory swaps "
         "audited instructions for unaudited ones between catalogue and load "
         "(roadmap G9)",
+    ),
+    Mutation(
+        "rate-limit-never-fires", 242, "mini_loop/server.py",
+        '        if count > limit:\n'
+        '            retry_after = 60 - int(time.time()) % 60',
+        '        if False:\n'
+        '            retry_after = 60 - int(time.time()) % 60',
+        "tests/test_rate_limit.py::test_over_budget_answers_429_with_retry_after",
+        "an enabled rate limit actually refuses over-budget principals; "
+        "counting without refusing is the second layer G4 asked for, "
+        "silently absent (roadmap G4)",
+    ),
+    Mutation(
+        "deleted-session-recordings-immortal", 243, "mini_loop/manager.py",
+        '            if remove_trajectories and self.trajectories is not None:\n'
+        '                self.trajectories.delete_for_session(session_id)',
+        '            if False:\n'
+        '                self.trajectories.delete_for_session(session_id)',
+        "tests/test_trajectory_reclamation.py::"
+        "test_deleting_a_session_removes_its_recordings_and_spares_others",
+        "session deletion reclaims the recorded conversations too; skipped, "
+        "the files outlive the session forever -- unreadable through the API "
+        "once owner eviction hits, held on disk regardless (roadmap G10)",
+    ),
+    Mutation(
+        "activity-hides-a-spinning-turn", 244, "mini_loop/session.py",
+        '        detector = getattr(agent, "stuck_detector", None)\n'
+        '        if detector is not None:',
+        '        detector = getattr(agent, "stuck_detector", None)\n'
+        '        if False:',
+        "tests/test_session_activity.py::test_live_stuck_evidence_shows_stuck",
+        "a polling client can tell a working turn from a spinning one; "
+        "hidden, running and stuck are indistinguishable again -- G5's "
+        "exact complaint (roadmap G5)",
+    ),
+    Mutation(
+        "self-audit-reads-no-ledgers", 245, "mini_loop/self_audit.py",
+        '        problem_lines: list[str] = []\n'
+        '        for name, log in _problem_sources(manager):',
+        '        problem_lines: list[str] = []\n'
+        '        for name, log in []:',
+        "tests/test_self_audit.py::test_problems_and_activity_reach_the_report",
+        "the self-audit actually reads the runtime's problem ledgers; "
+        "skipping them turns the observation half of the self-evolution "
+        "loop into a report that always says nothing is wrong",
     ),
     Mutation(
         "activity-hides-awaiting-approval", 232, "mini_loop/session.py",

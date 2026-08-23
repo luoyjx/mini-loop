@@ -126,6 +126,30 @@ OpenHands SDK 的关键设计是把 component 尽量做成 stateless object，�
 | Observability / operations | trajectory + SSE；metrics 有限，无 retention | OTel / metrics / cost / budget / retention / readiness / audit | P1 | 从 Phase 0 开始 instrumentation，Phase 6 完整化 |
 | Product surface | FastAPI console + Python API | CLI / TUI / Web / channel 共用一套稳定 control protocol | P2 | 先做一个 end-to-end surface |
 
+### 5.1 对账：截至 round 240 的落地状态（2026-08）
+
+上表与下节记录的是调研完成时的起点，保留原文不改。此后 harness 按轮次
+逐项落地（每轮一个有界增量 + 突变守卫，过程见
+[HARDENING_NOTES.md](HARDENING_NOTES.md) 8es–8gb），对账如下：
+
+- **已实质关闭**：durable conversation state（SQLite epochs、恢复带崩溃
+  窗口标记，r198/r202）；action journal（prepared/committed/unknown +
+  replay-stable action_id + 重放）；run control 的 steer/cancel/fork
+  （r192–196/r201）；HTTP idempotency（r231）与列表分页（r233）；LLM
+  provider seam + served-model 身份诚实 + token streaming（r207 前后）；
+  cron/task 的跨进程 O_EXCL claim（r236/r237）；background 孤儿账本
+  （r238）；subagent 深度配额（r234）；skill serve 时源 digest 校验
+  （r239）；事件的 turn 级关联（r235）。
+- **部分关闭，剩余明确**：G3 sandbox 已掌管 argv 且环境已 scrub，但
+  network/resource 硬隔离仍缺（Docker spike 为 operator-gated）；G5 有
+  activity 细化（r232），完整 pause/resume 状态机未建；G8 有配额与血统，
+  durable subagent registry/heartbeat/attempt 未建；G9 有完整性校验，
+  manifest/签名/来源未建；G10 有关联与 usage 事件，retention/prune 与
+  成本聚合未建。
+- **仍是起点状态**：G1 的 mid-turn checkpoint-resume（Phase 3，
+  operator-gated）；multi-provider fallback / capability negotiation；
+  MCP OAuth/HTTP 传输。
+
 ## 6. 十个最需要补齐的具体问题
 
 ### G1. trajectory 还不能用于 execution recovery
@@ -134,11 +158,21 @@ OpenHands SDK 的关键设计是把 component 尽量做成 stateless object，�
 
 **风险**：进程退出后，用户看到“session 还在”，但 agent 实际失忆；若退出发生在 external side effect 前后，还可能重复执行。
 
+> **状态（round 240 对账）**：大部分已关。restore 现在恢复 durable transcript
+> 并给崩溃中断的生成打显式标记（r198/r202）；pending tool call 由 action
+> journal 的 unknown 状态 + `close_unanswered_tools` 承接；压缩摘要随
+> transcript 恢复。仍缺：mid-turn checkpoint-resume（Phase 3，operator-gated）。
+
 ### G2. 没有 side-effect action journal
 
 tool call 直接执行后再把 result append 回 message。系统没有 `prepared → running → committed / failed / unknown` 记录，也没有 tool-level idempotency key。
 
 **风险**：crash 时无法判断一次 command、file write、message send 或 issue creation 到底完成没有。对任意 external system 无法承诺 exactly-once，只能通过 idempotency key、status query 和 manual confirmation 逼近 effectively-once。
+
+> **状态（round 240 对账）**：已关。action journal 具备
+> prepared → committed / failed / unknown 状态机与重放（unknown 明确报告
+> “dead process dispatched it”）；action_id 对 (session, turn, tool_use)
+> 重放稳定；HTTP 层幂等键见 G4（r231）。
 
 ### G3. shell 仍缺少 hard execution boundary
 
@@ -146,11 +180,20 @@ tool call 直接执行后再把 result append 回 message。系统没有 `prepar
 
 **风险**：一条绕过 deny-list 的 command 即可访问 workspace 外数据或产生不可控 resource consumption。
 
+> **状态（round 240 对账）**：部分关闭。sandbox 现在拥有 argv 构造，环境经
+> scrub（命令点名的凭据才注入），background 与前台 bash 同边界
+> （test_background_parity）。仍缺：network / resource 硬隔离——
+> DockerWorkspace spike 为 operator-gated。
+
 ### G4. server 缺少 identity、tenant isolation 和 idempotency
 
 [`server.py`](../mini_loop/server.py) 的 session、message、event 和 trajectory 路由没有 auth、tenant scope、rate limit、idempotency key 或 pagination。默认绑定 loopback 降低了意外暴露概率，但环境变量改变 host 后并没有第二层保护。
 
 **风险**：一旦用于 LAN、container 或 remote entry point，任何 caller 都可能读取 session 或触发 tool execution。
+
+> **状态（round 240 对账）**：大部分已关。路由有 principal 与 owner 作用域
+> （跨主体一律答“不存在”而非“无权”）；Idempotency-Key 头（r231，
+> 有界缓存）；列表分页（r233，最近优先、上限 500）。仍缺：rate limit。
 
 ### G5. run state machine 不足以承载真实交互
 
@@ -158,11 +201,23 @@ tool call 直接执行后再把 result append 回 message。系统没有 `prepar
 
 **风险**：long-running task 只能等待或 kill process；pending approval 无法跨 restart；client 也无法可靠区分 running 和 stuck。
 
+> **状态（round 240 对账）**：部分关闭。steer（含空闲起新 turn）、cancel、
+> fork 均已公开（r192–196/r201/r202）；approval 已 durable 并跨 restart
+> 过期上报；`info()['activity']` 细化出 awaiting_approval（r232）。仍缺：
+> 完整 paused / resume 状态机与 stuck 的显式状态（stuck 检测存在，
+> 状态面未升格）。
+
 ### G6. LLM provider 与 model capability 未抽象
 
 [`config.py`](../mini_loop/config.py) 和 [`agent.py`](../mini_loop/agent.py) 面向 Anthropic-compatible Messages API；缺少 Responses / Chat 差异、token streaming、model capability、fallback、retry classification、prompt cache、usage / cost 统一结构。
 
 **风险**：每增加一个 provider 都会侵入 agent loop，且难以执行 cross-provider conformance test。
+
+> **状态（round 240 对账）**：大部分已关。`providers.py` 的 ModelProvider
+> seam（凭据不入 describe）、conformance 测试（fake 恒跑，DeepSeek 真端点
+> 门控）、served-model 身份诚实（别名端点显式可见）、StreamingTransport、
+> retry 分类（transient/rate-limit/overloaded 对称）、usage 随 model_end。
+> 仍缺：multi-provider fallback 与 capability negotiation。
 
 ### G7. background、task、cron 都未达到 durable job semantics
 
@@ -170,11 +225,22 @@ background task 随 process 消失；task JSON 的 lock 主要是 in-process thr
 
 **风险**：多个 worker 可能发生 duplicate claim；单 worker crash 会导致 missed run 或 duplicate run。
 
+> **状态（round 240 对账）**：三个子系统各有交代。cron：O_EXCL 每
+> (job, 分钟) 认领 + 先存后发（r110/r236）；task：O_EXCL 认领标记 +
+> 崩溃中认领上报（r237）；background：在飞账本 + 重启孤儿收养
+> （绝不静默丢弃或重跑，r238）。仍缺：retry / heartbeat / attempt 语义。
+
 ### G8. subagent 是调用技巧，不是可运营实体
 
 当前 subagent 没有 durable ID、parent-child tree、attempt、heartbeat、concurrency / depth quota、tool policy snapshot 或 interrupt / recovery。
 
 **风险**：一旦启用 parallel delegation，就很难解释“谁还在 running、使用了什么 permission、失败后该 retry 谁”。
+
+> **状态（round 240 对账）**：部分关闭。深度配额在所有 provider 必经的
+> seam 强制（r234）；血统为数据（parent、delegation_depth）；工具集来自
+> 角色策略而非作用域继承；事件带 turn 关联与 parent 链接（r235），
+> `task` 不进子目录已钉为声明式契约。仍缺：durable subagent
+> registry / attempt / heartbeat / interrupt-recovery（并行委派前的前置）。
 
 ### G9. plugin / skill 缺少 supply-chain boundary
 
@@ -182,11 +248,23 @@ background task 随 process 消失；task JSON 的 lock 主要是 in-process thr
 
 **风险**：skill 越多，startup 阶段的 implicit code 和 prompt dependency 越难 audit；skill self-modification 会进一步放大风险。
 
+> **状态（round 240 对账）**：部分关闭。构造性防御在位（路径逃逸拒绝、
+> 重名先到先得、逐文件失败隔离、正文上限），serve 时源 digest 复验——
+> catalogue 通告什么 load 就注入什么，否则大声拒绝（r239）；user 层与
+> agent 层为分立权威、不以顺序解冲突。仍缺：manifest / version /
+> provenance / signature（操作员工作流级）。
+
 ### G10. observability data 还不能回答生产问题
 
 trajectory 可回答“发生过什么”，但还缺少跨 session / run / action 的 stable correlation、model cost、queue time、tool latency、retry、lease、resource usage、retention / prune 和统一 redaction。
 
 **风险**：无法回答“为什么慢、为什么贵、是否发生 duplicate execution、由哪个 tenant 触发、能否安全删除”。
+
+> **状态（round 240 对账）**：部分关闭。事件带 turn 级 message_id 与委派
+> parent 链接（r235），session → turn → span → action 树显式；usage /
+> duration / served_model 随 model_end；tool_result 带 duration 与
+> exit_code；trace_view 按 span join。仍缺：retention / prune、queue
+> time、跨会话成本聚合。
 
 ## 7. 推荐目标架构
 

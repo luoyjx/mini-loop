@@ -51,6 +51,7 @@ ALLOWED_DISCARDS = {
     ("builtins.py", "install_goals"): "registers tools; the Error strings are in nested handlers",
     ("builtins.py", "install_diagnostics"): "registers tools; the Error strings are in nested handlers",
     ("builtins.py", "install_session_query"): "registers tools; the Error strings are in nested handlers",
+    ("builtins.py", "install_self_audit"): "registers tools; the Error strings are in nested handlers",
     ("__main__.py", "run"): "uvicorn.run, unrelated to this package",
     ("runner.py", "run"): "workflow runner records the outcome through its own store",
     ("worktrees.py", "bind_worktree"): "binding is advisory; creation already succeeded",

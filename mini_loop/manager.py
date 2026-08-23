@@ -1440,7 +1440,8 @@ class SessionManager:
                 "cancellation completed but workflow remains active",
             )
 
-    def delete(self, session_id: str, *, remove_workspace: bool = True) -> bool:
+    def delete(self, session_id: str, *, remove_workspace: bool = True,
+               remove_trajectories: bool = False) -> bool:
         session = self._sessions.get(session_id)
         if session is not None:
             # A legacy fallback, and now a bounded one. Trajectories recorded
@@ -1546,6 +1547,18 @@ class SessionManager:
         # Don't delete a workspace shared by teammates.
         shared = any(s.workspace == session.workspace for s in self._sessions.values())
         remove_now = remove_workspace and not shared and not workflow_active
+
+        def _reclaim_records() -> None:
+            # Recordings deliberately OUTLIVE their session by default: the
+            # durable owner field exists precisely so a trajectory stays
+            # readable after its session is gone (round 74), and two tests
+            # pin that contract. What was missing was the other half of
+            # G10's "can it be safely deleted": no way to purge them at all.
+            # remove_trajectories=True is that way -- explicit, and run only
+            # after the turn is dead, or a still-winding-down capture would
+            # recreate the file it was appending to.
+            if remove_trajectories and self.trajectories is not None:
+                self.trajectories.delete_for_session(session_id)
         if (
             background is not None
             or mcp_clients
@@ -1569,6 +1582,7 @@ class SessionManager:
                             close_store()
                         if remove_now:
                             _remove_workspace(session.workspace)
+                        _reclaim_records()
 
                     running_turn.add_done_callback(_revoke_after_turn)
                 else:
@@ -1577,6 +1591,7 @@ class SessionManager:
                         close_store()
                     if remove_now:
                         _remove_workspace(session.workspace)
+                    _reclaim_records()
             else:
                 async def _close_services() -> None:
                     if running_turn is not None and not running_turn.done():
@@ -1602,11 +1617,17 @@ class SessionManager:
                     # live process has as its cwd is a race, not a cleanup.
                     if remove_now:
                         _remove_workspace(session.workspace)
+                    _reclaim_records()
                 cleanup = asyncio.create_task(_close_services())
                 self._cleanup_tasks.add(cleanup)
                 cleanup.add_done_callback(self._cleanup_tasks.discard)
         elif remove_now:
             _remove_workspace(session.workspace)
+            _reclaim_records()
+        else:
+            # No services to wind down and no workspace to remove: the
+            # records still go with the session.
+            _reclaim_records()
         # A process-local workflow may still have a read in flight while its
         # cooperative cancellation task drains.
         if remove_workspace and not shared and workflow_active:

@@ -42,6 +42,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import json
+import time
 from contextlib import asynccontextmanager
 from collections.abc import Callable
 from typing import Literal
@@ -472,6 +473,11 @@ SECURITY_HEADERS = {
 #: sent (bounded output is not bounded work).
 MAX_IDEMPOTENCY_KEYS = 1024
 
+#: Rate windows are one entry per principal, but principals are
+#: caller-supplied strings when auth is off -- the same unbounded-map shape as
+#: the idempotency cache, bounded the same way.
+MAX_RATE_WINDOWS = 4096
+
 
 def _register_routes(app: FastAPI) -> None:
     #: (owner, session_id, key) -> the response already returned for it, so a
@@ -486,6 +492,43 @@ def _register_routes(app: FastAPI) -> None:
         if not header:
             return None
         return (caller.id, session_id, header)
+
+    #: principal id -> (minute window, requests seen in it). Fixed-window
+    #: counting on the expensive routes only (message, steer, fork): a turn
+    #: is a model call and real tool work, so the request is the cheap part.
+    rate_windows: dict[str, tuple[int, int]] = {}
+
+    def _enforce_rate_limit(request: Request) -> None:
+        """429 when this principal is over budget; a no-op when disabled.
+
+        Off by default (rate_limit_per_minute=0): loopback single-user needs
+        no limiter. G4's second layer for deployments that bind further --
+        per principal, so one noisy caller cannot starve the others, and the
+        refusal names the wait rather than leaving the client to guess.
+        """
+
+        limit = request.app.state.settings.rate_limit_per_minute
+        if limit <= 0:
+            return
+        caller = _principal(request)
+        minute = int(time.time() // 60)
+        window, count = rate_windows.get(caller.id, (minute, 0))
+        if window != minute:
+            window, count = minute, 0
+        count += 1
+        if caller.id not in rate_windows and len(rate_windows) >= MAX_RATE_WINDOWS:
+            rate_windows.clear()
+        rate_windows[caller.id] = (window, count)
+        if count > limit:
+            retry_after = 60 - int(time.time()) % 60
+            raise HTTPException(
+                status_code=429,
+                detail=(
+                    f"rate limit exceeded ({limit}/minute); "
+                    f"retry in {retry_after}s"
+                ),
+                headers={"Retry-After": str(retry_after)},
+            )
 
     @app.get("/healthz")
     async def healthz(request: Request):
@@ -609,6 +652,7 @@ def _register_routes(app: FastAPI) -> None:
         running.
         """
         session = _require(request, session_id)
+        _enforce_rate_limit(request)
         if not session.busy:
             manager = _manager(request)
             task = asyncio.create_task(session.run(req.message))
@@ -632,6 +676,7 @@ def _register_routes(app: FastAPI) -> None:
         completed boundary (dsh's fork eligibility rule).
         """
         _require(request, session_id)
+        _enforce_rate_limit(request)
         try:
             child = await _manager(request).fork_session(session_id)
         except RuntimeError as error:
@@ -717,6 +762,9 @@ def _register_routes(app: FastAPI) -> None:
             # result rather than execute the (possibly non-idempotent) turn
             # again. G4 of AGENT_PLATFORM_ROADMAP.md.
             return idempotency[key]
+        # After the idempotency cache: a cached replay costs nothing and is
+        # exactly what a retrying client should get during a storm.
+        _enforce_rate_limit(request)
         if session.busy:
             # Queueing on the session lock would hold the connection open with
             # no timeout and no way to see the queue. Saying so is better than
@@ -745,6 +793,7 @@ def _register_routes(app: FastAPI) -> None:
     async def post_message_stream(request: Request, session_id: str, req: MessageReq):
         caller = _principal(request)
         session = _require(request, session_id)
+        _enforce_rate_limit(request)
 
         async def gen():
             q = session.subscribe(replay=False)

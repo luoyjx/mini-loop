@@ -360,6 +360,50 @@ class TrajectoryStore:
     def count(self, session_id: str) -> int:
         return len(self.list(session_id=session_id, limit=1_000_000))
 
+    def delete_for_session(self, session_id: str) -> int:
+        """Remove every recording whose header names this session; the count.
+
+        Session deletion reclaims the workspace, the cron jobs, the durable
+        row -- and left these files forever: unreadable through the API once
+        ownership eviction hit, held on disk regardless (roadmap G10's "can
+        it be safely deleted"). The caller runs this after the session's turn
+        is dead, or a still-winding-down capture recreates the file it was
+        appending to. A file whose header cannot be read is left in place and
+        reported: deletion is destructive, and "cannot prove it is this
+        session's" falls toward keeping bytes, never toward removing what
+        might be someone else's record.
+        """
+
+        removed = 0
+        for path in self.root.glob("traj_*.jsonl"):
+            trajectory_id = path.stem
+            try:
+                with path.open("r", encoding="utf-8") as handle:
+                    header = json.loads(handle.readline() or "null")
+            except (OSError, json.JSONDecodeError):
+                self.problems.append(
+                    f"{path.name}: header unreadable; left in place rather "
+                    "than deleted on a guess"
+                )
+                continue
+            if not isinstance(header, dict) or header.get("session") != session_id:
+                continue
+            with self._file_lock(trajectory_id):
+                try:
+                    path.unlink()
+                except FileNotFoundError:
+                    continue
+                except OSError as error:
+                    self.problems.append(
+                        f"{path.name}: deletion failed ({type(error).__name__}); "
+                        "the recording outlives its deleted session"
+                    )
+                    continue
+            with self._state_lock:
+                self._active.discard(trajectory_id)
+            removed += 1
+        return removed
+
     def raw(self, trajectory_id: str) -> str:
         path = self._path(trajectory_id)
         if not path.is_file():

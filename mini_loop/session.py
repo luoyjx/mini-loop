@@ -1033,6 +1033,19 @@ class AgentSession:
                     return "awaiting_approval"
             except Exception:
                 pass
+        # Live, not historical: `inspect` reads the current evidence window,
+        # which a nudge clears -- so a corrected model reads `running` again,
+        # and a client polling info() can tell a turn that is working from
+        # one that is spinning (roadmap G5's exact complaint). Derived from
+        # the detector that will act on it, never a second stored flag that
+        # could disagree with what the loop does next.
+        detector = getattr(agent, "stuck_detector", None)
+        if detector is not None:
+            try:
+                if detector.inspect(agent) is not None:
+                    return "stuck"
+            except Exception:
+                pass  # a diagnostics read must never take down info()
         return "running"
 
     # -- introspection for the API --

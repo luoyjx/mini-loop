@@ -7381,3 +7381,158 @@ gaps closed and cite the rounds, or the next "research exhausted"
 judgment will be made against fiction in the other direction.
 
 No code changed this round. Guards hold at 350; suite 1815/20.
+
+### 8gc — the gap matrix reconciled against the code (round 241)
+
+Round 240 found the roadmap stale in the reverse direction: written
+before rounds 185-239 landed, it still said restore loses transcripts,
+no action journal exists, bash has no boundary. Left alone, the next
+mining pass would either re-solve solved problems or -- worse -- declare
+the document exhausted while trusting its fiction (the round-229/230
+lesson inverted).
+
+Reconciled additively: the original matrix and gap prose stay as the
+record of the starting point; a 5.1 status section and one quoted
+status line under each of G1-G10 say what closed (with round numbers),
+what partially closed (with the remainder named), and what is untouched
+(mid-turn checkpoint-resume, provider fallback, MCP OAuth, rate limit,
+retention/prune). One slip caught mid-round: an edit altered a word of
+the original G5 risk text; reverted -- the reconciliation's rule is
+annotate, never rewrite.
+
+78 insertions, docs only. Guards hold at 350; anchors and scans clean.
+The mining source is now honest in both directions, and the remaining
+open items double as the round queue: rate limit (G4), stuck as a
+state (G5), retention/prune (G10) are bounded; the rest are
+operator-gated phases.
+
+### 8gd — the expensive routes carry a per-principal budget (round 242)
+
+From the reconciliation's queue: G4's last listed remainder. With
+principal scoping, idempotency and pagination in place, one noisy
+caller -- a retry storm, a runaway script -- could still submit turns
+as fast as the socket allows, and a turn is a model call and real tool
+work; the request is the cheap part.
+
+Fixed-window counting per principal on message, stream, steer and
+fork. Off by default (rate_limit_per_minute=0): loopback single-user
+needs no limiter and a surprise 429 there would be a regression; an
+operator binding beyond loopback turns it on (MINILOOP_RATE_LIMIT_
+PER_MINUTE) -- the second layer G4 asks for once the host stops being
+the protection. Over budget answers 429 with Retry-After and the limit
+named. The idempotency cache answers before the limiter: a cached
+replay costs nothing and is exactly what a retrying client should get
+during a storm. The windows map is bounded like the idempotency cache
+(principals are caller-supplied strings when auth is off).
+
+One test scaffold lesson: create_app(manager=...) reads app-level
+settings from the environment, not from the manager -- the fixture must
+pass settings explicitly or the limit silently stays 0 and the tests
+pass for the wrong reason (three did, until the 429 assertions failed).
+Six tests, one guard; two ownership-guard anchors re-anchored (the
+limiter landed inside both) and re-verified. Guards 350 -> 351.
+
+### 8ge — recordings can be purged, and the default was wrong once (round 243)
+
+G10's "can it be safely deleted": there was NO way to purge a session's
+recordings at any layer -- delete() reclaimed workspace, cron,
+approvals, background, the durable row, and left the trajectory files
+forever. Added TrajectoryStore.delete_for_session (header-verified,
+fail-toward-keeping: an unreadable header is left in place and
+reported) and a remove_trajectories flag on manager.delete, invoked
+only at the points where the turn is provably dead -- a winding-down
+capture would recreate the file it was appending to.
+
+The first draft defaulted remove_trajectories=True, and the full suite
+refused it: test_a_trajectory_outlives_its_session_for_its_owner and
+the server export test pin the OPPOSITE contract -- recordings
+deliberately outlive their session, readable by their durable owner
+(that owner field exists precisely for after-deletion reads, round 74).
+A bounded round does not reverse a deliberate, tested design decision:
+the default flipped to False, the mechanism stays, and the choice to
+purge is the operator's, explicit. The suite catching a contract
+reversal my probe missed is the system working exactly as built --
+"single-file green is not green", the round-232 lesson at design level.
+
+Four tests, one guard. Guards 351 -> 352.
+
+### 8gf — a polling client can tell working from spinning (round 244)
+
+The reconciliation queue's last item, and the second half of the G5
+refinement round 232 started. The stuck detector nudges and halts the
+loop, and its firings are durable events -- but a client polling
+info() during the spin still read `running`, which is G5's complaint
+verbatim: "client 也无法可靠区分 running 和 stuck".
+
+`activity` now answers `stuck` while the detector's evidence window
+holds an unproductive pattern -- derived by calling the same
+`inspect()` the loop will act on, never a second stored flag that
+could disagree with what the loop does next. Live, not historical: a
+nudge clears the evidence, so a corrected model reads `running` again
+immediately. awaiting_approval outranks stuck (blocked on a human
+beats spinning: the human unblocks both), and a detector failure is
+swallowed -- a diagnostics read must never take down info().
+
+Two tests in the round-232 file (same charter), one guard. Guards
+352 -> 353. The reconciliation queue is empty: every bounded item the
+gap-matrix audit surfaced now has its round. What remains on the
+matrix is operator-gated (checkpoint-resume, Docker isolation,
+provider fallback, MCP OAuth, manifests) or new research.
+
+### 8gg — the real endpoint re-validated after thirty rounds of drift (round 245)
+
+Verification debt of a different kind. Rounds 234-244 were mechanism
+rounds -- depth quotas, event stamps, O_EXCL claims, digest checks --
+each correctly skipping the real API because the fake transport
+exercises the identical code. But "identical" is a claim that ages:
+since the seven DeepSeek validations last ran, the harness gained the
+message_id stamp on every event (through the real streaming path),
+the rate limiter ahead of the message routes, the subagent depth gate
+in front of every delegation, and a dozen smaller seams. The fake
+path is hammered 1,828 times a round; the real path had not been
+exercised once.
+
+MINILOOP_REAL_PROVIDER_TESTS=1 across the four gated files: 29
+passed, zero skipped, 21.7s. Streaming and non-streaming conformance,
+served-model identity end-to-end, role isolation's hostile write still
+denied, steer obedience, and the verified-loop convergence all hold on
+the live endpoint. No code changed; the round's product is the
+re-anchored claim that fake-path green still predicts real-path green.
+
+Cadence note for future rounds: mechanism rounds skip the real API
+with a stated reason -- that discipline stands -- but the skips
+accumulate into exactly this debt, so a periodic gated re-run belongs
+on the same schedule as the full guard sweep (roughly every ten
+rounds, or after any change that touches transport, streaming, or the
+provider seam).
+
+### 8gh — the runtime reads its own ledgers (round 246, new charter)
+
+The loop's cron was stopped by the operator and the work re-aimed at
+self-evolution (see the round-245 discussion): make mini-loop improve
+itself the way its reference harness does. The maturity ladder's cheap
+missing piece was observation -- every subsystem keeps a deduplicating
+bounded ProblemLog, every turn records a trajectory summary, info()
+names live activity since rounds 232/244 -- and *nothing ever read any
+of it*.
+
+`self_audit.py`: `build_report(manager)` folds the manager-level
+ledgers (cron, trajectories, approvals, skills, actions), per-session
+ledgers (registry, tasks, teams, memory), the activity distribution,
+trajectory outcome counts with the slowest three, and the cron
+armed/disarmed state into one text report; the `self_audit` tool
+(read-only, wired into the comprehensive registry) serves it inside a
+session, so a scheduled prompt can say "run self_audit and act on what
+it says". Deliberately disk-free -- observation must not grow a write
+surface, and the write-site census stays quiet. Every section catches
+its own failures into report lines (a broken source is a line, never a
+missing report), every scan is capped, and the report itself is
+hard-capped: a self-audit that grows with runtime age would be the
+bounded-work defect reporting on itself.
+
+The discarded-results census caught the new install call until it was
+listed with its reason -- the instruments keep working on the
+instrument-adjacent code. Five tests, one guard. Guards 353 -> 354.
+Next per the plan: the evaluation substrate (Phase 0 paired benchmark,
+operator-budgeted), then skill-usage feedback, then the verified
+self-modification loop over VerifiedLoopService + worktrees.
