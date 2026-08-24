@@ -7536,3 +7536,46 @@ instrument-adjacent code. Five tests, one guard. Guards 353 -> 354.
 Next per the plan: the evaluation substrate (Phase 0 paired benchmark,
 operator-budgeted), then skill-usage feedback, then the verified
 self-modification loop over VerifiedLoopService + worktrees.
+
+### 8gi — the self-evolution loop's three missing pieces (round 246, part 2)
+
+Operator-authorized ("再做123"), in dependency order:
+
+1. **Judgment (benchmark.py + tools/paired_benchmark.py).** The paired
+   benchmark: a small deterministic task set, each task judged by an
+   effect predicate on the workspace -- never the model grading itself
+   -- run through a baseline arm and a candidate arm with fresh
+   managers. The verdict is conservative by construction: any
+   regression sinks the candidate and wins do not buy it back; a trade
+   is a human decision, not an instrument's. Validated end to end on
+   the real endpoint: identical arms scored 3/3 vs 3/3, verdict
+   not_worse -- parity, as identical configurations must. The fake-mode
+   CLI exercises the instrument, not the model (a fake arm passes zero
+   tasks; 0=0 parity is the expected smoke result).
+
+2. **Feedback (TrajectoryStore.iter_events + the audit's skill-usage
+   section).** A bounded streaming reader (limit counts yields, so a
+   filtered scan of a long file still terminates) feeds a self_audit
+   section correlating load_skill calls with how the loading turns
+   ended -- labeled "correlation, not causation: a lead, not a
+   verdict", because retirement decisions belong to the human reading
+   the report.
+
+3. **Proposal (self_improve.py).** The composition, not a new
+   mechanism: VerifiedLoopService pointed at an improvement objective
+   inside a git-checkout workspace. Refuses a non-git workspace (an
+   unreviewable improvement is just a mutation) and an empty acceptance
+   command ("verified" would be a vibe). The artifact is a COMMIT on
+   the isolated branch -- fixed commit message, the objective never
+   interpolated into a shell -- plus the receipt trail and diff stat;
+   an unverified attempt is reported diff-and-all, never hidden. No
+   merge code exists in the module, which is the strongest form of the
+   no-merge rule. The discarded-results census caught the first draft
+   throwing away git add/commit exit codes -- a failed commit would
+   have made HEAD~1 describe someone else's change -- and the fix
+   consumes them and falls back to naming the working-tree change.
+
+Three guards (conservative verdict, feedback not blind, git-only
+proposals). Guards 354 -> 357. Suite 1842/18 across 71 modules. The
+loop is now closed on paper: audit -> objective -> proposal -> paired
+benchmark -> human merge. What makes it real is an operator running it.

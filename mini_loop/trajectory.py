@@ -404,6 +404,40 @@ class TrajectoryStore:
             removed += 1
         return removed
 
+    def iter_events(
+        self,
+        trajectory_id: str,
+        *,
+        types: set[str] | None = None,
+        limit: int = 1_000,
+    ):
+        """Stream parsed event records, optionally filtered, always bounded.
+
+        `get()` materialises every event body; readers that only need a few
+        fields from a few event types (the skill-usage feedback in
+        self_audit, round 246) get a generator instead. `limit` counts
+        *yielded* records, so a filtered scan still terminates on a long
+        file: bounded output must be bounded work.
+        """
+
+        path = self._path(trajectory_id)
+        yielded = 0
+        try:
+            with path.open("r", encoding="utf-8") as handle:
+                for line in handle:
+                    if yielded >= limit:
+                        return
+                    try:
+                        record = json.loads(line)
+                    except json.JSONDecodeError:
+                        continue
+                    if types is not None and record.get("type") not in types:
+                        continue
+                    yielded += 1
+                    yield record
+        except OSError:
+            return
+
     def raw(self, trajectory_id: str) -> str:
         path = self._path(trajectory_id)
         if not path.is_file():

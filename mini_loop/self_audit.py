@@ -146,6 +146,38 @@ def build_report(manager: Any) -> str:
     except Exception as error:
         out += _section("trajectories", [f"unreadable: {type(error).__name__}"])
 
+    # -- skill usage: which instructions get loaded, and how those turns end
+    try:
+        store = getattr(manager, "trajectories", None)
+        if store is not None and hasattr(store, "iter_events"):
+            usage: dict[str, dict[str, int]] = {}
+            for summary in store.list(limit=MAX_TRAJECTORIES_SCANNED):
+                outcome = str(summary.get("status", "unknown"))
+                rough = "bad" if outcome in ("error", "interrupted") else "ok"
+                for event in store.iter_events(
+                    summary.get("id", ""), types={"tool_use"}, limit=200,
+                ):
+                    if event.get("name") != "load_skill":
+                        continue
+                    skill = str((event.get("input") or {}).get("name", "?"))
+                    counts = usage.setdefault(skill, {"loads": 0, "bad": 0})
+                    counts["loads"] += 1
+                    if rough == "bad":
+                        counts["bad"] += 1
+            lines = [
+                f"{name}: {c['loads']} load(s), {c['bad']} in turns that "
+                "ended error/interrupted"
+                for name, c in sorted(usage.items())
+            ]
+            if lines:
+                lines.append(
+                    "(correlation, not causation: a skill loaded in a bad "
+                    "turn is a lead, not a verdict)"
+                )
+            out += _section("skill usage", lines)
+    except Exception as error:
+        out += _section("skill usage", [f"unreadable: {type(error).__name__}"])
+
     # -- scheduled work and its authorization state ------------------------
     try:
         cron = getattr(manager, "cron", None)

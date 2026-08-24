@@ -109,3 +109,31 @@ def test_the_tool_serves_the_report_inside_a_session(tmp_path):
         state: dict = {}
 
     assert "Error" in asyncio.run(tool.handler(_Orphan()))
+
+
+def test_skill_usage_correlates_loads_with_outcomes(tmp_path):
+    """The feedback half of skill evolution: loads per skill, with how the
+    loading turns ended. Correlation surfaced as a lead, never a verdict."""
+
+    from mini_loop.trajectory import TrajectoryStore
+
+    manager = _manager(tmp_path)
+    store = TrajectoryStore(tmp_path / "trajectories")
+    manager.trajectories = store
+
+    good = store.start(session_id="s1", run_index=1, input_text="x")
+    store.append(good, {"type": "tool_use", "name": "load_skill",
+                        "input": {"name": "deploy"}})
+    store.finish(good, status="completed", output="done")
+
+    bad = store.start(session_id="s1", run_index=2, input_text="y")
+    store.append(bad, {"type": "tool_use", "name": "load_skill",
+                       "input": {"name": "deploy"}})
+    store.append(bad, {"type": "tool_use", "name": "load_skill",
+                       "input": {"name": "lint"}})
+    store.finish(bad, status="error", error="boom")
+
+    report = build_report(manager)
+    assert "deploy: 2 load(s), 1 in turns that ended error/interrupted" in report
+    assert "lint: 1 load(s), 1 in turns" in report
+    assert "correlation, not causation" in report

@@ -3272,6 +3272,40 @@ MUTATIONS = [
         "loop into a report that always says nothing is wrong",
     ),
     Mutation(
+        "benchmark-verdict-forgives-regressions", 246, "mini_loop/benchmark.py",
+        '        "verdict": "regression" if regressions else (\n'
+        '            "improvement" if wins else "not_worse"\n'
+        '        ),',
+        '        "verdict": "not_worse" if regressions else (\n'
+        '            "improvement" if wins else "not_worse"\n'
+        '        ),',
+        "tests/test_benchmark.py::test_the_verdict_is_conservative",
+        "the paired verdict is conservative: a candidate that loses a task "
+        "the baseline passed is a regression, and wins do not buy it back -- "
+        "forgiven, the judgment half of self-evolution approves trades no "
+        "human weighed",
+    ),
+    Mutation(
+        "skill-usage-feedback-blind", 246, "mini_loop/self_audit.py",
+        '                    if event.get("name") != "load_skill":\n'
+        '                        continue',
+        '                    if True:\n'
+        '                        continue',
+        "tests/test_self_audit.py::test_skill_usage_correlates_loads_with_outcomes",
+        "the audit actually correlates skill loads with turn outcomes; "
+        "blind, skill evolution has no feedback signal and retirement "
+        "decisions revert to vibes",
+    ),
+    Mutation(
+        "self-improvement-outside-git", 246, "mini_loop/self_improve.py",
+        '    if not is_git_repo(workspace):',
+        '    if False:',
+        "tests/test_self_improve.py::test_a_non_git_workspace_is_refused",
+        "self-modification runs only in a git checkout: unreviewable, "
+        "unrevertible 'improvement' of a plain workspace is just a "
+        "mutation, and the human gate has nothing to review",
+    ),
+    Mutation(
         "activity-hides-awaiting-approval", 232, "mini_loop/session.py",
         '                if broker.list(self.id):\n'
         '                    return "awaiting_approval"',
