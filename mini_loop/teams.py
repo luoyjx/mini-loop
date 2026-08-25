@@ -106,6 +106,38 @@ class MessageBus:
                     stream.write(json.dumps(payload) + "\n")
         return f"Sent {msg_type} to {to.split('/')[-1]}"
 
+    def peek(self, name: str) -> list[dict]:
+        """Read without consuming: the messages stay for their addressee.
+
+        `read()`'s drain IS the delivery contract -- the injector consumes
+        the inbox precisely because delivery happened. A viewer (the web
+        UI's team pane, a diagnostic) that used read() would deliver an
+        agent's messages to nobody; round 250's probe blocked the pane on
+        exactly that. Same bounds as read (tail-bounded load, MAX_INBOX
+        cap), but the backing file is left untouched and nothing is cleared.
+        """
+
+        with self._lock:
+            if self.root is None:
+                return list(self.inboxes.get(name, []))[-self.MAX_INBOX:]
+            try:
+                path = self._path(name)
+            except ValueError as error:
+                self.problems.append(f"peek({name!r}) refused: {error}")
+                return []
+            if not path.exists():
+                return []
+            text, _truncated = self._read_tail(path)
+            messages = []
+            for line in text.splitlines():
+                try:
+                    value = json.loads(line)
+                except json.JSONDecodeError:
+                    continue  # read() owns the malformed-line report
+                if isinstance(value, dict):
+                    messages.append(value)
+            return messages[-self.MAX_INBOX:]
+
     def _read_tail(self, path: Path) -> tuple[str, bool]:
         """The last MAX_READ_BYTES of the mailbox, and whether it was truncated.
 

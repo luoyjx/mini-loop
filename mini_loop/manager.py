@@ -1363,6 +1363,15 @@ class SessionManager:
         state.status = "approved" if approved else "rejected"
         state.feedback = str(message.get("content", ""))
 
+    def peek_team_inbox(self, team_id: str, name: str) -> list[dict]:
+        """A non-consuming view of a teammate's inbox (the UI's team pane).
+
+        Never `read()`: its drain is the delivery contract, and a viewer
+        must not deliver messages to nobody.
+        """
+
+        return self.bus.peek(team_key(team_id, name))
+
     def consume_team_inbox(self, team_id: str, name: str) -> list[dict]:
         messages = self.bus.read(team_key(team_id, name))
         session = self.teammate_session(team_id, name) if name != "lead" else None

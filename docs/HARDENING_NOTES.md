@@ -7579,3 +7579,176 @@ Three guards (conservative verdict, feedback not blind, git-only
 proposals). Guards 354 -> 357. Suite 1842/18 across 71 modules. The
 loop is now closed on paper: audit -> objective -> proposal -> paired
 benchmark -> human merge. What makes it real is an operator running it.
+
+### 8gj — the web UI, round 1: sessions, ledger, composer, approvals (round 247)
+
+New standing goal (/goal): a web UI covering the whole feature surface,
+dsh-style. docs/WEBUI_PLAN.md is the coverage matrix and the loop's
+queue; this round shipped R1.
+
+Architecture: separate sources under mini_loop/webui/ (index.html with
+/*CSS*/ and /*JS*/ markers, app.css, app.js), assembled at request time
+into ONE self-contained inline page served at /ui -- the CSP (inline
+script only, no 'self' in script-src) stays byte-identical, there is no
+static mount and therefore no traversal surface, and no build step
+exists to forget. The old / console is untouched until the plan's R6
+decides its fate.
+
+R1 features, all against existing HTTP APIs only: session rail with
+activity badges (idle/running/awaiting_approval/stuck/error -- the
+round-232/244 work gets its first reader with eyes), create with
+mode+system, dsh-style ledger over the SSE stream (span-paired
+model/tool rows with durations and served-model annotation, #N request
+numbering, depth-indented subagent rows, streaming deltas into a live
+row, reference rows for catalog/compact/stuck), composer whose send
+falls back to steer when the session is busy (the 409's own advice,
+automated), cancel/fork/mode controls, an approvals panel driven by
+both events and polling, health line, and the console's token
+convention.
+
+Safety inherited, not re-derived: test_webui.py mirrors the console
+scan (no markup-injecting sink -- the first run failed on the word
+'innerHTML' in a comment promising its absence, which is the scan
+working), pins textContent rendering, self-containment (no external
+refs -- the CSP would silently block them), the security headers on
+/ui, and that every path the client wires exists in the server's route
+table (a renamed route fails the suite, not a browser three weeks
+later). One guard: the page without its script is a dead shell that
+passes a status-code smoke. Guards 357 -> 358. Suite 1847/18.
+
+R2 queue: trajectory list/view/export integration, transcript view,
+session deletion with the retention choice made explicit. A live
+browser pass (claude-in-chrome) belongs in R2 as well -- TestClient
+proves the contract, not the pixels.
+
+### 8gk — the web UI covers the surface (round 248: R2-R5 + browser pass)
+
+The stop-hook held the goal open -- "覆盖我们所有的功能" is not R1 --
+so the remaining rounds ran in one push.
+
+Server first, per the plan's rule (the UI consumes the API, never
+invents it): session-scoped cron routes (list structured with arm
+state; scheduling over authenticated HTTP IS the human authorization
+edge, so the job arms exactly like an in-process schedule; cancel
+scoped so a stranger's probe answers not-found), GET /self-audit
+(owner-scoped under auth, manager-wide ledgers only on open
+deployments -- an observability endpoint must not become the
+cross-tenant side channel; build_report grew owner/include_global and
+_scoped_summaries so trajectory trends and skill usage follow the same
+scope), GET skills catalogue (exactly what the model sees), GET memory
+(names and descriptions, never bodies -- the body route needs its own
+masking-boundary design first), POST propose-improvement (self_improve
+refusals surface as 400s, busy as 409, the no-merge rule untouched).
+
+Then the UI: tabs over the session view -- Trajectories (list, dsh
+ledger view, JSON export), Transcript (with epoch selection, so
+superseded pre-compaction history is readable), Cron (DISARMED badge +
+arm, schedule, cancel), Skills, Memory, Improve (objective +
+acceptance command -> proposal branch/diff/receipt summary), plus the
+top-bar Self-audit pane and session Delete whose confirm states the
+retention contract (workspace removed, recordings kept for the owner).
+
+Then the pixels: a live Playwright pass -- create session, run a turn,
+verify the ledger's span pairing/#N numbering/durations/served-by
+annotation on screen, walk Trajectories/Cron/Self-audit. One benign
+finding (favicon 404) and one known limitation carried to R6
+(window.open cannot carry the Authorization header for view/export
+under auth -- the old console has the same limit; needs cookie or
+signed-URL design, not a quick fix).
+
+Instrument catches this round: the r245 audit guard re-anchored (the
+owner-scoping refactor grew its anchor line) and re-verified. Seven
+route tests + the earlier five UI tests; suite 1853/18 green after
+re-anchoring. WEBUI_PLAN.md updated: R1-R5 checked, R6 lists the
+explicit remainder (favicon, auth'd links, a11y pass, console fate,
+personal-skills flow, memory bodies, benchmark display).
+
+### 8gl — the web UI coverage matrix closes (round 249: R6)
+
+The remainder, each with its design decision stated:
+
+* **favicon**: inline data: SVG -- the CSP's img-src already allows
+  data:, so the fix adds no surface.
+* **authorized view/export**: window.open cannot carry the
+  Authorization header and the token must not ride a URL (history,
+  logs -- the same reason the stream token rides a query param on the
+  stream and nowhere else). Fetch with the header, open the bytes as a
+  same-process blob document: the server sees an authenticated
+  request, the address bar never sees the token. No server change.
+* **personal-skills flow**: Capture draft -> review the returned
+  preview -> Commit with the digest passed back verbatim -- what was
+  reviewed is what publishes, the same what-you-audited-is-what-runs
+  rule as skill serve-time verification (r239).
+* **memory bodies**: GET /sessions/{id}/memory/{name}. Safe because
+  the store masks at the write AND runtime_facts already feeds these
+  bodies into the owner's own requests -- the reader sees what their
+  model sees, not a new disclosure.
+* **benchmark display**: a Benchmark pane over POST /benchmark, which
+  runs the FAKE pairing in process. Deliberately fake-only: a button
+  that spends model budget is not a button this server grows; real
+  runs stay in the terminal where spending is explicit. Rate-limited
+  like the other expensive routes.
+* **a11y/mobile**: focus-visible on every interactive element,
+  prefers-reduced-motion, a stacked mobile breakpoint.
+* **console fate**: `/` stays as the single-session dev console,
+  cross-linked with /ui both ways.
+
+Second Playwright pass over the new panes: zero console errors
+(favicon included), benchmark pane renders the parity verdict with its
+fake-transport note, skills pane shows the real catalogue plus the
+capture form. Two more route tests (memory body owner-scoping incl.
+stranger-404; benchmark fake-only parity). Suite 1856/18.
+
+WEBUI_PLAN.md: all six rounds checked, matrix closed -- further UI
+work is feedback-driven, not queue-driven. The goal's standing loop
+can retire or refocus at the operator's word.
+
+### 8gm — R7: the completion re-check found real gaps (round 250)
+
+Declaring the matrix closed (r249) and then re-reading the goal --
+"覆盖我们所有的功能" -- against the module list found tool-carried
+state with no UI reader: the task board, the session goal and its
+round budget, plan mode, and team inboxes. The first three are pure
+reads and shipped this round: GET /sessions/{id}/tasks (a fresh
+read-only TaskStore over the same directory -- the board is
+file-backed by design, so the view mutates nothing), GET
+/sessions/{id}/goal (objective/phase/rounds + goal_armed + plan_mode),
+a Tasks tab with status badges and blocked-by chains, and head badges
+for goal (red when blocked) and plan mode, refreshed at turn end.
+
+The fourth was deliberately NOT shipped, and that is the round's most
+valuable find: `MessageBus.read()` is a CONSUMING read -- it drains
+the inbox it reads -- so a UI polling it would eat the agent's
+messages. The probe caught a destructive read masquerading as a view;
+the plan now records that a teams pane needs a non-consuming peek API
+(with its delivery-semantics design) first. A completion claim
+re-checked against the inventory beats a completion claim, which is
+the round-229/231 lesson pointed at my own plan document.
+
+Two routes, two tests, the UI wiring census extended to every stem
+the client calls. Suite 1858/18.
+
+### 8gn — the team pane, and the peek that makes it safe (round 251)
+
+The matrix's last deferred item. The blocker was real: MessageBus.read
+drains the inbox it reads because the drain IS the delivery contract --
+the injector consumes precisely because delivery happened. A UI pane
+polling read() would deliver the agent's messages to nobody.
+
+MessageBus.peek: same tail-bounded load, same MAX_INBOX cap, backing
+file untouched, nothing cleared, malformed-line reporting left to
+read() (one owner per report). manager.peek_team_inbox is the only
+channel the route uses, and the mutation guard pins the contract by
+inserting read()'s own unlink into peek -- the exact one-line "fix" a
+tidy refactor would make -- and watching the delivery test fail.
+
+One design fact surfaced by the tests: every session is created as a
+one-member team (team_id = its own id, name "lead"), so "no team" does
+not exist in the default assembly; the pane shows that identity
+honestly instead of a fabricated teamless state.
+
+Two tests, one guard. Guards 358 -> 359. Suite 1860/18. WEBUI_PLAN.md: the matrix is closed with zero
+deferred items -- every function surface has a UI carrier; workflows
+stays out by the consume-existing-APIs principle until it grows an
+HTTP surface. The hourly loop has nothing left to build; recommending
+retirement to the operator.

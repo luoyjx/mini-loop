@@ -3262,8 +3262,11 @@ MUTATIONS = [
     ),
     Mutation(
         "self-audit-reads-no-ledgers", 245, "mini_loop/self_audit.py",
+        # Re-anchored in round 248 when the sources call grew owner scoping.
         '        problem_lines: list[str] = []\n'
-        '        for name, log in _problem_sources(manager):',
+        '        for name, log in _problem_sources(\n'
+        '            manager, sessions, include_global=include_global,\n'
+        '        ):',
         '        problem_lines: list[str] = []\n'
         '        for name, log in []:',
         "tests/test_self_audit.py::test_problems_and_activity_reach_the_report",
@@ -3304,6 +3307,37 @@ MUTATIONS = [
         "self-modification runs only in a git checkout: unreviewable, "
         "unrevertible 'improvement' of a plain workspace is just a "
         "mutation, and the human gate has nothing to review",
+    ),
+    Mutation(
+        "webui-ships-without-its-script", 247, "mini_loop/webui/__init__.py",
+        '    return html.replace("/*CSS*/", css, 1).replace("/*JS*/", js, 1)',
+        '    return html.replace("/*CSS*/", css, 1).replace("/*JS*/", "", 1)',
+        "tests/test_webui.py::test_the_ui_renders_through_textcontent",
+        "the assembled page actually contains the application script; "
+        "without it /ui serves a dead shell that looks healthy in a "
+        "status-code smoke test",
+    ),
+    Mutation(
+        "team-peek-consumes-the-inbox", 250, "mini_loop/teams.py",
+        '            text, _truncated = self._read_tail(path)\n'
+        '            messages = []\n'
+        '            for line in text.splitlines():\n'
+        '                try:\n'
+        '                    value = json.loads(line)\n'
+        '                except json.JSONDecodeError:\n'
+        '                    continue  # read() owns the malformed-line report',
+        '            text, _truncated = self._read_tail(path)\n'
+        '            path.unlink(missing_ok=True)\n'
+        '            messages = []\n'
+        '            for line in text.splitlines():\n'
+        '                try:\n'
+        '                    value = json.loads(line)\n'
+        '                except json.JSONDecodeError:\n'
+        '                    continue  # read() owns the malformed-line report',
+        "tests/test_webui_routes.py::test_the_team_pane_peeks_without_consuming",
+        "peek is non-consuming by contract: a viewer that drains the mailbox "
+        "delivers the agent's messages to nobody -- the destructive read the "
+        "round-250 probe blocked the UI pane on",
     ),
     Mutation(
         "activity-hides-awaiting-approval", 232, "mini_loop/session.py",

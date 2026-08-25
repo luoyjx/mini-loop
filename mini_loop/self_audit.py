@@ -31,21 +31,29 @@ MAX_SESSIONS_SCANNED = 100
 MAX_TRAJECTORIES_SCANNED = 50
 
 
-def _problem_sources(manager: Any) -> list[tuple[str, Any]]:
-    """Every ProblemLog the runtime holds, named. Missing seams are skipped."""
+def _problem_sources(
+    manager: Any, sessions: list[Any], *, include_global: bool = True
+) -> list[tuple[str, Any]]:
+    """Every ProblemLog the runtime holds, named. Missing seams are skipped.
+
+    `include_global=False` keeps manager-wide subsystem ledgers out: on an
+    authenticated deployment they carry cross-tenant operational metadata,
+    and an owner-scoped report must not become the side channel.
+    """
 
     sources: list[tuple[str, Any]] = []
-    for name, holder in (
-        ("cron", getattr(manager, "cron", None)),
-        ("trajectories", getattr(manager, "trajectories", None)),
-        ("approvals", getattr(manager, "approvals", None)),
-        ("skills", getattr(manager, "skills", None)),
-        ("actions", getattr(manager, "actions", None)),
-    ):
-        log = getattr(holder, "problems", None)
-        if log is not None:
-            sources.append((name, log))
-    for session in _recent_sessions(manager):
+    if include_global:
+        for name, holder in (
+            ("cron", getattr(manager, "cron", None)),
+            ("trajectories", getattr(manager, "trajectories", None)),
+            ("approvals", getattr(manager, "approvals", None)),
+            ("skills", getattr(manager, "skills", None)),
+            ("actions", getattr(manager, "actions", None)),
+        ):
+            log = getattr(holder, "problems", None)
+            if log is not None:
+                sources.append((name, log))
+    for session in sessions:
         agent = getattr(session, "agent", None)
         if agent is None:
             continue
@@ -61,8 +69,12 @@ def _problem_sources(manager: Any) -> list[tuple[str, Any]]:
     return sources
 
 
-def _recent_sessions(manager: Any) -> list[Any]:
+def _recent_sessions(manager: Any, *, owner: str | None = None) -> list[Any]:
     sessions = list(getattr(manager, "list", lambda: [])())
+    if owner is not None:
+        sessions = [
+            s for s in sessions if getattr(s, "owner", "anonymous") == owner
+        ]
     sessions.sort(key=lambda s: getattr(s, "created_at", 0), reverse=True)
     return sessions[:MAX_SESSIONS_SCANNED]
 
@@ -71,15 +83,42 @@ def _section(title: str, lines: list[str]) -> list[str]:
     return [f"## {title}", *(lines or ["(nothing)"]), ""]
 
 
-def build_report(manager: Any) -> str:
-    """One bounded self-audit: problems, activity, trajectory trends."""
+def _scoped_summaries(manager: Any, owner: str | None) -> list[dict]:
+    """Recent trajectory summaries, respecting the owner scope."""
+
+    store = getattr(manager, "trajectories", None)
+    if store is None:
+        return []
+    if owner is None:
+        return store.list(limit=MAX_TRAJECTORIES_SCANNED)
+    summaries: list[dict] = []
+    for session in _recent_sessions(manager, owner=owner)[:20]:
+        summaries += store.list(session_id=session.id, limit=10)
+        if len(summaries) >= MAX_TRAJECTORIES_SCANNED:
+            break
+    return summaries[:MAX_TRAJECTORIES_SCANNED]
+
+
+def build_report(
+    manager: Any, *, owner: str | None = None, include_global: bool = True
+) -> str:
+    """One bounded self-audit: problems, activity, trajectory trends.
+
+    `owner` narrows every session-derived section to that owner's sessions;
+    `include_global=False` drops the manager-wide subsystem ledgers and the
+    cron overview. The HTTP route pairs them so an authenticated caller
+    reads their own runtime, never the fleet's.
+    """
 
     out: list[str] = ["# self-audit"]
 
     # -- sessions and what they are doing right now ------------------------
     try:
-        sessions = _recent_sessions(manager)
-        total = len(getattr(manager, "list", lambda: [])())
+        sessions = _recent_sessions(manager, owner=owner)
+        total = (
+            len(getattr(manager, "list", lambda: [])())
+            if owner is None else len(sessions)
+        )
         distribution: dict[str, int] = {}
         for session in sessions:
             try:
@@ -100,7 +139,9 @@ def build_report(manager: Any) -> str:
     # -- every subsystem's own problem ledger ------------------------------
     try:
         problem_lines: list[str] = []
-        for name, log in _problem_sources(manager):
+        for name, log in _problem_sources(
+            manager, sessions, include_global=include_global,
+        ):
             try:
                 summary = list(log.summary()) if hasattr(log, "summary") else list(log)
                 if not summary:
@@ -123,7 +164,7 @@ def build_report(manager: Any) -> str:
         if store is None:
             out += _section("trajectories", ["(recording disabled)"])
         else:
-            summaries = store.list(limit=MAX_TRAJECTORIES_SCANNED)
+            summaries = _scoped_summaries(manager, owner)
             by_status: dict[str, int] = {}
             durations: list[tuple[float, str]] = []
             for summary in summaries:
@@ -151,7 +192,7 @@ def build_report(manager: Any) -> str:
         store = getattr(manager, "trajectories", None)
         if store is not None and hasattr(store, "iter_events"):
             usage: dict[str, dict[str, int]] = {}
-            for summary in store.list(limit=MAX_TRAJECTORIES_SCANNED):
+            for summary in _scoped_summaries(manager, owner):
                 outcome = str(summary.get("status", "unknown"))
                 rough = "bad" if outcome in ("error", "interrupted") else "ok"
                 for event in store.iter_events(
@@ -179,6 +220,11 @@ def build_report(manager: Any) -> str:
         out += _section("skill usage", [f"unreadable: {type(error).__name__}"])
 
     # -- scheduled work and its authorization state ------------------------
+    if not include_global:
+        report = "\n".join(out).rstrip()
+        if len(report) > MAX_REPORT_CHARS:
+            report = report[:MAX_REPORT_CHARS] + "\n[report truncated at the cap]"
+        return report
     try:
         cron = getattr(manager, "cron", None)
         jobs = dict(getattr(cron, "jobs", {}) or {})

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mini-loop</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230d1117'/%3E%3Ccircle cx='8' cy='8' r='4' fill='none' stroke='%2358a6ff' stroke-width='2'/%3E%3C/svg%3E">
+<style>/*CSS*/</style>
+</head>
+<body>
+<header id="topbar">
+ <strong>mini-loop</strong>
+ <a href="/" class="muted" id="console-link">classic console</a>
+ <span id="health" class="muted">connecting&hellip;</span>
+ <span class="spacer"></span>
+ <button id="audit-btn" type="button" class="sec">Self-audit</button>
+ <input id="token" type="password" placeholder="API token (optional)" autocomplete="off">
+</header>
+<main>
+ <aside id="rail">
+  <div class="rail-head">
+   <h2>Sessions</h2>
+   <button id="new-session" type="button">New</button>
+  </div>
+  <div class="new-form" id="new-form" hidden>
+   <label for="new-mode">Mode</label>
+   <select id="new-mode">
+    <option value="interactive">interactive</option>
+    <option value="auto">auto</option>
+    <option value="readonly">readonly</option>
+   </select>
+   <label for="new-system">System prompt (optional)</label>
+   <textarea id="new-system" rows="2"></textarea>
+   <div class="row">
+    <button id="create-confirm" type="button">Create</button>
+    <button id="create-cancel" type="button" class="sec">Cancel</button>
+   </div>
+  </div>
+  <ul id="session-list" aria-label="Sessions"></ul>
+ </aside>
+ <section id="workspace">
+  <div id="placeholder" class="empty">Select or create a session.</div>
+  <div id="session-view" hidden>
+   <div id="session-head">
+    <span id="sess-id" class="mono"></span>
+    <span id="sess-activity" class="badge"></span>
+    <span id="sess-goal" class="badge" hidden></span>
+    <span id="sess-plan" class="badge" hidden>plan mode</span>
+    <span class="spacer"></span>
+    <select id="mode-select" aria-label="Permission mode">
+     <option value="interactive">interactive</option>
+     <option value="auto">auto</option>
+     <option value="readonly">readonly</option>
+    </select>
+    <button id="fork-btn" type="button" class="sec">Fork</button>
+    <button id="cancel-btn" type="button" class="sec danger">Cancel turn</button>
+    <button id="delete-btn" type="button" class="sec danger">Delete</button>
+   </div>
+   <nav id="tabs">
+    <button data-tab="ledger" class="tab active" type="button">Ledger</button>
+    <button data-tab="tasks" class="tab" type="button">Tasks</button>
+    <button data-tab="team" class="tab" type="button">Team</button>
+    <button data-tab="trajectories" class="tab" type="button">Trajectories</button>
+    <button data-tab="transcript" class="tab" type="button">Transcript</button>
+    <button data-tab="cron" class="tab" type="button">Cron</button>
+    <button data-tab="skills" class="tab" type="button">Skills</button>
+    <button data-tab="memory" class="tab" type="button">Memory</button>
+    <button data-tab="improve" class="tab" type="button">Improve</button>
+    <button data-tab="benchmark" class="tab" type="button">Benchmark</button>
+   </nav>
+   <div id="approvals" hidden>
+    <h3>Waiting for your approval</h3>
+    <ul id="approval-list"></ul>
+   </div>
+   <div id="ledger" class="pane" role="log" aria-live="polite" aria-label="Turn ledger"></div>
+   <div id="tasks" class="pane" hidden>
+    <div class="pane-tools"><button id="tasks-refresh" type="button" class="sec">Refresh</button></div>
+    <ul id="task-list" class="rows"></ul>
+   </div>
+   <div id="team" class="pane" hidden>
+    <p class="muted">A non-consuming view: reading here never drains the
+     agent's inbox — delivery stays the injector's job.</p>
+    <div class="pane-tools"><button id="team-refresh" type="button" class="sec">Refresh</button></div>
+    <ul id="team-inbox" class="rows"></ul>
+   </div>
+   <div id="trajectories" class="pane" hidden>
+    <div class="pane-tools"><button id="traj-refresh" type="button" class="sec">Refresh</button></div>
+    <ul id="traj-list" class="rows"></ul>
+   </div>
+   <div id="transcript" class="pane" hidden>
+    <div class="pane-tools">
+     <label for="epoch-select" class="muted">Epoch</label>
+     <select id="epoch-select"></select>
+     <button id="transcript-refresh" type="button" class="sec">Refresh</button>
+    </div>
+    <div id="transcript-body" class="prose"></div>
+   </div>
+   <div id="cron" class="pane" hidden>
+    <div class="pane-tools">
+     <input id="cron-expr" placeholder="*/5 * * * *">
+     <input id="cron-prompt" placeholder="prompt to fire">
+     <button id="cron-add" type="button">Schedule</button>
+    </div>
+    <ul id="cron-list" class="rows"></ul>
+   </div>
+   <div id="skills" class="pane" hidden>
+    <div class="pane-tools">
+     <input id="ps-name" placeholder="skill-name (kebab-case)">
+     <input id="ps-focus" placeholder="focus (optional)">
+     <button id="ps-preview" type="button" class="sec">Capture draft</button>
+    </div>
+    <div id="ps-draft" class="prose"></div>
+    <div class="pane-tools"><button id="ps-commit" type="button" hidden>Commit this draft</button></div>
+    <div id="skills-catalogue" class="prose"></div>
+   </div>
+   <div id="memory" class="pane" hidden>
+    <ul id="memory-list" class="rows"></ul>
+    <div id="memory-body" class="prose"></div>
+   </div>
+   <div id="improve" class="pane" hidden>
+    <p class="muted">Runs the verified improvement loop in this session's
+     workspace (must be a git checkout). The proposal lands on the isolated
+     branch; merging stays yours.</p>
+    <label for="improve-objective">Objective</label>
+    <textarea id="improve-objective" rows="2"></textarea>
+    <label for="improve-accept">Acceptance command</label>
+    <input id="improve-accept" placeholder="pytest -q tests/">
+    <div class="pane-tools"><button id="improve-run" type="button">Propose</button></div>
+    <div id="improve-result" class="prose"></div>
+   </div>
+   <div id="benchmark" class="pane" hidden>
+    <p class="muted">Runs the paired benchmark on the fake transport — it
+     exercises the instrument, not the model. Real runs stay in the terminal
+     (tools/paired_benchmark.py), where spending model budget is explicit.</p>
+    <div class="pane-tools"><button id="bench-run" type="button">Run fake pairing</button></div>
+    <div id="bench-result" class="prose"></div>
+   </div>
+   <div id="audit-pane" class="pane prose" hidden></div>
+   <div id="composer">
+    <textarea id="msg" rows="3" placeholder="Message the agent (busy sessions are steered)"></textarea>
+    <button id="send-btn" type="button">Send</button>
+   </div>
+  </div>
+ </section>
+</main>
+<script>/*JS*/</script>
+</body>
+</html>

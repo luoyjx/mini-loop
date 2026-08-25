@@ -43,6 +43,7 @@ import asyncio
 import contextlib
 import json
 import time
+from pathlib import Path
 from contextlib import asynccontextmanager
 from collections.abc import Callable
 from typing import Literal
@@ -80,6 +81,19 @@ class ApprovalReq(BaseModel):
     decision: Literal["allow", "deny"]
     #: For kind="question" pendings: the reply text. Ignored for approvals.
     answer: str | None = None
+
+
+class CronReq(BaseModel):
+    cron: str = Field(min_length=1, max_length=100)
+    prompt: str = Field(min_length=1)
+    recurring: bool = True
+    durable: bool = True
+
+
+class ImprovementReq(BaseModel):
+    objective: str = Field(min_length=1, max_length=4_000)
+    acceptance_command: str = Field(min_length=1, max_length=1_000)
+    max_rounds: int = Field(default=3, ge=1, le=10)
 
 
 class PersonalSkillPreviewReq(BaseModel):
@@ -690,6 +704,217 @@ def _register_routes(app: FastAPI) -> None:
         stopped = await session.cancel("cancelled over HTTP")
         return {"session": session_id, "cancelled": stopped, "info": session.info()}
 
+    @app.get("/sessions/{session_id}/cron")
+    async def list_cron(request: Request, session_id: str):
+        """This session's scheduled jobs, structured, with their arm state."""
+        session = _require(request, session_id)
+        scheduler = _manager(request).cron
+        return {"session": session_id, "jobs": [
+            {"id": job.id, "cron": job.cron, "prompt": job.prompt,
+             "recurring": job.recurring, "durable": job.durable,
+             "last_fired": job.last_fired, "armed": scheduler.armed(job.id)}
+            for job in scheduler.jobs.values()
+            if job.session_id == session.id
+        ]}
+
+    @app.post("/sessions/{session_id}/cron")
+    async def schedule_cron(request: Request, session_id: str, req: CronReq):
+        """Schedule a job for this session. Scheduling over authenticated
+        HTTP is the human authorization edge, so the job is armed exactly
+        like one scheduled from inside the process."""
+        session = _require(request, session_id)
+        result = _manager(request).cron.schedule(
+            session.id, req.cron, req.prompt,
+            recurring=req.recurring, durable=req.durable,
+        )
+        if result.startswith("Error"):
+            raise HTTPException(status_code=400, detail=result)
+        return {"session": session_id, "result": result}
+
+    @app.delete("/sessions/{session_id}/cron/{job_id}")
+    async def cancel_cron(request: Request, session_id: str, job_id: str):
+        session = _require(request, session_id)
+        result = _manager(request).cron.cancel(job_id, session_id=session.id)
+        if result.startswith("No cron"):
+            raise HTTPException(status_code=404, detail=result)
+        return {"session": session_id, "result": result}
+
+    @app.get("/self-audit")
+    async def self_audit_report(request: Request):
+        """The runtime's self-observation report (self_audit.py).
+
+        Owner-scoped under authentication: the caller sees their own
+        sessions' activity, ledgers, trajectories and skill usage. The
+        manager-wide subsystem ledgers are included only when auth is not
+        configured -- on an open single-user deployment the caller IS the
+        operator; on an authenticated one, cross-tenant operational
+        metadata stays out of tenant responses.
+        """
+        from .self_audit import build_report
+
+        caller = _principal(request)
+        configured = _auth(request).configured
+        return Response(
+            build_report(
+                _manager(request),
+                owner=caller.id if configured else None,
+                include_global=not configured,
+            ),
+            media_type="text/plain; charset=utf-8",
+        )
+
+    @app.get("/sessions/{session_id}/skills")
+    async def session_skills(request: Request, session_id: str):
+        """The layered skill catalogue exactly as this session's model sees it."""
+        session = _require(request, session_id)
+        loader = getattr(session.agent, "skills", None)
+        catalogue = loader.descriptions() if loader is not None else ""
+        return {"session": session_id, "catalogue": catalogue}
+
+    @app.get("/sessions/{session_id}/memory")
+    async def session_memory(request: Request, session_id: str):
+        """This session owner's memories: names and descriptions, not bodies."""
+        from .memory import memory_store_for
+
+        session = _require(request, session_id)
+        records = memory_store_for(session.agent).list()
+        return {"session": session_id, "memories": [
+            {"name": record.get("name"), "type": record.get("type"),
+             "description": record.get("description"),
+             "origin": record.get("origin")}
+            for record in records
+        ]}
+
+    @app.get("/sessions/{session_id}/tasks")
+    async def session_tasks(request: Request, session_id: str):
+        """The session workspace's task board, structured.
+
+        Read through a fresh TaskStore over the same directory: the board is
+        file-backed by design (teammates share it through the filesystem),
+        so a read-only view needs no live store and mutates nothing.
+        """
+        from .tasks import TaskStore
+
+        session = _require(request, session_id)
+        board = await asyncio.to_thread(
+            lambda: TaskStore(session.workspace).list()
+        )
+        return {"session": session_id, "tasks": [
+            {"id": task.id, "subject": task.subject, "status": task.status,
+             "owner": task.owner, "blockedBy": task.blockedBy,
+             "worktree": task.worktree}
+            for task in board
+        ]}
+
+    @app.get("/sessions/{session_id}/goal")
+    async def session_goal(request: Request, session_id: str):
+        """The session's durable objective and soft-mode flags."""
+        from .goals import current_goal
+
+        session = _require(request, session_id)
+        agent = session.agent
+        return {"session": session_id,
+                "goal": current_goal(agent) if agent is not None else None,
+                "goal_armed": bool(agent.state.get("goal_armed")) if agent else False,
+                "plan_mode": bool(agent.state.get("plan_mode")) if agent else False}
+
+    @app.get("/sessions/{session_id}/team")
+    async def session_team(request: Request, session_id: str):
+        """This session's team identity and a non-consuming inbox view.
+
+        Served through MessageBus.peek: read()'s drain is the delivery
+        contract, so a viewer that used it would deliver the agent's
+        messages to nobody (round 250 blocked the pane on exactly that).
+        """
+        session = _require(request, session_id)
+        agent = session.agent
+        team_id = agent.state.get("team_id") if agent is not None else None
+        if not team_id:
+            return {"session": session_id, "team": None}
+        name = agent.state.get("agent_name", "lead")
+        inbox = _manager(request).peek_team_inbox(team_id, name)
+        return {"session": session_id, "team": team_id, "name": name,
+                "inbox": inbox[-50:]}
+
+    @app.get("/sessions/{session_id}/memory/{name}")
+    async def session_memory_body(request: Request, session_id: str, name: str):
+        """One memory's stored body, for its owner.
+
+        Safe to serve because the store masks at the write (memories are the
+        most durable disk sink here and the census classifies them RECORDED),
+        and because this body is already fed back into the owner's own
+        requests by runtime_facts -- the reader is seeing what their model
+        sees, not a new disclosure.
+        """
+        from .memory import memory_store_for
+
+        session = _require(request, session_id)
+        for record in memory_store_for(session.agent).list():
+            if record.get("name") == name:
+                return {"session": session_id, "name": name,
+                        "type": record.get("type"),
+                        "description": record.get("description"),
+                        "body": record.get("body", "")}
+        raise HTTPException(status_code=404, detail=f"No memory {name!r}")
+
+    @app.post("/benchmark")
+    async def run_benchmark(request: Request):
+        """Run the paired benchmark on the fake transport, in process.
+
+        Deliberately fake-only: this exists so the UI can exercise and
+        display the instrument. A real-endpoint run spends the operator's
+        model budget and stays a terminal act (tools/paired_benchmark.py) --
+        a button that spends money is not a button this server grows.
+        """
+        from .benchmark import DEFAULT_TASKS, compare, run_arm
+        from .fake_llm import FakeAsyncAnthropic
+
+        _enforce_rate_limit(request)
+        import tempfile
+
+        with tempfile.TemporaryDirectory(prefix="ui-bench-") as root:
+            base = Path(root)
+            settings_a = Settings(fake_llm=True, workspace_root=base / "a",
+                                  skills_dir=request.app.state.settings.skills_dir,
+                                  spill_dir=None)
+            settings_b = Settings(fake_llm=True, workspace_root=base / "b",
+                                  skills_dir=request.app.state.settings.skills_dir,
+                                  spill_dir=None)
+            baseline = await run_arm("baseline", settings_a,
+                                     FakeAsyncAnthropic(), DEFAULT_TASKS)
+            candidate = await run_arm("candidate", settings_b,
+                                      FakeAsyncAnthropic(), DEFAULT_TASKS)
+        return {"real": False, "baseline": baseline, "candidate": candidate,
+                "comparison": compare(baseline, candidate),
+                "note": ("fake transport: this exercises the instrument, not "
+                         "the model; real runs stay in the terminal "
+                         "(tools/paired_benchmark.py)")}
+
+    @app.post("/sessions/{session_id}/propose-improvement")
+    async def propose_improvement_route(request: Request, session_id: str,
+                                        req: ImprovementReq):
+        """Run the verified improvement loop in this session's workspace.
+
+        Everything self_improve.py refuses (non-git workspace, empty
+        acceptance command) comes back 400; a busy session is 409 like a
+        message would be. The proposal lands on the isolated branch --
+        merging stays a human act outside this API."""
+        from .self_improve import propose_improvement
+
+        session = _require(request, session_id)
+        if session.busy:
+            raise HTTPException(status_code=409,
+                                detail=f"session {session_id} is running a turn")
+        try:
+            proposal = await propose_improvement(
+                session, req.objective,
+                acceptance_command=req.acceptance_command,
+                max_rounds=req.max_rounds,
+            )
+        except ValueError as error:
+            raise HTTPException(status_code=400, detail=str(error)) from None
+        return proposal
+
     @app.post("/sessions/{session_id}/cron/{job_id}/arm")
     async def arm_cron(request: Request, session_id: str, job_id: str):
         """Re-authorize a cron job restored from disk.
@@ -1019,6 +1244,15 @@ def _register_routes(app: FastAPI) -> None:
     async def console():
         return CONSOLE_HTML
 
+    @app.get("/ui", response_class=HTMLResponse)
+    async def web_ui():
+        """The full web UI (docs/WEBUI_PLAN.md): separate sources under
+        mini_loop/webui/, assembled into one self-contained inline page so
+        the CSP and the no-static-mount posture stay exactly as they are."""
+        from .webui import render_page
+
+        return render_page()
+
 
 # Default fleet (used by `python -m mini_loop` and `uvicorn mini_loop.server:app`).
 app = create_app()
@@ -1092,7 +1326,7 @@ CONSOLE_HTML = """<!doctype html>
 </style>
 </head>
 <body>
-<header><strong>mini-loop</strong> <span>&mdash; concurrent agent console with live event telemetry</span></header>
+<header><strong>mini-loop</strong> <span>&mdash; concurrent agent console with live event telemetry</span> <a href="/ui" style="color:#58a6ff;text-decoration:none;float:right">full web UI &rarr;</a></header>
 <main>
  <section class="col controls" aria-labelledby="controls-title">
   <h2 id="controls-title">Run an agent</h2>
