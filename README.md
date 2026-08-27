@@ -62,6 +62,12 @@ Open <http://127.0.0.1:8000> in two tabs to watch isolated agents run in
 parallel. The browser console shows live events and recorded trajectories; the
 generated OpenAPI reference is at <http://127.0.0.1:8000/docs>.
 
+The conversation workspace is at <http://127.0.0.1:8000/ui>: a searchable session
+sidebar, light/dark themes, expandable tool records, and a session-tools panel
+for tasks, team, trajectories, transcript, cron, skills, memory, improvements,
+and the fake benchmark. It uses the same REST/SSE and approval boundaries as
+the classic console. See [Web UI design and verification](mini_loop/webui/README.md).
+
 For a real Anthropic-compatible provider:
 
 ```sh
@@ -252,9 +258,10 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: committed runtime `0310242` (hardening through round
-240), reviewed **2026-08-23**. The read-only Research Atlas projection does not
-change runtime topology.
+Runtime review baseline: committed runtime `72417ba` (Web UI R1–R7), reviewed
+**2026-08-27**. The conversation UI redesign and the read-only Research Atlas
+remain projections of existing APIs; neither changes runtime topology,
+authority, persistence, or feature enablement.
 
 <!-- architecture-map:start -->
 ```mermaid

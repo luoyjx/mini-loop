@@ -1,15 +1,135 @@
 "use strict";
-/* mini-loop web UI (R1: sessions, ledger, composer, approvals).
+/* mini-loop web UI: sessions, conversation, tool disclosures, inspector.
    Safety contract (test_webui.py): every dynamic value reaches the DOM
    through textContent; no markup-injecting sink; no external resources. */
 
 const $ = (id) => document.getElementById(id);
 
+// Static, locally drawn icons. Untrusted content never supplies SVG markup.
+const ICONS = {
+  loop: "M19 8a8 8 0 1 0 1 7M19 3v5h-5",
+  plus: "M12 5v14M5 12h14",
+  search: "M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0",
+  "panel-left": "M3 4h18v16H3zM9 4v16",
+  "panel-right": "M3 4h18v16H3zM15 4v16",
+  settings: "M4 7h16M4 17h16M8 4v6M16 14v6",
+  moon: "M20 15a8 8 0 0 1-11-11A8.5 8.5 0 1 0 20 15",
+  sun: "M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1 1M18 18l1 1M5 19l1-1M18 6l1-1",
+  more: "M5 12h.01M12 12h.01M19 12h.01",
+  branch: "M6 3v12a4 4 0 0 0 4 4h8M6 7h7a5 5 0 0 0 5-5M15 16l3 3-3 3",
+  stop: "M6 6h12v12H6z",
+  trash: "M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7",
+  close: "M6 6l12 12M6 18L18 6",
+  shield: "M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM9 12l2 2 4-4",
+  "arrow-up": "M12 19V5M6 11l6-6 6 6",
+  "arrow-right": "M5 12h14M13 6l6 6-6 6",
+  folder: "M3 6h7l2 3h9v11H3z",
+  code: "M8 6l-6 6 6 6M16 6l6 6-6 6M14 4l-4 16",
+  list: "M9 6h12M9 12h12M9 18h12M3 6h1M3 12h1M3 18h1",
+  terminal: "M4 6l6 6-6 6M13 18h7",
+};
+function icon(name) {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  for (const [key, value] of Object.entries({
+    viewBox: "0 0 24 24", fill: "none", stroke: "currentColor",
+    "stroke-width": "1.7", "stroke-linecap": "round", "stroke-linejoin": "round",
+    "aria-hidden": "true", focusable: "false", class: "icon",
+  })) svg.setAttribute(key, value);
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", ICONS[name] || ICONS.loop);
+  svg.append(path);
+  return svg;
+}
+for (const node of document.querySelectorAll("[data-icon]")) node.append(icon(node.dataset.icon));
+
+function readPreference(key) {
+  try { return localStorage.getItem(key) || ""; } catch (err) { return ""; }
+}
+function writePreference(key, value) {
+  try { localStorage.setItem(key, value); } catch (err) { /* usable without storage */ }
+}
+function setTheme(theme) {
+  const dark = theme === "dark";
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  $("theme-icon").replaceChildren(icon(dark ? "sun" : "moon"));
+  const label = "Switch to " + (dark ? "light" : "dark") + " theme";
+  $("theme-toggle").setAttribute("aria-label", label);
+  $("theme-toggle").title = label;
+}
+$("theme-toggle").addEventListener("click", () => {
+  const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  setTheme(theme);
+  writePreference("miniloop_theme", theme);
+});
+
+const mobileViewport = window.matchMedia("(max-width: 760px)");
+const overlayViewport = window.matchMedia("(max-width: 1200px)");
+function syncOverlayAccess() {
+  const overlay = overlayViewport.matches && !$("inspector").hidden;
+  $("conversation").inert = overlay;
+  $("inspector").setAttribute("role", overlay ? "dialog" : "complementary");
+  if (overlay) $("inspector").setAttribute("aria-modal", "true");
+  else $("inspector").removeAttribute("aria-modal");
+}
+function setSidebarOpen(open, focus) {
+  document.body.dataset.sidebarOpen = String(open);
+  $("rail").hidden = !open;
+  $("sidebar-toggle").setAttribute("aria-expanded", String(open));
+  $("sidebar-backdrop").hidden = !(mobileViewport.matches && open);
+  $("workspace").inert = mobileViewport.matches && open;
+  if (focus) (open ? $("session-search") : $("sidebar-toggle")).focus();
+}
+$("sidebar-toggle").addEventListener("click", () => setSidebarOpen($("rail").hidden, true));
+$("rail-close").addEventListener("click", () => setSidebarOpen(false, true));
+$("sidebar-backdrop").addEventListener("click", () => setSidebarOpen(false, true));
+mobileViewport.addEventListener("change", () => setSidebarOpen(!mobileViewport.matches));
+overlayViewport.addEventListener("change", syncOverlayAccess);
+$("settings-btn").addEventListener("click", () => $("settings-dialog").showModal());
+$("settings-close").addEventListener("click", () => $("settings-dialog").close());
+$("notice-dismiss").addEventListener("click", () => { $("ui-notice").hidden = true; });
+document.addEventListener("keydown", (event) => {
+  const dialog = document.querySelector("dialog[open]");
+  if (dialog) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      dialog.close();
+    }
+    return;
+  }
+  if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
+    event.preventDefault();
+    showPane("ledger");
+    setSidebarOpen(true, true);
+  }
+  if (event.key === "Escape") {
+    if (mobileViewport.matches && !$("rail").hidden) setSidebarOpen(false, true);
+    else if (!$("inspector").hidden) closeInspector();
+    else $("session-actions").open = false;
+  }
+  // An overlay must not leave keyboard focus on the covered conversation.
+  const overlay = mobileViewport.matches && !$("rail").hidden ? $("rail")
+    : (overlayViewport.matches && !$("inspector").hidden ? $("inspector") : null);
+  if (event.key === "Tab" && overlay) {
+    const controls = Array.from(overlay.querySelectorAll("button, input, select, textarea, a[href], summary"))
+      .filter((node) => !node.disabled && node.getClientRects().length);
+    const first = controls[0], last = controls[controls.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !overlay.contains(document.activeElement))) {
+      event.preventDefault(); last?.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !overlay.contains(document.activeElement))) {
+      event.preventDefault(); first?.focus();
+    }
+  }
+});
+
 // ---- auth ---------------------------------------------------------------
 const tokenInput = $("token");
-tokenInput.value = localStorage.getItem("miniloop_token") || "";
+tokenInput.value = readPreference("miniloop_token");
 tokenInput.addEventListener("change", () => {
-  localStorage.setItem("miniloop_token", tokenInput.value.trim());
+  writePreference("miniloop_token", tokenInput.value.trim());
+  clearSession();
+  sessionsCache = [];
+  renderSessions();
+  loadHealth();
   loadSessions();
 });
 function authHeaders(extra) {
@@ -46,89 +166,186 @@ function el(tag, cls, text) {
 async function loadHealth() {
   try {
     const h = await api("/healthz");
-    $("health").textContent =
-      h.model + (h.fake_llm ? " (fake)" : "") +
-      " · " + (h.authenticated ? "authenticated" : "open") +
-      " · " + h.sessions + " session(s)";
+    $("health").textContent = (h.fake_llm ? "Fake model · " : "Connected · ") +
+      (h.authenticated ? "Authenticated" : "Open server");
+    $("health").title = h.model + " · " + h.sessions + " session(s)";
+    $("connection-dot").dataset.a = "idle";
+    $("composer-model").textContent = h.model + (h.fake_llm ? " (fake)" : "");
+    $("composer-model").title = $("composer-model").textContent;
   } catch (err) {
     $("health").textContent = "health: " + err.message;
+    $("connection-dot").dataset.a = "error";
   }
 }
 
 // ---- session rail -------------------------------------------------------
 let currentSid = null;
+let sessionsCache = [];
+let sessionsRenderKey = "";
+let creatingSession = false;
+let selectionVersion = 0;
+function activityLabel(activity) {
+  const label = String(activity || "idle").replaceAll("_", " ");
+  return label.charAt(0).toUpperCase() + label.slice(1);
+}
 async function loadSessions() {
-  let sessions = [];
+  const credential = tokenInput.value.trim();
+  let sessions;
   try { sessions = await api("/sessions?limit=100"); }
   catch (err) { $("health").textContent = "sessions: " + err.message; return; }
-  const list = $("session-list");
-  list.textContent = "";
-  for (const s of sessions) {
-    const item = el("li");
-    item.dataset.sid = s.id;
-    if (s.id === currentSid) item.className = "active";
-    const sid = el("span", "sid", s.id);
-    const badge = el("span", "badge", s.activity || s.status);
-    badge.dataset.a = s.activity || s.status;
-    item.append(sid, badge);
-    item.addEventListener("click", () => selectSession(s.id));
-    list.append(item);
-    if (s.id === currentSid) {
-      $("sess-activity").textContent = s.activity || s.status;
-      $("sess-activity").dataset.a = s.activity || s.status;
-    }
+  if (credential !== tokenInput.value.trim()) return;
+  sessionsCache = sessions;
+  renderSessions();
+  const selected = sessions.find((s) => s.id === currentSid);
+  if (selected) {
+    $("sess-activity").textContent = activityLabel(selected.activity || selected.status);
+    $("sess-activity").dataset.a = selected.activity || selected.status;
+    $("cancel-btn").disabled = !selected.busy;
   }
 }
+function renderSessions() {
+  const query = $("session-search").value.trim().toLowerCase();
+  const key = JSON.stringify([currentSid, query, sessionsCache.map((s) =>
+    [s.id, s.activity, s.status, s.run_count, s.permission_mode, s.workspace])]);
+  if (key === sessionsRenderKey) return;
+  sessionsRenderKey = key;
+  const list = $("session-list");
+  const focusedSid = list.contains(document.activeElement) ? document.activeElement.dataset.sid : null;
+  list.textContent = "";
+  $("session-count").textContent = String(sessionsCache.length);
+  for (const s of sessionsCache) {
+    if (query && !(s.id + " " + (s.workspace || "")).toLowerCase().includes(query)) continue;
+    const item = el("li");
+    const button = el("button", "session-button");
+    button.type = "button";
+    button.dataset.sid = s.id;
+    button.title = s.id + (s.workspace ? "\n" + s.workspace : "");
+    button.setAttribute("aria-current", String(s.id === currentSid));
+    const copy = el("span", "session-copy");
+    const title = el("span", "session-title", "Session " + s.id.slice(0, 8));
+    const activity = s.activity || s.status;
+    const count = s.run_count || 0;
+    copy.append(title, el("span", "session-meta",
+      activityLabel(activity) + " · " + count + (count === 1 ? " turn" : " turns")));
+    const dot = el("span", "status-dot");
+    dot.dataset.a = activity;
+    dot.setAttribute("aria-hidden", "true");
+    button.append(copy, dot);
+    button.addEventListener("click", () => selectSession(s.id));
+    item.append(button);
+    list.append(item);
+    if (s.id === focusedSid) button.focus({ preventScroll: true });
+  }
+  if (!list.childNodes.length) list.append(el("li", "session-empty",
+    query ? "No matching sessions." : "Your sessions will appear here."));
+}
+$("session-search").addEventListener("input", renderSessions);
 
-$("new-session").addEventListener("click", () => { $("new-form").hidden = false; });
-$("create-cancel").addEventListener("click", () => { $("new-form").hidden = true; });
-$("create-confirm").addEventListener("click", async () => {
+$("new-session").addEventListener("click", () => {
+  $("create-error").hidden = true;
+  $("new-form").showModal();
+});
+$("create-cancel").addEventListener("click", () => $("new-form").close());
+async function createSession(mode, system) {
+  if (creatingSession) return null;
+  creatingSession = true;
+  $("create-confirm").disabled = true;
+  $("new-session").disabled = true;
+  updateComposer();
+  const version = selectionVersion;
   try {
-    const body = { mode: $("new-mode").value };
-    const system = $("new-system").value.trim();
+    const body = { mode };
     if (system) body.system = system;
     const created = await api("/sessions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    $("new-form").hidden = true;
+    if (version === selectionVersion) await selectSession(created.id);
+    return created.id;
+  } finally {
+    creatingSession = false;
+    $("create-confirm").disabled = false;
+    $("new-session").disabled = false;
+    updateComposer();
+  }
+}
+$("create-confirm").addEventListener("click", async () => {
+  try {
+    await createSession($("new-mode").value, $("new-system").value.trim());
+    $("new-form").close();
     $("new-system").value = "";
-    await loadSessions();
-    selectSession(created.id);
-  } catch (err) { alertRow("create failed: " + err.message); }
+    $("msg").focus();
+  } catch (err) {
+    $("create-error").textContent = "Could not create session: " + err.message;
+    $("create-error").hidden = false;
+  }
 });
 
 // ---- ledger -------------------------------------------------------------
 let stream = null;
 const openSpans = new Map();   // span_id -> row state
-const streams = new Map();     // stream_id -> body element
+const streams = new Map();     // stream_id -> ephemeral row
 let requestNo = 0;
+let traceGroup = null;
+
+function diagnosticRow(event) {
+  if (!traceGroup) {
+    const row = el("details", "trace-group");
+    const summary = el("summary", "tool-summary");
+    const count = el("span", "dur");
+    summary.append(icon("list"), el("span", "label", "Run details"), count);
+    const body = el("div", "trace-events");
+    row.append(summary, body);
+    $("ledger").append(row);
+    traceGroup = { body, count, size: 0 };
+  }
+  const detail = el("details", "trace-event");
+  detail.append(el("summary", "", event.type), el("pre", "", JSON.stringify(event, null, 2)));
+  traceGroup.body.append(detail);
+  traceGroup.size += 1;
+  traceGroup.count.textContent = traceGroup.size + " events";
+}
 
 function ledgerRow(kind, glyph, label, content, depth) {
-  const row = el("div", "lrow");
+  const disclosure = kind === "tool" || kind === "model";
+  const row = el(disclosure ? "details" : "div", "lrow");
   row.dataset.kind = kind;
-  if (depth) {
+  const head = disclosure ? el("summary", "tool-summary") : row;
+  if (depth && !disclosure) {
     const pad = el("span", "depth-pad");
     pad.style.width = (depth * 18) + "px";
     row.append(pad);
   }
-  row.append(el("span", "glyph", glyph));
-  const body = el("span", "body");
-  if (label) body.append(el("span", "label", label));
-  const contentSpan = el("span", "content", content || "");
-  body.append(contentSpan);
-  row.append(body);
+  const mark = el("span", "glyph");
+  mark.setAttribute("aria-hidden", "true");
+  if (kind === "tool" || kind === "answer") mark.append(icon(kind === "tool" ? "terminal" : "loop"));
+  else mark.textContent = glyph;
+  head.append(mark);
   const dur = el("span", "dur", "");
-  row.append(dur);
+  const contentSpan = el(disclosure ? "pre" : "span", "content", content || "");
+  if (disclosure) {
+    head.append(el("span", "label", label), dur);
+    row.append(head, contentSpan);
+  } else {
+    const body = el("span", "body");
+    if (label) body.append(el("span", "label", label));
+    body.append(contentSpan);
+    row.append(body, dur);
+  }
+  const ledger = $("ledger");
+  const following = ledger.scrollHeight - ledger.scrollTop - ledger.clientHeight < 100;
   $("ledger").append(row);
-  $("ledger").scrollTop = $("ledger").scrollHeight;
+  if (following || kind === "user") ledger.scrollTop = ledger.scrollHeight;
   return { row, contentSpan, dur };
 }
 
 function alertRow(text) {
-  const r = ledgerRow("ref", "!", "ui", text, 0);
-  r.row.dataset.error = "1";
+  $("ui-notice-text").textContent = text;
+  $("ui-notice").hidden = false;
+  if (currentSid) {
+    const r = ledgerRow("ref", "!", "ui", text, 0);
+    r.row.dataset.error = "1";
+  }
 }
 
 function fmtDur(ms) {
@@ -140,6 +357,16 @@ function onEvent(event) {
   const depth = event.depth || 0;
   const type = event.type;
   if (type === "status" && event.detail === "session_created") return;
+  if (["trajectory_start", "trajectory_end", "status", "tool_catalog", "capability_plan", "system_prompt"].includes(type)) {
+    if (type === "trajectory_start") traceGroup = null;
+    diagnosticRow(event);
+    if (type === "status" && event.status) {
+      $("sess-activity").textContent = activityLabel(event.status);
+      $("sess-activity").dataset.a = event.status;
+      $("cancel-btn").disabled = event.status !== "running";
+    }
+    return;
+  }
   if (type === "model_start") {
     requestNo += 1;
     const r = ledgerRow("model", "#" + requestNo,
@@ -154,8 +381,9 @@ function onEvent(event) {
     const r = openSpans.get(event.span_id);
     if (!r) return;
     openSpans.delete(event.span_id);
+    r.row.dataset.state = "complete";
     r.dur.textContent = fmtDur(event.duration_ms);
-    if (event.error) { r.row.dataset.error = "1"; r.contentSpan.textContent = String(event.error); }
+    if (event.error) { r.row.dataset.error = "1"; r.row.open = true; r.contentSpan.textContent = String(event.error); }
     else if (event.served_model && event.served_model !== event.model) {
       r.contentSpan.textContent += " · served by " + event.served_model;
     }
@@ -164,6 +392,8 @@ function onEvent(event) {
   if (type === "tool_use") {
     const r = ledgerRow("tool", "⚙", event.name || "tool",
       JSON.stringify(event.input || {}), depth);
+    r.row.dataset.state = "requested";
+    r.dur.textContent = "Requested";
     if (event.span_id) openSpans.set(event.span_id, r);
     return;
   }
@@ -171,26 +401,34 @@ function onEvent(event) {
     const r = openSpans.get(event.span_id);
     if (!r) return;
     openSpans.delete(event.span_id);
+    r.row.dataset.state = "complete";
     r.dur.textContent = fmtDur(event.duration_ms);
-    if (event.denied || event.error) r.row.dataset.error = "1";
+    if (event.denied || event.error) { r.row.dataset.error = "1"; r.row.open = true; }
     const out = String(event.output || "");
     r.contentSpan.textContent += "\n→ " + (out.length > 400 ? out.slice(0, 400) + "…" : out);
     return;
   }
   if (type === "stream_start") {
-    const r = ledgerRow("answer", "…", "", "", depth);
-    streams.set(event.stream_id, r.contentSpan);
+    const r = ledgerRow("answer", "…", "mini-loop", "", depth);
+    streams.set(event.stream_id, r);
     return;
   }
   if (type === "assistant_delta") {
-    const span = streams.get(event.stream_id);
-    if (span) span.textContent += event.text || "";
+    const r = streams.get(event.stream_id);
+    if (r) {
+      const ledger = $("ledger");
+      const following = ledger.scrollHeight - ledger.scrollTop - ledger.clientHeight < 100;
+      r.contentSpan.textContent += event.text || "";
+      if (following) ledger.scrollTop = ledger.scrollHeight;
+    }
     return;
   }
   if (type === "assistant_text") {
-    for (const [sid2, span] of streams) { span.textContent = ""; streams.delete(sid2); }
+    for (const r of streams.values()) r.row.remove();
+    streams.clear();
     const kind = event.phase === "final_answer" ? "answer" : "ref";
-    ledgerRow(kind, kind === "answer" ? "✓" : "·", "assistant", event.text || "", depth);
+    const r = ledgerRow(kind, "·", "mini-loop", event.text || "", depth);
+    r.row.dataset.phase = event.phase || "commentary";
     return;
   }
   if (type === "subagent_start") {
@@ -205,9 +443,10 @@ function onEvent(event) {
     alertRow("delegation refused at depth " + event.child_depth);
     return;
   }
-  if (type === "approval_request" || type === "approval_resolved" ||
+  if (type === "approval_request" || type === "approval_required" || type === "approval_resolved" ||
       type === "approval_auto_reviewed") {
     refreshApprovals();
+    loadSessions();
     ledgerRow("ref", "⚑", type, event.tool || "", depth);
     return;
   }
@@ -218,6 +457,7 @@ function onEvent(event) {
   if (type === "turn_queued") { ledgerRow("ref", "…", "queued", "", depth); return; }
   if (type === "done") {
     ledgerRow("ref", "■", "turn done", "", depth);
+    traceGroup = null;
     loadSessions();
     loadGoal();
     return;
@@ -226,8 +466,7 @@ function onEvent(event) {
     alertRow(String(event.error || event.detail || "error"));
     return;
   }
-  if (type === "compact" || type === "tool_catalog" || type === "system_prompt" ||
-      type === "capability_plan" || type === "stuck") {
+  if (type === "compact" || type === "stuck") {
     ledgerRow("ref", "·", type, event.pattern || event.kind || "", depth);
     return;
   }
@@ -237,22 +476,27 @@ function onEvent(event) {
 
 function openStream(sid) {
   if (stream) { stream.close(); stream = null; }
-  openSpans.clear(); streams.clear(); requestNo = 0;
+  openSpans.clear(); streams.clear(); requestNo = 0; traceGroup = null;
   $("ledger").textContent = "";
   stream = new EventSource(
     "/sessions/" + encodeURIComponent(sid) + "/events?envelope=true" + tokenQuery());
   stream.addEventListener("agent_event", (message) => {
+    if (sid !== currentSid) return;
     try { onEvent(JSON.parse(message.data)); } catch (e) {}
   });
-  stream.onerror = () => { $("sess-activity").textContent = "reconnecting"; };
+  stream.onerror = () => {
+    if (sid === currentSid) $("sess-activity").textContent = "Reconnecting";
+  };
 }
 
 // ---- approvals ----------------------------------------------------------
 async function refreshApprovals() {
   if (!currentSid) return;
+  const sid = currentSid;
   let payload;
-  try { payload = await api("/sessions/" + encodeURIComponent(currentSid) + "/approvals"); }
+  try { payload = await api("/sessions/" + encodeURIComponent(sid) + "/approvals"); }
   catch (err) { return; }
+  if (sid !== currentSid) return;
   const approvals = payload.approvals || [];
   $("approvals").hidden = approvals.length === 0;
   const list = $("approval-list");
@@ -263,15 +507,18 @@ async function refreshApprovals() {
       (a.tool || "?") + " — " + (a.message || "") + " " + (a.input_preview || ""));
     const allow = el("button", "", "Allow");
     const deny = el("button", "sec danger", "Deny");
-    allow.addEventListener("click", () => resolveApproval(a.approval_id, "allow"));
-    deny.addEventListener("click", () => resolveApproval(a.approval_id, "deny"));
-    item.append(what, allow, deny);
+    allow.addEventListener("click", () => resolveApproval(a.approval_id, "allow", sid));
+    deny.addEventListener("click", () => resolveApproval(a.approval_id, "deny", sid));
+    const actions = el("div", "approval-actions");
+    actions.append(deny, allow);
+    item.append(what, actions);
     list.append(item);
   }
 }
-async function resolveApproval(approvalId, decision) {
+async function resolveApproval(approvalId, decision, sid) {
+  if (sid !== currentSid) return;
   try {
-    await api("/sessions/" + encodeURIComponent(currentSid) +
+    await api("/sessions/" + encodeURIComponent(sid) +
       "/approvals/" + encodeURIComponent(approvalId), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -282,11 +529,56 @@ async function resolveApproval(approvalId, decision) {
 }
 
 // ---- session selection & actions ---------------------------------------
+function clearSession() {
+  selectionVersion += 1;
+  currentSid = null;
+  if (stream) { stream.close(); stream = null; }
+  openSpans.clear(); streams.clear(); traceGroup = null;
+  $("ledger").textContent = "";
+  $("session-view").hidden = true;
+  $("placeholder").hidden = false;
+  $("suggestions").hidden = false;
+  $("conversation").classList.add("is-empty");
+  $("session-actions").hidden = true;
+  $("session-actions").open = false;
+  $("sess-activity").hidden = true;
+  $("sess-goal").hidden = true;
+  $("sess-plan").hidden = true;
+  $("approvals").hidden = true;
+  $("sess-id").textContent = "New session";
+  $("sess-id").title = "";
+  $("workspace-path").textContent = "New isolated workspace";
+  $("workspace-path").title = "";
+  $("mode-select").value = "interactive";
+  $("tools-btn").disabled = true;
+  $("msg").value = "";
+  pendingDraft = null;
+  showPane("ledger");
+  updateComposer();
+}
 async function selectSession(sid) {
+  selectionVersion += 1;
   currentSid = sid;
   $("placeholder").hidden = true;
+  $("suggestions").hidden = true;
+  $("conversation").classList.remove("is-empty");
   $("session-view").hidden = false;
-  $("sess-id").textContent = sid;
+  $("sess-id").textContent = "Session " + sid.slice(0, 8);
+  $("sess-id").title = sid;
+  $("sess-activity").hidden = false;
+  $("sess-activity").textContent = "Connecting";
+  $("session-actions").hidden = false;
+  $("session-actions").open = false;
+  $("tools-btn").disabled = false;
+  $("sess-goal").hidden = true;
+  $("sess-plan").hidden = true;
+  $("approvals").hidden = true;
+  $("epoch-select").textContent = "";
+  $("ps-draft").textContent = "";
+  $("ps-commit").hidden = true;
+  pendingDraft = null;
+  $("ui-notice").hidden = true;
+  if (mobileViewport.matches) setSidebarOpen(false);
   showPane("ledger");
   openStream(sid);
   loadGoal();
@@ -294,22 +586,31 @@ async function selectSession(sid) {
   loadSessions();
   try {
     const info = await api("/sessions/" + encodeURIComponent(sid));
+    if (sid !== currentSid) return;
     if (info.permission_mode) $("mode-select").value = info.permission_mode;
-  } catch (e) {}
+    const path = info.workspace || "";
+    $("workspace-path").textContent = path ? path.split(/[\\/]/).filter(Boolean).slice(-2).join("/") : "Isolated workspace";
+    $("workspace-path").title = path;
+  } catch (err) { if (sid === currentSid) alertRow("session: " + err.message); }
 }
 
 $("mode-select").addEventListener("change", async () => {
+  if (!currentSid) return; // This is the permission choice for the first message.
+  const sid = currentSid;
+  const mode = $("mode-select").value;
   try {
-    await api("/sessions/" + encodeURIComponent(currentSid) + "/mode", {
+    await api("/sessions/" + encodeURIComponent(sid) + "/mode", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mode: $("mode-select").value }),
+      body: JSON.stringify({ mode }),
     });
-    ledgerRow("ref", "·", "mode", $("mode-select").value, 0);
+    if (sid === currentSid) ledgerRow("ref", "·", "mode", mode, 0);
   } catch (err) { alertRow("mode change failed: " + err.message); }
 });
 
 $("fork-btn").addEventListener("click", async () => {
+  if (!currentSid) return;
+  $("session-actions").open = false;
   try {
     const child = await api("/sessions/" + encodeURIComponent(currentSid) + "/fork",
       { method: "POST" });
@@ -319,6 +620,8 @@ $("fork-btn").addEventListener("click", async () => {
 });
 
 $("cancel-btn").addEventListener("click", async () => {
+  if (!currentSid) return;
+  $("session-actions").open = false;
   try {
     await api("/sessions/" + encodeURIComponent(currentSid) + "/cancel",
       { method: "POST" });
@@ -327,14 +630,36 @@ $("cancel-btn").addEventListener("click", async () => {
 
 $("send-btn").addEventListener("click", sendMessage);
 $("msg").addEventListener("keydown", (keyEvent) => {
-  if (keyEvent.key === "Enter" && (keyEvent.metaKey || keyEvent.ctrlKey)) sendMessage();
+  if (!keyEvent.isComposing && keyEvent.key === "Enter" && (keyEvent.metaKey || keyEvent.ctrlKey)) {
+    keyEvent.preventDefault();
+    sendMessage();
+  }
 });
+function updateComposer() {
+  $("send-btn").disabled = creatingSession || !$("msg").value.trim();
+  $("msg").style.height = "auto";
+  $("msg").style.height = Math.min(220, Math.max(76, $("msg").scrollHeight)) + "px";
+}
+$("msg").addEventListener("input", updateComposer);
+for (const suggestion of document.querySelectorAll("[data-prompt]")) {
+  suggestion.addEventListener("click", () => {
+    $("msg").value = suggestion.dataset.prompt;
+    updateComposer();
+    $("msg").focus();
+  });
+}
 async function sendMessage() {
   const text = $("msg").value.trim();
-  if (!text || !currentSid) return;
-  $("msg").value = "";
-  ledgerRow("user", "›", "you", text, 0);
-  const sid = currentSid;
+  if (!text || creatingSession) return;
+  let sid = currentSid;
+  if (!sid) {
+    try { sid = await createSession($("mode-select").value); }
+    catch (err) { alertRow("create failed: " + err.message); return; }
+  }
+  if (!sid) return;
+  if ($("msg").value.trim() === text) $("msg").value = "";
+  updateComposer();
+  if (sid === currentSid) ledgerRow("user", "›", "you", text, 0);
   try {
     await api("/sessions/" + encodeURIComponent(sid) + "/messages", {
       method: "POST",
@@ -350,7 +675,7 @@ async function sendMessage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: text }),
         });
-        ledgerRow("ref", "»", "steered", "delivered to the running turn", 0);
+        if (sid === currentSid) ledgerRow("ref", "»", "steered", "delivered to the running turn", 0);
       } catch (steerErr) { alertRow("steer failed: " + steerErr.message); }
     } else {
       alertRow("send failed: " + err.message);
@@ -362,12 +687,29 @@ async function sendMessage() {
 // ---- tabs ---------------------------------------------------------------
 const PANES = ["ledger", "tasks", "team", "trajectories", "transcript",
                "cron", "skills", "memory", "improve", "benchmark"];
+const PANE_TITLES = { tasks: "Tasks", team: "Team inbox", trajectories: "Trajectories",
+  transcript: "Transcript", cron: "Scheduled prompts", skills: "Skills", memory: "Memory",
+  improve: "Propose an improvement", benchmark: "Benchmark", "audit-pane": "Self-audit" };
+let lastInspectorPane = "tasks";
 function showPane(name) {
-  for (const paneId of PANES.concat(["audit-pane"])) {
+  if (!PANES.includes(name) && name !== "audit-pane") return;
+  if (name !== "ledger" && name !== "audit-pane" && !currentSid) return;
+  const wasClosed = $("inspector").hidden;
+  for (const paneId of PANES.filter((id) => id !== "ledger").concat(["audit-pane"])) {
     $(paneId).hidden = paneId !== name;
   }
+  $("inspector").hidden = name === "ledger";
+  $("tools-btn").setAttribute("aria-expanded", String(name !== "ledger"));
+  $("tabs").hidden = !currentSid;
+  if (name !== "ledger") {
+    $("pane-title").textContent = PANE_TITLES[name];
+    if (name !== "audit-pane") lastInspectorPane = name;
+  }
+  syncOverlayAccess();
+  if (wasClosed && name !== "ledger") $("inspector-close").focus();
   for (const tab of document.querySelectorAll(".tab")) {
     tab.classList.toggle("active", tab.dataset.tab === name);
+    tab.setAttribute("aria-pressed", String(tab.dataset.tab === name));
   }
   if (name === "tasks") loadTasks();
   if (name === "team") loadTeam();
@@ -377,6 +719,12 @@ function showPane(name) {
   if (name === "skills") loadSkills();
   if (name === "memory") loadMemory();
 }
+function closeInspector() {
+  showPane("ledger");
+  ($("tools-btn").disabled ? $("msg") : $("tools-btn")).focus();
+}
+$("tools-btn").addEventListener("click", () => showPane($("inspector").hidden ? lastInspectorPane : "ledger"));
+$("inspector-close").addEventListener("click", closeInspector);
 for (const tab of document.querySelectorAll(".tab")) {
   tab.addEventListener("click", () => showPane(tab.dataset.tab));
 }
@@ -437,8 +785,10 @@ $("team-refresh").addEventListener("click", loadTeam);
 // ---- goal & plan mode (R7) ----------------------------------------------
 async function loadGoal() {
   if (!currentSid) return;
+  const sid = currentSid;
   try {
-    const payload = await api("/sessions/" + encodeURIComponent(currentSid) + "/goal");
+    const payload = await api("/sessions/" + encodeURIComponent(sid) + "/goal");
+    if (sid !== currentSid) return;
     const goalBadge = $("sess-goal");
     const goal = payload.goal;
     if (goal && goal.objective) {
@@ -598,15 +948,17 @@ let pendingDraft = null;
 $("ps-preview").addEventListener("click", async () => {
   const name = $("ps-name").value.trim();
   if (!name || !currentSid) return;
+  const sid = currentSid;
   $("ps-draft").textContent = "capturing…";
   $("ps-commit").hidden = true;
   try {
-    const draft = await api("/sessions/" + encodeURIComponent(currentSid) +
+    const draft = await api("/sessions/" + encodeURIComponent(sid) +
       "/personal-skills/preview", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, focus: $("ps-focus").value.trim() }),
     });
+    if (sid !== currentSid) return;
     pendingDraft = draft;
     $("ps-draft").textContent = JSON.stringify(draft, null, 1);
     $("ps-commit").hidden = !(draft.draft_id && draft.digest);
@@ -698,8 +1050,9 @@ $("improve-run").addEventListener("click", async () => {
 
 // ---- self-audit (global, R3) --------------------------------------------
 $("audit-btn").addEventListener("click", async () => {
-  if (currentSid) showPane("audit-pane");
-  else { $("placeholder").hidden = true; $("session-view").hidden = false; showPane("audit-pane"); }
+  $("settings-dialog").close();
+  if (mobileViewport.matches) setSidebarOpen(false);
+  showPane("audit-pane");
   const pane = $("audit-pane");
   pane.textContent = "loading…";
   try {
@@ -713,21 +1066,23 @@ $("audit-btn").addEventListener("click", async () => {
 // ---- delete (R2) --------------------------------------------------------
 $("delete-btn").addEventListener("click", async () => {
   if (!currentSid) return;
+  $("session-actions").open = false;
+  const sid = currentSid;
   const sure = window.confirm(
     "Delete session " + currentSid + "? The workspace is removed; recorded " +
     "trajectories are retained (the owner can still read them).");
   if (!sure) return;
   try {
-    await api("/sessions/" + encodeURIComponent(currentSid), { method: "DELETE" });
-    currentSid = null;
-    $("session-view").hidden = true;
-    $("placeholder").hidden = false;
-    if (stream) { stream.close(); stream = null; }
+    await api("/sessions/" + encodeURIComponent(sid), { method: "DELETE" });
+    if (sid === currentSid) clearSession();
   } catch (err) { alertRow("delete failed: " + err.message); }
   loadSessions();
 });
 
 // ---- boot ---------------------------------------------------------------
+setTheme(readPreference("miniloop_theme"));
+setSidebarOpen(!mobileViewport.matches);
+updateComposer();
 loadHealth();
 loadSessions();
 setInterval(loadSessions, 5000);

@@ -124,3 +124,24 @@ def test_the_ui_wires_only_existing_api_paths():
     ):
         assert stem in js, f"the UI lost its {stem} wiring"
         assert template in server_paths, f"server lost {template}"
+
+
+def test_the_ui_interaction_regressions():
+    """Execute the real client script without npm dependencies.
+
+    The DOM double covers interaction/state transitions, not rendering.
+    Served-page/CSP checks and browser layout QA remain separate gates.
+    """
+    import pathlib
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("Node is unavailable; Web UI interaction regressions not run")
+    test_file = pathlib.Path(__file__).with_name("webui_dom.test.cjs")
+    result = subprocess.run(
+        [node, "--test", str(test_file)],
+        capture_output=True, text=True, timeout=30,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
