@@ -54,6 +54,19 @@ def test_the_page_is_self_contained():
         assert not re.search(pattern, page), f"external reference: {pattern}"
 
 
+def test_the_ui_offers_both_axes():
+    """Mode (Agent/Plan/Ask) and Permissions (Ask for approval / Approve for
+    me / Full Access) are separate selectors, in the composer header and the
+    new-session form alike -- the axes must not be collapsed back into one."""
+
+    page = render_page()
+    for marker in ("perm-select", "new-perm", "Ask for approval",
+                   "Approve for me", "Full Access"):
+        assert marker in page, f"the UI lost its {marker} control"
+    for token in ('"agent"', '"plan"', '"ask"'):
+        assert token in page, f"the mode selector lost the {token} option"
+
+
 def test_the_route_serves_the_page_with_security_headers(tmp_path):
     from fastapi.testclient import TestClient
 

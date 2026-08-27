@@ -3399,6 +3399,43 @@ MUTATIONS = [
         "the reconstruction dedup sets are bounded; an unbounded set grows "
         "with session lifetime (bounded output is not bounded work)",
     ),
+    Mutation(
+        "approve-mode-writes-run-unasked", 252, "mini_loop/permissions.py",
+        '        and _declared_risk(ctx, call) in ("write", "exec")',
+        '        and _declared_risk(ctx, call) in ()',
+        "tests/test_permission_modes.py::test_approve_mode_asks_before_writing",
+        'the point of "ask for approval" is that nothing side-effectful runs '
+        "without a human's yes; a write that slips through unasked is the "
+        "mode not existing",
+    ),
+    Mutation(
+        "ask-mode-tells-but-does-not-hold", 252, "mini_loop/permissions.py",
+        "        if _ask_mode(ctx):",
+        "        if False:",
+        "tests/test_agent_modes.py::test_ask_mode_refuses_mutation_even_with_full_access",
+        "ask mode is the human's hard posture, not plan mode's soft guidance: "
+        "with the hook check gone, only the prompt section stands between an "
+        "ask session and a mutation",
+    ),
+    Mutation(
+        "ask-mode-forgotten-on-restore", 252, "mini_loop/session.py",
+        '        agent.state["ask_mode"] = fold_ask_mode(logged_events)',
+        '        agent.state["ask_mode"] = False',
+        "tests/test_agent_modes.py::test_a_restored_ask_session_stays_ask",
+        'the human said "answer, don\'t act"; a restart that quietly restores '
+        "an acting agent flips the fail-safe direction",
+    ),
+    Mutation(
+        "the-ask-flip-never-lands", 252, "mini_loop/session.py",
+        '        if set_ask_mode(agent, mode == "ask") == "committed":\n'
+        '            await self.emit({"type": "ask_mode", "active": mode == "ask"})',
+        '        if False:\n'
+        '            await self.emit({"type": "ask_mode", "active": mode == "ask"})',
+        "tests/test_agent_modes.py::test_setting_one_mode_clears_the_other",
+        "the mode axis is single-valued and its flips are durable events; a "
+        "setter that skips the ask flip leaves the UI claiming a posture the "
+        "hook never saw",
+    ),
 ]
 
 

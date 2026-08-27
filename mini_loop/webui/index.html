@@ -25,9 +25,15 @@
   <div class="new-form" id="new-form" hidden>
    <label for="new-mode">Mode</label>
    <select id="new-mode">
-    <option value="interactive">interactive</option>
-    <option value="auto">auto</option>
-    <option value="readonly">readonly</option>
+    <option value="agent">Agent</option>
+    <option value="plan">Plan</option>
+    <option value="ask">Ask</option>
+   </select>
+   <label for="new-perm">Permissions</label>
+   <select id="new-perm">
+    <option value="approve">Ask for approval</option>
+    <option value="interactive" selected>Approve for me</option>
+    <option value="auto">Full Access</option>
    </select>
    <label for="new-system">System prompt (optional)</label>
    <textarea id="new-system" rows="2"></textarea>
@@ -47,10 +53,16 @@
     <span id="sess-goal" class="badge" hidden></span>
     <span id="sess-plan" class="badge" hidden>plan mode</span>
     <span class="spacer"></span>
-    <select id="mode-select" aria-label="Permission mode">
-     <option value="interactive">interactive</option>
-     <option value="auto">auto</option>
-     <option value="readonly">readonly</option>
+    <select id="mode-select" aria-label="Mode">
+     <option value="agent">Agent</option>
+     <option value="plan">Plan</option>
+     <option value="ask">Ask</option>
+    </select>
+    <select id="perm-select" aria-label="Permissions">
+     <option value="approve">Ask for approval</option>
+     <option value="interactive">Approve for me</option>
+     <option value="auto">Full Access</option>
+     <option value="readonly">Read-only</option>
     </select>
     <button id="fork-btn" type="button" class="sec">Fork</button>
     <button id="cancel-btn" type="button" class="sec danger">Cancel turn</button>

@@ -91,6 +91,13 @@ def _row_digest(message: dict) -> str:
     ).hexdigest()
 
 
+#: The interaction axis, orthogonal to `permission_mode` (permissions.py):
+#: the mode says what the session is FOR, the permission says what runs
+#: without asking. `agent` executes; `plan` is the model's soft collaboration
+#: state (plan_mode.py); `ask` is the human's hard Q&A posture (ask_mode.py).
+AGENT_MODES = ("agent", "plan", "ask")
+
+
 class AgentSession:
     def __init__(
         self,
@@ -716,11 +723,13 @@ class AgentSession:
         # drift. The goal's ACTIVATION is deliberately not folded: a restored
         # goal is a fact; firing unattended again needs a new human edge
         # (goal_resume), same rule as restored cron jobs.
+        from .ask_mode import fold_ask_mode
         from .goals import fold_goal
         from .plan_mode import fold_plan_mode
 
         logged_events = self.state_store.load_events(self.id)
         agent.state["plan_mode"] = fold_plan_mode(logged_events)
+        agent.state["ask_mode"] = fold_ask_mode(logged_events)
         restored_goal = fold_goal(logged_events)
         if restored_goal is not None:
             agent.state["goal"] = restored_goal
@@ -1049,6 +1058,40 @@ class AgentSession:
         return "running"
 
     # -- introspection for the API --
+    @property
+    def interaction_mode(self) -> str:
+        """The mode in force, derived from the logged flags -- never a third
+        stored value that could drift. Plan outranks ask for display: the
+        model planning inside an ask session is still held by ask-mode
+        enforcement, but the plan is what the human is being shown."""
+
+        state = self.agent.state if self.agent is not None else {}
+        if state.get("plan_mode"):
+            return "plan"
+        if state.get("ask_mode"):
+            return "ask"
+        return "agent"
+
+    async def set_interaction_mode(self, mode: str) -> str:
+        """The human edge for the mode axis: flip the logged plan/ask state.
+
+        Setting one posture clears the other, so the axis is single-valued;
+        each real flip lands as a durable event through the same capture path
+        the model's own plan tools use, so restore folds it back.
+        """
+
+        if mode not in AGENT_MODES:
+            raise ValueError(f"unknown interaction mode: {mode!r}")
+        from .ask_mode import set_ask_mode
+        from .plan_mode import set_plan_mode
+
+        agent = self.agent
+        if set_plan_mode(agent, mode == "plan") == "committed":
+            await self.emit({"type": "plan_mode", "active": mode == "plan"})
+        if set_ask_mode(agent, mode == "ask") == "committed":
+            await self.emit({"type": "ask_mode", "active": mode == "ask"})
+        return self.interaction_mode
+
     def info(self) -> dict:
         agent = self.agent
         info = {
@@ -1065,6 +1108,7 @@ class AgentSession:
             "cancel_reason": self._cancel_reason,
             "created_at": self.created_at,
             "run_count": self.run_count,
+            "mode": self.interaction_mode,
             "permission_mode": self.permission_mode,
             "pending_steering": len(self._steering),
             "workspace": str(self.workspace),

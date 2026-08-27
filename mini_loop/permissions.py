@@ -49,21 +49,25 @@ def _path_escapes(ctx: ToolContext, call: ToolCall) -> bool:
         return True
 
 
-#: Per-session decision posture, OpenWorker's mode model reduced to the three
-#: its GUI actually shows (discuss / ask / full access). The mode maps risk to
-#: decision; the *rules* stay the same in every mode:
+#: Per-session decision posture. The mode maps risk to decision; the *rules*
+#: stay the same in every mode:
 #:
 #: * `readonly`    -- write/exec/external (and unclassified) deny outright,
 #:                    reads pass. A session that can be handed an untrusted
 #:                    prompt and provably mutate nothing.
-#: * `interactive` -- the default: external and unclassified ask.
-#: * `auto`        -- ask-rules auto-allow (with an audit event). Deny rules
-#:                    and the immutable deny-list still apply: full access
-#:                    means "stop asking", not "stop refusing".
+#: * `approve`     -- "ask for approval": file writes and command execution
+#:                    ask too, on top of everything `interactive` asks about.
+#:                    Nothing side-effectful runs without a human's yes.
+#: * `interactive` -- the default, "approve for me": external and
+#:                    unclassified ask; workspace writes and shell run.
+#: * `auto`        -- "full access": ask-rules auto-allow (with an audit
+#:                    event). Deny rules and the immutable deny-list still
+#:                    apply: full access means "stop asking", not "stop
+#:                    refusing".
 #:
 #: Runtime state, deliberately not persisted: a restored session comes back
 #: `interactive` -- the fail-safe direction is toward asking again.
-PERMISSION_MODES = ("readonly", "interactive", "auto")
+PERMISSION_MODES = ("readonly", "approve", "interactive", "auto")
 
 #: Risk levels a read-only session refuses. Unclassified (None) is refused
 #: too -- the round-95 rule that no claim gates upward, applied per mode.
@@ -75,6 +79,15 @@ def _session_mode(ctx: ToolContext) -> str:
     session = state.get("session")
     mode = getattr(session, "permission_mode", None) or state.get("permission_mode")
     return mode if mode in PERMISSION_MODES else "interactive"
+
+
+def _ask_mode(ctx: ToolContext) -> bool:
+    """The human's Q&A posture (ask_mode.py). Read here on purpose: unlike
+    plan mode, ask mode is hard -- the model cannot leave it, so the hook
+    refuses for it."""
+
+    state = getattr(getattr(ctx, "agent", None), "state", None) or {}
+    return bool(state.get("ask_mode"))
 
 
 #: A call to a tool that is not in the registry at all. Distinct from an
@@ -94,6 +107,16 @@ def _declared_risk(ctx: ToolContext, call: ToolCall):
     if tool is None:
         return _MISSING
     return tool.risk
+
+
+def _side_effect_in_approve(ctx: ToolContext, call: ToolCall) -> bool:
+    """In `approve` mode, write and exec ask too -- external and unclassified
+    already ask through their own rules in every non-auto mode."""
+
+    return (
+        _session_mode(ctx) == "approve"
+        and _declared_risk(ctx, call) in ("write", "exec")
+    )
 
 
 def default_permission_rules() -> list[PermissionRule]:
@@ -122,6 +145,12 @@ def default_permission_rules() -> list[PermissionRule]:
             ("bash", "background_run"),
             lambda _ctx, call: bool(_DESTRUCTIVE.search(str(call.input.get("command", "")))),
             "Potentially destructive shell command",
+        ),
+        PermissionRule(
+            "side-effect-approval",
+            ("*",),
+            _side_effect_in_approve,
+            "File edits and command execution require approval in this mode",
         ),
         PermissionRule(
             "external-action",
@@ -183,6 +212,23 @@ class PermissionHook(Hook):
                 return (
                     "Permission denied: this session is read-only "
                     f"(tool risk: {risk or 'unclassified'})"
+                )
+
+        if _ask_mode(ctx):
+            # The human said "answer, don't act". Same shape as readonly --
+            # denied, never asked -- because an approval the human would have
+            # to grant to override their own posture is just a slower "no".
+            # Composes with any permission mode, `auto` included: full access
+            # governs what is asked about, ask mode cuts what is allowed.
+            risk = _declared_risk(ctx, call)
+            if risk in _MUTATING_RISK or risk is None:
+                await self._emit(ctx, decision="deny", rule="ask-mode",
+                                 tool=call.name, reason=f"risk={risk}")
+                return (
+                    "Permission denied: this session is in ask mode -- "
+                    "answer and explain, but do not change anything. The "
+                    "human switches the session back to agent mode when "
+                    f"they want changes made (tool risk: {risk or 'unclassified'})"
                 )
 
         for rule in self.rules:

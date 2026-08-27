@@ -58,19 +58,33 @@ from .config import Settings, build_client, load_settings
 from .manager import SessionManager
 from .auth import ANONYMOUS, NullAuth, Principal, load_auth
 from .identity import runtime_identity
+from .permissions import PERMISSION_MODES
 from .run_context import UNTRUSTED, RunContext
-from .session import AgentSession
+from .session import AGENT_MODES, AgentSession
 from .skill_capture import PERSONAL_SKILL_CAPTURE_SOURCE, PersonalSkillError
+
+
+#: `mode` accepts both axes' vocabularies -- the interaction modes
+#: (agent/plan/ask, session.AGENT_MODES) and, for backward compatibility,
+#: the permission tokens older clients sent as "mode". The sets are
+#: disjoint, so routing is unambiguous; new clients say `permission` for
+#: the permission axis.
+_MODE_TOKENS = Literal[
+    "agent", "plan", "ask", "readonly", "approve", "interactive", "auto"
+]
+_PERMISSION_TOKENS = Literal["readonly", "approve", "interactive", "auto"]
 
 
 class CreateSessionReq(BaseModel):
     system: str | None = None
     model: str | None = None
-    mode: Literal["readonly", "interactive", "auto"] | None = None
+    mode: _MODE_TOKENS | None = None
+    permission: _PERMISSION_TOKENS | None = None
 
 
 class ModeReq(BaseModel):
-    mode: Literal["readonly", "interactive", "auto"]
+    mode: _MODE_TOKENS | None = None
+    permission: _PERMISSION_TOKENS | None = None
 
 
 class MessageReq(BaseModel):
@@ -562,19 +576,37 @@ def _register_routes(app: FastAPI) -> None:
     @app.post("/sessions")
     async def create_session(request: Request, req: CreateSessionReq):
         caller = _principal(request)
+        permission = req.permission or (
+            req.mode if req.mode in PERMISSION_MODES else None
+        )
         session = _manager(request).create(
             system=req.system, model=req.model,
-            permission_mode=req.mode or "interactive",
+            permission_mode=permission or "interactive",
             owner=caller.id,
         )
+        if req.mode in AGENT_MODES and req.mode != "agent":
+            await session.set_interaction_mode(req.mode)
         return session.info()
 
     @app.post("/sessions/{session_id}/mode")
     async def set_mode(request: Request, session_id: str, req: ModeReq):
-        """Change the session's risk->decision posture (see permissions.py)."""
+        """One route, two axes, disjoint vocabularies: an interaction mode in
+        `mode` (agent/plan/ask) flips what the session is FOR; a permission
+        token (in `permission`, or in `mode` for older clients) changes the
+        risk->decision posture (permissions.py)."""
         session = _require(request, session_id)
-        session.permission_mode = req.mode
-        return {"session": session_id, "permission_mode": req.mode}
+        permission = req.permission or (
+            req.mode if req.mode in PERMISSION_MODES else None
+        )
+        interaction = req.mode if req.mode in AGENT_MODES else None
+        if permission is None and interaction is None:
+            raise HTTPException(400, "provide a mode or a permission")
+        if permission is not None:
+            session.permission_mode = permission
+        if interaction is not None:
+            await session.set_interaction_mode(interaction)
+        return {"session": session_id, "mode": session.interaction_mode,
+                "permission_mode": session.permission_mode}
 
     @app.post("/sessions/{session_id}/personal-skills/preview")
     async def preview_personal_skill(

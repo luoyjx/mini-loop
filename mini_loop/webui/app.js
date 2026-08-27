@@ -84,7 +84,7 @@ $("new-session").addEventListener("click", () => { $("new-form").hidden = false;
 $("create-cancel").addEventListener("click", () => { $("new-form").hidden = true; });
 $("create-confirm").addEventListener("click", async () => {
   try {
-    const body = { mode: $("new-mode").value };
+    const body = { mode: $("new-mode").value, permission: $("new-perm").value };
     const system = $("new-system").value.trim();
     if (system) body.system = system;
     const created = await api("/sessions", {
@@ -220,6 +220,7 @@ function onEvent(event) {
     ledgerRow("ref", "■", "turn done", "", depth);
     loadSessions();
     loadGoal();
+    syncPosture();
     return;
   }
   if (type === "error") {
@@ -292,9 +293,18 @@ async function selectSession(sid) {
   loadGoal();
   refreshApprovals();
   loadSessions();
+  syncPosture();
+}
+
+// Both axes come from session info: the interaction mode (agent/plan/ask)
+// and the permission posture. Re-synced on turn done, so a model that
+// leaves plan mode via exit_plan_mode is reflected without a reload.
+async function syncPosture() {
+  if (!currentSid) return;
   try {
-    const info = await api("/sessions/" + encodeURIComponent(sid));
-    if (info.permission_mode) $("mode-select").value = info.permission_mode;
+    const info = await api("/sessions/" + encodeURIComponent(currentSid));
+    if (info.mode) $("mode-select").value = info.mode;
+    if (info.permission_mode) $("perm-select").value = info.permission_mode;
   } catch (e) {}
 }
 
@@ -307,6 +317,17 @@ $("mode-select").addEventListener("change", async () => {
     });
     ledgerRow("ref", "·", "mode", $("mode-select").value, 0);
   } catch (err) { alertRow("mode change failed: " + err.message); }
+});
+
+$("perm-select").addEventListener("change", async () => {
+  try {
+    await api("/sessions/" + encodeURIComponent(currentSid) + "/mode", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ permission: $("perm-select").value }),
+    });
+    ledgerRow("ref", "·", "permission", $("perm-select").value, 0);
+  } catch (err) { alertRow("permission change failed: " + err.message); }
 });
 
 $("fork-btn").addEventListener("click", async () => {

@@ -118,6 +118,13 @@ def default_system_builder(agent) -> str:
         from .plan_mode import PLAN_SECTION
 
         parts.append(PLAN_SECTION)
+
+    if agent.state.get("ask_mode"):
+        # The opposite enforcement choice: the section explains a refusal
+        # the permission hook makes anyway (ask_mode.py) -- told AND held.
+        from .ask_mode import ASK_SECTION
+
+        parts.append(ASK_SECTION)
     return "\n\n".join(parts)
 
 
