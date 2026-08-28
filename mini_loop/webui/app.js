@@ -23,6 +23,9 @@ const ICONS = {
   shield: "M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM9 12l2 2 4-4",
   "arrow-up": "M12 19V5M6 11l6-6 6 6",
   "arrow-right": "M5 12h14M13 6l6 6-6 6",
+  "chevron-left": "M15 5l-7 7 7 7",
+  "chevron-right": "M9 5l7 7-7 7",
+  command: "M9 9V5a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v14a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V9",
   folder: "M3 6h7l2 3h9v11H3z",
   code: "M8 6l-6 6 6 6M16 6l6 6-6 6M14 4l-4 16",
   list: "M9 6h12M9 12h12M9 18h12M3 6h1M3 12h1M3 18h1",
@@ -46,7 +49,7 @@ function readPreference(key) {
   try { return localStorage.getItem(key) || ""; } catch (err) { return ""; }
 }
 function writePreference(key, value) {
-  try { localStorage.setItem(key, value); } catch (err) { /* usable without storage */ }
+  try { localStorage.setItem(key, value); return true; } catch (err) { return false; }
 }
 function setTheme(theme) {
   const dark = theme === "dark";
@@ -88,19 +91,22 @@ $("settings-btn").addEventListener("click", () => $("settings-dialog").showModal
 $("settings-close").addEventListener("click", () => $("settings-dialog").close());
 $("notice-dismiss").addEventListener("click", () => { $("ui-notice").hidden = true; });
 document.addEventListener("keydown", (event) => {
+  if (event.defaultPrevented || event.isComposing || event.keyCode === 229 || event.repeat) return;
   const dialog = document.querySelector("dialog[open]");
   if (dialog) {
+    if (dialog.id === "shortcut-dialog" && recordingShortcut) {
+      recordShortcut(event);
+      return;
+    }
     if (event.key === "Escape") {
       event.preventDefault();
-      dialog.close();
+      if (dialog.id === "command-dialog") closeCommandPalette();
+      else if (dialog.id === "shortcut-dialog") closeShortcuts();
+      else dialog.close();
     }
     return;
   }
-  if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
-    event.preventDefault();
-    showPane("ledger");
-    setSidebarOpen(true, true);
-  }
+  if (handleShortcut(event)) return;
   if (event.key === "Escape") {
     if (mobileViewport.matches && !$("rail").hidden) setSidebarOpen(false, true);
     else if (!$("inspector").hidden) closeInspector();
@@ -149,7 +155,9 @@ async function api(path, options) {
   if (!response.ok) {
     let detail = response.status + " " + response.statusText;
     try { detail = (await response.json()).detail || detail; } catch (e) {}
-    throw new Error(detail);
+    const error = new Error(detail);
+    error.status = response.status;
+    throw error;
   }
   return response.json();
 }
@@ -202,6 +210,7 @@ async function loadSessions() {
     $("sess-activity").dataset.a = selected.activity || selected.status;
     $("cancel-btn").disabled = !selected.busy;
   }
+  if ($("command-dialog").open) renderCommands();
 }
 function renderSessions() {
   const query = $("session-search").value.trim().toLowerCase();
@@ -532,6 +541,11 @@ async function resolveApproval(approvalId, decision, sid) {
 function clearSession() {
   selectionVersion += 1;
   currentSid = null;
+  visitHistory = [];
+  visitIndex = -1;
+  invalidateSessionNavigation();
+  closeCommandPalette(false);
+  closeShortcuts(false);
   if (stream) { stream.close(); stream = null; }
   openSpans.clear(); streams.clear(); traceGroup = null;
   $("ledger").textContent = "";
@@ -556,9 +570,17 @@ function clearSession() {
   showPane("ledger");
   updateComposer();
 }
-async function selectSession(sid) {
+async function selectSession(sid, options = {}) {
+  if (options.history !== false) invalidateSessionNavigation();
+  if (sid === currentSid) {
+    if (mobileViewport.matches) setSidebarOpen(false);
+    return;
+  }
   selectionVersion += 1;
+  const version = selectionVersion;
   currentSid = sid;
+  if (options.history !== false) recordVisit(sid);
+  updateNavigation();
   $("placeholder").hidden = true;
   $("suggestions").hidden = true;
   $("conversation").classList.remove("is-empty");
@@ -585,13 +607,13 @@ async function selectSession(sid) {
   refreshApprovals();
   loadSessions();
   try {
-    const info = await api("/sessions/" + encodeURIComponent(sid));
-    if (sid !== currentSid) return;
+    const info = options.info || await api("/sessions/" + encodeURIComponent(sid));
+    if (sid !== currentSid || version !== selectionVersion) return;
     if (info.permission_mode) $("mode-select").value = info.permission_mode;
     const path = info.workspace || "";
     $("workspace-path").textContent = path ? path.split(/[\\/]/).filter(Boolean).slice(-2).join("/") : "Isolated workspace";
     $("workspace-path").title = path;
-  } catch (err) { if (sid === currentSid) alertRow("session: " + err.message); }
+  } catch (err) { if (sid === currentSid && version === selectionVersion) alertRow("session: " + err.message); }
 }
 
 $("mode-select").addEventListener("change", async () => {
@@ -630,7 +652,7 @@ $("cancel-btn").addEventListener("click", async () => {
 
 $("send-btn").addEventListener("click", sendMessage);
 $("msg").addEventListener("keydown", (keyEvent) => {
-  if (!keyEvent.isComposing && keyEvent.key === "Enter" && (keyEvent.metaKey || keyEvent.ctrlKey)) {
+  if (!keyEvent.isComposing && keyEvent.keyCode !== 229 && keyEvent.key === "Enter" && (keyEvent.metaKey || keyEvent.ctrlKey)) {
     keyEvent.preventDefault();
     sendMessage();
   }
@@ -728,6 +750,400 @@ $("inspector-close").addEventListener("click", closeInspector);
 for (const tab of document.querySelectorAll(".tab")) {
   tab.addEventListener("click", () => showPane(tab.dataset.tab));
 }
+
+// ---- workspace commands, local shortcuts and visited-session navigation ----
+// UI-only adapters: no new API, tool dispatch, model request or server settings.
+const SHORTCUT_DEFAULTS = Object.freeze({
+  "palette.open": "Mod+K", "session.back": "Mod+[", "session.forward": "Mod+]",
+  "composer.focus": null, "sessions.search": null, "session.new": null,
+  "sidebar.toggle": null, "tools.toggle": null, "settings.open": null, "shortcuts.open": null,
+});
+const RESERVED_SHORTCUTS = new Set([
+  "Mod+A", "Mod+C", "Mod+X", "Mod+V", "Mod+Z", "Mod+Y", "Mod+F", "Mod+G",
+  "Mod+H", "Mod+J", "Mod+L", "Mod+N", "Mod+O", "Mod+P", "Mod+Q", "Mod+R",
+  "Mod+S", "Mod+T", "Mod+W", "Mod+U", "Mod+Enter",
+  "Mod+Shift+A", "Mod+Shift+C", "Mod+Shift+X", "Mod+Shift+V", "Mod+Shift+Z",
+  "Mod+Shift+F", "Mod+Shift+G", "Mod+Shift+I", "Mod+Shift+J", "Mod+Shift+N",
+  "Mod+Shift+P", "Mod+Shift+Q", "Mod+Shift+R", "Mod+Shift+T", "Mod+Shift+W",
+]);
+let shortcutBindings = loadShortcutBindings();
+let recordingShortcut = null;
+let shortcutReturnFocus = null;
+let commandReturnFocus = null;
+let selectedCommandId = null;
+let visibleCommands = [];
+let visitHistory = [];
+let visitIndex = -1;
+let navigatingSession = false;
+let navigationVersion = 0;
+
+function invalidateSessionNavigation() {
+  navigationVersion += 1;
+  navigatingSession = false;
+  updateNavigation();
+}
+
+function recordVisit(sid) {
+  if (visitHistory[visitIndex] === sid) return;
+  visitHistory = visitHistory.slice(0, visitIndex + 1);
+  visitHistory.push(sid);
+  if (visitHistory.length > 100) visitHistory = visitHistory.slice(-100);
+  visitIndex = visitHistory.length - 1;
+}
+function forgetSession(sid) {
+  const before = visitHistory.slice(0, visitIndex + 1).filter((id) => id !== sid).length;
+  visitHistory = visitHistory.filter((id) => id !== sid);
+  visitIndex = Math.min(before - 1, visitHistory.length - 1);
+  updateNavigation();
+}
+function updateNavigation() {
+  $("session-back").disabled = navigatingSession || visitIndex <= 0;
+  $("session-forward").disabled = navigatingSession || visitIndex < 0 || visitIndex >= visitHistory.length - 1;
+}
+async function navigateSession(direction) {
+  if (navigatingSession || ![-1, 1].includes(direction)) return false;
+  const index = visitIndex + direction;
+  if (index < 0 || index >= visitHistory.length) return false;
+  const target = visitHistory[index];
+  const version = selectionVersion;
+  const navigation = ++navigationVersion;
+  navigatingSession = true;
+  updateNavigation();
+  try {
+    // Check authorization/existence before discarding the visible conversation.
+    const info = await api("/sessions/" + encodeURIComponent(target));
+    if (version !== selectionVersion || navigation !== navigationVersion) return false;
+    visitIndex = index;
+    await selectSession(target, { history: false, info });
+    return true;
+  } catch (err) {
+    if (version === selectionVersion && navigation === navigationVersion) {
+      if (err.status === 404) forgetSession(target);
+      alertRow("Could not open visited session: " + err.message);
+    }
+    return false;
+  } finally {
+    if (navigation === navigationVersion) {
+      navigatingSession = false;
+      updateNavigation();
+      if ($("command-dialog").open) renderCommands();
+    }
+  }
+}
+$("session-back").addEventListener("click", () => navigateSession(-1));
+$("session-forward").addEventListener("click", () => navigateSession(1));
+
+function focusComposer() {
+  if (mobileViewport.matches) setSidebarOpen(false);
+  showPane("ledger");
+  $("msg").focus({ preventScroll: true });
+}
+function searchSessions() {
+  showPane("ledger");
+  setSidebarOpen(true, true);
+}
+function sessionReason() { return currentSid ? "" : "Choose a session first."; }
+function getCommands() {
+  const commands = [
+    { id: "palette.open", label: "Open commands", group: "Navigation", detail: "Search actions and sessions", run: openCommandPalette },
+    { id: "composer.focus", label: "Focus message input", group: "Navigation", detail: "Continue your draft without sending it", run: focusComposer },
+    { id: "sessions.search", label: "Search sessions", group: "Navigation", detail: "Find a session by its ID or workspace", run: searchSessions },
+    { id: "session.back", label: "Previous session", group: "Navigation", detail: "Back through sessions visited on this page",
+      disabledReason: $("session-back").disabled ? "No previous session available." : "", run: () => navigateSession(-1) },
+    { id: "session.forward", label: "Next session", group: "Navigation", detail: "Forward through sessions visited on this page",
+      disabledReason: $("session-forward").disabled ? "No next session available." : "", run: () => navigateSession(1) },
+    { id: "sidebar.toggle", label: "Toggle session sidebar", group: "Navigation", detail: "Show or hide recent sessions",
+      run: () => setSidebarOpen($("rail").hidden, true) },
+    { id: "tools.toggle", label: "Toggle session tools", group: "Navigation", detail: "Inspect the current session",
+      disabledReason: sessionReason(), run: () => {
+        if (mobileViewport.matches) setSidebarOpen(false);
+        if ($("inspector").hidden) showPane(lastInspectorPane);
+        else closeInspector();
+      } },
+    { id: "session.new", label: "New session", group: "Session actions", detail: "Choose permissions and optional instructions",
+      disabledReason: creatingSession ? "A session is being created." : "", run: () => $("new-session").click() },
+    { id: "session.fork", label: "Fork session", group: "Session actions", detail: "Use the existing fork operation",
+      disabledReason: sessionReason(), run: () => $("fork-btn").click() },
+    { id: "session.cancel", label: "Cancel turn", group: "Session actions", detail: "Stop the current session's running turn",
+      disabledReason: sessionReason() || ($("cancel-btn").disabled ? "No running turn." : ""), run: () => $("cancel-btn").click() },
+    { id: "session.delete", label: "Delete session", group: "Session actions", detail: "Requires the existing confirmation",
+      disabledReason: sessionReason(), run: () => $("delete-btn").click() },
+    ...PANES.filter((name) => name !== "ledger").map((name) => ({
+      id: "pane." + name, label: "Open " + PANE_TITLES[name], group: "Session tools",
+      detail: "Inspect the current session", disabledReason: sessionReason(),
+      run: () => { if (mobileViewport.matches) setSidebarOpen(false); showPane(name); },
+    })),
+    { id: "settings.open", label: "Open settings", group: "Preferences", detail: "API token and local preferences", run: () => $("settings-dialog").showModal() },
+    { id: "shortcuts.open", label: "Keyboard shortcuts", group: "Preferences", detail: "Record, disable or reset local key bindings", run: openShortcuts },
+    { id: "theme.toggle", label: "Switch to " + (document.documentElement.dataset.theme === "dark" ? "light" : "dark") + " theme",
+      group: "Preferences", detail: "Saved in this browser", run: () => $("theme-toggle").click() },
+    { id: "audit.open", label: "Open self-audit", group: "Diagnostics", detail: "Read the existing owner-scoped report", run: () => $("audit-btn").click() },
+    ...sessionsCache.map((session) => ({
+      id: "session.select." + session.id, label: "Session " + session.id.slice(0, 8), group: "Sessions",
+      detail: session.id + (session.workspace ? " · " + session.workspace : ""),
+      disabledReason: session.id === currentSid ? "Current session." : "",
+      run: () => selectSession(session.id),
+    })),
+  ];
+  return commands.map((command) => ({ disabledReason: "", ...command, binding: shortcutBindings[command.id] || null }));
+}
+async function runCommand(id) {
+  const command = getCommands().find((item) => item.id === id);
+  if (!command || command.disabledReason) return false;
+  if (id !== "palette.open") closeCommandPalette(false);
+  try { await command.run(); return true; }
+  catch (err) { alertRow("Command failed: " + err.message); return false; }
+}
+function returnFocus(node) {
+  if (node?.isConnected && !node.disabled && node.getClientRects().length && !node.closest("[inert]")) node.focus({ preventScroll: true });
+  else $("commands-btn").focus({ preventScroll: true });
+}
+function openCommandPalette() {
+  if (document.querySelector("dialog[open]")) return false;
+  commandReturnFocus = document.activeElement;
+  $("command-search").value = "";
+  selectedCommandId = null;
+  renderCommands();
+  $("command-dialog").showModal();
+  $("command-search").focus();
+  return true;
+}
+function closeCommandPalette(restore = true) {
+  if (!$("command-dialog").open) return;
+  $("command-dialog").close();
+  if (restore) returnFocus(commandReturnFocus);
+}
+function renderCommands() {
+  const query = $("command-search").value.trim().toLowerCase();
+  visibleCommands = getCommands().filter((command) => command.id !== "palette.open" &&
+    [command.label, command.detail, command.group].join(" ").toLowerCase().includes(query));
+  if (!visibleCommands.some((command) => command.id === selectedCommandId && !command.disabledReason)) {
+    selectedCommandId = visibleCommands.find((command) => !command.disabledReason)?.id || null;
+  }
+  const list = $("command-list");
+  list.textContent = "";
+  let group = "";
+  visibleCommands.forEach((command, index) => {
+    if (command.group !== group) {
+      group = command.group;
+      const heading = el("div", "command-group", group);
+      heading.setAttribute("role", "presentation");
+      list.append(heading);
+    }
+    const option = el("button", "command-option");
+    option.type = "button";
+    option.setAttribute("id", "command-option-" + index);
+    option.setAttribute("role", "option");
+    option.setAttribute("tabindex", "-1");
+    option.setAttribute("data-command-id", command.id);
+    option.setAttribute("aria-disabled", String(!!command.disabledReason));
+    option.setAttribute("aria-selected", String(command.id === selectedCommandId));
+    const copy = el("span", "command-copy");
+    copy.append(el("span", "command-name", command.label), el("span", "command-detail", command.disabledReason || command.detail));
+    option.append(copy);
+    if (command.binding) option.append(el("kbd", "command-key", formatShortcut(command.binding)));
+    option.addEventListener("click", () => runCommand(command.id));
+    list.append(option);
+  });
+  $("command-status").textContent = visibleCommands.length
+    ? visibleCommands.length + " results · unavailable actions explain why"
+    : "No matching commands or sessions.";
+  updateCommandSelection();
+}
+function updateCommandSelection() {
+  let active = null;
+  for (const option of $("command-list").querySelectorAll("[data-command-id]")) {
+    const selected = option.dataset.commandId === selectedCommandId;
+    option.setAttribute("aria-selected", String(selected));
+    if (selected) active = option;
+  }
+  if (active) $("command-search").setAttribute("aria-activedescendant", active.id);
+  else $("command-search").removeAttribute("aria-activedescendant");
+  return active;
+}
+$("commands-btn").addEventListener("click", openCommandPalette);
+$("command-close").addEventListener("click", () => closeCommandPalette());
+$("command-search").addEventListener("input", () => { selectedCommandId = null; renderCommands(); });
+$("command-search").addEventListener("keydown", (event) => {
+  if (event.isComposing || event.keyCode === 229 || event.repeat || event.defaultPrevented) return;
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    event.preventDefault();
+    const enabled = visibleCommands.filter((command) => !command.disabledReason);
+    if (!enabled.length) return;
+    const index = enabled.findIndex((command) => command.id === selectedCommandId);
+    selectedCommandId = enabled[(index + (event.key === "ArrowDown" ? 1 : -1) + enabled.length) % enabled.length].id;
+    updateCommandSelection()?.scrollIntoView({ block: "nearest" });
+  } else if (event.key === "Enter") {
+    event.preventDefault();
+    if (selectedCommandId) return runCommand(selectedCommandId);
+  }
+});
+$("command-shortcuts").addEventListener("click", () => { closeCommandPalette(false); openShortcuts(); });
+
+function normalizeShortcut(binding) {
+  if (binding === null) return null;
+  if (typeof binding !== "string") return undefined;
+  const parts = binding.split("+");
+  const key = parts.pop();
+  if (!parts.includes("Mod") || parts.some((part) => !["Mod", "Alt", "Shift"].includes(part)) ||
+      new Set(parts).size !== parts.length || !/^([A-Za-z0-9[\],./]|Enter)$/.test(key || "")) return undefined;
+  return ["Mod", ...(parts.includes("Alt") ? ["Alt"] : []), ...(parts.includes("Shift") ? ["Shift"] : []),
+    key === "Enter" ? key : key.toUpperCase()].join("+");
+}
+function shortcutReserved(binding) {
+  // The composer already sends on every Ctrl/Meta+Enter variant.
+  return RESERVED_SHORTCUTS.has(binding) || Boolean(binding?.endsWith("+Enter")) || /^Mod\+(?:Shift\+)?[0-9]$/.test(binding);
+}
+function loadShortcutBindings() {
+  const bindings = { ...SHORTCUT_DEFAULTS };
+  try {
+    const saved = JSON.parse(readPreference("miniloop_shortcuts") || "{}");
+    if (!saved || Array.isArray(saved) || typeof saved !== "object") return bindings;
+    for (const id of Object.keys(SHORTCUT_DEFAULTS)) {
+      if (!Object.hasOwn(saved, id)) continue;
+      const binding = normalizeShortcut(saved[id]);
+      if (binding !== undefined && !shortcutReserved(binding)) bindings[id] = binding;
+    }
+    const enabled = Object.values(bindings).filter(Boolean);
+    if (new Set(enabled).size !== enabled.length) return { ...SHORTCUT_DEFAULTS };
+  } catch (err) { /* damaged or unavailable storage falls back to usable defaults */ }
+  return bindings;
+}
+function formatShortcut(binding) {
+  return binding ? binding.replace("Mod", "Ctrl/⌘").replaceAll("+", " + ") : "Not set";
+}
+function updateShortcutHints() {
+  $("command-hint").textContent = formatShortcut(shortcutBindings["palette.open"]);
+  for (const [id, command] of [["commands-btn", "palette.open"], ["session-back", "session.back"], ["session-forward", "session.forward"]]) {
+    const label = $(id).getAttribute("aria-label");
+    $(id).title = label + (shortcutBindings[command] ? " (" + formatShortcut(shortcutBindings[command]) + ")" : "");
+  }
+}
+function setShortcutBinding(id, value) {
+  if (!Object.hasOwn(SHORTCUT_DEFAULTS, id)) return { ok: false, error: "Unknown action." };
+  const binding = normalizeShortcut(value);
+  if (binding === undefined) return { ok: false, error: "Use Ctrl or ⌘ with a letter, number or punctuation key." };
+  if (shortcutReserved(binding)) return { ok: false, error: "That shortcut is reserved for the browser, editing or sending." };
+  const conflict = Object.keys(shortcutBindings).find((other) => other !== id && binding && shortcutBindings[other] === binding);
+  if (conflict) {
+    const label = getCommands().find((command) => command.id === conflict)?.label || conflict;
+    return { ok: false, error: "Already assigned to " + label + ". Choose another shortcut." };
+  }
+  shortcutBindings[id] = binding;
+  const persisted = writePreference("miniloop_shortcuts", JSON.stringify(shortcutBindings));
+  updateShortcutHints();
+  return { ok: true, persisted };
+}
+function shortcutFromEvent(event) {
+  if (event.isComposing || event.keyCode === 229 || event.repeat || event.getModifierState?.("AltGraph") || (!event.metaKey && !event.ctrlKey)) return null;
+  let key = event.key;
+  if (/^Key[A-Z]$/.test(event.code || "")) key = event.code.slice(3);
+  else if (/^Digit[0-9]$/.test(event.code || "")) key = event.code.slice(5);
+  else key = ({ BracketLeft: "[", BracketRight: "]", Comma: ",", Period: ".", Slash: "/" })[event.code] || key;
+  return normalizeShortcut(["Mod", ...(event.altKey ? ["Alt"] : []), ...(event.shiftKey ? ["Shift"] : []), key].join("+")) || null;
+}
+function handleShortcut(event) {
+  const binding = shortcutFromEvent(event);
+  if (!binding) return false;
+  const matches = Object.keys(shortcutBindings).filter((id) => shortcutBindings[id] === binding);
+  if (!matches.length) return false;
+  event.preventDefault();
+  if (matches.length === 1) runCommand(matches[0]);
+  return true;
+}
+function openShortcuts() {
+  if ($("settings-dialog").open) $("settings-dialog").close();
+  if (document.querySelector("dialog[open]")) return false;
+  shortcutReturnFocus = document.activeElement;
+  recordingShortcut = null;
+  $("shortcut-feedback").textContent = "";
+  $("shortcut-feedback").dataset.error = "false";
+  renderShortcuts();
+  $("shortcut-dialog").showModal();
+  $("shortcut-close").focus();
+  return true;
+}
+function closeShortcuts(restore = true) {
+  recordingShortcut = null;
+  if (!$("shortcut-dialog").open) return;
+  $("shortcut-dialog").close();
+  if (restore) returnFocus(shortcutReturnFocus);
+}
+function renderShortcuts() {
+  const list = $("shortcut-list");
+  list.textContent = "";
+  for (const command of getCommands().filter((item) => Object.hasOwn(SHORTCUT_DEFAULTS, item.id))) {
+    const row = el("div", "shortcut-row");
+    row.append(el("span", "shortcut-name", command.label));
+    const record = el("button", "shortcut-binding", recordingShortcut === command.id ? "Press keys…" : formatShortcut(shortcutBindings[command.id]));
+    record.type = "button";
+    record.setAttribute("id", "shortcut-record-" + command.id);
+    record.setAttribute("aria-label", "Record shortcut for " + command.label);
+    record.setAttribute("aria-pressed", String(recordingShortcut === command.id));
+    record.addEventListener("click", () => startShortcutRecording(command.id));
+    const reset = el("button", "icon-button shortcut-reset-one");
+    reset.type = "button";
+    reset.append(icon("loop"));
+    reset.setAttribute("aria-label", "Reset shortcut for " + command.label);
+    reset.title = "Restore default";
+    reset.addEventListener("click", () => finishShortcutChange(command.id, SHORTCUT_DEFAULTS[command.id]));
+    row.append(record, reset);
+    list.append(row);
+  }
+}
+function startShortcutRecording(id) {
+  if (!Object.hasOwn(SHORTCUT_DEFAULTS, id)) return;
+  recordingShortcut = id;
+  $("shortcut-feedback").textContent = "Press a shortcut. Escape cancels; Delete or Backspace disables.";
+  $("shortcut-feedback").dataset.error = "false";
+  renderShortcuts();
+  $("shortcut-record-" + id).focus();
+}
+function finishShortcutChange(id, binding) {
+  const result = setShortcutBinding(id, binding);
+  $("shortcut-feedback").dataset.error = String(!result.ok);
+  if (!result.ok) { $("shortcut-feedback").textContent = result.error; return; }
+  recordingShortcut = null;
+  $("shortcut-feedback").textContent = result.persisted ? "Shortcut saved in this browser."
+    : "Shortcut works for this page. Browser storage is unavailable.";
+  renderShortcuts();
+  $("shortcut-record-" + id).focus();
+}
+function recordShortcut(event) {
+  if (event.isComposing || event.keyCode === 229 || event.repeat || event.defaultPrevented || event.getModifierState?.("AltGraph")) return;
+  if (event.key === "Escape" || event.key === "Tab") {
+    if (event.key === "Escape") event.preventDefault();
+    const id = recordingShortcut;
+    recordingShortcut = null;
+    $("shortcut-feedback").textContent = "Recording cancelled.";
+    renderShortcuts();
+    $("shortcut-record-" + id).focus();
+    return;
+  }
+  if (["Shift", "Control", "Meta", "Alt"].includes(event.key)) return;
+  event.preventDefault();
+  if (["Delete", "Backspace"].includes(event.key) && !event.metaKey && !event.ctrlKey && !event.altKey && !event.shiftKey) {
+    finishShortcutChange(recordingShortcut, null);
+    return;
+  }
+  const binding = shortcutFromEvent(event);
+  if (binding) finishShortcutChange(recordingShortcut, binding);
+  else {
+    $("shortcut-feedback").dataset.error = "true";
+    $("shortcut-feedback").textContent = "Use Ctrl or ⌘ together with a letter or punctuation key.";
+  }
+}
+$("shortcuts-btn").addEventListener("click", openShortcuts);
+$("shortcut-close").addEventListener("click", () => closeShortcuts());
+$("shortcut-reset").addEventListener("click", () => {
+  recordingShortcut = null;
+  shortcutBindings = { ...SHORTCUT_DEFAULTS };
+  const persisted = writePreference("miniloop_shortcuts", JSON.stringify(shortcutBindings));
+  updateShortcutHints();
+  renderShortcuts();
+  $("shortcut-feedback").dataset.error = "false";
+  $("shortcut-feedback").textContent = persisted ? "Default shortcuts restored." : "Defaults restored for this page; browser storage is unavailable.";
+});
 
 // ---- task board (R7) ----------------------------------------------------
 async function loadTasks() {
@@ -1083,6 +1499,8 @@ $("delete-btn").addEventListener("click", async () => {
 setTheme(readPreference("miniloop_theme"));
 setSidebarOpen(!mobileViewport.matches);
 updateComposer();
+updateNavigation();
+updateShortcutHints();
 loadHealth();
 loadSessions();
 setInterval(loadSessions, 5000);

@@ -77,7 +77,6 @@ body[data-sidebar-open="false"] .app-shell { grid-template-columns: 0 minmax(0, 
 .new-session:hover { background: var(--panel-2); filter: none; }
 .session-search { display: flex; align-items: center; gap: 8px; padding: 0 9px; color: var(--muted); }
 .session-search input { width: 100%; border: 0; background: transparent; padding: 8px 0; font-size: 13px; }
-.session-search kbd { flex: none; font: 10px/1 var(--mono); color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 3px; }
 .rail-heading { display: flex; align-items: center; justify-content: space-between; padding: 25px 10px 8px; font-size: 11px; }
 .rail-heading h2 { font-size: 12px; font-weight: 500; color: var(--muted); margin: 0; }
 #session-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; min-height: 0; }
@@ -217,8 +216,50 @@ details.lrow[data-error="1"] { border-color: var(--red); background: var(--red-s
 #console-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; text-decoration: none; }
 #console-link:hover { text-decoration: underline; }
 .error-text { color: var(--red); }
+.session-history { display: flex; flex: 0 0 auto; gap: 2px; }
+.session-history .icon-button { width: 30px; min-height: 32px; }
+#commands-btn { flex: 0 0 auto; gap: 6px; }
+#command-hint, .command-key, .shortcut-binding { font: 11px var(--mono); }
+#command-hint { color: var(--muted); padding: 2px 4px; border: 1px solid var(--border); border-radius: 4px; }
+.command-dialog, .shortcut-dialog { width: min(620px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); }
+.command-dialog { padding-bottom: 12px; overflow: hidden; }
+.command-search { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); border-radius: 12px; padding: 0 12px; }
+.command-search:focus-within { border-color: var(--blue); outline: 2px solid var(--blue); outline-offset: 2px; }
+.command-search input { border: 0; background: transparent; min-width: 0; padding: 13px 0; margin: 0; box-shadow: none; }
+.command-search input:focus-visible { outline: none; }
+#command-list { max-height: min(440px, calc(100dvh - 290px)); overflow-y: auto; overscroll-behavior: contain; margin-top: 12px; }
+.command-group { margin: 14px 8px 6px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.command-option { display: flex; width: 100%; align-items: center; gap: 12px; padding: 10px; margin: 2px 0; border: 0; border-radius: 9px; background: transparent; color: var(--text); text-align: left; }
+.command-option:hover, .command-option[aria-selected="true"] { background: var(--panel-2); color: var(--text); }
+.command-option[aria-selected="true"] { box-shadow: inset 3px 0 0 var(--blue); }
+.command-option[aria-disabled="true"] { opacity: .65; cursor: not-allowed; }
+.command-copy { flex: 1; min-width: 0; }
+.command-name, .command-detail { display: block; overflow-wrap: anywhere; }
+.command-name { font-size: 13px; }
+.command-detail { margin-top: 3px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+.command-key { flex: 0 0 auto; color: var(--muted); }
+#command-status { margin: 10px 4px 6px; font-size: 11px; }
+.command-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; border-top: 1px solid var(--border); padding-top: 8px; font-size: 11px; }
+.command-footer button { font-size: 11px; }
+.shortcut-dialog { overflow: hidden; }
+.shortcut-dialog[open] { display: flex; flex-direction: column; }
+.shortcut-dialog > :not(#shortcut-list) { flex-shrink: 0; }
+#shortcut-list { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.shortcut-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.shortcut-name { flex: 1; min-width: 0; font-size: 13px; }
+.shortcut-binding { min-width: 114px; max-width: 190px; overflow-wrap: anywhere; color: var(--text); background: var(--panel-2); }
+.shortcut-binding[aria-pressed="true"] { border-color: var(--blue); color: var(--blue); }
+.shortcut-reset-one { flex: 0 0 auto; }
+#shortcut-feedback { min-height: 36px; color: var(--muted); font-size: 12px; }
+#shortcut-feedback:empty { min-height: 0; margin: 0; }
+#shortcut-feedback[data-error="true"] { color: var(--red); }
 .backdrop { display: none; }
 @media (max-width: 1200px) {
+ #topbar { padding-inline: 16px; gap: 8px; }
+ .breadcrumb-root, .breadcrumb-sep, .tools-label, .command-label, #command-hint { display: none; }
+ .breadcrumb { flex: 1; }
+ #topbar > .spacer { display: none; }
+ #commands-btn, #tools-btn { width: 36px; min-width: 36px; padding: 0; justify-content: center; }
  #inspector { position: absolute; inset: 0 0 0 auto; width: min(420px, 100%); z-index: 10; box-shadow: -12px 0 40px rgb(0 0 0 / 7%); }
 }
 @media (max-width: 760px) {
@@ -226,14 +267,17 @@ details.lrow[data-error="1"] { border-color: var(--red); background: var(--red-s
  #rail { position: fixed; z-index: 30; inset: 0 auto 0 0; width: min(290px, calc(100vw - 48px)); }
  #workspace { grid-column: 1; }
  .backdrop { display: block; position: fixed; z-index: 20; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; border-radius: 0; background: rgb(0 0 0 / 24%); }
- #topbar { padding: 8px 12px; gap: 6px; min-height: 60px; }
- .breadcrumb-root, .breadcrumb-sep, .tools-label { display: none; }
- .breadcrumb { flex: 1; }
- #topbar > .spacer { display: none; }
- #sess-activity { max-width: 110px; font-size: 10px; }
- #tools-btn { padding: 8px; }
+ #topbar { display: grid; grid-template-columns: 44px 90px minmax(0, 1fr) repeat(3, 44px); grid-template-rows: 44px auto; padding: 8px 12px; gap: 6px; min-height: 60px; }
+ #sidebar-toggle { grid-column: 1; grid-row: 1; }
+ .session-history { grid-column: 2; grid-row: 1; }
+ .breadcrumb { grid-column: 1 / 5; grid-row: 2; min-height: 24px; padding-left: 8px; }
+ #sess-activity { grid-column: 5 / -1; grid-row: 2; justify-self: end; max-width: 110px; font-size: 10px; }
+ #tools-btn { grid-column: 5; grid-row: 1; width: 44px; padding: 8px; justify-content: center; }
+ #session-actions { grid-column: 6; grid-row: 1; }
  button, .icon-button, .tool-summary, .trace-event > summary { min-height: 44px; }
  .icon-button, .send-button { width: 44px; height: 44px; }
+ .session-history .icon-button { width: 44px; min-height: 44px; }
+ #commands-btn { grid-column: 4; grid-row: 1; width: 44px; min-height: 44px; padding: 0; justify-content: center; }
  .new-session, .session-button { min-height: 44px; }
  .conversation.is-empty { padding-bottom: 6vh; }
  .welcome { padding-top: 20px; margin-bottom: 25px; }

@@ -20,7 +20,6 @@
    <span data-icon="search"></span>
    <label class="sr-only" for="session-search">Search sessions</label>
    <input id="session-search" type="search" placeholder="Search sessions" autocomplete="off">
-   <kbd aria-hidden="true">⌘ K</kbd>
   </div>
   <div class="rail-heading"><h2>Recent sessions</h2><span id="session-count" class="muted">0</span></div>
   <ul id="session-list" aria-label="Sessions"></ul>
@@ -36,9 +35,14 @@
  <main id="workspace">
   <header id="topbar">
    <button id="sidebar-toggle" class="icon-button" type="button" aria-label="Toggle session sidebar" aria-controls="rail" aria-expanded="true" title="Toggle sidebar"><span data-icon="panel-left"></span></button>
+   <nav class="session-history" aria-label="Visited sessions">
+    <button id="session-back" class="icon-button" type="button" aria-label="Previous session" title="Previous session" disabled><span data-icon="chevron-left"></span></button>
+    <button id="session-forward" class="icon-button" type="button" aria-label="Next session" title="Next session" disabled><span data-icon="chevron-right"></span></button>
+   </nav>
    <div class="breadcrumb"><span class="muted breadcrumb-root">Workspace</span><span class="breadcrumb-sep" aria-hidden="true">/</span><span id="sess-id">New session</span></div>
    <span id="sess-activity" class="badge" hidden></span>
    <span class="spacer"></span>
+   <button id="commands-btn" class="quiet-button" type="button" aria-label="Commands" aria-haspopup="dialog" title="Commands"><span data-icon="command"></span><span class="command-label">Commands</span><kbd id="command-hint">Ctrl / ⌘ K</kbd></button>
    <button id="tools-btn" type="button" class="quiet-button" aria-label="Session tools" aria-controls="inspector" aria-expanded="false" disabled><span data-icon="panel-right"></span><span class="tools-label">Session tools</span></button>
    <details id="session-actions" class="action-menu" hidden>
     <summary class="icon-button" aria-label="Session actions" title="Session actions"><span data-icon="more"></span></summary>
@@ -165,7 +169,22 @@
  <div class="dialog-heading"><h2 id="settings-title">Settings</h2><button id="settings-close" type="button" class="icon-button" aria-label="Close settings"><span data-icon="close"></span></button></div>
  <label for="token">API token</label><input id="token" type="password" placeholder="Optional on an open local server" autocomplete="off" aria-describedby="token-help">
  <p id="token-help" class="muted">Stored in this browser. Requests go only to this mini-loop server. Leave empty if authentication is disabled.</p>
- <div class="settings-links"><button id="audit-btn" type="button" class="sec"><span data-icon="shield"></span>Self-audit</button><a href="/" id="console-link">Classic console<span data-icon="arrow-right"></span></a></div>
+ <div class="settings-links"><button id="shortcuts-btn" type="button" class="sec"><span data-icon="command"></span>Keyboard shortcuts</button><button id="audit-btn" type="button" class="sec"><span data-icon="shield"></span>Self-audit</button><a href="/" id="console-link">Classic console<span data-icon="arrow-right"></span></a></div>
+</dialog>
+<dialog id="command-dialog" class="dialog command-dialog" aria-labelledby="command-title">
+ <div class="dialog-heading"><h2 id="command-title">Commands</h2><button id="command-close" class="icon-button" type="button" aria-label="Close commands"><span data-icon="close"></span></button></div>
+ <div class="command-search"><span data-icon="search"></span><label class="sr-only" for="command-search">Search commands and sessions</label><input id="command-search" type="search" role="combobox" placeholder="Search commands and sessions…" autocomplete="off" aria-autocomplete="list" aria-expanded="true" aria-controls="command-list" aria-describedby="command-status"></div>
+ <div id="command-list" role="listbox" aria-label="Commands and sessions"></div>
+ <p id="command-status" class="muted" role="status" aria-live="polite"></p>
+ <div class="command-footer"><span class="muted">↑ ↓ Choose · Enter Open · Esc Close</span><button id="command-shortcuts" class="quiet-button" type="button">Edit shortcuts</button></div>
+</dialog>
+<dialog id="shortcut-dialog" class="dialog shortcut-dialog" aria-labelledby="shortcut-title">
+ <div class="dialog-heading"><h2 id="shortcut-title">Keyboard shortcuts</h2><button id="shortcut-close" class="icon-button" type="button" aria-label="Close keyboard shortcuts"><span data-icon="close"></span></button></div>
+ <p class="muted">Saved only in this browser. Click a binding, then press a shortcut with Ctrl or ⌘. Escape cancels recording; Delete or Backspace disables it.</p>
+ <p class="muted">Common browser and editing shortcuts are reserved. Ctrl / ⌘ + Enter, including Shift or Alt variants, stays reserved for sending.</p>
+ <div id="shortcut-list"></div>
+ <p id="shortcut-feedback" role="status" aria-live="polite"></p>
+ <div class="dialog-actions"><button id="shortcut-reset" type="button" class="sec">Restore defaults</button></div>
 </dialog>
 <script>/*JS*/</script>
 </body>
