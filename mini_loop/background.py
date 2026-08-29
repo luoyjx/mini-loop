@@ -313,6 +313,18 @@ class BackgroundManager:
             task["result"] = SHED_BACKGROUND_RESULT
             task.pop("handle", None)  # a completed asyncio.Task, no longer needed
 
+    def live_count(self) -> int:
+        """How many tasks are still running right now.
+
+        Exists for the interruption marker (session._record_interruption):
+        a cancelled turn does not stop background work -- outliving the turn
+        is this manager's whole contract -- and the model must be told that,
+        or its next turn reasons about a world where the interruption stopped
+        everything.
+        """
+
+        return sum(1 for t in self._tasks.values() if t.get("status") == "running")
+
     def check(self, bg_id: str | None = None) -> str:
         if bg_id:
             t = self._tasks.get(bg_id)
@@ -414,14 +426,27 @@ async def background_injector(agent) -> list:
 
 _RUN = {
     "type": "object",
-    "properties": {"command": {"type": "string"}, "timeout": {"type": "integer"}},
+    "properties": {
+        "command": {"type": "string"},
+        "timeout": {"type": "integer"},
+        "approval_prefix": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": (
+                "Optional: propose the command prefix the human may remember "
+                "for the session if this needs approval (see bash)."
+            ),
+        },
+    },
     "required": ["command"],
 }
 _CHECK = {"type": "object", "properties": {"bg_id": {"type": "string"}}}
 
 
 def install_background(registry: ToolRegistry) -> ToolRegistry:
-    async def background_run(ctx, command, timeout=None):
+    async def background_run(ctx, command, timeout=None, approval_prefix=None):
+        # `approval_prefix` is approval-layer metadata (approvals.py);
+        # execution ignores it.
         return _mgr(ctx).run(command, timeout)
 
     async def check_background(ctx, bg_id=None):

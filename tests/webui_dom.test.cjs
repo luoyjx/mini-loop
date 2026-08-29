@@ -385,6 +385,92 @@ test("tool errors expand the disclosure and retain attacker-controlled output as
   assert.equal(row.querySelectorAll("img").length, 0);
 });
 
+test("activity groups collect only explicitly associated tool rows", async () => {
+  const a = await app();
+  a.run("onEvent({type:'activity_update', activity_id:'act_1', title:'Inspect the workspace.', source:'commentary', provisional:false})");
+  a.run("onEvent({type:'tool_use', name:'glob', span_id:'g1', activity_id:'act_1', input:{pattern:'*'}, display:{verb:'search', object:'*'}})");
+  a.run("onEvent({type:'tool_use', name:'bash', span_id:'g2', input:{command:'make'}})");
+
+  const ledger = a.get("ledger");
+  const group = ledger.children[0];
+  assert.equal(group.dataset.kind, "activity");
+  assert.match(group.textContent, /Inspect the workspace\./);
+  const body = group.querySelectorAll("div").find((n) => n.className === "activity-body");
+  assert.equal(body.children.length, 1, "the grouped tool row is inside the phase");
+  assert.match(body.textContent, /Search \*/);
+  // The un-associated call stays top-level -- no "latest title" guessing.
+  assert.equal(ledger.children.length, 2);
+  assert.match(ledger.children[1].textContent, /bash/);
+
+  // Replay is idempotent: the same activity_id never duplicates the group.
+  a.run("onEvent({type:'activity_update', activity_id:'act_1', title:'Inspect the workspace.', source:'commentary', provisional:false})");
+  assert.equal(ledger.children.length, 2);
+});
+
+test("semantic labels conjugate only on real success", async () => {
+  const a = await app();
+  a.run("onEvent({type:'tool_use', name:'bash', span_id:'ok', input:{command:'rg x'}, display:{verb:'run', object:'rg x'}})");
+  a.run("onEvent({type:'tool_use', name:'bash', span_id:'bad', input:{command:'rm -rf b'}, display:{verb:'run', object:'rm -rf b'}})");
+  const rows = a.get("ledger").children;
+  assert.match(rows[0].textContent, /Run rg x/);
+  assert.match(rows[0].textContent, /Requested/);
+
+  a.run("onEvent({type:'tool_result', span_id:'ok', output:'done', duration_ms:5})");
+  assert.match(rows[0].textContent, /Ran rg x/);
+
+  a.run("onEvent({type:'tool_result', span_id:'bad', denied:true, output:'no', duration_ms:5})");
+  assert.doesNotMatch(rows[1].textContent, /Ran/, "a denied call claimed past-tense success");
+  assert.match(rows[1].textContent, /Run rm -rf b/);
+  // The raw tool name and params stay in the details either way.
+  assert.match(rows[0].textContent, /bash/);
+  assert.match(rows[0].textContent, /"command"/);
+});
+
+test("events without display metadata keep the plain tool name", async () => {
+  const a = await app();
+  a.run("onEvent({type:'tool_use', name:'bash', span_id:'t', input:{command:'test'}})");
+  const row = a.get("ledger").children[0];
+  assert.match(row.textContent, /bash/);
+  assert.doesNotMatch(row.textContent, /Run |Ran /);
+});
+
+test("the workflows pane is honest about disabled and terminal states", async () => {
+  let a = await app({ respond: (url) => url.endsWith("/workflows")
+    ? { body: { enabled: false, runs: [] } } : undefined });
+  a.run("currentSid = 'alpha'");
+  await a.run("loadWorkflows()");
+  assert.equal(a.get("wf-disabled").hidden, false, "disabled deployment not named");
+  assert.equal(a.get("wf-launch").hidden, true, "launch form offered while disabled");
+
+  a = await app({ respond: (url) => url.endsWith("/workflows")
+    ? { body: { enabled: true, runs: [
+        { run_id: "wfr-1", workflow_name: "audit", status: "RUNNING", attempts_used: 1 },
+        { run_id: "wfr-2", workflow_name: "audit", status: "COMPLETED", attempts_used: 2 },
+      ] } } : undefined });
+  a.run("currentSid = 'alpha'");
+  await a.run("loadWorkflows()");
+  assert.equal(a.get("wf-disabled").hidden, true);
+  const items = a.get("wf-list").children;
+  assert.equal(items.length, 2);
+  const liveButtons = items[0].querySelectorAll("button").map((b) => b.textContent);
+  assert.ok(liveButtons.includes("Cancel"), "live run lost its cancel control");
+  const doneButtons = items[1].querySelectorAll("button").map((b) => b.textContent);
+  assert.ok(!doneButtons.includes("Cancel"), "terminal run offered cancel");
+});
+
+test("workflow launch submits the JSON exactly as written", async () => {
+  const a = await app({ respond: (url) => url.endsWith("/workflows")
+    ? { body: { enabled: true, runs: [] } } : undefined });
+  a.run("currentSid = 'alpha'");
+  a.get("wf-def").value = '{"name": "audit"}';
+  a.get("wf-args").value = '{"question": "q"}';
+  await a.get("wf-launch-btn").emit("click");
+  const request = a.requests.find((r) => r.method === "POST");
+  assert.equal(request.url, "/sessions/alpha/workflows");
+  assert.deepEqual(JSON.parse(request.body),
+    { definition: { name: "audit" }, args: { question: "q" } });
+});
+
 test("diagnostic events are inspectable inside one quiet disclosure", async () => {
   const a = await app();
   a.run("onEvent({type:'status', status:'running'}); onEvent({type:'system_prompt', text:'<script>not markup</script>'});");
@@ -448,8 +534,25 @@ test("both approval controls resolve only the displayed session and approval", a
     await button.emit("click");
     const request = a.requests.find((r) => r.method === "POST");
     assert.equal(request.url, "/sessions/alpha/approvals/approval-1");
-    assert.deepEqual(JSON.parse(request.body), { decision });
+    assert.deepEqual(JSON.parse(request.body), { decision, remember: false });
   }
+});
+
+test("the remember control sends remember=true and shows the exact grant", async () => {
+  const a = await app({ respond: (url) => url.endsWith("/approvals")
+    ? { body: { approvals: [{ approval_id: "approval-2", tool: "bash",
+        grant_candidate: ["bash", "git", "reset"], grant_proposed: true }] } } : undefined });
+  a.run("currentSid = 'alpha'");
+  await a.run("refreshApprovals()");
+  const button = a.get("approval-list").querySelectorAll("button")
+    .find((node) => node.textContent.startsWith("Allow + remember"));
+  assert.ok(button, "no remember control rendered");
+  assert.ok(button.textContent.includes("git reset"), "grant scope not shown");
+  assert.ok(button.textContent.includes("model-proposed"), "provenance not shown");
+  await button.emit("click");
+  const request = a.requests.find((r) => r.method === "POST");
+  assert.equal(request.url, "/sessions/alpha/approvals/approval-2");
+  assert.deepEqual(JSON.parse(request.body), { decision: "allow", remember: true });
 });
 
 

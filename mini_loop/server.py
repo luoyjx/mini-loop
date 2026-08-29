@@ -43,6 +43,7 @@ import asyncio
 import contextlib
 import json
 import time
+import uuid
 from pathlib import Path
 from contextlib import asynccontextmanager
 from collections.abc import Callable
@@ -54,11 +55,12 @@ from fastapi.responses import HTMLResponse, Response, StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
 from sse_starlette.sse import EventSourceResponse
 
+from .actions import ActionJournalConflict
 from .config import Settings, build_client, load_settings
 from .manager import SessionManager
 from .auth import ANONYMOUS, NullAuth, Principal, load_auth
 from .identity import runtime_identity
-from .run_context import UNTRUSTED, RunContext
+from .run_context import UNTRUSTED, WORKFLOW_LAUNCH, RunContext
 from .session import AgentSession
 from .skill_capture import PERSONAL_SKILL_CAPTURE_SOURCE, PersonalSkillError
 
@@ -77,10 +79,27 @@ class MessageReq(BaseModel):
     message: str
 
 
+class WorkflowLaunchReq(BaseModel):
+    definition: dict
+    args: dict = {}
+    #: Optional idempotency key: resubmitting the same action_id returns the
+    #: run the first submission bound (the workflow service's action journal
+    #: binding), instead of launching a second run.
+    action_id: str | None = None
+
+
+class WorkflowCancelReq(BaseModel):
+    reason: str = "requested by operator"
+
+
 class ApprovalReq(BaseModel):
     decision: Literal["allow", "deny"]
     #: For kind="question" pendings: the reply text. Ignored for approvals.
     answer: str | None = None
+    #: On an allow: record the pending's grant_candidate for the rest of the
+    #: session, so equivalent calls skip the ask (approvals.py). Ignored on
+    #: deny -- only a yes can generalize.
+    remember: bool = False
 
 
 class CronReq(BaseModel):
@@ -571,9 +590,13 @@ def _register_routes(app: FastAPI) -> None:
 
     @app.post("/sessions/{session_id}/mode")
     async def set_mode(request: Request, session_id: str, req: ModeReq):
-        """Change the session's risk->decision posture (see permissions.py)."""
+        """Change the session's risk->decision posture (see permissions.py).
+
+        Through this edge the change is told to the model at its next round
+        (session.change_permission_mode queues the note); raw attribute
+        writes remain the silent, process-local path."""
         session = _require(request, session_id)
-        session.permission_mode = req.mode
+        session.change_permission_mode(req.mode)
         return {"session": session_id, "permission_mode": req.mode}
 
     @app.post("/sessions/{session_id}/personal-skills/preview")
@@ -703,6 +726,117 @@ def _register_routes(app: FastAPI) -> None:
         session = _require(request, session_id)
         stopped = await session.cancel("cancelled over HTTP")
         return {"session": session_id, "cancelled": stopped, "info": session.info()}
+
+    @app.get("/sessions/{session_id}/workflows")
+    async def list_workflows(request: Request, session_id: str):
+        """This session's workflow runs, or an honest disabled flag.
+
+        `enabled` is explicit so the UI can say "not enabled on this
+        deployment" instead of rendering a vacuously empty list."""
+        session = _require(request, session_id)
+        service = _manager(request).workflows
+        if service is None:
+            return {"enabled": False, "runs": []}
+        return {"enabled": True, "runs": service.summaries(session.id)}
+
+    @app.get("/sessions/{session_id}/workflows/{run_id}")
+    async def workflow_detail(request: Request, session_id: str, run_id: str):
+        session = _require(request, session_id)
+        service = _manager(request).workflows
+        if service is None:
+            raise HTTPException(status_code=404, detail="workflows are not enabled")
+        from .workflows.store import NotFoundError
+
+        try:
+            # session_id scoping inside the service: a foreign run reads as
+            # missing, the same rule _require applies to sessions.
+            return service.status(run_id, session_id=session.id)
+        except NotFoundError:
+            raise HTTPException(status_code=404,
+                                detail=f"No workflow run '{run_id}'")
+
+    @app.post("/sessions/{session_id}/workflows/{run_id}/cancel")
+    async def cancel_workflow(request: Request, session_id: str, run_id: str,
+                              req: WorkflowCancelReq):
+        """The human's cancel edge: capability-reducing, so plain ownership
+        suffices -- no authority stamp needed to STOP work."""
+        session = _require(request, session_id)
+        service = _manager(request).workflows
+        if service is None:
+            raise HTTPException(status_code=404, detail="workflows are not enabled")
+        from .workflows.store import NotFoundError
+
+        try:
+            run = await service.cancel(run_id, session_id=session.id,
+                                       reason=req.reason)
+        except NotFoundError:
+            raise HTTPException(status_code=404,
+                                detail=f"No workflow run '{run_id}'")
+        return {"run_id": run_id, "status": run.status.value}
+
+    @app.post("/sessions/{session_id}/workflows")
+    async def launch_workflow(request: Request, session_id: str,
+                              req: WorkflowLaunchReq):
+        """The human's own launch edge.
+
+        Unlike /messages -- untrusted on purpose, because message TEXT flows
+        through the model and any capability would ride every action of the
+        turn -- this payload IS the single action the human is invoking:
+        definition plus args, no model interpretation in between. That is
+        exactly what explicit_human authority with a single approved
+        capability was built to express, and it follows the cron precedent
+        (scheduling over authenticated HTTP is the human edge). The stamp is
+        only issued on an AUTHENTICATED deployment: an anonymous bind cannot
+        claim to be the human, so an open deployment refuses launch and the
+        terminal path (which stamps its own trusted-local context) remains
+        the only edge there.
+        """
+        caller = _principal(request)
+        session = _require(request, session_id)
+        service = _manager(request).workflows
+        if service is None:
+            raise HTTPException(status_code=404, detail="workflows are not enabled")
+        if isinstance(_auth(request), NullAuth):
+            raise HTTPException(
+                status_code=403,
+                detail="workflow launch over HTTP requires an authenticated "
+                       "deployment; an anonymous bind cannot stamp "
+                       "explicit_human authority",
+            )
+        action_id = req.action_id or f"wfhttp_{uuid.uuid4().hex[:16]}"
+        # message_id derives from the action: the journal treats it as part
+        # of the action's immutable identity, so a client retry of the same
+        # action_id must present the same message identity to be recognized
+        # as a replay instead of rejected as a conflict.
+        import dataclasses
+
+        context = dataclasses.replace(
+            RunContext.explicit_human(
+                actor_id=caller.id, channel="http",
+                stamped_by="mini_loop.server",
+                approved_capabilities=(WORKFLOW_LAUNCH,),
+            ),
+            message_id=f"msg_{action_id}",
+        )
+        try:
+            result = await service.launch(
+                session_id=session.id, definition=req.definition,
+                args=req.args, run_context=context, action_id=action_id,
+            )
+        except PermissionError as error:
+            raise HTTPException(status_code=403, detail=str(error))
+        except ActionJournalConflict as error:
+            # Same action_id, different payload: not a replay, a collision.
+            raise HTTPException(status_code=409, detail=str(error))
+        except LookupError as error:
+            raise HTTPException(status_code=404, detail=str(error))
+        except (ValueError, KeyError, TypeError) as error:
+            # Malformed definitions and schema violations are the caller's
+            # to fix; surface the validator's words.
+            raise HTTPException(status_code=400, detail=str(error)[:500])
+        payload = result.as_dict()
+        payload["action_id"] = action_id
+        return payload
 
     @app.get("/sessions/{session_id}/cron")
     async def list_cron(request: Request, session_id: str):
@@ -970,7 +1104,7 @@ def _register_routes(app: FastAPI) -> None:
         # missing, the same rule _require applies to the session itself.
         resolved = _manager(request).approvals.resolve(
             approval_id, session_id=session.id, allowed=req.decision == "allow",
-            answer=req.answer,
+            answer=req.answer, remember=req.remember,
         )
         if not resolved:
             raise HTTPException(status_code=404,

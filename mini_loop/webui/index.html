@@ -98,6 +98,7 @@
      <button data-tab="trajectories" class="tab" type="button" aria-controls="trajectories">Trajectories</button>
      <button data-tab="transcript" class="tab" type="button" aria-controls="transcript">Transcript</button>
      <button data-tab="cron" class="tab" type="button" aria-controls="cron">Cron</button>
+<button data-tab="workflows" class="tab" type="button" aria-controls="workflows">Workflows</button>
      <button data-tab="skills" class="tab" type="button" aria-controls="skills">Skills</button>
      <button data-tab="memory" class="tab" type="button" aria-controls="memory">Memory</button>
      <button data-tab="improve" class="tab" type="button" aria-controls="improve">Improve</button>
@@ -129,6 +130,23 @@
       <button id="cron-add" type="button">Schedule</button>
      </div>
      <ul id="cron-list" class="rows"></ul>
+    </div>
+    <div id="workflows" class="pane" hidden>
+     <p class="muted" id="wf-disabled" hidden>Workflows are not enabled on this
+      deployment; start the server with the workflow service to use them.</p>
+     <div class="pane-tools"><button id="wf-refresh" type="button" class="sec">Refresh</button></div>
+     <ul id="wf-list" class="rows"></ul>
+     <div id="wf-detail" class="prose"></div>
+     <details id="wf-launch">
+      <summary>Launch a workflow</summary>
+      <p class="muted">The definition and args are submitted exactly as written;
+       launch requires an authenticated deployment.</p>
+      <label for="wf-def">Definition (JSON)</label>
+      <textarea id="wf-def" rows="6" spellcheck="false"></textarea>
+      <label for="wf-args">Args (JSON)</label>
+      <textarea id="wf-args" rows="2" spellcheck="false">{}</textarea>
+      <div class="pane-tools"><button id="wf-launch-btn" type="button">Launch</button></div>
+     </details>
     </div>
     <div id="skills" class="pane" hidden>
      <div class="pane-tools">

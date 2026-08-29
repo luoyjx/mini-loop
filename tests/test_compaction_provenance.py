@@ -52,6 +52,44 @@ def test_the_compact_event_records_usage_and_provenance(tmp_path):
     store.close()
 
 
+def test_the_summary_is_requested_and_framed_as_a_handoff(tmp_path):
+    """The summarization request names the four things a resuming agent
+    needs (progress+decisions, constraints, next steps, critical data), and
+    the replacement transcript frames the summary as ANOTHER instance's
+    handoff -- so the model builds on it instead of mistaking it for user
+    input or redoing finished work. Codex's checkpoint-compaction pattern."""
+
+    from mini_loop.compaction import COMPACTION_PROMPT, SUMMARY_PREFIX
+
+    captured = []
+    inner = _big_turn(3)
+
+    def responder(request):
+        captured.append(request)
+        return inner(request)
+
+    manager = SessionManager(
+        Settings(fake_llm=True, workspace_root=tmp_path / "ws",
+                 skills_dir=SKILLS, spill_dir=None, token_threshold=500),
+        FakeAsyncAnthropic(responder=responder),
+    )
+    session = manager.create()
+    for _ in range(4):
+        asyncio.run(session.run("keep working"))
+
+    compaction_requests = [
+        r for r in captured
+        if COMPACTION_PROMPT[:40] in str(r.get("messages", ""))
+    ]
+    assert compaction_requests, "no request carried the checkpoint prompt"
+
+    head = session.agent.messages[0]["content"]
+    assert "[Context compressed. Full transcript:" in head
+    assert SUMMARY_PREFIX in head, (
+        "the replacement transcript lost its handoff framing"
+    )
+
+
 def test_recovery_needs_only_the_durable_log_not_live_memory(tmp_path):
     """After a compaction, a SECOND process restores from disk alone and
     runs a further turn -- the recovery path depends on nothing the first

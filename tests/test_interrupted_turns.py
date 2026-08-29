@@ -142,6 +142,32 @@ def test_the_text_the_user_saw_is_kept(tmp_path, slow_stream):
     assert "PARTIAL-ANSWER" in str(assistant[-1])
 
 
+def test_the_marker_names_surviving_background_tasks(tmp_path):
+    """Cancellation does not stop background work -- outliving the turn is
+    background.py's contract -- and the marker must say so, or the model's
+    next turn reasons about a world where the interruption stopped
+    everything. (Codex pins the same fact in its interruption marker.)
+    The no-background case stays the bare marker, pinned by the exact
+    equality in the test below."""
+
+    from mini_loop.background import BackgroundManager
+
+    session = _session(
+        tmp_path, responder=lambda request: ([text("hi")], "end_turn")
+    )
+    manager = BackgroundManager(session.workspace)
+    # Seed a running task directly: a real subprocess here would race the
+    # assertion, and live_count reads only the status field.
+    manager._tasks["bg_1"] = {"status": "running", "command": "sleep 999",
+                              "result": None}
+    session.agent.state["background"] = manager
+    recorded = session._record_interruption("cancelled", repaired=False)
+    assert recorded
+    marker = session.agent.messages[-1]["content"][0]["text"]
+    assert "1 background task(s) kept running" in marker
+    assert "check_background" in marker
+
+
 def test_a_completed_stream_leaves_no_partial_to_re_record(tmp_path):
     """The mirror of the test above. `streamed_text` holds what an *interrupted*
     stream showed and never recorded, so a *completed* stream -- whose text is in

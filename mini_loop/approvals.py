@@ -38,6 +38,78 @@ DEFAULT_APPROVAL_TIMEOUT = 300.0
 #: so a pathological payload cannot flood the event stream or the REST list.
 INPUT_PREVIEW_CAP = 400
 
+#: Command heads that may never anchor a remembered grant (Codex's
+#: BANNED_PREFIX_SUGGESTIONS, cut to this harness's surface). Each is an
+#: interpreter, an escalator, or a deleter: a prefix starting with one covers
+#: effectively unbounded behavior, so "remember this" would remember far more
+#: than the human just reviewed.
+GRANT_BANNED_HEADS = (
+    "bash", "sh", "zsh", "dash", "ksh", "python", "python3", "node", "deno",
+    "perl", "ruby", "php", "sudo", "doas", "su", "rm", "eval", "exec", "env",
+    "xargs", "find", "curl", "wget", "nc", "chmod", "chown", "dd", "mkfs",
+)
+
+#: Shell grants anchor on exactly this many leading tokens: `git reset
+#: --hard X` may become "allow `git reset`", never "allow git".
+GRANT_PREFIX_TOKENS = 2
+
+
+def grant_candidate(tool: str, tool_input: dict) -> tuple[str, ...] | None:
+    """The most a single yes may generalize to, or None.
+
+    Shell: the command's first two tokens. Anything else: the tool name
+    alone -- an approved MCP deploy tool may be remembered as a tool, never
+    as a payload pattern the 400-char preview cannot actually capture. A
+    shell command shorter than the prefix offers nothing to remember: a
+    one-token grant is a head grant, which is what the ban list exists to
+    prevent.
+    """
+
+    if tool in ("bash", "background_run"):
+        tokens = str(tool_input.get("command", "")).split()
+        if len(tokens) < GRANT_PREFIX_TOKENS:
+            return None
+        return (tool, *tokens[:GRANT_PREFIX_TOKENS])
+    return (tool,)
+
+
+def grant_banned(candidate: tuple[str, ...]) -> bool:
+    return len(candidate) > 1 and candidate[1] in GRANT_BANNED_HEADS
+
+
+#: Longest model-proposed prefix admitted; beyond this a "prefix" is just
+#: the whole command wearing a hat.
+GRANT_PROPOSAL_MAX_TOKENS = 6
+
+
+def proposed_candidate(tool: str, tool_input: dict) -> tuple[str, ...] | None:
+    """The model's own `approval_prefix`, admitted only when honest.
+
+    Admissible iff it is the command's OWN leading tokens -- a proposal
+    that is not a prefix of what will actually run is a lie about scope --
+    at least two of them (a one-token grant is a head grant), at most
+    GRANT_PROPOSAL_MAX_TOKENS, with an unbanned head. Anything else answers
+    None and the caller falls back to the default candidate exactly as if
+    nothing had been proposed: a bad proposal never widens or narrows what
+    a yes means.
+    """
+
+    proposed = tool_input.get("approval_prefix")
+    if (
+        tool not in ("bash", "background_run")
+        or not isinstance(proposed, list)
+        or not (2 <= len(proposed) <= GRANT_PROPOSAL_MAX_TOKENS)
+        or not all(isinstance(t, str) for t in proposed)
+    ):
+        return None
+    tokens = str(tool_input.get("command", "")).split()
+    if tokens[: len(proposed)] != list(proposed):
+        return None
+    candidate = (tool, *proposed)
+    if grant_banned(candidate):
+        return None
+    return candidate
+
 
 @dataclass
 class PendingApproval:
@@ -57,6 +129,16 @@ class PendingApproval:
     #: free text; the model asked the human something (`ask_user`). One
     #: machinery, because a question is an approval whose answer has words.
     kind: str = "approval"
+    #: What resolve(remember=True) would grant for the rest of the session,
+    #: shown to the approver up front so a remembered yes is informed.
+    grant_candidate: tuple = ()
+    #: True when the candidate is the model's own admitted approval_prefix
+    #: rather than the harness default -- the approver should know whose
+    #: generalization they are ratifying.
+    grant_proposed: bool = False
+    #: Set by resolve: "recorded" | "refused_banned" | None. Read back by the
+    #: waiting ask() so the grant's fate is emitted from the turn's own loop.
+    grant_outcome: str | None = None
 
     def snapshot(self) -> dict:
         return {
@@ -69,6 +151,8 @@ class PendingApproval:
             "input_preview": self.input_preview,
             "created_at": self.created_at,
             "kind": self.kind,
+            "grant_candidate": list(self.grant_candidate) or None,
+            "grant_proposed": self.grant_proposed,
         }
 
 
@@ -107,6 +191,11 @@ class ApprovalBroker:
         #: path, never toward silent auto-approval.
         self.reviewer = None
         self._pending: dict[str, PendingApproval] = {}
+        #: Session-scoped grants a human recorded with resolve(remember=True):
+        #: session_id -> set of grant tuples. Runtime-only on purpose, the
+        #: same doctrine as permission_mode -- a restarted process asks again;
+        #: the fail-safe direction is toward the human.
+        self._grants: dict[str, set] = {}
         #: Persistence faults, surfaced by the audit's problem-channel sweep.
         #: A silently-swallowed write undoes round 100's restart guarantee --
         #: a parked approval with no row restores as UNKNOWN (do-not-retry)
@@ -173,6 +262,34 @@ class ApprovalBroker:
         secrets = getattr(ctx.agent, "secrets", None)
         shown = secrets.mask_payload(call.input) if secrets is not None else call.input
         preview = json.dumps(shown, default=str)[:INPUT_PREVIEW_CAP]
+        # A grant the human recorded earlier answers first -- it IS a human
+        # decision, so it outranks the auto-reviewer the same way the human
+        # does.
+        hit = self.granted(session_id, call.name, call.input)
+        if hit is not None:
+            self._persist(
+                PendingApproval(
+                    approval_id=f"apr_{uuid.uuid4().hex[:12]}",
+                    session_id=session_id, tool=call.name, rule=rule.name,
+                    message=rule.message, input_preview=preview,
+                    created_at=time.time(),
+                    future=asyncio.get_running_loop().create_future(),
+                    tool_use_id=getattr(call, "id", "") or "",
+                    grant_candidate=hit,
+                ),
+                "grant_allowed",
+            )
+            await ctx.emit_event(
+                "approval_grant_used",
+                tool=call.name, rule=rule.name, grant=list(hit),
+            )
+            return True
+        # The model's admitted proposal wins over the harness default: it is
+        # usually narrower and always honest (proposed_candidate refuses
+        # anything that is not the command's own prefix). The approver sees
+        # whose generalization they are ratifying via grant_proposed.
+        proposal = proposed_candidate(call.name, call.input)
+        candidate = proposal or grant_candidate(call.name, call.input)
         # Auto-review before parking a human (Codex's priority: hooks, then
         # Guardian, then the user). A decisive reviewer replaces the human
         # for THIS action only -- it decides the same allow/deny a human
@@ -218,6 +335,8 @@ class ApprovalBroker:
             created_at=time.time(),
             future=asyncio.get_running_loop().create_future(),
             tool_use_id=getattr(call, "id", "") or "",
+            grant_candidate=candidate or (),
+            grant_proposed=proposal is not None,
         )
         self._pending[pending.approval_id] = pending
         self._persist(pending, "pending")
@@ -227,7 +346,22 @@ class ApprovalBroker:
             # writes allowed/denied, cancel_session() writes cancelled --
             # so a cancellation is not overwritten as a plain deny when the
             # parked coroutine wakes up.
-            return bool(await asyncio.wait_for(pending.future, self.timeout))
+            allowed = bool(await asyncio.wait_for(pending.future, self.timeout))
+            # The grant's fate is emitted from the turn's own loop -- resolve()
+            # runs on the HTTP side with no ctx to emit through.
+            if allowed and pending.grant_outcome == "recorded":
+                await ctx.emit_event(
+                    "approval_grant_recorded",
+                    tool=call.name, grant=list(pending.grant_candidate),
+                )
+            elif allowed and pending.grant_outcome == "refused_banned":
+                await ctx.emit_event(
+                    "approval_grant_refused",
+                    tool=call.name, grant=list(pending.grant_candidate),
+                    reason="prefix too broad to remember; this run was "
+                           "allowed, the next will ask again",
+                )
+            return allowed
         except asyncio.TimeoutError:
             # The safe default is the old default: nobody answered, so no.
             self._persist(pending, "timeout")
@@ -291,18 +425,47 @@ class ApprovalBroker:
 
     # -- the resolution surface (REST, tests, embedding apps) ---------------
 
+    def granted(self, session_id: str, tool: str, tool_input: dict):
+        """The recorded grant covering this call, or None.
+
+        Shell grants are token prefixes of the command -- variable length,
+        because a model-proposed prefix may be longer than the two-token
+        default. Other grants are the tool name alone. Matching against the
+        call's OWN tokens is the containment: a grant covers exactly the
+        calls whose commands start with it, nothing else.
+        """
+
+        grants = self._grants.get(session_id)
+        if not grants:
+            return None
+        if tool in ("bash", "background_run"):
+            tokens = tuple(str(tool_input.get("command", "")).split())
+            for g in grants:
+                if g[0] == tool and len(g) > 1 and tokens[: len(g) - 1] == g[1:]:
+                    return g
+            return None
+        return (tool,) if (tool,) in grants else None
+
     def list(self, session_id: str) -> list[dict]:
         return [p.snapshot() for p in self._pending.values()
                 if p.session_id == session_id]
 
     def resolve(self, approval_id: str, *, session_id: str, allowed: bool,
-                answer: str | None = None) -> bool:
+                answer: str | None = None, remember: bool = False) -> bool:
         """Answer one pending approval. False when the id is unknown, already
         answered, or belongs to a different session -- a foreign id behaves
         exactly like a missing one.
 
         For a `question`, `allowed` + `answer` provides the text and a deny
-        declines; the answer is persisted verbatim on the row."""
+        declines; the answer is persisted verbatim on the row.
+
+        `remember` on an allow records the pending's grant_candidate for the
+        rest of the session (approval-as-learning, Codex's prefix_rule):
+        later calls with the same candidate skip the ask. A banned head is
+        refused -- THIS run stays allowed, the rule is not recorded, and the
+        refusal is emitted so the approver learns the generalization was too
+        broad. `remember` on a deny is ignored: only a yes can generalize.
+        """
 
         pending = self._pending.get(approval_id)
         if pending is None or pending.session_id != session_id:
@@ -316,13 +479,27 @@ class ApprovalBroker:
                           "answered" if value is not None else "declined",
                           answer=value)
         else:
-            pending.future.set_result(bool(allowed))
-            self._persist(pending, "allowed" if allowed else "denied")
+            verdict = bool(allowed)
+            if verdict and remember and pending.grant_candidate:
+                if grant_banned(pending.grant_candidate):
+                    pending.grant_outcome = "refused_banned"
+                else:
+                    self._grants.setdefault(
+                        pending.session_id, set()
+                    ).add(pending.grant_candidate)
+                    pending.grant_outcome = "recorded"
+            pending.future.set_result(verdict)
+            self._persist(pending, "allowed" if verdict else "denied")
         return True
 
     def cancel_session(self, session_id: str) -> int:
-        """Deny everything a session still has open (delete/stop paths)."""
+        """Deny everything a session still has open (delete/stop paths).
 
+        Grants die with the session too: they were scoped to a conversation
+        that no longer exists, and a successor session with the same id must
+        start from asking."""
+
+        self._grants.pop(session_id, None)
         cancelled = 0
         for pending in list(self._pending.values()):
             if pending.session_id != session_id or pending.future.done():

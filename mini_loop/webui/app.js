@@ -294,8 +294,25 @@ $("create-confirm").addEventListener("click", async () => {
 let stream = null;
 const openSpans = new Map();   // span_id -> row state
 const streams = new Map();     // stream_id -> ephemeral row
+// activity_id -> { body } phase groups (WEBUI_PLAN R8-3). Grouping is the
+// event's own recorded association: a tool_use lands in a group only when
+// it carries that group's activity_id -- never "the latest title".
+const activities = new Map();
 let requestNo = 0;
 let traceGroup = null;
+
+// R8-2 tense projection: the verb stem renders as-is while a call is only
+// Requested/failed; only a successful tool_result may conjugate to past.
+const VERB_STEM = { read: "Read", search: "Search", list: "List",
+  write: "Write", edit: "Edit", run: "Run", call: "Call" };
+const VERB_PAST = { read: "Read", search: "Searched", list: "Listed",
+  write: "Wrote", edit: "Edited", run: "Ran", call: "Called" };
+
+function displayLabel(display, table) {
+  if (!display || !table[display.verb]) return null;
+  const object = display.object ? " " + display.object : "";
+  return table[display.verb] + object;
+}
 
 function diagnosticRow(event) {
   if (!traceGroup) {
@@ -315,7 +332,7 @@ function diagnosticRow(event) {
   traceGroup.count.textContent = traceGroup.size + " events";
 }
 
-function ledgerRow(kind, glyph, label, content, depth) {
+function ledgerRow(kind, glyph, label, content, depth, container) {
   const disclosure = kind === "tool" || kind === "model";
   const row = el(disclosure ? "details" : "div", "lrow");
   row.dataset.kind = kind;
@@ -332,20 +349,22 @@ function ledgerRow(kind, glyph, label, content, depth) {
   head.append(mark);
   const dur = el("span", "dur", "");
   const contentSpan = el(disclosure ? "pre" : "span", "content", content || "");
+  let labelEl = null;
   if (disclosure) {
-    head.append(el("span", "label", label), dur);
+    labelEl = el("span", "label", label);
+    head.append(labelEl, dur);
     row.append(head, contentSpan);
   } else {
     const body = el("span", "body");
-    if (label) body.append(el("span", "label", label));
+    if (label) { labelEl = el("span", "label", label); body.append(labelEl); }
     body.append(contentSpan);
     row.append(body, dur);
   }
   const ledger = $("ledger");
   const following = ledger.scrollHeight - ledger.scrollTop - ledger.clientHeight < 100;
-  $("ledger").append(row);
+  (container || ledger).append(row);
   if (following || kind === "user") ledger.scrollTop = ledger.scrollHeight;
-  return { row, contentSpan, dur };
+  return { row, contentSpan, dur, labelEl };
 }
 
 function alertRow(text) {
@@ -398,11 +417,34 @@ function onEvent(event) {
     }
     return;
   }
+  if (type === "activity_update") {
+    // A phase header (R8-1/R8-3). Idempotent by id: a replayed event reuses
+    // the existing group, and existing groups are never renamed.
+    if (!event.activity_id || activities.has(event.activity_id)) return;
+    const group = el("details", "lrow activity-group");
+    group.open = true;
+    group.dataset.kind = "activity";
+    const summary = el("summary", "tool-summary");
+    summary.append(el("span", "glyph", "§"),
+      el("span", "label", event.title || ""), el("span", "dur", ""));
+    const body = el("div", "activity-body");
+    group.append(summary, body);
+    $("ledger").append(group);
+    activities.set(event.activity_id, { body });
+    return;
+  }
   if (type === "tool_use") {
-    const r = ledgerRow("tool", "⚙", event.name || "tool",
-      JSON.stringify(event.input || {}), depth);
+    // Semantic label (R8-2) when the event carries a display projection;
+    // older events keep the tool name. The raw name and masked params stay
+    // in the details body either way -- the label never replaces them.
+    const semantic = displayLabel(event.display, VERB_STEM);
+    const group = event.activity_id && activities.get(event.activity_id);
+    const r = ledgerRow("tool", "⚙", semantic || event.name || "tool",
+      (event.name || "tool") + " " + JSON.stringify(event.input || {}), depth,
+      group ? group.body : undefined);
     r.row.dataset.state = "requested";
     r.dur.textContent = "Requested";
+    r.display = event.display;
     if (event.span_id) openSpans.set(event.span_id, r);
     return;
   }
@@ -413,6 +455,12 @@ function onEvent(event) {
     r.row.dataset.state = "complete";
     r.dur.textContent = fmtDur(event.duration_ms);
     if (event.denied || event.error) { r.row.dataset.error = "1"; r.row.open = true; }
+    else {
+      // Only a real success may conjugate to past tense (R8-2): a denied
+      // or failed call keeps its requested-form label.
+      const past = displayLabel(r.display, VERB_PAST);
+      if (past && r.labelEl) r.labelEl.textContent = past;
+    }
     const out = String(event.output || "");
     r.contentSpan.textContent += "\n→ " + (out.length > 400 ? out.slice(0, 400) + "…" : out);
     return;
@@ -485,7 +533,8 @@ function onEvent(event) {
 
 function openStream(sid) {
   if (stream) { stream.close(); stream = null; }
-  openSpans.clear(); streams.clear(); requestNo = 0; traceGroup = null;
+  openSpans.clear(); streams.clear(); activities.clear();
+  requestNo = 0; traceGroup = null;
   $("ledger").textContent = "";
   stream = new EventSource(
     "/sessions/" + encodeURIComponent(sid) + "/events?envelope=true" + tokenQuery());
@@ -520,18 +569,32 @@ async function refreshApprovals() {
     deny.addEventListener("click", () => resolveApproval(a.approval_id, "deny", sid));
     const actions = el("div", "approval-actions");
     actions.append(deny, allow);
+    if (a.grant_candidate && a.grant_candidate.length) {
+      // Session-scoped learning: an informed yes may generalize to the
+      // shown prefix (approvals.py grant machinery). Label carries the
+      // exact grant; provenance marks a model-proposed prefix.
+      const scope = a.grant_candidate.length > 1
+        ? a.grant_candidate.slice(1).join(" ")
+        : a.grant_candidate[0];
+      const origin = a.grant_proposed ? " (model-proposed)" : "";
+      const remember = el("button", "sec",
+        "Allow + remember: " + scope + origin);
+      remember.addEventListener("click",
+        () => resolveApproval(a.approval_id, "allow", sid, true));
+      actions.append(remember);
+    }
     item.append(what, actions);
     list.append(item);
   }
 }
-async function resolveApproval(approvalId, decision, sid) {
+async function resolveApproval(approvalId, decision, sid, remember) {
   if (sid !== currentSid) return;
   try {
     await api("/sessions/" + encodeURIComponent(sid) +
       "/approvals/" + encodeURIComponent(approvalId), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ decision }),
+      body: JSON.stringify({ decision, remember: !!remember }),
     });
   } catch (err) { alertRow("approval failed: " + err.message); }
   refreshApprovals();
@@ -708,9 +771,10 @@ async function sendMessage() {
 
 // ---- tabs ---------------------------------------------------------------
 const PANES = ["ledger", "tasks", "team", "trajectories", "transcript",
-               "cron", "skills", "memory", "improve", "benchmark"];
+               "cron", "workflows", "skills", "memory", "improve", "benchmark"];
 const PANE_TITLES = { tasks: "Tasks", team: "Team inbox", trajectories: "Trajectories",
-  transcript: "Transcript", cron: "Scheduled prompts", skills: "Skills", memory: "Memory",
+  transcript: "Transcript", cron: "Scheduled prompts", workflows: "Workflows",
+  skills: "Skills", memory: "Memory",
   improve: "Propose an improvement", benchmark: "Benchmark", "audit-pane": "Self-audit" };
 let lastInspectorPane = "tasks";
 function showPane(name) {
@@ -738,6 +802,7 @@ function showPane(name) {
   if (name === "trajectories") loadTrajectories();
   if (name === "transcript") loadTranscript();
   if (name === "cron") loadCron();
+  if (name === "workflows") loadWorkflows();
   if (name === "skills") loadSkills();
   if (name === "memory") loadMemory();
 }
@@ -1282,6 +1347,95 @@ $("transcript-refresh").addEventListener("click", loadTranscript);
 $("epoch-select").addEventListener("change", loadTranscript);
 
 // ---- cron (R3) ----------------------------------------------------------
+async function loadWorkflows() {
+  if (!currentSid) return;
+  const list = $("wf-list");
+  list.textContent = "";
+  $("wf-detail").textContent = "";
+  let payload;
+  try { payload = await api("/sessions/" + encodeURIComponent(currentSid) + "/workflows"); }
+  catch (err) { list.append(el("li", "", "workflows: " + err.message)); return; }
+  $("wf-disabled").hidden = payload.enabled !== false;
+  $("wf-launch").hidden = payload.enabled === false;
+  if (payload.enabled === false) return;
+  if (!(payload.runs || []).length) {
+    list.append(el("li", "muted", "No workflow runs in this session yet."));
+  }
+  for (const run of payload.runs || []) {
+    const item = el("li");
+    const grow = el("span", "grow",
+      run.workflow_name + " · " + run.run_id + " · attempts " + run.attempts_used);
+    const badge = el("span", "badge", run.status);
+    badge.dataset.a = run.status === "RUNNING" ? "running" : "idle";
+    item.append(grow, badge);
+    const inspect = el("button", "sec", "Detail");
+    inspect.addEventListener("click", () => loadWorkflowDetail(run.run_id));
+    item.append(inspect);
+    // Terminal statuses per workflows/models.py RunStatus.is_terminal.
+    if (!["COMPLETED", "FAILED", "CANCELLED", "REJECTED"].includes(run.status)) {
+      const cancel = el("button", "sec danger", "Cancel");
+      cancel.addEventListener("click", async () => {
+        try {
+          await api("/sessions/" + encodeURIComponent(currentSid) +
+            "/workflows/" + encodeURIComponent(run.run_id) + "/cancel", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({}),
+          });
+        } catch (err) { alertRow("workflow cancel failed: " + err.message); }
+        loadWorkflows();
+      });
+      item.append(cancel);
+    }
+    list.append(item);
+  }
+}
+
+async function loadWorkflowDetail(runId) {
+  const detail = $("wf-detail");
+  detail.textContent = "";
+  let run;
+  try {
+    run = await api("/sessions/" + encodeURIComponent(currentSid) +
+      "/workflows/" + encodeURIComponent(runId));
+  } catch (err) { detail.textContent = "detail: " + err.message; return; }
+  const head = el("p", "", run.workflow_name + " (rev " + run.definition_revision +
+    ") · " + run.status + (run.error ? " · error: " + run.error : "") +
+    (run.cancel_reason ? " · " + run.cancel_reason : ""));
+  detail.append(head);
+  const nodes = el("ul", "rows");
+  for (const node of run.nodes || []) {
+    nodes.append(el("li", "",
+      node.node_id + " · " + node.status +
+      " · attempts " + (node.attempt_ids || []).length +
+      (node.error ? " · " + node.error : "")));
+  }
+  detail.append(nodes);
+  if (run.result !== null && run.result !== undefined) {
+    const result = el("pre", "", JSON.stringify(run.result, null, 2).slice(0, 2000));
+    detail.append(el("p", "muted", "Result"), result);
+  }
+}
+
+$("wf-refresh").addEventListener("click", loadWorkflows);
+$("wf-launch-btn").addEventListener("click", async () => {
+  let definition, args;
+  try {
+    definition = JSON.parse($("wf-def").value);
+    args = JSON.parse($("wf-args").value || "{}");
+  } catch (err) { alertRow("workflow launch: invalid JSON: " + err.message); return; }
+  try {
+    const result = await api("/sessions/" + encodeURIComponent(currentSid) + "/workflows", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ definition, args }),
+    });
+    ledgerRow("ref", "·", "workflow", result.workflow_name + " " + result.run_id +
+      " " + result.status, 0);
+  } catch (err) { alertRow("workflow launch failed: " + err.message); }
+  loadWorkflows();
+});
+
 async function loadCron() {
   if (!currentSid) return;
   const list = $("cron-list");

@@ -113,6 +113,8 @@ class AgentSession:
         # Risk -> decision posture for this session's permission hook. Runtime
         # state, deliberately not persisted: a restored session asks again.
         self.permission_mode = "interactive"
+        # Posture changes waiting to be told to the model (posture_injector).
+        self._posture_notes: list[str] = []
         # Messages sent while a turn is running. OpenWorker's gateway turns
         # them into steering; ours used to answer 409 and drop the caller's
         # words on the floor. Drained by `steering_injector` at the next loop
@@ -457,6 +459,19 @@ class AgentSession:
         # with nothing between them" for "two user turns with a marker between
         # them", which is the same shape wearing a label.
         note = f"[Turn interrupted: {reason}]"
+        # Cancellation does not stop background tasks -- outliving the turn is
+        # their contract (background.py). Codex's interruption marker names
+        # this explicitly; without it, the model's next turn reasons about a
+        # world where the interruption stopped everything. Only said when it
+        # is true: a session that never ran background work gets no caveat.
+        manager = agent.state.get("background") if agent.state else None
+        live = manager.live_count() if manager is not None else 0
+        if live:
+            note += (
+                f"\n[{live} background task(s) kept running through this "
+                "interruption and may have already changed files; "
+                "check_background shows their state.]"
+            )
         agent.messages.append({
             "role": "assistant",
             "content": [{"type": "text", "text": f"{partial}\n{note}" if partial else note}],
@@ -483,6 +498,10 @@ class AgentSession:
         repaired = self._close_unanswered_tools()
         shown = self._record_interruption(reason, repaired)
         if repaired or shown:
+            # Flush BEFORE the cancelled event goes out: subscribers treat
+            # the event as "the transcript is settled, re-read it". An event
+            # that races ahead of the repair it announces hands them the
+            # un-repaired transcript as if it were final.
             self._flush_messages()
         await self.emit({
             "type": "cancelled",
@@ -665,6 +684,39 @@ class AgentSession:
         drained, self._steering = self._steering, []
         return drained
 
+    def change_permission_mode(self, mode: str) -> str:
+        """Flip the posture AND queue a note telling the model (the human edge).
+
+        A mid-conversation posture change used to be silent: the hook started
+        asking (or stopped refusing) and the model discovered the new rules by
+        colliding with them. Codex renders permission state into every step's
+        world state and marks changes explicitly; the miniature here is one
+        injected note naming old -> new at the next round (posture_injector).
+        Pre-first-run sets stay silent -- there is no conversation to notify,
+        and the first turn meets the posture as a fact, not a change. Direct
+        attribute writes remain possible for process-local callers and stay
+        silent by the same ownership rule as everything else on the session.
+        """
+
+        from .permissions import PERMISSION_MODES
+
+        if mode not in PERMISSION_MODES:
+            raise ValueError(f"unknown permission mode: {mode!r}")
+        old, self.permission_mode = self.permission_mode, mode
+        if mode != old and self.run_count > 0:
+            meaning = {
+                "readonly": "mutating tools are now refused outright",
+                "interactive": "risky actions now ask for approval",
+                "auto": "actions now run without asking; the deny-list still applies",
+            }.get(mode, "")
+            note = f"Permission posture changed by the operator: {old} -> {mode}."
+            self._posture_notes.append(f"{note} {meaning}".strip())
+        return mode
+
+    def drain_posture_notes(self) -> list[str]:
+        drained, self._posture_notes = self._posture_notes, []
+        return drained
+
     def _mask(self, value):
         """Mask a value for a durable trajectory record.
 
@@ -752,6 +804,10 @@ class AgentSession:
                     "text": "[Turn interrupted: process stopped mid-generation]",
                 }],
             })
+            # Flush before restore() returns: the marker exists to survive
+            # the NEXT crash. Deferred to the first turn's flush it protects
+            # nothing -- a process that dies again before running leaves the
+            # same bare-tail transcript this branch just repaired.
             self._flush_messages()
         return len(agent.messages)
 
@@ -1124,6 +1180,30 @@ async def steering_injector(agent) -> list[dict]:
     return [{
         "role": "user",
         "content": f"<user_interjection>\n{body}\n</user_interjection>",
+    }]
+
+
+async def posture_injector(agent) -> list[dict]:
+    """Deliver queued posture-change notes at the next loop round.
+
+    Separate from steering on purpose: a steer is the user's words and wears
+    <user_interjection>; a posture change is a fact about the rules of the
+    session, harness-authored, and must not be dressed as user prose. The
+    event mirrors steering_delivered so the ledger shows the change as a
+    first-class row.
+    """
+
+    session = agent.state.get("session")
+    if session is None:
+        return []
+    drained = session.drain_posture_notes()
+    if not drained:
+        return []
+    body = "\n".join(drained)
+    await agent._send("posture_update", count=len(drained), text=body)
+    return [{
+        "role": "user",
+        "content": f"<posture_update>\n{body}\n</posture_update>",
     }]
 
 #: The module's runtime-invariant posture (tools/verify_invariants.py).

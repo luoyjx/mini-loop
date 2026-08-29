@@ -731,6 +731,8 @@ class Agent:
         self._rounds_without_tools = 0
         self._resumptions = 0
         self._stuck_nudges = 0
+        #: The open display activity (WEBUI_PLAN R8-1); reset per turn.
+        self._activity_id = None
         #: One turn at a time per agent. See `run`.
         self._turn_lock = asyncio.Lock()
         #: Tool uses closed as unknown since the last report. See `run`.
@@ -1220,6 +1222,9 @@ class Agent:
         self._recent_steps.clear()
         self._rounds_without_tools = 0
         self._stuck_nudges = 0
+        # Display state only: the open activity (WEBUI_PLAN R8-1). A new
+        # turn starts unphased; the first commentary opens the first phase.
+        self._activity_id = None
         # Per turn, like the two above and for the same reason. Introduced in
         # round 84 as a plain instance counter, which quietly made it a
         # *session lifetime* budget: after eight paused turns spread over an
@@ -1432,6 +1437,25 @@ class Agent:
                 return
 
             await emit_text(COMMENTARY_PHASE)
+            # The commentary that precedes a tool batch names the phase the
+            # batch belongs to (WEBUI_PLAN R8-1): extract a bounded title
+            # from the COMPLETE public text and open an activity the batch's
+            # tool_use events reference explicitly -- grouping is a recorded
+            # association, never a "latest title" guess. Display-only: a
+            # missing or unusable title changes nothing about execution.
+            if text:
+                from .activity import activity_title
+
+                title = activity_title(text)
+                if title is not None:
+                    self._activity_id = f"act_{uuid.uuid4().hex[:8]}"
+                    await self._send(
+                        "activity_update",
+                        activity_id=self._activity_id,
+                        title=self.secrets.mask(title),
+                        source="commentary",
+                        provisional=False,
+                    )
             self._rounds_without_tools = 0
             used_todo = any(_block(b, "name") == "TodoWrite" for b in tool_blocks)
             self._pending_compact = False
@@ -1654,16 +1678,24 @@ class Agent:
         )
         span_id = f"tool_{uuid.uuid4().hex[:16]}"
         started = time.monotonic()
+        # Display projection (WEBUI_PLAN R8-2): computed from the MASKED
+        # copy, so a secret in an argument never rides the label; `call.input`
+        # still carries the real value into the tool, untouched.
+        from .activity import tool_label
+
+        masked_input = self.secrets.mask_payload(call.input)
         await self._send(
             "tool_use",
             name=call.name,
             # The *recorded* arguments, not the executed ones: `call.input`
             # still carries the real value into the tool.
-            input=self.secrets.mask_payload(call.input),
+            input=masked_input,
             id=call.id,
             span_id=span_id,
             parent_span_id=parent_span_id,
             action_id=action_id,
+            activity_id=self._activity_id,
+            display=tool_label(call.name, masked_input),
         )
 
         denied = False

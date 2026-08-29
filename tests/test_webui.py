@@ -54,6 +54,26 @@ def test_the_page_is_self_contained():
         assert not re.search(pattern, page), f"external reference: {pattern}"
 
 
+def test_the_activity_wiring_is_present():
+    """R8-3 markers: the group handler, the explicit-association container,
+    and both tense tables must survive in the served page."""
+
+    page = render_page()
+    for marker in ("activity_update", "activity-body", "VERB_STEM",
+                   "VERB_PAST", "activities"):
+        assert marker in page, f"the ledger lost its {marker} wiring"
+
+
+def test_the_approval_panel_offers_remember():
+    """The R4 grant machinery is only reachable if the panel wires it: the
+    remember control, the candidate it shows, and the provenance mark."""
+
+    page = render_page()
+    for marker in ("Allow + remember", "grant_candidate", "grant_proposed",
+                   "remember: !!remember"):
+        assert marker in page, f"the approval panel lost its {marker} wiring"
+
+
 def test_the_route_serves_the_page_with_security_headers(tmp_path):
     from fastapi.testclient import TestClient
 
@@ -119,6 +139,7 @@ def test_the_ui_wires_only_existing_api_paths():
         ("/memory", "/sessions/{session_id}/memory"),
         ("/skills", "/sessions/{session_id}/skills"),
         ("/cron", "/sessions/{session_id}/cron"),
+        ("/workflows", "/sessions/{session_id}/workflows"),
         ("/benchmark", "/benchmark"),
         ("/propose-improvement", "/sessions/{session_id}/propose-improvement"),
     ):

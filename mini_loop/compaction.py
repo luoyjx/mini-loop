@@ -263,6 +263,32 @@ class InMemoryCompactor:
         microcompact(agent.messages)
 
 
+#: The summarization request, framed as a handoff (Codex's "CONTEXT
+#: CHECKPOINT COMPACTION" pattern, prompts/templates/compact/prompt.md in
+#: openai/codex): name the four things a resuming agent actually needs,
+#: instead of asking for an unstructured summary and hoping the right
+#: content lands.
+COMPACTION_PROMPT = (
+    "You are performing a context checkpoint compaction. Write a handoff "
+    "summary for another instance of this agent that will resume the task. "
+    "Include: current progress and key decisions made; important context, "
+    "constraints, or user preferences; what remains to be done, as clear "
+    "next steps; any critical data, examples, or references needed to "
+    "continue. Be concise, structured, and focused on letting the next "
+    "instance continue seamlessly."
+)
+
+#: Prefixed to the summary when it replaces the transcript. Framing the
+#: summary as ANOTHER instance's handoff (Codex's summary_prefix.md) keeps
+#: the model from mistaking it for user input, and carries the one behavior
+#: instruction that matters: build on the work, do not redo it.
+SUMMARY_PREFIX = (
+    "A previous instance of this agent worked on this task and left the "
+    "handoff summary below. Build on what is already done; do not repeat "
+    "completed work."
+)
+
+
 class DefaultCompactor:
     """Four ordered layers: result budget, snip, micro, LLM summary."""
 
@@ -329,7 +355,7 @@ class DefaultCompactor:
 
         conv = json.dumps(agent.messages, default=str)[-80_000:]
         resp = await agent._create(
-            [{"role": "user", "content": f"Summarize this agent session for continuity:\n{conv}"}],
+            [{"role": "user", "content": f"{COMPACTION_PROMPT}\n{conv}"}],
             max_tokens=2000,
             purpose="compaction",
         )
@@ -366,7 +392,9 @@ class DefaultCompactor:
         replaced_tokens = estimate_tokens(agent.messages)
         usage = getattr(resp, "usage", None)
         agent.messages[:] = [
-            {"role": "user", "content": f"[Context compressed. Full transcript: {path}]\n{summary}"}
+            {"role": "user", "content":
+                f"[Context compressed. Full transcript: {path}]\n"
+                f"{SUMMARY_PREFIX}\n{summary}"}
         ]
         await agent._send(
             "compact", kind="auto", transcript=str(path),

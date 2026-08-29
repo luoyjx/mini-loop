@@ -387,10 +387,14 @@ class SessionManager:
             self.injectors.append(workflow_injector)
         # Core, not a feature toggle: every manager-built session can be
         # steered, or a busy session drops its caller's words on the floor.
-        from .session import steering_injector
+        from .session import posture_injector, steering_injector
 
         if steering_injector not in self.injectors:
             self.injectors.append(steering_injector)
+        # Same rule: a posture change made through the HTTP edge must reach
+        # the model, or it discovers the new rules by colliding with them.
+        if posture_injector not in self.injectors:
+            self.injectors.append(posture_injector)
 
         # Cross-session services.
         self.bus = MessageBus(settings.workspace_root / ".teams", secrets=self.secrets)

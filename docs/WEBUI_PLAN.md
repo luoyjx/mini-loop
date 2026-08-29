@@ -126,7 +126,7 @@ iOS 客户端的具体分组实现，也不引入 Codex 私有协议依赖。
 
 以下事件名与字段是**待实现的协议草案**，不是当前 API。
 
-- [ ] **R8-1 展示契约与来源分流**：沿用 `session` / `message_id` /
+- [x] **R8-1 展示契约与来源分流**：沿用 `session` / `message_id` /
       `agent` / `depth`、`stream_id`、`span_id` / `parent_span_id` 的关联，
       增加 `activity_id` 和独立的 `activity_update` 展示事件；约定
       `title`、`source`（public_summary / commentary / tool_fallback）及
@@ -134,7 +134,15 @@ iOS 客户端的具体分组实现，也不引入 Codex 私有协议依赖。
       时退回工具标签。若接入公开 summary，等待完整标题边界再更新；不依赖
       当前混合的 assistant_delta 猜来源。标题单行、限定长度、统一脱敏，
       格式异常不阻断工具执行。先补 agent / transport 的事件与测试，再接 UI。
-- [ ] **R8-2 工具语义投影**：先映射 `read_file`、`glob`、`write_file`、
+      > 落地（2026-08-29，agent 侧）：`agent.py` 在完整 commentary 后、
+      > 工具批次前发 `activity_update`（activity_id/title/source=
+      > "commentary"/provisional=False），批次内每个 `tool_use` 事件显式带
+      > `activity_id`（记录的关联，非 UI 猜测），新回合归零；标题经
+      > `activity.py::activity_title`（首行首句、剥 markdown、80 字符封顶、
+      > 发射前 mask，不可用即不发且不阻断批次）。public_summary 留待
+      > provider 真提供公开 summary（当前 transport 无此通道）。测试
+      > tests/test_activity.py。
+- [x] **R8-2 工具语义投影**：先映射 `read_file`、`glob`、`write_file`、
       `edit_file` 的已知参数；再对 `bash` 的简单 cat / sed 只读形式、
       rg / grep 搜索、文件列举作保守分类。命令替换、重定向、混合管道、
       解析失败或未知工具一律退回工具名或原命令预览，不运行解析出的内容。
@@ -143,17 +151,40 @@ iOS 客户端的具体分组实现，也不引入 Codex 私有协议依赖。
       `tool_use` 仅代表请求，拒绝或失败不得写成成功；没有真实 diff 证据时
       不显示增删行数。没有执行开始事件时保持 Requested，不能推测 Running。
       保留原参数详情，不以预览替换执行参数。
-- [ ] **R8-3 阶段分组与交互**：在 `onEvent()` / `ledgerRow()` 上增加
+      > 落地（2026-08-29，helper 侧）：`mini_loop/activity.py::tool_label`
+      > 产出 `{"verb","object"}`；bash 只认单一用途简单形态（rg/grep→
+      > search、ls/tree→list、cat/head/tail/wc→read），任一元字符即退回
+      > `run <60 字符预览>`，未知工具退 `call <名>`；守卫
+      > labels-classify-past-a-pipe（r257）钉保守性。投影取自 MASKED 副本，
+      > `call.input` 原样进工具。**时态转写留给 R8-3 的 UI**（helper 只给
+      > 动词干，`tool_use` 仅表 Requested）。测试 tests/test_activity.py。
+- [x] **R8-3 阶段分组与交互**：在 `onEvent()` / `ledgerRow()` 上增加
       阶段折叠头和工具子行；按显式关联归组，不使用“最后一个全局标题”
       猜测并行调用的归属。新阶段只接纳对应调用，不重命名历史分组；同阶段
       多工具各自保留 span、状态和耗时。覆盖并行工具、子代理、会话切换、
       重试和取消；保持审批入口可见。旧事件或缺失元数据继续显示现有工具名。
-- [ ] **R8-4 回放与验收**：标题增量保持 ephemeral，只有完整、脱敏、
+      > 落地（2026-08-29）：`activity_update` 建 `<details>` 折叠组
+      > （§ 记号 + 标题），`tool_use` 仅凭事件自带 `activity_id` 落入组内
+      > （无 id 保持顶层——DOM 测试钉死"不猜最新标题"）；`ledgerRow` 增
+      > 可选容器参数，组内子行各留 span/状态/耗时；语义标签动词干在
+      > Requested/denied/失败态保持原形，**只有真实成功的 tool_result 转
+      > 过去式**（Run→Ran；DOM 测试钉死 denied 不得写成 Ran）；无 display
+      > 的旧事件保持工具名。会话切换 openStream 清 activities。审批面板
+      > 不受影响。真浏览器验收：fake 服务器端到端（标题"Working on it."
+      > 成组、组内 "Ran echo …" 10ms、控制台零错误），375/1440 两档复核
+      > （768/1024 未单独复核，布局未动横向约束）。
+- [x] **R8-4 回放与验收**：标题增量保持 ephemeral，只有完整、脱敏、
       有界的展示快照随现有事件通道记录；不写入模型 transcript 或改变工具
       参数。按 seq / activity_id 幂等恢复分组；新 stream 替换旧临时标题，
       done / error / cancel 清理当前活动态，历史快照仍可读。历史事件缺少
       标题时确定性降级，不能在重连时另调模型补写过去的意图。持久性仍取决于
       实际配置的 StateStore / TrajectoryStore，不将 Null 存储描述为可恢复。
+      > 落地（2026-08-29）：本实现从不流式发标题——只发完整、mask 后、
+      > 80 字符封顶的 `activity_update`（现有事件通道，`_capture_event`
+      > 统一持久化与脱敏,不进模型 transcript）；UI 按 activity_id 幂等
+      > （重放同 id 不建重复组，DOM 测试钉死）；agent 侧 `_activity_id`
+      > 每回合归零，UI 无隐式"当前阶段"态可泄漏；缺元数据的历史事件
+      > 确定性降级为工具名。持久性随实际 StateStore 配置。
 
 #### 验收门槛
 
@@ -180,3 +211,24 @@ R1–R7 的完成记录仅覆盖当时的功能面，不包含新增的 R8。后
 原矩阵对 workflows 的排除是历史范围说明，不代表持续有效的默认状态；实际
 启用与暴露边界以 [README 的 Runtime posture](../README.md#runtime-posture)
 为准。本次 Activity 计划不改变任何功能默认值。
+
+### R9 Workflows 面板（2026-08-29 落地）
+
+workflows 长出了会话作用域 HTTP 面，UI 按"只消费既有 API"原则接入：
+
+- 路由：`GET /sessions/{id}/workflows`（列表；禁用时显式
+  `enabled: false`，不伪装空列表）、`GET …/workflows/{run_id}`（节点级
+  详情，外会话 run 读作 404）、`POST …/workflows/{run_id}/cancel`
+  （降权动作，所有权即够）、`POST …/workflows`（启动）。
+- **启动的权威边界**：/messages 刻意 UNTRUSTED（文本经模型转译，能力会
+  搭全回合的车）；launch 载荷即人直接调用的单一动作本身，故在**认证
+  部署**上盖 `explicit_human` + 单一 `workflow.launch` 能力章（cron
+  "认证 HTTP 即人授权边"先例）；**开放部署 403 拒绝启动**（匿名绑定
+  不能自称是人），守卫 anonymous-binds-stamp-explicit-human（r258）。
+  幂等：可选 `action_id`，message_id 由其确定性派生，网络重试复用同一
+  run（journal 绑定）；同 id 异载荷 409。
+- UI：Workflows 页签——禁用态诚实说明、run 列表（状态徽章/attempts/
+  Detail/仅活跃 run 有 Cancel）、节点级详情与 result 预览、launch 表单
+  （JSON 原样提交，authenticated-only 的约束由服务端 403 兜底）。
+- 测试：tests/test_workflow_routes.py（6:禁用/开放拒启/往返/幂等/
+  越权探测/畸形 400)、DOM 桩 2 例、路由 census 增补 /workflows。

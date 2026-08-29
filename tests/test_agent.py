@@ -54,7 +54,10 @@ def test_basic_loop_runs_one_tool_then_finishes(tmp_path):
         # identity, so the log carries them and requests stay
         # reconstructable).
         "tool_catalog", "capability_plan", "system_prompt",
-        "assistant_text", "tool_use", "tool_result", "assistant_text",
+        # The commentary before a tool batch opens a display activity
+        # (WEBUI_PLAN R8-1); the batch's tool_use references it.
+        "assistant_text", "activity_update", "tool_use", "tool_result",
+        "assistant_text",
     ]
     assert types.count("model_start") == types.count("model_end") == 2
     assistant_events = [e for e in events if e["type"] == "assistant_text"]

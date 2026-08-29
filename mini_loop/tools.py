@@ -39,6 +39,18 @@ BASH = {
                 "type": "boolean",
                 "description": "Run asynchronously and return a task id immediately.",
             },
+            "approval_prefix": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": (
+                    "Optional: when this command will need approval and is part "
+                    "of a routine you expect to repeat, propose the command "
+                    "prefix the human may remember for the rest of the session, "
+                    "e.g. [\"git\", \"pull\"]. It must be the command's own "
+                    "leading words, at least two; interpreter, deleter, and "
+                    "escalator heads are never remembered."
+                ),
+            },
         },
         "required": ["command"],
     },

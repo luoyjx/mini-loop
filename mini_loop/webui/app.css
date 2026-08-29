@@ -311,3 +311,8 @@ details.lrow[data-error="1"] { border-color: var(--red); background: var(--red-s
 @media (prefers-reduced-motion: reduce) {
  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Activity phase groups (WEBUI_PLAN R8-3): a collapsible heading whose
+   body holds only tool rows that explicitly reference its activity_id. */
+.activity-group > .tool-summary .label { font-weight: 600; }
+.activity-body { margin-left: 22px; border-left: 2px solid var(--border); padding-left: 8px; }

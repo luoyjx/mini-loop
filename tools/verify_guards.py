@@ -223,8 +223,8 @@ MUTATIONS = [
     ),
     Mutation(
         "tool-input-unmasked", 21, "mini_loop/agent.py",
-        "input=self.secrets.mask_payload(call.input),",
-        "input=call.input,",
+        "masked_input = self.secrets.mask_payload(call.input)",
+        "masked_input = call.input",
         "tests/test_write_sites.py",
         "a credential in a tool argument is masked at the agent boundary too",
     ),
@@ -1764,11 +1764,13 @@ MUTATIONS = [
         "ask-leaves-no-durable-row", 100, "mini_loop/approvals.py",
         # `ask` and `ask_question` register identically; the absence of
         # `kind="question"` is what pins this to the tool-approval site.
-        '            tool_use_id=getattr(call, "id", "") or "",\n'
+        '            grant_candidate=candidate or (),\n'
+        '            grant_proposed=proposal is not None,\n'
         '        )\n'
         '        self._pending[pending.approval_id] = pending\n'
         '        self._persist(pending, "pending")',
-        '            tool_use_id=getattr(call, "id", "") or "",\n'
+        '            grant_candidate=candidate or (),\n'
+        '            grant_proposed=proposal is not None,\n'
         '        )\n'
         '        self._pending[pending.approval_id] = pending',
         "tests/test_durable_approvals.py::test_every_ask_leaves_a_row_and_every_outcome_updates_it",
@@ -3398,6 +3400,97 @@ MUTATIONS = [
         "tests/test_dedup_set_bounds.py::test_the_set_never_exceeds_the_cap",
         "the reconstruction dedup sets are bounded; an unbounded set grows "
         "with session lifetime (bounded output is not bounded work)",
+    ),
+    Mutation(
+        "interruption-marker-hides-surviving-background-work", 253,
+        "mini_loop/session.py",
+        '        live = manager.live_count() if manager is not None else 0\n'
+        '        if live:',
+        '        live = manager.live_count() if manager is not None else 0\n'
+        '        if False:',
+        "tests/test_interrupted_turns.py::test_the_marker_names_surviving_background_tasks",
+        "cancellation does not stop background work; a marker that omits the "
+        "survivors leaves the model reasoning about a world where the "
+        "interruption stopped everything",
+    ),
+    Mutation(
+        "grants-never-actually-skip-the-ask", 255, "mini_loop/approvals.py",
+        '        hit = self.granted(session_id, call.name, call.input)\n'
+        '        if hit is not None:',
+        '        hit = self.granted(session_id, call.name, call.input)\n'
+        '        if False:',
+        "tests/test_approval_grants.py::test_an_allow_with_remember_skips_the_next_equivalent_ask",
+        "approval-as-learning is the feature: a recorded grant that still "
+        "parks every call is a checkbox that does nothing",
+    ),
+    Mutation(
+        "anonymous-binds-stamp-explicit-human", 258, "mini_loop/server.py",
+        '        if isinstance(_auth(request), NullAuth):\n'
+        '            raise HTTPException(\n'
+        '                status_code=403,',
+        '        if False:\n'
+        '            raise HTTPException(\n'
+        '                status_code=403,',
+        "tests/test_workflow_routes.py::test_an_open_deployment_observes_but_cannot_launch",
+        "the launch stamp says a human authenticated; an open bind minting "
+        "explicit_human authority hands workflow launch to anyone who can "
+        "reach the port",
+    ),
+    Mutation(
+        "labels-classify-past-a-pipe", 257, "mini_loop/activity.py",
+        '        if any(marker in command for marker in _OPAQUE_SHELL):\n'
+        '            return {"verb": "run", "object": preview}',
+        '        if False:\n'
+        '            return {"verb": "run", "object": preview}',
+        "tests/test_activity.py::test_metacharacters_end_classification",
+        'a piped exfiltration labeled "search" by its head token is a display '
+        "layer lying to the reviewer; conservatism past a metacharacter is "
+        "the module's whole contract",
+    ),
+    Mutation(
+        "a-lying-prefix-is-taken-at-its-word", 256, "mini_loop/approvals.py",
+        '    tokens = str(tool_input.get("command", "")).split()\n'
+        '    if tokens[: len(proposed)] != list(proposed):\n'
+        '        return None',
+        '    tokens = str(tool_input.get("command", "")).split()\n'
+        '    if False:\n'
+        '        return None',
+        "tests/test_approval_grants.py::test_a_lying_proposal_falls_back_to_the_default",
+        "a proposed prefix that is not the command's own leading words is a "
+        "lie about scope; admitted, the approver ratifies a grant that "
+        "covers commands they never saw",
+    ),
+    Mutation(
+        "banned-heads-get-remembered-anyway", 255, "mini_loop/approvals.py",
+        '                if grant_banned(pending.grant_candidate):\n'
+        '                    pending.grant_outcome = "refused_banned"',
+        '                if False:\n'
+        '                    pending.grant_outcome = "refused_banned"',
+        "tests/test_approval_grants.py::test_a_banned_head_is_allowed_once_but_never_remembered",
+        "a grant anchored on rm/sudo/an interpreter covers unbounded "
+        "behavior; remembering it turns one reviewed yes into a standing "
+        "waiver the human never saw",
+    ),
+    Mutation(
+        "posture-changes-happen-behind-the-models-back", 254,
+        "mini_loop/session.py",
+        '        old, self.permission_mode = self.permission_mode, mode\n'
+        '        if mode != old and self.run_count > 0:',
+        '        old, self.permission_mode = self.permission_mode, mode\n'
+        '        if False:',
+        "tests/test_posture_updates.py::test_a_mid_session_change_reaches_the_model",
+        "a mid-conversation rule change the model is not told about is a "
+        "trap: it discovers the new posture by colliding with it",
+    ),
+    Mutation(
+        "compaction-summary-loses-its-handoff-framing", 253,
+        "mini_loop/compaction.py",
+        '                f"{SUMMARY_PREFIX}\\n{summary}"}',
+        '                f"{summary}"}',
+        "tests/test_compaction_provenance.py::test_the_summary_is_requested_and_framed_as_a_handoff",
+        "the summary replaces the whole transcript; without the handoff "
+        "prefix the model can mistake it for user input or redo the work it "
+        "describes",
     ),
 ]
 

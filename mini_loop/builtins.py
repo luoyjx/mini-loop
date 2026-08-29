@@ -93,7 +93,10 @@ ASK_USER = {
 
 # --- handlers (all receive ctx first) --------------------------------------
 
-async def _bash(ctx: ToolContext, command: str, run_in_background: bool = False) -> str:
+async def _bash(ctx: ToolContext, command: str, run_in_background: bool = False,
+                approval_prefix=None) -> str:
+    # `approval_prefix` is metadata for the approval layer (approvals.py
+    # reads it from the call input); execution ignores it entirely.
     if "background_run" in ctx.agent.tools:
         from .background import background_manager_for, should_run_background
 
