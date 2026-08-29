@@ -140,7 +140,12 @@ def _manager(request: Request) -> SessionManager:
 #: authenticated by middleware, so a handler added later inherits the check
 #: instead of having to remember it -- which is how `/trajectories/{id}`, an
 #: endpoint that returns a whole recorded conversation, ended up open.
-PUBLIC_PATHS = frozenset({"/healthz", "/", "/favicon.ico"})
+#: "/" and "/ui" are static, self-contained shells with zero session data
+#: (pinned by test_the_page_is_self_contained); the token is entered client-
+#: side and every DATA route stays gated. A browser navigation cannot carry
+#: an Authorization header, so gating the shell just locks the door the key
+#: is behind.
+PUBLIC_PATHS = frozenset({"/healthz", "/", "/ui", "/favicon.ico"})
 
 
 def _auth(request: Request):
@@ -416,7 +421,13 @@ def create_app(
             app.state.manager = manager_factory(cfg)
             owns_client = False
         else:
-            app.state.manager = SessionManager(cfg, build_client(cfg), enable_features=cfg.enable_features)
+            app.state.manager = SessionManager(
+                cfg, build_client(cfg), enable_features=cfg.enable_features,
+                # MINILOOP_EXPERIMENTAL_WORKFLOWS: without this forward the
+                # env flag set cfg and died here, and the /workflows surface
+                # answered enabled:false on every real deployment.
+                enable_workflows=cfg.enable_workflows,
+            )
             owns_client = True
         mgr = app.state.manager
         with contextlib.suppress(Exception):

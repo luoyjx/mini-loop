@@ -183,6 +183,24 @@ def test_strangers_and_foreign_runs_read_as_missing(tmp_path):
         client.__exit__(None, None, None)
 
 
+def test_the_env_flag_reaches_the_default_manager(tmp_path):
+    """MINILOOP_EXPERIMENTAL_WORKFLOWS sets Settings.enable_workflows; the
+    server's own manager construction must forward it, or the flag is dead
+    on every real deployment and the panel always says disabled."""
+
+    from fastapi.testclient import TestClient
+
+    from mini_loop.server import create_app
+
+    settings = Settings(fake_llm=True, workspace_root=tmp_path / "ws",
+                        skills_dir=SKILLS, spill_dir=None,
+                        enable_workflows=True)
+    app = create_app(settings=settings)
+    with TestClient(app) as client:
+        sid = client.post("/sessions", json={}).json()["id"]
+        assert client.get(f"/sessions/{sid}/workflows").json()["enabled"] is True
+
+
 def test_a_malformed_definition_is_400_not_500(tmp_path):
     client, _ = _client(tmp_path)
     try:

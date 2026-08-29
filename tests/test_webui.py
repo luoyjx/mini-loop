@@ -54,6 +54,29 @@ def test_the_page_is_self_contained():
         assert not re.search(pattern, page), f"external reference: {pattern}"
 
 
+def test_the_shell_is_public_but_the_data_stays_gated(tmp_path):
+    """A browser navigation cannot carry Authorization, so the static shell
+    must serve without a token on an authed deployment -- while every data
+    route keeps answering 401. The shell holds no session data by
+    construction (see test_the_page_is_self_contained)."""
+
+    from fastapi.testclient import TestClient
+
+    from mini_loop import SessionManager, Settings
+    from mini_loop.auth import TokenAuth
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.server import create_app
+
+    settings = Settings(fake_llm=True, workspace_root=tmp_path / "ws",
+                        skills_dir=pathlib_skills(), spill_dir=None)
+    app = create_app(manager=SessionManager(settings, FakeAsyncAnthropic()),
+                     settings=settings)
+    with TestClient(app) as client:
+        app.state.auth = TokenAuth({"tok-a": "a"})
+        assert client.get("/ui").status_code == 200
+        assert client.get("/sessions").status_code == 401
+
+
 def test_the_activity_wiring_is_present():
     """R8-3 markers: the group handler, the explicit-association container,
     and both tense tables must survive in the served page."""
