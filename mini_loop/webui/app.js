@@ -805,6 +805,7 @@ function showPane(name) {
   if (name === "workflows") loadWorkflows();
   if (name === "skills") loadSkills();
   if (name === "memory") loadMemory();
+  if (name === "improve") loadImprovementLineage();
 }
 function closeInspector() {
   showPane("ledger");
@@ -1597,6 +1598,45 @@ $("bench-run").addEventListener("click", async () => {
 });
 
 // ---- self-evolution (R5) ------------------------------------------------
+$("improve-suggest").addEventListener("click", async () => {
+  const list = $("improve-suggestions");
+  list.textContent = "";
+  let payload;
+  try { payload = await api("/self-audit/suggestions"); }
+  catch (err) { list.append(el("li", "", "suggestions: " + err.message)); return; }
+  if (!(payload.suggestions || []).length) {
+    list.append(el("li", "muted", "No recurring problems in the ledgers — nothing to suggest."));
+  }
+  for (const s of payload.suggestions || []) {
+    const item = el("li");
+    const grow = el("span", "grow", "[" + s.source + "] " + s.problem);
+    // Suggestion is not authorization: clicking only fills the objective
+    // box; the human still reviews, edits, and submits.
+    const use = el("button", "sec", "Use");
+    use.addEventListener("click", () => { $("improve-objective").value = s.objective; });
+    item.append(grow, use);
+    list.append(item);
+  }
+});
+
+async function loadImprovementLineage() {
+  const list = $("improve-lineage");
+  list.textContent = "";
+  let payload;
+  try { payload = await api("/improvements"); }
+  catch (err) { list.append(el("li", "", "lineage: " + err.message)); return; }
+  for (const p of (payload.proposals || []).slice(0, 20)) {
+    const flags = (p.touches_verifiers && p.touches_verifiers.length)
+      ? " · TOUCHES VERIFIERS" : "";
+    const item = el("li");
+    item.append(el("span", "grow",
+      p.proposal_id + (p.parent_id ? " ← " + p.parent_id : "") +
+      " · " + (p.verified ? "verified" : "unverified") + flags +
+      " · " + String(p.objective || "").slice(0, 80)));
+    list.append(item);
+  }
+}
+
 $("improve-run").addEventListener("click", async () => {
   const objective = $("improve-objective").value.trim();
   const accept = $("improve-accept").value.trim();
@@ -1612,9 +1652,16 @@ $("improve-run").addEventListener("click", async () => {
     });
     result.textContent =
       (proposal.verified ? "VERIFIED" : "UNVERIFIED") +
+      // The self-weakening tell rides ahead of everything else: a proposal
+      // that changed the acceptance instruments may have passed BECAUSE of
+      // that change (see self_improve.py).
+      (proposal.touches_verifiers && proposal.touches_verifiers.length
+        ? " · TOUCHES VERIFIERS: " + proposal.touches_verifiers.join(", ")
+        : "") +
       " · branch " + proposal.branch + "\n\n" +
       (proposal.diff_stat || "(no diff)") + "\n\n" +
       (proposal.summary || "") + "\n\n" + proposal.next;
+    loadImprovementLineage();
   } catch (err) { result.textContent = "proposal failed: " + err.message; }
 });
 

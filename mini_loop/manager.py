@@ -398,6 +398,14 @@ class SessionManager:
 
         # Cross-session services.
         self.bus = MessageBus(settings.workspace_root / ".teams", secrets=self.secrets)
+        # Proposal lineage (improvement_archive.py): durable beside .teams,
+        # so later proposals can build on archived ones instead of
+        # hill-climbing from zero every time.
+        from .improvement_archive import ImprovementArchive
+
+        self.improvements = ImprovementArchive(
+            settings.workspace_root / ".improvements", secrets=self.secrets
+        )
         # The journal is durable when the state store is: an in-memory journal
         # cannot tell a resumed process which side effects already happened.
         if workflow_service is not None:

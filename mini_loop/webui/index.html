@@ -161,10 +161,15 @@
     <div id="memory" class="pane" hidden><ul id="memory-list" class="rows"></ul><div id="memory-body" class="prose"></div></div>
     <div id="improve" class="pane" hidden>
      <p class="muted">Runs the verified improvement loop in this session's workspace (must be a git checkout). The proposal lands on an isolated branch; merging stays yours.</p>
+     <div class="pane-tools"><button id="improve-suggest" type="button" class="sec">Suggest objectives</button></div>
+     <ul id="improve-suggestions" class="rows"></ul>
      <label for="improve-objective">Objective</label><textarea id="improve-objective" rows="3"></textarea>
      <label for="improve-accept">Acceptance command</label><input id="improve-accept" placeholder="pytest -q tests/">
      <div class="pane-tools"><button id="improve-run" type="button">Propose</button></div>
      <div id="improve-result" class="prose"></div>
+     <p class="muted">Proposal lineage: every attempt, verified or not, with its
+      parent — a population to build on, not a hill-climb to forget.</p>
+     <ul id="improve-lineage" class="rows"></ul>
     </div>
     <div id="benchmark" class="pane" hidden>
      <p class="muted">Runs on the fake transport to test the instrument, not the model. Real runs stay in the terminal (tools/paired_benchmark.py), where spending model budget is explicit.</p>

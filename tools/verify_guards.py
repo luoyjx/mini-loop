@@ -3424,6 +3424,15 @@ MUTATIONS = [
         "parks every call is a checkbox that does nothing",
     ),
     Mutation(
+        "verifier-touches-go-unnamed", 259, "mini_loop/self_improve.py",
+        "    touches = verifier_touches(touched)",
+        "    touches = []",
+        "tests/test_improvement_lineage.py::test_a_verifier_touching_proposal_is_named_and_archived",
+        "the DGM lesson: a self-improvement that passed because it weakened "
+        "the acceptance instruments must be NAMED to the reviewer, or "
+        "'verified' means 'verified by the thing it just edited'",
+    ),
+    Mutation(
         "anonymous-binds-stamp-explicit-human", 258, "mini_loop/server.py",
         '        if isinstance(_auth(request), NullAuth):\n'
         '            raise HTTPException(\n'

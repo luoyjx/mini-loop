@@ -71,6 +71,11 @@ RECORDED = {
         "that were masked once at _capture_event before they reached the "
         "store, written 0600 like the recording it renders"
     ),
+    "improvement_archive.py": (
+        "the proposal lineage index: objective and diff-stat prose is "
+        "mask_payload'ed in record() before the row is appended; the "
+        "authoritative artifact stays the branch commit"
+    ),
 }
 
 #: Writes that *perform* the thing the caller asked for. Masking these would

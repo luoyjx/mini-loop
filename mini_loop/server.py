@@ -113,6 +113,8 @@ class ImprovementReq(BaseModel):
     objective: str = Field(min_length=1, max_length=4_000)
     acceptance_command: str = Field(min_length=1, max_length=1_000)
     max_rounds: int = Field(default=3, ge=1, le=10)
+    #: The archived proposal this one builds on (lineage; improvement_archive).
+    parent_id: str | None = None
 
 
 class PersonalSkillPreviewReq(BaseModel):
@@ -1050,15 +1052,46 @@ def _register_routes(app: FastAPI) -> None:
         if session.busy:
             raise HTTPException(status_code=409,
                                 detail=f"session {session_id} is running a turn")
+        caller = _principal(request)
         try:
             proposal = await propose_improvement(
                 session, req.objective,
                 acceptance_command=req.acceptance_command,
                 max_rounds=req.max_rounds,
+                archive=_manager(request).improvements,
+                owner=caller.id,
+                parent_id=req.parent_id,
             )
         except ValueError as error:
             raise HTTPException(status_code=400, detail=str(error)) from None
         return proposal
+
+    @app.get("/improvements")
+    async def list_improvements(request: Request):
+        """The proposal lineage (improvement_archive.py), newest first.
+
+        Same scoping rule as /self-audit: authenticated callers read their
+        own lineage; an open single-user deployment reads all of it."""
+        caller = _principal(request)
+        configured = _auth(request).configured
+        return {"proposals": _manager(request).improvements.list(
+            owner=caller.id if configured else None,
+        )}
+
+    @app.get("/self-audit/suggestions")
+    async def improvement_suggestions(request: Request):
+        """Candidate objectives derived from the problem ledgers.
+
+        Suggestion is not authorization: nothing launches from here; the
+        human reviews, edits, and submits through propose-improvement."""
+        from .self_audit import suggest_objectives
+
+        caller = _principal(request)
+        configured = _auth(request).configured
+        return {"suggestions": suggest_objectives(
+            _manager(request),
+            owner=caller.id if configured else None,
+        )}
 
     @app.post("/sessions/{session_id}/cron/{job_id}/arm")
     async def arm_cron(request: Request, session_id: str, job_id: str):

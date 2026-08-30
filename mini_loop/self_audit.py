@@ -246,6 +246,45 @@ def build_report(
     return report
 
 
+#: Suggestions returned per call; the ledgers themselves are already bounded.
+MAX_SUGGESTIONS = 8
+
+
+def suggest_objectives(manager: Any, *, owner: str | None = None,
+                       limit: int = MAX_SUGGESTIONS) -> list[dict]:
+    """Candidate improvement objectives derived from the problem ledgers.
+
+    The scan half of the improvement loop, with the decision half left
+    exactly where it is: each recurring runtime problem becomes a
+    reviewable objective STRING for `propose_improvement`, and nothing is
+    launched from here. The human picks, edits, or ignores -- suggestion
+    is not authorization (the same edge doctrine as cron arming).
+    """
+
+    sessions = _recent_sessions(manager, owner=owner)
+    suggestions: list[dict] = []
+    seen: set[str] = set()
+    for name, log in _problem_sources(
+        manager, sessions, include_global=owner is None
+    ):
+        for entry in list(log)[-3:]:
+            problem = str(entry).strip()[:300]
+            if not problem or problem in seen:
+                continue
+            seen.add(problem)
+            suggestions.append({
+                "source": name,
+                "problem": problem,
+                "objective": (
+                    "Find and eliminate the failure mode behind this "
+                    f"recurring runtime problem: {problem}"
+                ),
+            })
+            if len(suggestions) >= max(1, limit):
+                return suggestions
+    return suggestions
+
+
 _SCHEMA = {"type": "object", "properties": {}}
 
 
