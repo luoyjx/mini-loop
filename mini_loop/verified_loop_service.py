@@ -54,8 +54,23 @@ class VerifiedLoopService:
         *,
         acceptance_command: str,
         max_rounds: int = 3,
+        integrity_probe=None,
     ) -> dict:
+        """Drive the rounds; `integrity_probe` guards the auditor itself.
+
+        The probe is a zero-argument callable returning a fingerprint of
+        the acceptance instruments. Sampled once before the first round
+        and again immediately before EVERY acceptance run: an executor
+        that weakens the instruments mid-round -- even one that restores
+        them afterwards -- is judged by a different auditor than the one
+        the task started with, and the receipt for that round says
+        `integrity: "suspect"` instead of letting a green exit code speak
+        alone. (The DGM incident: a self-improvement scored 2.0/2.0 by
+        deleting the detection markers it was asked to satisfy.)
+        """
+
         agent = self.session.agent
+        instruments_baseline = integrity_probe() if integrity_probe else None
         contract = TaskContractV1(
             run_id=self.session.id,
             revision=1,
@@ -94,18 +109,32 @@ class VerifiedLoopService:
             summary = await agent._run_subagent(objective, "worker")
 
             # The deterministic auditor: the acceptance command, sandboxed.
+            # Probe BEFORE the run: the question is whether the instruments
+            # that are ABOUT to judge this round are still the ones the
+            # task started with.
+            tampered = (
+                instruments_baseline is not None
+                and integrity_probe() != instruments_baseline
+            )
             result = await asyncio.to_thread(
                 agent.toolset.run_bash_result, acceptance_command
             )
-            passed = result.exit_code == 0 and not result.timed_out
+            # A changed auditor cannot verify: verified_loop.py only lets a
+            # `clean` receipt support a requirement, so a tampered round is
+            # judged not-passed here rather than tripping the gate below.
+            passed = (result.exit_code == 0 and not result.timed_out
+                      and not tampered)
+            evidence = [f"exit:{result.exit_code}",
+                        f"command:{acceptance_command[:120]}"]
+            if tampered:
+                evidence.append("instruments:changed-since-baseline")
             receipt = AuditReceiptV1(
                 contract_hash=contract.contract_hash,
                 round_id=f"round-{round_no}",
                 verdict="complete" if passed else "incomplete",
-                integrity="clean" if not result.timed_out else "suspect",
+                integrity="suspect" if (result.timed_out or tampered) else "clean",
                 coverage=(REQUIREMENT_ID,),
-                evidence_refs=(f"exit:{result.exit_code}",
-                               f"command:{acceptance_command[:120]}"),
+                evidence_refs=tuple(evidence),
                 verifier_ids=("command",),
             )
             receipts.append(receipt)
@@ -133,8 +162,16 @@ class VerifiedLoopService:
                     "checkpoint": checkpoint,
                     "receipts": receipts,
                     "summary": summary,
+                    "integrity": "clean",
                 }
             feedback = result.render()[-2000:]
+            if tampered:
+                feedback = (
+                    "[integrity] the acceptance instruments changed after "
+                    "the task began; a passing exit code from a changed "
+                    "auditor does not verify. Restore the instruments, or "
+                    "make changing them the explicit objective.\n" + feedback
+                )
 
         # Rounds exhausted, requirement unverified: the stop leads (round
         # 187's rule) and the state says pending, never a quiet success.
@@ -151,6 +188,11 @@ class VerifiedLoopService:
             "summary": (
                 f"[stopped after {max_rounds} rounds without verification]\n"
                 f"Last evidence:\n{feedback}"
+            ),
+            "integrity": (
+                "suspect"
+                if any(r.integrity == "suspect" for r in receipts)
+                else "clean"
             ),
         }
 

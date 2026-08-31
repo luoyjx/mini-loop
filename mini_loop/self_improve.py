@@ -48,6 +48,43 @@ def verifier_touches(paths: list[str]) -> list[str]:
             if any(marker in p for marker in VERIFIER_PATH_MARKERS)]
 
 
+#: Where the fingerprint looks. Globs, not a tree walk: bounded on any
+#: repo size, and matching the marker list above.
+VERIFIER_GLOBS = (
+    "tools/verify_*",
+    ".github/workflows/*",
+    "conftest.py",
+    "tests/conftest.py",
+)
+
+
+def verifier_fingerprint(workspace) -> str:
+    """One digest over every acceptance instrument in the checkout.
+
+    Content-addressed, not status-addressed: `git status` sees end states,
+    so weaken-verify-restore leaves it clean. Sampled by the verified
+    loop's integrity probe immediately before each acceptance run, this
+    catches the instruments being different AT JUDGMENT TIME from what the
+    task started with -- the actual attack window in the DGM incident.
+    """
+
+    import hashlib
+    from pathlib import Path
+
+    root = Path(workspace)
+    digest = hashlib.sha256()
+    for pattern in VERIFIER_GLOBS:
+        for path in sorted(root.glob(pattern)):
+            if not path.is_file():
+                continue
+            digest.update(str(path.relative_to(root)).encode())
+            try:
+                digest.update(path.read_bytes())
+            except OSError:
+                digest.update(b"<unreadable>")
+    return digest.hexdigest()[:32]
+
+
 async def propose_improvement(
     session: Any,
     objective: str,
@@ -82,6 +119,7 @@ async def propose_improvement(
 
     outcome = await VerifiedLoopService(session).run_task(
         objective, acceptance_command=acceptance_command, max_rounds=max_rounds,
+        integrity_probe=lambda: verifier_fingerprint(workspace),
     )
 
     # The proposal artifact is a COMMIT on the isolated branch: durable,
@@ -139,6 +177,11 @@ async def propose_improvement(
         # instruments are the objective, and the human is the judge either
         # way.
         "touches_verifiers": touches,
+        # "clean" or "suspect": whether the auditor that judged the rounds
+        # was still the auditor the task started with (verified_loop_service
+        # integrity probe). Suspect never verifies, so verified=True implies
+        # clean -- carried anyway so the archive row states it outright.
+        "integrity": outcome.get("integrity", "clean"),
         # The human's next move, stated by the machine that must not make it.
         "next": "review the diff on the branch; merge only after the paired "
                 "benchmark and your own read agree it is an improvement",

@@ -1013,7 +1013,7 @@ def _register_routes(app: FastAPI) -> None:
         model budget and stays a terminal act (tools/paired_benchmark.py) --
         a button that spends money is not a button this server grows.
         """
-        from .benchmark import DEFAULT_TASKS, compare, run_arm
+        from .benchmark import DEFAULT_TASKS, HELDOUT_TASKS, compare, run_arm
         from .fake_llm import FakeAsyncAnthropic
 
         _enforce_rate_limit(request)
@@ -1031,8 +1031,16 @@ def _register_routes(app: FastAPI) -> None:
                                      FakeAsyncAnthropic(), DEFAULT_TASKS)
             candidate = await run_arm("candidate", settings_b,
                                       FakeAsyncAnthropic(), DEFAULT_TASKS)
+            # The second opinion: tasks outside the visible optimization
+            # loop (practice #10) -- a candidate tuned against the default
+            # set shows its overfit here, before any merge.
+            heldout_base = await run_arm("baseline", settings_a,
+                                         FakeAsyncAnthropic(), HELDOUT_TASKS)
+            heldout_cand = await run_arm("candidate", settings_b,
+                                         FakeAsyncAnthropic(), HELDOUT_TASKS)
         return {"real": False, "baseline": baseline, "candidate": candidate,
                 "comparison": compare(baseline, candidate),
+                "heldout_comparison": compare(heldout_base, heldout_cand),
                 "note": ("fake transport: this exercises the instrument, not "
                          "the model; real runs stay in the terminal "
                          "(tools/paired_benchmark.py)")}
@@ -1089,6 +1097,22 @@ def _register_routes(app: FastAPI) -> None:
         caller = _principal(request)
         configured = _auth(request).configured
         return {"suggestions": suggest_objectives(
+            _manager(request),
+            owner=caller.id if configured else None,
+        )}
+
+    @app.get("/self-audit/bench-task-drafts")
+    async def bench_task_drafts(request: Request):
+        """Candidate benchmark tasks hatched from the problem ledgers.
+
+        Drafts, not admissions: each row ships without an expect predicate
+        and nothing here touches the task sets -- a human authors the
+        judgment and admits the task by editing benchmark.py."""
+        from .self_audit import suggest_bench_tasks
+
+        caller = _principal(request)
+        configured = _auth(request).configured
+        return {"drafts": suggest_bench_tasks(
             _manager(request),
             owner=caller.id if configured else None,
         )}

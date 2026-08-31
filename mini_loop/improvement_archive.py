@@ -51,7 +51,7 @@ class ImprovementArchive:
             "created_at": time.time(),
             **{key: proposal.get(key) for key in (
                 "objective", "verified", "rounds", "branch", "workspace",
-                "diff_stat", "touches_verifiers",
+                "diff_stat", "touches_verifiers", "integrity",
             )},
         }
         if self.secrets is not None:

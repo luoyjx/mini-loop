@@ -104,6 +104,42 @@ def _repo_workspace_session(tmp_path, responder):
     return manager, session
 
 
+def test_mid_loop_tampering_cannot_verify(tmp_path):
+    """The DGM incident, closed at the judgment window: the executor edits
+    an acceptance instrument during the round, the acceptance command still
+    exits 0 -- and the round does NOT verify, because the auditor that
+    judged it is not the auditor the task started with. Weaken-then-restore
+    is caught the same way: the probe samples before each acceptance run,
+    not just at the end."""
+
+    executor = scripted([
+        ([text("weakening the guard runner"),
+          tool("write_file", _id="w1", path="tools/verify_guards.py",
+               content="# gutted\n")],
+         "tool_use"),
+        ([text("done")], "end_turn"),
+    ])
+    manager, session = _repo_workspace_session(tmp_path, executor)
+    # The instrument exists at baseline; the executor rewrites it mid-round.
+    (session.workspace / "tools").mkdir()
+    (session.workspace / "tools" / "verify_guards.py").write_text("# real\n")
+    _git(session.workspace, "add", "-A")
+    _git(session.workspace, "commit", "-m", "instruments")
+
+    proposal = asyncio.run(propose_improvement(
+        session, "improve things", acceptance_command="true", max_rounds=1,
+        archive=manager.improvements, owner="alice",
+    ))
+
+    assert proposal["verified"] is False, (
+        "a green exit code from a changed auditor verified the proposal"
+    )
+    assert proposal["integrity"] == "suspect"
+    assert "instruments changed" in proposal["summary"]
+    [row] = manager.improvements.list(owner="alice")
+    assert row["integrity"] == "suspect"
+
+
 def test_a_verifier_touching_proposal_is_named_and_archived(tmp_path):
     executor = scripted([
         ([text("adjusting the guard runner"),
@@ -170,6 +206,46 @@ def test_problem_ledgers_become_reviewable_objectives(tmp_path):
     assert all("Find and eliminate" in s["objective"] for s in suggestions)
 
 
+def test_problem_ledgers_hatch_bench_task_drafts_not_admissions(tmp_path):
+    """The curation half of growing the benchmark set (§5): friction
+    becomes a reviewable DRAFT. The judge-side boundary is structural --
+    a draft ships no expect predicate, its name lives in a reserved
+    namespace no admitted task uses, and calling the hatchery touches
+    neither task set."""
+
+    from mini_loop.benchmark import DEFAULT_TASKS, HELDOUT_TASKS
+    from mini_loop.self_audit import DRAFT_TASK_PREFIX, suggest_bench_tasks
+
+    manager = SessionManager(
+        Settings(fake_llm=True, workspace_root=tmp_path / "ws",
+                 skills_dir=SKILLS, spill_dir=None),
+        FakeAsyncAnthropic(),
+    )
+    assert suggest_bench_tasks(manager) == []
+
+    admitted_before = [t.name for t in DEFAULT_TASKS + HELDOUT_TASKS]
+    manager.approvals.problems.append("approval persistence failed (OSError)")
+    drafts = suggest_bench_tasks(manager)
+    assert drafts, "a recorded problem produced no draft"
+    (draft,) = [d for d in drafts
+                if "approval persistence failed" in d["problem"]]
+    assert draft["name"].startswith(DRAFT_TASK_PREFIX)
+    assert draft["expect"] is None, (
+        "a draft with an expectation would be an admission the human "
+        "never authored"
+    )
+    assert draft["problem"] in draft["prompt_draft"]
+    assert "judge-side" in draft["note"]
+
+    # Admission is a human edit to benchmark.py, never a side effect here.
+    assert [t.name for t in DEFAULT_TASKS + HELDOUT_TASKS] == admitted_before
+    assert not any(name.startswith(DRAFT_TASK_PREFIX)
+                   for name in admitted_before), (
+        "the draft namespace is reserved; an admitted task inside it "
+        "blurs the draft/admitted line"
+    )
+
+
 def test_the_http_surface_scopes_like_self_audit(tmp_path):
     from fastapi.testclient import TestClient
 
@@ -195,3 +271,7 @@ def test_the_http_surface_scopes_like_self_audit(tmp_path):
         suggested = client.get("/self-audit/suggestions", headers=alice)
         assert suggested.status_code == 200
         assert "suggestions" in suggested.json()
+
+        drafts = client.get("/self-audit/bench-task-drafts", headers=alice)
+        assert drafts.status_code == 200
+        assert "drafts" in drafts.json()

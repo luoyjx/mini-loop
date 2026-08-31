@@ -285,6 +285,60 @@ def suggest_objectives(manager: Any, *, owner: str | None = None,
     return suggestions
 
 
+#: Reserved name prefix for un-admitted drafts, so a draft can never be
+#: mistaken for (or collide with) an admitted benchmark task.
+DRAFT_TASK_PREFIX = "ledger-"
+
+
+def suggest_bench_tasks(manager: Any, *, owner: str | None = None,
+                        limit: int = MAX_SUGGESTIONS) -> list[dict]:
+    """Candidate BenchTask DRAFTS hatched from the problem ledgers.
+
+    The curation half of growing the visible benchmark set toward the
+    workload this deployment actually records (docs/RSI_RESEARCH_AND_PLAN
+    §5). The judge-side boundary stays crisp by construction: a draft has
+    no `expect` predicate and no code here or anywhere else adds a draft
+    to DEFAULT_TASKS -- the human authors the expectation and admits the
+    task by editing benchmark.py, a reviewed judge-side change (the
+    AlphaEvolve rule: never evolve the judge automatically).
+    """
+
+    import hashlib
+
+    sessions = _recent_sessions(manager, owner=owner)
+    drafts: list[dict] = []
+    seen: set[str] = set()
+    for name, log in _problem_sources(
+        manager, sessions, include_global=owner is None
+    ):
+        for entry in list(log)[-3:]:
+            problem = str(entry).strip()[:300]
+            if not problem or problem in seen:
+                continue
+            seen.add(problem)
+            digest = hashlib.sha256(problem.encode()).hexdigest()[:8]
+            drafts.append({
+                "source": name,
+                "problem": problem,
+                "name": f"{DRAFT_TASK_PREFIX}{digest}",
+                "prompt_draft": (
+                    "Reproduce the workload behind this recorded friction "
+                    f"and complete it: {problem}"
+                ),
+                # Structurally inadmissible: BenchTask requires a callable
+                # expectation, and a draft deliberately ships none.
+                "expect": None,
+                "note": (
+                    "a human authors the expect predicate and admits the "
+                    "task by editing benchmark.py; admission is a "
+                    "judge-side change, never automatic"
+                ),
+            })
+            if len(drafts) >= max(1, limit):
+                return drafts
+    return drafts
+
+
 _SCHEMA = {"type": "object", "properties": {}}
 
 

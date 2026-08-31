@@ -124,12 +124,12 @@ Meta Agent Search:**不被修改的元代理**在 archive 条件下发明新目�
 | 2 | 外部信号接受 | ✓ acceptance_command 是命令不是意见;paired benchmark 是第二道 |
 | 3 | 沙箱+上限 | ✓ sandbox/max_rounds/预算机制既有 |
 | 4 | lineage+证据包 | ✓ **本轮落地**:ImprovementArchive,行含 branch/diff_stat/verified/touches_verifiers |
-| 5 | 假定 hacking | ✓ **本轮落地**:verifier_touches 具名告警(DGM 满分劫持的直接对策);哈希校验为后续项 |
+| 5 | 假定 hacking | ✓ 具名告警 + **哈希指纹探针**(2026-08-30 二轮):verified loop 在每次验收运行前重采仪器指纹,与基线不符 ⇒ 该轮**不能验证**(verified_loop.py 本就只认 clean 收据),weaken-verify-restore 的窗口关闭;守卫 r260 |
 | 6 | 人审合并门 | ✓ 宪法级(propose, never merge) |
 | 7 | archive 优于爬山 | ✓ **本轮落地**:宽松入档(unverified 也入),晋升仍是人 |
-| 8 | 多维效用 | ◐ benchmark 报 not_worse;成本/时延维度为后续项 |
+| 8 | 多维效用 | ✓(2026-08-31)dimensions + 警告进报表,裁决保持效果锚定;r261 |
 | 9 | 独立监督 | ◐ guardian(fail-closed 审批复核)是近亲;不随提案分支演化 |
-| 10 | held-out 迁移 | ✗ 后续项(晋升前跨任务复测) |
+| 10 | held-out 迁移 | ✓(2026-08-31)HELDOUT_TASKS + heldout_comparison(盲性边界如实声明) |
 | 11 | 失败入档 | ✓ **本轮落地**(unverified 行照记) |
 | 12 | 小步+分支+回滚 | ✓ worktree 分支即契约 |
 
@@ -158,12 +158,84 @@ Meta Agent Search:**不被修改的元代理**在 archive 条件下发明新目�
 
 ## 4. 后续项与明确不做
 
-- [建议] 验收仪器哈希校验:proposal 记录 acceptance_command 所涉文件的
-  运行前哈希,复核时比对(实践 #5 的强化)。
-- [建议] 多维效用:paired benchmark 报表加成本与时延列(实践 #8)。
-- [建议] held-out 复测:晋升(合并)前在提案未见过的任务上复测(#10)。
+- [x] 验收仪器哈希校验(2026-08-30 落地):`verifier_fingerprint` 内容
+  寻址指纹 + `run_task(integrity_probe=...)` 通用探针——基线在任务开始
+  时采样,**每次验收运行前**重探;不符 ⇒ tampered ⇒ 该轮 passed=False、
+  收据 integrity="suspect"、反馈向执行者言明"改了仪器的通过不算数"。
+  proposal 与存档行携带聚合 integrity。守卫
+  a-changed-auditor-still-verifies(r260)。
+- [x] 多维效用(2026-08-31 落地):run_arm 记 `context_tokens_estimate`
+  (转录估算,fake/真跑皆有意义);compare 报 `dimensions`(时延/上下文
+  成本,含 delta_pct)与 `dimension_warnings`(>25% 恶化具名)。**维度
+  进报表不进裁决**——把成本折进 verdict 会让效用公式自身成为钻营面,
+  裁决保持效果锚定、人来权衡具名的取舍。守卫
+  cost-regressions-pass-silently(r261)。
+- [x] held-out 复测(2026-08-31 落地):`HELDOUT_TASKS` 与可见集名字
+  互斥(测试钉死),/benchmark 同报 `heldout_comparison`。诚实声明:
+  它们在仓库里、提案可以读——是"排除在优化循环外",不是"对模型保密";
+  真盲集由操作者在终端自带任务模块。
 - **明确不做**(现阶段):自动合并(违宪)、自动重启加载提案代码、
   无人边的连续循环(DGM/SICA 的自主循环以沙箱+监督为前提,mini-loop
   的部署姿态是单机开发工具,人边即监督);评委完全出仓(把验收仪器
   移出代理可写范围会同时废掉"改进仪器自身"的合法目标,当前用具名+
   人审换取这份表达力,是有意的权衡)。
+
+## 5. 长周期实验计划(2026-08-31,与用户对齐)
+
+### 对齐方向(宪法层,不进化)
+
+**方向不是一个标量,而是字典序**:
+
+1. **可信性**(边界,不是优化目标):诚实、可验证、propose-never-merge、
+   仪器完整性——守卫与指纹已钉死。
+2. **任务效果**(主目标):在真实工作负载上把人交付的任务做完,
+   以可观测效果裁决。
+3. **成本**(从属目标):token/时延/轮数——进报表供人权衡,不进裁决。
+
+"真实工作负载"的本地化:mini-loop 没有生产遥测,但有本地等价物——
+问题账本(摩擦记录)、trajectory JSONL(行为记录)、self_audit(趋势)。
+**对齐方向 = 向自己被记录的使用摩擦对齐**:账本孵化目标,轨迹提供
+度量,基准防回归。方向本身的修改是评委侧变更,永远人审
+(AlphaEvolve:只进化解,不进化评委)。
+
+### 实验队列(每项=实现+指名测试+守卫如适用+全量套件)
+
+瓶颈判断:微实验(如 read_file 截断文案改一句)值得做的前提是
+**仪器测得出小效应**——3 个玩具任务测不出。所以先投资仪器,再拧旋钮:
+
+- [x] 轨迹派生行为学维度(2026-08-31 落地):`_behavioral_metrics`
+  从每臂转录提取 rounds/tool_calls/repeated_reads(同路径重复读)/
+  tool_errors,并入结果行,DIMENSIONS 扩至六维——进报表不进裁决,
+  churn 变多裁决仍 not_worse 但具名警告。两个新指名测试;守卫
+  wasted-motion-goes-unmeasured(r262)钉死"从不计数的仪器"。
+- [x] 账本孵化任务(2026-08-31 落地):`suggest_bench_tasks` 把问题
+  账本条目孵化为 BenchTask **草案**(保留名字空间 `ledger-`、
+  `expect=None`、note 言明入集人审);`GET /self-audit/bench-task-drafts`
+  与 suggestions 同一属主作用域。评委侧边界是结构性的:草案无谓词、
+  无任何入集代码可误触——与 propose-never-merge 同理,以"不存在的
+  代码"设防,故无突变守卫可设(守卫需要可突变的行为,而这里的安全
+  性质恰是行为的缺席);由指名测试钉住草案不可入集与名字空间互斥。
+- [x] 工具极端情况行为普查(2026-08-31 落地):
+  `tests/test_tool_edge_census.py` 七个指名测试钉住 read_file 现状——
+  0 字节返回空串、二进制以替换符呈现不崩溃、目录/无权限答 Error 且
+  内容不泄漏、负参数钳制为零、limit=0 只答标记。**两个 FINDING 已
+  具名为未来微实验候选**:①越界 offset 与空文件同样返回空串,模型
+  无法区分"翻过头了"和"本来就空";②巨型单行文件上,头部截断把
+  "read further with a larger offset"引导语本身切掉,只剩通用截断
+  标记——最需要引导的病态输入恰好拿不到引导。改动它们是刻意实验
+  (以行为学维度测量),不是顺手修复,故普查钉现状而非打补丁。
+  无守卫(观察性测试自身即钉)。
+- [x] 真端点微实验载具(2026-08-31 落地):tools/paired_benchmark.py
+  重写——`--tasks 模块.py` 换入操作者自带任务集(仓内 HELDOUT 诚实
+  做不到的真盲集),held-out 第二意见照跑;真跑必须显式声明
+  `MINILOOP_BENCHMARK_TASK_BUDGET`(以 task-run 计数)且 ≥ 本次将
+  执行的数量,否则在构建任何 client 之前拒绝——**成本先具名再花,
+  不在账单上被发现**;两个比较任一 regression 即退出码非零;坏任务
+  模块(空/重名/无谓词)响亮拒绝。守卫
+  an-unbudgeted-real-run-proceeds(r263)。
+
+**队列清空评估(2026-08-31)**:四项全落,仪器就位。微实验候选已
+具名(§3 普查两个 FINDING:越界 offset 歧义、巨行引导语被吞),但
+其效果只在真模型行为上显形——**真跑预算是操作者边**(与真端点测试
+门同一 doctrine),循环无权自行花钱,故循环在此停止。重开方式:
+操作者授权预算后按"一轮一个小点"推进,载具与量尺都已备好。

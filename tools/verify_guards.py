@@ -3064,7 +3064,8 @@ MUTATIONS = [
     Mutation(
         "coordinator-completes-without-verification", 212,
         "mini_loop/verified_loop_service.py",
-        '            passed = result.exit_code == 0 and not result.timed_out',
+        '            passed = (result.exit_code == 0 and not result.timed_out\n'
+        '                      and not tampered)',
         '            passed = True',
         "tests/test_verified_loop_service.py::test_unverified_never_reads_as_complete",
         "unverified never completes: only the acceptance command's exit "
@@ -3422,6 +3423,53 @@ MUTATIONS = [
         "tests/test_approval_grants.py::test_an_allow_with_remember_skips_the_next_equivalent_ask",
         "approval-as-learning is the feature: a recorded grant that still "
         "parks every call is a checkbox that does nothing",
+    ),
+    Mutation(
+        "cost-regressions-pass-silently", 261, "mini_loop/benchmark.py",
+        '        if delta_pct is not None and delta_pct > DIMENSION_WARN_PCT:\n'
+        '            warnings.append(f"{dim} worsened {delta_pct}%")',
+        '        if False:\n'
+        '            warnings.append(f"{dim} worsened {delta_pct}%")',
+        "tests/test_benchmark.py::test_dimensions_inform_and_never_judge",
+        "the cost dimensions exist so a 3x-slower not_worse is a NAMED "
+        "trade; without the warning the human weighs a trade nobody told "
+        "them about",
+    ),
+    Mutation(
+        "an-unbudgeted-real-run-proceeds", 263, "tools/paired_benchmark.py",
+        '    if not real:\n'
+        '        return None\n'
+        '    if budget is None:',
+        '    if True:\n'
+        '        return None\n'
+        '    if budget is None:',
+        "tests/test_paired_benchmark_cli.py::test_a_real_run_without_an_explicit_budget_is_refused",
+        "the budget gate is what makes a real-endpoint experiment an "
+        "explicit, costed authorization; without it MINILOOP_BENCHMARK_REAL=1 "
+        "spends whatever the task set happens to cost",
+    ),
+    Mutation(
+        "wasted-motion-goes-unmeasured", 262, "mini_loop/benchmark.py",
+        '                    if path and path in read_paths:\n'
+        '                        repeated_reads += 1',
+        '                    if False:\n'
+        '                        repeated_reads += 1',
+        "tests/test_benchmark.py::test_arms_record_behavioral_dimensions",
+        "the behavioral dimensions are the instrument the long-horizon "
+        "experiments depend on; a repeated-read counter that never counts "
+        "makes every ergonomics experiment read as a no-op",
+    ),
+    Mutation(
+        "a-changed-auditor-still-verifies", 260,
+        "mini_loop/verified_loop_service.py",
+        '            passed = (result.exit_code == 0 and not result.timed_out\n'
+        '                      and not tampered)',
+        '            passed = (result.exit_code == 0 and not result.timed_out)',
+        "tests/test_improvement_lineage.py::test_mid_loop_tampering_cannot_verify",
+        "the integrity probe exists so a green exit code from instruments "
+        "the executor just rewrote cannot verify anything; without the gate "
+        "the DGM incident (score 2.0/2.0 by deleting the detectors) passes "
+        "here too",
     ),
     Mutation(
         "verifier-touches-go-unnamed", 259, "mini_loop/self_improve.py",
