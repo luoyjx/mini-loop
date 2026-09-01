@@ -84,6 +84,42 @@ def test_mining_aggregates_and_ranks_hotspots(tmp_path):
     assert "hot.log: 2 redundant read(s)" in text
 
 
+def test_the_bash_profile_names_cwd_distrust_and_repeats(tmp_path):
+    """The corpus's first profile showed 97% of commands re-establishing
+    the working directory with a cd prefix -- workload/workspace
+    mismatch, the same root as the absolute-path read errors. The
+    profile names that rate, the head histogram, error heads, and
+    repeated identical commands."""
+
+    from mini_loop.mining import bash_profile, render_bash
+
+    store = TrajectoryStore(tmp_path / "t")
+    _record(store, "s1", [
+        _use("bash", command="cd /repo && make test"),
+        _result("bash", "FAILED\n(exit 2)"),
+        _use("bash", command="cd /repo && make test"),
+        _result("bash", "ok"),
+        _use("bash", command="ls -la"),
+        _result("bash", "files"),
+        _use("read_file", path="a.txt"),
+        _result("read_file", "ignored by the bash profile"),
+    ])
+
+    profile = bash_profile(store)
+    assert profile["commands"] == 3
+    assert profile["cwd_distrust"] == round(2 / 3, 3)
+    assert profile["heads"] == {"cd": 2, "ls": 1}
+    assert profile["error_heads"] == {"cd": 1}, (
+        "the (exit N) note marks a failed command"
+    )
+    assert profile["repeated_commands"] == {"cd /repo && make test": 1}
+
+    text = render_bash(profile)
+    assert "3 commands" in text
+    assert "67% of commands" in text
+    assert "1x extra: cd /repo && make test" in text
+
+
 def test_the_miner_is_read_only(tmp_path):
     """Mining must not grow a write surface: the store's files are
     byte-identical before and after a full mine+render pass."""

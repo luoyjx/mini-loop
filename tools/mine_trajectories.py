@@ -16,7 +16,7 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
-from mini_loop.mining import mine, render  # noqa: E402
+from mini_loop.mining import bash_profile, mine, render, render_bash  # noqa: E402
 from mini_loop.trajectory import TrajectoryStore  # noqa: E402
 
 
@@ -33,6 +33,9 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     store = TrajectoryStore(root)
     print(render(mine(store, session_id=args.session, limit=args.limit)))
+    print()
+    print(render_bash(bash_profile(
+        store, session_id=args.session, limit=args.limit)))
     return 0
 
 

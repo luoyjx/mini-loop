@@ -19,7 +19,7 @@ from __future__ import annotations
 
 from typing import Any
 
-__all__ = ["mine", "mine_trajectory", "render"]
+__all__ = ["bash_profile", "mine", "mine_trajectory", "render"]
 
 #: Trajectories examined per mine() call, newest first.
 MAX_TRAJECTORIES = 50
@@ -117,6 +117,72 @@ def mine(store: Any, *, session_id: str | None = None,
     }
 
 
+def _command_head(command: str) -> str:
+    for token in command.split():
+        return token
+    return "?"
+
+
+def bash_profile(store: Any, *, session_id: str | None = None,
+                 limit: int = MAX_TRAJECTORIES) -> dict:
+    """The shape of recorded bash usage: heads, cwd distrust, repeats.
+
+    The corpus's first profile (2026-09-02) showed 97% of commands
+    prefixed with `cd /abs/path &&` -- the model re-establishing its
+    working directory on every call because the work it was asked to do
+    lived outside the session workspace. That prefix rate is named here
+    as cwd_distrust: a high value is a workload/workspace mismatch
+    signal, the same root the absolute-path read errors grew from.
+    """
+
+    heads: dict[str, int] = {}
+    error_heads: dict[str, int] = {}
+    repeats: dict[str, int] = {}
+    pending: dict[str, str] = {}
+    total = cd_prefixed = 0
+    for summary in store.list(session_id=session_id, limit=max(1, limit)):
+        trajectory_id = summary.get("trajectory_id") or summary.get("id")
+        if not trajectory_id:
+            continue
+        seen: dict[str, int] = {}
+        for event in store.iter_events(
+            trajectory_id, types={"tool_use", "tool_result"}, limit=2_000,
+        ):
+            name = event.get("name")
+            if name != "bash":
+                continue
+            if event.get("type") == "tool_use":
+                inputs = event.get("input")
+                command = (str(inputs.get("command", ""))
+                           if isinstance(inputs, dict) else "")
+                total += 1
+                head = _command_head(command)
+                heads[head] = heads.get(head, 0) + 1
+                if head == "cd":
+                    cd_prefixed += 1
+                seen[command] = seen.get(command, 0) + 1
+                pending[str(event.get("id"))] = head
+            else:
+                output = str(event.get("output", ""))
+                if (output.lstrip().startswith("Error")
+                        or "(exit " in output[-24:]):
+                    head = pending.get(str(event.get("id")), "?")
+                    error_heads[head] = error_heads.get(head, 0) + 1
+        for command, count in seen.items():
+            if count > 1:
+                key = command[:80]
+                repeats[key] = repeats.get(key, 0) + count - 1
+    return {
+        "commands": total,
+        "cwd_distrust": round(cd_prefixed / total, 3) if total else 0.0,
+        "heads": dict(sorted(heads.items(), key=lambda kv: -kv[1])),
+        "error_heads": dict(sorted(error_heads.items(),
+                                   key=lambda kv: -kv[1])),
+        "repeated_commands": dict(sorted(
+            repeats.items(), key=lambda kv: -kv[1])[:MAX_HOTSPOTS]),
+    }
+
+
 def render(report: dict) -> str:
     """Bounded text projection of a mining report."""
 
@@ -142,6 +208,24 @@ def render(report: dict) -> str:
         lines.append("\n## re-read hotspots (wasted motion)")
         for path, extra in report["reread_hotspots"].items():
             lines.append(f"- {path}: {extra} redundant read(s)")
+    return "\n".join(lines)
+
+
+def render_bash(profile: dict) -> str:
+    """Bounded text projection of a bash usage profile."""
+
+    lines = [f"# bash profile ({profile['commands']} commands)"]
+    lines.append(f"cwd_distrust: {profile['cwd_distrust']:.0%} of commands "
+                 "re-establish the working directory with a cd prefix")
+    lines.append("\n## heads")
+    for head, count in list(profile["heads"].items())[:MAX_HOTSPOTS]:
+        errors = profile["error_heads"].get(head)
+        suffix = f" ({errors} errored)" if errors else ""
+        lines.append(f"- {head}: {count}{suffix}")
+    if profile["repeated_commands"]:
+        lines.append("\n## repeated identical commands (wasted motion)")
+        for command, extra in profile["repeated_commands"].items():
+            lines.append(f"- {extra}x extra: {command}")
     return "\n".join(lines)
 
 
