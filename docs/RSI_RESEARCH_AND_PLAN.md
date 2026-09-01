@@ -394,6 +394,27 @@ estimate_tokens 的纯函数,完全确定性,却从未被当成被测量。
 - (待数据)真实轨迹挖掘:有使用量后重开,回归"向被记录的摩擦
   对齐"的主航道。
 
+### 建议稿:受限工具集任务变体(2026-09-01,评委侧,待人审)
+
+**动机**:page-long-log 真跑验证显示模型的最优解是 bash 单行
+(sed/awk),完全绕开 read_file——微实验 A/B(offset 提示、截断
+引导)的行为学效应量不到。要专测 read_file 路径,任务必须拿走 bash。
+
+**机制草案**(有先例,非新发明):BenchTask 增
+`tool_names: tuple[str, ...] | None = None` 白名单字段;`run_arm`
+在 create 后据此收窄 session 的工具目录——与子代理的最小权限目录
+(tool_policy.py::CapabilityRoleToolPolicy.select 构造子目录)同一
+机制族。任务变体 `page-long-log-readonly` 白名单
+{read_file, glob}:模型只能靠 offset/limit 翻页,A/B 改动直接
+反映在 rounds/tool_calls/repeated_reads 维度上。
+
+**成本**:BenchTask 字段 + run_arm ~10 行 + 任务一条 + 指名测试;
+可见集 4→5 后预算算术再变(N=1 一次 2×(5+3)=16,N=2=32 仍在
+36 授权内,N=3=48 需再确认)。
+
+**待操作者一句话**:同意即落地(改动走测试与 review);不同意则
+A/B 维持"第一性原理 + pin"证成,不再追行为学读数。
+
 ### 评委侧入集记录(2026-09-01,操作者三项拍板)
 
 操作者决定:①翻页任务**入集** ②真跑判读预算 **N=3** ③529 熔断
