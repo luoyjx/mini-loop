@@ -315,10 +315,28 @@ class SQLiteStateStore:
             isolation_level=None,  # explicit transactions
         )
         self._db.row_factory = sqlite3.Row
-        self._db.execute("PRAGMA journal_mode=WAL")
-        self._db.execute("PRAGMA synchronous=NORMAL")
-        self._db.execute("PRAGMA foreign_keys=ON")
-        self._migrate()
+        try:
+            self._db.execute("PRAGMA journal_mode=WAL")
+            self._db.execute("PRAGMA synchronous=NORMAL")
+            self._db.execute("PRAGMA foreign_keys=ON")
+            self._migrate()
+        except sqlite3.OperationalError:
+            # Locked / read-only / disk-io: environmental, and the corrupt-
+            # file advice below would be exactly the wrong remedy for it.
+            raise
+        except sqlite3.DatabaseError as error:
+            # Storage census (2026-09-01): a corrupt state file surfaced as
+            # sqlite's bare "file is not a database" traceback at startup.
+            # Refuse-and-say-how-to-fix, like the newer-schema refusal
+            # beside it: name the file, the likely cause, and the remedy.
+            self._db.close()
+            raise StorageSchemaError(
+                f"{self.path} is not readable as a SQLite database "
+                f"({error}). Likely a corrupt or foreign file at the state "
+                "path -- a half-written database from a killed process, or "
+                "something else entirely. Move it aside to start fresh; "
+                "rows inside it are not recoverable through this store."
+            ) from error
 
     # -- schema ------------------------------------------------------------
     def _migrate(self) -> None:
