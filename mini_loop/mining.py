@@ -74,12 +74,36 @@ def mine_trajectory(store: Any, trajectory_id: str) -> dict:
     }
 
 
+def _started_at(summary: dict) -> float:
+    try:
+        return float(summary.get("started_at") or 0.0)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _window(summaries, since: float | None, until: float | None):
+    for summary in summaries:
+        started = _started_at(summary)
+        if since is not None and started < since:
+            continue
+        if until is not None and started >= until:
+            continue
+        yield summary
+
+
 def mine(store: Any, *, session_id: str | None = None,
-         limit: int = MAX_TRAJECTORIES) -> dict:
-    """Fold the newest recorded trajectories into one friction report."""
+         limit: int = MAX_TRAJECTORIES, since: float | None = None,
+         until: float | None = None) -> dict:
+    """Fold the newest recorded trajectories into one friction report.
+
+    `since`/`until` (unix timestamps, half-open window) slice the corpus
+    by era, so a landed experiment gets a real before/after reading from
+    the same instrument instead of a synthetic one.
+    """
 
     rows = []
-    for summary in store.list(session_id=session_id, limit=max(1, limit)):
+    for summary in _window(store.list(session_id=session_id,
+                                      limit=max(1, limit)), since, until):
         trajectory_id = summary.get("trajectory_id") or summary.get("id")
         if not trajectory_id:
             continue
@@ -124,7 +148,8 @@ def _command_head(command: str) -> str:
 
 
 def bash_profile(store: Any, *, session_id: str | None = None,
-                 limit: int = MAX_TRAJECTORIES) -> dict:
+                 limit: int = MAX_TRAJECTORIES, since: float | None = None,
+                 until: float | None = None) -> dict:
     """The shape of recorded bash usage: heads, cwd distrust, repeats.
 
     The corpus's first profile (2026-09-02) showed 97% of commands
@@ -140,7 +165,8 @@ def bash_profile(store: Any, *, session_id: str | None = None,
     repeats: dict[str, int] = {}
     pending: dict[str, str] = {}
     total = cd_prefixed = 0
-    for summary in store.list(session_id=session_id, limit=max(1, limit)):
+    for summary in _window(store.list(session_id=session_id,
+                                      limit=max(1, limit)), since, until):
         trajectory_id = summary.get("trajectory_id") or summary.get("id")
         if not trajectory_id:
             continue

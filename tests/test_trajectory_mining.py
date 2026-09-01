@@ -120,6 +120,39 @@ def test_the_bash_profile_names_cwd_distrust_and_repeats(tmp_path):
     assert "1x extra: cd /repo && make test" in text
 
 
+def test_era_windows_slice_the_corpus(tmp_path, monkeypatch):
+    """since/until windows give a landed experiment a real before/after
+    reading from the same instrument. Half-open: since is inclusive,
+    until exclusive, and an unparseable started_at falls out of any
+    bounded window rather than crashing the fold."""
+
+    import time as time_module
+
+    from mini_loop.mining import bash_profile
+
+    store = TrajectoryStore(tmp_path / "t")
+    clock = {"now": 1000.0}
+    monkeypatch.setattr(time_module, "time", lambda: clock["now"])
+    old = _record(store, "s1", [_use("bash", command="cd /a && ls"),
+                                _result("bash", "x")])
+    clock["now"] = 2000.0
+    mid = _record(store, "s1", [_use("bash", command="ls"),
+                                _result("bash", "x")])
+    clock["now"] = 3000.0
+    new = _record(store, "s1", [_use("bash", command="pwd"),
+                                _result("bash", "x")])
+
+    assert mine(store)["trajectories"] == 3
+    early = mine(store, until=1500.0)
+    assert [r["trajectory_id"] for r in early["rows"]] == [old]
+    late = mine(store, since=1500.0)
+    assert {r["trajectory_id"] for r in late["rows"]} == {mid, new}
+    assert mine(store, since=2000.0, until=3000.0)["trajectories"] == 1
+
+    assert bash_profile(store, until=1500.0)["cwd_distrust"] == 1.0
+    assert bash_profile(store, since=1500.0)["cwd_distrust"] == 0.0
+
+
 def test_the_miner_is_read_only(tmp_path):
     """Mining must not grow a write surface: the store's files are
     byte-identical before and after a full mine+render pass."""

@@ -25,17 +25,32 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--root", default="workspaces/.trajectories")
     parser.add_argument("--session", default=None)
     parser.add_argument("--limit", type=int, default=50)
+    parser.add_argument(
+        "--since-hours", type=float, default=None, metavar="H",
+        help="only trajectories started in the last H hours (era slicing "
+             "for before/after readings)",
+    )
+    parser.add_argument(
+        "--until-hours", type=float, default=None, metavar="H",
+        help="only trajectories started more than H hours ago",
+    )
     args = parser.parse_args(argv)
 
     root = pathlib.Path(args.root)
     if not root.exists():
         print(f"no trajectory root at {root}", file=sys.stderr)
         return 2
+    import time
+
+    now = time.time()
+    since = now - args.since_hours * 3600 if args.since_hours else None
+    until = now - args.until_hours * 3600 if args.until_hours else None
     store = TrajectoryStore(root)
-    print(render(mine(store, session_id=args.session, limit=args.limit)))
+    window = dict(session_id=args.session, limit=args.limit,
+                  since=since, until=until)
+    print(render(mine(store, **window)))
     print()
-    print(render_bash(bash_profile(
-        store, session_id=args.session, limit=args.limit)))
+    print(render_bash(bash_profile(store, **window)))
     return 0
 
 
