@@ -8,18 +8,16 @@ for command output the tail is the part worth running the command for),
 a vanished exit code (a failed long build injected as a clean
 "completed"), and communicate() reading unbounded output into memory.
 
-The first two are fixed and pinned here (docs/RSI_RESEARCH_AND_PLAN.md
-§5). The third stays a named FINDING:
-
-* FINDING: _exec reads the whole stdout via communicate() -- a
-  background `yes` fills memory until the timeout. The foreground's
-  _BoundedCapture (round 140) has no async sibling yet; building one is
-  a deliberate follow-up, not a drive-by.
+All three are fixed and pinned here (docs/RSI_RESEARCH_AND_PLAN.md §5):
+the render follows the foreground rules, and _bounded_read is the async
+sibling of round 140's _BoundedCapture -- peak memory tracks the capture
+limit, an overflow stops the capture and ends the command, flagged.
 """
 
 import asyncio
 import inspect
 
+import mini_loop.background as background
 from mini_loop.background import BackgroundManager
 from mini_loop.secrets import SecretRegistry
 from mini_loop.tools import OUTPUT_CAP
@@ -74,14 +72,43 @@ def test_a_long_background_output_keeps_the_tail_and_says_it_was_cut(tmp_path):
     )
 
 
-def test_unbounded_capture_is_a_named_finding():
-    """FINDING tripwire: _exec still gathers output via communicate(),
-    which holds the whole stream in memory (the round-140 hazard, async
-    edition). When a bounded async reader lands, this pin flips together
-    with the §5 record."""
+def test_background_capture_is_memory_bounded_not_just_capped(
+        tmp_path, monkeypatch):
+    """The round-140 rule, async edition: `communicate()` held the whole
+    stream in memory, so a high-output background command filled the
+    process until its timeout. The capture is now chunk-bounded -- the
+    overflow stops it, ends the command, and is flagged to the model."""
 
-    source = inspect.getsource(BackgroundManager._exec)
-    assert "communicate()" in source, (
-        "if communicate() is gone, the bounded-capture follow-up landed "
-        "-- flip this pin and the §5 finding together"
-    )
+    import shlex
+    import sys
+
+    monkeypatch.setattr(background, "MAX_BASH_CAPTURE", 64 * 1024)
+    big = 64 * 1024 * 16
+    script = f"import sys; sys.stdout.write('a' * {big})"
+    row = _run(tmp_path, f"{shlex.quote(sys.executable)} -c {shlex.quote(script)}")
+
+    assert row["status"] == "completed"
+    assert "output exceeded 65,536 bytes" in row["result"]
+    # The tripwire from the census round, flipped: communicate() is gone.
+    assert "communicate()" not in inspect.getsource(BackgroundManager._exec)
+    assert "_bounded_read" in inspect.getsource(BackgroundManager._exec)
+
+
+def test_an_exactly_full_capture_is_not_an_overflow():
+    """The boundary: output that fills the limit exactly ends at EOF
+    with no overflow -- killing a command for fitting would be absurd."""
+
+    class _Stream:
+        def __init__(self, payload):
+            self._pieces = [payload, b""]
+
+        async def read(self, _n):
+            return self._pieces.pop(0)
+
+    async def go():
+        return await BackgroundManager._bounded_read(
+            _Stream(b"x" * 100), 100, lambda: (_ for _ in ()).throw(
+                AssertionError("overflow fired on an exact fit")))
+
+    data, overflowed = asyncio.run(go())
+    assert data == b"x" * 100 and overflowed is False

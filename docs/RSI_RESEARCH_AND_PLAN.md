@@ -385,8 +385,12 @@ estimate_tokens 的纯函数,完全确定性,却从未被当成被测量。
   保持生命周期语义,失败可见性在文本里);pin 三个 + FINDING 绊线
   一个(communicate() 仍在源里即未修,修时绊线与本条同翻)。守卫
   r58(background-result-unmasked)锚随行更新并重验承重。
-- [ ] 后台有界捕获:_BoundedCapture 的异步版,补 round-140 内存界
-  的后台缺口(绊线在 test_background_census.py)。
+- [x] 后台有界捕获(2026-09-01 落地):`_bounded_read`——
+  _BoundedCapture 的异步版,64k 分块读、峰值内存追捕获上限而非输出
+  规模;溢出即停捕获+结束进程组+具名标记(与前台同语义,溢出时不叠
+  exit 注);**恰满上限不算溢出**(边界钉死:为"刚好装下"杀进程是
+  荒谬的)。绊线翻转(communicate() 已从 _exec 消失,pin 断言其不
+  在);FINDING ③ → RESOLVED。
 - (待数据)真实轨迹挖掘:有使用量后重开,回归"向被记录的摩擦
   对齐"的主航道。
 

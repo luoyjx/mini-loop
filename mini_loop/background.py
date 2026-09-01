@@ -25,7 +25,7 @@ from pathlib import Path
 
 from .durable import atomic_write_text
 from .registry import Tool, ToolContext, ToolRegistry
-from .tools import OUTPUT_CAP, capped, looks_dangerous
+from .tools import MAX_BASH_CAPTURE, OUTPUT_CAP, capped, looks_dangerous
 
 
 SLOW_KEYWORDS = (
@@ -159,6 +159,31 @@ class BackgroundManager:
             started += " (unrecorded: a restart will lose track of it)"
         return started
 
+    @staticmethod
+    async def _bounded_read(stream, limit: int, on_overflow) -> tuple[bytes, bool]:
+        """Async sibling of the foreground's _BoundedCapture (round 140).
+
+        `communicate()` held the whole stream in memory, so a background
+        `yes` filled the process until the timeout. Reading in chunks
+        bounds peak memory to the capture limit; on overflow the capture
+        stops and `on_overflow` ends the command, the same
+        bounded-output-is-not-bounded-work rule the foreground enforces.
+        """
+
+        chunks: list[bytes] = []
+        size = 0
+        while True:
+            piece = await stream.read(64 * 1024)
+            if not piece:
+                return b"".join(chunks), False
+            room = limit - size
+            if room > 0:
+                chunks.append(piece[:room])
+                size += min(len(piece), room)
+            if len(piece) > room:
+                on_overflow()
+                return b"".join(chunks), True
+
     async def _exec(self, bg_id: str, command: str, timeout: int) -> None:
         proc = None
         try:
@@ -181,7 +206,16 @@ class BackgroundManager:
             # whether the process is still alive after a restart.
             self._write_ledger(bg_id, command, pid=proc.pid)
             try:
-                out, _ = await asyncio.wait_for(proc.communicate(), timeout=timeout)
+                async def _capture():
+                    data, over = await self._bounded_read(
+                        proc.stdout, MAX_BASH_CAPTURE,
+                        lambda: _kill_group(proc),
+                    )
+                    await proc.wait()
+                    return data, over
+
+                out, overflowed = await asyncio.wait_for(
+                    _capture(), timeout=timeout)
                 # Masked here as well as at the agent boundary: this result is
                 # stored, injected into the next turn, and read by `check`.
                 # Rendered with the foreground rules (background census,
@@ -196,7 +230,13 @@ class BackgroundManager:
                     (out or b"").decode("utf-8", "replace").strip()
                 )
                 rendered = capped(text, keep_tail=True) if text else ""
-                if proc.returncode not in (0, None):
+                if overflowed:
+                    note = (
+                        f"[output exceeded {MAX_BASH_CAPTURE:,} bytes; "
+                        "capture stopped and the command was ended]"
+                    )
+                    rendered = f"{rendered}\n{note}" if rendered else note
+                elif proc.returncode not in (0, None):
                     note = f"(exit {proc.returncode})"
                     rendered = f"{rendered}\n{note}" if rendered else note
                 result = rendered or "(no output)"
