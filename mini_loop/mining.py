@@ -19,7 +19,8 @@ from __future__ import annotations
 
 from typing import Any
 
-__all__ = ["bash_profile", "mine", "mine_trajectory", "render"]
+__all__ = ["bash_profile", "mine", "mine_trajectory", "model_profile",
+           "render", "render_bash", "render_model"]
 
 #: Trajectories examined per mine() call, newest first.
 MAX_TRAJECTORIES = 50
@@ -234,6 +235,83 @@ def render(report: dict) -> str:
         lines.append("\n## re-read hotspots (wasted motion)")
         for path, extra in report["reread_hotspots"].items():
             lines.append(f"- {path}: {extra} redundant read(s)")
+    return "\n".join(lines)
+
+
+def model_profile(store: Any, *, session_id: str | None = None,
+                  limit: int = MAX_TRAJECTORIES, since: float | None = None,
+                  until: float | None = None) -> dict:
+    """What the recorded model calls actually cost, from provider counts.
+
+    model_end events carry the provider's own usage numbers -- input,
+    output, cache reads, cache creation -- and the stop reason. Folded
+    here into the questions that pick experiments: how much prompt is
+    served from cache (cache_read_share), how often answers truncate
+    (stop max_tokens), and what a call costs end to end.
+    """
+
+    from statistics import median
+
+    calls = 0
+    stop_reasons: dict[str, int] = {}
+    tokens = {"input": 0, "output": 0, "cache_read": 0, "cache_creation": 0}
+    durations: list[float] = []
+    for summary in _window(store.list(session_id=session_id,
+                                      limit=max(1, limit)), since, until):
+        trajectory_id = summary.get("trajectory_id") or summary.get("id")
+        if not trajectory_id:
+            continue
+        for event in store.iter_events(
+            trajectory_id, types={"model_end"}, limit=2_000,
+        ):
+            calls += 1
+            reason = str(event.get("stop_reason"))
+            stop_reasons[reason] = stop_reasons.get(reason, 0) + 1
+            usage = event.get("usage")
+            if isinstance(usage, dict):
+                tokens["input"] += int(usage.get("input_tokens") or 0)
+                tokens["output"] += int(usage.get("output_tokens") or 0)
+                tokens["cache_read"] += int(
+                    usage.get("cache_read_input_tokens") or 0)
+                tokens["cache_creation"] += int(
+                    usage.get("cache_creation_input_tokens") or 0)
+            try:
+                durations.append(float(event.get("duration_ms")))
+            except (TypeError, ValueError):
+                pass
+    prompt_total = (tokens["input"] + tokens["cache_read"]
+                    + tokens["cache_creation"])
+    return {
+        "calls": calls,
+        "stop_reasons": dict(sorted(stop_reasons.items(),
+                                    key=lambda kv: -kv[1])),
+        "tokens": tokens,
+        "cache_read_share": (round(tokens["cache_read"] / prompt_total, 3)
+                             if prompt_total else 0.0),
+        "median_call_ms": round(median(durations), 1) if durations else None,
+        "truncations": stop_reasons.get("max_tokens", 0),
+    }
+
+
+def render_model(profile: dict) -> str:
+    """Bounded text projection of a model-call profile."""
+
+    tokens = profile["tokens"]
+    lines = [f"# model profile ({profile['calls']} calls)"]
+    lines.append(
+        f"prompt tokens: {tokens['input']:,} uncached + "
+        f"{tokens['cache_read']:,} cache-read + "
+        f"{tokens['cache_creation']:,} cache-write "
+        f"(cache_read_share {profile['cache_read_share']:.0%}) | "
+        f"output {tokens['output']:,}"
+    )
+    reasons = ", ".join(f"{k}: {v}" for k, v in profile["stop_reasons"].items())
+    lines.append(f"stop reasons: {reasons or 'none'}")
+    if profile["truncations"]:
+        lines.append(f"TRUNCATIONS: {profile['truncations']} calls stopped "
+                     "at max_tokens")
+    if profile["median_call_ms"] is not None:
+        lines.append(f"median call: {profile['median_call_ms']:,} ms")
     return "\n".join(lines)
 
 

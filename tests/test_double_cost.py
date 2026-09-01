@@ -87,10 +87,16 @@ def test_the_system_prompt_and_tools_are_still_counted():
 
 
 def _time(fn, payload, rounds=20):
-    started = time.monotonic()
+    # Minimum, not mean: under full-suite load a scheduler hiccup lands
+    # inside some iterations and the mean drags toward it -- this test
+    # flaked three times that way. Noise only ever ADDS time, so the
+    # fastest observed round is the honest estimate of the code's cost.
+    best = float("inf")
     for _ in range(rounds):
+        started = time.monotonic()
         fn(payload)
-    return (time.monotonic() - started) / rounds
+        best = min(best, time.monotonic() - started)
+    return best
 
 
 def test_counting_beats_the_character_by_character_version():

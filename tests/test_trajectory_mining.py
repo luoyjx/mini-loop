@@ -153,6 +153,42 @@ def test_era_windows_slice_the_corpus(tmp_path, monkeypatch):
     assert bash_profile(store, since=1500.0)["cwd_distrust"] == 0.0
 
 
+def test_the_model_profile_folds_provider_counts(tmp_path):
+    """model_end events carry the provider's own usage numbers; the
+    profile folds them into cache share, truncation count, and median
+    call time -- the cost questions that pick experiments."""
+
+    from mini_loop.mining import model_profile, render_model
+
+    store = TrajectoryStore(tmp_path / "t")
+    _record(store, "s1", [
+        {"type": "model_end", "stop_reason": "tool_use",
+         "duration_ms": 100.0,
+         "usage": {"input_tokens": 1000, "output_tokens": 50,
+                   "cache_read_input_tokens": 0,
+                   "cache_creation_input_tokens": 500}},
+        {"type": "model_end", "stop_reason": "max_tokens",
+         "duration_ms": 300.0,
+         "usage": {"input_tokens": 100, "output_tokens": 200,
+                   "cache_read_input_tokens": 1400,
+                   "cache_creation_input_tokens": 0}},
+    ])
+
+    profile = model_profile(store)
+    assert profile["calls"] == 2
+    assert profile["tokens"] == {"input": 1100, "output": 250,
+                                 "cache_read": 1400, "cache_creation": 500}
+    assert profile["cache_read_share"] == round(1400 / 3000, 3)
+    assert profile["truncations"] == 1
+    assert profile["median_call_ms"] == 200.0
+    assert profile["stop_reasons"] == {"tool_use": 1, "max_tokens": 1}
+
+    text = render_model(profile)
+    assert "2 calls" in text
+    assert "cache_read_share 47%" in text
+    assert "TRUNCATIONS: 1" in text
+
+
 def test_the_miner_is_read_only(tmp_path):
     """Mining must not grow a write surface: the store's files are
     byte-identical before and after a full mine+render pass."""

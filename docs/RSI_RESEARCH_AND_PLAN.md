@@ -513,7 +513,16 @@ workspaces/.trajectories 76 份轨迹(23MB,含开发期历史)。发现顺带
   this repository")工作负载即仓库、工作区在别处——**错位诊断被
   第一份有机使用立即验证**(该会话 11 次模型调用、44 秒,全程 cd
   前缀)。
-- **建议稿(harness 侧,待人审)**:会话创建支持指定工作区根
+- [x] 模型调用剖面(2026-09-02 落地):`model_profile`——供应商
+  usage 计数折叠为 cache_read_share、截断数、中位时长、stop_reason
+  分布。**真实读数(804 次调用)**:prompt 269 万 token 全价 +
+  157 万 cache-read(share 仅 37%),**cache_creation 全程为 0**
+  ——缓存全靠端点隐式行为,CachePolicy 席位从未主动标记断点;
+  63% 的 prompt token 在按全价付。候选实验:cache_control 断点
+  策略(请求侧确定性可验,费用效应真跑读)。好消息同录:野外零
+  截断(escalation 机器从未触发)。顺手修 flaky:test_double_cost
+  计时从均值改最小值(噪声只加时间,min 是诚实估计;本会话第三次
+  偶发后按言修复)。
   (workspace=现有 checkout 路径),使"对着仓库干活"的会话不再
   隔着围栏——涉及围栏边界选择(任意路径绑定的安全姿态),故只
   建议不擅动;采纳后 cwd_distrust 与 read_file 错误率应显著下落,
