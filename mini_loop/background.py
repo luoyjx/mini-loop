@@ -25,7 +25,7 @@ from pathlib import Path
 
 from .durable import atomic_write_text
 from .registry import Tool, ToolContext, ToolRegistry
-from .tools import OUTPUT_CAP, looks_dangerous
+from .tools import OUTPUT_CAP, capped, looks_dangerous
 
 
 SLOW_KEYWORDS = (
@@ -184,9 +184,22 @@ class BackgroundManager:
                 out, _ = await asyncio.wait_for(proc.communicate(), timeout=timeout)
                 # Masked here as well as at the agent boundary: this result is
                 # stored, injected into the next turn, and read by `check`.
-                result = self.secrets.mask(
+                # Rendered with the foreground rules (background census,
+                # 2026-09-01): the old bare [:OUTPUT_CAP] slice truncated
+                # SILENTLY and kept the head -- for command output the tail
+                # is the part worth running the command for -- and a nonzero
+                # exit vanished entirely, so a failed long build injected as
+                # a clean "completed". Status stays lifecycle ("completed"
+                # means ran-to-end); failure visibility lives in the text,
+                # exactly like CommandResult.render().
+                text = self.secrets.mask(
                     (out or b"").decode("utf-8", "replace").strip()
-                )[:OUTPUT_CAP] or "(no output)"
+                )
+                rendered = capped(text, keep_tail=True) if text else ""
+                if proc.returncode not in (0, None):
+                    note = f"(exit {proc.returncode})"
+                    rendered = f"{rendered}\n{note}" if rendered else note
+                result = rendered or "(no output)"
                 status = "completed"
             except asyncio.TimeoutError:
                 _kill_group(proc)

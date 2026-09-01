@@ -670,8 +670,8 @@ MUTATIONS = [
     ),
     Mutation(
         "background-result-unmasked", 58, "mini_loop/background.py",
-        "                result = self.secrets.mask(\n                    (out or b\"\").decode(\"utf-8\", \"replace\").strip()\n                )[:OUTPUT_CAP] or \"",
-        "                result = (out or b\"\").decode(\"utf-8\", \"replace\").strip()[:OUTPUT_CAP] or \"",
+        "                text = self.secrets.mask(\n                    (out or b\"\").decode(\"utf-8\", \"replace\").strip()\n                )",
+        "                text = (out or b\"\").decode(\"utf-8\", \"replace\").strip()",
         "tests/test_background_parity.py",
         "a background result is masked before it is stored and injected",
     ),

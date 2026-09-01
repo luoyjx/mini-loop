@@ -377,6 +377,16 @@ estimate_tokens 的纯函数,完全确定性,却从未被当成被测量。
   三个 pin:目录总价带(2k–5k)、单工具上限(<1.2k,防 enum 倾倒
   与描述散文)、无工具零描述(有形无义的 schema 是纯浪费)。可选面
   (ast-outline/workflows)在普查中钉关,只价常开核心。
+- [x] 后台命令结果普查(2026-09-01 落地):前台的三课在后台路径
+  全部重犯——裸 `[:OUTPUT_CAP]` 切片**静默截断且保头弃尾**(round-62
+  课)、**非零退出码消失**(失败的长构建注入成干净 "completed",
+  实验 E 课)、`communicate()` **无内存界**(round-140 课)。修前
+  两者:后台渲染改走前台规则(capped keep_tail + exit 注;status
+  保持生命周期语义,失败可见性在文本里);pin 三个 + FINDING 绊线
+  一个(communicate() 仍在源里即未修,修时绊线与本条同翻)。守卫
+  r58(background-result-unmasked)锚随行更新并重验承重。
+- [ ] 后台有界捕获:_BoundedCapture 的异步版,补 round-140 内存界
+  的后台缺口(绊线在 test_background_census.py)。
 - (待数据)真实轨迹挖掘:有使用量后重开,回归"向被记录的摩擦
   对齐"的主航道。
 
