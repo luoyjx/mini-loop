@@ -20,7 +20,8 @@ from __future__ import annotations
 from typing import Any
 
 __all__ = ["bash_profile", "mine", "mine_trajectory", "model_profile",
-           "render", "render_bash", "render_model"]
+           "render", "render_bash", "render_model", "render_time",
+           "time_profile"]
 
 #: Trajectories examined per mine() call, newest first.
 MAX_TRAJECTORIES = 50
@@ -306,6 +307,77 @@ def model_profile(store: Any, *, session_id: str | None = None,
         "median_call_ms": round(median(durations), 1) if durations else None,
         "truncations": stop_reasons.get("max_tokens", 0),
     }
+
+
+def time_profile(store: Any, *, session_id: str | None = None,
+                 limit: int = MAX_TRAJECTORIES, since: float | None = None,
+                 until: float | None = None) -> dict:
+    """Where the wall-clock went: model, tools, or harness slack.
+
+    Every model_end and tool_result carries its own duration; the
+    trajectory carries the wall total. What neither covers -- injectors,
+    compaction, journaling, the loop itself -- is the slack, computed by
+    subtraction. First corpus reading (2026-09-02, 85 trajectories):
+    98% model, 2% tools, 0.2% slack -- a clean bill that says the
+    latency lever is fewer rounds, not faster harness code.
+    """
+
+    wall = model = tool = 0.0
+    tool_ms: dict[str, float] = {}
+    trajectories = 0
+    for summary in _window(store.list(session_id=session_id,
+                                      limit=max(1, limit)), since, until):
+        trajectory_id = summary.get("trajectory_id") or summary.get("id")
+        if not trajectory_id:
+            continue
+        try:
+            wall += float(summary.get("duration_ms") or 0)
+        except (TypeError, ValueError):
+            continue
+        trajectories += 1
+        for event in store.iter_events(
+            trajectory_id, types={"model_end", "tool_result"}, limit=2_000,
+        ):
+            try:
+                duration = float(event.get("duration_ms") or 0)
+            except (TypeError, ValueError):
+                continue
+            if event.get("type") == "model_end":
+                model += duration
+            else:
+                tool += duration
+                name = str(event.get("name", "?"))
+                tool_ms[name] = tool_ms.get(name, 0.0) + duration
+    slack = max(0.0, wall - model - tool)
+    def _share(part: float) -> float:
+        return round(part / wall, 3) if wall else 0.0
+    return {
+        "trajectories": trajectories,
+        "wall_ms": round(wall, 1),
+        "model_ms": round(model, 1),
+        "tool_ms": round(tool, 1),
+        "slack_ms": round(slack, 1),
+        "shares": {"model": _share(model), "tool": _share(tool),
+                   "slack": _share(slack)},
+        "tool_ms_by_name": dict(sorted(
+            ((k, round(v, 1)) for k, v in tool_ms.items()),
+            key=lambda kv: -kv[1])),
+    }
+
+
+def render_time(profile: dict) -> str:
+    """Bounded text projection of a wall-clock ledger."""
+
+    shares = profile["shares"]
+    lines = [f"# time ledger ({profile['trajectories']} trajectories)"]
+    lines.append(
+        f"wall {profile['wall_ms'] / 1000:,.1f}s = "
+        f"model {shares['model']:.0%} + tools {shares['tool']:.0%} + "
+        f"harness slack {shares['slack']:.1%}"
+    )
+    for name, ms in list(profile["tool_ms_by_name"].items())[:MAX_HOTSPOTS]:
+        lines.append(f"- {name}: {ms / 1000:,.1f}s")
+    return "\n".join(lines)
 
 
 def render_model(profile: dict) -> str:

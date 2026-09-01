@@ -192,6 +192,41 @@ def test_the_model_profile_folds_provider_counts(tmp_path):
     assert "TRUNCATIONS: 1" in text
 
 
+def test_the_time_ledger_attributes_the_wall_clock(tmp_path, monkeypatch):
+    """wall = model + tools + slack, by subtraction: what no span claims
+    is the harness's own cost. The corpus's first reading was a clean
+    bill (0.2% slack); this pin keeps the arithmetic honest."""
+
+    import time as time_module
+
+    from mini_loop.mining import render_time, time_profile
+
+    store = TrajectoryStore(tmp_path / "t")
+    clock = {"now": 1000.0}
+    monkeypatch.setattr(time_module, "time", lambda: clock["now"])
+    tid = store.start(session_id="s1", run_index=1, input_text="work")
+    store.append(tid, {"type": "model_end", "duration_ms": 600.0,
+                       "stop_reason": "end_turn", "usage": {}})
+    store.append(tid, {"type": "tool_result", "name": "bash",
+                       "duration_ms": 250.0, "output": "ok"})
+    store.append(tid, {"type": "tool_result", "name": "read_file",
+                       "duration_ms": 50.0, "output": "text"})
+    store.finish(tid, status="completed", duration_ms=1000.0)
+
+    profile = time_profile(store)
+    assert profile["trajectories"] == 1
+    assert profile["wall_ms"] == 1000.0
+    assert profile["model_ms"] == 600.0
+    assert profile["tool_ms"] == 300.0
+    assert profile["slack_ms"] == 100.0
+    assert profile["shares"] == {"model": 0.6, "tool": 0.3, "slack": 0.1}
+    assert profile["tool_ms_by_name"] == {"bash": 250.0, "read_file": 50.0}
+
+    text = render_time(profile)
+    assert "model 60% + tools 30% + harness slack 10.0%" in text
+    assert "- bash: 0.2s" in text
+
+
 def test_the_miner_is_read_only(tmp_path):
     """Mining must not grow a write surface: the store's files are
     byte-identical before and after a full mine+render pass."""
