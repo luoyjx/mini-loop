@@ -29,7 +29,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
 
-__all__ = ["BenchTask", "DEFAULT_TASKS", "HELDOUT_TASKS", "compare", "run_arm"]
+__all__ = ["BenchTask", "DEFAULT_TASKS", "HELDOUT_TASKS", "aggregate_runs",
+           "compare", "run_arm"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -244,6 +245,44 @@ def _dimension_fold(baseline: list[dict], candidate: list[dict]):
         if delta_pct is not None and delta_pct > DIMENSION_WARN_PCT:
             warnings.append(f"{dim} worsened {delta_pct}%")
     return dims, warnings
+
+
+def aggregate_runs(runs: list[list[dict]]) -> list[dict]:
+    """Median-of-N aggregation for repeated arm runs.
+
+    The real-transport calibration (§5, 2026-08-31) showed identical arms
+    drifting up to 33% on small-integer dimensions -- single runs cannot
+    carry a verdict on a micro-experiment. Dimensions take the median
+    across repeats; `passed` takes the strict majority (a tie fails),
+    with the raw pass_rate reported alongside so a flaky 2-of-3 stays
+    visible, never laundered into a clean pass.
+    """
+
+    from statistics import median
+
+    by_task: dict[str, list[dict]] = {}
+    for run in runs:
+        for row in run:
+            by_task.setdefault(row["task"], []).append(row)
+    aggregated = []
+    for task, rows in by_task.items():
+        passes = sum(1 for row in rows if row["passed"])
+        agg = {
+            "arm": rows[0]["arm"],
+            "task": task,
+            "passed": 2 * passes > len(rows),
+            "pass_rate": round(passes / len(rows), 3),
+            "repeats": len(rows),
+            "error": next(
+                (row.get("error") for row in rows if row.get("error")), None),
+        }
+        for dim in DIMENSIONS:
+            values = [row[dim] for row in rows
+                      if isinstance(row.get(dim), (int, float))]
+            if values:
+                agg[dim] = median(values)
+        aggregated.append(agg)
+    return aggregated
 
 
 def compare(baseline: list[dict], candidate: list[dict]) -> dict:

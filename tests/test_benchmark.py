@@ -159,6 +159,34 @@ def test_rows_without_dimensions_stay_comparable():
     assert verdict["dimension_warnings"] == []
 
 
+def test_repeated_runs_aggregate_by_median_and_majority():
+    """The calibration run showed identical arms drifting 33% on small
+    dimensions -- single runs cannot judge a micro-experiment. Medians
+    smooth the dimensions; `passed` needs a strict majority (a tie
+    fails), and the raw pass_rate rides along so a flaky 2-of-3 stays
+    visible instead of laundering into a clean pass."""
+
+    from mini_loop.benchmark import aggregate_runs
+
+    def _run(passed, duration, error=None):
+        return [{"arm": "x", "task": "a", "passed": passed,
+                 "duration_ms": duration, "error": error}]
+
+    (row,) = aggregate_runs([_run(True, 100), _run(True, 300),
+                             _run(False, 200, error="boom")])
+    assert row["passed"] is True and row["pass_rate"] == 0.667
+    assert row["repeats"] == 3
+    assert row["duration_ms"] == 200, "the median, not the mean or max"
+    assert row["error"] == "boom", "a repeat's failure is not discarded"
+
+    (minority,) = aggregate_runs([_run(True, 100), _run(False, 100),
+                                  _run(False, 100)])
+    assert minority["passed"] is False
+
+    (tie,) = aggregate_runs([_run(True, 100), _run(False, 100)])
+    assert tie["passed"] is False, "a tie falls conservative, like the verdict"
+
+
 def test_heldout_tasks_are_disjoint_from_the_visible_set():
     """The whole point of a held-out set: no overlap with the tasks the
     optimization loop sees, so overfit shows instead of hiding."""

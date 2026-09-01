@@ -6,18 +6,19 @@ in micro-experiments -- reword a truncation notice, change a default limit
 behavior" and "the experiment broke an edge case" are indistinguishable.
 This file is the before-picture: named tests for what `read_file` does
 TODAY on inputs nobody sends on the happy path. Nothing here asserts the
-behavior is *good*; two findings are explicitly candidates for future
-experiments, marked FINDING below:
+behavior is *good*; findings are candidates for deliberate experiments,
+and when an experiment lands, its pin flips here in the same change:
 
-* an offset past EOF reads exactly like an empty file -- the model cannot
-  tell "no such content" from "nothing there at all";
-* on a single overlong line, the head-only output cap swallows the very
-  notice that says how to read further (`offset` guidance), leaving only
-  the generic truncation marker.
+* RESOLVED (micro-experiment A, 2026-08-31): an offset past EOF used to
+  read exactly like an empty file; it now names the end and the file's
+  actual line count.
+* RESOLVED (micro-experiment B, 2026-08-31): the offset guidance on a
+  READ_CHAR_CAP-exceeded read used to sit on the LAST line, exactly where
+  the head-only output cap cuts; it now leads the output and survives.
 
-Changing either is a deliberate experiment measured by the behavioral
-benchmark dimensions -- not a drive-by fix, which is why the current
-behavior is pinned rather than patched.
+Changing a finding is a deliberate experiment measured by the behavioral
+benchmark dimensions -- not a drive-by fix, which is why current behavior
+is pinned rather than patched.
 """
 
 import os
@@ -39,15 +40,27 @@ def test_an_empty_file_reads_as_empty_not_error(toolset):
     assert toolset.run_read("empty.txt") == ""
 
 
-def test_an_offset_past_eof_reads_the_same_as_an_empty_file(toolset):
-    """FINDING: both answer the empty string, so the model cannot
-    distinguish "I paged past the end" from "the file is empty"."""
+def test_an_offset_past_eof_names_the_end_not_an_empty_file(toolset):
+    """Micro-experiment A: paging past EOF used to answer the same empty
+    string as an empty file. Now it names the end and the real line
+    count, so "I paged too far" and "nothing there" read differently."""
 
     (toolset.workspace / "empty.txt").write_text("")
     (toolset.workspace / "two.txt").write_text("a\nb\n")
+
     past_eof = toolset.run_read("two.txt", offset=10)
-    assert past_eof == ""
-    assert past_eof == toolset.run_read("empty.txt")
+    assert past_eof == "... (nothing at offset 10: the file ends after 2 lines)"
+    assert past_eof != toolset.run_read("empty.txt")
+
+    # The boundary reads the same way: offset == line count is also "past".
+    assert "ends after 2 lines" in toolset.run_read("two.txt", offset=2)
+    # No trailing newline still counts the partial last line.
+    (toolset.workspace / "tail.txt").write_text("a\nb")
+    assert "ends after 2 lines" in toolset.run_read("tail.txt", offset=9)
+    # An empty file with an offset says so too, instead of a bare "".
+    assert "ends after 0 lines" in toolset.run_read("empty.txt", offset=3)
+    # A valid offset is untouched by the experiment.
+    assert toolset.run_read("two.txt", offset=1) == "b"
 
 
 def test_negative_offset_and_limit_are_clamped_not_errors(toolset):
@@ -86,11 +99,11 @@ def test_an_unreadable_file_answers_error_and_stays_unread(toolset):
         locked.chmod(0o644)
 
 
-def test_a_huge_single_line_loses_the_offset_guidance(toolset):
-    """FINDING: the read-level notice ("read further with a larger
-    `offset`") is appended as the LAST line, and the head-only output cap
-    then cuts it off -- so on the pathological input that most needs the
-    guidance, only the generic truncation marker survives."""
+def test_a_huge_single_line_keeps_the_offset_guidance(toolset):
+    """Micro-experiment B: the guidance used to be the LAST line, exactly
+    where the head-only cap cuts -- the pathological input that most
+    needed it never saw it. Leading the output, it survives any head
+    truncation, and the generic cap marker still names the cut."""
 
     (toolset.workspace / "one-line.txt").write_text(
         "A" * (READ_CHAR_CAP + READ_CHAR_CAP // 2)
@@ -98,7 +111,12 @@ def test_a_huge_single_line_loses_the_offset_guidance(toolset):
     result = toolset.run_read("one-line.txt")
     assert len(result) <= OUTPUT_CAP
     assert "[truncated:" in result, "the generic cap marker must survive"
-    assert "read further with a larger `offset`" not in result, (
-        "if the guidance now survives, an experiment changed this "
-        "deliberately -- update this pin and the §5 finding together"
+    assert result.splitlines()[0].startswith("... (file exceeds"), (
+        "the guidance must lead the output, where head truncation "
+        "cannot reach it"
     )
+    assert "read further with a larger `offset`" in result
+
+    # A small file (or a small window under `limit`) carries no guidance.
+    (toolset.workspace / "small.txt").write_text("one\ntwo\n")
+    assert "file exceeds" not in toolset.run_read("small.txt")

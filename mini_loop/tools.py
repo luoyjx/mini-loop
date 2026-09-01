@@ -555,28 +555,45 @@ class Toolset:
             # it with `offset`. Now a larger offset genuinely reaches later lines.
             with self.safe_path(path).open("r", encoding="utf-8", errors="replace") as handle:
                 hit_eof = False
+                skipped = 0
                 for _ in range(offset):
                     # Skip one line, reading in READ_CHAR_CAP-sized pieces so an
                     # overlong line cannot pull more than the cap into memory --
                     # readline(size) stops at a newline *or* `size` chars.
+                    saw_content = False
                     while True:
                         piece = handle.readline(READ_CHAR_CAP)
                         if not piece:
                             hit_eof = True
                             break
+                        saw_content = True
                         if piece.endswith("\n"):
                             break
+                    if saw_content:
+                        skipped += 1
                     if hit_eof:
                         break
                 data = "" if hit_eof else handle.read(READ_CHAR_CAP + 1)
             truncated_read = len(data) > READ_CHAR_CAP
+            if not data and offset > 0:
+                # Micro-experiment A (docs/RSI_RESEARCH_AND_PLAN.md §5): an
+                # offset past the end used to answer the same empty string as
+                # an empty file, so the model could not tell "paged too far"
+                # from "nothing there". Name the end instead.
+                return (f"... (nothing at offset {offset}: the file ends "
+                        f"after {skipped} lines)")
             lines = data[:READ_CHAR_CAP].splitlines()
             limit = max(int(limit), 0) if limit is not None else None
             if limit is not None and limit < len(lines):
                 tail = ", read truncated" if truncated_read else ""
                 lines = lines[:limit] + [f"... ({len(lines) - limit} more lines{tail})"]
             elif truncated_read:
-                lines.append(
+                # Micro-experiment B (docs/RSI_RESEARCH_AND_PLAN.md §5): as
+                # the LAST line this guidance sat exactly where the head-only
+                # output cap cuts, so the pathological input that most needed
+                # it never saw it. First line survives any head truncation.
+                lines.insert(
+                    0,
                     f"... (file exceeds {READ_CHAR_CAP:,} characters from this "
                     "offset; read further with a larger `offset`)"
                 )

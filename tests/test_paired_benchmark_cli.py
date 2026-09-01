@@ -75,6 +75,35 @@ def test_an_operator_task_module_swaps_the_visible_set(
     assert "dimensions" in report["comparison"]
 
 
+def test_repeat_multiplies_the_budget_and_aggregates(
+        tmp_path, monkeypatch, capsys):
+    """--repeat N spends N times the task-runs, and the budget gate counts
+    every one of them; the rows come back aggregated with the repeat count
+    and pass_rate named."""
+
+    cli = _cli()
+
+    # The gate prices repeats in: default sets at --repeat 2 cost 24.
+    monkeypatch.setenv("MINILOOP_BENCHMARK_REAL", "1")
+    monkeypatch.delenv("MINILOOP_BENCHMARK_TASK_BUDGET", raising=False)
+    assert cli.main(["--repeat", "2"]) == 2
+    assert "24" in capsys.readouterr().err
+
+    monkeypatch.delenv("MINILOOP_BENCHMARK_REAL", raising=False)
+    blind = tmp_path / "blind.py"
+    blind.write_text(
+        "from mini_loop.benchmark import BenchTask\n"
+        "TASKS = (BenchTask('op-probe', 'say anything',\n"
+        "                   lambda workspace, final: True),)\n"
+    )
+    assert cli.main(["--tasks", str(blind), "--repeat", "2"]) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["repeat"] == 2
+    assert report["task_runs"] == 16  # 2 arms x 2 repeats x (1 + 3)
+    assert all(r["repeats"] == 2 for r in report["baseline"])
+    assert all("pass_rate" in r for r in report["candidate"])
+
+
 def test_a_broken_task_module_refuses_loudly(tmp_path):
     cli = _cli()
 

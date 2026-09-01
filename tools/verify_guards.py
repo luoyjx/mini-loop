@@ -3436,6 +3436,15 @@ MUTATIONS = [
         "them about",
     ),
     Mutation(
+        "flakiness-launders-into-a-clean-pass", 264, "mini_loop/benchmark.py",
+        '            "passed": 2 * passes > len(rows),',
+        '            "passed": passes > 0,',
+        "tests/test_benchmark.py::test_repeated_runs_aggregate_by_median_and_majority",
+        "repeats exist to see through noise, not to give a flaky task N "
+        "chances; any-pass aggregation turns 1-of-3 into green and the "
+        "instrument into a slot machine",
+    ),
+    Mutation(
         "an-unbudgeted-real-run-proceeds", 263, "tools/paired_benchmark.py",
         '    if not real:\n'
         '        return None\n'

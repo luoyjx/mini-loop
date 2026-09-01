@@ -39,7 +39,7 @@ import tempfile
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
 from mini_loop.benchmark import (  # noqa: E402
-    DEFAULT_TASKS, HELDOUT_TASKS, compare, run_arm,
+    DEFAULT_TASKS, HELDOUT_TASKS, aggregate_runs, compare, run_arm,
 )
 from mini_loop.config import Settings, build_client  # noqa: E402
 
@@ -121,12 +121,20 @@ def main(argv: list[str] | None = None) -> int:
         "--tasks", metavar="MODULE.py", default=None,
         help="operator task module exporting TASKS; replaces the visible set",
     )
+    parser.add_argument(
+        "--repeat", type=int, default=1, metavar="N",
+        help="run each arm N times and aggregate by median/majority -- the "
+             "calibration noise floor makes single real runs unjudgeable",
+    )
     args = parser.parse_args(argv)
+    if args.repeat < 1:
+        parser.error("--repeat must be >= 1")
 
     visible = load_task_module(args.tasks) if args.tasks else DEFAULT_TASKS
     real = os.getenv("MINILOOP_BENCHMARK_REAL") == "1"
-    # Two arms, each running the visible set and the held-out second opinion.
-    task_runs = 2 * (len(visible) + len(HELDOUT_TASKS))
+    # Two arms, each running the visible set and the held-out second
+    # opinion, --repeat times over: every repeat is a spent task-run.
+    task_runs = 2 * args.repeat * (len(visible) + len(HELDOUT_TASKS))
     refusal = real_run_refusal(
         real, task_runs, os.getenv("MINILOOP_BENCHMARK_TASK_BUDGET"))
     if refusal:
@@ -139,14 +147,19 @@ def main(argv: list[str] | None = None) -> int:
         if key.startswith("MINILOOP_BENCH_CANDIDATE_")
     }
 
+    async def arm_rows(label, settings, client, tasks):
+        runs = [await run_arm(label, settings, client, tasks)
+                for _ in range(args.repeat)]
+        return runs[0] if args.repeat == 1 else aggregate_runs(runs)
+
     async def run() -> dict:
         with tempfile.TemporaryDirectory(prefix="bench-base-") as base_dir, \
              tempfile.TemporaryDirectory(prefix="bench-cand-") as cand_dir:
             base_settings = _settings(pathlib.Path(base_dir), real)
             base_client = build_client(base_settings)
-            baseline = await run_arm(
+            baseline = await arm_rows(
                 "baseline", base_settings, base_client, visible)
-            heldout_base = await run_arm(
+            heldout_base = await arm_rows(
                 "baseline", base_settings, base_client, HELDOUT_TASKS)
             saved = {k: os.environ.get(k) for k in overlay}
             os.environ.update(overlay)
@@ -159,13 +172,14 @@ def main(argv: list[str] | None = None) -> int:
                     else:
                         os.environ[key] = value
             cand_client = build_client(cand_settings)
-            candidate = await run_arm(
+            candidate = await arm_rows(
                 "candidate", cand_settings, cand_client, visible)
-            heldout_cand = await run_arm(
+            heldout_cand = await arm_rows(
                 "candidate", cand_settings, cand_client, HELDOUT_TASKS)
             return {
                 "real": real,
                 "overlay": sorted(overlay),
+                "repeat": args.repeat,
                 "task_runs": task_runs,
                 "baseline": baseline,
                 "candidate": candidate,
