@@ -169,7 +169,15 @@ class MessageBus:
                 # in-memory path returned every queued message uncapped while
                 # the persisted path capped at MAX_INBOX. A new backend inherits
                 # the resource's bound, it does not get to skip it.
-                return messages[-self.MAX_INBOX:]
+                if len(messages) > self.MAX_INBOX:
+                    keep = self.MAX_INBOX - 1  # the notice spends the bound
+                    dropped = len(messages) - keep
+                    self.problems.append(
+                        f"inbox {name}: {dropped} messages dropped unread"
+                    )
+                    return [self._overflow_notice(name, dropped),
+                            *messages[-keep:]]
+                return messages
             try:
                 path = self._path(name)
             except ValueError as error:
@@ -192,15 +200,40 @@ class MessageBus:
                 if isinstance(value, dict):
                     messages.append(value)
             if truncated or len(messages) > self.MAX_INBOX:
+                keep = self.MAX_INBOX - 1  # the notice spends the bound
+                dropped = (len(messages) - keep
+                           if len(messages) > keep else None)
                 self.problems.append(
                     f"{path}: mailbox exceeded {self.MAX_READ_BYTES:,} bytes; "
                     "older messages dropped unread"
                     if truncated else
                     f"{path}: {len(messages)} messages delivered at once; "
-                    f"{len(messages) - self.MAX_INBOX} dropped"
+                    f"{dropped} dropped"
                 )
-                messages = messages[-self.MAX_INBOX:]
+                messages = messages[-keep:]
+                # Teams census (2026-09-01): the drop went to the problem
+                # ledger -- operator-visible -- while the RECIPIENT learned
+                # nothing: to the agent, 150 sent and 100 delivered looked
+                # exactly like 100 sent. The loss rides the delivery itself,
+                # so both ends of the conversation can react to it.
+                messages.insert(0, self._overflow_notice(name, dropped))
             return messages
+
+    @staticmethod
+    def _overflow_notice(name: str, dropped: int | None) -> dict:
+        detail = (
+            f"{dropped} older messages were dropped unread"
+            if dropped is not None else
+            "the mailbox exceeded its size bound; an unknown number of "
+            "older messages were dropped unread"
+        )
+        return {
+            "from": "mailbox", "to": name, "type": "notice",
+            "content": (
+                f"[inbox overflow: {detail}. Ask senders to resend "
+                "anything critical.]"
+            ),
+        }
 
 
 def team_key(team_id: str, name: str) -> str:

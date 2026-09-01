@@ -744,8 +744,10 @@ MUTATIONS = [
     ),
     Mutation(
         "in-memory-mailbox-uncapped", 144, "mini_loop/teams.py",
-        "                return messages[-self.MAX_INBOX:]",
-        "                return messages",
+        "                if len(messages) > self.MAX_INBOX:\n"
+        "                    keep = self.MAX_INBOX - 1  # the notice spends the bound",
+        "                if False:\n"
+        "                    keep = self.MAX_INBOX - 1  # the notice spends the bound",
         "tests/test_content_stores.py::test_the_in_memory_mailbox_is_bounded_like_the_persisted_one",
         "the MAX_INBOX bound belongs to the mailbox, not the backend: the "
         "in-memory path must cap the delivered batch like the persisted one",
