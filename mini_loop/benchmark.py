@@ -45,6 +45,12 @@ class BenchTask:
     #: the fixture must come from the instrument, never from the arm's
     #: own conversation.
     setup: Callable[[Path], None] | None = None
+    #: Optional tool whitelist (judge-side mechanism, human-admitted
+    #: 2026-09-01): the same least-authority narrowing the subagent
+    #: catalogues use. A task that must exercise a specific tool path --
+    #: read_file paging with the bash shortcut removed -- narrows the
+    #: session catalogue to exactly these names.
+    tool_names: tuple[str, ...] | None = None
 
 
 def _wrote_greeting(workspace: Path, final: str) -> bool:
@@ -101,6 +107,19 @@ DEFAULT_TASKS: tuple[BenchTask, ...] = (
         "line 4321.",
         _found_deep_line,
         setup=_seed_long_log,
+    ),
+    # Admitted 2026-09-01 (human-approved judge-side change): the same
+    # deep-line task with the bash shortcut removed, so read_file's
+    # paging path -- the surface micro-experiments A/B changed -- is the
+    # only road and their behavioral effect has somewhere to register.
+    BenchTask(
+        "page-long-log-readonly",
+        "data.log has 6000 numbered lines and is too large to read in "
+        "one go. Using the available file tools, report the exact "
+        "token-NNNNN value that appears on line 4321.",
+        _found_deep_line,
+        setup=_seed_long_log,
+        tool_names=("read_file", "glob"),
     ),
 )
 
@@ -187,7 +206,9 @@ def _behavioral_metrics(messages: list) -> dict:
             elif kind == "tool_result":
                 result = block_field(block, "content")
                 text = result if isinstance(result, str) else block_text(result)
-                if text.lstrip().startswith("Error"):
+                # "Unknown tool" is the loop's own refusal shape for a call
+                # outside the catalogue -- a failed tool call by any name.
+                if text.lstrip().startswith(("Error", "Unknown tool")):
                     tool_errors += 1
     return {"rounds": rounds, "tool_calls": tool_calls,
             "tool_errors": tool_errors, "repeated_reads": repeated_reads}
@@ -209,6 +230,8 @@ async def run_arm(
         session = manager.create()
         if task.setup is not None:
             task.setup(session.workspace)
+        if task.tool_names is not None:
+            session.agent.tools = session.agent.tools.subset(task.tool_names)
         started = time.monotonic()
         try:
             final = await session.run(task.prompt)

@@ -177,7 +177,7 @@ def test_the_ui_benchmark_is_fake_only_and_reports_parity(tmp_path):
         assert report["real"] is False
         assert "fake transport" in report["note"]
         assert report["comparison"]["verdict"] == "not_worse"
-        assert report["comparison"]["tasks"] == 4
+        assert report["comparison"]["tasks"] == 5
         # The promotion gate's second opinion rides the same report: tasks
         # outside the visible loop, compared with the same instrument.
         assert report["heldout_comparison"]["verdict"] == "not_worse"

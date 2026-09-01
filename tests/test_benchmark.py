@@ -36,6 +36,9 @@ def _client_passing_write_file():
         ([tool("read_file", _id="t2", path="data.log", offset=4320, limit=1)],
          "tool_use"),
         ([text("line 4321 carries token-04321")], "end_turn"),
+        ([tool("read_file", _id="t3", path="data.log", offset=4320, limit=1)],
+         "tool_use"),
+        ([text("readonly run also finds token-04321")], "end_turn"),
     ]))
 
 
@@ -46,10 +49,42 @@ def test_tasks_are_judged_on_effects(tmp_path):
     ))
     by_task = {r["task"]: r["passed"] for r in results}
     assert by_task == {"write-file": True, "arithmetic": True,
-                       "edit-config": False, "page-long-log": True}
-    # The admitted paging task's fixture came from the instrument's setup
+                       "edit-config": False, "page-long-log": True,
+                       "page-long-log-readonly": True}
+    # The admitted paging tasks' fixture came from the instrument's setup
     # hook, not from the conversation: the scripted arm never wrote it.
     assert by_task["page-long-log"] is True
+
+
+def test_a_restricted_task_narrows_the_catalogue(tmp_path):
+    """The tool_names whitelist is real narrowing, proven behaviorally:
+    the same scripted bash call errors under the restricted task and
+    succeeds under the unrestricted one -- so the readonly paging task
+    cannot be solved by the shortcut it exists to remove."""
+
+    def _probe(name, tool_names=None):
+        return BenchTask(name, "run the probe", lambda ws, final: True,
+                         tool_names=tool_names)
+
+    def _bash_then_done():
+        return FakeAsyncAnthropic(responder=scripted([
+            ([tool("bash", _id="b1", command="echo hi")], "tool_use"),
+            ([text("done")], "end_turn"),
+        ]))
+
+    (restricted,) = asyncio.run(run_arm(
+        "x", _settings(tmp_path, "r"), _bash_then_done(),
+        (_probe("restricted", tool_names=("read_file",)),),
+    ))
+    assert restricted["tool_errors"] == 1, (
+        "a bash call under a read_file-only whitelist must fail"
+    )
+
+    (unrestricted,) = asyncio.run(run_arm(
+        "x", _settings(tmp_path, "u"), _bash_then_done(),
+        (_probe("unrestricted"),),
+    ))
+    assert unrestricted["tool_errors"] == 0
 
 
 def test_a_crashing_expectation_is_a_loud_failure(tmp_path):
