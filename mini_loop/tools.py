@@ -402,7 +402,16 @@ class Toolset:
     def safe_path(self, p: str) -> Path:
         path = (self.workspace / p).resolve()
         if path != self.workspace and not path.is_relative_to(self.workspace):
-            raise ValueError(f"Path escapes workspace: {p}")
+            # Micro-experiment I (docs/RSI_RESEARCH_AND_PLAN.md §5): the
+            # first experiment selected by mined friction, not taste --
+            # 64 of 66 recorded read_file errors were absolute paths
+            # hitting this refusal, which said what failed and nothing
+            # about the remedy.
+            raise ValueError(
+                f"Path escapes workspace: {p}. Paths are relative to the "
+                "workspace root; an absolute path only works when it points "
+                "inside the workspace."
+            )
         return path
 
     # -- blocking primitives (run via to_thread in `dispatch`) --

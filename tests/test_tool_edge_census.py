@@ -93,6 +93,27 @@ def test_binary_bytes_are_replaced_never_a_crash(toolset):
     assert "PNG" in result and "end" in result
 
 
+def test_an_escaping_path_names_the_remedy(toolset):
+    """Micro-experiment I, the first selected by mined friction: 64 of 66
+    recorded read_file errors were absolute paths hitting the confinement
+    refusal, which said what failed and nothing about what would work."""
+
+    result = toolset.run_read("/etc/passwd")
+    assert result.startswith("Error: Path escapes workspace")
+    assert "relative to the workspace root" in result
+    assert "relative to the workspace root" in toolset.run_read("../../up")
+
+
+def test_an_absolute_path_inside_the_workspace_is_served(toolset):
+    """The mined errors were absolute paths OUTSIDE the workspace; an
+    absolute path that points inside it has always been served, and the
+    remedy text above promises exactly that -- pinned so nobody tightens
+    it away."""
+
+    (toolset.workspace / "f.txt").write_text("inside")
+    assert toolset.run_read(str(toolset.workspace / "f.txt")) == "inside"
+
+
 def test_a_directory_path_answers_error(toolset):
     (toolset.workspace / "sub").mkdir()
     assert toolset.run_read("sub").startswith("Error")

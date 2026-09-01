@@ -485,9 +485,16 @@ workspaces/.trajectories 76 份轨迹(23MB,含开发期历史)。发现顺带
   拒绝;而该错误只说逃逸、不说"路径须相对于工作区根"。这是
   error-as-prompt 缺口(与微实验 F 同类),且是**真实数据选出的**
   第一个实验题。
-- [ ] 微实验 I(数据选题):escape 拒绝附导引(相对路径处方;绝对
-  路径落在工作区内时本就放行,pin 之);普查 pin 同步;落地后下批
-  轨迹应能看到错误率变化——这是首个能用真实数据前后对照的实验。
+- [x] 微实验 I(2026-09-02 落地,首个数据选题实验):escape 拒绝附
+  处方("Paths are relative to the workspace root; an absolute path
+  only works when it points inside the workspace");工作区内绝对
+  路径的放行 pin 住(挖出的 64 错全在区外;别人不许"收紧修掉")。
+  两个探针真会话(post-fix):撞新处方后一轮即恢复;错误率对照将
+  随语料自然累积(挖掘器即读数)。**顺带浮出部署级观察**:
+  NullSandbox 下 bash 不受限而 read_file 受限,真实轨迹显示模型
+  **学会用 bash 绕过读围栏**(cat 区外文件)——无沙箱时文件围栏只
+  是摩擦不是边界。这是部署姿态事实,如实入档;要边界请开沙箱
+  (sandbox_confined 在 capability_plan 事件里可见)。
 
 ### 评委侧入集记录(2026-09-01,操作者三项拍板)
 
