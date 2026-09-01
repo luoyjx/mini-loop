@@ -56,7 +56,18 @@ MAX_BODY = 32_000
 
 
 def _slug(name: str) -> str:
-    return (re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-") or "memory")[:MAX_SLUG]
+    normalized = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")[:MAX_SLUG]
+    if not normalized or normalized == "memory":
+        # Memory census (2026-09-01): every name that normalized to
+        # nothing -- Chinese, emoji -- shared the one bare fallback file,
+        # so unrelated CJK-named memories silently destroyed each other;
+        # and on a case-insensitive filesystem that file folds onto the
+        # MEMORY.md index, so the next flush destroyed the memory
+        # outright. The fallback is stable per exact name, and the
+        # reserved index name can never become a memory's filename.
+        digest = hashlib.sha256(name.encode("utf-8")).hexdigest()[:8]
+        normalized = f"memory-{digest}"
+    return normalized
 
 
 def _header(value: object) -> str:
@@ -209,16 +220,22 @@ class MemoryStore:
 
             # Lazily migrate the exact legacy record this write supersedes.
             # A different normalized name may share its slug and must survive.
-            legacy = self.dir / f"{slug}.md"
-            if target != legacy and legacy.exists():
-                prior = self._parse(legacy)
-                if (
-                    prior is not None
-                    and _belongs_to_owner(prior, owner)
-                    and prior.get("name") == name
-                ):
-                    legacy.unlink(missing_ok=True)
-                    self._parsed.pop(legacy.name, None)
+            # The pre-census fallback file (bare memory.md) is a candidate
+            # too: a CJK-named record stored there before hashed fallbacks
+            # would otherwise reappear beside its own rewrite.
+            legacy_candidates = [self.dir / f"{slug}.md"]
+            if slug.startswith("memory-"):
+                legacy_candidates.append(self.dir / "memory.md")
+            for legacy in legacy_candidates:
+                if target != legacy and legacy.exists():
+                    prior = self._parse(legacy)
+                    if (
+                        prior is not None
+                        and _belongs_to_owner(prior, owner)
+                        and prior.get("name") == name
+                    ):
+                        legacy.unlink(missing_ok=True)
+                        self._parsed.pop(legacy.name, None)
             # Deferred. Caching the parses made the *reads* linear and left the
             # time quadratic, because every write still materialised the whole
             # `MEMORY.md`. An agent that remembers ten things and then looks at
@@ -323,6 +340,14 @@ class MemoryStore:
         with self._lock:
             found = [m for m in (self._parse(p) for p in sorted(self.dir.glob("*.md"))
                                  if p.name != "MEMORY.md") if m is not None]
+            # A legacy index that landed in `memory.md` (case-insensitive
+            # filesystems fold that name onto MEMORY.md) parses as a memory
+            # named "memory" whose body IS the index. Serve no index text as
+            # a memory; a real legacy record living in memory.md still parses
+            # by its frontmatter and stays.
+            found = [m for m in found
+                     if not (m["file"].lower() == "memory.md"
+                             and m["body"].startswith("# Memory index"))]
             if owner is not None:
                 expected_key = _owner_key(owner)
                 # Normalize keyed records onto the exact requested identity

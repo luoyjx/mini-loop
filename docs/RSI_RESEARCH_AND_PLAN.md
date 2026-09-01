@@ -391,6 +391,17 @@ estimate_tokens 的纯函数,完全确定性,却从未被当成被测量。
   exit 注);**恰满上限不算溢出**(边界钉死:为"刚好装下"杀进程是
   荒谬的)。绊线翻转(communicate() 已从 _exec 消失,pin 断言其不
   在);FINDING ③ → RESOLVED。
+- [x] 记忆命名普查(2026-09-01 落地,挖出两个数据毁损缺陷):
+  ①`_slug` 剥光全部非 ASCII 字符 → 所有中文/emoji 名共享裸
+  "memory" fallback 文件,**两条无关中文记忆互相静默覆盖**(对写
+  中文的操作者是大多数名字);②大小写不敏感文件系统(macOS APFS)
+  上该 fallback 文件与 MEMORY.md 索引**同 inode**——flush 直接用
+  索引覆盖记忆本体,再把索引文本当"memory"记忆端出来。修复:
+  fallback slug 按确切名字取稳定摘要(memory-<sha8>,ASCII 名零
+  变化)、保留字 "memory" 永不成为记忆文件名、索引文本嗅探排除
+  (真遗留记忆按 frontmatter 保留)、写路径接管旧 fallback 遗留。
+  良性行为顺手钉住:遍历名受困、巨体截断有标记+问题账本、同名
+  last-write-wins。五个指名测试;无守卫(pin 即钉)。
 - (待数据)真实轨迹挖掘:有使用量后重开,回归"向被记录的摩擦
   对齐"的主航道。
 
