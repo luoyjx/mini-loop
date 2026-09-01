@@ -131,7 +131,8 @@ def _context_pressure(agent) -> str:
 
     An agent at 89% of its budget has a `compress` tool, no idea it is at 89%,
     and compaction about to happen *to* it -- old tool results blanked to
-    `[cleared]`, the middle of the conversation replaced by a snip marker --
+    `[cleared: tool, N chars]` markers, the middle of the conversation
+    replaced by a snip marker --
     with nothing having warned it. One `cat` of a large file at that point costs
     it context it was relying on.
     """

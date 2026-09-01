@@ -180,6 +180,15 @@ class Settings:
 
     bash_timeout: int = field(default_factory=lambda: _env_int("MINILOOP_BASH_TIMEOUT", 120))
 
+    # Model the 529 breaker switches to after MAX_CONSECUTIVE_529 overloads
+    # in one turn (recovery.py). Unset keeps the breaker unarmed. The
+    # fault-injection census found the mechanism fully built and fully
+    # unreachable -- tested, evented, and never constructed with a model to
+    # switch to; this field is the reaching (micro-experiment H).
+    fallback_model: str | None = field(
+        default_factory=lambda: os.getenv("MINILOOP_FALLBACK_MODEL") or None
+    )
+
     # Requests per principal per minute on the expensive HTTP routes (message,
     # steer, fork). 0 disables (the default): loopback single-user needs no
     # limiter, and a surprise 429 in that setting would be a regression. An

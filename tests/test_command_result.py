@@ -34,7 +34,7 @@ def test_stderr_and_nonzero_exit_are_separate_from_stdout(tmp_path):
     assert result.stderr == "failure detail\n"
     assert result.exit_code == 7
     assert result.timed_out is False
-    assert result.render() == "ordinary output\nfailure detail"
+    assert result.render() == "ordinary output\nfailure detail\n(exit 7)"
 
 
 def test_timeout_retains_metadata_and_masked_partial_streams(tmp_path):
@@ -75,7 +75,7 @@ def test_run_bash_remains_the_string_projection(tmp_path):
     toolset = Toolset(tmp_path)
 
     assert toolset.run_bash("printf 'out\\n'; printf 'err\\n' >&2; exit 3") == (
-        "out\nerr"
+        "out\nerr\n(exit 3)"
     )
     assert toolset.run_bash("true") == "(no output)"
     assert toolset.run_bash("sudo true") == "Error: Dangerous command blocked"

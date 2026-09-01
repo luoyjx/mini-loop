@@ -72,13 +72,15 @@ def test_the_superseded_epoch_keeps_the_original_bodies(tmp_path):
 
     assert store.transcript_epoch(session.id) == 2
     current = _bodies(store.load_messages(session.id))
-    assert "[cleared]" in current, "the projection did not compact"
+    assert any(str(body).startswith("[cleared") for body in current), (
+        "the projection did not compact"
+    )
 
     canonical = _bodies(store.load_messages(session.id, epoch=1))
     assert canonical and all(body == BODY for body in canonical), (
         "the superseded epoch is not the record of what the agent saw"
     )
-    assert "[cleared]" not in canonical, (
+    assert not any(str(body).startswith("[cleared") for body in canonical), (
         "compacted rows leaked into the canonical epoch"
     )
     store.close()
@@ -125,7 +127,8 @@ def test_the_canonical_record_is_readable_over_http(tmp_path):
         projection = client.get(f"/sessions/{session_id}/transcript",
                                 headers=headers).json()
         assert projection["epoch"] == projection["epochs"] == 2
-        assert "[cleared]" in _bodies(projection["messages"])
+        assert any(str(body).startswith("[cleared")
+                   for body in _bodies(projection["messages"]))
 
         canonical = client.get(f"/sessions/{session_id}/transcript?epoch=1",
                                headers=headers).json()

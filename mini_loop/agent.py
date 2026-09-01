@@ -684,7 +684,9 @@ class Agent:
         #: Correlates ephemeral deltas with the authoritative assistant_text
         #: event that classifies the completed provider response.
         self._last_stream_id: str | None = None
-        self.recovery = recovery or DefaultRecovery()
+        self.recovery = recovery or DefaultRecovery(
+            fallback_model=getattr(settings, "fallback_model", None)
+        )
         self.stuck_detector = stuck_detector or DefaultStuckDetector()
         self.cache_policy = cache_policy or DefaultCachePolicy()
         self.injectors: list[Injector] = list(injectors or [])

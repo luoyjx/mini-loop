@@ -171,6 +171,15 @@ class CommandResult:
             )
         if self.error is not None:
             return f"{rendered}\n{self.error}" if rendered else self.error
+        if self.exit_code not in (0, None) and not self.overflowed:
+            # Micro-experiment E (docs/RSI_RESEARCH_AND_PLAN.md §5): the
+            # structured result always carried exit_code; the projection
+            # dropped it, so `exit 3` with no output was byte-identical to
+            # a quiet success. Only the command's own statement is noted --
+            # harness-caused endings (timeout, overflow) already explain
+            # themselves above.
+            note = f"(exit {self.exit_code})"
+            return f"{rendered}\n{note}" if rendered else note
         return rendered or "(no output)"
 
     def __str__(self) -> str:
@@ -663,7 +672,16 @@ class Toolset:
             content = fp.read_text()
             occurrences = content.count(old_text)
             if occurrences == 0:
-                return f"Error: Text not found in {path}"
+                # Micro-experiment F (docs/RSI_RESEARCH_AND_PLAN.md §5): the
+                # ambiguous branch below has said how to fix itself since it
+                # was written; the miss branch said only what failed. Name
+                # the productive next move and the exact-match requirement.
+                return (
+                    f"Error: Text not found in {path}. Re-read the file "
+                    "before retrying -- its current content may differ from "
+                    "what you expect, and old_text must match exactly, "
+                    "whitespace included."
+                )
             if occurrences > 1:
                 # Replacing the first of several silently edits a location the
                 # model may not have meant, and reports success so it never

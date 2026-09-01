@@ -296,3 +296,93 @@ scratchpad/real_bench_calibration.json。
 预算(单次 12 只够 N=1)。二者都是操作者决定,循环无权代决,故按
 章程停止。操作者任一拍板后,载具(--tasks/--repeat/预算门)与量尺
 (六维+噪声底记录)即刻可用。
+
+### 自选实验队列(2026-09-01,操作者授权自选方向)
+
+选向原则:离线**确定性可测**(不花真跑预算、不动评委侧)。首选
+"挖真实轨迹"因 var/state.db 六表皆空而暂缓(诚实记录:无使用数据
+可挖,待有使用量后重开)。改选**压缩子系统**:上下文节省率是
+estimate_tokens 的纯函数,完全确定性,却从未被当成被测量。
+
+- [x] 压缩效率普查(2026-09-01 落地):tests/test_compaction_census.py
+  四个 pin——十个已消费 5k 结果保 3 清 7、token 估算降 >60%、
+  ≤100 字符小结果不清、清除窗口恰为最近 3。**两个 FINDING 具名**:
+  ①块形(list)tool_result 对 microcompact 完全不可见——清除门是
+  `isinstance(content, str)`,再老再大的块形结果永不被清,正是
+  blocks.py 存在就为防止的 shape-blindness;②清除占位符是裸字符串
+  "[cleared]",不带工具名与原始规模,模型无法权衡是否值得重取。
+- [x] 微实验 C(2026-09-01 落地):清除占位符从裸 "[cleared]" 改为
+  "[cleared: read_file, 5,000 chars]"(工具名取自配对 tool_use 块、
+  shape-agnostic 读取;找不到配对时仍报规模);标记 <100 字符,天然
+  在清除门之下——二次压缩不清不长(幂等 pin)。pin 同步翻转
+  (FINDING ② → RESOLVED),模型可见文档(prompts.py 上下文压力
+  说明)同步;守卫 r27 锚随行更新;节省率普查基线仍立
+  (after < before×0.4)。无新守卫(精确 pin 即钉)。
+- [x] 微实验 D(2026-09-01 落地):清除门从 `isinstance(content, str)`
+  改为 `_result_weight`——字符串按字面长度、块形按序列化长度计权,
+  与 estimate_tokens 同一成本口径,两种形状同规清除;小块形结果
+  (≤100)与小字符串同样豁免。pin 翻转(FINDING ① → RESOLVED,
+  断言 5k 字符块形结果被清且不再携带、标记含 JSON 权重);守卫 r27
+  锚未动(替换行本身没变)。无新守卫(pin 即钉)。
+- [x] 错误路径普查扩展(2026-09-01 落地):八个新 pin——嵌套写自动
+  建父目录、空写合法、写目录答 Error、空 old_text 按歧义拒绝、glob
+  `../*` 围栏承重(兄弟目录不可见,唯一幸存者是工作区自身的 ../
+  别名——探针初看像越界,查实现证明过滤器在;钉 pin 防回归)、
+  stderr 无标记并入。**两个新 FINDING**:①(bash)非零退出码从不
+  到达模型——`exit 3` 无输出时与安静成功逐字节相同,CommandResult
+  带着 exit_code,render() 丢弃它;②(edit)陈旧 old_text 只答
+  "Text not found",不提示"重读文件"这一高产下一步。
+- [x] 微实验 E(2026-09-01 落地):非零退出码进投影——`exit 3` 无
+  输出答 "(exit 3)"、有输出附尾注;**只注命令自己的陈述**,harness
+  主导的结束(超时/溢出)已各有说明不再加噪;干净成功保持无注
+  (每条都注即噪声)。pin 翻转(FINDING → RESOLVED);
+  test_command_result 两处精确 pin 更新;守卫 r181
+  (timeout-hides-the-diagnostic-output)锚收窄到 error 分支并重验
+  承重;验收语义不受影响(verified loop 读结构化 exit_code,全量
+  套件为证)。无新守卫(pin 即钉)。
+- [x] 微实验 F(2026-09-01 落地):陈旧 edit 的 miss 分支补齐
+  refuse-and-say-how-to-fix——"Re-read the file before retrying...
+  old_text must match exactly, whitespace included"(歧义分支自诞生
+  就有出路提示,miss 分支一直只报失败);pin 翻转,附"拒绝的编辑
+  不动文件"断言。无新守卫(pin 即钉)。
+- [x] 供应商故障注入普查(2026-09-01 落地):
+  tests/test_recovery_census.py 四个 pin,钉**组合性质**(单机制既有
+  测试很厚,组合面没人钉过)——重试耗尽:每次具名 retry 事件 +
+  failed 事件 + 原异常上抛,不吞不循环;529 熔断在配置了 fallback
+  时确实切换(kwargs.model/事件/state 三处);最坏挂起时长从常量可
+  算(计算退避 ~199.4s);退避包络 [base, base×1.25] 钉住而不钉 RNG。
+  **两个新 FINDING**:①fallback 熔断是死特性——agent.py 裸构造
+  `DefaultRecovery()`,无部署面接入 fallback_model,MAX_CONSECUTIVE_529
+  永远打不着;②Retry-After 单次封顶 300s 但**无总预算**——服务器
+  每次都答 Retry-After: 300 可让一个 turn 被"守规矩地"挂 50 分钟
+  (计算退避最坏 199s,header 路径是它的 15 倍)。
+- [x] 微实验 G(2026-09-01 落地):`MAX_TOTAL_RETRY_WAIT_MS=300s`
+  跨尝试累计等待预算——将越界的那次等待在入睡**之前**拒绝,具名
+  failed 事件 + 原异常上抛;计算退避最坏 199s 落在预算之内,正常
+  路径无感,只有人质场景被砍(50min → ≤300s)。pin 翻转(FINDING②
+  → RESOLVED,3000s 可达性数字保留为对照);人质测试钉"恰好两次
+  150s 等待,第三次拒绝";守卫
+  a-patient-server-can-hang-a-turn-forever(r265)。
+- [x] 微实验 H(2026-09-01 落地,选**接入**非删除):
+  `MINILOOP_FALLBACK_MODEL` → Settings.fallback_model → Agent 默认
+  装配 `DefaultRecovery(fallback_model=...)`。理由:机制已被普查
+  验证可用、代码量小、529 风暴对代理端点真实;接入后默认 None
+  零行为变化,武装是操作者显式动作(与整仓武装 doctrine 一致)。
+  pin 翻转(FINDING① → RESOLVED)+ 接线测试(env → Settings →
+  session.agent.recovery 全链路)。无新守卫(接线 pin 即钉)。
+- [x] 工具 schema 上下文开销测量(2026-09-01 落地):
+  tests/test_schema_cost_census.py——核心目录 10 工具共 ~3.3k 字符
+  (~840 token)/每请求。**诚实裁决:精瘦,不值得瘦身实验**——最重
+  的 bash(~730)重在 approval_prefix 导引,是承重提示工程非膨胀。
+  三个 pin:目录总价带(2k–5k)、单工具上限(<1.2k,防 enum 倾倒
+  与描述散文)、无工具零描述(有形无义的 schema 是纯浪费)。可选面
+  (ast-outline/workflows)在普查中钉关,只价常开核心。
+- (待数据)真实轨迹挖掘:有使用量后重开,回归"向被记录的摩擦
+  对齐"的主航道。
+
+**自选队列清空评估(2026-09-01)**:十项全落(压缩普查+C+D、错误
+路径普查+E+F、故障注入普查+G+H、schema 普查)。var/state.db 复查
+仍空(无真实使用数据)。继续自选的边际收益已明显递减:剩余高价值
+工作要么等**人审事项**(翻页任务入集+setup 钩子、降噪判读预算 N),
+要么等**真实使用数据**(轨迹挖掘)。按章程停止循环;任一解锁即可
+重开。

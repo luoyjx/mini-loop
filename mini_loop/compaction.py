@@ -104,6 +104,19 @@ def microcompact(messages: list) -> int:
     for index, part_index in consumed[:-3]:
         targets.setdefault(index, []).append(part_index)
 
+    # Micro-experiment C (docs/RSI_RESEARCH_AND_PLAN.md §5): the marker
+    # names what was cleared and how big it was, so the model can weigh a
+    # re-fetch instead of guessing what "[cleared]" used to be. The name
+    # comes from the paired tool_use block, read shape-agnostically.
+    tool_names = {
+        block_field(block, "id"): block_field(block, "name")
+        for message in messages
+        if message.get("role") == "assistant"
+        and isinstance(message.get("content"), list)
+        for block in message["content"]
+        if _block_type(block) == "tool_use"
+    }
+
     cleared = 0
     for index, part_indexes in targets.items():
         message = messages[index]
@@ -111,13 +124,33 @@ def microcompact(messages: list) -> int:
         touched = False
         for part_index in part_indexes:
             part = content[part_index]
-            if isinstance(part.get("content"), str) and len(part["content"]) > 100:
-                content[part_index] = {**part, "content": "[cleared]"}
+            weight = _result_weight(part.get("content"))
+            if weight > 100:
+                name = tool_names.get(part.get("tool_use_id"))
+                size = f"{weight:,} chars"
+                marker = (f"[cleared: {name}, {size}]" if name
+                          else f"[cleared: {size}]")
+                content[part_index] = {**part, "content": marker}
                 cleared += 1
                 touched = True
         if touched:
             messages[index] = {**message, "content": content}
     return cleared
+
+
+def _result_weight(content) -> int:
+    """Context weight of a tool_result's content, whichever shape.
+
+    Micro-experiment D (docs/RSI_RESEARCH_AND_PLAN.md §5): the clear gate
+    used to be `isinstance(content, str)`, so a block-shaped result hid
+    behind its shape however old and huge. Weight is what the context
+    actually pays -- serialized size, the same measure estimate_tokens
+    uses -- so both shapes clear by the same rule.
+    """
+
+    if isinstance(content, str):
+        return len(content)
+    return len(json.dumps(content, default=str))
 
 
 def _safe_result_id(value: str) -> str:

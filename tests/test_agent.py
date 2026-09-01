@@ -190,8 +190,8 @@ def test_microcompact_keeps_last_three():
         for part in message["content"]
         if part.get("type") == "tool_result"
     ]
-    assert results[0]["content"] == "[cleared]"
-    assert results[1]["content"] == "[cleared]"
+    assert results[0]["content"] == "[cleared: read_file, 200 chars]"
+    assert results[1]["content"] == "[cleared: read_file, 200 chars]"
     assert results[-1]["content"] == "x" * 200
 
 
@@ -222,7 +222,8 @@ def test_microcompact_preserves_an_unconsumed_batch_past_injected_user_messages(
     messages.append({"role": "assistant", "content": [{"type": "text", "text": "done"}]})
     assert microcompact(messages) == 2
     assert [part["content"] for part in messages[2]["content"]] == [
-        "[cleared]", "[cleared]", "2" * 200, "3" * 200, "4" * 200,
+        "[cleared: read_file, 200 chars]", "[cleared: read_file, 200 chars]",
+        "2" * 200, "3" * 200, "4" * 200,
     ]
 
 

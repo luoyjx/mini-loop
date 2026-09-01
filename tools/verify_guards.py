@@ -51,8 +51,8 @@ MUTATIONS = [
     ),
     Mutation(
         "microcompact-mutates-in-place", 27, "mini_loop/compaction.py",
-        'content[part_index] = {**part, "content": "[cleared]"}',
-        'part["content"] = "[cleared]"',
+        'content[part_index] = {**part, "content": marker}',
+        'part["content"] = marker',
         "tests/test_compaction_composition.py",
         "compaction replaces messages so the store mirrors it",
     ),
@@ -2459,11 +2459,9 @@ MUTATIONS = [
     Mutation(
         "timeout-hides-the-diagnostic-output", 181, "mini_loop/tools.py",
         '        if self.error is not None:\n'
-        '            return f"{rendered}\\n{self.error}" if rendered else self.error\n'
-        '        return rendered or "(no output)"',
+        '            return f"{rendered}\\n{self.error}" if rendered else self.error',
         '        if self.error is not None:\n'
-        '            return self.error\n'
-        '        return rendered or "(no output)"',
+        '            return self.error',
         "tests/test_command_result.py::test_timeout_retains_metadata_and_masked_partial_streams",
         "orthogonal outcomes report independently: a timeout carries the "
         "partial output that explains it, never the error alone",
@@ -3434,6 +3432,16 @@ MUTATIONS = [
         "the cost dimensions exist so a 3x-slower not_worse is a NAMED "
         "trade; without the warning the human weighs a trade nobody told "
         "them about",
+    ),
+    Mutation(
+        "a-patient-server-can-hang-a-turn-forever", 265,
+        "mini_loop/recovery.py",
+        '                    if (total_wait + delay) * 1000 > MAX_TOTAL_RETRY_WAIT_MS:',
+        '                    if False:',
+        "tests/test_recovery_census.py::test_a_retry_after_hostage_is_cut_at_the_total_budget",
+        "per-wait ceilings compose into a 50-minute hostage when every "
+        "attempt honors Retry-After: 300; the TOTAL budget is the only "
+        "thing standing between politeness and paralysis",
     ),
     Mutation(
         "flakiness-launders-into-a-clean-pass", 264, "mini_loop/benchmark.py",

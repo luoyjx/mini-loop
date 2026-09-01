@@ -35,6 +35,13 @@ MAX_DELAY_MS = 32000
 #: to honor any real rate-limit window (which are seconds, rarely a minute);
 #: finite by construction.
 MAX_RETRY_AFTER_MS = 300_000
+#: Micro-experiment G (docs/RSI_RESEARCH_AND_PLAN.md §5): the per-wait
+#: ceiling alone still allowed MAX_RETRIES x 300s = 50 minutes of honored
+#: waiting for a server answering `Retry-After: 300` every time. The
+#: budget is TOTAL: once accumulated sleep would cross it, the turn fails
+#: loudly instead of waiting politely forever. The computed-backoff worst
+#: case (~199s) fits underneath, so the normal path never feels it.
+MAX_TOTAL_RETRY_WAIT_MS = 300_000
 MAX_CONSECUTIVE_529 = 3
 MAX_CONTINUATIONS = 3
 #: Escalation discards a partial answer and regenerates. Only worth it when the
@@ -240,6 +247,7 @@ class DefaultRecovery:
         from .agent import _content_payload
 
         attempt = consecutive_529 = continuations = 0
+        total_wait = 0.0
         escalated = reactive = False
         # Retry bookkeeping edits this list; whether it aliased the live
         # transcript depended on whether a CachePolicy had copied it, which is
@@ -254,6 +262,18 @@ class DefaultRecovery:
                 resp = await call(kwargs)
             except Exception as e:
                 if is_transient(e) and attempt < self.max_retries:
+                    delay = backoff_delay(attempt, retry_after_seconds(e))
+                    if (total_wait + delay) * 1000 > MAX_TOTAL_RETRY_WAIT_MS:
+                        await agent._send(
+                            "recovery", action="failed",
+                            error=f"{type(e).__name__}: {e}",
+                            reason=(
+                                "total retry wait would exceed "
+                                f"{MAX_TOTAL_RETRY_WAIT_MS // 1000}s; a "
+                                "turn does not wait politely forever"
+                            ),
+                        )
+                        raise
                     if is_overloaded(e):
                         consecutive_529 += 1
                         if consecutive_529 >= MAX_CONSECUTIVE_529 and self.fallback_model:
@@ -263,7 +283,8 @@ class DefaultRecovery:
                             consecutive_529 = 0
                             await agent._send("recovery", action="fallback_model", model=self.fallback_model)
                     await agent._send("recovery", action="retry", attempt=attempt + 1, error=type(e).__name__)
-                    await asyncio.sleep(backoff_delay(attempt, retry_after_seconds(e)))
+                    await asyncio.sleep(delay)
+                    total_wait += delay
                     attempt += 1
                     continue
                 if is_streaming_required(e) and escalated_from is not None:

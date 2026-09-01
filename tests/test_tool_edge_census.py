@@ -16,6 +16,18 @@ and when an experiment lands, its pin flips here in the same change:
   READ_CHAR_CAP-exceeded read used to sit on the LAST line, exactly where
   the head-only output cap cuts; it now leads the output and survives.
 
+Census round 2 (2026-09-01) extends to write/edit/glob/bash error paths:
+
+* RESOLVED (micro-experiment E, 2026-09-01): a nonzero exit code used to
+  be dropped by render() -- `exit 3` with no output was byte-identical to
+  a quiet success. The command's own exit statement is now noted;
+  harness-caused endings (timeout, overflow) keep their own notices.
+* RESOLVED (micro-experiment F, 2026-09-01): a stale old_text used to
+  answer "Error: Text not found" with no guidance; the message now names
+  the productive next move (re-read the file) and the exact-match
+  requirement, the same refuse-and-say-how-to-fix pattern the ambiguous
+  branch always had.
+
 Changing a finding is a deliberate experiment measured by the behavioral
 benchmark dimensions -- not a drive-by fix, which is why current behavior
 is pinned rather than patched.
@@ -97,6 +109,77 @@ def test_an_unreadable_file_answers_error_and_stays_unread(toolset):
         assert "secret" not in result
     finally:
         locked.chmod(0o644)
+
+
+def test_a_nested_write_creates_the_parents(toolset):
+    assert toolset.run_write("a/b/c.txt", "hi") == "Wrote 2 bytes to a/b/c.txt"
+    assert (toolset.workspace / "a" / "b" / "c.txt").read_text() == "hi"
+
+
+def test_an_empty_write_is_legal_and_says_so(toolset):
+    assert toolset.run_write("e.txt", "") == "Wrote 0 bytes to e.txt"
+    assert (toolset.workspace / "e.txt").read_text() == ""
+
+
+def test_a_write_to_a_directory_answers_error(toolset):
+    (toolset.workspace / "d").mkdir()
+    assert toolset.run_write("d", "x").startswith("Error")
+
+
+def test_a_stale_edit_says_what_would_help(toolset):
+    """Micro-experiment F: the miss used to say only what failed; it now
+    names the productive next move (re-read: the content may have
+    drifted) and the exact-match requirement -- the same
+    refuse-and-say-how-to-fix pattern the ambiguous branch always had."""
+
+    (toolset.workspace / "f.txt").write_text("hello world")
+    result = toolset.run_edit("f.txt", "zebra", "stripe")
+    assert result.startswith("Error: Text not found in f.txt")
+    assert "Re-read the file" in result
+    assert "whitespace included" in result
+    assert (toolset.workspace / "f.txt").read_text() == "hello world", (
+        "a refused edit must leave the file untouched"
+    )
+
+
+def test_an_empty_old_text_is_refused_as_ambiguous(toolset):
+    (toolset.workspace / "f.txt").write_text("hello world")
+    result = toolset.run_edit("f.txt", "", "x")
+    assert result.startswith("Error") and "ambiguous" in result
+
+
+def test_glob_traversal_stays_inside_the_workspace(tmp_path):
+    """The containment filter is load-bearing: `../*` lists nothing
+    outside the workspace -- a sibling directory stays invisible, and the
+    only survivor is the workspace itself under its `../` alias."""
+
+    from mini_loop.tools import Toolset
+
+    ws = tmp_path / "ws"
+    ws.mkdir()
+    (tmp_path / "secret").mkdir()
+    (tmp_path / "secret" / "loot.txt").write_text("x")
+    result = Toolset(ws).run_glob("../*")
+    assert "secret" not in result
+    assert result == "../ws"
+
+
+def test_a_silent_failure_names_its_exit_code(toolset):
+    """Micro-experiment E: `exit 3` with no output used to render the
+    same "(no output)" as a quiet success -- the model could not see the
+    failure at all. The command's own exit statement is now visible."""
+
+    assert toolset.run_bash("exit 3") == "(exit 3)"
+    assert toolset.run_bash("true") == "(no output)"
+    assert toolset.run_bash("echo partial; exit 5") == "partial\n(exit 5)"
+    # A clean success stays unannotated: a note on every result is noise.
+    assert toolset.run_bash("echo hello") == "hello"
+
+
+def test_stderr_reaches_the_model_unlabelled(toolset):
+    """Census pin: stderr rides after stdout with no channel marker."""
+
+    assert toolset.run_bash("echo oops >&2") == "oops"
 
 
 def test_a_huge_single_line_keeps_the_offset_guidance(toolset):
