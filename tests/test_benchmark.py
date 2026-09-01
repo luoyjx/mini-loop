@@ -25,13 +25,17 @@ def _settings(tmp_path, name):
 
 def _client_passing_write_file():
     # One scripted conversation per task, in DEFAULT_TASKS order: writes the
-    # greeting, answers 12, then skips the config edit (a deliberate miss).
+    # greeting, answers 12, skips the config edit (a deliberate miss), and
+    # reads the seeded log's deep line via offset paging.
     return FakeAsyncAnthropic(responder=scripted([
         ([tool("write_file", _id="t1", path="greeting.txt", content="hello")],
          "tool_use"),
         ([text("done")], "end_turn"),
         ([text("The answer is 12.")], "end_turn"),
         ([text("skipping the config task")], "end_turn"),
+        ([tool("read_file", _id="t2", path="data.log", offset=4320, limit=1)],
+         "tool_use"),
+        ([text("line 4321 carries token-04321")], "end_turn"),
     ]))
 
 
@@ -42,7 +46,10 @@ def test_tasks_are_judged_on_effects(tmp_path):
     ))
     by_task = {r["task"]: r["passed"] for r in results}
     assert by_task == {"write-file": True, "arithmetic": True,
-                       "edit-config": False}
+                       "edit-config": False, "page-long-log": True}
+    # The admitted paging task's fixture came from the instrument's setup
+    # hook, not from the conversation: the scripted arm never wrote it.
+    assert by_task["page-long-log"] is True
 
 
 def test_a_crashing_expectation_is_a_loud_failure(tmp_path):

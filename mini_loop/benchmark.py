@@ -39,6 +39,12 @@ class BenchTask:
     prompt: str
     #: Judged on observable effects: (workspace, final_text) -> passed.
     expect: Callable[[Path, str], bool]
+    #: Optional workspace pre-seeding, run host-side before the session
+    #: starts (judge-side mechanism, human-admitted 2026-09-01): some
+    #: admitted tasks need fixtures -- a long log to page through -- and
+    #: the fixture must come from the instrument, never from the arm's
+    #: own conversation.
+    setup: Callable[[Path], None] | None = None
 
 
 def _wrote_greeting(workspace: Path, final: str) -> bool:
@@ -53,6 +59,18 @@ def _answered_sum(workspace: Path, final: str) -> bool:
 def _edited_config(workspace: Path, final: str) -> bool:
     target = workspace / "config.ini"
     return target.exists() and "retries = 3" in target.read_text()
+
+
+def _seed_long_log(workspace: Path) -> None:
+    lines = [
+        f"line-{index:05d} value token-{index:05d} {'x' * 24}"
+        for index in range(1, 6_001)
+    ]
+    (workspace / "data.log").write_text("\n".join(lines) + "\n")
+
+
+def _found_deep_line(workspace: Path, final: str) -> bool:
+    return "token-04321" in final
 
 
 DEFAULT_TASKS: tuple[BenchTask, ...] = (
@@ -70,6 +88,19 @@ DEFAULT_TASKS: tuple[BenchTask, ...] = (
         "edit-config",
         "Create config.ini with a [net] section containing `retries = 3`.",
         _edited_config,
+    ),
+    # Admitted 2026-09-01 (human-approved judge-side change): the first
+    # task that exercises paging through a file too large to read whole,
+    # so tool-ergonomics experiments (offset notices, truncation
+    # guidance) have a behavioral read on the benchmark instead of being
+    # structurally unmeasurable.
+    BenchTask(
+        "page-long-log",
+        "data.log has 6000 numbered lines and is too large to read in "
+        "one go. Report the exact token-NNNNN value that appears on "
+        "line 4321.",
+        _found_deep_line,
+        setup=_seed_long_log,
     ),
 )
 
@@ -176,6 +207,8 @@ async def run_arm(
     results = []
     for task in tasks:
         session = manager.create()
+        if task.setup is not None:
+            task.setup(session.workspace)
         started = time.monotonic()
         try:
             final = await session.run(task.prompt)

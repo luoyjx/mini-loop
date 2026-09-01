@@ -88,6 +88,11 @@ EXECUTED = {
         "operator-pinned ast-outline process and deleted after each invocation"
     ),
     "tools.py": "write_file / edit_file put the agent's work product on disk",
+    "benchmark.py": (
+        "task fixtures seeded into throwaway benchmark workspaces by an "
+        "admitted task's setup hook: deterministic instrument-authored "
+        "content (a numbered log), no user data in reach"
+    ),
     "mcp.py": "requests to an MCP server, which must arrive intact to work",
     "durable.py": (
         "the write primitive itself: it puts down exactly the bytes it was "

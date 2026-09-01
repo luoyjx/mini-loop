@@ -83,11 +83,12 @@ def test_repeat_multiplies_the_budget_and_aggregates(
 
     cli = _cli()
 
-    # The gate prices repeats in: default sets at --repeat 2 cost 24.
+    # The gate prices repeats in: default sets (4 visible + 3 held-out)
+    # at --repeat 2 cost 28.
     monkeypatch.setenv("MINILOOP_BENCHMARK_REAL", "1")
     monkeypatch.delenv("MINILOOP_BENCHMARK_TASK_BUDGET", raising=False)
     assert cli.main(["--repeat", "2"]) == 2
-    assert "24" in capsys.readouterr().err
+    assert "28" in capsys.readouterr().err
 
     monkeypatch.delenv("MINILOOP_BENCHMARK_REAL", raising=False)
     blind = tmp_path / "blind.py"
