@@ -343,10 +343,19 @@ class DefaultCompactor:
         snipped = snip_compact(agent.messages, self.max_messages)
         if snipped:
             await agent._send("compact", kind="snip", removed=snipped)
-        cleared = microcompact(agent.messages)
+        threshold = self.token_threshold or agent.settings.token_threshold
+        # Cache-pressure gate (mined 2026-09-02): microcompact was the one
+        # UNCONDITIONAL history rewriter here -- budget and snip carry their
+        # own pressure triggers -- and the corpus showed the prompt cache
+        # decaying 88% -> 33% across a session as every clear invalidated
+        # the prefix from the edit point on. Below half the summary
+        # threshold the transcript stays byte-stable and the cache keeps
+        # paying; past it, context space wins over cache money.
+        cleared = 0
+        if context_used(agent) > threshold // 2:
+            cleared = microcompact(agent.messages)
         if cleared:
             await agent._send("compact", kind="micro", cleared=cleared)
-        threshold = self.token_threshold or agent.settings.token_threshold
         if context_used(agent) > threshold:
             # The summary stage is itself a model call and can fail like one
             # (rate limits, overload, a provider error). It used to propagate:

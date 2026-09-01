@@ -128,6 +128,44 @@ def test_a_cleared_result_names_what_it_was():
     assert messages == before
 
 
+def test_micro_compaction_waits_for_context_pressure(tmp_path):
+    """Mined 2026-09-02: the prompt cache decayed 88% -> 33% across real
+    sessions because microcompact rewrote history unconditionally every
+    turn -- each clear invalidates the cached prefix from the edit point.
+    Below half the summary threshold the transcript stays byte-stable and
+    the cache keeps paying; past it, context space wins over cache."""
+
+    import asyncio
+    from types import SimpleNamespace
+
+    from mini_loop.compaction import DefaultCompactor
+
+    class _Agent:
+        def __init__(self, messages, threshold):
+            self.messages = messages
+            self.workspace = tmp_path
+            self.settings = SimpleNamespace(token_threshold=threshold)
+            self.secrets = None
+            self.events = []
+
+        async def _send(self, *args, **fields):
+            self.events.append((args[0], fields))
+
+    # ~13k estimated tokens of clearable results: well under half of the
+    # default 100k threshold -- the transcript must stay untouched.
+    calm = _Agent(_transcript(["R" * 5_000] * 10), threshold=100_000)
+    asyncio.run(DefaultCompactor().maybe_compact(calm))
+    assert not any(kind == "compact" and fields.get("kind") == "micro"
+                   for kind, fields in calm.events)
+    assert all("[cleared" not in str(m) for m in calm.messages)
+
+    # The same transcript over a low threshold is pressure: micro fires.
+    pressed = _Agent(_transcript(["R" * 5_000] * 10), threshold=20_000)
+    asyncio.run(DefaultCompactor(token_threshold=20_000).maybe_compact(pressed))
+    assert any(fields.get("kind") == "micro" and fields.get("cleared") == 7
+               for _, fields in pressed.events)
+
+
 def test_a_small_consumed_result_is_left_alone():
     """Clearing a result at or under 100 chars saves almost nothing and
     costs information; the gate skips them, and the census pins it."""

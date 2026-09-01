@@ -256,25 +256,36 @@ def model_profile(store: Any, *, session_id: str | None = None,
     stop_reasons: dict[str, int] = {}
     tokens = {"input": 0, "output": 0, "cache_read": 0, "cache_creation": 0}
     durations: list[float] = []
+    by_call: dict[str, dict] = {}
     for summary in _window(store.list(session_id=session_id,
                                       limit=max(1, limit)), since, until):
         trajectory_id = summary.get("trajectory_id") or summary.get("id")
         if not trajectory_id:
             continue
+        index = 0
         for event in store.iter_events(
             trajectory_id, types={"model_end"}, limit=2_000,
         ):
             calls += 1
+            index += 1
             reason = str(event.get("stop_reason"))
             stop_reasons[reason] = stop_reasons.get(reason, 0) + 1
             usage = event.get("usage")
             if isinstance(usage, dict):
-                tokens["input"] += int(usage.get("input_tokens") or 0)
+                read = int(usage.get("cache_read_input_tokens") or 0)
+                uncached = int(usage.get("input_tokens") or 0)
+                created = int(usage.get("cache_creation_input_tokens") or 0)
+                tokens["input"] += uncached
                 tokens["output"] += int(usage.get("output_tokens") or 0)
-                tokens["cache_read"] += int(
-                    usage.get("cache_read_input_tokens") or 0)
-                tokens["cache_creation"] += int(
-                    usage.get("cache_creation_input_tokens") or 0)
+                tokens["cache_read"] += read
+                tokens["cache_creation"] += created
+                # The decay gauge: a healthy prefix cache holds its share
+                # as a session grows; a share that collapses with call
+                # index means something rewrites history mid-session.
+                key = str(index) if index < 5 else "5+"
+                bucket = by_call.setdefault(key, {"read": 0, "prompt": 0})
+                bucket["read"] += read
+                bucket["prompt"] += read + uncached + created
             try:
                 durations.append(float(event.get("duration_ms")))
             except (TypeError, ValueError):
@@ -288,6 +299,10 @@ def model_profile(store: Any, *, session_id: str | None = None,
         "tokens": tokens,
         "cache_read_share": (round(tokens["cache_read"] / prompt_total, 3)
                              if prompt_total else 0.0),
+        "cache_share_by_call": {
+            key: round(bucket["read"] / bucket["prompt"], 3)
+            for key, bucket in by_call.items() if bucket["prompt"]
+        },
         "median_call_ms": round(median(durations), 1) if durations else None,
         "truncations": stop_reasons.get("max_tokens", 0),
     }
@@ -307,6 +322,12 @@ def render_model(profile: dict) -> str:
     )
     reasons = ", ".join(f"{k}: {v}" for k, v in profile["stop_reasons"].items())
     lines.append(f"stop reasons: {reasons or 'none'}")
+    if profile.get("cache_share_by_call"):
+        curve = " ".join(
+            f"#{key}:{share:.0%}"
+            for key, share in sorted(profile["cache_share_by_call"].items(),
+                                     key=lambda kv: (len(kv[0]), kv[0])))
+        lines.append(f"cache share by call: {curve}")
     if profile["truncations"]:
         lines.append(f"TRUNCATIONS: {profile['truncations']} calls stopped "
                      "at max_tokens")

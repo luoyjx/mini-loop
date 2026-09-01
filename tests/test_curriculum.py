@@ -182,8 +182,13 @@ def test_default_compaction_pipeline_runs_budget_before_snip_and_micro(tmp_path)
     async def emit(event):
         events.append(event)
 
+    # micro is pressure-gated now (the mined cache-decay fix): it fires
+    # only past half the threshold, so the threshold here is small enough
+    # that the post-budget/post-snip transcript still counts as pressure.
+    # Any summary attempt lands AFTER the three cheap layers, so kinds[:3]
+    # pins the order either way.
     compactor = DefaultCompactor(
-        token_threshold=10_000_000, max_messages=20, result_budget=100_000
+        token_threshold=2_000, max_messages=20, result_budget=100_000
     )
     agent = _agent(tmp_path, compactor=compactor, emit=emit)
     messages = [{"role": "user", "content": "start"}]

@@ -523,6 +523,18 @@ workspaces/.trajectories 76 份轨迹(23MB,含开发期历史)。发现顺带
   截断(escalation 机器从未触发)。顺手修 flaky:test_double_cost
   计时从均值改最小值(噪声只加时间,min 是诚实估计;本会话第三次
   偶发后按言修复)。
+- [x] 缓存衰减实验(2026-09-02 落地,数据选题)。**先更正上一条的
+  错误推断**:CachePolicy 并非"从未标记"——DefaultCachePolicy 是
+  默认且断点确实上线(test_policy_reaches_the_wire 早有 pin);
+  cache_creation=0 是 DeepSeek 隐式缓存的记账方式。真问题在曲线:
+  按调用序号切,**#1: 1% → #2: 88% → #3: 63% → #4: 52% → #5+: 33%**
+  ——缓存机器工作,但份额随会话衰减:**microcompact 是唯一无条件
+  的历史改写者**(budget/snip 各有压力触发),每轮清除都从改写点
+  作废前缀。修复:micro 加压力门(context_used > 阈值一半才清)
+  ——低压时转录字节稳定、缓存吃饱;高压时空间赢过钱。曲线产品化
+  为 model_profile.cache_share_by_call(常设衰减仪表,效应由未来
+  语料读);curriculum 管线顺序 pin 按门语义更新。
+- **建议稿(harness 侧,待人审)**:会话创建支持指定工作区根
   (workspace=现有 checkout 路径),使"对着仓库干活"的会话不再
   隔着围栏——涉及围栏边界选择(任意路径绑定的安全姿态),故只
   建议不擅动;采纳后 cwd_distrust 与 read_file 错误率应显著下落,

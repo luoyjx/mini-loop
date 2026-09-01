@@ -182,6 +182,9 @@ def test_the_model_profile_folds_provider_counts(tmp_path):
     assert profile["truncations"] == 1
     assert profile["median_call_ms"] == 200.0
     assert profile["stop_reasons"] == {"tool_use": 1, "max_tokens": 1}
+    # The decay gauge: share per call index within a session. A healthy
+    # prefix cache holds its share as calls accumulate.
+    assert profile["cache_share_by_call"] == {"1": 0.0, "2": round(1400 / 1500, 3)}
 
     text = render_model(profile)
     assert "2 calls" in text
