@@ -626,6 +626,20 @@ pin 见 tests/test_read_window_census.py。含义:①解锁记录里 N=1 的
   79%,按调用序 #1 0% / #2 89% / #3 75% / #4 65% / #5+ 82%——修前
   是 88→33 的单调衰减,修后第 5 调用起回到 82%。时间账本 model 97%
   / tools 3% / slack 0.2%,与首次读数一致。
+- **第二读(09:57)——待数据;顺手做了失败词汇普查**:语料 +1(09:32,
+  仍是草稿工作区、首条 cd 进仓库),无绑定会话,.env 仍无根。转②:
+  上一读记下的口径分歧是真缺陷——全语料 1,176 条 bash 结果里 16 条
+  以 "(exit N)" 收尾(模型眼里失败了),bench 与挖掘器的 tool_errors
+  都只认 "Error"/"Unknown tool" 前缀,一条也没算;同一份报告里
+  "tool_errors 0" 与 "cd: 22 (1 errored)" 并排自相矛盾。**修正**:
+  唯一规则 `tools.is_failed_result` 放在产出退出注记的渲染器旁,
+  两把量尺共用(尾锚的 "(exit N)" + 两个前缀);已知盲区如实钉住:
+  溢出注记按设计替代退出注记,溢出且失败的命令仍不计。守卫 r267
+  a-failed-command-is-not-a-tool-error;pin 见
+  tests/test_error_vocabulary_census.py。**修后全语料重读**:tool_errors
+  69→85(read_file 69/71 + bash 16/1176=1.4%),repeated_reads 按窗口
+  规则归 0——此前的"重复读"全是翻页。含义:read_file 仍是唯一热点,
+  bash 失败率低,结论不变但账对了。
 
 ### 评委侧入集记录(2026-09-01,操作者三项拍板)
 

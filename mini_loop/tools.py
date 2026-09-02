@@ -18,6 +18,7 @@ import glob as globlib
 import contextlib
 from dataclasses import dataclass
 import os
+import re
 import signal
 import subprocess
 import threading
@@ -184,6 +185,24 @@ class CommandResult:
 
     def __str__(self) -> str:
         return self.render()
+
+
+#: The failure vocabulary a rendered tool result speaks: refusals begin
+#: "Error ...", the loop's own refusal begins "Unknown tool ...", and a
+#: command that failed ends with the "(exit N)" note `render()` appends
+#: above (the background runner appends the same). One rule for "did this
+#: call fail", shared by the benchmark and the trajectory miner, so the
+#: failed command the model saw is the tool error the instruments count.
+#: The trailing exit note is the only one of the three anchored at the end,
+#: because command output may legitimately begin with anything.
+_EXIT_NOTE = re.compile(r"\(exit [1-9]\d*\)\s*$")
+
+
+def is_failed_result(text: object) -> bool:
+    """True when a rendered tool result reports that the call failed."""
+    rendered = str(text or "")
+    return rendered.lstrip().startswith(("Error", "Unknown tool")) or bool(
+        _EXIT_NOTE.search(rendered))
 
 
 class _BoundedCapture:

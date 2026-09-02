@@ -3464,6 +3464,17 @@ MUTATIONS = [
         "reclaims scratch, and the first symptom is a missing repo",
     ),
     Mutation(
+        "a-failed-command-is-not-a-tool-error", 267, "mini_loop/tools.py",
+        '    return rendered.lstrip().startswith(("Error", "Unknown tool")) or bool(\n'
+        '        _EXIT_NOTE.search(rendered))',
+        '    return rendered.lstrip().startswith(("Error", "Unknown tool")) or bool(\n'
+        '        False)',
+        "tests/test_error_vocabulary_census.py::test_a_failed_command_counts_as_a_tool_error_in_both_instruments",
+        "the exit note exists so the model sees a command fail; an error "
+        "counter that cannot see the same note reports a corpus of failed "
+        "commands as error-free and picks experiments blind to them",
+    ),
+    Mutation(
         "an-unbudgeted-real-run-proceeds", 263, "tools/paired_benchmark.py",
         '    if not real:\n'
         '        return None\n'

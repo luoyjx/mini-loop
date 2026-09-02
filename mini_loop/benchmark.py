@@ -224,9 +224,13 @@ def _behavioral_metrics(messages: list) -> dict:
             elif kind == "tool_result":
                 result = block_field(block, "content")
                 text = result if isinstance(result, str) else block_text(result)
-                # "Unknown tool" is the loop's own refusal shape for a call
-                # outside the catalogue -- a failed tool call by any name.
-                if text.lstrip().startswith(("Error", "Unknown tool")):
+                # One failure vocabulary with the renderer and the miner
+                # (tools.is_failed_result): "Error", "Unknown tool", and a
+                # command's trailing "(exit N)" note -- the failed command
+                # the model saw was invisible to the prefix-only rule.
+                from .tools import is_failed_result
+
+                if is_failed_result(text):
                     tool_errors += 1
     return {"rounds": rounds, "tool_calls": tool_calls,
             "tool_errors": tool_errors, "repeated_reads": repeated_reads}

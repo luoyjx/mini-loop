@@ -30,7 +30,13 @@ MAX_HOTSPOTS = 8
 
 
 def _is_error(output: object) -> bool:
-    return str(output or "").lstrip().startswith(("Error", "Unknown tool"))
+    # One vocabulary with the benchmark and the tool renderer: a command
+    # that ended "(exit N)" failed in the model's eyes even though its
+    # output began with whatever the command printed (16 of the corpus's
+    # first 1,176 bash results, all invisible to the prefix-only rule).
+    from .tools import is_failed_result
+
+    return is_failed_result(output)
 
 
 def mine_trajectory(store: Any, trajectory_id: str) -> dict:
