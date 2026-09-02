@@ -635,17 +635,30 @@ def era_table(store: Any, *, session_id: str | None = None,
         era = eras.setdefault(key, {
             "build": key, "trajectories": 0, "commands": 0, "cd_home": 0,
             "cd_foreign": 0, "read_calls": 0, "read_errors": 0,
+            # Cost, so one row is the whole story of a build: behavior
+            # gauges and what it cost (成本进报表不进裁决).
+            "calls": 0, "input": 0, "cache_read": 0, "durations": [],
             "latest": 0.0,
         })
         era["trajectories"] += 1
         era["latest"] = max(era["latest"], _started_at(summary))
         workspace = summary.get("workspace")
-        pending: dict[str, str] = {}
         for event in store.iter_events(
-            trajectory_id, types={"tool_use", "tool_result"}, limit=2_000,
+            trajectory_id, types={"tool_use", "tool_result", "model_end"},
+            limit=2_000,
         ):
+            kind = event.get("type")
             name = event.get("name")
-            if event.get("type") == "tool_use":
+            if kind == "model_end":
+                usage = event.get("usage") or {}
+                usage = usage if isinstance(usage, dict) else {}
+                era["calls"] += 1
+                era["input"] += int(usage.get("input_tokens") or 0)
+                era["cache_read"] += int(usage.get("cache_read_input_tokens") or 0)
+                duration = event.get("duration_ms")
+                if isinstance(duration, (int, float)):
+                    era["durations"].append(float(duration))
+            elif kind == "tool_use":
                 inputs = event.get("input")
                 if name == "bash":
                     command = (str(inputs.get("command", ""))
@@ -657,32 +670,47 @@ def era_table(store: Any, *, session_id: str | None = None,
                             era[f"cd_{where}"] += 1
                 elif name == "read_file":
                     era["read_calls"] += 1
-                    pending[str(event.get("id"))] = "read_file"
             elif name == "read_file" and _is_error(event.get("output")):
                 era["read_errors"] += 1
     rows = []
     for era in sorted(eras.values(), key=lambda e: -e["latest"]):
         commands = era["commands"]
+        durations = sorted(era.pop("durations"))
+        prompt = era["input"] + era["cache_read"]
         rows.append({
             **era,
             "cwd_home": round(era["cd_home"] / commands, 3) if commands else 0.0,
             "cwd_foreign": round(era["cd_foreign"] / commands, 3) if commands else 0.0,
             "read_error_rate": (round(era["read_errors"] / era["read_calls"], 3)
                                 if era["read_calls"] else 0.0),
+            "cache_share": round(era["cache_read"] / prompt, 3) if prompt else 0.0,
+            "median_call_ms": _median(durations),
         })
     return rows
+
+
+def _median(values: list[float]) -> float:
+    if not values:
+        return 0.0
+    middle = len(values) // 2
+    if len(values) % 2:
+        return values[middle]
+    return (values[middle - 1] + values[middle]) / 2
 
 
 def render_eras(rows: list[dict]) -> str:
     """Bounded text table of the acceptance gauges by build."""
 
-    lines = ["# by build (acceptance gauges; newest build first)",
-             "build          n  commands  cwd_home  cwd_foreign  read_file errors"]
+    lines = ["# by build (acceptance gauges and cost; newest build first)",
+             "build          n  commands  cwd_home  cwd_foreign  read_file errors"
+             "  calls  cache  median ms"]
     for row in rows[:MAX_HOTSPOTS]:
         lines.append(
             f"{row['build'][:12]:<12} {row['trajectories']:>4} {row['commands']:>9} "
             f"{row['cwd_home']:>9.0%} {row['cwd_foreign']:>12.0%} "
-            f"{row['read_errors']:>6}/{row['read_calls']}"
+            f"{row['read_errors']:>6}/{row['read_calls']:<9} "
+            f"{row['calls']:>5} {row['cache_share']:>6.0%} "
+            f"{row['median_call_ms']:>9,.0f}"
         )
     if not rows:
         lines.append("(no trajectories in the window)")

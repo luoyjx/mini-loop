@@ -122,3 +122,42 @@ def test_the_era_table_lines_up_the_acceptance_gauges_by_build(tmp_path):
     assert "bbbb2222" in text.splitlines()[2] and "aaaa1111" in text.splitlines()[3]
     assert "1/1" in text.splitlines()[3]
     assert render_eras([]).endswith("(no trajectories in the window)")
+
+
+def test_the_era_table_carries_cost_beside_behavior(tmp_path):
+    """One row per build is the whole story only if it also says what the
+    build cost: model calls, cache share, median call time (成本进报表不进
+    裁决). A build with no model_end events reports zero cost, not a crash."""
+    from mini_loop.mining import era_table, render_eras
+
+    store = TrajectoryStore(tmp_path / "t")
+    tid = store.start(session_id="s", run_index=1, input_text="x",
+                      metadata={"workspace": "/ws", "build": "cccc3333"})
+    for duration, usage in (
+        (100.0, {"input_tokens": 1000, "cache_read_input_tokens": 0}),
+        (300.0, {"input_tokens": 200, "cache_read_input_tokens": 1800}),
+        (200.0, {"input_tokens": 100, "cache_read_input_tokens": 900}),
+    ):
+        store.append(tid, {"type": "model_end", "stop_reason": "tool_use",
+                           "duration_ms": duration, "usage": usage})
+    store.append(tid, {"type": "tool_use", "name": "bash",
+                       "input": {"command": "ls"}, "id": "c"})
+    store.append(tid, {"type": "tool_result", "name": "bash", "output": "ok", "id": "c"})
+    store.finish(tid, status="completed", duration_ms=1.0)
+    silent = store.start(session_id="s", run_index=2, input_text="x",
+                         metadata={"workspace": "/ws", "build": "dddd4444"})
+    store.finish(silent, status="completed", duration_ms=1.0)
+
+    rows = {row["build"]: row for row in era_table(store)}
+    priced = rows["cccc3333"]
+    assert priced["calls"] == 3
+    assert priced["cache_share"] == round(2700 / 4000, 3)
+    assert priced["median_call_ms"] == 200.0
+    assert "durations" not in priced
+    free = rows["dddd4444"]
+    assert free["calls"] == 0 and free["cache_share"] == 0.0 and free["median_call_ms"] == 0.0
+
+    text = render_eras(era_table(store))
+    assert "calls  cache  median ms" in text.splitlines()[1]
+    line = next(l for l in text.splitlines() if l.startswith("cccc3333"))
+    assert line.rstrip().endswith("3    68%       200")
