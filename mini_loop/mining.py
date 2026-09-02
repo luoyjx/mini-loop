@@ -17,12 +17,14 @@ decision.
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
 __all__ = ["bash_profile", "era_table", "mine", "mine_trajectory",
-           "model_profile", "render", "render_bash", "render_eras",
-           "render_model", "render_time", "time_profile"]
+           "model_profile", "refusal_profile", "render", "render_bash",
+           "render_eras", "render_model", "render_refusals", "render_time",
+           "time_profile"]
 
 #: Trajectories examined per mine() call, newest first.
 MAX_TRAJECTORIES = 50
@@ -512,6 +514,101 @@ def render_bash(profile: dict) -> str:
         lines.append("\n## repeated identical commands (wasted motion)")
         for command, extra in profile["repeated_commands"].items():
             lines.append(f"- {extra}x extra: {command}")
+    return "\n".join(lines)
+
+
+_REFUSAL_PATH = (
+    # Experiment I's message: "... escapes workspace: {p}. Paths are relative ..."
+    re.compile(r"escapes workspace: (.*?)\. Paths are relative"),
+    # The pre-I message ended at the path.
+    re.compile(r"escapes workspace: (\S+)"),
+)
+
+
+def _refused_path(output: str) -> str:
+    for pattern in _REFUSAL_PATH:
+        match = pattern.search(output)
+        if match:
+            return match.group(1).strip()
+    return ""
+
+
+def refusal_profile(store: Any, *, session_id: str | None = None,
+                    limit: int = MAX_TRAJECTORIES, since: float | None = None,
+                    until: float | None = None,
+                    build: str | None = None) -> dict:
+    """What the model did right after the workspace fence refused a path.
+
+    The fence's cost is a round per refusal; its worth is what the refusal
+    prevented. The corpus's first reading (2026-09-02, 75 refusals): zero
+    recoveries through read_file, zero abandoned turns, and every single
+    one followed by a bash command -- 29 of them reading the very file
+    just refused. Under a Null sandbox that is a speed bump, not a
+    boundary, and the number belongs in the report where the operator
+    weighing workspace binding can see it.
+    """
+
+    outcomes: dict[str, int] = {}
+    refusals = 0
+    for summary in _window(store.list(session_id=session_id,
+                                      limit=max(1, limit)), since, until, build):
+        trajectory_id = summary.get("trajectory_id") or summary.get("id")
+        if not trajectory_id:
+            continue
+        events = list(store.iter_events(
+            trajectory_id, types={"tool_use", "tool_result"}, limit=2_000,
+        ))
+        for index, event in enumerate(events):
+            if event.get("type") != "tool_result":
+                continue
+            output = str(event.get("output") or "")
+            if not output.lstrip().startswith("Error: Path escapes workspace"):
+                continue
+            refusals += 1
+            refused = _refused_path(output)
+            base = refused.rsplit("/", 1)[-1]
+            following = next(
+                (e for e in events[index + 1:] if e.get("type") == "tool_use"),
+                None,
+            )
+            if following is None:
+                outcome = "turn ended"
+            else:
+                name = str(following.get("name"))
+                inputs = following.get("input")
+                inputs = inputs if isinstance(inputs, dict) else {}
+                if name == "bash":
+                    command = str(inputs.get("command", ""))
+                    outcome = ("bash reads the same path (fence bypassed)"
+                               if base and base in command else "bash elsewhere")
+                elif name == "read_file":
+                    path = str(inputs.get("path", ""))
+                    outcome = ("read_file absolute again"
+                               if path.startswith("/")
+                               else "read_file relative (recovered)")
+                else:
+                    outcome = f"{name}"
+            outcomes[outcome] = outcomes.get(outcome, 0) + 1
+    return {
+        "refusals": refusals,
+        "outcomes": dict(sorted(outcomes.items(), key=lambda kv: -kv[1])),
+        "recovered": outcomes.get("read_file relative (recovered)", 0),
+        "bypassed": outcomes.get("bash reads the same path (fence bypassed)", 0),
+    }
+
+
+def render_refusals(profile: dict) -> str:
+    """Bounded text projection of the post-refusal profile."""
+
+    lines = [f"# workspace fence ({profile['refusals']} refusals)"]
+    if not profile["refusals"]:
+        lines.append("no refusals in the window")
+        return "\n".join(lines)
+    lines.append(f"recovered via read_file: {profile['recovered']} | "
+                 f"same file read through bash: {profile['bypassed']}")
+    lines.append("\n## what followed each refusal")
+    for outcome, count in list(profile["outcomes"].items())[:MAX_HOTSPOTS]:
+        lines.append(f"- {outcome}: {count}")
     return "\n".join(lines)
 
 
