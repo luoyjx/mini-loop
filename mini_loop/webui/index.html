@@ -185,6 +185,10 @@
  <p class="muted">Start with an isolated workspace and a fresh conversation.</p>
  <label for="new-mode">Permission mode</label><select id="new-mode"><option value="interactive">Interactive — ask for approval</option><option value="auto">Auto</option><option value="readonly">Read-only</option></select>
  <label for="new-system">System prompt <span class="muted">(optional)</span></label><textarea id="new-system" rows="4" placeholder="Additional instructions for this session"></textarea>
+ <div id="new-workspace-field" hidden>
+  <label for="new-workspace">Workspace <span class="muted">(optional)</span></label><input id="new-workspace" type="text" placeholder="/path/to/checkout" autocomplete="off" spellcheck="false" aria-describedby="new-workspace-help">
+  <p id="new-workspace-help" class="muted">Bind the session to an existing directory instead of an isolated scratch workspace. The server accepts only paths under the directories its operator listed.</p>
+ </div>
  <p id="create-error" class="error-text" role="alert" hidden></p>
  <div class="dialog-actions"><button id="create-confirm" type="button">Create session<span data-icon="arrow-right"></span></button></div>
 </dialog>

@@ -856,3 +856,57 @@ test("palette session search renders remote text literally and selects the real 
   assert.equal(a.get("workspace-path").title, session.workspace);
   assert.equal(a.requests.filter((request) => request.method === "POST").length, 0);
 });
+
+test("workspace binding is offered only where the server allows it, and sent only when filled", async () => {
+  // Server posture decides whether the control exists (docs/RSI_RESEARCH_AND_PLAN.md
+  // §5, workspace binding): the mined corpus showed every organic session
+  // cd-ing out of its scratch workspace into the checkout it was really about.
+  const off = await app();
+  assert.equal(off.get("new-workspace-field").hidden, true);
+  await off.get("new-session").emit("click");
+  off.get("new-workspace").value = "/srv/src/repo";  // stale text in a hidden field
+  await off.get("create-confirm").emit("click");
+  const offPost = off.requests.find((r) => r.url === "/sessions" && r.method === "POST");
+  assert.equal("workspace" in JSON.parse(offPost.body), false);
+
+  const on = await app({
+    respond: (url, opts) => {
+      if (url === "/healthz") return { body: { model: "m", fake_llm: true, sessions: 0, workspace_binding: true } };
+      if (url === "/sessions" && opts.method === "POST") {
+        const body = JSON.parse(opts.body);
+        return { body: { id: "bound-session", status: "idle", run_count: 0, permission_mode: body.mode,
+          workspace: body.workspace || "/tmp/scratch", workspace_bound: !!body.workspace } };
+      }
+      if (url === "/sessions/bound-session") return { body: { id: "bound-session", permission_mode: "interactive",
+        workspace: "/srv/src/repo", workspace_bound: true } };
+      return null;
+    },
+  });
+  assert.equal(on.get("new-workspace-field").hidden, false);
+  await on.get("new-session").emit("click");
+  on.get("new-workspace").value = "  /srv/src/repo  ";
+  await on.get("create-confirm").emit("click");
+  await new Promise(setImmediate);
+  const onPost = on.requests.find((r) => r.url === "/sessions" && r.method === "POST");
+  assert.equal(JSON.parse(onPost.body).workspace, "/srv/src/repo");
+  assert.equal(on.get("new-workspace").value, "", "the field is cleared after a successful create");
+  assert.equal(on.get("workspace-path").textContent, "src/repo (bound)");
+  assert.equal(on.get("workspace-path").title, "Bound to /srv/src/repo");
+
+  // A refusal is surfaced with the server's own reason and keeps the dialog open.
+  const refused = await app({
+    respond: (url, opts) => {
+      if (url === "/healthz") return { body: { model: "m", fake_llm: true, sessions: 0, workspace_binding: true } };
+      if (url === "/sessions" && opts.method === "POST") return { status: 403,
+        body: { detail: "cannot bind /elsewhere: outside every bindable root" } };
+      return null;
+    },
+  });
+  await refused.get("new-session").emit("click");
+  refused.get("new-workspace").value = "/elsewhere";
+  await refused.get("create-confirm").emit("click");
+  await new Promise(setImmediate);
+  assert.equal(refused.get("create-error").hidden, false);
+  assert.match(refused.get("create-error").textContent, /outside every bindable root/);
+  assert.equal(refused.get("new-form").open, true);
+});

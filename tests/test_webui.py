@@ -97,6 +97,18 @@ def test_the_approval_panel_offers_remember():
         assert marker in page, f"the approval panel lost its {marker} wiring"
 
 
+def test_the_new_session_dialog_can_bind_a_workspace():
+    """Workspace binding (docs/RSI_RESEARCH_AND_PLAN.md §5) is only usable
+    if the front door offers it: the field, the posture gate that hides it
+    where the server would refuse, and the body key the server reads."""
+
+    page = render_page()
+    for marker in ('id="new-workspace"', "new-workspace-field",
+                   "h.workspace_binding", "body.workspace = workspace",
+                   "workspace_bound"):
+        assert marker in page, f"the new-session dialog lost its {marker} wiring"
+
+
 def test_the_route_serves_the_page_with_security_headers(tmp_path):
     from fastapi.testclient import TestClient
 

@@ -67,8 +67,13 @@ replace a newer selection. No server-side history or transcript store is added.
 ## Interaction and boundaries
 
 - Sending the first message creates a session with the displayed permission
-  mode. New session also offers the existing optional system prompt. Creation
-  failures leave the draft available; sending while busy still uses steering.
+  mode. New session also offers the existing optional system prompt, and --
+  only when `/healthz` reports `workspace_binding` -- an optional workspace
+  path that binds the session to an existing directory under the roots the
+  server's operator listed (`MINILOOP_BINDABLE_ROOTS`); the server's refusal
+  reason is shown as-is. A bound workspace is labelled "(bound)" where the
+  path is shown. Creation failures leave the draft available; sending while
+  busy still uses steering.
 - Session rows are keyboard-operable buttons. Search filters the fetched
   session IDs and workspace paths (up to the existing 100-session API limit).
   Displayed IDs and activity are server data, not invented session titles.
@@ -84,7 +89,9 @@ replace a newer selection. No server-side history or transcript store is added.
 - Light is the initial appearance; the theme choice and existing API token
   preference are local to the browser. Storage being unavailable does not
   prevent use of the page. Model and workspace labels describe server state;
-  they do not claim to be model-switching or host-directory-selection controls.
+  they are not model-switching controls. The only host-directory choice is the
+  New session workspace field, and it exists only where the server's posture
+  allows binding -- the server, not the page, decides what may be bound.
 - Dynamic prose uses text nodes only. SVG paths are fixed local constants;
   there are no external scripts, fonts, images, markup sinks, or CSP changes.
   No feature bundle, approval permission, durable store, or auth default changes.

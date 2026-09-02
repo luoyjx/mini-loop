@@ -604,6 +604,29 @@ pin 见 tests/test_read_window_census.py。含义:①解锁记录里 N=1 的
 **#3 N=3=42 已确认**:真跑单次预算上限自 36 提至 42(--repeat 3 全集),
 仍限每轮至多一次、仅结构上可测时花。
 
+### 绑定验收阶段(2026-09-02 循环重开)
+
+- **第一读(09:27)——错位再现,绑定未被使用**:语料 +2 有机会话
+  (08:50/08:53,local-user,均为草稿工作区)。`--since-hours 3`:
+  cwd_distrust **100%**(22/22 条命令 cd 前缀,两会话首条命令都是
+  `cd …/mini-loop` 进仓库),read_file 0 次调用(全走 bash),
+  tool_errors 0(bash 另有 1 条 exit≠0——挖掘器的 tool_errors 只认
+  "Error" 前缀,与 bash 剖面的 error_heads 口径不同,记为观察不动)。
+  绑定为何没用上:①.env 未设 MINILOOP_BINDABLE_ROOTS(操作者项);
+  ②**Web UI 的 New session 对话框没有工作区字段**——边有了,前门
+  没通。本轮小点即前门接线:字段按 `/healthz.workspace_binding`
+  显隐(服务器不允许就不出现,避免提供一个必被拒绝的控件),
+  `body.workspace` 只在填写时发送,拒绝原因原样显示且对话框不关,
+  路径标签带 "(bound)" 与 "Bound to …" 提示;DOM 测试(node)覆盖
+  关/开/拒绝三态,标记测试钉住接线,README 边界说明同步。
+  **验收仍待数据**:操作者在 .env 设 MINILOOP_BINDABLE_ROOTS(例如
+  `/Users/yanjixiong/github`)后用绑定创建会话,`--since-hours` 的
+  cwd_distrust 应显著下落——那才是绑定的验收读数。
+- **顺带读数(缓存门后首个有机样本,n=2 仅示意)**:cache_read_share
+  79%,按调用序 #1 0% / #2 89% / #3 75% / #4 65% / #5+ 82%——修前
+  是 88→33 的单调衰减,修后第 5 调用起回到 82%。时间账本 model 97%
+  / tools 3% / slack 0.2%,与首次读数一致。
+
 ### 评委侧入集记录(2026-09-01,操作者三项拍板)
 
 操作者决定:①翻页任务**入集** ②真跑判读预算 **N=3** ③529 熔断

@@ -180,6 +180,10 @@ async function loadHealth() {
     $("connection-dot").dataset.a = "idle";
     $("composer-model").textContent = h.model + (h.fake_llm ? " (fake)" : "");
     $("composer-model").title = $("composer-model").textContent;
+    // Workspace binding is server posture: the field exists only where the
+    // operator listed bindable roots, so the dialog never offers a control
+    // the server would refuse outright.
+    $("new-workspace-field").hidden = !h.workspace_binding;
   } catch (err) {
     $("health").textContent = "health: " + err.message;
     $("connection-dot").dataset.a = "error";
@@ -255,7 +259,7 @@ $("new-session").addEventListener("click", () => {
   $("new-form").showModal();
 });
 $("create-cancel").addEventListener("click", () => $("new-form").close());
-async function createSession(mode, system) {
+async function createSession(mode, system, workspace) {
   if (creatingSession) return null;
   creatingSession = true;
   $("create-confirm").disabled = true;
@@ -265,6 +269,7 @@ async function createSession(mode, system) {
   try {
     const body = { mode };
     if (system) body.system = system;
+    if (workspace) body.workspace = workspace;
     const created = await api("/sessions", {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -280,9 +285,11 @@ async function createSession(mode, system) {
 }
 $("create-confirm").addEventListener("click", async () => {
   try {
-    await createSession($("new-mode").value, $("new-system").value.trim());
+    await createSession($("new-mode").value, $("new-system").value.trim(),
+      $("new-workspace-field").hidden ? "" : $("new-workspace").value.trim());
     $("new-form").close();
     $("new-system").value = "";
+    $("new-workspace").value = "";
     $("msg").focus();
   } catch (err) {
     $("create-error").textContent = "Could not create session: " + err.message;
@@ -674,8 +681,11 @@ async function selectSession(sid, options = {}) {
     if (sid !== currentSid || version !== selectionVersion) return;
     if (info.permission_mode) $("mode-select").value = info.permission_mode;
     const path = info.workspace || "";
-    $("workspace-path").textContent = path ? path.split(/[\\/]/).filter(Boolean).slice(-2).join("/") : "Isolated workspace";
-    $("workspace-path").title = path;
+    const tail = path ? path.split(/[\\/]/).filter(Boolean).slice(-2).join("/") : "Isolated workspace";
+    // A bound workspace is the operator's directory, not scratch: say so
+    // where the path is shown, so "delete session" reads correctly.
+    $("workspace-path").textContent = info.workspace_bound ? tail + " (bound)" : tail;
+    $("workspace-path").title = info.workspace_bound ? "Bound to " + path : path;
   } catch (err) { if (sid === currentSid && version === selectionVersion) alertRow("session: " + err.message); }
 }
 
