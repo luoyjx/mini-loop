@@ -20,9 +20,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-__all__ = ["bash_profile", "mine", "mine_trajectory", "model_profile",
-           "render", "render_bash", "render_model", "render_time",
-           "time_profile"]
+__all__ = ["bash_profile", "era_table", "mine", "mine_trajectory",
+           "model_profile", "render", "render_bash", "render_eras",
+           "render_model", "render_time", "time_profile"]
 
 #: Trajectories examined per mine() call, newest first.
 MAX_TRAJECTORIES = 50
@@ -512,6 +512,83 @@ def render_bash(profile: dict) -> str:
         lines.append("\n## repeated identical commands (wasted motion)")
         for command, extra in profile["repeated_commands"].items():
             lines.append(f"- {extra}x extra: {command}")
+    return "\n".join(lines)
+
+
+def era_table(store: Any, *, session_id: str | None = None,
+              limit: int = MAX_TRAJECTORIES, since: float | None = None,
+              until: float | None = None, build: str | None = None) -> list[dict]:
+    """The acceptance gauges, one row per build, newest build first.
+
+    A landed experiment's before/after is a comparison between builds;
+    running the profiles twice with two `--build` prefixes and lining up
+    the numbers by hand is where transcription errors live. This fold
+    keys the gauges that experiments are read on -- the two cd shares and
+    the read_file error rate -- by the build each trajectory recorded, so
+    one report carries the comparison and its sample sizes.
+    """
+
+    eras: dict[str, dict] = {}
+    for summary in _window(store.list(session_id=session_id,
+                                      limit=max(1, limit)), since, until, build):
+        trajectory_id = summary.get("trajectory_id") or summary.get("id")
+        if not trajectory_id:
+            continue
+        key = str(summary.get("build") or "(unrecorded)")
+        era = eras.setdefault(key, {
+            "build": key, "trajectories": 0, "commands": 0, "cd_home": 0,
+            "cd_foreign": 0, "read_calls": 0, "read_errors": 0,
+            "latest": 0.0,
+        })
+        era["trajectories"] += 1
+        era["latest"] = max(era["latest"], _started_at(summary))
+        workspace = summary.get("workspace")
+        pending: dict[str, str] = {}
+        for event in store.iter_events(
+            trajectory_id, types={"tool_use", "tool_result"}, limit=2_000,
+        ):
+            name = event.get("name")
+            if event.get("type") == "tool_use":
+                inputs = event.get("input")
+                if name == "bash":
+                    command = (str(inputs.get("command", ""))
+                               if isinstance(inputs, dict) else "")
+                    era["commands"] += 1
+                    if _command_head(command) == "cd":
+                        where = _cd_class(command, workspace)
+                        if where in ("home", "foreign"):
+                            era[f"cd_{where}"] += 1
+                elif name == "read_file":
+                    era["read_calls"] += 1
+                    pending[str(event.get("id"))] = "read_file"
+            elif name == "read_file" and _is_error(event.get("output")):
+                era["read_errors"] += 1
+    rows = []
+    for era in sorted(eras.values(), key=lambda e: -e["latest"]):
+        commands = era["commands"]
+        rows.append({
+            **era,
+            "cwd_home": round(era["cd_home"] / commands, 3) if commands else 0.0,
+            "cwd_foreign": round(era["cd_foreign"] / commands, 3) if commands else 0.0,
+            "read_error_rate": (round(era["read_errors"] / era["read_calls"], 3)
+                                if era["read_calls"] else 0.0),
+        })
+    return rows
+
+
+def render_eras(rows: list[dict]) -> str:
+    """Bounded text table of the acceptance gauges by build."""
+
+    lines = ["# by build (acceptance gauges; newest build first)",
+             "build          n  commands  cwd_home  cwd_foreign  read_file errors"]
+    for row in rows[:MAX_HOTSPOTS]:
+        lines.append(
+            f"{row['build'][:12]:<12} {row['trajectories']:>4} {row['commands']:>9} "
+            f"{row['cwd_home']:>9.0%} {row['cwd_foreign']:>12.0%} "
+            f"{row['read_errors']:>6}/{row['read_calls']}"
+        )
+    if not rows:
+        lines.append("(no trajectories in the window)")
     return "\n".join(lines)
 
 

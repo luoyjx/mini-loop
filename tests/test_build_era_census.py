@@ -68,3 +68,57 @@ def test_the_miner_slices_by_build_prefix_and_names_the_mix(tmp_path):
     # The same slice reaches every profile: the cwd gauges read per build.
     assert bash_profile(store, build="aaaa")["cwd_distrust"] == 1.0
     assert bash_profile(store, build="bbbb")["cwd_distrust"] == 0.0
+
+
+def test_the_era_table_lines_up_the_acceptance_gauges_by_build(tmp_path):
+    """One report, one row per build, newest first: the comparison an
+    experiment is read on, with its sample sizes, instead of two CLI runs
+    lined up by hand."""
+    import time as time_module
+
+    from mini_loop.mining import era_table, render_eras
+
+    store = TrajectoryStore(tmp_path / "t")
+    clock = {"now": 1000.0}
+    real_time = time_module.time
+    time_module.time = lambda: clock["now"]
+    try:
+        before = store.start(session_id="s", run_index=1, input_text="x",
+                             metadata={"workspace": "/ws", "build": "aaaa1111"})
+        for command in ("cd /ws && ls", "cd /repo && make", "ls"):
+            store.append(before, {"type": "tool_use", "name": "bash",
+                                  "input": {"command": command}, "id": "c"})
+            store.append(before, {"type": "tool_result", "name": "bash",
+                                  "output": "ok", "id": "c"})
+        store.append(before, {"type": "tool_use", "name": "read_file",
+                              "input": {"path": "/repo/a"}, "id": "r"})
+        store.append(before, {"type": "tool_result", "name": "read_file",
+                              "output": "Error: Path escapes workspace", "id": "r"})
+        store.finish(before, status="completed", duration_ms=1.0)
+
+        clock["now"] = 2000.0
+        after = store.start(session_id="s", run_index=2, input_text="x",
+                            metadata={"workspace": "/ws", "build": "bbbb2222"})
+        store.append(after, {"type": "tool_use", "name": "bash",
+                             "input": {"command": "ls"}, "id": "c"})
+        store.append(after, {"type": "tool_result", "name": "bash",
+                             "output": "ok", "id": "c"})
+        store.finish(after, status="completed", duration_ms=1.0)
+    finally:
+        time_module.time = real_time
+
+    rows = era_table(store)
+    assert [r["build"] for r in rows] == ["bbbb2222", "aaaa1111"], "newest first"
+    old, new = rows[1], rows[0]
+    assert old["trajectories"] == 1 and old["commands"] == 3
+    assert old["cwd_home"] == round(1 / 3, 3) and old["cwd_foreign"] == round(1 / 3, 3)
+    assert old["read_calls"] == 1 and old["read_errors"] == 1
+    assert old["read_error_rate"] == 1.0
+    assert new["commands"] == 1 and new["cwd_home"] == 0.0 and new["cwd_foreign"] == 0.0
+    assert new["read_calls"] == 0 and new["read_error_rate"] == 0.0
+
+    text = render_eras(rows)
+    assert text.splitlines()[0].startswith("# by build")
+    assert "bbbb2222" in text.splitlines()[2] and "aaaa1111" in text.splitlines()[3]
+    assert "1/1" in text.splitlines()[3]
+    assert render_eras([]).endswith("(no trajectories in the window)")

@@ -17,8 +17,8 @@ import sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
 from mini_loop.mining import (  # noqa: E402
-    bash_profile, mine, model_profile, render, render_bash, render_model,
-    render_time, time_profile,
+    bash_profile, era_table, mine, model_profile, render, render_bash,
+    render_eras, render_model, render_time, time_profile,
 )
 from mini_loop.trajectory import TrajectoryStore  # noqa: E402
 
@@ -64,6 +64,8 @@ def main(argv: list[str] | None = None) -> int:
     print(render_model(model_profile(store, **window)))
     print()
     print(render_time(time_profile(store, **window)))
+    print()
+    print(render_eras(era_table(store, **window)))
     return 0
 
 

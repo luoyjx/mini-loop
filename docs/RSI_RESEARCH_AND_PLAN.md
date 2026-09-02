@@ -674,6 +674,22 @@ pin 见 tests/test_read_window_census.py。含义:①解锁记录里 N=1 的
   (n=4)记为未归因读数,不作 J 的证据。read_file 绝对路径错误本小时
   又见 4 次(模型直接读仓库文件),绑定的必要性再次被记录。pin 见
   tests/test_build_era_census.py。
+- **第五读(11:27)——J 的第一个可归因读数;对照表按构建自动分列**:
+  语料 +1(11:02),带构建戳 375c2822eb6d = HEAD——服务器已在新代码
+  上。`--build 375c2822eb6d`:13 条命令,**home 0%**(开场直接
+  `ls -la`,无一次 cd 回自己工作区),foreign 85%(11 次 cd 进仓库),
+  read_file 0 调用 0 错。n=1,只记不判;方向与 J 的预期一致(落地前
+  home 12%)。绑定仍无数据(无根、无绑定会话)。**仪器**:`era_table`
+  / `render_eras`——验收仪表(cwd_home、cwd_foreign、read_file 错误率)
+  按构建分行、最新构建在前、附样本量,CLI 报告末尾自动打印;此前要
+  跑两遍 `--build` 再手工对齐数字,抄错就在那一步。首张表:
+
+  | build | n | commands | cwd_home | cwd_foreign | read_file errors |
+  |---|---|---|---|---|---|
+  | 375c2822eb6d | 1 | 13 | 0% | 85% | 0/0 |
+  | (unrecorded) | 93 | 1240 | 12% | 84% | 74/76 |
+
+  往后每轮的①读数就是这张表的最新几行。
 
 ### 评委侧入集记录(2026-09-01,操作者三项拍板)
 
