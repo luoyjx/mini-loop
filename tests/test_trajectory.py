@@ -242,6 +242,7 @@ def test_the_streamed_summary_matches_the_full_representation(tmp_path):
         row["input_preview"] = preview
         row["model"] = (full.get("metadata") or {}).get("model")
         row["workspace"] = (full.get("metadata") or {}).get("workspace")
+        row["build"] = (full.get("metadata") or {}).get("build")
         return row
 
     for trajectory_id in (done, running):

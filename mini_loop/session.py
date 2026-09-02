@@ -52,6 +52,12 @@ class LeaseLost(RuntimeError):
     """Another process holds this session."""
 
 
+def _build_id() -> str:
+    from .identity import build_id
+
+    return build_id()
+
+
 def _bare_user_tail(message: dict) -> bool:
     """A plain user message (no tool results): the crash-mid-request shape.
 
@@ -940,6 +946,12 @@ class AgentSession:
                     metadata=self._mask({
                         "model": self.agent.settings.model,
                         "workspace": str(self.workspace),
+                        # Which code this run executed on. Era slicing by
+                        # clock assumed the server ran the code the
+                        # experiment landed; a long-lived process or a
+                        # reloading one breaks that silently (identity.py
+                        # tells the same story from the /healthz side).
+                        "build": _build_id(),
                         "agent": self.agent.label,
                         "system": self.agent.refresh_system(),
                         "tools": self.agent.tools.names(),

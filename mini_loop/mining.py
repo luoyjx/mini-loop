@@ -97,19 +97,30 @@ def _started_at(summary: dict) -> float:
         return 0.0
 
 
-def _window(summaries, since: float | None, until: float | None):
+def _window(summaries, since: float | None, until: float | None,
+            build: str | None = None):
+    """Slice the corpus by era: a clock window and/or a build prefix.
+
+    The clock alone cannot tell which code a trajectory ran on -- a server
+    started before an edit keeps answering with the old code, and one run
+    with reload picks up working-tree edits mid-experiment (both observed).
+    `build` matches the build_id recorded on the trajectory header, so an
+    experiment's before/after is read against the code, not the wall clock.
+    """
     for summary in summaries:
         started = _started_at(summary)
         if since is not None and started < since:
             continue
         if until is not None and started >= until:
             continue
+        if build and not str(summary.get("build") or "").startswith(build):
+            continue
         yield summary
 
 
 def mine(store: Any, *, session_id: str | None = None,
          limit: int = MAX_TRAJECTORIES, since: float | None = None,
-         until: float | None = None) -> dict:
+         until: float | None = None, build: str | None = None) -> dict:
     """Fold the newest recorded trajectories into one friction report.
 
     `since`/`until` (unix timestamps, half-open window) slice the corpus
@@ -119,13 +130,14 @@ def mine(store: Any, *, session_id: str | None = None,
 
     rows = []
     for summary in _window(store.list(session_id=session_id,
-                                      limit=max(1, limit)), since, until):
+                                      limit=max(1, limit)), since, until, build):
         trajectory_id = summary.get("trajectory_id") or summary.get("id")
         if not trajectory_id:
             continue
         mined = mine_trajectory(store, trajectory_id)
         mined["status"] = summary.get("status")
         mined["duration_ms"] = summary.get("duration_ms")
+        mined["build"] = summary.get("build")
         rows.append(mined)
 
     per_tool: dict[str, dict] = {}
@@ -137,8 +149,15 @@ def mine(store: Any, *, session_id: str | None = None,
             bucket["errors"] += counts["errors"]
         for path, count in row["reread_paths"].items():
             reread[path] = reread.get(path, 0) + count - 1
+    builds: dict[str, int] = {}
+    for row in rows:
+        key = str(row.get("build") or "(unrecorded)")
+        builds[key] = builds.get(key, 0) + 1
     return {
         "trajectories": len(rows),
+        # The era composition: which builds the rows ran on. A reading that
+        # mixes builds is a reading of nothing in particular.
+        "builds": dict(sorted(builds.items(), key=lambda kv: -kv[1])),
         "rows": rows,
         "totals": {
             "rounds": sum(r["rounds"] for r in rows),
@@ -197,7 +216,8 @@ def _cd_class(command: str, workspace: str | None) -> str:
 
 def bash_profile(store: Any, *, session_id: str | None = None,
                  limit: int = MAX_TRAJECTORIES, since: float | None = None,
-                 until: float | None = None) -> dict:
+                 until: float | None = None,
+                 build: str | None = None) -> dict:
     """The shape of recorded bash usage: heads, cwd distrust, repeats.
 
     The corpus's first profile (2026-09-02) showed 97% of commands
@@ -216,7 +236,7 @@ def bash_profile(store: Any, *, session_id: str | None = None,
     foreign: dict[str, int] = {}
     total = cd_prefixed = 0
     for summary in _window(store.list(session_id=session_id,
-                                      limit=max(1, limit)), since, until):
+                                      limit=max(1, limit)), since, until, build):
         trajectory_id = summary.get("trajectory_id") or summary.get("id")
         if not trajectory_id:
             continue
@@ -277,6 +297,9 @@ def render(report: dict) -> str:
         f"tool_errors {totals['tool_errors']} | "
         f"repeated_reads {totals['repeated_reads']}"
     )
+    if report.get("builds"):
+        lines.append("builds: " + ", ".join(
+            f"{build} x{count}" for build, count in report["builds"].items()))
     lines.append("\n## per-tool")
     for name, counts in sorted(report["per_tool"].items(),
                                key=lambda kv: -kv[1]["calls"]):
@@ -297,7 +320,8 @@ def render(report: dict) -> str:
 
 def model_profile(store: Any, *, session_id: str | None = None,
                   limit: int = MAX_TRAJECTORIES, since: float | None = None,
-                  until: float | None = None) -> dict:
+                  until: float | None = None,
+                 build: str | None = None) -> dict:
     """What the recorded model calls actually cost, from provider counts.
 
     model_end events carry the provider's own usage numbers -- input,
@@ -315,7 +339,7 @@ def model_profile(store: Any, *, session_id: str | None = None,
     durations: list[float] = []
     by_call: dict[str, dict] = {}
     for summary in _window(store.list(session_id=session_id,
-                                      limit=max(1, limit)), since, until):
+                                      limit=max(1, limit)), since, until, build):
         trajectory_id = summary.get("trajectory_id") or summary.get("id")
         if not trajectory_id:
             continue
@@ -367,7 +391,8 @@ def model_profile(store: Any, *, session_id: str | None = None,
 
 def time_profile(store: Any, *, session_id: str | None = None,
                  limit: int = MAX_TRAJECTORIES, since: float | None = None,
-                 until: float | None = None) -> dict:
+                 until: float | None = None,
+                 build: str | None = None) -> dict:
     """Where the wall-clock went: model, tools, or harness slack.
 
     Every model_end and tool_result carries its own duration; the
@@ -382,7 +407,7 @@ def time_profile(store: Any, *, session_id: str | None = None,
     tool_ms: dict[str, float] = {}
     trajectories = 0
     for summary in _window(store.list(session_id=session_id,
-                                      limit=max(1, limit)), since, until):
+                                      limit=max(1, limit)), since, until, build):
         trajectory_id = summary.get("trajectory_id") or summary.get("id")
         if not trajectory_id:
             continue

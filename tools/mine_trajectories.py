@@ -37,6 +37,12 @@ def main(argv: list[str] | None = None) -> int:
         "--until-hours", type=float, default=None, metavar="H",
         help="only trajectories started more than H hours ago",
     )
+    parser.add_argument(
+        "--build", default=None, metavar="PREFIX",
+        help="only trajectories recorded on a build whose id starts with "
+             "PREFIX (era slicing by code, not by clock; the report lists "
+             "the builds it saw)",
+    )
     args = parser.parse_args(argv)
 
     root = pathlib.Path(args.root)
@@ -50,7 +56,7 @@ def main(argv: list[str] | None = None) -> int:
     until = now - args.until_hours * 3600 if args.until_hours else None
     store = TrajectoryStore(root)
     window = dict(session_id=args.session, limit=args.limit,
-                  since=since, until=until)
+                  since=since, until=until, build=args.build)
     print(render(mine(store, **window)))
     print()
     print(render_bash(bash_profile(store, **window)))

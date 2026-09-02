@@ -281,6 +281,8 @@ class TrajectoryStore:
             # shell usage can tell "cd back into my own workspace" (cwd
             # distrust) from "cd somewhere else" (the work lives elsewhere).
             "workspace": (start.get("metadata") or {}).get("workspace"),
+            # The build the run executed on, for era slicing by code.
+            "build": (start.get("metadata") or {}).get("build"),
         }
 
     def _scan_summary(
