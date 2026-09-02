@@ -17,6 +17,7 @@ decision.
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 __all__ = ["bash_profile", "mine", "mine_trajectory", "model_profile",
@@ -162,6 +163,38 @@ def _command_head(command: str) -> str:
     return "?"
 
 
+def _cd_target(command: str) -> str:
+    tokens = command.split()
+    return tokens[1].strip("\"'") if len(tokens) > 1 else ""
+
+
+def _cd_class(command: str, workspace: str | None) -> str:
+    """Where a `cd`-prefixed command goes, relative to the session workspace.
+
+    "home": back into the workspace it was already in -- pure cwd distrust,
+    the model not trusting that the shell starts there. "foreign": somewhere
+    else -- the work lives outside the workspace (the mismatch that
+    workspace binding exists to remove). "unknown": no recorded workspace or
+    an unparseable target. Two levers, two gauges: a clearer cwd contract
+    should move "home"; binding should move "foreign".
+    """
+    target = _cd_target(command)
+    if not target or target == "-":
+        return "unknown"
+    if target.startswith("~") or target == "/":
+        return "foreign"
+    if not target.startswith("/"):
+        return "foreign" if target.startswith("..") else "home"
+    if not workspace:
+        return "unknown"
+    try:
+        home = Path(workspace)
+        there = Path(target)
+    except (TypeError, ValueError):
+        return "unknown"
+    return "home" if there == home or there.is_relative_to(home) else "foreign"
+
+
 def bash_profile(store: Any, *, session_id: str | None = None,
                  limit: int = MAX_TRAJECTORIES, since: float | None = None,
                  until: float | None = None) -> dict:
@@ -179,6 +212,8 @@ def bash_profile(store: Any, *, session_id: str | None = None,
     error_heads: dict[str, int] = {}
     repeats: dict[str, int] = {}
     pending: dict[str, str] = {}
+    cd_classes: dict[str, int] = {}
+    foreign: dict[str, int] = {}
     total = cd_prefixed = 0
     for summary in _window(store.list(session_id=session_id,
                                       limit=max(1, limit)), since, until):
@@ -186,6 +221,7 @@ def bash_profile(store: Any, *, session_id: str | None = None,
         if not trajectory_id:
             continue
         seen: dict[str, int] = {}
+        workspace = summary.get("workspace")
         for event in store.iter_events(
             trajectory_id, types={"tool_use", "tool_result"}, limit=2_000,
         ):
@@ -201,12 +237,15 @@ def bash_profile(store: Any, *, session_id: str | None = None,
                 heads[head] = heads.get(head, 0) + 1
                 if head == "cd":
                     cd_prefixed += 1
+                    where = _cd_class(command, workspace)
+                    cd_classes[where] = cd_classes.get(where, 0) + 1
+                    if where == "foreign":
+                        target = _cd_target(command)
+                        foreign[target] = foreign.get(target, 0) + 1
                 seen[command] = seen.get(command, 0) + 1
                 pending[str(event.get("id"))] = head
             else:
-                output = str(event.get("output", ""))
-                if (output.lstrip().startswith("Error")
-                        or "(exit " in output[-24:]):
+                if _is_error(event.get("output")):
                     head = pending.get(str(event.get("id")), "?")
                     error_heads[head] = error_heads.get(head, 0) + 1
         for command, count in seen.items():
@@ -216,6 +255,10 @@ def bash_profile(store: Any, *, session_id: str | None = None,
     return {
         "commands": total,
         "cwd_distrust": round(cd_prefixed / total, 3) if total else 0.0,
+        "cwd_home": round(cd_classes.get("home", 0) / total, 3) if total else 0.0,
+        "cwd_foreign": round(cd_classes.get("foreign", 0) / total, 3) if total else 0.0,
+        "foreign_targets": dict(sorted(
+            foreign.items(), key=lambda kv: -kv[1])[:MAX_HOTSPOTS]),
         "heads": dict(sorted(heads.items(), key=lambda kv: -kv[1])),
         "error_heads": dict(sorted(error_heads.items(),
                                    key=lambda kv: -kv[1])),
@@ -427,6 +470,14 @@ def render_bash(profile: dict) -> str:
     lines = [f"# bash profile ({profile['commands']} commands)"]
     lines.append(f"cwd_distrust: {profile['cwd_distrust']:.0%} of commands "
                  "re-establish the working directory with a cd prefix")
+    lines.append(f"  home {profile['cwd_home']:.0%} (cd back into the session "
+                 "workspace: pure cwd distrust) | "
+                 f"foreign {profile['cwd_foreign']:.0%} (cd elsewhere: the "
+                 "work lives outside the workspace)")
+    if profile["foreign_targets"]:
+        lines.append("\n## foreign cd targets (where the work really lives)")
+        for target, count in profile["foreign_targets"].items():
+            lines.append(f"- {target}: {count}")
     lines.append("\n## heads")
     for head, count in list(profile["heads"].items())[:MAX_HOTSPOTS]:
         errors = profile["error_heads"].get(head)

@@ -31,7 +31,15 @@ from .durable import atomic_write_text
 
 BASH = {
     "name": "bash",
-    "description": "Run a shell command in the workspace. Returns combined stdout+stderr.",
+    # Micro-experiment J (docs/RSI_RESEARCH_AND_PLAN.md §5): every organic
+    # session opened by cd-ing into the very workspace the shell already
+    # starts in. The description said "in the workspace" without saying
+    # that the workspace IS the working directory; the model hedged.
+    "description": (
+        "Run a shell command. The session workspace is the working "
+        "directory, so relative paths resolve there and no cd is needed "
+        "unless you mean to work elsewhere. Returns combined stdout+stderr."
+    ),
     "input_schema": {
         "type": "object",
         "properties": {

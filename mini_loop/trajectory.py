@@ -277,6 +277,10 @@ class TrajectoryStore:
             "partial": partial or end is None,
             "input_preview": input_text,
             "model": (start.get("metadata") or {}).get("model"),
+            # The workspace the run was recorded in, so a reader profiling
+            # shell usage can tell "cd back into my own workspace" (cwd
+            # distrust) from "cd somewhere else" (the work lives elsewhere).
+            "workspace": (start.get("metadata") or {}).get("workspace"),
         }
 
     def _scan_summary(

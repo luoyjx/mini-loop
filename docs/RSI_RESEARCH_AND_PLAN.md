@@ -640,6 +640,23 @@ pin 见 tests/test_read_window_census.py。含义:①解锁记录里 N=1 的
   69→85(read_file 69/71 + bash 16/1176=1.4%),repeated_reads 按窗口
   规则归 0——此前的"重复读"全是翻页。含义:read_file 仍是唯一热点,
   bash 失败率低,结论不变但账对了。
+- **第三读(10:27)——待数据;拆开 cwd_distrust,两杠杆两仪表**:语料
+  +1(10:02),无绑定会话,.env 仍无根。新轨迹又是同一开场:先
+  `cd <自己的工作区> && ls -la`,再 `cd <仓库>`——两种 cd 混在一个
+  数字里,任一杠杆的效果都读不出来。**仪器**:bash 剖面按轨迹头部
+  记录的 workspace(列表行新增 `workspace` 字段)把 cd 目标分为
+  home(回自己工作区=纯 cwd 不信任)/ foreign(出走=工作在别处)
+  / unknown(无记录或不可解析),并列出 foreign 目标热点。**全语料
+  读数**:cwd_distrust 97% = home **12%** + foreign **85%**,foreign
+  目标 /Users/…/mini-loop ×1007;近 3 小时 100% = 12% + 88%。含义:
+  绑定是主杠杆(85%),cwd 契约只管那 12%。**实验 J**(harness 侧,
+  同变更落地):bash 工具描述从 "Run a shell command in the workspace"
+  改为写明"工作区就是工作目录,相对路径在此解析,除非要去别处否则
+  不需要 cd"——模型此前是在对一句含糊的描述做防御性 cd。验收仪即
+  home 份额的时代切片(落地前 12%);schema 普查价带内(单工具 <1,200
+  字符、总价 2,000~5,000)。bash 剖面的错误判定也并入
+  `tools.is_failed_result`(上轮漏掉的第三份拷贝)。pin 见
+  tests/test_cwd_census.py。
 
 ### 评委侧入集记录(2026-09-01,操作者三项拍板)
 
