@@ -549,11 +549,60 @@ cwd_distrust、错误率的下一次读数都等新数据。剩余工作全部�
 门控:①工作区绑定建议稿(下方)②受限变体 N=2 判读时机 ③N=3
 预算。任一解锁或语料明显增长后重开。
 
-- **建议稿(harness 侧,待人审)**:会话创建支持指定工作区根
+- **建议稿(harness 侧,已采纳,见下)**:会话创建支持指定工作区根
   (workspace=现有 checkout 路径),使"对着仓库干活"的会话不再
   隔着围栏——涉及围栏边界选择(任意路径绑定的安全姿态),故只
   建议不擅动;采纳后 cwd_distrust 与 read_file 错误率应显著下落,
   时代切片即验收仪。
+
+### 解锁记录(2026-09-02,操作者:"123解锁")
+
+**#1 工作区绑定已落地**(harness 侧)。边界姿态取"操作者白名单":
+`MINILOOP_BINDABLE_ROOTS`(os.pathsep 分隔)列出可绑定的根,默认
+空=一律拒绝;`POST /sessions {"workspace": …}` / `create(workspace=)`
+的路径先 resolve 再判(软链按落点算),须落在某个根内;管理器自身
+workspace_root 子树无条件拒绝(跨租户);策略判断先于存在性判断
+(403 在 400 之前,免得越界探路径)。**绑定工作区永不回收**:
+delete 的回收项多一个 `and not session.workspace_bound`(守卫 r266
+a-bound-checkout-is-reclaimed-as-scratch);队友继承标记(父先删、
+子最后站着也不回收);标记持久化(sessions.workspace_bound,schema
+v6→v7——版本必须抬,旧构建打开新库若默默丢字段,会把 checkout 当
+草稿删掉);会话记录每次刷新都带标记(_persist_session_record 漏带
+即首次刷新归零——写测试时抓到的)。restore_sessions 与 cron 的
+restore_scheduled_session 都按记录恢复绑定("在这里每晚跑测试"就
+是在这里)。/healthz 报 `workspace_binding` 姿态(不泄露根)。
+9 个场景测试(tests/test_workspace_binding.py)。**验收仪即时代切片**:
+自此的有机会话若用绑定创建,cwd_distrust 与 read_file 绝对路径错误
+率应显著下落——`tools/mine_trajectories.py --since-hours` 直接读。
+
+**#2 受限变体 N=2 判读已跑**(同配置双臂、无 overlay,32 task-runs,
+从 HEAD 隔离工作树跑,原始报表存 scratchpad/n2_readonly.json):
+16/16 双臂全过,两侧 not_worse,零维度警告。**降噪读数**——N=2 取
+中位后,同配置漂移:
+
+| 维度 | 可见集 Δ | held-out Δ |
+|---|---|---|
+| duration_ms | −15.1% | +0.1% |
+| context_tokens_estimate | −3.5% | +4.9% |
+| rounds | +4.8% | +9.1% |
+| tool_calls | +9.1% | +20.0% |
+| repeated_reads | **−66.7%**(1.5 vs 0.5) | — |
+
+N=1 时 tool_calls 曾漂 33% 触发误报;N=2 后整数维度回到阈值内,
+--repeat 的降噪在真传输上兑现。**但 repeated_reads 漂 67%**——全部
+来自 readonly 翻页任务,而两臂代码相同。追查:计数器按**路径**记
+重复,offset 翻页同一文件即被记作"重复读";翻页任务存在的目的恰是
+观察翻页,量尺把它要观察的动作记成了浪费。**修正**:重复读=同一
+**窗口**(path, offset, limit)读两次;bench 与挖掘器共用同一规则
+(benchmark._read_window / mining seen_windows),守卫 r262 同步重锚,
+pin 见 tests/test_read_window_census.py。含义:①解锁记录里 N=1 的
+"readonly 1 重读"是翻页假象;②A/B/I 三个已落地实验在该任务上
+**结构上不触发**(A 需越界 offset,B 需 >2M 字符,I 需绝对路径),
+成对基准量不到它们——它们的验收仪是时代切片(实验 I 已用),不是
+成对跑。此次 32 花在了量尺校准与量尺缺陷上,值。
+
+**#3 N=3=42 已确认**:真跑单次预算上限自 36 提至 42(--repeat 3 全集),
+仍限每轮至多一次、仅结构上可测时花。
 
 ### 评委侧入集记录(2026-09-01,操作者三项拍板)
 

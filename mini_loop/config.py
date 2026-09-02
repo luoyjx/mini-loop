@@ -207,6 +207,22 @@ class Settings:
     workspace_root: Path = field(
         default_factory=lambda: Path(os.getenv("MINILOOP_WORKSPACE_ROOT", "./workspaces")).resolve()
     )
+    # Directories a session may be *bound* to at creation (workspace
+    # binding, docs/RSI_RESEARCH_AND_PLAN.md §5): a session working on an
+    # existing checkout gets that checkout as its workspace instead of a
+    # fresh scratch directory under workspace_root. The mined corpus showed
+    # what the fence costs when the work lives elsewhere -- 97% of shell
+    # commands re-establishing a cwd and 64 of 66 read_file errors being
+    # absolute paths refused at the boundary. Binding is an operator
+    # decision, never a caller's: empty (the default) refuses every bind,
+    # and a bind must resolve inside one of these roots. os.pathsep-separated.
+    bindable_roots: tuple[Path, ...] = field(
+        default_factory=lambda: tuple(
+            Path(item).resolve()
+            for item in os.getenv("MINILOOP_BINDABLE_ROOTS", "").split(os.pathsep)
+            if item.strip()
+        )
+    )
     # Where oversized tool output is preserved when truncated. Empty string
     # disables preservation (truncation reverts to drop-the-middle).
     spill_dir: Path | None = field(

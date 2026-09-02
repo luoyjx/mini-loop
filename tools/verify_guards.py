@@ -3455,6 +3455,15 @@ MUTATIONS = [
         "instrument into a slot machine",
     ),
     Mutation(
+        "a-bound-checkout-is-reclaimed-as-scratch", 266, "mini_loop/manager.py",
+        '        remove_workspace = remove_workspace and not session.workspace_bound',
+        '        remove_workspace = remove_workspace',
+        "tests/test_workspace_binding.py::test_deleting_a_bound_session_leaves_the_checkout_alone",
+        "a bound workspace is the operator's repository lent to the session; "
+        "without this one term, delete rmtrees the checkout exactly as it "
+        "reclaims scratch, and the first symptom is a missing repo",
+    ),
+    Mutation(
         "an-unbudgeted-real-run-proceeds", 263, "tools/paired_benchmark.py",
         '    if not real:\n'
         '        return None\n'
@@ -3469,7 +3478,7 @@ MUTATIONS = [
     ),
     Mutation(
         "wasted-motion-goes-unmeasured", 262, "mini_loop/benchmark.py",
-        '                    if path and path in read_paths:\n'
+        '                    if window and window in read_paths:\n'
         '                        repeated_reads += 1',
         '                    if False:\n'
         '                        repeated_reads += 1',

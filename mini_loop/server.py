@@ -57,7 +57,7 @@ from sse_starlette.sse import EventSourceResponse
 
 from .actions import ActionJournalConflict
 from .config import Settings, build_client, load_settings
-from .manager import SessionManager
+from .manager import SessionManager, WorkspaceBindingError
 from .auth import ANONYMOUS, NullAuth, Principal, load_auth
 from .identity import runtime_identity
 from .run_context import UNTRUSTED, WORKFLOW_LAUNCH, RunContext
@@ -69,6 +69,10 @@ class CreateSessionReq(BaseModel):
     system: str | None = None
     model: str | None = None
     mode: Literal["readonly", "interactive", "auto"] | None = None
+    # Bind the session to an existing directory (an operator-allowed
+    # checkout) instead of fresh scratch. 403 unless the deployment lists
+    # the path's root in MINILOOP_BINDABLE_ROOTS; 400 if it is not a directory.
+    workspace: str | None = None
 
 
 class ModeReq(BaseModel):
@@ -589,16 +593,25 @@ def _register_routes(app: FastAPI) -> None:
                 # remotely instead of inferred from local configuration.
                 **runtime_identity(_manager(request), _auth(request)),
                 "trajectories": _manager(request).trajectories is not None,
+                # Posture: whether this deployment lets a session be bound
+                # to an existing directory at all (roots stay private).
+                # Read from the manager: its settings are what enforce it.
+                "workspace_binding": bool(
+                    _manager(request).settings.bindable_roots),
                 "sessions": len(_manager(request).list())}
 
     @app.post("/sessions")
     async def create_session(request: Request, req: CreateSessionReq):
         caller = _principal(request)
-        session = _manager(request).create(
-            system=req.system, model=req.model,
-            permission_mode=req.mode or "interactive",
-            owner=caller.id,
-        )
+        try:
+            session = _manager(request).create(
+                system=req.system, model=req.model,
+                permission_mode=req.mode or "interactive",
+                owner=caller.id,
+                workspace=req.workspace,
+            )
+        except WorkspaceBindingError as error:
+            raise HTTPException(status_code=error.status, detail=str(error))
         return session.info()
 
     @app.post("/sessions/{session_id}/mode")

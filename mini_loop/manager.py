@@ -82,6 +82,19 @@ MAX_REMEMBERED_OWNERS = 10_000
 MAX_PROTOCOLS = 200
 
 
+class WorkspaceBindingError(ValueError):
+    """A session could not be bound to the requested workspace.
+
+    `status` is the HTTP shape of the refusal: 403 when policy refuses the
+    path (binding disabled, outside every bindable root, inside the
+    manager's own root), 400 when the path is not an existing directory.
+    """
+
+    def __init__(self, message: str, *, status: int = 403) -> None:
+        super().__init__(message)
+        self.status = status
+
+
 def _remove_workspace(path) -> None:
     """Remove a workspace: unlink a link-shaped path, rmtree a real directory.
 
@@ -687,7 +700,18 @@ class SessionManager:
         model: str | None = None,
         permission_mode: str = "interactive",
         owner: str = "anonymous",
+        workspace: str | Path | None = None,
     ) -> AgentSession:
+        """Create a session in a fresh scratch workspace, or bind one.
+
+        `workspace` binds the session to an existing directory instead of
+        scratch under workspace_root -- the shape for "work on this
+        checkout", which the fence otherwise turns into a wall the model
+        keeps hitting (docs/RSI_RESEARCH_AND_PLAN.md §5, workspace binding).
+        Policy is the operator's: the path must resolve inside one of
+        `settings.bindable_roots`, which is empty by default. A bound
+        workspace is never reclaimed by `delete`.
+        """
         if self._manager_stopped:
             raise RuntimeError("session manager is stopped")
         from .permissions import PERMISSION_MODES
@@ -700,8 +724,12 @@ class SessionManager:
                 f"expected one of {PERMISSION_MODES}"
             )
         session_id = uuid.uuid4().hex[:12]
-        workspace = Path(self.workspace_factory(session_id))
-        workspace.mkdir(parents=True, exist_ok=True)
+        bound = workspace is not None
+        if bound:
+            workspace = self._bind_workspace(workspace)
+        else:
+            workspace = Path(self.workspace_factory(session_id))
+            workspace.mkdir(parents=True, exist_ok=True)
 
         session = AgentSession(
             session_id,
@@ -711,6 +739,7 @@ class SessionManager:
             trajectory_store=self.trajectories,
             state_store=self.state_store,
         )
+        session.workspace_bound = bound
         session.permission_mode = permission_mode
         session.owner = owner
         settings = self.settings if model is None else dataclasses.replace(self.settings, model=model)
@@ -719,6 +748,41 @@ class SessionManager:
         self._record(session)
         self._claim(session)
         return session
+
+    def _bind_workspace(self, requested: str | Path) -> Path:
+        """Resolve a bind request against the operator's policy, or refuse.
+
+        Resolved before checking, so a symlink inside an allowed root that
+        points outside it is judged by where it lands. The manager's own
+        workspace_root is refused even when a bindable root contains it:
+        that tree holds every session's private scratch, trajectories,
+        memory and mailboxes, and binding into it is cross-tenant reach.
+        """
+        roots = tuple(self.settings.bindable_roots)
+        if not roots:
+            raise WorkspaceBindingError(
+                "workspace binding is disabled: set MINILOOP_BINDABLE_ROOTS "
+                "to the directories sessions may be bound to"
+            )
+        path = Path(requested).expanduser().resolve()
+        # Policy before existence: answering "not a directory" for a path
+        # outside the roots would tell any caller which paths exist there.
+        own_root = self.settings.workspace_root.resolve()
+        if path == own_root or path.is_relative_to(own_root):
+            raise WorkspaceBindingError(
+                f"cannot bind {requested}: it is inside the manager's own "
+                "workspace root, which holds other sessions' state"
+            )
+        if not any(path == root or path.is_relative_to(root) for root in roots):
+            raise WorkspaceBindingError(
+                f"cannot bind {requested}: outside every bindable root"
+            )
+        if not path.is_dir():
+            raise WorkspaceBindingError(
+                f"cannot bind {requested}: not an existing directory",
+                status=400,
+            )
+        return path
 
     async def fork_session(self, source_id: str) -> AgentSession:
         """Branch a new session from an idle session's current transcript.
@@ -964,6 +1028,7 @@ class SessionManager:
                 status=session.status,
                 event_cursor=0,  # derived on read; not authoritative here
                 owner=getattr(session, "owner", "anonymous"),
+                workspace_bound=bool(getattr(session, "workspace_bound", False)),
             )
         )
 
@@ -996,6 +1061,9 @@ class SessionManager:
                 trajectory_store=self.trajectories,
                 state_store=self.state_store,
             )
+            # Bind-time policy is what admitted the path; a restart keeps
+            # the flag so delete still knows the workspace is not scratch.
+            session.workspace_bound = record.workspace_bound
             session.owner = record.owner
             session.agent = self._build_agent(
                 session, settings=self.settings, extra_state={}
@@ -1021,7 +1089,13 @@ class SessionManager:
             ),
             None,
         )
-        workspace = Path(self.workspace_factory(session_id))
+        # A bound session's cron job runs in the checkout it was bound to,
+        # not in fresh scratch: "run the tests here nightly" means here.
+        bound = record is not None and record.workspace_bound
+        workspace = (
+            Path(record.workspace) if bound
+            else Path(self.workspace_factory(session_id))
+        )
         workspace.mkdir(parents=True, exist_ok=True)
         session = AgentSession(
             session_id,
@@ -1030,6 +1104,7 @@ class SessionManager:
             trajectory_store=self.trajectories,
             state_store=self.state_store,
         )
+        session.workspace_bound = bound
         if record is not None:
             session.owner = record.owner
         session.agent = self._build_agent(session, settings=self.settings, extra_state={})
@@ -1110,6 +1185,10 @@ class SessionManager:
             state_store=self.state_store,
         )
         session.owner = parent.owner
+        # A teammate shares the parent's workspace and therefore its
+        # binding: the checkout stays the operator's when the child is the
+        # last session standing.
+        session.workspace_bound = parent.workspace_bound
         session.agent = self._build_agent(
             session, settings=self.settings,
             extra_state={
@@ -1565,8 +1644,14 @@ class SessionManager:
             if other.agent is not None
         ):
             raw_store = None
-        # Don't delete a workspace shared by teammates.
+        # Don't delete a workspace shared by teammates. And never reclaim a
+        # BOUND workspace: it is the operator's checkout, lent to the
+        # session, not scratch the manager made -- rmtree here would delete
+        # the user's repository. Checked on the session's own flag, not on
+        # the path's location, so a teammate that inherited the binding is
+        # protected even after the parent that bound it is gone.
         shared = any(s.workspace == session.workspace for s in self._sessions.values())
+        remove_workspace = remove_workspace and not session.workspace_bound
         remove_now = remove_workspace and not shared and not workflow_active
 
         def _reclaim_records() -> None:

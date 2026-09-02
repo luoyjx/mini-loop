@@ -39,6 +39,10 @@ def mine_trajectory(store: Any, trajectory_id: str) -> dict:
     rounds = tool_calls = tool_errors = repeated_reads = 0
     per_tool: dict[str, dict] = {}
     read_paths: dict[str, int] = {}
+    # A repeat is the same WINDOW (path, offset, limit) asked for twice;
+    # a new offset on the same path is paging, not waste. Same rule as
+    # benchmark._read_window, so the miner and the bench count one thing.
+    seen_windows: dict[tuple, int] = {}
     for event in store.iter_events(
         trajectory_id,
         types={"model_start", "tool_use", "tool_result"},
@@ -56,9 +60,12 @@ def mine_trajectory(store: Any, trajectory_id: str) -> dict:
                 path = (str(inputs.get("path", ""))
                         if isinstance(inputs, dict) else "")
                 if path:
-                    read_paths[path] = read_paths.get(path, 0) + 1
-                    if read_paths[path] > 1:
+                    window = (path, inputs.get("offset"), inputs.get("limit"))
+                    seen_windows[window] = seen_windows.get(window, 0) + 1
+                    read_paths.setdefault(path, 1)
+                    if seen_windows[window] > 1:
                         repeated_reads += 1
+                        read_paths[path] += 1
         elif kind == "tool_result":
             if _is_error(event.get("output")):
                 tool_errors += 1

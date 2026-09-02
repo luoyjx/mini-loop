@@ -164,6 +164,21 @@ HELDOUT_TASKS: tuple[BenchTask, ...] = (
 )
 
 
+def _read_window(inputs) -> tuple | None:
+    """The identity of one read_file call: (path, offset, limit).
+
+    Shared vocabulary with the trajectory miner (mining.py): a read_file
+    call is "the same read" only when it asks for the same window of the
+    same path. Returns None for an input with no path.
+    """
+    if not isinstance(inputs, dict):
+        return None
+    path = str(inputs.get("path", ""))
+    if not path:
+        return None
+    return (path, inputs.get("offset"), inputs.get("limit"))
+
+
 def _behavioral_metrics(messages: list) -> dict:
     """Wasted-motion metrics, derived from the arm's own transcript.
 
@@ -195,14 +210,17 @@ def _behavioral_metrics(messages: list) -> dict:
                 tool_calls += 1
                 if block_field(block, "name") == "read_file":
                     inputs = block_field(block, "input") or {}
-                    path = (
-                        str(inputs.get("path", ""))
-                        if isinstance(inputs, dict) else ""
-                    )
-                    if path and path in read_paths:
+                    window = _read_window(inputs)
+                    # A repeat is the same WINDOW asked for twice. Keyed on
+                    # the path alone, paging a long file with offsets --
+                    # the one legitimate reason to read a path again, and
+                    # the exact motion the paging task exists to observe --
+                    # was booked as waste (N=2 real reading, §5: 1.5 vs 0.5
+                    # "repeated" reads that were all distinct pages).
+                    if window and window in read_paths:
                         repeated_reads += 1
-                    if path:
-                        read_paths.add(path)
+                    if window:
+                        read_paths.add(window)
             elif kind == "tool_result":
                 result = block_field(block, "content")
                 text = result if isinstance(result, str) else block_text(result)

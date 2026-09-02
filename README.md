@@ -385,7 +385,7 @@ it follows the construction seams from caller identity through serving.
 | Provider | `ANTHROPIC_API_KEY`, `MODEL_ID`, `ANTHROPIC_BASE_URL` |
 | Runtime limits | `MINILOOP_MAX_CONCURRENT_*`, turn/token/compaction/bash limits |
 | Optional modules | `MINILOOP_FEATURES`, `MINILOOP_GUARDIAN` |
-| Workspace and resources | `MINILOOP_WORKSPACE_ROOT`, `MINILOOP_REPO_ROOT`, `MINILOOP_USER_RESOURCES_ROOT`, `MINILOOP_MEMORY_ROOT` |
+| Workspace and resources | `MINILOOP_WORKSPACE_ROOT`, `MINILOOP_BINDABLE_ROOTS` (directories a session may be bound to via `POST /sessions {"workspace": ...}`; empty refuses binding), `MINILOOP_REPO_ROOT`, `MINILOOP_USER_RESOURCES_ROOT`, `MINILOOP_MEMORY_ROOT` |
 | Evidence | `MINILOOP_TRAJECTORIES`, `MINILOOP_TRAJECTORY_ROOT`, content-capture settings |
 | Token efficiency and AST | `MINILOOP_TOKEN_EFFICIENCY_*`, `MINILOOP_AST_OUTLINE_*` |
 

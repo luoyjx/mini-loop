@@ -104,6 +104,10 @@ class AgentSession:
     ) -> None:
         self.id = session_id
         self.workspace = workspace
+        # True when `workspace` is an existing directory the session was
+        # bound to (an operator-allowed checkout), not scratch the manager
+        # made for it. The manager reads this before reclaiming a workspace.
+        self.workspace_bound = False
         self.system = system
         self.created_at = time.time()
         self.status = "idle"  # idle | running | error
@@ -631,6 +635,9 @@ class AgentSession:
                 pending_steering=tuple(
                     self._mask(queued) for queued in self._steering
                 ),
+                # Every refresh rewrites the row; dropping this here would
+                # reset a bound session to scratch on its first flush.
+                workspace_bound=self.workspace_bound,
             )
         )
 
@@ -1124,6 +1131,7 @@ class AgentSession:
             "permission_mode": self.permission_mode,
             "pending_steering": len(self._steering),
             "workspace": str(self.workspace),
+            "workspace_bound": self.workspace_bound,
             "model": agent.settings.model if agent else None,
             "message_count": len(agent.messages) if agent else 0,
             "todos": agent.todo.snapshot() if agent else [],

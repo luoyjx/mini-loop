@@ -82,7 +82,7 @@ __all__ = [
     "StorageSchemaError",
 ]
 
-SCHEMA_VERSION = 6
+SCHEMA_VERSION = 7
 
 
 class StorageSchemaError(RuntimeError):
@@ -108,6 +108,11 @@ class SessionRecord:
     # -- a promise -- and an in-memory-only queue broke it across a restart:
     # the caller was told their words would arrive and a restart lost them.
     pending_steering: tuple[str, ...] = ()
+    # True when the workspace is an operator-allowed existing directory the
+    # session was bound to, not scratch the manager created. Persisted so a
+    # restart still knows the difference: deleting a restored session must
+    # never reclaim a bound checkout as if it were scratch.
+    workspace_bound: bool = False
 
 
 def _json_safe(value: Any) -> Any:
@@ -252,7 +257,8 @@ CREATE TABLE IF NOT EXISTS sessions (
     owner        TEXT NOT NULL DEFAULT 'anonymous',
     lease_owner  TEXT,
     lease_until  REAL NOT NULL DEFAULT 0,
-    pending_steering TEXT NOT NULL DEFAULT '[]'
+    pending_steering TEXT NOT NULL DEFAULT '[]',
+    workspace_bound INTEGER NOT NULL DEFAULT 0
 );
 CREATE TABLE IF NOT EXISTS messages (
     session_id TEXT NOT NULL,
@@ -435,6 +441,16 @@ class SQLiteStateStore:
                 "ALTER TABLE sessions ADD COLUMN pending_steering "
                 "TEXT NOT NULL DEFAULT '[]'"
             )
+        # v7: workspace binding. Pre-binding rows are all scratch (0). The
+        # version bump matters more than the column: a v6 build opening a
+        # v7 database would drop the flag and could reclaim a bound checkout
+        # as scratch on delete -- exactly the silent field loss the
+        # newer-schema refusal above exists to prevent.
+        if "workspace_bound" not in session_columns:
+            self._db.execute(
+                "ALTER TABLE sessions ADD COLUMN workspace_bound "
+                "INTEGER NOT NULL DEFAULT 0"
+            )
         if found < 2:
             columns = {
                 row["name"]
@@ -613,8 +629,8 @@ class SQLiteStateStore:
             self._db.execute(
                 """
                 INSERT INTO sessions
-                    (session_id, workspace, system, created_at, run_count, status, todos, owner, pending_steering)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    (session_id, workspace, system, created_at, run_count, status, todos, owner, pending_steering, workspace_bound)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(session_id) DO UPDATE SET
                     workspace = excluded.workspace,
                     system    = excluded.system,
@@ -622,7 +638,8 @@ class SQLiteStateStore:
                     status    = excluded.status,
                     todos     = excluded.todos,
                     owner     = excluded.owner,
-                    pending_steering = excluded.pending_steering
+                    pending_steering = excluded.pending_steering,
+                    workspace_bound = excluded.workspace_bound
                 """,
                 (
                     record.session_id,
@@ -634,6 +651,7 @@ class SQLiteStateStore:
                     json.dumps(_json_safe(list(record.todos)), ensure_ascii=False),
                     record.owner,
                     json.dumps(list(record.pending_steering), ensure_ascii=False),
+                    1 if record.workspace_bound else 0,
                 ),
             )
 
@@ -658,6 +676,8 @@ class SQLiteStateStore:
                         pending_steering=tuple(
                             json.loads(row["pending_steering"] or "[]")
                         ) if "pending_steering" in row.keys() else (),
+                        workspace_bound=bool(row["workspace_bound"])
+                        if "workspace_bound" in row.keys() else False,
                     )
                 )
             return out
