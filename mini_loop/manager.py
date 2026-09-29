@@ -351,7 +351,7 @@ class SessionManager:
         if tool_registry is not None:
             self.tool_registry = (
                 tool_registry.clone()
-                if self.enable_workflows or settings.ast_outline_enabled
+                if self.enable_workflows or settings.ast_outline_enabled or settings.decision_mode != "off"
                 else tool_registry
             )
         elif enable_features:
@@ -360,6 +360,18 @@ class SessionManager:
             self.tool_registry = default_registry()
         else:
             self.tool_registry = None  # -> Agent default (default_registry)
+        if settings.decision_mode != "off":
+            from .decision_tools import install_decisions
+            from .decisions import JevDecisionProvider
+
+            if self.tool_registry is None:
+                self.tool_registry = default_registry()
+            if "decision" not in self.tool_registry:
+                provider = (
+                    JevDecisionProvider(settings.typesafe_api_key, model=settings.decision_model)
+                    if settings.decision_mode == "jev" else None
+                )
+                install_decisions(self.tool_registry, provider)
         if self.enable_workflows:
             assert self.tool_registry is not None
             install_workflows(self.tool_registry)

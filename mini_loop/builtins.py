@@ -287,6 +287,8 @@ def full_registry(
     mcp: bool = True,
     mcp_servers: dict | None = None,
     self_audit: bool = True,
+    decisions: bool = False,
+    decision_provider=None,
 ) -> ToolRegistry:
     """Comprehensive s20 registry; toggle individual feature groups as needed."""
     from .background import install_background
@@ -346,6 +348,10 @@ def full_registry(
         from .self_audit import install_self_audit
 
         install_self_audit(reg)
+    if decisions or decision_provider is not None:
+        from .decision_tools import install_decisions
+
+        install_decisions(reg, decision_provider)
     return reg
 
 

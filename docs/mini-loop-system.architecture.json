@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Concurrent sessions, owner-scoped knowledge, explicit personal-skill publication, guarded tools, and durable evidence",
+    "subtitle": "Concurrent sessions, scoped knowledge, guarded tools, opt-in typed decisions, and durable evidence",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -19,8 +19,8 @@
       {
         "id": "tool-path",
         "label": "Guarded tool execution",
-        "focus": ["agent", "toolPolicy", "toolBackends", "state"],
-        "note": "Tool calls cross immutable catalog, policy, hook, permission, masking, and journaling boundaries."
+        "focus": ["agent", "toolPolicy", "toolBackends", "state", "decisions"],
+        "note": "Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."
       },
       {
         "id": "async-path",
@@ -55,7 +55,8 @@
     { "id": "toolPolicy", "type": "security", "label": "Tool Execution Gate", "sublabel": "catalog + hooks + permissions", "pos": [1780, 540], "size": [210, 76], "tag": "deny is final" },
     { "id": "toolBackends", "type": "backend", "label": "Tool Backends", "sublabel": "files / shell / MCP / sandbox", "pos": [2110, 700], "size": [215, 76] },
     { "id": "coordination", "type": "messagebus", "label": "Async Coordination", "sublabel": "background / cron / teams / workflows", "pos": [1030, 620], "size": [230, 76], "tag": "opt-in surfaces" },
-    { "id": "state", "type": "database", "label": "Durable State + Files", "sublabel": "owner resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] }
+    { "id": "state", "type": "database", "label": "Durable State + Files", "sublabel": "owner resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] },
+    { "id": "decisions", "type": "external", "label": "Decision Providers", "sublabel": "Jev / explicit LLM estimates", "pos": [2110, 540], "size": [220, 76], "tag": "off by default" }
   ],
   "boundaries": [
     { "kind": "region", "label": "Control plane", "wraps": ["entry", "authority", "manager", "skillDrafts"], "pad": 24 },
@@ -79,11 +80,13 @@
     { "id": "coordinationOwned", "from": "manager", "to": "coordination", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
     { "id": "inject", "from": "coordination", "to": "session", "label": "inject next turn", "variant": "dashed" },
     { "id": "persist", "from": "session", "to": "state", "label": "epochs / events", "fromSide": "bottom", "toSide": "top" },
-    { "id": "recordEffects", "from": "toolPolicy", "to": "state", "label": "action outcomes", "fromSide": "left", "toSide": "right" }
+    { "id": "recordEffects", "from": "toolPolicy", "to": "state", "label": "action outcomes", "fromSide": "left", "toSide": "right" },
+    { "id": "decisionRequest", "from": "toolPolicy", "to": "decisions", "variant": "dashed" }
   ],
   "cards": [
     { "dot": "cyan", "title": "Concurrency", "items": ["One lock serializes each session", "Fleet-wide LLM and tool semaphores bound parallel work", "Parallel-safe tool results retain model-call order"] },
     { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Only authenticated HTTP user/final turns enter preview", "Preview cannot publish; commit is a separate caller action", "Agent and user skills retain explicit provenance"] },
-    { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] }
+    { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] },
+    { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] }
   ]
 }

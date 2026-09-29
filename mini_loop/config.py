@@ -284,6 +284,17 @@ class Settings:
         default_factory=lambda: _env_bool("MINILOOP_GUARDIAN", False)
     )
 
+    # Independent, billable judgment requests; opt-in even with FEATURES=all.
+    decision_mode: str = field(
+        default_factory=lambda: os.getenv("MINILOOP_DECISIONS", "off").strip().lower()
+    )
+    decision_model: str = field(
+        default_factory=lambda: os.getenv("MINILOOP_DECISION_MODEL", "jev-latest")
+    )
+    typesafe_api_key: str | None = field(
+        default_factory=lambda: os.getenv("TYPESAFE_API_KEY") or None, repr=False,
+    )
+
     # Experimental Dynamic Workflow MVP. The default FastAPI server deliberately
     # does not consume this flag: callers must opt a local SessionManager into the
     # surface explicitly so the unauthenticated REST API never gains it by env
@@ -305,6 +316,14 @@ class Settings:
     )
 
     def __post_init__(self) -> None:
+        if self.decision_mode not in {"off", "llm", "jev"}:
+            raise ValueError("decision_mode must be one of: off, llm, jev")
+        if not isinstance(self.decision_model, str) or not self.decision_model.strip():
+            raise ValueError("decision_model must not be empty")
+        if self.decision_mode == "jev" and (
+            not isinstance(self.typesafe_api_key, str) or not self.typesafe_api_key.strip()
+        ):
+            raise ValueError("Jev decisions require TYPESAFE_API_KEY")
         if self.token_efficiency_mode not in {"off", "shadow", "enforce"}:
             raise ValueError(
                 "token_efficiency_mode must be one of: off, shadow, enforce"

@@ -19,16 +19,24 @@ from typing import Any, Mapping
 
 
 MAX_ACTION_RESULT_CHARS = 4_000
+# Typed decision results are validated to at most 512 KiB of compact UTF-8 JSON.
+# A character budget of the same size preserves every accepted result intact;
+# ordinary tool output retains its historical, smaller prefix budget.
+MAX_DECISION_ACTION_RESULT_CHARS = 512 * 1024
 
 
-def _bounded_result(result: str | None) -> str | None:
-    """Retain a replay-safe prefix that explicitly reports truncation."""
+def _bounded_result(result: str | None, *, tool_name: str = "") -> str | None:
+    """Preserve bounded typed results; report any oversized output explicitly."""
 
-    if result is None or len(result) <= MAX_ACTION_RESULT_CHARS:
+    limit = (
+        MAX_DECISION_ACTION_RESULT_CHARS
+        if tool_name == "decision" else MAX_ACTION_RESULT_CHARS
+    )
+    if result is None or len(result) <= limit:
         return result
     marker = f"\n[action result truncated; original_chars={len(result)}]"
-    keep = MAX_ACTION_RESULT_CHARS - len(marker)
-    return f"{result[:max(0, keep)]}{marker}"[:MAX_ACTION_RESULT_CHARS]
+    keep = limit - len(marker)
+    return f"{result[:max(0, keep)]}{marker}"[:limit]
 
 
 class ActionJournalConflict(RuntimeError):
@@ -64,8 +72,9 @@ class ActionRecord:
 #: Terminal records that keep their `result` text. Past this, the oldest give up
 #: the payload and keep everything else.
 #:
-#: Each result is already capped at 4,000 characters, so the *per record* size
-#: was bounded and the *count* was not. Measured on a long-lived session doing
+#: Ordinary results are capped at 4,000 characters; typed decision results at
+#: 512 KiB characters. The *per record* size is bounded, and this limit also
+#: bounds the retained *count*. Originally measured on a long-lived session doing
 #: ordinary tool work:
 #:
 #:     20,000 completed actions -> 81.0 MB of result text, never released
@@ -74,6 +83,10 @@ class ActionRecord:
 #: than by reading: `messages` plateaus at 51 under compaction and every other
 #: structure with it, so this was the one line still climbing.
 MAX_RESULTS_RETAINED = 512
+# Larger typed results must not multiply the journal's historical total payload
+# budget. Count and aggregate characters are independent bounds; shedding keeps
+# action identity and terminal status so replay never invokes a provider again.
+MAX_RETAINED_RESULT_CHARS = MAX_RESULTS_RETAINED * MAX_ACTION_RESULT_CHARS
 
 #: Records held before the journal starts saying so. Deliberately not a cap.
 #: Dropping a record is not like trimming a log: a replay of an evicted action
@@ -99,6 +112,7 @@ class InMemoryActionJournal:
         #: candidates for shedding: an action still `started` has an outcome
         #: nobody has recorded yet.
         self._completed: deque[str] = deque()
+        self._retained_result_chars = 0
         #: Results dropped to stay within the bound. Reported, not hidden.
         self.problems = ProblemLog()
 
@@ -106,17 +120,22 @@ class InMemoryActionJournal:
         """Release payloads beyond the retention bound, keeping the records."""
 
         dropped = 0
-        while len(self._completed) > self.max_results_retained:
+        while (
+            len(self._completed) > self.max_results_retained
+            or self._retained_result_chars > MAX_RETAINED_RESULT_CHARS
+        ):
             action_id = self._completed.popleft()
             record = self._records.get(action_id)
             if record is None or record.result is None:
                 continue
+            self._retained_result_chars -= len(record.result)
             self._records[action_id] = replace(record, result=SHED_RESULT)
             dropped += 1
         if dropped:
             self.problems.append(
-                f"released {dropped} action result(s) beyond the newest "
-                f"{self.max_results_retained}; status and identity are kept"
+                f"released {dropped} action result(s) to retain at most "
+                f"{self.max_results_retained} results and "
+                f"{MAX_RETAINED_RESULT_CHARS} characters; status and identity are kept"
             )
         if len(self._records) > REPORT_RECORDS_ABOVE:
             self.problems.append(
@@ -184,11 +203,12 @@ class InMemoryActionJournal:
             updated = replace(
                 existing,
                 status=status,
-                result=_bounded_result(result),
+                result=_bounded_result(result, tool_name=existing.tool_name),
                 completed_at=time.time(),
             )
             self._records[action_id] = updated
             if status in TERMINAL_STATUSES or status == UNKNOWN:
+                self._retained_result_chars += len(updated.result or "")
                 self._completed.append(action_id)
                 self._shed_old_results()
             return copy.deepcopy(updated)
@@ -330,7 +350,7 @@ class DurableActionJournal:
             updated = {
                 **existing,
                 "status": status,
-                "result": _bounded_result(result),
+                "result": _bounded_result(result, tool_name=existing["tool_name"]),
                 "completed_at": time.time(),
             }
             self.store.write_action(updated)
@@ -356,7 +376,7 @@ class DurableActionJournal:
             updated = {
                 **existing,
                 "status": status,
-                "result": _bounded_result(result),
+                "result": _bounded_result(result, tool_name=existing["tool_name"]),
                 "completed_at": time.time(),
             }
             self.store.write_action(updated)

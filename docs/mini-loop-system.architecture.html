@@ -4498,10 +4498,10 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Concurrent sessions, owner-scoped knowledge, explicit personal-skill publication, guarded tools, and durable evidence</p>
+      <p class="subtitle">Concurrent sessions, scoped knowledge, guarded tools, opt-in typed decisions, and durable evidence</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state"],"note":"Tool calls cross immutable catalog, policy, hook, permission, masking, and journaling boundaries."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"resource-path","label":"Scoped skills and memory","focus":["authority","manager","session","skillDrafts","state","context"],"note":"Preview is process-local; an exact digest commit creates an owner skill that only future session snapshots can load."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"resource-path","label":"Scoped skills and memory","focus":["authority","manager","session","skillDrafts","state","context"],"note":"Preview is process-local; an exact digest commit creates an owner skill that only future session snapshots can load."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4546,7 +4546,7 @@
     <div class="diagram-container" data-detail-level="read">
       <svg viewBox="0 0 2500 1100" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Concurrent sessions, owner-scoped knowledge, explicit personal-skill publication, guarded tools, and durable evidence</desc>
+        <desc id="archify-diagram-description">Concurrent sessions, scoped knowledge, guarded tools, opt-in typed decisions, and durable evidence</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -4592,11 +4592,12 @@
         <path data-edge-from="context" data-edge-to="provider" data-edge-label="model request" data-edge-key="9" data-edge-id="modelRequest" data-composition-points="2220,176;2220,200;2236,200;2236,386;2210,386;2210,410" d="M 2220 176 L 2220 192 Q 2220 200 2228 200 L 2228 200 Q 2236 200 2236 208 L 2236 378 Q 2236 386 2228 386 L 2218 386 Q 2210 386 2210 394 L 2210 410" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="provider" data-edge-to="agent" data-edge-label="text / tools" data-edge-key="10" data-edge-id="modelResponse" data-composition-points="2110,446;2035,446;2035,303;1960,303" d="M 2110 446 L 2043 446 Q 2035 446 2035 438 L 2035 311 Q 2035 303 2027 303 L 1960 303" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="agent" data-edge-to="toolPolicy" data-edge-label="ToolCall batch" data-edge-key="11" data-edge-id="toolCalls" data-composition-points="1870,332;1870,356;1901,356;1901,516;1885,516;1885,540" d="M 1870 332 L 1870 348 Q 1870 356 1878 356 L 1893 356 Q 1901 356 1901 364 L 1901 508 Q 1901 516 1893 516 L 1893 516 Q 1885 516 1885 524 L 1885 540" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
-        <path data-edge-from="toolPolicy" data-edge-to="toolBackends" data-edge-label="guarded dispatch" data-edge-key="12" data-edge-id="dispatch" data-composition-points="1990,578;2050,578;2050,738;2110,738" d="M 1990 578 L 2042 578 Q 2050 578 2050 586 L 2050 730 Q 2050 738 2058 738 L 2110 738" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="toolPolicy" data-edge-to="toolBackends" data-edge-label="guarded dispatch" data-edge-key="12" data-edge-id="dispatch" data-composition-points="1990,585;2050,585;2050,738;2110,738" d="M 1990 585 L 2042 585 Q 2050 585 2050 593 L 2050 730 Q 2050 738 2058 738 L 2110 738" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="manager" data-edge-to="coordination" data-edge-key="13" data-edge-id="coordinationOwned" data-composition-points="1130,332;1130,356;1161,356;1161,596;1145,596;1145,620" d="M 1130 332 L 1130 348 Q 1130 356 1138 356 L 1153 356 Q 1161 356 1161 364 L 1161 588 Q 1161 596 1153 596 L 1153 596 Q 1145 596 1145 604 L 1145 620" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="coordination" data-edge-to="session" data-edge-label="inject next turn" data-edge-key="14" data-edge-id="inject" data-composition-points="1260,658;1335,658;1335,296;1410,296" d="M 1260 658 L 1327 658 Q 1335 658 1335 650 L 1335 304 Q 1335 296 1343 296 L 1410 296" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="session" data-edge-to="state" data-edge-label="epochs / events" data-edge-key="15" data-edge-id="persist" data-composition-points="1505,332;1505,356;1523.5,356;1523.5,776;1507.5,776;1507.5,800" d="M 1505 332 L 1505 348 Q 1505 356 1513 356 L 1515.5 356 Q 1523.5 356 1523.5 364 L 1523.5 768 Q 1523.5 776 1515.5 776 L 1515.5 776 Q 1507.5 776 1507.5 784 L 1507.5 800" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="toolPolicy" data-edge-to="state" data-edge-label="action outcomes" data-edge-key="16" data-edge-id="recordEffects" data-composition-points="1780,578;1702.5,578;1702.5,839;1625,839" d="M 1780 578 L 1710.5 578 Q 1702.5 578 1702.5 586 L 1702.5 831 Q 1702.5 839 1694.5 839 L 1625 839" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="toolPolicy" data-edge-to="decisions" data-edge-key="17" data-edge-id="decisionRequest" data-composition-points="1990,571;2014,571;2014,594;2086,594;2086,578;2110,578" d="M 1990 571 L 2006 571 Q 2014 571 2014 579 L 2014 586 Q 2014 594 2022 594 L 2078 594 Q 2086 594 2086 586 L 2086 586 Q 2086 578 2094 578 L 2110 578" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4759,6 +4760,19 @@
         <text data-detail="context" x="1507.5" y="853" class="t-muted" font-size="9" text-anchor="middle">owner resources / SQLite / trajectory</text>
         </g>
 
+        <g id="node-decisions" data-node-id="decisions" data-node-label="Decision Providers" tabindex="0" role="button" aria-label="Focus Decision Providers, Jev / explicit LLM estimates, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Jev / explicit LLM estimates" data-node-tag="off by default" data-node-context="Architecture component">
+          <title>Decision Providers · Jev / explicit LLM estimates · Architecture component · off by default</title>
+          <rect x="2110" y="540" width="220" height="76" rx="6" class="c-mask"/>
+          <rect x="2110" y="540" width="220" height="76" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(2116 546) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text data-detail-anchor x="2220" y="576" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Decision Providers</text>
+        <text data-detail="context" x="2220" y="592" class="t-muted" font-size="9" text-anchor="middle">Jev / explicit LLM estimates</text>
+        <text data-detail="fine" x="2220" y="608" class="t-external" font-size="7" text-anchor="middle">off by default</text>
+        </g>
+
         <!-- Connection labels -->
         <g data-detail="context" data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request">
           <rect x="248.2" y="276" width="43.6" height="14" rx="3" class="c-mask"/>
@@ -4803,8 +4817,8 @@
           <text x="1885.5" y="346" class="t-security" font-size="8" text-anchor="middle">ToolCall batch</text>
         </g>
         <g data-detail="context" data-edge-from="toolPolicy" data-edge-to="toolBackends" data-edge-label="guarded dispatch" data-edge-key="12" data-edge-id="dispatch">
-          <rect x="2006.6" y="638" width="86.8" height="14" rx="3" class="c-mask"/>
-          <text x="2050" y="648" class="t-security" font-size="8" text-anchor="middle">guarded dispatch</text>
+          <rect x="2006.6" y="641.5" width="86.8" height="14" rx="3" class="c-mask"/>
+          <text x="2050" y="651.5" class="t-security" font-size="8" text-anchor="middle">guarded dispatch</text>
         </g>
 
         <g data-detail="context" data-edge-from="coordination" data-edge-to="session" data-edge-label="inject next turn" data-edge-key="14" data-edge-id="inject">
@@ -4819,6 +4833,7 @@
           <rect x="1661.5" y="688.5" width="82" height="14" rx="3" class="c-mask"/>
           <text x="1702.5" y="698.5" class="t-muted" font-size="8" text-anchor="middle">action outcomes</text>
         </g>
+
 
         <!-- Legend -->
         <g data-legend-bridge>
@@ -5065,6 +5080,19 @@
           <li>&bull; Pending personal-skill drafts are capped, expiring, and process-local</li>
           <li>&bull; Committed owner skills and memory are durable local files, not SQLite rows</li>
           <li>&bull; Publication is create-only and activates in future sessions</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>Typed decisions</h3>
+        </div>
+        <ul>
+          <li>&bull; Off by default, including the full feature bundle</li>
+          <li>&bull; Explicit state + batch choice / score / noul questions</li>
+          <li>&bull; External-risk approval; judgments never execute actions</li>
+          <li>&bull; Jev values retain provenance; LLM estimates are labeled</li>
         </ul>
       </div>
     </div>

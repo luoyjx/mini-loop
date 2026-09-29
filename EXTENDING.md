@@ -32,6 +32,7 @@ A complete, runnable example combining all of the below:
 | Module | Seam | Inject via | Replace to change… |
 |---|---|---|---|
 | `registry.py` / `builtins.py` | `ToolRegistry` | `tools=` / `tool_registry=` | what the agent can *do* |
+| `decisions.py` | `DecisionProvider` | `install_decisions(registry, provider=...)` | the backend for typed choice, score, and noul judgments |
 | `registry.py` | immutable `ToolCatalogSnapshot` | automatic per request | the exact schema/prompt prefix and its fingerprint |
 | `tool_policy.py` | `RoleToolPolicy` | `role_tool_policy=` | which declared capabilities Explore/Worker children inherit |
 | `registry.py` | `Hooks` (`Hook`) | `hooks=` | permissions, audit, arg/output rewriting |
@@ -210,6 +211,64 @@ subset of the **parent** registry. Explore inherits `repo.read`, `repo.search`,
 capabilities exist in the parent registry. A tool with no capability is not
 inherited implicitly. Explore also runs in read-only permission mode, so capability
 selection and execution-time authority agree.
+
+---
+
+## 1a. Typed judgments — `DecisionProvider`
+
+`decision` evaluates an explicit `state` against a batch of named questions.
+It returns typed `choice`, `score`, and `noul` answers without executing an
+action. `DecisionRequest`, `DecisionResult`, and `DecisionProvider` are public
+composition types. The question IDs connect results to inputs; they are not
+instructions. Keep the actual question in `instructions` and its alternatives
+or ordered levels in `criteria`.
+
+The tool is off by default, even in `full_registry()` and
+`MINILOOP_FEATURES=all`. Select a backend explicitly:
+
+```python
+import os
+from mini_loop import default_registry, install_decisions, JevDecisionProvider
+
+def configured_decision_registry():
+    registry = default_registry()
+    install_decisions(
+        registry,
+        provider=JevDecisionProvider(
+            api_key=os.environ["TYPESAFE_API_KEY"],
+            model="jev-latest",
+        ),
+    )
+    return registry
+
+# registry = configured_decision_registry()  # requires TYPESAFE_API_KEY
+# SessionManager(settings, client, tool_registry=registry)
+```
+
+`install_decisions(registry)` uses the current LLM explicitly; so does
+`full_registry(decisions=True)`. To select Jev through the comprehensive
+registry, pass both `decisions=True` and `decision_provider=provider`.
+For the default server, use `MINILOOP_DECISIONS=llm` or
+`MINILOOP_DECISIONS=jev`; Jev requires `TYPESAFE_API_KEY` and accepts
+`MINILOOP_DECISION_MODEL` (default `jev-latest`). An explicitly installed
+`decision` tool takes precedence over environment-backed manager composition.
+
+Both backends carry `risk="external"`: the existing interactive approval path
+applies, read-only sessions refuse the tool, and auto mode records its normal
+permission decision. A returned classification never authorizes a write,
+shell command, workflow, or approval. Subsequent actions still cross their
+own gates.
+
+Jev responses retain the actual served model and provider statistics. The
+LLM backend marks `probability_source="llm_estimate"`; its confidence uses a
+local normalized-entropy calculation, not Jev's undisclosed computation or a
+calibrated correctness probability. A failed Jev call does not silently switch
+to the LLM. The existing tool-result trace contains the typed result;
+`decision_completed` adds bounded metadata without a raw state copy. There
+is no new HTTP endpoint or decision store.
+
+See [Typed decisions](docs/DECISIONS.md) for a complete batch example,
+source-pinned upstream semantics, and validation boundaries.
 
 ---
 

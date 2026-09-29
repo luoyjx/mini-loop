@@ -3591,6 +3591,16 @@ MUTATIONS = [
 ]
 
 
+MUTATIONS.append(Mutation(
+    "decision-results-ignore-aggregate-budget", 254, "mini_loop/actions.py",
+    "            or self._retained_result_chars > MAX_RETAINED_RESULT_CHARS\n",
+    "",
+    "tests/test_decision_replay.py::test_large_decisions_shed_at_the_aggregate_limit_without_reexecution",
+    "large typed decisions retain complete results within the shared payload budget; "
+    "shedding keeps action identity and cannot trigger another provider call",
+))
+
+
 def _run(selector: str | None, start: int = 1, end: int | None = None) -> int:
     chosen = [m for m in MUTATIONS if not selector or selector in m.name]
     if not chosen:

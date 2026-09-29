@@ -51,6 +51,12 @@ from .caching import (
 )
 from .config import Settings, build_client, load_settings
 from .cron import CronScheduler, install_cron
+from .decisions import (
+    DecisionError, DecisionValidationError, DecisionProvider, DecisionRequest,
+    DecisionResult, JevDecisionProvider, validate_result,
+)
+from .decision_llm import LLMDecisionProvider
+from .decision_tools import install_decisions
 from .harness import Harness
 from .manager import SessionManager
 from .mcp import InProcessMCP, MCPClient, StdioMCP, install_mcp, register_mcp
@@ -152,6 +158,9 @@ from .workflows.service import WorkflowLaunchResult, WorkflowService
 from .workflows.tools import install_workflows
 
 __all__ = [
+    "DecisionError", "DecisionValidationError", "DecisionProvider", "DecisionRequest",
+    "DecisionResult", "JevDecisionProvider", "LLMDecisionProvider", "validate_result",
+    "install_decisions",
     # core
     "Agent",
     "AgentSession",

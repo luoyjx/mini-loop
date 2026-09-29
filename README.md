@@ -113,6 +113,7 @@ The table is the fastest way to distinguish “implemented” from “active her
 | Owner-scoped skills, memory, and personal-skill publication | **Off** | Configure `MINILOOP_USER_RESOURCES_ROOT` and authenticated owners |
 | Token-efficiency pipeline and semantic code tools | **Off** | Explicit `shadow`/`enforce` and pinned `ast-outline` settings |
 | Guardian approval reviewer | **Off** | `MINILOOP_GUARDIAN=1`; it may approve, deny, or defer, never widen authority |
+| Typed decisions: choice, score, and noul | **Off, including the full feature bundle** | `MINILOOP_DECISIONS=llm\|jev` or explicit `install_decisions()`; judgments return data through the existing tool boundary |
 | Declarative workflow MVP | **Off, process-local** | Trusted Python construction with `enable_workflows=True` |
 | Verified execute → verify → fold loop | **Library-only** | Call `VerifiedLoopService` explicitly; no HTTP/tool surface |
 
@@ -259,11 +260,10 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: committed runtime `f6f0503` (conversation UI redesign),
-reviewed **2026-08-28**. The Minke-inspired command palette, browser-local
-shortcuts, page-local session navigation, and read-only Research Atlas remain
-projections of existing APIs. They do not change runtime topology, authority,
-persistence, or feature enablement.
+Runtime review baseline: `c3e0ab9` plus the typed-decision integration in this
+iteration, reviewed **2026-09-29**. The optional `decision` tool evaluates
+explicit state through a configured provider; its typed result returns through
+the existing permission, tool-result, and event boundaries.
 
 <!-- architecture-map:start -->
 ```mermaid
@@ -292,6 +292,7 @@ flowchart LR
 
     Provider["Model provider<br/>streaming transport · recovery"]
     Backends["Tool backends<br/>files · shell · AST · diagnostics · MCP<br/>sandbox · secrets · spill"]
+    Decisions["Optional DecisionProvider<br/>Jev API or explicit LLM estimates<br/>choice · score · noul"]
 
     subgraph Async["Optional orchestration"]
         Coordination["Background · cron · tasks · teams<br/>worktrees · subagent provider"]
@@ -314,6 +315,8 @@ flowchart LR
     Provider -->|text / tool_use| Agent
     Gate -->|guarded dispatch| Backends
     Backends -->|masked result| Agent
+    Gate -. approved typed query .-> Decisions
+    Decisions -. typed result; no action .-> Agent
 
     Manager -. owns shared services .-> Coordination
     Coordination -. bounded next-turn injection .-> Session
@@ -332,6 +335,15 @@ Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new
 source of authority.
+
+Typed decisions are also default-off, including with `MINILOOP_FEATURES=all`.
+Both decision backends use the existing external-risk permission gate. Jev
+preserves the service's returned model, probabilities, confidence, and usage;
+the separately selected LLM backend labels its probabilities as estimates.
+Neither backend executes the selected action or grants permission to do so.
+Decision results use existing tool and event records; no decision database,
+session-restoration mechanism, or HTTP route is added. See
+[Typed decisions](docs/DECISIONS.md) for configuration and evidence boundaries.
 
 SQLite durability applies only when a real `StateStore` is configured; the
 default server keeps the documented `Null*` boundaries. Owner skills and
@@ -385,6 +397,7 @@ it follows the construction seams from caller identity through serving.
 | Provider | `ANTHROPIC_API_KEY`, `MODEL_ID`, `ANTHROPIC_BASE_URL` |
 | Runtime limits | `MINILOOP_MAX_CONCURRENT_*`, turn/token/compaction/bash limits |
 | Optional modules | `MINILOOP_FEATURES`, `MINILOOP_GUARDIAN` |
+| Typed decisions | `MINILOOP_DECISIONS=off\|llm\|jev`, `TYPESAFE_API_KEY`, `MINILOOP_DECISION_MODEL` |
 | Workspace and resources | `MINILOOP_WORKSPACE_ROOT`, `MINILOOP_BINDABLE_ROOTS` (directories a session may be bound to via `POST /sessions {"workspace": ...}`; empty refuses binding), `MINILOOP_REPO_ROOT`, `MINILOOP_USER_RESOURCES_ROOT`, `MINILOOP_MEMORY_ROOT` |
 | Evidence | `MINILOOP_TRAJECTORIES`, `MINILOOP_TRAJECTORY_ROOT`, content-capture settings |
 | Token efficiency and AST | `MINILOOP_TOKEN_EFFICIENCY_*`, `MINILOOP_AST_OUTLINE_*` |
@@ -416,6 +429,7 @@ Additional mutation guards and source scans protect load-bearing boundaries:
 | Why does a guard or invariant exist? | [Hardening notes](docs/HARDENING_NOTES.md) |
 | What is durable, inspectable, or exported? | [Agent trajectories](docs/TRAJECTORIES.md) |
 | How do owner skills and memory resolve? | [User-scoped skills and memory](docs/USER_SCOPED_SKILLS_MEMORY_DESIGN.md) |
+| How do typed judgments and Jev integrate? | [Typed decisions](docs/DECISIONS.md) |
 | What is the verified-loop adoption status? | [Verified loop design](docs/VERIFIED_LOOP_DESIGN.md) |
 | What remains before a broader agent platform? | [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md) |
 | What informed the token-efficiency design? | [Token-efficiency components](docs/TOKEN_EFFICIENCY_COMPONENTS.md) |
