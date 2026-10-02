@@ -54,6 +54,18 @@ func (event SubagentEvent) Refusal() (int, int, bool) {
 	return event.childDepth, event.limit, event.kind == EventSubagentRefused
 }
 
+const EventStuck SessionEventKind = "stuck"
+
+type StuckEvent struct {
+	signal     StuckSignal
+	halted     bool
+	nudgesUsed int
+}
+
+func (event StuckEvent) Signal() StuckSignal { return event.signal.clone() }
+func (event StuckEvent) Halted() bool        { return event.halted }
+func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
+
 // SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
@@ -64,8 +76,14 @@ type SessionEvent struct {
 	subagent SubagentEvent
 	runError RunErrorEvent
 	approval ApprovalEvent
+	stuck    StuckEvent
 }
 
+func (event SessionEvent) Stuck() (StuckEvent, bool) {
+	value := event.stuck
+	value.signal = value.signal.clone()
+	return value, event.kind == EventStuck
+}
 func (event SessionEvent) Approval() (ApprovalEvent, bool) {
 	switch ApprovalEventKind(event.kind) {
 	case ApprovalRequiredEvent, ApprovalTimeoutEvent, ApprovalGrantUsedEvent, ApprovalGrantRecordedEvent, ApprovalGrantRefusedEvent, ApprovalAutoReviewedEvent:
@@ -112,6 +130,7 @@ func (event SessionEvent) Todos() ([]protocol.TodoItem, bool) {
 func (event SessionEvent) clone() SessionEvent {
 	event.todos = append([]protocol.TodoItem(nil), event.todos...)
 	event.approval = event.approval.clone()
+	event.stuck.signal = event.stuck.signal.clone()
 	return event
 }
 

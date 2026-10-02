@@ -39,6 +39,9 @@ type SubagentParent struct {
 	rolePolicy                                     RoleToolPolicy
 	events                                         *sessionEvents
 	secrets                                        TextMasker
+	cachePolicy                                    CachePolicy
+	stuckDetector                                  StuckDetector
+	stopHooks                                      []StopHook
 }
 
 func (parent SubagentParent) Authority() ToolAuthority {
@@ -153,6 +156,13 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	child.secrets = parent.secrets
 	child.model, child.maxTokens, child.tokenThreshold = parent.model, parent.maxTokens, parent.tokenThreshold
 	child.skills, child.questions, child.compactor = parent.skills, questions, parent.compactor
+	if parent.cachePolicy != nil {
+		child.cachePolicy = parent.cachePolicy
+	}
+	if parent.stuckDetector != nil {
+		child.stuckDetector = parent.stuckDetector
+	}
+	child.stopHooks = append([]StopHook(nil), parent.stopHooks...)
 	child.subagents, child.rolePolicy = parent.subagents, parent.rolePolicy
 	child.subagentMaxDepth, child.subagentMaxRounds = parent.maxDepth, parent.maxRounds
 	child.todos, child.events, child.compression = handler.todos, handler.events, handler.compression
@@ -202,7 +212,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 		authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode, RunContext: run.clone()}, label: s.label, depth: s.depth,
 		model: s.model, maxTokens: s.maxTokens, tokenThreshold: s.tokenThreshold, maxRounds: s.subagentMaxRounds, maxDepth: s.subagentMaxDepth,
 		provider: s.provider, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
-		skills: s.skills, questions: s.questions, compactor: s.compactor, subagents: s.subagents, rolePolicy: s.rolePolicy, events: s.events, secrets: s.secrets,
+		skills: s.skills, questions: s.questions, compactor: s.compactor, subagents: s.subagents, rolePolicy: s.rolePolicy, events: s.events, secrets: s.secrets, cachePolicy: s.cachePolicy, stuckDetector: s.stuckDetector, stopHooks: append([]StopHook(nil), s.stopHooks...),
 	}
 	summary, err := s.subagents.RunSubagent(ctx, SubagentRequest{parent, prompt, role, run.clone()})
 	if err != nil {

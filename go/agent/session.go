@@ -64,6 +64,12 @@ type Session struct {
 	subagents                           SubagentProvider
 	rolePolicy                          RoleToolPolicy
 	subagentMaxDepth, subagentMaxRounds int
+	cachePolicy                         CachePolicy
+	stuckDetector                       StuckDetector
+	stopHooks                           []StopHook
+	recentSteps                         []ToolStep
+	roundsWithoutTools                  int
+	stuckNudges                         int
 }
 
 func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExecutor, maxRounds int) (*Session, error) {
@@ -87,6 +93,7 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 		return nil, errors.New("session requires id, owner, provider, tool gate, valid mode, and positive maxRounds")
 	}
 	session := &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}, model: DefaultModel, maxTokens: DefaultMaxTokens, tokenThreshold: DefaultTokenThreshold, systemBuilder: DefaultSystemBuilder{}, compactor: InMemoryCompactor{DefaultTokenThreshold, 50}}
+	session.cachePolicy, session.stuckDetector = NewDefaultCachePolicy(), NewDefaultStuckDetector()
 	session.label, session.skills = string(id), skills.EmptyCatalog()
 	session.subagents, session.rolePolicy = &InProcessSubagents{}, DefaultRoleToolPolicy()
 	session.subagentMaxDepth, session.subagentMaxRounds = DefaultSubagentMaxDepth, DefaultSubagentMaxRounds
@@ -108,7 +115,7 @@ func (s *Session) TokenMeter() TokenMeterSnapshot {
 }
 
 func (s *Session) compact(ctx context.Context, envelope string, forced bool) error {
-	value := CompactionContext{Messages: append([]protocol.Message(nil), s.messages...), Files: s.files, Provider: s.provider, Model: s.model, Meter: s.meter, Envelope: envelope, Secrets: s.secrets}
+	value := CompactionContext{Messages: append([]protocol.Message(nil), s.messages...), Files: s.files, Provider: s.provider, Model: s.model, Meter: s.meter, Envelope: envelope, Secrets: s.secrets, CachePolicy: s.cachePolicy}
 	var result CompactionResult
 	var err error
 	if forced {
@@ -204,6 +211,9 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 	if err := run.Validate(); err != nil {
 		return "", err
 	}
+	s.recentSteps = nil
+	s.roundsWithoutTools = 0
+	s.stuckNudges = 0
 	s.currentRun = run.clone()
 	s.events.setScope(EventScope{s.label, s.depth, run.clone()})
 	defer func() { s.currentRun = RunContext{} }()
@@ -220,6 +230,10 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			return "", fmt.Errorf("transcript before model call: %w", err)
 		}
 		request, envelope, err := s.buildRequest()
+		if err != nil {
+			return "", err
+		}
+		request, err = s.cachePolicy.Annotate(request)
 		if err != nil {
 			return "", err
 		}
@@ -267,6 +281,10 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 				return "", dispatchErr
 			}
 			results = append(results, protocol.NewToolResult(use.ID, outcome.Output, outcome.IsError()))
+			if err := s.recordToolStep(use.Input.Name(), outcome); err != nil {
+				s.closeInterruptedBatch(blocks, results, i+1)
+				return "", err
+			}
 		}
 		if roundText != "" {
 			lastText = roundText
@@ -289,7 +307,51 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			if !reply.StopReason.Known() {
 				s.recordStop(ProviderStopEvent{kind: EventProviderStopUnhandled, reason: reply.StopReason, detail: "unrecognized stop reason, treated as end of turn"})
 			}
+			s.roundsWithoutTools++
+			var continuation *string
+			for _, hook := range s.stopHooks {
+				continuation, err = hook.Stop(ctx, StopContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode, RunContext: run.clone()}, Messages: append([]protocol.Message(nil), s.messages...), LastText: lastText})
+				if err != nil {
+					return "", err
+				}
+				if ctx.Err() != nil {
+					return "", ctx.Err()
+				}
+				if continuation != nil {
+					break
+				}
+			}
+			if continuation != nil {
+				signal, err := s.stuckDetector.Inspect(s.stuckState())
+				if err != nil {
+					return "", err
+				}
+				text := *continuation
+				if signal != nil {
+					nudge, headline := s.nudgeOrHalt(*signal)
+					if !nudge {
+						return stoppedText(headline, lastText), nil
+					}
+					text = signal.Reminder() + "\n\n" + text
+				}
+				s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(text)})
+				continue
+			}
 			return lastText, nil
+		}
+		s.roundsWithoutTools = 0
+		signal, inspectErr := s.stuckDetector.Inspect(s.stuckState())
+		if inspectErr != nil {
+			s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+			return "", inspectErr
+		}
+		if signal != nil {
+			nudge, headline := s.nudgeOrHalt(*signal)
+			if !nudge {
+				s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+				return stoppedText(headline, lastText), nil
+			}
+			results = append(results, protocol.NewTextBlock(signal.Reminder()))
 		}
 		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
 		if s.compression != nil && s.compression.take() {
@@ -300,8 +362,12 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 	}
 	s.events.append(SessionEvent{kind: EventError, runError: RunErrorEvent{kind: ErrorRoundExhaustion, rounds: s.maxRounds}})
 	headline := fmt.Sprintf("[stopped after %d rounds without finishing]", s.maxRounds)
-	if lastText != "" {
-		headline += "\nPartial output before the stop:\n" + lastText
+	return stoppedText(headline, lastText), nil
+}
+
+func stoppedText(headline, partial string) string {
+	if partial != "" {
+		return headline + "\nPartial output before the stop:\n" + partial
 	}
-	return headline, nil
+	return headline
 }

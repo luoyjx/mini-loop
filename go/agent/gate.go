@@ -58,6 +58,7 @@ type ToolOutcome struct {
 	Replayed       bool
 	reconciliation *ActionReconciliation
 	commandResult  *shell.Metadata
+	inputHash      StepHash
 }
 
 // CommandResult is present only for a newly executed structured Bash call.
@@ -172,6 +173,7 @@ func (gate *ToolGate) observe(ctx context.Context, authority ToolAuthority, call
 		outcome.events[i].Rule = maskedText(gate.secrets, outcome.events[i].Rule)
 	}
 	outcome.ActionID = authority.ActionID
+	outcome.inputHash, _ = InputStepHash(call.Input)
 	for _, observer := range gate.observers {
 		if err := notifyObserver(observer, ctx, authority, call, outcome); err != nil {
 			gate.recordProblem(fmt.Sprintf("result observer failed for %s: %T", call.Name(), err))

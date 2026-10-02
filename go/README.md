@@ -14,7 +14,7 @@ workspace and registers Bash, `read_file`, `write_file`, `edit_file` and `glob` 
 the same gate. `NewRuntimeSession(RuntimeConfig)` adds `TodoWrite`, `load_skill`
 and `ask_user`, plus deferred `compress` and bound `task`: all ten default tools
 now execute through the same gate, with explicit dependencies and state bound to
-one session and owner. Todo, stop, compaction and scoped child events share a
+one session and owner. Todo, stop, stuck, compaction and scoped child events share a
 typed, sequenced 200-event backlog.
 The `workspace` package preserves bounded Unicode reads, line pagination,
 unique exact edits and atomic replacements. Every file path is checked at
@@ -58,7 +58,7 @@ read-only workers must inject `InMemoryCompactor`. The Bash-only constructor use
 executor; a real bound executor selects workspace compaction.
 The context snapshot compares six catalogues, three wire/token cases, four
 cheap-compaction histories, six meter steps, spill output and summary artifacts
-against Python. Cache annotations, future sink masking, team/plan/memory prompt sections,
+against Python. Future sink masking, team/plan/memory prompt sections,
 and provider recovery remain pending. Compaction files persist, but cannot
 restore a Go session on their own.
 `task` passes the execution-risk gate and uses an explicit `SubagentProvider`.
@@ -82,7 +82,7 @@ and three real child loops (read, write and exhaustion). Go tests also cover
 custom-provider refusal/cancellation, nested task rebinding, readonly Explore
 with an auto parent and shared-provider session isolation under the race detector.
 This library slice does not supply authenticated HTTP ownership, shared tool/LLM
-limiters, stuck detection or complete lifecycle events. Custom broker/state
+limiters or complete lifecycle events. Custom broker/state
 inheritance, owner resources and remote provider transport remain open.
 `RuntimeConfig.ActionJournal` and `NewJournaledToolGate` optionally bind a typed
 journal. Stable action IDs hash session/message/tool-use/name; canonical input
@@ -123,7 +123,9 @@ Go preserves that behavior, UTF-8 replacement, universal newlines, channel
 separation and tail-preserving rendering. Nonzero exits and timeout/error status
 reach the gate, journal and observer as failures, with detached command metadata.
 Replays have stored text and no fresh process metadata. Cancellation/overflow
-kill the process group; pipe cleanup is bounded to five further seconds. A
+kill the process group and retry while inherited pipes remain open, covering
+concurrent forks. Explicit interruption enters the same bounded cleanup.
+Pipe cleanup is bounded to five further seconds. A
 child deliberately detaching into a new session is outside the group.
 
 Create an executor with `shell.New(shell.Config{Workspace: root})` and pass it
@@ -137,7 +139,35 @@ no Go Seatbelt backend ships and cwd is not confinement. Runtime process tests
 ran on macOS. Linux code has no Linux-host execution evidence; other platforms
 reject construction. The sixteenth Python snapshot covers eight actual commands,
 seven rendering recipes and six typo-blocklist decisions. Complete tool events,
-provider/cache work and additional sink masking remain pending.
+real provider transport and additional sink masking remain pending.
+
+Cache and stuck policies are enabled by default. `RuntimeConfig.CachePolicy`
+can select `NullCachePolicy`; `NewCachePolicy(CacheConfig)` controls TTL, stride
+and breakpoint budget. Annotations belong to one cloned request: system text
+becomes one cached text block on the wire and eligible user blocks receive
+`cache_control`. Live transcript blocks, assistant thinking and signatures stay
+unchanged. Summaries use the same policy. `ModelRequest.System` currently accepts
+plain text only; existing system block-list input remains pending. The fake
+counts the annotated payload and rejects more than four points; real cache
+reuse and savings require an actual provider.
+
+`RuntimeConfig.StuckDetector` can select `NullStuckDetector` or a configured
+`NewStuckDetector(StuckThresholds)`. The default keeps 20 tool steps, checks five
+Python patterns after paired batches, nudges once, then halts with an explicit
+stop marker. Each user intent resets the window and nudge count. Input hashes
+use final gate rewrites; output hashes use final masked results. `StopHooks`
+request another tool-less round through an optional string (nil finishes, empty
+text continues); this is the monologue detection path. Children inherit policies
+and hooks with fresh counters. Hooks receive detached snapshots and must not
+recursively enter their locked session. Constructors reject invalid thresholds
+and cache strides rather than accepting Python's invalid configurations.
+
+The seventeenth Python snapshot compares twelve cache projections/token counts,
+sixteen detector signals, six identity hashes and five actual looping agents.
+Go tests also cover bounded/reset state, paired error exits, rewritten input
+identity, summary and child policy inheritance, and detached/masked events.
+Optional input fields preserve absent versus explicit JSON null through wire,
+cloning and masking; their execution defaults remain unchanged.
 
 ```sh
 cd go

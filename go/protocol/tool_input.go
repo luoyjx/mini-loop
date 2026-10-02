@@ -110,6 +110,7 @@ type AskUserInput struct {
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
 	name      ToolName
+	nulls     inputNullFields
 	bash      BashInput
 	readFile  ReadFileInput
 	writeFile WriteFileInput
@@ -244,7 +245,8 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 	return input.askUser, input.name == ToolAskUser
 }
 
-func (input ToolInput) clone() ToolInput {
+func (input ToolInput) clone() (result ToolInput) {
+	defer func() { result.nulls = input.nulls }()
 	switch input.name {
 	case ToolBash:
 		value, _ := input.Bash()
@@ -294,6 +296,10 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
+	switch input.name {
+	case ToolBash, ToolReadFile, ToolTask, ToolLoadSkill:
+		return input.marshalOptionalJSON()
+	}
 	if err := input.Validate(); err != nil {
 		return nil, err
 	}
@@ -472,6 +478,9 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 		result = AskUserToolInput(AskUserInput{*wire.Question})
 	default:
 		return result, fmt.Errorf("unsupported tool %q", name)
+	}
+	if err := json.Unmarshal(data, &result.nulls); err != nil {
+		return ToolInput{}, err
 	}
 	if err := result.Validate(); err != nil {
 		return ToolInput{}, err

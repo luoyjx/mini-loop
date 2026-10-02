@@ -18,6 +18,13 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	event.stuck.signal.Pattern = StuckPattern(mask(string(event.stuck.signal.Pattern)))
+	event.stuck.signal.Detail = mask(event.stuck.signal.Detail)
+	event.stuck.signal.Advice = mask(event.stuck.signal.Advice)
+	if event.stuck.signal.Tool != nil {
+		name := protocol.ToolName(mask(string(*event.stuck.signal.Tool)))
+		event.stuck.signal.Tool = &name
+	}
 	event.stop.detail = mask(event.stop.detail)
 	event.stop.reason = protocol.StopReason(mask(string(event.stop.reason)))
 	for i := range event.todos {

@@ -80,10 +80,11 @@ Record its parity evidence and remaining gaps before checking it off.
 - [x] P1 Python directory split (server smoke, complete Python suite, and
       repository verifiers pass from the documented layout)
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
-      usage, stop/error/subagent/approval events, run provenance, action and approval records implemented;
+      usage, stop/error/stuck/subagent/approval events, run provenance, action and approval records implemented;
       other event and state variants remain)
 - [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
-      fake-provider slice, scoped child execution, exhaustion markers and cancellation repair implemented;
+      fake-provider slice, cache annotation, stuck detection, scoped child execution,
+      exhaustion markers and cancellation repair implemented;
       complete lifecycle events and parallel batches remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
@@ -730,3 +731,79 @@ pending under AGENTS.md. No dependencies were added in this slice. Remaining
 provider/HTTP/SQLite/trajectory/optional-feature sinks require explicit masking.
 Restoration, leases, shared concurrency limits and optional features remain
 open; the full G0-G7 goal remains active.
+
+## 2026-10-03 cache and stuck slice
+
+- Cache annotations are enabled by default at the model boundary, including
+  summary requests. `CachePolicy`, `CacheConfig`, `CacheControl` and concrete
+  wire variants preserve system text, absent/empty tools and typed message
+  content without putting cache metadata into live transcript blocks. The
+  stable system prefix takes one ephemeral breakpoint; remaining eligible user
+  blocks follow Python's reverse traversal and stride. The default budget is
+  four, stride 15 and lookback ceiling 20. TTL is forwarded when configured.
+  `NullCachePolicy` is an explicit opt-out. The fake counts the annotated wire
+  payload and rejects more than four breakpoints; real provider cache reuse and
+  savings are unverified. Preexisting system block-list input remains open.
+- `StuckDetector`, `StuckThresholds`, `ToolStep`, `StepHash` and typed stuck
+  events implement all five source rules and their precedence: monologue,
+  repeated error, unproductive tool, repeated result and alternating actions.
+  At most 20 steps bind final rewritten inputs and final masked outputs; hash
+  bytes preserve Python's sorted/spaced UTF-8 JSON and 16-digit SHA-256 prefix.
+  One default reminder resets the window; a further signal halts with all tool
+  results paired and an explicit stop marker before partial output. Every new
+  user intent resets both counters and ledger. Detector faults also retain a
+  paired transcript. Round exhaustion shares the same stop-text formatter.
+- Explicit `StopHook` continuation enables the monologue path (nil finishes,
+  empty string continues). Hooks receive detached context snapshots; they must
+  not recursively enter the locked session. Children inherit policies/hooks,
+  while their ledger and nudge budget remain fresh. Null policies and custom
+  valid thresholds are tested. Go constructors reject invalid thresholds and
+  cache strides more strictly than Python's invalid-configuration behavior.
+- Differential hashes exposed an actual decoder mismatch: absent optional
+  fields and explicit JSON null had been merged. Closed flags now retain the
+  distinction for Bash, read, task and skill inputs through cloning, masking,
+  wire serialization and both identity hashes. Execution accessors preserve
+  their existing nil defaults; no arbitrary JSON enters the domain.
+- The seventeenth Python export adds twelve cache wire/position/token cases,
+  sixteen detector decisions, six hash recipes and five actual source loops.
+  Real loop cases cover one nudge then halt, denied calls, zero nudge budget,
+  continued monologues and null opt-out. Go additionally checks the bounded
+  window, new-user reset, before-hook rewrites, detached/masked stuck events,
+  paired detector errors, summary annotation and child policy inheritance.
+- Final Go validation uncovered a preexisting foreground cancellation race.
+  Repeated tests and goroutine/process diagnostics showed a child surviving
+  inside the original group after a shell fork overlapped the first SIGKILL;
+  the reaped shell left the child holding both pipes. Cleanup now repeats the
+  group signal every 20 milliseconds while pipes remain open, within the
+  existing five-second bound. Explicit Interrupt notifies the running command
+  to enter that same cleanup path. A new test exercises 20 immediate stops in
+  each cancellation/interrupt mode; the existing runtime test passed 30
+  consecutive runs after the fix. Detached children remain outside the group.
+
+- Final validation: `go test ./...`, `go vet ./...`, `go test -race ./...`
+  passed after the cancellation fix. The isolated full Python run passed:
+  2151 passed, 28 skipped, 24 subtests passed and three dependency deprecation
+  warnings in 98.81 seconds. The 17-file Python export check, all 19 scanning
+  guards and `git diff --check` passed. Five scoped Python reference selectors
+  caught their mutations: `cache-budget-drifts-from-the-limit`,
+  `double-allows-extra-breakpoints`, `stuck-halt-bypasses-the-stop-rule`,
+  `cancelled-turn-abandons-the-shell` and
+  `interrupt-spares-the-commands-children`. These are source reference checks,
+  not a Go mutation suite or the full 377-guard sweep. No Python package
+  modules changed, so the package invariant verifier was not required.
+- README baseline, canonical Mermaid, boundary prose and interactive source
+  were updated together. Archify delivery passed 9/9 showcase checks with
+  zero errors/warnings, correction_rounds: 0. Specification SHA-256:
+  `ca9295892b59fb35b40c1f9bf19d7f2524bdc0828d4dc40093f11659a98b8fac`
+  (15,477 bytes); artifact SHA-256:
+  `335a39f4117f931d26b4c9886eca28ddd5cce679da2c1cf726c0d56465702849`
+  (658,744 bytes), output: `docs/mini-loop-system.architecture.html`.
+  `visual_review: skipped (image reader unavailable)`; the earlier browser
+  local-file policy block remains, so no rendered visual acceptance is claimed.
+  Runtime process evidence remains local macOS; no Linux-host claim is added.
+
+Next: complete session lifecycle/services and HTTP/SSE, followed by real
+provider/recovery and durable session storage. SQLite still requires a Go driver
+and the existing dependency authorization question is unanswered. No
+dependencies were added. Owner resources, shared concurrency limits, trajectory,
+Go Seatbelt and optional features remain open; the full G0-G7 goal stays active.

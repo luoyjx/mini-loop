@@ -62,13 +62,14 @@ func (event CompactionEvent) Failure() (string, bool) {
 // model dependency. A custom strategy returns a typed replacement; Session
 // validates pairing before accepting it. Summaries never observe the live meter.
 type CompactionContext struct {
-	Messages []protocol.Message
-	Files    *workspace.Files
-	Provider Provider
-	Model    string
-	Meter    TokenMeter
-	Envelope string
-	Secrets  TextMasker
+	Messages    []protocol.Message
+	Files       *workspace.Files
+	Provider    Provider
+	Model       string
+	Meter       TokenMeter
+	Envelope    string
+	Secrets     TextMasker
+	CachePolicy CachePolicy
 }
 type CompactionResult struct {
 	Messages []protocol.Message
@@ -362,6 +363,12 @@ func (compactor DefaultCompactor) Compact(ctx context.Context, value CompactionC
 	}
 	conversation = conversation[max(0, len(conversation)-80_000):]
 	request := protocol.ModelRequest{Model: value.Model, MaxTokens: 2000, Messages: []protocol.Message{{Role: protocol.RoleUser, Content: protocol.PlainContent(CompactionPrompt + "\n" + conversation)}}, Purpose: protocol.PurposeCompaction}
+	if value.CachePolicy != nil {
+		request, err = value.CachePolicy.Annotate(request)
+		if err != nil {
+			return result, err
+		}
+	}
 	reply, err := value.Provider.Complete(ctx, request)
 	if err != nil {
 		return result, err

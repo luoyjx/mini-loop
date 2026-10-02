@@ -261,6 +261,44 @@ func TestBlockedCommandAndInvalidConfiguration(t *testing.T) {
 	}
 }
 
+func TestStopWhileShellSpawnsChild(t *testing.T) {
+	for _, interrupt := range []bool{false, true} {
+		t.Run(fmt.Sprint(interrupt), func(t *testing.T) {
+			root := t.TempDir()
+			executor := makeExecutor(t, Config{Workspace: root})
+			for attempt := 0; attempt < 20; attempt++ {
+				ready := fmt.Sprintf("ready-%d", attempt)
+				ctx, cancel := context.WithCancel(context.Background())
+				done := make(chan error, 1)
+				go func() {
+					_, err := executor.ExecuteBashResult(ctx, protocol.BashInput{Command: "printf ready > " + ready + "; sleep 10"})
+					done <- err
+				}()
+				awaitFile(t, filepath.Join(root, ready))
+				if interrupt {
+					executor.Interrupt()
+				} else {
+					cancel()
+				}
+				select {
+				case err := <-done:
+					cancel()
+					if interrupt && err != nil || !interrupt && !errors.Is(err, context.Canceled) {
+						t.Fatalf("stop error %v", err)
+					}
+				case <-time.After(2 * time.Second):
+					cancel()
+					executor.Interrupt()
+					t.Fatal("spawned child retained output pipes after stop")
+				}
+				if executor.Interrupt() != 0 {
+					t.Fatal("stopped command remains registered")
+				}
+			}
+		})
+	}
+}
+
 func TestDeadlineAlsoCoversProcessWithClosedPipes(t *testing.T) {
 	executor := makeExecutor(t, Config{Timeout: 60 * time.Millisecond})
 	result := execute(t, executor, "exec 1>&- 2>&-; sleep 10")

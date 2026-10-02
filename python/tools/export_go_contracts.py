@@ -1013,6 +1013,128 @@ def _command_contracts(scratch: Path) -> dict[str, object]:
                           ["sudo echo x", "rm  -rf  /", "SUDO echo x", "r' 'm -rf /", "echo shutdown", "printf safe"]]}
 
 
+def _loop_contracts(scratch: Path) -> dict[str, object]:
+    """Actual caching projections, detector decisions/hashes and loop halts."""
+    import asyncio
+    import copy
+    from dataclasses import asdict
+    from types import SimpleNamespace
+    from mini_loop.caching import DefaultCachePolicy, NullCachePolicy
+    from mini_loop.stuck import DefaultStuckDetector, NullStuckDetector, StuckThresholds, ToolStep, step_hash
+    from mini_loop.agent import Agent
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool, count_tokens
+    from mini_loop.registry import Tool, ToolRegistry, Hooks
+
+    caches = []
+    def cache_case(name, system, messages, *, ttl=None, maximum=4, stride=15, null=False):
+        original = copy.deepcopy(messages)
+        policy = NullCachePolicy() if null else DefaultCachePolicy(ttl=ttl, max_breakpoints=maximum, stride=stride)
+        cached_system, tools, cached_messages = policy.annotate(system=system, tools=None, messages=messages)
+        positions = [[mi, bi] for mi, message in enumerate(cached_messages)
+                     if isinstance(message["content"], list)
+                     for bi, block in enumerate(message["content"])
+                     if "cache_control" in block]
+        caches.append({"name": name, "system": system, "messages": original, "ttl": ttl,
+                       "maximum": maximum, "stride": stride, "null": null,
+                       "cached_system": cached_system, "cached_messages": cached_messages,
+                       "positions": positions, "source_unchanged": original == messages,
+                       "fake_tokens": count_tokens({"system": cached_system, "messages": cached_messages, "tools": tools})})
+    def history(width, rounds):
+        messages = [{"role": "user", "content": "start"}]
+        for ri in range(rounds):
+            messages += [{"role": "assistant", "content": [{"type": "text", "text": "work"} for _ in range(width)]},
+                         {"role": "user", "content": [{"type": "text", "text": f"result-{ri}-{bi}"} for bi in range(width)]}]
+        return messages
+    for width in [1, 12, 25]:
+        for rounds in [1, 4]:
+            cache_case(f"batch-{width}-rounds-{rounds}", "stable", history(width, rounds))
+    cache_case("empty-system", "", history(2, 2))
+    cache_case("absent-system", None, history(2, 2))
+    cache_case("plain-only", "stable", [{"role": "user", "content": "plain"}])
+    cache_case("ttl-and-stride", "stable", history(4, 4), ttl="1h", stride=3)
+    cache_case("prefix-budget-only", "stable", history(12, 4), maximum=1)
+    cache_case("null-policy", "stable", history(12, 4), null=True)
+
+    decisions = []
+    def step(name="bash", inp="a", out="same", failed=False, denied=False):
+        return ToolStep(name, step_hash({"command": inp}), step_hash(out), failed, denied)
+    def detect(name, steps, rounds=0, **overrides):
+        thresholds = StuckThresholds(**overrides)
+        signal = DefaultStuckDetector(thresholds).inspect(SimpleNamespace(recent_steps=steps, rounds_without_tools=rounds))
+        decisions.append({"name": name, "steps": [asdict(value) for value in steps], "rounds": rounds,
+                          "thresholds": asdict(thresholds), "signal": asdict(signal) if signal else None,
+                          "reminder": signal.reminder() if signal else None})
+    detect("before-repeat", [step()] * 3)
+    detect("repeated-result", [step()] * 4)
+    detect("changing-output", [step(out=str(i)) for i in range(8)])
+    detect("repeated-denial", [step(denied=True)] * 3)
+    detect("repeated-error-varies-output", [step(out=str(i), failed=True) for i in range(3)])
+    detect("mixed-failure-and-denial", [step(failed=True), step(denied=True), step(failed=True)])
+    detect("varied-input-failures", [step(inp=str(i), failed=True) for i in range(5)])
+    detect("same-tool-success-suppresses", [step(inp=str(i), failed=True) for i in range(5)] + [step(inp="good")])
+    detect("interleaved-workaround", [value for i in range(5) for value in [step(inp=str(i), denied=True), step("read_file", str(i), str(i))]])
+    detect("insertion-order", [value for i in range(5) for value in [step("write_file", str(i), str(i), True), step("bash", str(i), str(i), True)]])
+    detect("alternating", [step("read_file"), step("glob")] * 3)
+    detect("unstable-alternating", [step("read_file", out=str(i)) if i % 2 == 0 else step("glob") for i in range(6)])
+    detect("uniform-is-repeat", [step()] * 6)
+    detect("monologue", [step()] * 4, rounds=3)
+    detect("unproductive-disabled", [step(inp=str(i), failed=True) for i in range(8)], unproductive_tool=0)
+    detect("custom-repeat", [step()] * 2, repeat_action_result=2)
+    hashes = [{"tool": "bash" if "command" in value else "TodoWrite" if "items" in value else "edit_file" if "old_text" in value else "write_file" if "content" in value else "read_file" if "path" in value else "compress", "input": value, "input_hash": step_hash(value), "output": output, "output_hash": step_hash(output)} for value, output in [
+        ({"command": "printf 你好\n"}, "你好\n"),
+        ({"path": "x", "offset": 0, "limit": None}, "Error: missing"),
+        ({"content": "x", "path": "out"}, "Wrote 1 bytes"),
+        ({"old_text": "a", "new_text": "b", "path": "p"}, "Edited"),
+        ({"items": [{"content": "Work", "status": "pending", "activeForm": "Working"}]}, "todo"),
+        ({}, ""),
+    ]]
+
+    loops = []
+    class DenyAll(Hooks):
+        async def before_tool(self, ctx, call):
+            return "Error: permission denied by policy"
+    class AlwaysResume(Hooks):
+        async def stop(self, agent, messages, last_text):
+            return "keep going"
+    async def run_loop(name, *, denied=False, max_nudges=1, monologue=False, null=False):
+        calls = 0
+        def responder(request):
+            nonlocal calls
+            calls += 1
+            if monologue:
+                return [text("loop commentary")], "end_turn"
+            return [text("loop commentary"), tool("bash", _id=f"u{calls}", command="printf same")], "tool_use"
+        async def same(ctx, command):
+            return "same"
+        registry = ToolRegistry()
+        registry.register(Tool("bash", "shell", {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]}, same, risk="exec"))
+        settings = Settings(fake_llm=True, workspace_root=scratch, skills_dir=scratch / "empty-skills", max_turns=12)
+        events = []
+        async def emit(event):
+            events.append(event)
+        (scratch / name).mkdir(parents=True)
+        agent = Agent(client=FakeAsyncAnthropic(responder=responder), settings=settings, workspace=scratch / name,
+                      tools=registry, hooks=AlwaysResume() if monologue else DenyAll() if denied else Hooks(),
+                      stuck_detector=NullStuckDetector() if null else DefaultStuckDetector(StuckThresholds(max_nudges=max_nudges)), emit=emit)
+        output = await agent.run("go")
+        stuck_events = [{key: event.get(key) for key in ["pattern", "detail", "tool", "halted", "nudges_used"]}
+                        for event in events if event.get("type") == "stuck"]
+        reminders = [block["text"] for message in agent.messages if isinstance(message.get("content"), list)
+                     for block in message["content"] if isinstance(block, dict) and block.get("type") == "text" and "<stuck" in block.get("text", "")]
+        continuations = [message["content"] for message in agent.messages if isinstance(message.get("content"), str) and "<stuck" in message["content"]]
+        loops.append({"name": name, "denied": denied, "max_nudges": max_nudges, "monologue": monologue, "null": null,
+                      "calls": calls, "output": output, "events": stuck_events, "reminders": reminders, "continuations": continuations})
+    async def all_loops():
+        await run_loop("result")
+        await run_loop("denied", denied=True)
+        await run_loop("halt-immediately", max_nudges=0)
+        await run_loop("monologue", monologue=True)
+        await run_loop("null", null=True)
+    asyncio.run(all_loops())
+    return {"caches": caches, "decisions": decisions, "hashes": hashes, "loops": loops}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -1085,6 +1207,7 @@ def _snapshot() -> dict[str, bytes]:
         approval_contracts = _approval_contracts()
         secret_contracts = _secret_contracts()
         command_contracts = _command_contracts(Path(scratch) / "commands")
+        loop_contracts = _loop_contracts(Path(scratch) / "loops")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1116,6 +1239,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-approvals.json": _json_bytes(approval_contracts),
         "python-secrets.json": _json_bytes(secret_contracts),
         "python-commands.json": _json_bytes(command_contracts),
+        "python-loops.json": _json_bytes(loop_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

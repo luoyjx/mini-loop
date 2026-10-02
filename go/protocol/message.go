@@ -146,7 +146,13 @@ func (b Block) Validate() error {
 	return nil
 }
 
-func (b Block) MarshalJSON() ([]byte, error) {
+func (b Block) MarshalJSON() ([]byte, error) { return b.marshalWithCache(nil) }
+func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
+	if control != nil {
+		if err := control.Validate(); err != nil {
+			return nil, err
+		}
+	}
 	if err := b.Validate(); err != nil {
 		return nil, err
 	}
@@ -155,22 +161,26 @@ func (b Block) MarshalJSON() ([]byte, error) {
 		return json.Marshal(struct {
 			Type BlockKind `json:"type"`
 			TextBlock
-		}{BlockText, *b.text})
+			CacheControl *CacheControl `json:"cache_control,omitempty"`
+		}{BlockText, *b.text, control})
 	case BlockThinking:
 		return json.Marshal(struct {
 			Type BlockKind `json:"type"`
 			ThinkingBlock
-		}{BlockThinking, *b.thinking})
+			CacheControl *CacheControl `json:"cache_control,omitempty"`
+		}{BlockThinking, *b.thinking, control})
 	case BlockToolUse:
 		return json.Marshal(struct {
 			Type BlockKind `json:"type"`
 			ToolUseBlock
-		}{BlockToolUse, *b.toolUse})
+			CacheControl *CacheControl `json:"cache_control,omitempty"`
+		}{BlockToolUse, *b.toolUse, control})
 	case BlockToolResult:
 		return json.Marshal(struct {
 			Type BlockKind `json:"type"`
 			ToolResultBlock
-		}{BlockToolResult, *b.toolResult})
+			CacheControl *CacheControl `json:"cache_control,omitempty"`
+		}{BlockToolResult, *b.toolResult, control})
 	default:
 		return nil, fmt.Errorf("unsupported block type %q", b.kind)
 	}

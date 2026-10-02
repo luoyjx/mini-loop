@@ -32,7 +32,7 @@
         "id": "go-path",
         "label": "Go port in progress",
         "focus": ["goFake", "goSession", "goGate", "goBash", "goFiles", "goResources", "goContext", "goArchives", "goChildren", "goActions", "goApprovals", "goSecrets"],
-        "note": "Ten tools, real shell, compaction, children, replay, approvals and optional secrets. SQLite, restore, HTTP and real provider pending."
+        "note": "Ten tools, shell, cache, stuck detection, compaction, children and optional replay/approvals/secrets. HTTP, provider and SQLite pending."
       },
       {
         "id": "personal-skill",
@@ -58,12 +58,12 @@
     { "id": "state", "type": "database", "label": "Durable State + Files", "sublabel": "owner resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] },
     { "id": "decisions", "type": "external", "label": "Decision Providers", "sublabel": "Jev / explicit LLM estimates", "pos": [2110, 540], "size": [220, 76], "tag": "off by default" },
     { "id": "goFake", "type": "external", "label": "Go FakeProvider", "sublabel": "typed requests / replies + usage", "pos": [330, 1180], "size": [220, 76] },
-    { "id": "goSession", "type": "backend", "label": "Go Session", "sublabel": "serialized turns + bounded events", "pos": [850, 1180], "size": [230, 76], "tag": "process-local" },
+    { "id": "goSession", "type": "backend", "label": "Go Session", "sublabel": "serial loop / events / stuck", "pos": [850, 1180], "size": [230, 76], "tag": "process-local" },
     { "id": "goGate", "type": "security", "label": "Go ToolGate", "sublabel": "before / guard / permission / after", "pos": [1370, 1180], "size": [280, 76], "tag": "deny is final" },
     { "id": "goBash", "type": "backend", "label": "Workspace shell.Executor", "sublabel": "groups / deadlines / typed results", "pos": [1920, 1180], "size": [280, 76] },
     { "id": "goFiles", "type": "backend", "label": "Workspace Files", "sublabel": "read / write / edit / glob", "pos": [1920, 1360], "size": [280, 76], "tag": "atomic replacement" },
     { "id": "goResources", "type": "backend", "label": "Session Resources", "sublabel": "todos / skills / questions / delegation", "pos": [1920, 1540], "size": [280, 76], "tag": "bound session + owner" },
-    { "id": "goContext", "type": "backend", "label": "Go Context Pipeline", "sublabel": "typed requests / skills / token meter", "pos": [850, 1360], "size": [330, 76], "tag": "four compaction layers" },
+    { "id": "goContext", "type": "backend", "label": "Go Context Pipeline", "sublabel": "schemas / skills / cache / meter", "pos": [850, 1360], "size": [330, 76], "tag": "four compaction layers" },
     { "id": "goActions", "type": "database", "label": "Go Action Journals", "sublabel": "typed states / replay / retention", "pos": [1370, 1360], "size": [280, 76], "tag": "memory + store interface" },
     { "id": "goChildren", "type": "backend", "label": "Go Subagent Sessions", "sublabel": "role subset / fresh history / peer", "pos": [1370, 1540], "size": [330, 76], "tag": "default depth limit: 2" },
     { "id": "goSecrets", "type": "security", "label": "Go Secret Registry", "sublabel": "cached values / masked copies", "pos": [330, 980], "size": [280, 76], "tag": "optional deployment binding" },
@@ -118,6 +118,7 @@
     { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Only authenticated HTTP user/final turns enter preview", "Preview cannot publish; commit is a separate caller action", "Agent and user skills retain explicit provenance"] },
     { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] },
     { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] },
-    { "dot": "cyan", "title": "Language layout", "items": ["The main map follows the Python runtime under python/", "Go NewRuntimeSession registers ten implemented tools behind one typed gate", "Scoped child events share a sequenced 200-event process-local backlog", "Skill source digests are rechecked; questions return text or an unanswered variant", "Go requests consume fitted schemas and skills; compaction archives are workspace files", "Go children use capability-selected tools, fresh state and peer provenance", "Optional Go journals replay terminal results; SQLite backend remains pending", "Optional bound approvals preserve grants, text answers, reviewer abstention and typed rows; no SQLite backend yet", "Optional registry masking precedes result settlement and covers implemented events, approvals and compaction files; live arguments stay raw", "Real host shell consumes selected credentials, bounds shared capture, masks streams and kills process groups; Seatbelt and future sink coverage remain open", "Cache annotation, HTTP, restore and provider recovery remain open"] }
+    { "dot": "cyan", "title": "Language layout", "items": ["The main map follows the Python runtime under python/", "Go NewRuntimeSession registers ten implemented tools behind one typed gate", "Scoped child events share a sequenced 200-event process-local backlog", "Skill source digests are rechecked; questions return text or an unanswered variant", "Go requests consume fitted schemas and skills; compaction archives are workspace files", "Go children use capability-selected tools, fresh state and peer provenance", "Optional Go journals replay terminal results; SQLite backend remains pending", "Optional bound approvals preserve grants, text answers, reviewer abstention and typed rows; no SQLite backend yet", "Optional registry masking precedes result settlement and covers implemented events, approvals and compaction files; live arguments stay raw", "Real host shell consumes selected credentials, bounds shared capture, masks streams and kills process groups; Seatbelt and future sink coverage remain open", "Default cache uses detached wire annotations; stuck detection keeps 20 steps and nudges once before halting",
+        "Children inherit cache/stuck policies and stop hooks with fresh state; HTTP, restore and real provider remain open"] }
   ]
 }

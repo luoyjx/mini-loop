@@ -269,7 +269,8 @@ execution with run provenance, action replay and typed journal transitions,
 a bound approval broker with session grants and textual questions, and optional
 registered-secret masking across the implemented Go result/recording paths,
 and a real foreground workspace shell with typed results, group cancellation
-and bounded capture, reviewed **2026-10-03** (Go baseline `033336e` plus the shell slice).
+and bounded capture, plus default cache annotations and bounded stuck detection,
+reviewed **2026-10-03** (Go baseline `068d15e` plus the cache/stuck slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -317,8 +318,8 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoFake["FakeProvider<br/>typed requests · replies · usage"]
-        GoSession["Go Session<br/>serialized turns · typed event backlog"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · token meter<br/>spill → snip → micro → summary"]
+        GoSession["Go Session<br/>serialized turns · typed events · stuck detection"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
@@ -388,7 +389,7 @@ same gate, with state bound to its session and owner. It uses explicit skill
 and textual-question interfaces; a nil skill source is an empty catalogue,
 and a nil question surface reports unavailability. The deployment skill loader
 snapshots bounded bodies and descriptions and verifies the normalized source
-hash at load time. User-scoped skill layering remains pending. Todo and stop
+hash at load time. User-scoped skill layering remains pending. Todo, stop and stuck
 events, compaction receipts, approval events and scoped child events share a typed, sequenced 200-event backlog;
 HTTP/SSE and subscriptions remain pending. Model requests consume one fitted,
 immutable schema snapshot and the deployment skill descriptions. Provider usage
@@ -401,8 +402,15 @@ the write-risk gate and defers the summary until the whole tool batch is paired.
 The Bash-only constructor uses in-memory snip/micro for an unbound injected
 executor; a real workspace-bound executor selects the workspace compactor. Internal automatic compaction can write workspace artifacts
 even with a readonly tool mode, matching the Python ordinary-agent path; a
-read-only worker must explicitly select `InMemoryCompactor`. Provider cache
-annotation and user-resource prompt sections remain pending. Optional
+read-only worker must explicitly select `InMemoryCompactor`. Default cache
+annotation projects at most four ephemeral breakpoints into a detached wire
+request, including summary calls; raw transcript blocks retain no cache fields.
+The system prefix takes one slot, with eligible user blocks selected at the
+Python stride. `RuntimeConfig.CachePolicy` can select `NullCachePolicy` or a
+custom typed policy. The fake counts annotated wire payloads and enforces the
+four-point ceiling; real provider reuse and savings have not been verified.
+Existing system block-list input and user-resource prompt sections remain
+pending. Optional
 `RuntimeConfig.Secrets` binds a typed registry to the gate, compactor, event
 backlog and approval surface. Tool results are masked after post hooks and
 before journal settlement, observers and model results; raw executed arguments
@@ -422,7 +430,9 @@ are masked before rendering/truncation, including credentials split across pipes
 The shared capture budget is 5,000,000 decoded characters, preserving Python's
 existing "bytes" notice; stdout and stderr retain their own channels otherwise.
 A 120-second default deadline covers process exit and pipe EOF. Cancellation,
-timeout and overflow kill the new process group; cleanup closes pipe readers
+timeout and overflow kill the new process group; bounded repeat signals cover
+a child joining during a concurrent fork, including explicit interruption.
+Cleanup closes pipe readers
 after a further bounded five seconds if a detached child still holds them.
 A descendant that deliberately starts a new session is outside that group and
 is not reclaimed by group cancellation. The gate preserves structured failure
@@ -476,8 +486,17 @@ caller-stamped, never inferred from model text. Default child derivation drops
 human actor and approvals, records peer authority and links the parent message.
 Child events retain label, depth and detached provenance in the parent's bounded
 backlog. Round exhaustion leads with an explicit stop marker before partial
-output. Shared concurrency limiters, stuck detection, complete lifecycle events
-and authenticated HTTP ownership remain pending in Go. See the parity matrix.
+output. Default stuck detection retains the latest 20 final rewritten tool
+input/output hashes per user turn. Five Python rules detect repeated results,
+repeated errors, unproductive tools, alternating calls and continued monologues.
+One reminder clears the window; a repeated signal halts with paired results and
+a stop marker before partial text. Monologue detection applies only when an
+explicit `StopHook` requests continuation. `RuntimeConfig.StuckDetector` can
+select `NullStuckDetector`; children inherit policies and hooks with fresh
+windows and nudge budgets. Optional input absence and explicit JSON null remain
+distinct in wire payloads and identity hashes. Shared concurrency limiters,
+complete lifecycle events and authenticated HTTP ownership remain pending in Go.
+See the parity matrix.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new

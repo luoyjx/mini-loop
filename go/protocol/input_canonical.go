@@ -4,7 +4,11 @@ import "fmt"
 
 // CanonicalJSON binds a validated input to Python's sorted, compact UTF-8 JSON.
 // Each variant supplies concrete fields in key order; no dynamic JSON is stored.
-func (input ToolInput) CanonicalJSON() (string, error) {
+func (input ToolInput) CanonicalJSON() (string, error) { return input.sortedJSON(true) }
+
+// SortedPythonJSON is the spaced UTF-8 projection used by Python's step_hash.
+func (input ToolInput) SortedPythonJSON() (string, error) { return input.sortedJSON(false) }
+func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	if err := input.Validate(); err != nil {
 		return "", err
 	}
@@ -12,30 +16,30 @@ func (input ToolInput) CanonicalJSON() (string, error) {
 	case ToolBash:
 		v, _ := input.Bash()
 		return PythonJSON(struct {
-			ApprovalPrefix  *[]string `json:"approval_prefix,omitempty"`
-			Command         string    `json:"command"`
-			RunInBackground *bool     `json:"run_in_background,omitempty"`
-		}{v.ApprovalPrefix, v.Command, v.RunInBackground}, false, true)
+			ApprovalPrefix  *wireOptional[[]string] `json:"approval_prefix,omitempty"`
+			Command         string                  `json:"command"`
+			RunInBackground *wireOptional[bool]     `json:"run_in_background,omitempty"`
+		}{optionalWire(v.ApprovalPrefix, input.nulls.ApprovalPrefix), v.Command, optionalWire(v.RunInBackground, input.nulls.Background)}, false, compact)
 	case ToolReadFile:
 		v, _ := input.ReadFile()
 		return PythonJSON(struct {
-			Limit  *int   `json:"limit,omitempty"`
-			Offset *int   `json:"offset,omitempty"`
-			Path   string `json:"path"`
-		}{v.Limit, v.Offset, v.Path}, false, true)
+			Limit  *wireOptional[int] `json:"limit,omitempty"`
+			Offset *wireOptional[int] `json:"offset,omitempty"`
+			Path   string             `json:"path"`
+		}{optionalWire(v.Limit, input.nulls.Limit), optionalWire(v.Offset, input.nulls.Offset), v.Path}, false, compact)
 	case ToolWriteFile:
 		v, _ := input.WriteFile()
 		return PythonJSON(struct {
 			Content string `json:"content"`
 			Path    string `json:"path"`
-		}{v.Content, v.Path}, false, true)
+		}{v.Content, v.Path}, false, compact)
 	case ToolEditFile:
 		v, _ := input.EditFile()
 		return PythonJSON(struct {
 			NewText string `json:"new_text"`
 			OldText string `json:"old_text"`
 			Path    string `json:"path"`
-		}{v.NewText, v.OldText, v.Path}, false, true)
+		}{v.NewText, v.OldText, v.Path}, false, compact)
 	case ToolTodoWrite:
 		v, _ := input.TodoWrite()
 		type item struct {
@@ -49,16 +53,22 @@ func (input ToolInput) CanonicalJSON() (string, error) {
 		}
 		return PythonJSON(struct {
 			Items []item `json:"items"`
-		}{items}, false, true)
+		}{items}, false, compact)
 	case ToolTask:
 		v, _ := input.Task()
 		return PythonJSON(struct {
-			AgentType *AgentType `json:"agent_type,omitempty"`
-			Prompt    string     `json:"prompt"`
-		}{v.AgentType, v.Prompt}, false, true)
-	case ToolGlob, ToolLoadSkill, ToolCompress, ToolAskUser:
+			AgentType *wireOptional[AgentType] `json:"agent_type,omitempty"`
+			Prompt    string                   `json:"prompt"`
+		}{optionalWire(v.AgentType, input.nulls.AgentType), v.Prompt}, false, compact)
+	case ToolLoadSkill:
+		v, _ := input.LoadSkill()
+		return PythonJSON(struct {
+			Name  string                    `json:"name"`
+			Scope *wireOptional[SkillScope] `json:"scope,omitempty"`
+		}{v.Name, optionalWire(v.Scope, input.nulls.Scope)}, false, compact)
+	case ToolGlob, ToolCompress, ToolAskUser:
 		// These payloads already have sorted field order.
-		return PythonJSON(input, false, true)
+		return PythonJSON(input, false, compact)
 	default:
 		return "", fmt.Errorf("unsupported canonical input %q", input.Name())
 	}

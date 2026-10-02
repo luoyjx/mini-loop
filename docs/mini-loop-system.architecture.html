@@ -4501,7 +4501,7 @@
       <p class="subtitle">Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Ten tools, real shell, compaction, children, replay, approvals and optional secrets. SQLite, restore, HTTP and real provider pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Ten tools, shell, cache, stuck detection, compaction, children and optional replay/approvals/secrets. HTTP, provider and SQLite pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4805,15 +4805,15 @@
         <text data-detail="context" x="440" y="1232" class="t-muted" font-size="9" text-anchor="middle">typed requests / replies + usage</text>
         </g>
 
-        <g id="node-goSession" data-node-id="goSession" data-node-label="Go Session" tabindex="0" role="button" aria-label="Focus Go Session, serialized turns + bounded events, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="serialized turns + bounded events" data-node-tag="process-local" data-node-context="Independent Go port - in progress">
-          <title>Go Session · serialized turns + bounded events · Independent Go port - in progress · process-local</title>
+        <g id="node-goSession" data-node-id="goSession" data-node-label="Go Session" tabindex="0" role="button" aria-label="Focus Go Session, serial loop / events / stuck, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="serial loop / events / stuck" data-node-tag="process-local" data-node-context="Independent Go port - in progress">
+          <title>Go Session · serial loop / events / stuck · Independent Go port - in progress · process-local</title>
           <rect x="850" y="1180" width="230" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="1180" width="230" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 1186) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="965" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Session</text>
-        <text data-detail="context" x="965" y="1232" class="t-muted" font-size="9" text-anchor="middle">serialized turns + bounded events</text>
+        <text data-detail="context" x="965" y="1232" class="t-muted" font-size="9" text-anchor="middle">serial loop / events / stuck</text>
         <text data-detail="fine" x="965" y="1248" class="t-backend" font-size="7" text-anchor="middle">process-local</text>
         </g>
 
@@ -4865,15 +4865,15 @@
         <text data-detail="fine" x="2060" y="1608" class="t-backend" font-size="7" text-anchor="middle">bound session + owner</text>
         </g>
 
-        <g id="node-goContext" data-node-id="goContext" data-node-label="Go Context Pipeline" tabindex="0" role="button" aria-label="Focus Go Context Pipeline, typed requests / skills / token meter, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="typed requests / skills / token meter" data-node-tag="four compaction layers" data-node-context="Independent Go port - in progress">
-          <title>Go Context Pipeline · typed requests / skills / token meter · Independent Go port - in progress · four compaction layers</title>
+        <g id="node-goContext" data-node-id="goContext" data-node-label="Go Context Pipeline" tabindex="0" role="button" aria-label="Focus Go Context Pipeline, schemas / skills / cache / meter, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="schemas / skills / cache / meter" data-node-tag="four compaction layers" data-node-context="Independent Go port - in progress">
+          <title>Go Context Pipeline · schemas / skills / cache / meter · Independent Go port - in progress · four compaction layers</title>
           <rect x="850" y="1360" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="1360" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 1366) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="1015" y="1396" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Context Pipeline</text>
-        <text data-detail="context" x="1015" y="1412" class="t-muted" font-size="9" text-anchor="middle">typed requests / skills / token meter</text>
+        <text data-detail="context" x="1015" y="1412" class="t-muted" font-size="9" text-anchor="middle">schemas / skills / cache / meter</text>
         <text data-detail="fine" x="1015" y="1428" class="t-backend" font-size="7" text-anchor="middle">four compaction layers</text>
         </g>
 
@@ -5348,7 +5348,8 @@
           <li>&bull; Optional bound approvals preserve grants, text answers, reviewer abstention and typed rows; no SQLite backend yet</li>
           <li>&bull; Optional registry masking precedes result settlement and covers implemented events, approvals and compaction files; live arguments stay raw</li>
           <li>&bull; Real host shell consumes selected credentials, bounds shared capture, masks streams and kills process groups; Seatbelt and future sink coverage remain open</li>
-          <li>&bull; Cache annotation, HTTP, restore and provider recovery remain open</li>
+          <li>&bull; Default cache uses detached wire annotations; stuck detection keeps 20 steps and nudges once before halting</li>
+          <li>&bull; Children inherit cache/stuck policies and stop hooks with fresh state; HTTP, restore and real provider remain open</li>
         </ul>
       </div>
     </div>

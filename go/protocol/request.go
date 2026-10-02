@@ -116,31 +116,25 @@ const (
 // not an extra field sent to an Anthropic-compatible endpoint. Nil system or
 // tools means absent, as in Python's summary request.
 type ModelRequest struct {
-	Model     string         `json:"model"`
-	MaxTokens int            `json:"max_tokens"`
-	Messages  []Message      `json:"messages"`
-	System    *string        `json:"system,omitempty"`
-	Tools     []ToolSchema   `json:"tools,omitempty"`
-	Purpose   RequestPurpose `json:"-"`
+	Model     string           `json:"model"`
+	MaxTokens int              `json:"max_tokens"`
+	Messages  []Message        `json:"messages"`
+	System    *string          `json:"system,omitempty"`
+	Tools     []ToolSchema     `json:"tools,omitempty"`
+	Purpose   RequestPurpose   `json:"-"`
+	Cache     CacheAnnotations `json:"-"`
 }
 
 func (request ModelRequest) MarshalJSON() ([]byte, error) {
-	// Preserve absent tools separately from an explicitly empty fitted
-	// catalogue, just as Python's _create does at the provider boundary.
-	var tools *[]ToolSchema
-	if request.Tools != nil {
-		tools = &request.Tools
+	wire, err := request.Wire()
+	if err != nil {
+		return nil, err
 	}
-	return json.Marshal(struct {
-		Model     string        `json:"model"`
-		MaxTokens int           `json:"max_tokens"`
-		Messages  []Message     `json:"messages"`
-		System    *string       `json:"system,omitempty"`
-		Tools     *[]ToolSchema `json:"tools,omitempty"`
-	}{request.Model, request.MaxTokens, request.Messages, request.System, tools})
+	return json.Marshal(wire)
 }
 
 func (request ModelRequest) Clone() ModelRequest {
+	request.Cache = request.Cache.Clone()
 	request.Messages = append([]Message(nil), request.Messages...)
 	if request.System != nil {
 		value := *request.System
@@ -156,6 +150,9 @@ func (request ModelRequest) Clone() ModelRequest {
 	return request
 }
 func (request ModelRequest) Validate() error {
+	if err := request.Cache.Validate(request); err != nil {
+		return err
+	}
 	if request.Model == "" || request.MaxTokens < 1 || len(request.Messages) == 0 {
 		return errors.New("model request requires model, positive max tokens and messages")
 	}

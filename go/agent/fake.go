@@ -19,6 +19,9 @@ func (FakeProvider) Complete(ctx context.Context, request protocol.ModelRequest)
 	if err := request.Validate(); err != nil {
 		return protocol.ModelReply{}, err
 	}
+	if len(request.Cache.Messages)+boolCount(request.Cache.System != nil) > 4 {
+		return protocol.ModelReply{}, fmt.Errorf("request exceeds four cache breakpoints")
+	}
 	if request.MaxTokens > 8192 {
 		return protocol.ModelReply{}, fmt.Errorf("Streaming is required for operations that may take longer than 10 minutes. See https://github.com/anthropics/anthropic-sdk-python#long-requests for more details")
 	}
@@ -68,15 +71,19 @@ func (FakeProvider) Complete(ctx context.Context, request protocol.ModelRequest)
 // Count the complete provider payload, including system and schemas, with the
 // Python fake's deliberately distinct ASCII/non-ASCII approximation.
 func FakePromptTokens(request protocol.ModelRequest) (int, error) {
-	messages, err := protocol.PythonJSON(request.Messages, false, false)
+	wire, err := request.Wire()
 	if err != nil {
 		return 0, err
 	}
-	system, err := protocol.PythonJSON(request.System, false, false)
+	messages, err := protocol.PythonJSON(wire.Messages, false, false)
 	if err != nil {
 		return 0, err
 	}
-	tools, err := protocol.PythonJSON(request.Tools, false, false)
+	system, err := protocol.PythonJSON(wire.System, false, false)
+	if err != nil {
+		return 0, err
+	}
+	tools, err := protocol.PythonJSON(wire.Tools, false, false)
 	if err != nil {
 		return 0, err
 	}
@@ -104,4 +111,11 @@ func fakeReply(blocks []protocol.Block, reason protocol.StopReason) protocol.Mod
 			ServiceTier: &tier,
 		},
 	}
+}
+
+func boolCount(value bool) int {
+	if value {
+		return 1
+	}
+	return 0
 }

@@ -49,7 +49,7 @@ type Executor struct {
 
 type processTracker struct {
 	mu   sync.Mutex
-	live map[*os.Process]struct{}
+	live map[*os.Process]chan struct{}
 }
 
 func New(config Config) (*Executor, error) {
@@ -88,7 +88,7 @@ func New(config Config) (*Executor, error) {
 			return nil, errors.New("sandbox binding returned nil")
 		}
 	}
-	return &Executor{root: files.Root(), timeout: config.Timeout, captureLimit: config.CaptureLimit, secrets: config.Secrets, sandbox: config.Sandbox, processes: &processTracker{live: make(map[*os.Process]struct{})}}, nil
+	return &Executor{root: files.Root(), timeout: config.Timeout, captureLimit: config.CaptureLimit, secrets: config.Secrets, sandbox: config.Sandbox, processes: &processTracker{live: make(map[*os.Process]chan struct{})}}, nil
 }
 
 // WithSecrets returns an independent executor using the same bound process
@@ -126,8 +126,12 @@ func (executor *Executor) ExecuteBash(ctx context.Context, input protocol.BashIn
 func (executor *Executor) Interrupt() int {
 	executor.processes.mu.Lock()
 	defer executor.processes.mu.Unlock()
-	for process := range executor.processes.live {
+	for process, interrupted := range executor.processes.live {
 		killGroup(process)
+		select {
+		case interrupted <- struct{}{}:
+		default:
+		}
 	}
 	return len(executor.processes.live)
 }
@@ -196,8 +200,9 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 	}
 	_ = stdoutWrite.Close()
 	_ = stderrWrite.Close()
+	interrupted := make(chan struct{}, 1)
 	executor.processes.mu.Lock()
-	executor.processes.live[cmd.Process] = struct{}{}
+	executor.processes.live[cmd.Process] = interrupted
 	executor.processes.mu.Unlock()
 	defer func() {
 		executor.processes.mu.Lock()
@@ -218,9 +223,14 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 	var drainError error
 	var waitError error
 	var cleanup *time.Timer
+	var killRetry *time.Ticker
+	var retryKill <-chan time.Time
 	defer func() {
 		if cleanup != nil {
 			cleanup.Stop()
+		}
+		if killRetry != nil {
+			killRetry.Stop()
 		}
 	}()
 	drains := 0
@@ -235,11 +245,19 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 		killGroup(cmd.Process)
 		cleanup = time.NewTimer(5 * time.Second)
 		deadline = cleanup.C
+		// A concurrent shell fork can join the group after the first signal
+		// broadcast. Retry while pipes remain open, within the cleanup deadline.
+		killRetry = time.NewTicker(20 * time.Millisecond)
+		retryKill = killRetry.C
 	}
 	for drains < 2 || !reaped && !abandonedWait {
 		select {
 		case err := <-drained:
 			drains++
+			if drains == 2 && killRetry != nil {
+				killRetry.Stop()
+				retryKill = nil
+			}
 			if err != nil && !errors.Is(err, os.ErrClosed) && drainError == nil {
 				drainError = err
 			}
@@ -254,6 +272,13 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 			returnedErr = ctx.Err()
 			cancelled = nil
 			endGroup()
+		case <-interrupted:
+			interrupted = nil
+			endGroup()
+		case <-retryKill:
+			if drains < 2 {
+				killGroup(cmd.Process)
+			}
 		case <-deadline:
 			if !killed {
 				result.TimedOut = true
@@ -264,6 +289,8 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 				_ = stdout.Close()
 				_ = stderr.Close()
 				deadline = nil
+				killRetry.Stop()
+				retryKill = nil
 				if !reaped {
 					abandonedWait = true
 					waited = nil

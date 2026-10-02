@@ -75,6 +75,9 @@ type RuntimeConfig struct {
 	ActionJournal     ActionJournal
 	Approvals         *ApprovalBroker
 	Secrets           ApprovalRedactor
+	CachePolicy       CachePolicy
+	StuckDetector     StuckDetector
+	StopHooks         []StopHook
 }
 
 type runtimeHandler struct {
@@ -257,6 +260,13 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
+	if config.CachePolicy != nil {
+		session.cachePolicy = config.CachePolicy
+	}
+	if config.StuckDetector != nil {
+		session.stuckDetector = config.StuckDetector
+	}
+	session.stopHooks = append([]StopHook(nil), config.StopHooks...)
 	session.todos, session.events = handler.todos, handler.events
 	session.secrets, session.events.secrets = config.Secrets, config.Secrets
 	handler.session = session

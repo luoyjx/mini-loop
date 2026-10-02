@@ -1,0 +1,72 @@
+package protocol
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+)
+
+// These closed flags distinguish absent optional fields from explicit JSON null
+// for replay and step identity. Execution accessors still expose the same nil
+// default value; no untyped JSON survives the decoder.
+type nullField bool
+
+func (field *nullField) UnmarshalJSON(data []byte) error {
+	*field = nullField(bytes.Equal(bytes.TrimSpace(data), []byte("null")))
+	return nil
+}
+
+type inputNullFields struct {
+	Background     nullField `json:"run_in_background"`
+	ApprovalPrefix nullField `json:"approval_prefix"`
+	Limit          nullField `json:"limit"`
+	Offset         nullField `json:"offset"`
+	AgentType      nullField `json:"agent_type"`
+	Scope          nullField `json:"scope"`
+}
+
+// wireOptional is used only in concretely instantiated encoding boundary structs.
+type wireOptional[T any] struct{ value *T }
+
+func (field wireOptional[T]) MarshalJSON() ([]byte, error) { return json.Marshal(field.value) }
+func optionalWire[T any](value *T, explicitNull nullField) *wireOptional[T] {
+	if value == nil && !bool(explicitNull) {
+		return nil
+	}
+	return &wireOptional[T]{value}
+}
+
+func (input ToolInput) marshalOptionalJSON() ([]byte, error) {
+	if err := input.Validate(); err != nil {
+		return nil, err
+	}
+	switch input.name {
+	case ToolBash:
+		v := input.bash
+		return json.Marshal(struct {
+			Command    string                  `json:"command"`
+			Background *wireOptional[bool]     `json:"run_in_background,omitempty"`
+			Prefix     *wireOptional[[]string] `json:"approval_prefix,omitempty"`
+		}{v.Command, optionalWire(v.RunInBackground, input.nulls.Background), optionalWire(v.ApprovalPrefix, input.nulls.ApprovalPrefix)})
+	case ToolReadFile:
+		v := input.readFile
+		return json.Marshal(struct {
+			Path   string             `json:"path"`
+			Limit  *wireOptional[int] `json:"limit,omitempty"`
+			Offset *wireOptional[int] `json:"offset,omitempty"`
+		}{v.Path, optionalWire(v.Limit, input.nulls.Limit), optionalWire(v.Offset, input.nulls.Offset)})
+	case ToolTask:
+		v := input.task
+		return json.Marshal(struct {
+			Prompt    string                   `json:"prompt"`
+			AgentType *wireOptional[AgentType] `json:"agent_type,omitempty"`
+		}{v.Prompt, optionalWire(v.AgentType, input.nulls.AgentType)})
+	case ToolLoadSkill:
+		v := input.loadSkill
+		return json.Marshal(struct {
+			Name  string                    `json:"name"`
+			Scope *wireOptional[SkillScope] `json:"scope,omitempty"`
+		}{v.Name, optionalWire(v.Scope, input.nulls.Scope)})
+	}
+	return nil, fmt.Errorf("tool %s has no optional fields", input.name)
+}
