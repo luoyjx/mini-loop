@@ -215,18 +215,11 @@ func TestRuntimeCatalogMatchesPythonMetadata(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(session.gate.CatalogNames()) != 9 {
+	if len(session.gate.CatalogNames()) != 10 {
 		t.Fatal("runtime catalogue drift")
 	}
 	for _, expected := range metadata {
 		definition, exists := session.gate.catalog.Lookup(expected.Name)
-		pending := expected.Name == protocol.ToolTask
-		if pending {
-			if exists {
-				t.Fatalf("pending tool advertised: %s", expected.Name)
-			}
-			continue
-		}
 		if !exists || definition.Risk() != expected.Risk || definition.Readonly() != expected.Readonly || definition.ParallelSafe() != expected.ParallelSafe || !slices.Equal(definition.Capabilities(), expected.Capabilities) {
 			t.Fatalf("metadata drift for %s", expected.Name)
 		}

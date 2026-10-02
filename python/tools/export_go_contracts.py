@@ -518,6 +518,113 @@ def _context_contracts(scratch: Path) -> dict[str, object]:
     return {"catalogs": catalog_cases, "wire": wire_cases, "cheap": cheap, "meter": meter_cases, **normalized}
 
 
+def _subagent_contracts(scratch: Path) -> dict[str, object]:
+    """Capture capability selection, derived authority and real child loops."""
+    import asyncio
+    import copy
+    from mini_loop.agent import Agent
+    from mini_loop.builtins import default_registry
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool, system_text
+    from mini_loop.registry import Hook, Hooks, Tool
+    from mini_loop.run_context import RunContext
+    from mini_loop.stuck import NullStuckDetector
+    from mini_loop.tool_policy import DEFAULT_ROLE_TOOL_POLICY
+
+    async def noop(*args, **kwargs):
+        return ""
+    registry = default_registry()
+    for name, capabilities in [
+        ("semantic", {"repo.semantic_outline"}), ("symbol", {"repo.symbol"}),
+        ("references", {"repo.references"}), ("recover", {"observation.recover"}),
+        ("mixed", {"repo.read", "workspace.write"}), ("uncategorized", set()),
+    ]:
+        registry.register(Tool(name, name, {"type": "object", "properties": {}}, noop,
+                               readonly=True, risk="read", capabilities=frozenset(capabilities)))
+    role_cases = []
+    for role in ["Explore", " worker ", "GENERAL-PURPOSE", "planner"]:
+        try:
+            names, failed = DEFAULT_ROLE_TOOL_POLICY.select(role, registry).names(), False
+        except ValueError:
+            names, failed = [], True
+        role_cases.append({"role": role, "names": names, "failed": failed})
+    definitions = [{"schema": definition.schema, "capabilities": sorted(definition.capabilities)}
+                   for definition in registry._tools.values()]
+
+    human = RunContext.explicit_human(actor_id="human-1", approved_capabilities=("workflow.launch", "a", "workflow.launch"))
+    contexts = {
+        "default": RunContext.default(), "human": human,
+        "peer": human.derive_peer_agent(delegated_by="main"),
+        "new_human": human.with_new_message(),
+    }
+    contexts["new_peer"] = contexts["peer"].with_new_message(approved_capabilities=("a",))
+    identities = {value.message_id: name for name, value in contexts.items()}
+    context_cases = []
+    for name, value in contexts.items():
+        snapshot = value.as_dict()
+        snapshot["message_id"] = name
+        if snapshot["parent_message_id"] is not None:
+            snapshot["parent_message_id"] = identities[snapshot["parent_message_id"]]
+        context_cases.append({"name": name, "snapshot": snapshot, "allows_a": value.allows("a")})
+
+    children = []
+    for index, (role, exhausted) in enumerate([("Explore", False), ("general-purpose", False), ("general-purpose", True)]):
+        root = scratch / f"child-{index}"
+        root.mkdir(parents=True)
+        (root / "proof").write_text("proof content")
+        child_requests, tool_contexts, events = [], [], []
+        parent_context = RunContext.explicit_human(actor_id="human-1", approved_capabilities=("workflow.launch",))
+        class Capture(Hook):
+            async def before_tool(self, ctx, call):
+                if ctx.agent.depth:
+                    tool_contexts.append(ctx.run_context.as_dict())
+        async def emit(event):
+            events.append(event)
+        def responder(kwargs):
+            is_child = " subagent in " in system_text(kwargs)
+            last = kwargs["messages"][-1]
+            if is_child:
+                child_requests.append({"system": system_text(kwargs),
+                                       "names": [schema["name"] for schema in kwargs.get("tools", [])],
+                                       "messages": copy.deepcopy(kwargs["messages"]),
+                                       "model": kwargs["model"], "max_tokens": kwargs["max_tokens"]})
+                if isinstance(last["content"], str):
+                    action = tool("read_file", _id="child", path="proof") if role == "Explore" else tool("write_file", _id="child", path="made.txt", content="worker file")
+                    return [text("child progress"), action], "tool_use"
+                return [text("child done")], "end_turn"
+            if isinstance(last["content"], str):
+                return [tool("task", _id="parent", prompt="delegated prompt", agent_type=role)], "tool_use"
+            return [text("parent done")], "end_turn"
+        settings = Settings(fake_llm=True, workspace_root=root, skills_dir=root / "empty-skills",
+                            model="model-contract", max_tokens=777, token_threshold=10_000_000,
+                            subagent_max_rounds=1 if exhausted else 2)
+        parent = Agent(client=FakeAsyncAnthropic(responder=responder, thinking=False),
+                       settings=settings, workspace=root, label="main", hooks=Hooks([Capture()]),
+                       stuck_detector=NullStuckDetector(), emit=emit)
+        parent.messages.append({"role": "user", "content": "private parent history"})
+        output = asyncio.run(parent.run("delegate", run_context=parent_context))
+        result = next(part["content"] for message in parent.messages
+                      if isinstance(message["content"], list) for part in message["content"]
+                      if isinstance(part, dict) and part.get("type") == "tool_result" and part.get("tool_use_id") == "parent")
+        child_context = tool_contexts[0]
+        child_context["message_id"], child_context["parent_message_id"] = "child", "human"
+        # Cache breakpoints belong to the provider adapter, which is a later
+        # slice; assert fresh portable message content, not annotation fields.
+        first = [{"role": message["role"], "content": message["content"]}
+                 for message in child_requests[0]["messages"]]
+        children.append({"role": role, "exhausted": exhausted, "output": output,
+                         "summary": result, "system": child_requests[0]["system"],
+                         "names": child_requests[0]["names"], "messages": first,
+                         "model": child_requests[0]["model"], "max_tokens": child_requests[0]["max_tokens"],
+                         "context": child_context,
+                         "lineage": parent.subagents.last_lineage,
+                         "made": (root / "made.txt").read_text() if (root / "made.txt").exists() else None})
+        children[-1] = json.loads(json.dumps(children[-1], ensure_ascii=False).replace(str(root), "<workspace>"))
+    return {"definitions": definitions, "roles": role_cases, "contexts": context_cases,
+            "children": children, "default_max_depth": 2, "default_max_rounds": 30,
+            "refusal": "(delegation refused: depth 3 exceeds subagent_max_depth=2; do the work directly)"}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -585,6 +692,7 @@ def _snapshot() -> dict[str, bytes]:
         runtime_contracts = _runtime_contracts()
         skill_contracts = _skill_contracts(Path(scratch) / "skills")
         context_contracts = _context_contracts(Path(scratch) / "context")
+        subagent_contracts = _subagent_contracts(Path(scratch) / "subagents")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -611,6 +719,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-runtime-tools.json": _json_bytes(runtime_contracts),
         "python-skills.json": _json_bytes(skill_contracts),
         "python-context.json": _json_bytes(context_contracts),
+        "python-subagents.json": _json_bytes(subagent_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

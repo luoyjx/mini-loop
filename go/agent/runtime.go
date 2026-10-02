@@ -49,22 +49,28 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	ID             SessionID
-	Owner          OwnerID
-	Provider       Provider
-	Bash           BashExecutor
-	Workspace      string
-	Mode           PermissionMode
-	MaxRounds      int
-	Skills         SkillSource
-	Questions      Questioner
-	Approver       Approver
-	Hooks          GateHooks
-	Model          string
-	MaxTokens      int
-	TokenThreshold int
-	SystemBuilder  SystemBuilder
-	Compactor      Compactor
+	ID                SessionID
+	Owner             OwnerID
+	Provider          Provider
+	Bash              BashExecutor
+	Workspace         string
+	Mode              PermissionMode
+	MaxRounds         int
+	Skills            SkillSource
+	Questions         Questioner
+	Approver          Approver
+	Hooks             GateHooks
+	Model             string
+	MaxTokens         int
+	TokenThreshold    int
+	SystemBuilder     SystemBuilder
+	Compactor         Compactor
+	Label             string
+	Depth             int
+	SubagentMaxDepth  int
+	SubagentMaxRounds int
+	Subagents         SubagentProvider
+	RoleToolPolicy    RoleToolPolicy
 }
 
 type runtimeHandler struct {
@@ -75,6 +81,7 @@ type runtimeHandler struct {
 	skills      SkillSource
 	questions   Questioner
 	compression *compressionSignal
+	session     *Session
 }
 
 type compressionSignal struct {
@@ -109,6 +116,24 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolTask:
+		value, _ := input.Task()
+		role := RoleExplore
+		if value.AgentType != nil {
+			role = AgentRole(*value.AgentType)
+		}
+		if handler.session == nil {
+			return "", errors.New("task handler has no bound session")
+		}
+		run := authority.RunContext
+		if run.MessageID() == "" {
+			var err error
+			run, err = DefaultRunContext()
+			if err != nil {
+				return "", err
+			}
+		}
+		return handler.session.runSubagent(ctx, value.Prompt, role, run)
 	case protocol.ToolCompress:
 		handler.compression.request()
 		return "Compressing conversation...", nil
@@ -146,13 +171,16 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 
 // NewRuntimeSession adds per-session todos, on-demand skills and textual human
 // questions plus deferred compaction to the implemented workspace tools.
-// Task still awaits its subagent pipeline.
+// Task delegates to a fresh child through the explicit subagent seam.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if config.ID == "" || config.Owner == "" || config.Provider == nil || config.Bash == nil || !config.Mode.Valid() || config.MaxRounds < 1 {
 		return nil, errors.New("runtime session requires valid identity, provider, executor, mode and round limit")
 	}
 	if config.MaxTokens < 0 || config.TokenThreshold < 0 {
 		return nil, errors.New("runtime model budgets cannot be negative")
+	}
+	if config.Depth < 0 || config.SubagentMaxDepth < 0 || config.SubagentMaxRounds < 0 {
+		return nil, errors.New("subagent depth and round budgets cannot be negative")
 	}
 	files, err := workspace.NewFiles(config.Workspace)
 	if err != nil {
@@ -167,14 +195,17 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		source = skills.EmptyCatalog()
 	}
 	handler := &runtimeHandler{
-		binding: ToolAuthority{config.ID, config.Owner, files.Root(), config.Mode},
+		binding: ToolAuthority{SessionID: config.ID, OwnerID: config.Owner, Workspace: files.Root(), Mode: config.Mode},
 		todos:   &TodoManager{}, events: &sessionEvents{}, skills: source, questions: config.Questions, compression: &compressionSignal{},
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
-	for _, name := range []protocol.ToolName{protocol.ToolTodoWrite, protocol.ToolLoadSkill, protocol.ToolCompress, protocol.ToolAskUser} {
+	for _, name := range []protocol.ToolName{protocol.ToolTodoWrite, protocol.ToolTask, protocol.ToolLoadSkill, protocol.ToolCompress, protocol.ToolAskUser} {
 		traits := ToolTraits{Risk: RiskRead, Readonly: true}
 		if name == protocol.ToolTodoWrite || name == protocol.ToolCompress {
 			traits = ToolTraits{Risk: RiskWrite}
+		}
+		if name == protocol.ToolTask {
+			traits = ToolTraits{Risk: RiskExec}
 		}
 		definition, err := NewToolDefinition(name, traits, handler)
 		if err != nil {
@@ -195,6 +226,25 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		return nil, err
 	}
 	session.todos, session.events = handler.todos, handler.events
+	handler.session = session
+	session.questions = config.Questions
+	if config.Label != "" {
+		session.label = config.Label
+	}
+	session.depth = config.Depth
+	if config.SubagentMaxDepth != 0 {
+		session.subagentMaxDepth = config.SubagentMaxDepth
+	}
+	if config.SubagentMaxRounds != 0 {
+		session.subagentMaxRounds = config.SubagentMaxRounds
+	}
+	if config.Subagents != nil {
+		session.subagents = config.Subagents
+	}
+	if config.RoleToolPolicy != nil {
+		session.rolePolicy = config.RoleToolPolicy
+	}
+	session.events.setScope(EventScope{Label: session.label, Depth: session.depth})
 	session.skills, session.compression = source, handler.compression
 	if config.Model != "" {
 		session.model = config.Model

@@ -12,9 +12,10 @@ typed gate with an immutable executable catalogue, ordered hooks and permission
 modes. `NewSession` registers injected Bash only. `NewWorkspaceSession` binds a
 workspace and registers Bash, `read_file`, `write_file`, `edit_file` and `glob` through
 the same gate. `NewRuntimeSession(RuntimeConfig)` adds `TodoWrite`, `load_skill`
-and `ask_user`, plus deferred `compress`, with explicit dependencies and state
-bound to one session and owner. Todo, stop and compaction events share a typed,
-sequenced 200-event backlog. `task` still returns an explicit unknown-tool result.
+and `ask_user`, plus deferred `compress` and bound `task`: all ten default tools
+now execute through the same gate, with explicit dependencies and state bound to
+one session and owner. Todo, stop, compaction and scoped child events share a
+typed, sequenced 200-event backlog.
 The `workspace` package preserves bounded Unicode reads, line pagination,
 unique exact edits and atomic replacements. Every file path is checked at
 execution; write paths also undergo permission checks. Thirty-four Python cases
@@ -60,6 +61,29 @@ cheap-compaction histories, six meter steps, spill output and summary artifacts
 against Python. Cache annotations, masking, team/plan/memory prompt sections,
 and provider recovery remain pending. Compaction files persist, but cannot
 restore a Go session on their own.
+`task` passes the execution-risk gate and uses an explicit `SubagentProvider`.
+The default `InProcessSubagents` creates fresh child history, todos and meter;
+it inherits model/budgets and injected context/tool services, then uses a fixed
+role-specific system prompt. `CapabilityRoleToolPolicy` selects tools only when
+their nonempty capability set is entirely allowed. Explore is readonly;
+general-purpose and worker are interactive independently of the parent mode.
+The default roles omit unclassified tools, including task. Custom selected
+built-in handlers are rebound to the child, with the same depth guard.
+`RunWithContext` and `DelegateWithContext` accept caller-stamped `RunContext`;
+`Run` and `Delegate` default to untrusted provenance. Default child derivation
+creates a peer message linked to its parent and drops human actor/approvals.
+Custom providers receive a pinned `SubagentParent` environment and parent run
+context. Every delegation checks the depth quota before invoking the provider
+or emitting start telemetry (defaults: depth 2, child rounds 30). Child events
+forward their original label/depth/provenance into the parent backlog. Exhausted
+runs prepend a stop marker to partial output instead of reporting a clean summary.
+The twelfth Python snapshot covers four role selections, five context snapshots
+and three real child loops (read, write and exhaustion). Go tests also cover
+custom-provider refusal/cancellation, nested task rebinding, readonly Explore
+with an auto parent and shared-provider session isolation under the race detector.
+This library slice does not supply authenticated HTTP ownership, shared tool/LLM
+limiters, stuck detection or complete lifecycle events. Custom broker/state
+inheritance, owner resources and remote provider transport remain open.
 Approvals are an in-process callback, with no durable broker, action journal,
 secret masking, HTTP server or session persistence yet. Python
 contract snapshots and fake reply fixtures are generated into `testdata/` by

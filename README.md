@@ -264,8 +264,9 @@ separate:
 Runtime review baseline: `ad71e05` plus the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
-model requests, token metering and four-layer context compaction, reviewed
-**2026-10-02** (Go resource baseline `de2aab1` plus the request/context slice).
+model requests, token metering, four-layer context compaction and typed subagent
+execution with run provenance, reviewed **2026-10-02** (Go baseline `4e9cda6`
+plus the subagent slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -319,13 +320,18 @@ flowchart LR
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Injected BashExecutor"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
-        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress<br/>snapshot · digest check · deferred summary"]
+        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
+        GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>depth limit 2 · round budget 30"]
         GoSession --> GoContext --> GoFake
         GoFake --> GoSession
         GoContext --> GoArchives
         GoSession --> GoGate --> GoBash
         GoGate --> GoFiles
         GoGate --> GoResources
+        GoResources -->|task / depth gate| GoChildren
+        GoChildren --> GoContext
+        GoChildren -->|selected tools| GoGate
+        GoChildren -. scoped events .-> GoSession
     end
 
     Caller --> Entry
@@ -372,14 +378,14 @@ and textual-question interfaces; a nil skill source is an empty catalogue,
 and a nil question surface reports unavailability. The deployment skill loader
 snapshots bounded bodies and descriptions and verifies the normalized source
 hash at load time. User-scoped skill layering remains pending. Todo and stop
-events and compaction receipts share a typed, sequenced 200-event backlog;
+events, compaction receipts and scoped child events share a typed, sequenced 200-event backlog;
 HTTP/SSE and subscriptions remain pending. Model requests consume one fitted,
 immutable schema snapshot and the deployment skill descriptions. Provider usage
 anchors the token meter; unrelated summary calls do not change that anchor.
 Workspace-backed sessions use the four-layer compactor, which writes bounded
 tool-result previews and full transcript archives inside the bound workspace
 before generating a summary. Empty or failed summaries preserve the transcript.
-`NewRuntimeSession` also registers `compress` (nine executable tools); it crosses
+`NewRuntimeSession` also registers `compress`; it crosses
 the write-risk gate and defers the summary until the whole tool batch is paired.
 The Bash-only constructor has no bound workspace and uses the in-memory
 snip/micro strategy. Internal automatic compaction can write workspace artifacts
@@ -389,8 +395,21 @@ annotation, secret masking and user-resource prompt sections remain pending.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
 process-local, with no durable approval broker or action journal yet. Compaction
-files are durable local artifacts, not a session-restoration store. `task`
-remains unavailable until the subagent path is ported. See the parity matrix.
+files are durable local artifacts, not a session-restoration store.
+`task` is the tenth runtime tool and crosses the execution-risk gate before
+delegation. The default in-process provider creates a fresh child history,
+todo state and token meter, with a capability-selected subset of the parent
+catalogue. Explore uses readonly mode; general-purpose/worker children use
+interactive mode independently of the parent. Default roles omit unclassified
+tools, including `task`. Custom role policies can select them, with built-in
+handlers rebound to each child. The depth limit (default 2) is checked before
+calling even a custom provider; child rounds default to 30. Run provenance is
+caller-stamped, never inferred from model text. Default child derivation drops
+human actor and approvals, records peer authority and links the parent message.
+Child events retain label, depth and detached provenance in the parent's bounded
+backlog. Round exhaustion leads with an explicit stop marker before partial
+output. Shared concurrency limiters, stuck detection, complete lifecycle events
+and authenticated HTTP ownership remain pending in Go. See the parity matrix.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new

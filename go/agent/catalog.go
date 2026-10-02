@@ -30,10 +30,14 @@ func (risk ToolRisk) valid() bool {
 type Capability string
 
 const (
-	CapabilityProcessExec    Capability = "process.exec"
-	CapabilityRepoRead       Capability = "repo.read"
-	CapabilityRepoSearch     Capability = "repo.search"
-	CapabilityWorkspaceWrite Capability = "workspace.write"
+	CapabilityProcessExec         Capability = "process.exec"
+	CapabilityRepoRead            Capability = "repo.read"
+	CapabilityRepoSearch          Capability = "repo.search"
+	CapabilityWorkspaceWrite      Capability = "workspace.write"
+	CapabilityRepoSemanticOutline Capability = "repo.semantic_outline"
+	CapabilityRepoSymbol          Capability = "repo.symbol"
+	CapabilityRepoReferences      Capability = "repo.references"
+	CapabilityObservationRecover  Capability = "observation.recover"
 )
 
 type ToolTraits struct {
@@ -44,15 +48,19 @@ type ToolTraits struct {
 }
 
 type ToolAuthority struct {
-	SessionID SessionID
-	OwnerID   OwnerID
-	Workspace string
-	Mode      PermissionMode
+	SessionID  SessionID
+	OwnerID    OwnerID
+	Workspace  string
+	Mode       PermissionMode
+	RunContext RunContext
 }
 
 func (authority ToolAuthority) Validate() error {
 	if authority.SessionID == "" || authority.OwnerID == "" || !authority.Mode.Valid() {
 		return errors.New("tool authority requires session, owner, and valid permission mode")
+	}
+	if authority.RunContext.MessageID() != "" {
+		return authority.RunContext.Validate()
 	}
 	return nil
 }

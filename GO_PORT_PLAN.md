@@ -80,13 +80,15 @@ Record its parity evidence and remaining gaps before checking it off.
 - [x] P1 Python directory split (server smoke, complete Python suite, and
       repository verifiers pass from the documented layout)
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
-      usage and stop events implemented; other event and state variants remain)
+      usage, stop/error/subagent events and run provenance implemented;
+      other event and state variants remain)
 - [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
-      fake-provider slice and cancellation repair implemented;
+      fake-provider slice, scoped child execution, exhaustion markers and cancellation repair implemented;
       complete lifecycle events and parallel batches remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
-      compress now defers a real summary after the batch; task, durable approvals,
+      compress defers a real summary after the batch and task delegates through
+      a bound provider; durable approvals,
       action journal and masking remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
@@ -386,3 +388,65 @@ journals, masking, provider cache annotation and HTTP/SSE. Streaming transport,
 provider recovery, optional prompt sections/user resources, token efficiency and
 session restoration remain open. Compaction files are durable artifacts, not a
 Go session-restoration store. The full objective and G0-G7 remain open.
+
+## 2026-10-02 subagent slice
+
+- `NewRuntimeSession` now registers all ten Python default tools in source
+  order. `task` retains Python's execution risk and empty capability set, passes
+  the existing gate and invokes an explicit `SubagentProvider`. Custom providers
+  receive a pinned environment with named settings, identity and catalogue
+  accessors, rather than a mutable parent session or untyped state map.
+- The default provider creates fresh child history, todos, runtime facts and
+  token meter. It inherits the available model/context/tool services, uses the
+  source's fixed role system prompt and selects tools by nonempty capability
+  sets wholly contained in an immutable role profile. Ordered profile input
+  preserves last-wins normalized aliases. Explore uses readonly mode;
+  general-purpose and worker use interactive mode independently of the parent.
+  Default roles omit unclassified tools, including task. Custom selected
+  built-in handlers bind the fresh child, so nested task execution still reaches
+  the same depth guard. Default depth is 2; child rounds default to 30.
+- Typed `RunContext` supports default untrusted and explicit-human provenance,
+  detached snapshots, new-message approval replacement and peer derivation.
+  Default children link their parent message and drop human actor/approvals.
+  `RunWithContext` and `DelegateWithContext` keep caller stamps out of model
+  JSON. Custom providers receive the parent context; the default provider owns
+  peer derivation, matching the Python injection seam. This does not implement
+  authenticated HTTP ownership or the full Python RunContext construction API.
+- Typed subagent start/end/refusal and round-exhaustion variants join the bounded
+  200-event backlog. Child forwarding retains label, depth and detached run
+  provenance; parent history remains separate. Depth refusal happens before
+  provider construction/start telemetry. Prompt and summary displays retain at
+  most 2,000 Unicode characters while the provider/result receives full text.
+  Cancelled/error children emit no successful end. Round exhaustion returns the
+  source stop marker before partial output, with an error event and no Go error.
+- The twelfth generated Python snapshot covers four role selections, five
+  provenance cases and three actual child loops: Explore reads, general-purpose
+  writes and an exhausted child reports its stop. Tests compare fixed system,
+  fresh messages, model/output budgets, selected tools, provenance, lineage,
+  summary and filesystem effects. Additional Go tests cover quota enforcement
+  for custom providers, nested task rebinding, a wider custom Explore catalogue
+  under an auto parent, cancellation pairing and concurrent shared services.
+- Validation: `go test ./...`, `go vet ./...`, `go test -race ./...`, twelve-file
+  Python export check, all 19 scanning guards and `git diff --check` passed.
+  `.venv/bin/python -m pytest -q`: 2151 passed, 28 skipped, 24 subtests passed,
+  three existing dependency deprecation warnings. Scoped Python reference
+  mutation selectors `subagent`, `explore-registry`, `task-tool-bypasses` and
+  `early-stop-swallowed` caught all nine distinct mutations. This is not a Go
+  mutation suite or the full 377-guard run. No Python package modules changed;
+  invariant declarations did not require revalidation.
+- The canonical README Mermaid, boundary prose and interactive specification
+  were updated together. Archify passed 9/9 showcase checks with zero warnings
+  or errors after fixing the reported endpoint direction and label clearance.
+  Specification SHA-256:
+  `c3d89d7dc8baee21e0d784dadb7bb777bbe06e3ef0e63f14a44a77369c48f67d`
+  (12,972 bytes); generated HTML SHA-256:
+  `15e1184ee5f8f77a7c388067bd8e06c068dcb36b1e5e94a5000e215aca26e044`
+  (649,492 bytes). Browser visual inspection remains unavailable following the
+  earlier local-file navigation policy block; static layout validation passed.
+  Runtime gates ran on macOS; cross-platform/live-provider audit remains open.
+
+Next: durable approvals and action journals, then masking, provider cache
+annotation and HTTP/SSE. Shared concurrency limiters, stuck detection, complete
+lifecycle events, custom child broker/state inheritance, owner resources,
+streaming transport, recovery and session restoration remain open. The full
+objective and G0-G7 remain open.

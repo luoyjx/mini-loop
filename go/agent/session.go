@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/skills"
 	workspacepkg "github.com/luoyjx/mini-loop/go/workspace"
 )
 
@@ -32,28 +33,36 @@ type BashExecutor interface {
 }
 
 type Session struct {
-	id             SessionID
-	owner          OwnerID
-	provider       Provider
-	gate           *ToolGate
-	mode           PermissionMode
-	workspace      string
-	maxRounds      int
-	mu             sync.Mutex
-	messages       []protocol.Message
-	events         *sessionEvents
-	todos          *TodoManager
-	skills         SkillSource
-	model          string
-	maxTokens      int
-	tokenThreshold int
-	systemBuilder  SystemBuilder
-	meter          TokenMeter
-	runtimeFacts   string
-	envelope       string
-	compactor      Compactor
-	files          *workspacepkg.Files
-	compression    *compressionSignal
+	id                                  SessionID
+	owner                               OwnerID
+	provider                            Provider
+	gate                                *ToolGate
+	mode                                PermissionMode
+	workspace                           string
+	maxRounds                           int
+	mu                                  sync.Mutex
+	messages                            []protocol.Message
+	events                              *sessionEvents
+	todos                               *TodoManager
+	skills                              SkillSource
+	model                               string
+	maxTokens                           int
+	tokenThreshold                      int
+	systemBuilder                       SystemBuilder
+	meter                               TokenMeter
+	runtimeFacts                        string
+	envelope                            string
+	compactor                           Compactor
+	files                               *workspacepkg.Files
+	compression                         *compressionSignal
+	label                               string
+	depth                               int
+	lineage                             *SubagentLineage
+	currentRun                          RunContext
+	questions                           Questioner
+	subagents                           SubagentProvider
+	rolePolicy                          RoleToolPolicy
+	subagentMaxDepth, subagentMaxRounds int
 }
 
 func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExecutor, maxRounds int) (*Session, error) {
@@ -73,6 +82,10 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 		return nil, errors.New("session requires id, owner, provider, tool gate, valid mode, and positive maxRounds")
 	}
 	session := &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}, model: DefaultModel, maxTokens: DefaultMaxTokens, tokenThreshold: DefaultTokenThreshold, systemBuilder: DefaultSystemBuilder{}, compactor: InMemoryCompactor{DefaultTokenThreshold, 50}}
+	session.label, session.skills = string(id), skills.EmptyCatalog()
+	session.subagents, session.rolePolicy = &InProcessSubagents{}, DefaultRoleToolPolicy()
+	session.subagentMaxDepth, session.subagentMaxRounds = DefaultSubagentMaxDepth, DefaultSubagentMaxRounds
+	session.events.setScope(EventScope{Label: session.label})
 	if workspace != "" {
 		files, err := workspacepkg.NewFiles(workspace)
 		if err != nil {
@@ -169,12 +182,26 @@ func (s *Session) closeInterruptedBatch(blocks []protocol.Block, completed []pro
 // Run serializes turns within this session. Different sessions do not share a
 // lock and can make model progress concurrently.
 func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
+	run, err := DefaultRunContext()
+	if err != nil {
+		return "", err
+	}
+	return s.RunWithContext(ctx, prompt, run)
+}
+
+func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunContext) (string, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	if err := ctx.Err(); err != nil {
 		return "", err
 	}
+	if err := run.Validate(); err != nil {
+		return "", err
+	}
+	s.currentRun = run.clone()
+	s.events.setScope(EventScope{s.label, s.depth, run.clone()})
+	defer func() { s.currentRun = RunContext{} }()
 	s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(prompt)})
 	var lastText string
 	resumptions := 0
@@ -228,7 +255,7 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 				continue
 			}
 			outcome, dispatchErr := s.gate.Dispatch(ctx,
-				ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode},
+				ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode, RunContext: run.clone()},
 				ToolCall{ID: use.ID, Input: use.Input})
 			if dispatchErr != nil {
 				s.closeInterruptedBatch(blocks, results, i)
@@ -266,5 +293,10 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 			}
 		}
 	}
-	return lastText, fmt.Errorf("hit maxRounds (%d) without finishing", s.maxRounds)
+	s.events.append(SessionEvent{kind: EventError, runError: RunErrorEvent{kind: ErrorRoundExhaustion, rounds: s.maxRounds}})
+	headline := fmt.Sprintf("[stopped after %d rounds without finishing]", s.maxRounds)
+	if lastText != "" {
+		headline += "\nPartial output before the stop:\n" + lastText
+	}
+	return headline, nil
 }
