@@ -21,5 +21,7 @@ These instructions apply to `go/`.
 
 - Run `go test ./...`, `go vet ./...`, and `go test -race ./...` before committing
   Go runtime changes.
+- Run `.venv/bin/python python/tools/export_go_contracts.py --check` from the
+  repository root after changing Python contract exports or Go default-tool types.
 - Update the README runtime baseline and architecture source when an
   implementation slice changes topology, authority, persistence, or defaults.

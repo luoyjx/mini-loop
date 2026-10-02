@@ -75,11 +75,12 @@ Record its parity evidence and remaining gaps before checking it off.
 
 ## Current status
 
-- [ ] P0 contract inventory (`GO_PARITY_MATRIX.md` has the capability baseline;
-      route schemas, storage columns, and per-tool fixtures remain)
-- [ ] P1 Python directory split (files moved and server smoke passes; final
-      full-suite timing gate remains unstable under host load)
-- [ ] G0 typed Go contracts (message and bash input slice implemented)
+- [x] P0 contract inventory (`GO_PARITY_MATRIX.md`, the generated Python
+      contracts in `go/testdata/`, and Go cases for each default tool input)
+- [x] P1 Python directory split (server smoke, complete Python suite, and
+      repository verifiers pass from the documented layout)
+- [ ] G0 typed Go contracts (message and all default tool input variants
+      implemented; model reply, usage, and event contracts remain)
 - [ ] G1 session loop (in-memory fake-provider slice implemented)
 - [ ] G2 execution gate
 - [ ] G3 HTTP/SSE
@@ -111,6 +112,19 @@ Record its parity evidence and remaining gaps before checking it off.
   warnings. Browser visual inspection of a local `file:` URL was unavailable
   because the browser policy blocked that protocol.
 
-Next: finish P0's concrete route, storage, and tool fixtures; finish G0 with
-the remaining default tool inputs, model response and event variants; then
-complete the G1 loop and build the G2 execution gate before exposing a Go server.
+## 2026-10-02 continuation
+
+- `python/tools/export_go_contracts.py` now exports the real default registry,
+  44-operation FastAPI OpenAPI schema, SQLite v7 schema, and a small manifest.
+  `--check` verifies byte-for-byte freshness without writing.
+- Go has concrete, closed input variants for all ten Python default tools.
+  The protocol tests use each variant, check required fields and enums against
+  Python's exported schema, and reject unknown tools and extra input fields.
+- The in-memory Go agent still executes only `bash`; it rejects another typed
+  tool before appending an unanswered `tool_use` or invoking the bash executor.
+- The final full Python suite passed: 2151 passed, 28 skipped, and 24 subtests
+  passed, including the previously load-sensitive timing case. The earlier
+  failures are retained above as part of the audit history.
+
+Next: add typed model replies, usage, stop reasons, and event variants, then
+finish the default loop and its guarded tool dispatcher.

@@ -32,7 +32,8 @@ func TestPythonFakeTurnRoundTrip(t *testing.T) {
 		t.Fatal("assistant tool content was not decoded as blocks")
 	}
 	use, ok := blocks[1].ToolUse()
-	if !ok || use.Input.Command != "echo handled: inspect this repository" {
+	input, bash := use.Input.Bash()
+	if !ok || !bash || input.Command != "echo handled: inspect this repository" {
 		t.Fatalf("typed bash input lost: %+v", use)
 	}
 	encoded, err := json.Marshal(messages)
@@ -66,12 +67,14 @@ func TestRejectsUnknownToolAndInputFields(t *testing.T) {
 		t.Fatal(err)
 	}
 	use, _ := background.ToolUse()
-	if use.Input.RunInBackground == nil || !*use.Input.RunInBackground {
+	input, _ := use.Input.Bash()
+	if input.RunInBackground == nil || !*input.RunInBackground {
 		t.Fatal("explicit background flag was lost")
 	}
-	*use.Input.RunInBackground = false
+	*input.RunInBackground = false
 	useAgain, _ := background.ToolUse()
-	if !*useAgain.Input.RunInBackground {
+	inputAgain, _ := useAgain.Input.Bash()
+	if !*inputAgain.RunInBackground {
 		t.Fatal("caller changed a decoded block through its accessor")
 	}
 }

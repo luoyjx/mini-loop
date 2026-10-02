@@ -33,28 +33,6 @@ const ToolBash ToolName = "bash"
 
 const MaxWireBytes = 512 * 1024
 
-// BashInput is the supported model-supplied input for the first Go tool slice.
-// Additional tools get distinct input types and decoder cases.
-type BashInput struct {
-	Command         string `json:"command"`
-	RunInBackground *bool  `json:"run_in_background,omitempty"`
-}
-
-func (input *BashInput) UnmarshalJSON(data []byte) error {
-	var wire struct {
-		Command         *string `json:"command"`
-		RunInBackground *bool   `json:"run_in_background"`
-	}
-	if err := decodeStrict(data, &wire); err != nil {
-		return err
-	}
-	if wire.Command == nil {
-		return errors.New("bash input requires command")
-	}
-	*input = BashInput{Command: *wire.Command, RunInBackground: wire.RunInBackground}
-	return nil
-}
-
 type TextBlock struct {
 	Text string `json:"text"`
 }
@@ -67,7 +45,7 @@ type ThinkingBlock struct {
 type ToolUseBlock struct {
 	ID    string    `json:"id"`
 	Name  ToolName  `json:"name"`
-	Input BashInput `json:"input"`
+	Input ToolInput `json:"input"`
 }
 
 type ToolResultBlock struct {
@@ -94,7 +72,11 @@ func NewThinkingBlock(thinking, signature string) Block {
 }
 
 func NewBashUse(id, command string) Block {
-	return Block{kind: BlockToolUse, toolUse: &ToolUseBlock{ID: id, Name: ToolBash, Input: BashInput{Command: command}}}
+	return NewToolUse(id, BashToolInput(BashInput{Command: command}))
+}
+
+func NewToolUse(id string, input ToolInput) Block {
+	return Block{kind: BlockToolUse, toolUse: &ToolUseBlock{ID: id, Name: input.Name(), Input: input.clone()}}
 }
 
 func NewToolResult(id, content string, isError bool) Block {
@@ -115,10 +97,7 @@ func (b Block) ToolUse() (ToolUseBlock, bool) {
 		return ToolUseBlock{}, false
 	}
 	copyOf := *b.toolUse
-	if copyOf.Input.RunInBackground != nil {
-		flag := *copyOf.Input.RunInBackground
-		copyOf.Input.RunInBackground = &flag
-	}
+	copyOf.Input = copyOf.Input.clone()
 	return copyOf, true
 }
 
@@ -140,7 +119,7 @@ func (b Block) Validate() error {
 			return errors.New("thinking block requires a signature and no other variant")
 		}
 	case BlockToolUse:
-		if b.toolUse == nil || b.text != nil || b.thinking != nil || b.toolResult != nil || b.toolUse.ID == "" || b.toolUse.Name != ToolBash {
+		if b.toolUse == nil || b.text != nil || b.thinking != nil || b.toolResult != nil || b.toolUse.ID == "" || b.toolUse.Name != b.toolUse.Input.Name() || b.toolUse.Input.Validate() != nil {
 			return errors.New("tool_use requires a supported named tool and id")
 		}
 	case BlockToolResult:
@@ -235,21 +214,22 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 		next = NewThinkingBlock(wire.Thinking, wire.Signature)
 	case BlockToolUse:
 		var wire struct {
-			Type  BlockKind  `json:"type"`
-			ID    string     `json:"id"`
-			Name  ToolName   `json:"name"`
-			Input *BashInput `json:"input"`
+			Type  BlockKind       `json:"type"`
+			ID    string          `json:"id"`
+			Name  ToolName        `json:"name"`
+			Input json.RawMessage `json:"input"`
 		}
 		if err := decodeStrict(data, &wire); err != nil {
 			return err
 		}
-		if wire.Name != ToolBash {
-			return fmt.Errorf("unsupported tool %q", wire.Name)
-		}
-		if wire.Input == nil {
+		if len(wire.Input) == 0 {
 			return errors.New("tool_use requires input")
 		}
-		next = Block{kind: BlockToolUse, toolUse: &ToolUseBlock{ID: wire.ID, Name: wire.Name, Input: *wire.Input}}
+		input, err := DecodeToolInput(wire.Name, wire.Input)
+		if err != nil {
+			return err
+		}
+		next = NewToolUse(wire.ID, input)
 	case BlockToolResult:
 		var wire struct {
 			Type BlockKind `json:"type"`

@@ -1,0 +1,16 @@
+{
+  "default_tool_names": [
+    "bash",
+    "read_file",
+    "write_file",
+    "edit_file",
+    "glob",
+    "TodoWrite",
+    "task",
+    "load_skill",
+    "compress",
+    "ask_user"
+  ],
+  "http_operation_count": 44,
+  "sqlite_schema_version": 7
+}

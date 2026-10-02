@@ -6,11 +6,16 @@ each row with a fixture or test result as the port proceeds.
 Python module names in the table are relative to `python/mini_loop/`; test
 names are relative to `python/tests/`.
 
+The versioned contract snapshot is under [`go/testdata/`](go/testdata/). Run
+`.venv/bin/python python/tools/export_go_contracts.py --check` to detect drift;
+the generator captures `default_registry()`, `create_app().openapi()`, and the
+SQLite v7 schema from the current Python implementation.
+
 | Slice | Python source of truth | Required Go contract | Go evidence |
 |---|---|---|---|
 | Session lifecycle, ownership, workspace binding and concurrent isolation | `mini_loop/manager.py`, `session.py`, `auth.py`; `tests/test_concurrent_turns.py`, `test_auth.py`, `test_workspace_binding.py` | Typed owner/session IDs, serialized turns per session, concurrent separate sessions, identical refusal status | Pending |
 | Model/tool loop and transcript protocol | `agent.py`, `blocks.py`, `fake_llm.py`; `tests/test_transcript_contract.py`, `test_tool_batch_invariants.py`, `test_provider_fidelity.py` | Text, thinking, tool use and result variants; ordered batches and strict transcript validation | `go/protocol` covers fake bash shape and immediate pairing; `go/agent` runs an in-memory fake turn. Provider variants, gates and full parity pending. |
-| Registry and execution boundary | `registry.py`, `builtins.py`, `permissions.py`, `approvals.py`, `actions.py`; `tests/test_tool_pipeline.py`, `test_permission_modes.py`, `test_durable_approvals.py` | Pinned catalogue; before, monotonic guard, permission, execute, after, observer order; denied and unknown-effect outcomes | Pending |
+| Registry and execution boundary | `registry.py`, `builtins.py`, `permissions.py`, `approvals.py`, `actions.py`; `tests/test_tool_pipeline.py`, `test_permission_modes.py`, `test_durable_approvals.py` | Pinned catalogue; before, monotonic guard, permission, execute, after, observer order; denied and unknown-effect outcomes | All ten default inputs have strict Go variants checked against the Python registry snapshot. Catalogue, gates, approvals, and effects remain pending. |
 | Default REST and SSE | `server.py`; `tests/test_server.py`, `test_streaming.py`, `test_webui_routes.py` | Health, session CRUD/message/cancel, approval, event stream, transcript, trajectory, UI response shapes | Pending |
 | Provider and recovery | `providers.py`, `transport.py`, `recovery.py`; `tests/test_provider_surface.py`, `test_streaming_failures.py`, `test_recovery_backoff.py` | Fake and Anthropic-compatible transports; served-model identity, bounded retries, safe interrupted streams | Pending |
 | Context and model budget | `prompts.py`, `skills.py`, `compaction.py`, `caching.py`, `metering.py`, `token_efficiency.py`; relevant `tests/test_*` files | Bounded request construction, skills, cache and compaction, usage accounting | Pending |

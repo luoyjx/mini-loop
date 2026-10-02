@@ -3,10 +3,12 @@
 This directory is the independent Go port of the Python runtime in `../python/`.
 It is under construction and is not yet a runnable agent or HTTP server. The
 protocol package fixes the default fake-model transcript shapes as explicit Go
-types, including the `bash` tool input. It rejects unsupported tool names at
-the JSON boundary instead of admitting an untyped payload into the runtime.
-The `agent` package adds an injected, in-memory fake-model turn loop. It has
-no production tool gate or persistence yet.
+types and has concrete inputs for all ten Python default tools. It rejects
+unsupported tool names and extra fields at the JSON boundary instead of
+admitting an untyped payload into the runtime. The `agent` package adds an
+injected, in-memory fake-model turn loop that currently executes only `bash`.
+It has no production tool gate or persistence yet. Python contract snapshots
+are generated into `testdata/` by `../python/tools/export_go_contracts.py`.
 
 ```sh
 cd go

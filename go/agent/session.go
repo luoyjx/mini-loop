@@ -92,6 +92,11 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 			return "", fmt.Errorf("model content: %w", err)
 		}
 		blocks, _ := content.Blocks()
+		for _, block := range blocks {
+			if use, ok := block.ToolUse(); ok && use.Name != protocol.ToolBash {
+				return "", fmt.Errorf("tool %q has no executor in the initial Go loop", use.Name)
+			}
+		}
 		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleAssistant, Content: content})
 
 		results := make([]protocol.Block, 0)
@@ -104,7 +109,8 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 			if !ok {
 				continue
 			}
-			output, executeErr := s.executor.ExecuteBash(ctx, use.Input)
+			input, _ := use.Input.Bash()
+			output, executeErr := s.executor.ExecuteBash(ctx, input)
 			if executeErr != nil {
 				// The result remains paired even when execution fails. Richer
 				// unknown-effect and approval states belong to G2.

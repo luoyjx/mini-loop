@@ -86,7 +86,38 @@ func TestFakeProviderTruncatesByCharacters(t *testing.T) {
 		t.Fatal(err)
 	}
 	use, ok := reply.Content[1].ToolUse()
-	if !ok || use.Input.Command != "echo handled: "+strings.Repeat("界", 60) {
+	input, bash := use.Input.Bash()
+	if !ok || !bash || input.Command != "echo handled: "+strings.Repeat("界", 60) {
 		t.Fatalf("Python character truncation changed: %+v", use)
+	}
+}
+
+type readFileProvider struct{}
+
+func (readFileProvider) Complete(context.Context, []protocol.Message) (ModelReply, error) {
+	return ModelReply{
+		Content:    []protocol.Block{protocol.NewToolUse("u1", protocol.ReadFileToolInput(protocol.ReadFileInput{Path: "a.txt"}))},
+		StopReason: StopToolUse,
+	}, nil
+}
+
+type countedBashExecutor struct{ calls int }
+
+func (executor *countedBashExecutor) ExecuteBash(context.Context, protocol.BashInput) (string, error) {
+	executor.calls++
+	return "unexpected", nil
+}
+
+func TestUnsupportedToolDoesNotFallThroughToBash(t *testing.T) {
+	executor := &countedBashExecutor{}
+	session, err := NewSession("s", "owner", readFileProvider{}, executor, 2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := session.Run(context.Background(), "read a.txt"); err == nil {
+		t.Fatal("initial loop accepted a tool without an executor")
+	}
+	if executor.calls != 0 || len(session.Messages()) != 1 {
+		t.Fatal("unsupported tool reached executor or left an unanswered tool_use")
 	}
 }

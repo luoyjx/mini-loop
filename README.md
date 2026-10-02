@@ -262,7 +262,7 @@ separate:
 ## Architecture
 
 Runtime review baseline: `ad71e05` plus the Python directory split, its
-package-relative default skills path, and the initial typed Go port, reviewed
+package-relative default skills path, and typed Go default-tool inputs, reviewed
 **2026-10-02**. The optional `decision` tool evaluates
 explicit state through a configured provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -337,6 +337,8 @@ directory is an independent port in progress and is not on this execution
 path. The solid path is one ordinary turn; dotted paths are optional or asynchronous.
 The Python default agent skills now resolve from `python/skills/` regardless
 of the current working directory; `MINILOOP_SKILLS_DIR` still overrides it.
+The Go port currently types all ten Python default tool inputs but its
+in-memory loop dispatches only `bash`; see the parity matrix for remaining gates.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new
@@ -390,6 +392,7 @@ The Mermaid block above remains the canonical GitHub view.
 | `python/tools/` | Python verification and benchmark scripts |
 | `python/examples/` | Runnable Python custom composition |
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
+| `go/testdata/` | Generated Python tool, OpenAPI, and SQLite contract snapshots |
 | `docs/` | Design evidence, research, hardening record, and roadmap |
 | `research-site/` | Read-only browsable projection generated from `docs/*.md` |
 
@@ -435,6 +438,12 @@ The current Go slice is checked independently:
 cd go
 go test ./...
 go vet ./...
+```
+
+Check the Python contract snapshot before extending the Go port:
+
+```sh
+.venv/bin/python python/tools/export_go_contracts.py --check
 ```
 
 ## Documentation map

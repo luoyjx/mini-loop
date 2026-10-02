@@ -88,6 +88,6 @@
     { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Only authenticated HTTP user/final turns enter preview", "Preview cannot publish; commit is a separate caller action", "Agent and user skills retain explicit provenance"] },
     { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] },
     { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] },
-    { "dot": "cyan", "title": "Language layout", "items": ["This map follows the current Python runtime under python/", "Default agent skills resolve from python/skills/", "go/ is an independent port in progress", "Go behavior and parity are tracked separately"] }
+    { "dot": "cyan", "title": "Language layout", "items": ["This map follows the current Python runtime under python/", "Default agent skills resolve from python/skills/", "go/ types ten default inputs but executes only bash in memory", "Go behavior and parity are tracked separately"] }
   ]
 }
