@@ -53,6 +53,7 @@ type ToolAuthority struct {
 	Workspace  string
 	Mode       PermissionMode
 	RunContext RunContext
+	ActionID   ActionID
 }
 
 func (authority ToolAuthority) Validate() error {
@@ -93,6 +94,43 @@ type ToolDefinition struct {
 	capabilities []Capability
 	handler      ToolHandler
 	schema       protocol.ToolSchema
+	verifier     ToolVerifier
+}
+
+type EffectVerdict string
+
+const (
+	EffectUndetermined   EffectVerdict = "undetermined"
+	EffectAlreadyApplied EffectVerdict = "already_applied"
+	EffectNotApplied     EffectVerdict = "not_applied"
+)
+
+type ToolVerifier interface {
+	VerifyTool(context.Context, ToolAuthority, ToolCall) (EffectVerdict, error)
+}
+
+// WithVerifier creates a new immutable definition. Failure or an invalid verdict
+// means undetermined; neither can authorize retry of an unknown action.
+func (definition ToolDefinition) WithVerifier(verifier ToolVerifier) ToolDefinition {
+	definition.verifier = verifier
+	return definition
+}
+
+func verifyEffect(ctx context.Context, definition ToolDefinition, authority ToolAuthority, call ToolCall) (verdict EffectVerdict) {
+	verdict = EffectUndetermined
+	defer func() {
+		if recover() != nil {
+			verdict = EffectUndetermined
+		}
+	}()
+	if definition.verifier == nil {
+		return
+	}
+	v, err := definition.verifier.VerifyTool(ctx, authority, call)
+	if err == nil && (v == EffectAlreadyApplied || v == EffectNotApplied) {
+		verdict = v
+	}
+	return
 }
 
 func NewToolDefinition(name protocol.ToolName, traits ToolTraits, handler ToolHandler) (ToolDefinition, error) {

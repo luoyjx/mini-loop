@@ -225,6 +225,54 @@ func (files *Files) Write(ctx context.Context, input protocol.WriteFileInput) (s
 	return fmt.Sprintf("Wrote %d bytes to %s", utf8.RuneCountInString(input.Content), input.Path), nil
 }
 
+// WriteTookEffect compares the source text without materializing the file. It
+// uses the same strict UTF-8/universal-newline reader as Python text reads.
+// Errors remain undetermined at the verifier boundary, never evidence to retry.
+func (files *Files) WriteTookEffect(ctx context.Context, input protocol.WriteFileInput) (bool, error) {
+	if err := ctx.Err(); err != nil {
+		return false, err
+	}
+	path, err := files.Resolve(input.Path)
+	if err != nil {
+		return false, err
+	}
+	info, err := os.Stat(path)
+	if errors.Is(err, os.ErrNotExist) {
+		return false, nil
+	}
+	if err != nil {
+		return false, err
+	}
+	if !info.Mode().IsRegular() {
+		return false, nil
+	}
+	file, err := os.Open(path)
+	if err != nil {
+		return false, err
+	}
+	defer file.Close()
+	reader := textReader{reader: bufio.NewReader(file)}
+	expectedText := strings.NewReader(input.Content)
+	equal := true
+	for {
+		if err := ctx.Err(); err != nil {
+			return false, err
+		}
+		actual, err := reader.readStrictRune()
+		if err == io.EOF {
+			_, _, tail := expectedText.ReadRune()
+			return equal && tail == io.EOF, nil
+		}
+		if err != nil {
+			return false, err
+		}
+		expected, _, tail := expectedText.ReadRune()
+		if tail != nil || actual != expected {
+			equal = false
+		}
+	}
+}
+
 func (files *Files) Edit(ctx context.Context, input protocol.EditFileInput) (string, error) {
 	if err := ctx.Err(); err != nil {
 		return "", err

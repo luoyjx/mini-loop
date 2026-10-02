@@ -13,6 +13,23 @@ type workspaceFileHandler struct {
 	name  protocol.ToolName
 }
 
+type workspaceWriteVerifier struct{ files *workspace.Files }
+
+func (verifier workspaceWriteVerifier) VerifyTool(ctx context.Context, authority ToolAuthority, call ToolCall) (EffectVerdict, error) {
+	input, ok := call.Input.WriteFile()
+	if !ok || authority.Workspace != verifier.files.Root() {
+		return EffectUndetermined, nil
+	}
+	landed, err := verifier.files.WriteTookEffect(ctx, input)
+	if err != nil {
+		return EffectUndetermined, err
+	}
+	if landed {
+		return EffectAlreadyApplied, nil
+	}
+	return EffectNotApplied, nil
+}
+
 func (handler workspaceFileHandler) ExecuteTool(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, error) {
 	if authority.Workspace == "" {
 		return "", errors.New("file handler requires a bound workspace")
@@ -67,6 +84,9 @@ func NewWorkspaceToolCatalog(executor BashExecutor, files *workspace.Files) (*To
 		definition, err := NewToolDefinition(name, traits, workspaceFileHandler{files, name})
 		if err != nil {
 			return nil, err
+		}
+		if name == protocol.ToolWriteFile {
+			definition = definition.WithVerifier(workspaceWriteVerifier{files})
 		}
 		definitions = append(definitions, definition)
 	}

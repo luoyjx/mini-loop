@@ -265,8 +265,8 @@ Runtime review baseline: `ad71e05` plus the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
 model requests, token metering, four-layer context compaction and typed subagent
-execution with run provenance, reviewed **2026-10-02** (Go baseline `4e9cda6`
-plus the subagent slice).
+execution with run provenance, action replay and typed journal transitions,
+reviewed **2026-10-02** (Go baseline `ab93433` plus the action-journal slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -317,6 +317,7 @@ flowchart LR
         GoSession["Go Session<br/>serialized turns · typed event backlog"]
         GoContext["Context pipeline<br/>fitted schemas · skills · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
+        GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Injected BashExecutor"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
@@ -328,6 +329,7 @@ flowchart LR
         GoSession --> GoGate --> GoBash
         GoGate --> GoFiles
         GoGate --> GoResources
+        GoGate -. replay / reconcile / settle .-> GoActions
         GoResources -->|task / depth gate| GoChildren
         GoChildren --> GoContext
         GoChildren -->|selected tools| GoGate
@@ -394,8 +396,18 @@ read-only worker must explicitly select `InMemoryCompactor`. Provider cache
 annotation, secret masking and user-resource prompt sections remain pending.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
-process-local, with no durable approval broker or action journal yet. Compaction
-files are durable local artifacts, not a session-restoration store.
+process-local. `RuntimeConfig.ActionJournal` optionally binds a replay journal:
+final rewritten inputs are hashed after guard/permission checks, terminal results
+replay through post hooks, and unknown actions only retry after a verifier proves
+non-landing. `write_file` has a workspace-bound verifier; Bash has none. Typed
+settlement precedes result observers; cancellation settles as cancelled. The
+memory journal keeps every action identity while bounding retained result text.
+`StoredActionJournal` supplies transitions over an explicit `ActionStore`; the
+shipped Go SQLite backend and durable approval broker remain pending. No journal
+claims cross-process dispatch ownership or restart-safe exactly-once effects.
+Default subagents do not inherit the parent journal, matching Python fresh child
+state. Secret masking remains pending. Compaction files are durable local
+artifacts, not a session-restoration store.
 `task` is the tenth runtime tool and crosses the execution-risk gate before
 delegation. The default in-process provider creates a fresh child history,
 todo state and token meter, with a capability-selected subset of the parent

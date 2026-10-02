@@ -625,6 +625,110 @@ def _subagent_contracts(scratch: Path) -> dict[str, object]:
             "refusal": "(delegation refused: depth 3 exceeds subagent_max_depth=2; do the work directly)"}
 
 
+def _action_contracts(scratch: Path) -> dict[str, object]:
+    """Actual Python journal transitions, canonical identities and replay paths."""
+    import asyncio
+    import hashlib
+    from dataclasses import asdict, replace
+    from mini_loop.actions import (InMemoryActionJournal, DurableActionJournal,
+                                   _bounded_result, _payload_hash, SHED_RESULT)
+    from mini_loop.agent import Agent, _tool_action_id
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.registry import Tool, ToolCall, ToolRegistry, Hooks
+    from mini_loop.run_context import RunContext
+    from mini_loop.storage import SQLiteStateStore
+
+    scratch.mkdir(parents=True)
+    context = replace(RunContext.default(), message_id="m")
+    payloads = [
+        ("bash", {"command": "echo 汉字😀\n\u2028<>&"}),
+        ("bash", {"command": "echo x", "approval_prefix": [], "run_in_background": False}),
+        ("read_file", {"path": "proof", "limit": 0, "offset": 2}),
+        ("write_file", {"path": "out", "content": "x\r\ny"}),
+        ("edit_file", {"path": "out", "old_text": "x", "new_text": "y"}),
+        ("glob", {"pattern": "**/*.go"}),
+        ("TodoWrite", {"items": [{"content": "one", "status": "pending", "activeForm": "doing one"}]}),
+        ("TodoWrite", {"items": []}), ("task", {"prompt": "check", "agent_type": "Explore"}),
+        ("load_skill", {"name": "review", "scope": "agent"}), ("compress", {}),
+        ("ask_user", {"question": "继续？"}),
+    ]
+    inputs = [{"block": {"type": "tool_use", "id": "u", "name": name, "input": value},
+               "canonical": json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")),
+               "input_hash": _payload_hash(value),
+               "action_id": _tool_action_id(session_id="s", run_context=context, call=ToolCall(name, value, "u"))}
+              for name, value in payloads]
+    def normalized(record):
+        value = asdict(record)
+        value["created_at"] = 0
+        if value["completed_at"] is not None:
+            value["completed_at"] = 0
+        return value
+    runs = []
+    for backing in ("memory", "sqlite"):
+        store = SQLiteStateStore(scratch / f"{backing}.db") if backing == "sqlite" else None
+        journal = DurableActionJournal(store) if store else InMemoryActionJournal()
+        begin = dict(action_id="a", session_id="s", message_id="m", tool_use_id="u",
+                     tool_name="bash", input_value={"command": "echo x"})
+        records = [normalized(journal.begin(**begin)),
+                   normalized(journal.finish("a", status="completed", result="done")),
+                   normalized(journal.finish("a", status="failed", result="overwrite")),
+                   normalized(journal.begin(**begin)),
+                   normalized(journal.attach_workflow("a", "workflow")),
+                   normalized(journal.get("a"))]
+        errors = []
+        for operation in (lambda: journal.begin(**{**begin, "input_value": {"command": "other"}}),
+                          lambda: journal.attach_workflow("a", "different"),
+                          lambda: journal.finish("a", status="started")):
+            try:
+                operation()
+                errors.append(False)
+            except (ValueError, RuntimeError):
+                errors.append(True)
+        runs.append({"backing": backing, "records": records, "errors": errors})
+        if store:
+            store.close()
+    bounds = [{"tool": tool_name, "result": _bounded_result("😀" * length, tool_name=tool_name)}
+              for tool_name, length in [("bash", 4100), ("decision", 4100)]]
+    replays = []
+    for index, (status, verification) in enumerate(
+            [(status, "absent") for status in ("completed", "failed", "denied", "cancelled")]
+            + [("unknown", value) for value in ("absent", "yes", "no", "none", "invalid", "error")]):
+        store = SQLiteStateStore(scratch / f"replay-{index}.db")
+        journal = DurableActionJournal(store)
+        calls, events = [], []
+        async def handler(ctx, command):
+            calls.append(command)
+            return "effect"
+        def verify(ctx, call):
+            if verification == "error":
+                raise RuntimeError("cannot tell")
+            return {"yes": True, "no": False, "none": None, "invalid": "no"}.get(verification)
+        registry = ToolRegistry()
+        registry.register(Tool("bash", "test", {"type": "object", "properties": {"command": {"type": "string"}}}, handler,
+                               risk="exec", verify=None if verification == "absent" else verify))
+        call = ToolCall("bash", {"command": "echo x"}, "u")
+        action_id = _tool_action_id(session_id="s", run_context=context, call=call)
+        journal.begin(action_id=action_id, session_id="s", message_id="m", tool_use_id="u",
+                      tool_name="bash", input_value=call.input)
+        journal.finish(action_id, status=status, result=None if status == "unknown" else "recorded")
+        async def emit(event):
+            events.append(event)
+        agent = Agent(client=FakeAsyncAnthropic(), settings=Settings(fake_llm=True),
+                      workspace=scratch, tools=registry, hooks=Hooks(), emit=emit,
+                      state={"session_id": "s", "action_journal": journal})
+        output = asyncio.run(agent._exec_tool(call, run_context=context))
+        result = next(event for event in reversed(events) if event["type"] == "tool_result")
+        reconciliation = next((event for event in events if event["type"] == "reconcile"), None)
+        replays.append({"status": status, "verification": verification, "output": output,
+                        "calls": len(calls), "replayed": result.get("replayed", False),
+                        "failed": result["error"],
+                        "verdict": reconciliation["verdict"] if reconciliation else None,
+                        "record": normalized(journal.get(action_id))})
+        store.close()
+    return {"inputs": inputs, "runs": runs, "bounds": bounds, "replays": replays, "shed_result": SHED_RESULT}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -693,6 +797,7 @@ def _snapshot() -> dict[str, bytes]:
         skill_contracts = _skill_contracts(Path(scratch) / "skills")
         context_contracts = _context_contracts(Path(scratch) / "context")
         subagent_contracts = _subagent_contracts(Path(scratch) / "subagents")
+        action_contracts = _action_contracts(Path(scratch) / "actions")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -720,6 +825,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-skills.json": _json_bytes(skill_contracts),
         "python-context.json": _json_bytes(context_contracts),
         "python-subagents.json": _json_bytes(subagent_contracts),
+        "python-actions.json": _json_bytes(action_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

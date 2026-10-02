@@ -80,7 +80,7 @@ Record its parity evidence and remaining gaps before checking it off.
 - [x] P1 Python directory split (server smoke, complete Python suite, and
       repository verifiers pass from the documented layout)
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
-      usage, stop/error/subagent events and run provenance implemented;
+      usage, stop/error/subagent events, run provenance and action records implemented;
       other event and state variants remain)
 - [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
       fake-provider slice, scoped child execution, exhaustion markers and cancellation repair implemented;
@@ -88,8 +88,8 @@ Record its parity evidence and remaining gaps before checking it off.
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
-      a bound provider; durable approvals,
-      action journal and masking remain)
+      a bound provider; optional action replay and journal transitions are implemented;
+      durable approvals, SQLite backend and masking remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -450,3 +450,70 @@ annotation and HTTP/SSE. Shared concurrency limiters, stuck detection, complete
 lifecycle events, custom child broker/state inheritance, owner resources,
 streaming transport, recovery and session restoration remain open. The full
 objective and G0-G7 remain open.
+
+## 2026-10-02 action journal slice
+
+- `ActionRecord`, `ActionStatus`, `ActionRequest`, `ActionSettlement`, action IDs,
+  workflow IDs and input hashes are named types. `InMemoryActionJournal` and
+  `StoredActionJournal` implement the Python begin/finish/get/workflow-binding
+  contracts; the stored adapter additionally supports explicit reconciliation
+  and scoped in-flight-to-unknown marking through a typed `ActionStore`. Record
+  snapshots detach optional fields. Payload or workflow reuse conflicts are
+  typed errors; finish cannot rewrite a terminal or unknown record, and only
+  reconcile can settle unknown. A stored adapter is not itself a durable backend.
+- Optional `RuntimeConfig.ActionJournal` / `NewJournaledToolGate` binds replay
+  into the existing gate. Action IDs hash session/message/tool-use/name; sorted,
+  compact UTF-8 JSON binds final rewritten arguments. Current guards and
+  permissions run before journal begin, including for replay. Denied calls do
+  not become dispatched records. Terminal replay reuses the stored result while
+  retaining post hooks; source replay does not reproduce old failure flags.
+  Cancellation settles cancelled without reusing its cancelled context. Store
+  settlement faults propagate before observers. Nil journal retains the bare
+  agent default. Default children do not inherit the parent's state journal.
+- `ToolVerifier` uses three named verdicts. Unknown actions retry only after
+  proven non-landing; undetermined, invalid/error or panic cannot become a no.
+  Proven landing returns the source reconciliation marker and uses the optional
+  journal reconciliation seam. `write_file` has a bound verifier; Bash has none.
+  Full strict UTF-8 reads preserve Python universal-newline semantics, validate
+  even a mismatching suffix and use bounded working memory. Source behavior is
+  preserved: a proven non-landing retry cannot rewrite unknown via finish, so
+  that record stays unknown until explicit reconciliation. Result metadata is
+  typed on `ToolOutcome`; complete lifecycle/SSE event projection remains open.
+- Ordinary results retain at most 4,000 Unicode characters with an explicit
+  truncation marker; the future decision result budget remains 512 KiB characters.
+  Memory retention bounds both count (default 512) and aggregate characters
+  (2,048,000), shedding result text while keeping every identity/status to avoid
+  reexecution after eviction. Growth/shedding diagnostics are bounded. Journals
+  do not claim cross-process dispatch ownership or exactly-once external effects.
+- The thirteenth Python export adds twelve canonical input/hash/identity cases,
+  six transitions per actual memory/SQLite journal, conflicts/invalid settlement,
+  two Unicode result bounds and ten actual tool replay/reconciliation paths.
+  The Go stored-adapter tests use a typed test backing and do not prove SQLite
+  persistence. Go integration covers final rewrites, post-hook replay, current
+  permission refusal, cancellation/fault propagation, shared-journal session
+  isolation, workflow binding, retention without identity eviction and bound
+  write verification including malformed UTF-8/newlines.
+- Validation: `go test ./...`, `go vet ./...`, `go test -race ./...`, thirteen-file
+  Python export check, all 19 scanning guards and `git diff --check` passed.
+  `.venv/bin/python -m pytest -q`: 2151 passed, 28 skipped, 24 subtests passed,
+  three existing dependency deprecation warnings. Reference mutation selectors
+  `reconcile`, `action-results` and `decision-results` caught all three mutations;
+  this is not a Go mutation suite or a full 377-guard run. No Python package
+  modules changed, so invariant declarations did not require revalidation.
+- README baseline, canonical Mermaid, boundary prose and interactive source
+  were updated together. Archify passed 9/9 showcase checks, zero warnings/errors,
+  after routing the new journal connection away from the reported crossings.
+  Specification SHA-256:
+  `f16190b14c9daa87781d484f68b319d7f12ac225b8b3015b20bd4e20be530cde`
+  (13,516 bytes); generated HTML SHA-256:
+  `4d7014f7f04980b5f11a96fde1cd325ebbd22a2fa8be7e454e7e7ec3212cb8f7`
+  (651,938 bytes). Browser visual review remains unavailable after the earlier
+  local-file policy block. Runtime tests ran on macOS; live provider and
+  cross-platform/restart evidence remain open.
+
+Next: typed approval broker, session grants/questions and persistence-fault
+reporting, then the SQLite backend, masking, cache annotation and HTTP/SSE.
+The SQLite driver dependency authorization is pending under AGENTS.md; this
+slice adds no dependencies. Session restoration, leases, shared limiters,
+stuck detection, complete lifecycle events and remaining optional features are
+still required. The full objective and G0-G7 remain open.

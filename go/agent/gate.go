@@ -49,10 +49,26 @@ type ResultObserver interface {
 }
 
 type ToolOutcome struct {
-	Output string
-	Denied bool
-	Failed bool
-	events []PermissionEvent
+	Output         string
+	Denied         bool
+	Failed         bool
+	events         []PermissionEvent
+	ActionID       ActionID
+	Replayed       bool
+	reconciliation *ActionReconciliation
+}
+
+func (outcome ToolOutcome) Reconciliation() (ActionReconciliation, bool) {
+	if outcome.reconciliation == nil {
+		return ActionReconciliation{}, false
+	}
+	return *outcome.reconciliation, true
+}
+
+type ActionReconciliation struct {
+	ActionID   ActionID
+	Verdict    EffectVerdict
+	Verifiable bool
 }
 
 func (outcome ToolOutcome) PermissionEvents() []PermissionEvent {
@@ -77,9 +93,21 @@ type ToolGate struct {
 	observers []ResultObserver
 	mu        sync.Mutex
 	problems  []string
+	journal   ActionJournal
 }
 
 const maxGateProblems = 100
+
+// NewJournaledToolGate binds replay/settlement to this gate instance. A nil
+// journal preserves the bare-agent path; storage is an explicit caller choice.
+func NewJournaledToolGate(catalog *ToolCatalog, policy *PermissionPolicy, hooks GateHooks, journal ActionJournal) (*ToolGate, error) {
+	gate, err := NewToolGate(catalog, policy, hooks)
+	if err != nil {
+		return nil, err
+	}
+	gate.journal = journal
+	return gate, nil
+}
 
 func NewToolGate(catalog *ToolCatalog, policy *PermissionPolicy, hooks GateHooks) (*ToolGate, error) {
 	if catalog == nil || policy == nil {
@@ -123,6 +151,7 @@ func notifyObserver(observer ResultObserver, ctx context.Context, authority Tool
 }
 
 func (gate *ToolGate) finish(ctx context.Context, authority ToolAuthority, call ToolCall, outcome ToolOutcome) ToolOutcome {
+	outcome.ActionID = authority.ActionID
 	for _, observer := range gate.observers {
 		if err := notifyObserver(observer, ctx, authority, call, outcome); err != nil {
 			gate.recordProblem(fmt.Sprintf("result observer failed for %s: %T", call.Name(), err))
@@ -133,7 +162,7 @@ func (gate *ToolGate) finish(ctx context.Context, authority ToolAuthority, call 
 
 // Dispatch is the only path from a model tool_use to a handler. Guards and
 // permissions see all before-hook rewrites; denials bypass replacement hooks.
-func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, call ToolCall) (ToolOutcome, error) {
+func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, call ToolCall) (returned ToolOutcome, dispatchError error) {
 	if err := authority.Validate(); err != nil {
 		return ToolOutcome{}, err
 	}
@@ -143,6 +172,26 @@ func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, cal
 	if err := ctx.Err(); err != nil {
 		return ToolOutcome{}, err
 	}
+	if authority.RunContext.MessageID() == "" {
+		run, err := DefaultRunContext()
+		if err != nil {
+			return ToolOutcome{}, err
+		}
+		authority.RunContext = run
+	}
+	id, err := ToolActionID(authority.SessionID, authority.RunContext, call)
+	if err != nil {
+		return ToolOutcome{}, err
+	}
+	authority.ActionID = id
+	journalStarted := false
+	defer func() {
+		if ctx.Err() != nil && journalStarted {
+			if _, err := gate.journal.Finish(context.WithoutCancel(ctx), ActionSettlement{ActionID: id, Status: ActionCancelled}); err != nil {
+				dispatchError = err
+			}
+		}
+	}()
 	failed := func(err error) ToolOutcome {
 		return gate.finish(ctx, authority, call, ToolOutcome{Output: "Error: " + err.Error(), Failed: true})
 	}
@@ -195,7 +244,49 @@ func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, cal
 		return gate.finish(ctx, authority, call, ToolOutcome{Output: permission.message, Denied: true, events: permission.Events()}), nil
 	}
 	outcome := ToolOutcome{events: permission.Events()}
-	if !exists {
+	if gate.journal != nil {
+		prior, err := gate.journal.Begin(ctx, ActionRequest{ActionID: id, SessionID: authority.SessionID, MessageID: authority.RunContext.MessageID(), ToolUseID: call.ID, Input: call.Input})
+		if err == nil && prior.Status == ActionStarted {
+			journalStarted = true
+		}
+		if ctx.Err() != nil {
+			return ToolOutcome{}, ctx.Err()
+		}
+		if err != nil {
+			return failed(err), nil
+		}
+		switch {
+		case prior.Status.Terminal():
+			outcome.Replayed = true
+			if prior.Result != nil {
+				outcome.Output = *prior.Result
+			}
+		case prior.Status == ActionUnknown:
+			verdict := verifyEffect(ctx, definition, authority, call)
+			if ctx.Err() != nil {
+				return ToolOutcome{}, ctx.Err()
+			}
+			outcome.reconciliation = &ActionReconciliation{id, verdict, definition.verifier != nil}
+			switch verdict {
+			case EffectAlreadyApplied:
+				outcome.Output, outcome.Replayed = ReconciledActionResult, true
+				if reconciler, ok := gate.journal.(ActionReconciler); ok {
+					if _, err := reconciler.Reconcile(ctx, ActionSettlement{id, ActionCompleted, &outcome.Output}); err != nil {
+						return failed(err), nil
+					}
+				}
+			case EffectNotApplied:
+				journalStarted = true
+			default:
+				outcome.Output, outcome.Replayed = unknownToolResult, true
+			}
+		default:
+			journalStarted = true
+		}
+	}
+	if outcome.Replayed {
+		// Post hooks still transform a replay, as in the Python tool boundary.
+	} else if !exists {
 		outcome.Output = "Unknown tool: " + string(call.Name())
 		outcome.Failed = true
 	} else {
@@ -221,6 +312,18 @@ func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, cal
 			break
 		}
 		outcome.Output = output
+	}
+	if journalStarted {
+		status := ActionCompleted
+		if outcome.Denied {
+			status = ActionDenied
+		} else if outcome.Failed {
+			status = ActionFailed
+		}
+		if _, err := gate.journal.Finish(ctx, ActionSettlement{id, status, &outcome.Output}); err != nil {
+			return ToolOutcome{}, err
+		}
+		journalStarted = false
 	}
 	return gate.finish(ctx, authority, call, outcome), nil
 }

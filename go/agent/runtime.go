@@ -71,6 +71,7 @@ type RuntimeConfig struct {
 	SubagentMaxRounds int
 	Subagents         SubagentProvider
 	RoleToolPolicy    RoleToolPolicy
+	ActionJournal     ActionJournal
 }
 
 type runtimeHandler struct {
@@ -217,7 +218,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
-	gate, err := NewToolGate(catalog, DefaultPermissionPolicy(config.Approver), config.Hooks)
+	gate, err := NewJournaledToolGate(catalog, DefaultPermissionPolicy(config.Approver), config.Hooks, config.ActionJournal)
 	if err != nil {
 		return nil, err
 	}

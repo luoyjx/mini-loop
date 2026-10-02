@@ -62,6 +62,14 @@ func decodeRune(data []byte) (rune, int, utf8Issue) {
 type textReader struct{ reader *bufio.Reader }
 
 func (reader *textReader) readRune() (rune, error) {
+	return reader.readTextRune(false)
+}
+
+func (reader *textReader) readStrictRune() (rune, error) {
+	return reader.readTextRune(true)
+}
+
+func (reader *textReader) readTextRune(strict bool) (rune, error) {
 	data, err := reader.reader.Peek(4)
 	if len(data) == 0 {
 		return 0, err
@@ -69,7 +77,10 @@ func (reader *textReader) readRune() (rune, error) {
 	if err != nil && err != io.EOF {
 		return 0, err
 	}
-	r, size, _ := decodeRune(data)
+	r, size, issue := decodeRune(data)
+	if strict && issue != validUTF8 {
+		return 0, fmt.Errorf("invalid UTF-8: %s", issue)
+	}
 	_, _ = reader.reader.Discard(size)
 	if r == '\r' {
 		if next, _ := reader.reader.Peek(1); len(next) > 0 && next[0] == '\n' {

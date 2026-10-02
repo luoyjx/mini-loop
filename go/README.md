@@ -84,8 +84,29 @@ with an auto parent and shared-provider session isolation under the race detecto
 This library slice does not supply authenticated HTTP ownership, shared tool/LLM
 limiters, stuck detection or complete lifecycle events. Custom broker/state
 inheritance, owner resources and remote provider transport remain open.
-Approvals are an in-process callback, with no durable broker, action journal,
-secret masking, HTTP server or session persistence yet. Python
+`RuntimeConfig.ActionJournal` and `NewJournaledToolGate` optionally bind a typed
+journal. Stable action IDs hash session/message/tool-use/name; canonical input
+hashes bind final rewritten arguments. Terminal replay does not execute again,
+but still crosses current permissions and post hooks. An unknown action asks an
+optional `ToolVerifier`: already-applied returns a reconciliation marker,
+not-applied permits retry, and undetermined/error/panic preserves unknown.
+`write_file` compares the full strict UTF-8 text with universal newlines inside
+the bound workspace; Bash cannot verify an opaque shell effect.
+`InMemoryActionJournal` keeps all identities and sheds old result text by count
+and aggregate Unicode character budgets. `StoredActionJournal` ports Python
+transitions over a concrete `ActionStore` interface; its durability depends on
+that injected store. The Go SQLite adapter remains pending. Finish changes only
+started records, reconcile changes only unknown records, and terminal settlement
+is immutable. Like Python, a proven non-landing retry does not rewrite unknown
+through finish. Journal settlement runs before observers; cancelled calls settle
+without the cancelled context, and settlement faults propagate. Default children
+have fresh state and do not inherit the parent journal. No cross-process dispatch
+claim or exactly-once side-effect guarantee is supplied by these journals.
+The thirteenth Python snapshot compares twelve input/hash/identity cases, memory
+and SQLite transitions, Unicode bounds and ten real replay/reconciliation paths.
+The Go stored-adapter tests use a typed test backing; they do not prove SQLite
+persistence. Approvals remain an in-process callback. Durable broker, secret
+masking, HTTP server and session persistence remain pending. Python
 contract snapshots and fake reply fixtures are generated into `testdata/` by
 `../python/tools/export_go_contracts.py`.
 
