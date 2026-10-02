@@ -79,6 +79,11 @@ type RuntimeConfig struct {
 	StuckDetector     StuckDetector
 	StopHooks         []StopHook
 	EventSink         EventSink
+
+	UserPromptHooks []UserPromptHook
+	Injectors       []MessageInjector
+	ModelLimiter    *ConcurrencyLimiter
+	ToolLimiter     *ConcurrencyLimiter
 }
 
 type runtimeHandler struct {
@@ -181,6 +186,21 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 // questions plus deferred compaction to the implemented workspace tools.
 // Task delegates to a fresh child through the explicit subagent seam.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
+	for _, hook := range config.UserPromptHooks {
+		if hook == nil {
+			return nil, errors.New("user prompt hook cannot be nil")
+		}
+	}
+	for _, injector := range config.Injectors {
+		if injector == nil {
+			return nil, errors.New("message injector cannot be nil")
+		}
+	}
+	for _, limiter := range []*ConcurrencyLimiter{config.ModelLimiter, config.ToolLimiter} {
+		if limiter != nil && limiter.slots == nil {
+			return nil, errors.New("uninitialized concurrency limiter")
+		}
+	}
 	if config.Approvals != nil && (config.Approver != nil || config.Questions != nil) {
 		return nil, errors.New("approval broker conflicts with an explicit approver/question surface")
 	}
@@ -268,6 +288,12 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		session.stuckDetector = config.StuckDetector
 	}
 	session.stopHooks = append([]StopHook(nil), config.StopHooks...)
+	session.promptHooks = append([]UserPromptHook(nil), config.UserPromptHooks...)
+	session.injectors = append([]MessageInjector(nil), config.Injectors...)
+	session.modelLimiter = config.ModelLimiter
+	if config.ToolLimiter != nil {
+		session.toolLimiter = config.ToolLimiter
+	}
 	session.bash = config.Bash
 	session.todos, session.events = handler.todos, handler.events
 	session.secrets, session.events.secrets = config.Secrets, config.Secrets

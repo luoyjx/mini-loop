@@ -4501,7 +4501,7 @@
       <p class="subtitle">Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Managed admission/cancel, typed spans, bounded subscriptions, ten tools and context. HTTP, streaming/recovery and SQLite pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed loop seams, ordered parallel groups and inherited pools. HTTP, streaming/recovery and SQLite pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4601,11 +4601,11 @@
         <path data-edge-from="session" data-edge-to="state" data-edge-label="epochs / events" data-edge-key="15" data-edge-id="persist" data-composition-points="1505,332;1505,356;1523.5,356;1523.5,776;1507.5,776;1507.5,800" d="M 1505 332 L 1505 348 Q 1505 356 1513 356 L 1515.5 356 Q 1523.5 356 1523.5 364 L 1523.5 768 Q 1523.5 776 1515.5 776 L 1515.5 776 Q 1507.5 776 1507.5 784 L 1507.5 800" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="toolPolicy" data-edge-to="state" data-edge-label="action outcomes" data-edge-key="16" data-edge-id="recordEffects" data-composition-points="1780,578;1702.5,578;1702.5,839;1625,839" d="M 1780 578 L 1710.5 578 Q 1702.5 578 1702.5 586 L 1702.5 831 Q 1702.5 839 1694.5 839 L 1625 839" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="toolPolicy" data-edge-to="decisions" data-edge-key="17" data-edge-id="decisionRequest" data-composition-points="1990,571;2014,571;2014,594;2086,594;2086,578;2110,578" d="M 1990 571 L 2006 571 Q 2014 571 2014 579 L 2014 586 Q 2014 594 2022 594 L 2078 594 Q 2086 594 2086 586 L 2086 586 Q 2086 578 2094 578 L 2110 578" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="goSession" data-edge-to="goContext" data-edge-label="fit + compact" data-edge-key="18" data-edge-id="goBuildContext" data-composition-points="965,1256;965,1308;1015,1308;1015,1360" d="M 965 1256 L 965 1300 Q 965 1308 973 1308 L 1007 1308 Q 1015 1308 1015 1316 L 1015 1360" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="goSession" data-edge-to="goContext" data-edge-label="fit + compact" data-edge-key="18" data-edge-id="goBuildContext" data-composition-points="1015,1256;1015,1360" d="M 1015 1256 L 1015 1360" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="goContext" data-edge-to="goArchives" data-edge-label="spill / archive" data-edge-key="19" data-edge-id="goArchive" data-composition-points="850,1398;740,1398;740,1578;660,1578" d="M 850 1398 L 748 1398 Q 740 1398 740 1406 L 740 1570 Q 740 1578 732 1578 L 660 1578" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="goContext" data-edge-to="goFake" data-edge-label="typed request" data-edge-key="20" data-edge-id="goRequest" data-composition-points="850,1398;700,1398;700,1218;550,1218" d="M 850 1398 L 708 1398 Q 700 1398 700 1390 L 700 1226 Q 700 1218 692 1218 L 550 1218" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="goFake" data-edge-to="goSession" data-edge-label="typed reply" data-edge-key="21" data-edge-id="goReply" data-composition-points="550,1218;850,1218" d="M 550 1218 L 850 1218" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="goSession" data-edge-to="goGate" data-edge-label="typed ToolCall" data-edge-key="22" data-edge-id="goDispatch" data-composition-points="1080,1218;1370,1218" d="M 1080 1218 L 1370 1218" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="goSession" data-edge-to="goGate" data-edge-label="groups / barriers" data-edge-key="22" data-edge-id="goDispatch" data-composition-points="1180,1218;1370,1218" d="M 1180 1218 L 1370 1218" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="goGate" data-edge-to="goBash" data-edge-label="guarded effect" data-edge-key="23" data-edge-id="goExecute" data-composition-points="1650,1218;1920,1218" d="M 1650 1218 L 1920 1218" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="goGate" data-edge-to="goFiles" data-edge-label="bound file effect" data-edge-key="24" data-edge-id="goFileEffect" data-composition-points="1650,1218;1785,1218;1785,1398;1920,1398" d="M 1650 1218 L 1777 1218 Q 1785 1218 1785 1226 L 1785 1390 Q 1785 1398 1793 1398 L 1920 1398" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="goGate" data-edge-to="goActions" data-edge-label="replay / settle" data-edge-key="25" data-edge-id="goReplay" data-composition-points="1510,1256;1510,1280;1450,1280;1450,1320;1510,1320;1510,1360" d="M 1510 1256 L 1510 1272 Q 1510 1280 1502 1280 L 1458 1280 Q 1450 1280 1450 1288 L 1450 1312 Q 1450 1320 1458 1320 L 1502 1320 Q 1510 1320 1510 1328 L 1510 1360" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
@@ -4618,7 +4618,7 @@
         <path data-edge-from="goResources" data-edge-to="goApprovals" data-edge-label="text question" data-edge-key="32" data-edge-id="goQuestion" data-composition-points="2200,1578;2280,1578;2280,1018;2200,1018" d="M 2200 1578 L 2272 1578 Q 2280 1578 2280 1570 L 2280 1026 Q 2280 1018 2272 1018 L 2200 1018" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goApprovals" data-edge-to="goSession" data-edge-label="scoped approvals" data-edge-key="33" data-edge-id="goApprovalEvents" data-composition-points="1920,1018;1300,1018;1300,1090;790,1090;790,1218;850,1218" d="M 1920 1018 L 1308 1018 Q 1300 1018 1300 1026 L 1300 1082 Q 1300 1090 1292 1090 L 798 1090 Q 790 1090 790 1098 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goGate" data-edge-to="goResources" data-edge-label="bound session effect" data-edge-key="34" data-edge-id="goResourceEffect" data-composition-points="1650,1218;1785,1218;1785,1578;1920,1578" d="M 1650 1218 L 1777 1218 Q 1785 1218 1785 1226 L 1785 1570 Q 1785 1578 1793 1578 L 1920 1578" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
-        <path data-edge-from="goManaged" data-edge-to="goSession" data-edge-label="owns core" data-edge-key="35" data-edge-id="goManagedRun" data-composition-points="990,1056;990,1120;965,1120;965,1180" d="M 990 1056 L 990 1112 Q 990 1120 982 1120 L 973 1120 Q 965 1120 965 1128 L 965 1180" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="goManaged" data-edge-to="goSession" data-edge-label="owns core" data-edge-key="35" data-edge-id="goManagedRun" data-composition-points="990,1056;990,1120;1015,1120;1015,1180" d="M 990 1056 L 990 1112 Q 990 1120 998 1120 L 1007 1120 Q 1015 1120 1015 1128 L 1015 1180" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4806,16 +4806,16 @@
         <text data-detail="context" x="440" y="1232" class="t-muted" font-size="9" text-anchor="middle">typed requests / replies + usage</text>
         </g>
 
-        <g id="node-goSession" data-node-id="goSession" data-node-label="Go Session" tabindex="0" role="button" aria-label="Focus Go Session, loop / spans / event bus, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="loop / spans / event bus" data-node-tag="process-local" data-node-context="Independent Go port - in progress">
-          <title>Go Session · loop / spans / event bus · Independent Go port - in progress · process-local</title>
-          <rect x="850" y="1180" width="230" height="76" rx="6" class="c-mask"/>
-          <rect x="850" y="1180" width="230" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+        <g id="node-goSession" data-node-id="goSession" data-node-label="Go Session" tabindex="0" role="button" aria-label="Focus Go Session, hooks / injectors / ordered groups, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="hooks / injectors / ordered groups" data-node-tag="process-local" data-node-context="Independent Go port - in progress">
+          <title>Go Session · hooks / injectors / ordered groups · Independent Go port - in progress · process-local</title>
+          <rect x="850" y="1180" width="330" height="76" rx="6" class="c-mask"/>
+          <rect x="850" y="1180" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 1186) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-detail-anchor x="965" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Session</text>
-        <text data-detail="context" x="965" y="1232" class="t-muted" font-size="9" text-anchor="middle">loop / spans / event bus</text>
-        <text data-detail="fine" x="965" y="1248" class="t-backend" font-size="7" text-anchor="middle">process-local</text>
+          <text data-detail-anchor x="1015" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Session</text>
+        <text data-detail="context" x="1015" y="1232" class="t-muted" font-size="9" text-anchor="middle">hooks / injectors / ordered groups</text>
+        <text data-detail="fine" x="1015" y="1248" class="t-backend" font-size="7" text-anchor="middle">process-local</text>
         </g>
 
         <g id="node-goGate" data-node-id="goGate" data-node-label="Go ToolGate" tabindex="0" role="button" aria-label="Focus Go ToolGate, before / guard / permission / after, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="before / guard / permission / after" data-node-tag="deny is final" data-node-context="Independent Go port - in progress">
@@ -4891,15 +4891,15 @@
         <text data-detail="fine" x="1510" y="1428" class="t-database" font-size="7" text-anchor="middle">memory + store interface</text>
         </g>
 
-        <g id="node-goChildren" data-node-id="goChildren" data-node-label="Go Subagent Sessions" tabindex="0" role="button" aria-label="Focus Go Subagent Sessions, role subset / fresh history / peer, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="role subset / fresh history / peer" data-node-tag="default depth limit: 2" data-node-context="Independent Go port - in progress">
-          <title>Go Subagent Sessions · role subset / fresh history / peer · Independent Go port - in progress · default depth limit: 2</title>
+        <g id="node-goChildren" data-node-id="goChildren" data-node-label="Go Subagent Sessions" tabindex="0" role="button" aria-label="Focus Go Subagent Sessions, role subset / inherited seams + pools, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="role subset / inherited seams + pools" data-node-tag="default depth limit: 2" data-node-context="Independent Go port - in progress">
+          <title>Go Subagent Sessions · role subset / inherited seams + pools · Independent Go port - in progress · default depth limit: 2</title>
           <rect x="1370" y="1540" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="1370" y="1540" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1376 1546) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="1535" y="1576" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Subagent Sessions</text>
-        <text data-detail="context" x="1535" y="1592" class="t-muted" font-size="9" text-anchor="middle">role subset / fresh history / peer</text>
+        <text data-detail="context" x="1535" y="1592" class="t-muted" font-size="9" text-anchor="middle">role subset / inherited seams + pools</text>
         <text data-detail="fine" x="1535" y="1608" class="t-backend" font-size="7" text-anchor="middle">default depth limit: 2</text>
         </g>
 
@@ -5031,9 +5031,9 @@
           <rect x="668.6" y="1198" width="62.8" height="14" rx="3" class="c-mask"/>
           <text x="700" y="1208" class="t-backend" font-size="8" text-anchor="middle">typed reply</text>
         </g>
-        <g data-detail="context" data-edge-from="goSession" data-edge-to="goGate" data-edge-label="typed ToolCall" data-edge-key="22" data-edge-id="goDispatch">
-          <rect x="1186.4" y="1198" width="77.2" height="14" rx="3" class="c-mask"/>
-          <text x="1225" y="1208" class="t-security" font-size="8" text-anchor="middle">typed ToolCall</text>
+        <g data-detail="context" data-edge-from="goSession" data-edge-to="goGate" data-edge-label="groups / barriers" data-edge-key="22" data-edge-id="goDispatch">
+          <rect x="1194.2" y="1198" width="91.6" height="14" rx="3" class="c-mask"/>
+          <text x="1240" y="1208" class="t-security" font-size="8" text-anchor="middle">groups / barriers</text>
         </g>
         <g data-detail="context" data-edge-from="goGate" data-edge-to="goBash" data-edge-label="guarded effect" data-edge-key="23" data-edge-id="goExecute">
           <rect x="1635.4" y="1166" width="77.2" height="14" rx="3" class="c-mask"/>
@@ -5366,7 +5366,10 @@
           <li>&bull; Optional registry masking precedes result settlement and covers implemented events, approvals and compaction files; live arguments stay raw</li>
           <li>&bull; Real host shell consumes selected credentials, bounds shared capture, masks streams and kills process groups; Seatbelt and future sink coverage remain open</li>
           <li>&bull; Default cache uses detached wire annotations; stuck detection keeps 20 steps and nudges once before halting</li>
-          <li>&bull; Children inherit cache/stuck policies and stop hooks with fresh state; HTTP, restore and real provider remain open</li>
+          <li>&bull; Children inherit typed prompt/injector seams, cache/stuck policies and exact model/tool pools with fresh state</li>
+          <li>&bull; Parallel groups preserve result/step order; exclusive tools are barriers and bypass tool permits</li>
+          <li>&bull; Bare model calls are unbounded; parallel tools default to eight per session unless a pool is shared</li>
+          <li>&bull; Todo reminder counters survive user turns; HTTP, steering, restore and real provider remain open</li>
           <li>&bull; Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records</li>
           <li>&bull; Transcript rewrites open event epochs; no durable cursor gap recovery or HTTP routes yet</li>
         </ul>

@@ -81,8 +81,9 @@ The twelfth Python snapshot covers four role selections, five context snapshots
 and three real child loops (read, write and exhaustion). Go tests also cover
 custom-provider refusal/cancellation, nested task rebinding, readonly Explore
 with an auto parent and shared-provider session isolation under the race detector.
-This library slice does not supply authenticated HTTP ownership, shared tool/LLM
-limiters or complete lifecycle events. Custom broker/state
+This library slice does not supply authenticated HTTP ownership or a fleet
+manager. Core lifecycle events and explicit shared limiters are implemented.
+Custom broker/state
 inheritance, owner resources and remote provider transport remain open.
 `RuntimeConfig.ActionJournal` and `NewJournaledToolGate` optionally bind a typed
 journal. Stable action IDs hash session/message/tool-use/name; canonical input
@@ -138,7 +139,7 @@ interface stays supported. The typed `Sandbox` argv seam rebinds to the workspac
 no Go Seatbelt backend ships and cwd is not confinement. Runtime process tests
 ran on macOS. Linux code has no Linux-host execution evidence; other platforms
 reject construction. The sixteenth Python snapshot covers eight actual commands,
-seven rendering recipes and six typo-blocklist decisions. Complete tool events,
+seven rendering recipes and six typo-blocklist decisions. Core tool events are implemented;
 real provider transport and additional sink masking remain pending.
 
 Cache and stuck policies are enabled by default. `RuntimeConfig.CachePolicy`
@@ -168,6 +169,44 @@ Go tests also cover bounded/reset state, paired error exits, rewritten input
 identity, summary and child policy inheritance, and detached/masked events.
 Optional input fields preserve absent versus explicit JSON null through wire,
 cloning and masking; their execution defaults remain unchanged.
+
+`RuntimeConfig.UserPromptHooks` form a typed sequential rewrite chain before the
+submitted user message; nil preserves text and an empty replacement is valid.
+Named `Injectors` receive detached messages, todos and caller-stamped authority,
+validate an entire typed message batch before append, and run before runtime
+facts and compaction each round. Children inherit both seams with fresh history.
+Callbacks must not reenter the locked session and shared callbacks must be safe
+for concurrent sessions. Injected text never changes authority.
+
+Consecutive parallel-safe calls overlap; exclusive calls wait for the prior group
+and remain ordering barriers. `ToolDefinition.WithExecutionClassifier` can choose
+per-call `ExecutionParallel` or `ExecutionExclusive` before gate rewrites. Errors,
+panics and invalid values fall back to exclusive. Static readonly and parallel
+traits remain independent. Every effect still crosses the gate. Result rows and
+stuck steps follow model order; tool-use telemetry starts in that order while
+result telemetry follows completion. Interrupted groups join started workers,
+retain recorded outputs and pair unfinished calls with unknown results. Worker
+panics become type-only errors and release capacity; exclusive panics retain the
+existing repair/rethrow behavior. Custom handlers must honor cancellation.
+
+`NewConcurrencyLimiter(ConcurrencyLimit(n))` supplies a positive shared pool.
+Set `RuntimeConfig.ModelLimiter` to cap provider calls across sessions, children
+and summaries. Nil is unbounded, matching a bare Python Agent. Parallel tools
+use a fresh eight-slot pool unless `ToolLimiter` is explicitly shared; children
+inherit the exact pointers. Exclusive tools bypass this pool, including default
+task delegation. A custom parallel classification must cover handler and hook
+safety; do not classify nested task execution as parallel while it waits for the
+same saturated tool pool. No fleet/environment configuration is implemented yet.
+An open todo board receives `<reminder>Update your todos.</reminder>` after three
+tool batches without an attempted TodoWrite. The counter persists across user
+turns; child counters are fresh and a TodoWrite attempt resets it even if denied.
+
+The nineteenth Python snapshot compares actual classified batch overlap/barriers,
+ordered outputs and stuck hashes, six mode decisions, nil/empty prompt rewrites
+and four cross-turn Todo counters. Deterministic Go synchronization tests cover
+shared pool caps and waiting cancellation, exclusive bypass, completed-sibling
+repair, worker joins, panic capacity release, atomic injector validation and
+child seam/pool inheritance. Steering and provider transport/recovery remain open.
 
 ```sh
 cd go

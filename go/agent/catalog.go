@@ -97,6 +97,7 @@ type ToolDefinition struct {
 	handler      ToolHandler
 	schema       protocol.ToolSchema
 	verifier     ToolVerifier
+	classifier   ExecutionClassifier
 }
 
 type EffectVerdict string

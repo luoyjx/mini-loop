@@ -312,7 +312,7 @@ func (s *Session) completeModel(ctx context.Context, request protocol.ModelReque
 	start := ModelStartEvent{span, request.Purpose, request.Model, len(request.Messages), len(estimated) / 4, len(request.Tools), request.MaxTokens, fingerprint, systemHash, capability}
 	s.events.append(SessionEvent{kind: EventModelStart, modelStart: start})
 	started := time.Now()
-	reply, err := s.provider.Complete(ctx, request)
+	reply, err := s.limitedComplete(ctx, request)
 	if err == nil {
 		err = ctx.Err()
 	}
@@ -354,6 +354,19 @@ func truncateRunes(text string, cap int) string {
 	return text
 }
 func (s *Session) dispatchTool(ctx context.Context, run RunContext, use protocol.ToolUseBlock) (ToolOutcome, error) {
+	return s.dispatchToolAnnounced(ctx, run, use, nil)
+}
+
+func (s *Session) limitedComplete(ctx context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+	lease, err := s.modelLimiter.Acquire(ctx)
+	if err != nil {
+		return protocol.ModelReply{}, err
+	}
+	defer lease.Release()
+	return s.provider.Complete(ctx, request)
+}
+
+func (s *Session) dispatchToolAnnounced(ctx context.Context, run RunContext, use protocol.ToolUseBlock, announce func()) (ToolOutcome, error) {
 	call := ToolCall{ID: use.ID, Input: use.Input}
 	action, err := ToolActionID(s.id, run, call)
 	if err != nil {
@@ -365,6 +378,9 @@ func (s *Session) dispatchTool(ctx context.Context, run RunContext, use protocol
 	}
 	span := SpanID(id)
 	s.events.append(SessionEvent{kind: EventToolUse, toolUse: ToolUseEvent{use.Name, use.Input, use.ID, span, s.lastModelSpan, action, s.activityID, ToolLabel(use.Input)}})
+	if announce != nil {
+		announce()
+	}
 	started := time.Now()
 	outcome, err := s.gate.dispatch(ctx, ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode, RunContext: run.clone()}, call, func(v ActionReconciliation) {
 		s.events.append(SessionEvent{kind: EventReconcile, reconcile: ReconcileEvent{use.Input.Name(), v.ActionID, v.Verdict, v.Verifiable}})

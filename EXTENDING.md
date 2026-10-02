@@ -1195,3 +1195,16 @@ Notes:
 * Within one session run, `parallel_safe` tool handlers and their before/after
   hooks may overlap. Non-parallel-safe tools remain ordered barriers, and tool
   results are always appended in model-call order.
+
+The Go runtime exposes these implemented loop seams through `agent.RuntimeConfig`:
+`UserPromptHooks`, `Injectors`, `StopHooks`, `CachePolicy`, `StuckDetector`,
+`EventSink`, `ModelLimiter` and `ToolLimiter`. Prompt/injector views detach history,
+todos and caller authority; callbacks cannot reenter a running session. Shared
+hooks and parallel handlers must synchronize state and honor context cancellation.
+`ToolDefinition.WithExecutionClassifier` is evaluated before gate rewrites and
+fails to an exclusive barrier. Exclusive tools bypass the parallel-tool pool;
+custom nested delegation must avoid holding a permit while waiting for that same
+pool. The Go model pool is explicit (nil is unbounded); its default tool pool has
+eight slots per session, and children inherit the exact pools. A fleet manager
+and environment settings are still pending. See `go/README.md` for concrete
+semantics and the parity matrix for evidence.

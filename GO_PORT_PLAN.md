@@ -87,7 +87,8 @@ Record its parity evidence and remaining gaps before checking it off.
       fake-provider slice, cache annotation, stuck detection, scoped child execution,
       exhaustion markers and cancellation repair implemented;
       managed admission/cancellation and bounded subscriptions implemented;
-      remaining hooks/injectors, shared limiters and parallel batches remain)
+      prompt hooks/injectors, Todo nagging, shared limiters and ordered parallel batches
+      implemented; steering, transport/recovery and remaining context integrations remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
@@ -897,3 +898,97 @@ and durable storage. Remaining G1 work includes user-prompt hooks/injectors, tod
 nagging, shared concurrency limits and parallel batches. SQLite driver approval
 is still unanswered; no dependencies were added. Owner resources, trajectories,
 Go Seatbelt and optional features remain open. The G0-G7 goal stays active.
+
+## 2026-10-03 loop extensions and scheduling slice
+
+Reviewed Python `agent.py` prompt/injector/Todo-nag and `_exec_tool_batch`,
+`registry.py` per-call execution modes, `config.py` limits, and child semaphore
+inheritance against Go baseline `0e4d8e0`. This completes another G1/G2 library
+slice; the complete port remains open.
+
+Implemented:
+
+- Typed sequential `UserPromptHook`: nil preserves the submitted prompt, an
+  empty replacement is valid, and failure occurs before the user message.
+- Named `MessageInjector`: detached transcript/todo/authority views, whole-batch
+  typed validation before append, one pass before runtime facts and compaction
+  per model round. Go validates concrete protocol messages more strictly than
+  Python's injector role-presence check; error strings are not claimed identical.
+- Todo reminders after three tool batches without an attempted TodoWrite.
+  Counters survive user turns, attempts reset them even when denied, and fresh
+  children retain independent todos/counters.
+- Typed `ExecutionMode` / `ExecutionClassifier`: a per-call override before gate
+  rewriting; errors, panics and invalid values create an exclusive barrier.
+  Static readonly does not imply parallel. Default read_file and glob opt in.
+- Consecutive parallel groups with barriers; each worker retains the same gate.
+  Tool-use telemetry starts in model order, result telemetry follows completion,
+  and transcript results / bounded stuck steps drain in model order.
+- Explicit typed shared model/tool pools. Bare model calls remain unbounded;
+  parallel tools default to eight per session. RuntimeConfig can share pools
+  across sessions; children inherit the exact pools. Summaries use the model
+  pool, and exclusive tools (including default task delegation) bypass tool
+  permits. A custom nested task classifier must not hold a saturated pool while
+  waiting for that same pool.
+- Interrupted groups join all started workers, preserve completed results and
+  close unfinished uses as unknown before returning. Parallel worker panics
+  expose only their type and release capacity; group cancellation retains its
+  original failure cause instead of reporting a sibling's cancellation. Existing
+  exclusive panic repair/rethrow remains. Custom handlers must honor context
+  cancellation. These Go fault tests do not claim a complete differential corpus
+  for Python's parallel cancellation/crash windows.
+- Child inheritance of prompt/injector seams and limiter pointers, with fresh
+  history, todo/meter and stuck state. No new authority source or effect bypass.
+
+Evidence:
+
+- Nineteenth real-Python snapshot: six classifier decisions, nil/empty prompt
+  chain, forced reverse completions in two groups around a barrier, ordered
+  result rows / step hashes, and four cross-turn Todo-nag counters.
+- Deterministic Go synchronization checks: group overlap/barrier/tail ordering,
+  classification after an earlier barrier, shared pool caps, cancelled model/tool
+  admission, exclusive bypass, completed-sibling preservation, worker joins,
+  capacity release and original panic cause, next-turn recovery, atomic injector
+  rejection, per-round injection before compaction, and child seam/pool identity.
+- Original eighteen contract exports remain unchanged.
+- README canonical Mermaid, boundary explanation, Go docs and interactive source
+  now describe the actual loop scheduling and inherited pools.
+
+Validation:
+
+- Final `go test ./...`, `go vet ./...` and `go test -race ./...`: pass.
+  Earlier focused synchronization/race runs also passed.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: all 19 current.
+  `.venv/bin/python python/tools/verify_scans.py`: all 19 anchored scans pass.
+- Full `.venv/bin/python -m pytest -q`: **2148 passed, 28 skipped, 3 failed,
+  24 subtests passed, 4 warnings**, 351.78 seconds. Failures:
+  `test_agent.py::test_sessions_run_concurrently` (0.755 > 0.5 seconds),
+  `test_double_cost.py::test_a_forty_turn_session_stays_fast` (1.112 > 0.5),
+  and `test_curriculum.py::test_bash_background_flag_routes_through_background_manager`
+  (empty completion injection after its fixed 50ms wait).
+- Targeted rerun: background case passed; concurrent-session and forty-turn
+  thresholds still failed (0.639 and 0.914 seconds). The previous lifecycle
+  checkpoint already recorded those timing failures and a clean baseline
+  archive's forty-turn failure. Root cause remains unconfirmed; this full gate
+  is **not green**. Python package source, tests, waits and thresholds are unchanged.
+  Warnings: three dependency deprecations and an asyncio subprocess-destructor
+  event-loop-closed warning.
+- Four targeted Python mutation guards passed: `injector-return-unchecked`,
+  `broken-classifier-goes-parallel`, `batch-results-follow-completion-order`,
+  `barrier-runs-before-the-group-settles` (one `verify_guards.py -k NAME` invocation
+  per guard). They verify the source guard anchors; Go behavior is verified by
+  its synchronization and differential tests above.
+- New Go domain/service files contain no stored broad dynamic payload types.
+  Python package invariants were not rerun because package modules are unchanged.
+- Interactive map regenerated from JSON: **9/9 showcase checks**, zero errors or
+  warnings. Spec SHA `a059e8a198bdcdc7e5672fb1e7b0e59e3115eb7cad97c50fcb84a94a7ee9bf6f`,
+  HTML SHA `e409f2ce48bf1cc05762def9654ff25949f32fb50e4f662a16fffbcb1169d143`.
+  Visual acceptance remains skipped after the earlier browser policy block;
+  automatic layout validation does not claim rendered acceptance.
+- README outline reviewed and `git diff --check` passed; final staged diff is
+  checked before delivery.
+
+Remaining: fleet composition/environment settings, mid-batch steering,
+streaming/provider recovery, authenticated HTTP/SSE, SQLite and lease/restart
+behavior, trajectory evidence, owner resources and optional feature services.
+No dependencies added. G0/G1/G2 remain open until their complete required parity
+contracts pass; G3–G7 remain open.

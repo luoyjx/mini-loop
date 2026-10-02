@@ -1271,6 +1271,85 @@ def _lifecycle_contracts(scratch: Path) -> dict[str, object]:
             "labels": [{"tool": n, "input": v, "display": tool_label(n, v)} for n, v in labels]}
 
 
+def _scheduling_contracts(scratch: Path) -> dict[str, object]:
+    """Real Python prompt chain, classified batches and per-session Todo nag."""
+    import asyncio
+    from types import SimpleNamespace
+    from mini_loop.agent import Agent
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, tool
+    from mini_loop.registry import Hook, Hooks, Tool, ToolCall, ToolRegistry
+    from mini_loop.stuck import NullStuckDetector
+
+    schema = {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]}
+    modes = []
+    def broken(call):
+        raise ValueError("classifier failed")
+    for name, static, classifier in [
+        ("static-exclusive", False, None), ("static-parallel", True, None),
+        ("override-exclusive", True, lambda call: "exclusive"),
+        ("override-parallel", False, lambda call: "parallel"),
+        ("invalid", True, lambda call: "invalid"), ("error", True, broken),
+    ]:
+        definition = Tool("bash", "shell", schema, lambda ctx, command: command,
+                          parallel_safe=static, mode_for=classifier, risk="read")
+        modes.append({"name": name, "static": static, "mode": definition.execution_mode(ToolCall("bash", {"command": "x"}, "x"))})
+
+    async def exercise():
+        seen = []
+        class Keep(Hook):
+            async def on_user_prompt(self, agent, text):
+                seen.append(text)
+        class Empty(Hook):
+            async def on_user_prompt(self, agent, text):
+                seen.append(text)
+                return ""
+        rewritten = await Hooks([Keep(), Empty(), Keep()]).user_prompt(SimpleNamespace(), "start")
+        scratch.mkdir(parents=True)
+        settings = Settings(fake_llm=True, workspace_root=scratch, skills_dir=scratch / "empty-skills", max_turns=2)
+        first, tail = asyncio.Event(), asyncio.Event()
+        log = []
+        async def handler(ctx, command):
+            if command == "a":
+                await first.wait()
+            elif command == "d":
+                await tail.wait()
+            log.append(command)
+            if command == "b":
+                first.set()
+            elif command == "e":
+                tail.set()
+            return command
+        registry = ToolRegistry()
+        registry.register(Tool("bash", "shell", schema, handler, parallel_safe=True, risk="read",
+                               mode_for=lambda call: "exclusive" if call.input["command"] == "c" else "parallel"))
+        batch_agent = Agent(client=FakeAsyncAnthropic(), settings=settings, workspace=scratch,
+                            tools=registry, tool_semaphore=asyncio.Semaphore(2), stuck_detector=NullStuckDetector())
+        results = await batch_agent._exec_tool_batch([tool("bash", _id=name, command=name) for name in "abcde"])
+        steps = [step.output_hash for step in batch_agent._recent_steps]
+
+        async def echo(ctx, command):
+            return "handled: go"
+        registry = ToolRegistry()
+        registry.register(Tool("bash", "shell", schema, echo, risk="read"))
+        nag_agent = Agent(client=FakeAsyncAnthropic(), settings=settings, workspace=scratch,
+                          tools=registry, stuck_detector=NullStuckDetector(), hooks=Hooks())
+        nag_agent.todo.update([{"content": "open", "status": "pending", "activeForm": "Working"}])
+        turns = []
+        for index in range(4):
+            before = len(nag_agent.messages)
+            await nag_agent.run("go")
+            reminders = [block["text"] for message in nag_agent.messages[before:]
+                         if isinstance(message["content"], list)
+                         for block in message["content"]
+                         if block.get("type") == "text" and block.get("text") == "<reminder>Update your todos.</reminder>"]
+            turns.append({"counter": nag_agent._rounds_without_todo, "reminders": reminders})
+        return {"modes": modes, "prompt_seen": seen, "prompt": rewritten,
+                "completion_order": log, "results": results, "step_outputs": steps,
+                "todo_turns": turns, "default_tool_limit": settings.max_concurrent_tools}
+    return asyncio.run(exercise())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -1345,6 +1424,7 @@ def _snapshot() -> dict[str, bytes]:
         command_contracts = _command_contracts(Path(scratch) / "commands")
         loop_contracts = _loop_contracts(Path(scratch) / "loops")
         lifecycle_contracts = _lifecycle_contracts(Path(scratch) / "lifecycle")
+        scheduling_contracts = _scheduling_contracts(Path(scratch) / "scheduling")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1378,6 +1458,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-commands.json": _json_bytes(command_contracts),
         "python-loops.json": _json_bytes(loop_contracts),
         "python-lifecycle.json": _json_bytes(lifecycle_contracts),
+        "python-scheduling.json": _json_bytes(scheduling_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

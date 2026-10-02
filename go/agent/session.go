@@ -69,6 +69,10 @@ type Session struct {
 	cachePolicy                                       CachePolicy
 	stuckDetector                                     StuckDetector
 	stopHooks                                         []StopHook
+	promptHooks                                       []UserPromptHook
+	injectors                                         []MessageInjector
+	modelLimiter, toolLimiter                         *ConcurrencyLimiter
+	roundsWithoutTodo                                 int
 	recentSteps                                       []ToolStep
 	roundsWithoutTools                                int
 	stuckNudges                                       int
@@ -107,6 +111,7 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 	}
 	session := &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}, model: DefaultModel, maxTokens: DefaultMaxTokens, tokenThreshold: DefaultTokenThreshold, systemBuilder: DefaultSystemBuilder{}, compactor: InMemoryCompactor{DefaultTokenThreshold, 50}}
 	session.cachePolicy, session.stuckDetector = NewDefaultCachePolicy(), NewDefaultStuckDetector()
+	session.toolLimiter, _ = NewConcurrencyLimiter(DefaultToolConcurrency)
 	session.turn = make(chan struct{}, 1)
 	session.turn <- struct{}{}
 	session.loggedCatalogs, session.loggedSystems, session.loggedCapabilities = make(map[string]bool), make(map[string]bool), make(map[string]bool)
@@ -198,22 +203,6 @@ func (s *Session) recordStop(event ProviderStopEvent) {
 	s.events.append(SessionEvent{kind: SessionEventKind(event.Kind()), stop: event})
 }
 
-// An interrupted batch must still answer every tool_use before another model
-// request. Completed results keep their real output; remaining effects are
-// explicitly unknown so a model does not blindly retry a side effect.
-func (s *Session) closeInterruptedBatch(blocks []protocol.Block, completed []protocol.Block, start int) {
-	results := append([]protocol.Block(nil), completed...)
-	for _, block := range blocks[start:] {
-		if use, ok := block.ToolUse(); ok {
-			s.repairedToolUses = append(s.repairedToolUses, use.ID)
-			results = append(results, protocol.NewToolResult(use.ID, unknownToolResult, false))
-		}
-	}
-	if len(results) != 0 {
-		s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
-	}
-}
-
 // Run serializes turns within this session. Different sessions do not share a
 // lock and can make model progress concurrently.
 func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
@@ -254,11 +243,18 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 	s.currentRun = run.clone()
 	s.events.setScope(EventScope{s.label, s.depth, run.clone()})
 	defer func() { s.currentRun = RunContext{} }()
+	prompt, err := s.rewritePrompt(ctx, prompt)
+	if err != nil {
+		return "", err
+	}
 	s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(prompt)})
 	var lastText string
 	resumptions := 0
 	for round := 0; round < s.maxRounds; round++ {
 		envelope := s.envelope
+		if err := s.injectMessages(ctx); err != nil {
+			return "", err
+		}
 		s.injectRuntimeFacts(envelope)
 		if err := s.compact(ctx, envelope, false); err != nil {
 			return "", err
@@ -380,6 +376,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			return lastText, nil
 		}
 		s.roundsWithoutTools = 0
+		results = s.remindTodos(blocks, results)
 		s.publishLive()
 		signal, inspectErr := s.stuckDetector.Inspect(s.stuckState())
 		if inspectErr != nil {
@@ -411,36 +408,4 @@ func stoppedText(headline, partial string) string {
 		return headline + "\nPartial output before the stop:\n" + partial
 	}
 	return headline
-}
-
-// Repair on every interrupted exit, including a caller-provided handler panic.
-// Already completed results retain their real output; remaining effects are unknown.
-func (s *Session) dispatchBatch(ctx context.Context, run RunContext, blocks []protocol.Block) (results []protocol.Block, err error) {
-	results = []protocol.Block{}
-	next := 0
-	defer func() {
-		if fault := recover(); fault != nil {
-			s.closeInterruptedBatch(blocks, results, next)
-			panic(fault)
-		}
-	}()
-	for i, block := range blocks {
-		next = i
-		use, ok := block.ToolUse()
-		if !ok {
-			continue
-		}
-		outcome, dispatchErr := s.dispatchTool(ctx, run, use)
-		if dispatchErr != nil {
-			s.closeInterruptedBatch(blocks, results, i)
-			return nil, dispatchErr
-		}
-		results = append(results, protocol.NewToolResult(use.ID, outcome.Output, false))
-		next = i + 1
-		if err := s.recordToolStep(use.Input.Name(), outcome); err != nil {
-			s.closeInterruptedBatch(blocks, results, next)
-			return nil, err
-		}
-	}
-	return results, nil
 }

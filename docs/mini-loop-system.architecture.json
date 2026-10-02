@@ -32,7 +32,7 @@
         "id": "go-path",
         "label": "Go port in progress",
         "focus": ["goManaged", "goFake", "goSession", "goGate", "goBash", "goFiles", "goResources", "goContext", "goArchives", "goChildren", "goActions", "goApprovals", "goSecrets"],
-        "note": "Managed admission/cancel, typed spans, bounded subscriptions, ten tools and context. HTTP, streaming/recovery and SQLite pending."
+        "note": "Typed loop seams, ordered parallel groups and inherited pools. HTTP, streaming/recovery and SQLite pending."
       },
       {
         "id": "personal-skill",
@@ -58,14 +58,14 @@
     { "id": "state", "type": "database", "label": "Durable State + Files", "sublabel": "owner resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] },
     { "id": "decisions", "type": "external", "label": "Decision Providers", "sublabel": "Jev / explicit LLM estimates", "pos": [2110, 540], "size": [220, 76], "tag": "off by default" },
     { "id": "goFake", "type": "external", "label": "Go FakeProvider", "sublabel": "typed requests / replies + usage", "pos": [330, 1180], "size": [220, 76] },
-    { "id": "goSession", "type": "backend", "label": "Go Session", "sublabel": "loop / spans / event bus", "pos": [850, 1180], "size": [230, 76], "tag": "process-local" },
+    { "id": "goSession", "type": "backend", "label": "Go Session", "sublabel": "hooks / injectors / ordered groups", "pos": [850, 1180], "size": [330, 76], "tag": "process-local" },
     { "id": "goGate", "type": "security", "label": "Go ToolGate", "sublabel": "before / guard / permission / after", "pos": [1370, 1180], "size": [280, 76], "tag": "deny is final" },
     { "id": "goBash", "type": "backend", "label": "Workspace shell.Executor", "sublabel": "groups / deadlines / typed results", "pos": [1920, 1180], "size": [280, 76] },
     { "id": "goFiles", "type": "backend", "label": "Workspace Files", "sublabel": "read / write / edit / glob", "pos": [1920, 1360], "size": [280, 76], "tag": "atomic replacement" },
     { "id": "goResources", "type": "backend", "label": "Session Resources", "sublabel": "todos / skills / questions / delegation", "pos": [1920, 1540], "size": [280, 76], "tag": "bound session + owner" },
     { "id": "goContext", "type": "backend", "label": "Go Context Pipeline", "sublabel": "schemas / skills / cache / meter", "pos": [850, 1360], "size": [330, 76], "tag": "four compaction layers" },
     { "id": "goActions", "type": "database", "label": "Go Action Journals", "sublabel": "typed states / replay / retention", "pos": [1370, 1360], "size": [280, 76], "tag": "memory + store interface" },
-    { "id": "goChildren", "type": "backend", "label": "Go Subagent Sessions", "sublabel": "role subset / fresh history / peer", "pos": [1370, 1540], "size": [330, 76], "tag": "default depth limit: 2" },
+    { "id": "goChildren", "type": "backend", "label": "Go Subagent Sessions", "sublabel": "role subset / inherited seams + pools", "pos": [1370, 1540], "size": [330, 76], "tag": "default depth limit: 2" },
     { "id": "goSecrets", "type": "security", "label": "Go Secret Registry", "sublabel": "cached values / masked copies", "pos": [330, 980], "size": [280, 76], "tag": "optional deployment binding" },
     { "id": "goApprovals", "type": "security", "label": "Go Approval Broker", "sublabel": "grants / questions / optional review", "pos": [1920, 980], "size": [280, 76], "tag": "process-local + store seam" },
     { "id": "goArchives", "type": "database", "label": "Compaction Artifacts", "sublabel": ".task_outputs / .transcripts", "pos": [330, 1540], "size": [330, 76], "tag": "workspace files" },
@@ -100,7 +100,7 @@
     { "id": "goArchive", "from": "goContext", "to": "goArchives", "label": "spill / archive", "fromSide": "left", "toSide": "right", "via": [[740, 1398], [740, 1578]], "labelAt": [740, 1490] },
     { "id": "goRequest", "from": "goContext", "to": "goFake", "label": "typed request", "fromSide": "left", "toSide": "right", "via": [[700, 1398], [700, 1218]], "labelAt": [700, 1300] },
     { "id": "goReply", "from": "goFake", "to": "goSession", "label": "typed reply", "variant": "emphasis" },
-    { "id": "goDispatch", "from": "goSession", "to": "goGate", "label": "typed ToolCall", "variant": "security" },
+    { "id": "goDispatch", "from": "goSession", "to": "goGate", "label": "groups / barriers", "variant": "security", "labelAt": [1240, 1208] },
     { "id": "goExecute", "from": "goGate", "to": "goBash", "label": "guarded effect", "variant": "security", "labelAt": [1674, 1176] },
     { "id": "goFileEffect", "from": "goGate", "to": "goFiles", "label": "bound file effect", "variant": "security", "labelAt": [1850, 1378] },
     { "id": "goReplay", "from": "goGate", "to": "goActions", "label": "replay / settle", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "via": [[1510, 1280], [1450, 1280], [1450, 1320], [1510, 1320]], "labelAt": [1400, 1330] },
@@ -113,7 +113,7 @@
     { "id": "goQuestion", "from": "goResources", "to": "goApprovals", "label": "text question", "variant": "dashed", "fromSide": "right", "toSide": "right", "via": [[2280, 1578], [2280, 1018]], "labelAt": [2310, 1460] },
     { "id": "goApprovalEvents", "from": "goApprovals", "to": "goSession", "label": "scoped approvals", "variant": "dashed", "fromSide": "left", "toSide": "left", "via": [[1300, 1018], [1300, 1090], [790, 1090], [790, 1218]], "labelAt": [1650, 998] },
     { "id": "goResourceEffect", "from": "goGate", "to": "goResources", "label": "bound session effect", "variant": "security", "labelAt": [1850, 1558] },
-    { "id": "goManagedRun", "from": "goManaged", "to": "goSession", "label": "owns core", "fromSide": "bottom", "toSide": "top", "via": [[990, 1120], [965, 1120]], "labelAt": [1100, 1140] }
+    { "id": "goManagedRun", "from": "goManaged", "to": "goSession", "label": "owns core", "fromSide": "bottom", "toSide": "top", "via": [[990, 1120], [1015, 1120]], "labelAt": [1100, 1140] }
   ],
   "cards": [
     { "dot": "cyan", "title": "Concurrency", "items": ["One lock serializes each session", "Fleet-wide LLM and tool semaphores bound parallel work", "Parallel-safe tool results retain model-call order"] },
@@ -121,7 +121,10 @@
     { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] },
     { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] },
     { "dot": "cyan", "title": "Language layout", "items": ["The main map follows the Python runtime under python/", "Go NewRuntimeSession registers ten implemented tools behind one typed gate", "ManagedSession owns admission/cancel/status; raw children emit core spans only", "Skill source digests are rechecked; questions return text or an unanswered variant", "Go requests consume fitted schemas and skills; compaction archives are workspace files", "Go children use capability-selected tools, fresh state and peer provenance", "Optional Go journals replay terminal results; SQLite backend remains pending", "Optional bound approvals preserve grants, text answers, reviewer abstention and typed rows; no SQLite backend yet", "Optional registry masking precedes result settlement and covers implemented events, approvals and compaction files; live arguments stay raw", "Real host shell consumes selected credentials, bounds shared capture, masks streams and kills process groups; Seatbelt and future sink coverage remain open", "Default cache uses detached wire annotations; stuck detection keeps 20 steps and nudges once before halting",
-        "Children inherit cache/stuck policies and stop hooks with fresh state; HTTP, restore and real provider remain open",
+        "Children inherit typed prompt/injector seams, cache/stuck policies and exact model/tool pools with fresh state",
+        "Parallel groups preserve result/step order; exclusive tools are barriers and bypass tool permits",
+        "Bare model calls are unbounded; parallel tools default to eight per session unless a pool is shared",
+        "Todo reminder counters survive user turns; HTTP, steering, restore and real provider remain open",
         "Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records",
         "Transcript rewrites open event epochs; no durable cursor gap recovery or HTTP routes yet"] }
   ]

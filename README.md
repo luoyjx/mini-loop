@@ -271,7 +271,9 @@ registered-secret masking across the implemented Go result/recording paths,
 and a real foreground workspace shell with typed results, group cancellation
 and bounded capture, plus default cache annotations and bounded stuck detection, core lifecycle
 telemetry, bounded subscriptions and managed turn admission/cancellation,
-reviewed **2026-10-03** (Go baseline `7090fdf` plus the lifecycle slice).
+plus typed prompt hooks/injectors, Todo reminders and shared model/tool pools
+with ordered parallel groups,
+reviewed **2026-10-03** (Go baseline `0e4d8e0` plus the scheduling slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -320,7 +322,7 @@ flowchart LR
     subgraph GoPort["Independent Go port · in progress"]
         GoFake["FakeProvider<br/>typed requests · replies · usage"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done"]
-        GoSession["Go Session<br/>serialized loop · spans · bounded event bus · stuck"]
+        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
@@ -330,12 +332,12 @@ flowchart LR
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
-        GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>depth limit 2 · round budget 30"]
+        GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoManaged --> GoSession
         GoSession --> GoContext --> GoFake
         GoFake --> GoSession
         GoContext --> GoArchives
-        GoSession --> GoGate --> GoBash
+        GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
         GoGate --> GoResources
         GoGate -. replay / reconcile / settle .-> GoActions
@@ -504,9 +506,29 @@ a stop marker before partial text. Monologue detection applies only when an
 explicit `StopHook` requests continuation. `RuntimeConfig.StuckDetector` can
 select `NullStuckDetector`; children inherit policies and hooks with fresh
 windows and nudge budgets. Optional input absence and explicit JSON null remain
-distinct in wire payloads and identity hashes. Shared concurrency limiters,
-parallel batches, provider streaming/recovery and authenticated HTTP ownership
-remain pending in Go. `NewManagedSession` privately owns a runtime and adds
+distinct in wire payloads and identity hashes. Typed `UserPromptHooks` rewrite
+submitted text in order (nil keeps it; empty replaces it) before the user row.
+Named `Injectors` append fully validated message batches before runtime facts
+and compaction on every model round. Their detached views include caller-stamped
+authority; injected text cannot grant authority. Children inherit both seams.
+An open todo board receives a reminder after three tool batches without an
+attempted `TodoWrite`; this counter persists across user turns.
+Consecutive parallel-safe calls share a group; exclusive calls wait for the
+preceding group and form ordered barriers. A typed per-call classifier overrides
+the static flag before gate rewrites; error, panic or invalid mode means exclusive.
+Read file and glob are parallel by default; readonly alone does not opt in.
+Results and stuck steps retain model order even when completion order differs.
+Cancelled groups join every started worker before repairing history; completed
+results survive while unfinished calls are unknown. Custom concurrent handlers
+and hooks must synchronize their state and honor context cancellation.
+`RuntimeConfig.ModelLimiter` optionally supplies a shared model pool, including
+summary calls; nil is unbounded like a bare Python Agent. Each session has a
+parallel-tool pool of eight unless `ToolLimiter` is explicitly shared. Children
+inherit the exact pools. Exclusive tools bypass the tool pool, so default task
+delegation can progress through a child. No Go fleet composition or environment
+configuration is supplied yet. Provider streaming/recovery and authenticated
+HTTP ownership remain pending in Go. `NewManagedSession` privately owns a runtime
+and adds
 context-aware turn admission, idle/running/error status and operator cancellation.
 Queued callers cannot replace the cancellation target; admission is rechecked
 after waiting. `Info` reads immutable live snapshots without waiting for the loop
