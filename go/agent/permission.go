@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/workspace"
 )
 
 type PermissionMode string
@@ -104,29 +104,6 @@ func NewPermissionPolicy(rules []PermissionRule, approver Approver, denyCommands
 
 var destructiveShell = regexp.MustCompile(`(?i)(^|[;&|\n]\s*)(rm\s|git\s+(?:reset\s+--hard|clean\s+-)|chmod\s+(?:-R\s+|777\s)|chown\s+-R)|>\s*/etc/`)
 
-func canonicalPath(path string) (string, error) {
-	path = filepath.Clean(path)
-	var suffix []string
-	for {
-		resolved, err := filepath.EvalSymlinks(path)
-		if err == nil {
-			for i := len(suffix) - 1; i >= 0; i-- {
-				resolved = filepath.Join(resolved, suffix[i])
-			}
-			return filepath.Clean(resolved), nil
-		}
-		if !os.IsNotExist(err) {
-			return "", err
-		}
-		parent := filepath.Dir(path)
-		if parent == path {
-			return "", err
-		}
-		suffix = append(suffix, filepath.Base(path))
-		path = parent
-	}
-}
-
 func pathEscapesWorkspace(authority ToolAuthority, call ToolCall) bool {
 	var path string
 	switch call.Name() {
@@ -142,19 +119,15 @@ func pathEscapesWorkspace(authority ToolAuthority, call ToolCall) bool {
 	if authority.Workspace == "" || path == "" {
 		return true
 	}
-	root, err := filepath.Abs(authority.Workspace)
-	if err != nil {
-		return true
-	}
-	root, err = filepath.EvalSymlinks(root)
+	root, err := workspace.ResolvePath(authority.Workspace)
 	if err != nil {
 		return true
 	}
 	target := path
 	if !filepath.IsAbs(target) {
-		target = filepath.Join(root, target)
+		target = root + string(filepath.Separator) + target
 	}
-	target, err = canonicalPath(target)
+	target, err = workspace.ResolvePath(target)
 	if err != nil {
 		return true
 	}

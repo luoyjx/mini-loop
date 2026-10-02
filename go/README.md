@@ -1,7 +1,7 @@
 # Go implementation
 
 This directory is the independent Go port of the Python runtime in `../python/`.
-It is under construction and is not yet a runnable agent or HTTP server. The
+It is under construction and has no standalone agent CLI or HTTP server yet. The
 protocol package fixes the default fake-model transcript shapes as explicit Go
 types, completed model replies, usage and stop reasons, and has concrete inputs
 for all ten Python default tools. It rejects
@@ -9,8 +9,13 @@ unsupported tool names and extra fields at the JSON boundary instead of
 admitting an untyped payload into the runtime. The `agent` package adds an
 injected, in-memory fake-model turn loop. Every tool call now passes through a
 typed gate with an immutable executable catalogue, ordered hooks and permission
-modes. Only `bash` is registered by default; other typed tools return an
-explicit unknown-tool result until their handlers are ported.
+modes. `NewSession` registers injected Bash only. `NewWorkspaceSession` binds a
+workspace and registers Bash, `read_file`, `write_file` and `edit_file` through
+the same gate; the remaining typed tools return an explicit unknown-tool result.
+The `workspace` package preserves bounded Unicode reads, line pagination,
+unique exact edits and atomic replacements. Every file path is checked at
+execution; write paths also undergo permission checks. Thirty-four Python cases
+compare the output and resulting file hashes, including failure cases.
 It records typed pause, refusal and unknown-stop events. The fake provider's
 input usage is still a placeholder until Go builds the full model request.
 Approvals are an in-process callback, with no durable broker, action journal,
@@ -22,6 +27,7 @@ contract snapshots and fake reply fixtures are generated into `testdata/` by
 cd go
 go test ./...
 go vet ./...
+go test -race ./...
 ```
 
 See [the plan](../GO_PORT_PLAN.md) and [parity matrix](../GO_PARITY_MATRIX.md)

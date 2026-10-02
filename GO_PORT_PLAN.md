@@ -83,8 +83,9 @@ Record its parity evidence and remaining gaps before checking it off.
       usage and stop events implemented; other event and state variants remain)
 - [ ] G1 session loop (in-memory fake-provider slice and cancellation repair implemented;
       request construction, bounded events, and parallel batches remain)
-- [ ] G2 execution gate (typed catalogue, ordered gate and basic modes implemented;
-      durable approvals, action journal, masking and remaining handlers remain)
+- [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
+      workspace read/write/edit implemented; glob, durable approvals,
+      action journal, masking and remaining handlers remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -187,3 +188,38 @@ The file-tool slice must preserve these Python contracts before registration:
    Python's missing-text and ambiguous-text messages and avoid partial writes.
 5. Compare actual Python/Go results for these cases using generated fixtures,
    including non-ASCII content, absent parents, pagination and failed edits.
+
+## 2026-10-02 workspace file slice
+
+- `go/workspace.Files` binds a resolved root. Its typed read/write/edit methods
+  resolve each path at execution and preserve symlink-before-parent semantics;
+  write permissions use the same resolver. This does not provide OS shell confinement.
+- Reads count Unicode characters, normalize universal newlines, replace invalid
+  UTF-8, skip lines without collecting them, and preserve the Python pagination
+  and truncation notices. Edits decode strictly and require one exact match
+  within the byte cap. Writes use sibling temporary files, fsync and rename,
+  with cleanup on failure and a cancellation check before publication.
+- `NewWorkspaceSession` registers injected Bash plus read/write/edit behind
+  the existing gate. The Bash-only `NewSession` remains available. The backend
+  checks authority against its bound root and rechecks paths after approval.
+- The seventh contract snapshot contains 34 cases produced by actual Python
+  file operations. Go compares outputs, failure signals and final file hashes.
+  Other Go tests cover atomic write failure, cancellation, readonly mode,
+  workspace mismatch and a symlink changed after permission approval.
+- Validation passed: `go test ./...`, `go vet ./...`, `go test -race ./...`,
+  the seven-file Python contract check, 77 Python invariant declarations,
+  19 scanning guards, 377 mutation guards and `git diff --check`. The full
+  `.venv/bin/python -m pytest -q` run passed with 2151 tests, 28 skips and
+  24 subtests. These results were obtained on macOS; other platforms remain
+  part of the G7 audit.
+- The README and interactive architecture include the workspace backend.
+  Archify passed all nine showcase checks, with no errors or warnings. Its
+  receipt is specification SHA-256
+  `c0b7364dd372d78cda06fb6152c9af7e1848239d3589e88128b3a7d8ec99c41b`
+  (10,237 bytes) and HTML SHA-256
+  `d9409a5bc35ff8e440ec5860fe38bb1b22344dd286264747b6a35cee2c21b8d1`
+  (637,737 bytes). Visual review remains unavailable because browser policy
+  blocked local-file navigation.
+
+Next: port glob and the remaining default handlers, then action/approval
+journals, secret masking, and the default HTTP/SSE service.

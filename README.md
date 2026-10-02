@@ -262,9 +262,9 @@ separate:
 ## Architecture
 
 Runtime review baseline: `ad71e05` plus the Python directory split, its
-package-relative default skills path, and the Go typed loop and execution
-gate slice, reviewed **2026-10-02**. The optional `decision` tool evaluates
-explicit state through a configured provider; its typed result returns through
+package-relative default skills path, and the Go typed loop, execution gate
+and workspace file effects, reviewed **2026-10-02**. The optional `decision`
+tool evaluates explicit state through a configured provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
 <!-- architecture-map:start -->
@@ -312,9 +312,11 @@ flowchart LR
         GoFake["FakeProvider<br/>typed model replies"]
         GoSession["Go Session<br/>serialized in-memory turns"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
-        GoBash["Injected BashExecutor<br/>only registered default handler"]
+        GoBash["Injected BashExecutor"]
+        GoFiles["Workspace Files<br/>read · write · edit<br/>bound path · atomic replacement"]
         GoFake <--> GoSession
         GoSession --> GoGate --> GoBash
+        GoGate --> GoFiles
     end
 
     Caller --> Entry
@@ -348,8 +350,13 @@ optional or asynchronous.
 The Python default agent skills now resolve from `python/skills/` regardless
 of the current working directory; `MINILOOP_SKILLS_DIR` still overrides it.
 The Go port types all ten Python default tool inputs, but its immutable
-executable catalogue currently registers only `bash`. The Go session uses one
-typed gate for rewrites, guards, permission, execution and observers; its local
+workspace catalogue registers `bash`, `read_file`, `write_file` and `edit_file`
+through `NewWorkspaceSession`; the older `NewSession` convenience constructor
+still registers Bash only. File effects bind one resolved workspace and check
+paths at execution; write permissions use the same resolver. This file boundary
+does not provide OS shell confinement.
+The Go session uses one typed gate for rewrites, guards, permission, execution
+and observers; its local
 stop events, in-process approvals and cancellation repair have no durable
 event stream, approval broker or action journal yet. See the parity matrix.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
