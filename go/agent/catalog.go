@@ -84,9 +84,22 @@ type ToolDefinition struct {
 	parallelSafe bool
 	capabilities []Capability
 	handler      ToolHandler
+	schema       protocol.ToolSchema
 }
 
 func NewToolDefinition(name protocol.ToolName, traits ToolTraits, handler ToolHandler) (ToolDefinition, error) {
+	schema, ok := protocol.DefaultToolSchema(name)
+	if !ok {
+		return ToolDefinition{}, fmt.Errorf("tool %s requires an explicit schema", name)
+	}
+	return NewToolDefinitionWithSchema(schema, traits, handler)
+}
+
+func NewToolDefinitionWithSchema(schema protocol.ToolSchema, traits ToolTraits, handler ToolHandler) (ToolDefinition, error) {
+	name := schema.Name
+	if err := schema.Validate(); err != nil {
+		return ToolDefinition{}, err
+	}
 	if name == "" || !traits.Risk.valid() || handler == nil || (traits.Readonly && traits.Risk != RiskRead) {
 		return ToolDefinition{}, errors.New("tool definition requires name, valid risk, matching readonly claim, and handler")
 	}
@@ -100,7 +113,7 @@ func NewToolDefinition(name protocol.ToolName, traits ToolTraits, handler ToolHa
 	return ToolDefinition{
 		name: name, risk: traits.Risk, readonly: traits.Readonly,
 		parallelSafe: traits.ParallelSafe,
-		capabilities: append([]Capability(nil), traits.Capabilities...), handler: handler,
+		capabilities: append([]Capability(nil), traits.Capabilities...), handler: handler, schema: schema.Clone(),
 	}, nil
 }
 
@@ -123,6 +136,9 @@ func NewToolCatalog(definitions ...ToolDefinition) (*ToolCatalog, error) {
 	index := make(map[protocol.ToolName]int, len(definitions))
 	ordered := make([]ToolDefinition, len(definitions))
 	for i, definition := range definitions {
+		if err := definition.schema.Validate(); err != nil || definition.schema.Name != definition.name {
+			return nil, fmt.Errorf("tool %d has an invalid schema", i)
+		}
 		if definition.name == "" || !definition.risk.valid() || definition.handler == nil || (definition.readonly && definition.risk != RiskRead) {
 			return nil, fmt.Errorf("tool %d has an invalid definition", i)
 		}
@@ -131,6 +147,7 @@ func NewToolCatalog(definitions ...ToolDefinition) (*ToolCatalog, error) {
 		}
 		index[definition.name] = i
 		definition.capabilities = append([]Capability(nil), definition.capabilities...)
+		definition.schema = definition.schema.Clone()
 		ordered[i] = definition
 	}
 	return &ToolCatalog{ordered: ordered, index: index}, nil
@@ -151,6 +168,7 @@ func (catalog *ToolCatalog) Lookup(name protocol.ToolName) (ToolDefinition, bool
 	}
 	definition := catalog.ordered[i]
 	definition.capabilities = append([]Capability(nil), definition.capabilities...)
+	definition.schema = definition.schema.Clone()
 	return definition, true
 }
 

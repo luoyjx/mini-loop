@@ -263,8 +263,9 @@ separate:
 
 Runtime review baseline: `ad71e05` plus the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
-and workspace files, bounded glob search, todo/skill/question handlers and
-typed event backlog, reviewed **2026-10-02**.
+and workspace files, bounded glob search, todo/skill/question handlers, typed
+model requests, token metering and four-layer context compaction, reviewed
+**2026-10-02** (Go resource baseline `de2aab1` plus the request/context slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -311,13 +312,17 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoFake["FakeProvider<br/>typed model replies"]
+        GoFake["FakeProvider<br/>typed requests · replies · usage"]
         GoSession["Go Session<br/>serialized turns · typed event backlog"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · token meter<br/>spill → snip → micro → summary"]
+        GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Injected BashExecutor"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
-        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user<br/>snapshot · digest check · text answer"]
-        GoFake <--> GoSession
+        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress<br/>snapshot · digest check · deferred summary"]
+        GoSession --> GoContext --> GoFake
+        GoFake --> GoSession
+        GoContext --> GoArchives
         GoSession --> GoGate --> GoBash
         GoGate --> GoFiles
         GoGate --> GoResources
@@ -367,14 +372,25 @@ and textual-question interfaces; a nil skill source is an empty catalogue,
 and a nil question surface reports unavailability. The deployment skill loader
 snapshots bounded bodies and descriptions and verifies the normalized source
 hash at load time. User-scoped skill layering remains pending. Todo and stop
-events share a typed, sequenced 200-event backlog; HTTP/SSE and subscriptions
-remain pending. Skill descriptions are available to callers but the Go model
-request pipeline does not yet consume them.
+events and compaction receipts share a typed, sequenced 200-event backlog;
+HTTP/SSE and subscriptions remain pending. Model requests consume one fitted,
+immutable schema snapshot and the deployment skill descriptions. Provider usage
+anchors the token meter; unrelated summary calls do not change that anchor.
+Workspace-backed sessions use the four-layer compactor, which writes bounded
+tool-result previews and full transcript archives inside the bound workspace
+before generating a summary. Empty or failed summaries preserve the transcript.
+`NewRuntimeSession` also registers `compress` (nine executable tools); it crosses
+the write-risk gate and defers the summary until the whole tool batch is paired.
+The Bash-only constructor has no bound workspace and uses the in-memory
+snip/micro strategy. Internal automatic compaction can write workspace artifacts
+even with a readonly tool mode, matching the Python ordinary-agent path; a
+read-only worker must explicitly select `InMemoryCompactor`. Provider cache
+annotation, secret masking and user-resource prompt sections remain pending.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
-process-local, with no durable approval broker or action journal yet. `task`
-and `compress` remain unavailable until the subagent and context paths are
-ported. See the parity matrix.
+process-local, with no durable approval broker or action journal yet. Compaction
+files are durable local artifacts, not a session-restoration store. `task`
+remains unavailable until the subagent path is ported. See the parity matrix.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new

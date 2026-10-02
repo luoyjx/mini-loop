@@ -49,26 +49,50 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	ID        SessionID
-	Owner     OwnerID
-	Provider  Provider
-	Bash      BashExecutor
-	Workspace string
-	Mode      PermissionMode
-	MaxRounds int
-	Skills    SkillSource
-	Questions Questioner
-	Approver  Approver
-	Hooks     GateHooks
+	ID             SessionID
+	Owner          OwnerID
+	Provider       Provider
+	Bash           BashExecutor
+	Workspace      string
+	Mode           PermissionMode
+	MaxRounds      int
+	Skills         SkillSource
+	Questions      Questioner
+	Approver       Approver
+	Hooks          GateHooks
+	Model          string
+	MaxTokens      int
+	TokenThreshold int
+	SystemBuilder  SystemBuilder
+	Compactor      Compactor
 }
 
 type runtimeHandler struct {
-	mu        sync.Mutex
-	binding   ToolAuthority
-	todos     *TodoManager
-	events    *sessionEvents
-	skills    SkillSource
-	questions Questioner
+	mu          sync.Mutex
+	binding     ToolAuthority
+	todos       *TodoManager
+	events      *sessionEvents
+	skills      SkillSource
+	questions   Questioner
+	compression *compressionSignal
+}
+
+type compressionSignal struct {
+	mu      sync.Mutex
+	pending bool
+}
+
+func (signal *compressionSignal) request() {
+	signal.mu.Lock()
+	defer signal.mu.Unlock()
+	signal.pending = true
+}
+func (signal *compressionSignal) take() bool {
+	signal.mu.Lock()
+	defer signal.mu.Unlock()
+	pending := signal.pending
+	signal.pending = false
+	return pending
 }
 
 func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, error) {
@@ -85,6 +109,9 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolCompress:
+		handler.compression.request()
+		return "Compressing conversation...", nil
 	case protocol.ToolTodoWrite:
 		value, _ := input.TodoWrite()
 		output, err := handler.todos.Update(value.Items)
@@ -118,11 +145,14 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 }
 
 // NewRuntimeSession adds per-session todos, on-demand skills and textual human
-// questions to the implemented workspace tools. Task and compress await their
-// subagent and context pipelines; neither is advertised as executable yet.
+// questions plus deferred compaction to the implemented workspace tools.
+// Task still awaits its subagent pipeline.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if config.ID == "" || config.Owner == "" || config.Provider == nil || config.Bash == nil || !config.Mode.Valid() || config.MaxRounds < 1 {
 		return nil, errors.New("runtime session requires valid identity, provider, executor, mode and round limit")
+	}
+	if config.MaxTokens < 0 || config.TokenThreshold < 0 {
+		return nil, errors.New("runtime model budgets cannot be negative")
 	}
 	files, err := workspace.NewFiles(config.Workspace)
 	if err != nil {
@@ -138,12 +168,12 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	handler := &runtimeHandler{
 		binding: ToolAuthority{config.ID, config.Owner, files.Root(), config.Mode},
-		todos:   &TodoManager{}, events: &sessionEvents{}, skills: source, questions: config.Questions,
+		todos:   &TodoManager{}, events: &sessionEvents{}, skills: source, questions: config.Questions, compression: &compressionSignal{},
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
-	for _, name := range []protocol.ToolName{protocol.ToolTodoWrite, protocol.ToolLoadSkill, protocol.ToolAskUser} {
+	for _, name := range []protocol.ToolName{protocol.ToolTodoWrite, protocol.ToolLoadSkill, protocol.ToolCompress, protocol.ToolAskUser} {
 		traits := ToolTraits{Risk: RiskRead, Readonly: true}
-		if name == protocol.ToolTodoWrite {
+		if name == protocol.ToolTodoWrite || name == protocol.ToolCompress {
 			traits = ToolTraits{Risk: RiskWrite}
 		}
 		definition, err := NewToolDefinition(name, traits, handler)
@@ -165,5 +195,25 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		return nil, err
 	}
 	session.todos, session.events = handler.todos, handler.events
+	session.skills, session.compression = source, handler.compression
+	if config.Model != "" {
+		session.model = config.Model
+	}
+	if config.MaxTokens != 0 {
+		session.maxTokens = config.MaxTokens
+	}
+	if config.TokenThreshold != 0 {
+		session.tokenThreshold = config.TokenThreshold
+	}
+	if config.SystemBuilder != nil {
+		session.systemBuilder = config.SystemBuilder
+	}
+	if config.Compactor != nil {
+		session.compactor = config.Compactor
+	} else {
+		compactor := NewDefaultCompactor()
+		compactor.TokenThreshold = session.tokenThreshold
+		session.compactor = compactor
+	}
 	return session, nil
 }

@@ -383,6 +383,141 @@ def _skill_contracts(scratch: Path) -> dict[str, object]:
             "catalogue_cap": MAX_SKILL_CATALOGUE, "cases": cases}
 
 
+def _context_contracts(scratch: Path) -> dict[str, object]:
+    """Exercise request fitting, text budgets, metering and compaction source."""
+    import asyncio
+    import copy
+    from types import SimpleNamespace
+    from unittest.mock import patch
+    from mini_loop.builtins import default_registry
+    from mini_loop.registry import Tool, ToolRegistry
+    from mini_loop.prompts import default_system_builder
+    from mini_loop.compaction import (
+        estimate_tokens, snip_compact, microcompact, tool_result_budget,
+        DefaultCompactor,
+    )
+    from mini_loop.fake_llm import count_tokens
+    from mini_loop.metering import TokenMeter
+
+    defaults = default_registry()
+    catalogs = []
+    for names in [
+        ["bash"],
+        ["bash", "read_file", "write_file", "edit_file", "glob"],
+        ["bash", "read_file", "write_file", "edit_file", "glob", "TodoWrite", "load_skill", "compress", "ask_user"],
+        defaults.names(),
+    ]:
+        registry = ToolRegistry(defaults.get(name) for name in names)
+        catalogs.append(registry)
+    async def noop(*args, **kwargs):
+        return ""
+    for oversized_property in [False, True]:
+        registry = ToolRegistry()
+        for name in ["bash", "read_file", "write_file"]:
+            schema = copy.deepcopy(defaults.get(name).input_schema)
+            if oversized_property and name == "bash":
+                schema["properties"]["command"]["description"] = "界" * 11_000
+            registry.register(Tool(name, "界🌱" * 20_000, schema, noop))
+        catalogs.append(registry)
+    catalog_cases = []
+    for registry in catalogs:
+        snapshot = registry.snapshot()
+        agent = SimpleNamespace(workspace=Path("/contract"), tools=registry,
+                                _request_tool_catalog=snapshot, state={},
+                                skills=SimpleNamespace(descriptions=lambda: "paint: 绘图"))
+        catalog_cases.append({
+            "input": [tool.schema for tool in registry._tools.values()],
+            "schemas": snapshot.schemas(), "sent": snapshot.sent_names,
+            "omitted": snapshot.omitted_names, "trimmed_to": snapshot.trimmed_to,
+            "fingerprint": snapshot.fingerprint, "system": default_system_builder(agent),
+        })
+
+    wire_cases = []
+    for text in ["ascii <>& / \\\"", "界🌱\u2028\u2029\x7f", "\b\f\n\r\t\x00\x1f"]:
+        messages = [{"role": "user", "content": text}]
+        tools = defaults.snapshot().schemas()
+        wire_cases.append({"messages": messages, "system": text, "tools": tools,
+                           "estimate": estimate_tokens(messages),
+                           "fake_tokens": count_tokens({"messages": messages, "system": text, "tools": tools}),
+                           "ascii_json": json.dumps(messages),
+                           "unicode_json": json.dumps(messages, ensure_ascii=False)})
+
+    def history(rounds, leading=1, pending=False):
+        messages = [{"role": "user", "content": "start"} for _ in range(leading)]
+        for index in range(rounds):
+            messages.extend([
+                {"role": "assistant", "content": [
+                    {"type": "thinking", "thinking": "reason", "signature": "signed"},
+                    {"type": "tool_use", "id": f"use-{index}", "name": "bash", "input": {"command": "echo"},
+                     "caller": {"type": "direct"}},
+                ]},
+                {"role": "user", "content": [{"type": "tool_result", "tool_use_id": f"use-{index}",
+                                              "content": "界🌱" * 600, "is_error": True}]},
+            ])
+        if not pending:
+            messages.append({"role": "assistant", "content": [{"type": "text", "text": "done"}]})
+        messages.append({"role": "user", "content": "<runtime-state>\nfacts\n</runtime-state>"})
+        return messages
+    cheap = []
+    for leading, pending, maximum in [(1, False, 8), (2, True, 8), (1, True, 50), (1, False, 3)]:
+        original = history(6, leading, pending)
+        snipped = copy.deepcopy(original)
+        removed = snip_compact(snipped, maximum)
+        micro = copy.deepcopy(original)
+        cleared = microcompact(micro)
+        cheap.append({"messages": original, "max_messages": maximum, "snipped": snipped,
+                      "removed": removed, "micro": micro, "cleared": cleared})
+
+    meter = TokenMeter()
+    meter_cases = []
+    for length, actual, read, creation, envelope, probe_length, probe_envelope in [
+        (10, 0, 0, 0, "a", 20, "a"),
+        (100, 100, 20, 30, "a", 10, "a"),
+        (200, 250, 0, 0, "a", 100, "a"),
+        (300, 4000, 0, 0, "b", 20, "a"),
+        (400, 10000, 0, 0, "b", 0, "b"),
+        (800, 10001, 0, 0, "b", 400, "b"),
+    ]:
+        messages = [{"role": "user", "content": "界" * length}]
+        probe = [{"role": "user", "content": "界" * probe_length}]
+        usage = SimpleNamespace(input_tokens=actual, cache_read_input_tokens=read,
+                                cache_creation_input_tokens=creation)
+        meter.observe(usage, messages, envelope=envelope)
+        meter_cases.append({"messages": messages, "usage": {**vars(usage), "output_tokens": 0},
+                            "envelope": envelope, "probe": probe, "probe_envelope": probe_envelope,
+                            "used": meter.used_for(probe, envelope=probe_envelope), "snapshot": meter.snapshot()})
+
+    scratch.mkdir(parents=True, exist_ok=True)
+    spill_messages = history(1, pending=True)
+    with patch("mini_loop.compaction.time.time", return_value=1.234):
+        persisted = tool_result_budget(spill_messages, scratch, max_bytes=1000, preview_chars=12)
+    spill = {"messages": history(1, pending=True), "result": spill_messages, "persisted": persisted,
+             "max_bytes": 1000, "preview_chars": 12,
+             "files": [{"path": str(path.relative_to(scratch)), "content": path.read_text()}
+                       for path in sorted((scratch / ".task_outputs").rglob("*.txt"))]}
+
+    class SummaryAgent:
+        def __init__(self):
+            self.workspace, self.messages = scratch, history(2)
+            self.events, self.requests = [], []
+        async def _create(self, messages, **kwargs):
+            self.requests.append({"messages": messages, **kwargs})
+            return SimpleNamespace(content=[{"type": "text", "text": "handoff: 已完成"}],
+                                   usage=SimpleNamespace(input_tokens=123, output_tokens=7), model="served-summary")
+        async def _send(self, event, **kwargs):
+            self.events.append({"event": event, **kwargs})
+    summary = SummaryAgent()
+    original = copy.deepcopy(summary.messages)
+    with patch("mini_loop.compaction.time.time", return_value=1.234):
+        asyncio.run(DefaultCompactor().compact(summary))
+    summary_case = {"messages": original, "result": summary.messages, "requests": summary.requests,
+                    "events": summary.events,
+                    "archive": (scratch / ".transcripts/transcript_1234.jsonl").read_text()}
+    # Portable artifact paths; preserve actual source-produced text otherwise.
+    normalized = json.loads(json.dumps({"spill": spill, "summary": summary_case}, ensure_ascii=False).replace(str(scratch), "<workspace>"))
+    return {"catalogs": catalog_cases, "wire": wire_cases, "cheap": cheap, "meter": meter_cases, **normalized}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -449,6 +584,7 @@ def _snapshot() -> dict[str, bytes]:
         glob_contracts = _glob_contracts(Path(scratch) / "globs")
         runtime_contracts = _runtime_contracts()
         skill_contracts = _skill_contracts(Path(scratch) / "skills")
+        context_contracts = _context_contracts(Path(scratch) / "context")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -474,6 +610,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-glob-tools.json": _json_bytes(glob_contracts),
         "python-runtime-tools.json": _json_bytes(runtime_contracts),
         "python-skills.json": _json_bytes(skill_contracts),
+        "python-context.json": _json_bytes(context_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

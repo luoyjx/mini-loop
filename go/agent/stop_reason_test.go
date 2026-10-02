@@ -15,7 +15,8 @@ type scriptedStopProvider struct {
 	lengths []int
 }
 
-func (provider *scriptedStopProvider) Complete(_ context.Context, messages []protocol.Message) (protocol.ModelReply, error) {
+func (provider *scriptedStopProvider) Complete(_ context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+	messages := request.Messages
 	provider.lengths = append(provider.lengths, len(messages))
 	reply := provider.replies[provider.calls]
 	provider.calls++

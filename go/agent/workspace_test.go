@@ -15,7 +15,8 @@ import (
 
 type fileWorkflowProvider struct{}
 
-func (fileWorkflowProvider) Complete(_ context.Context, messages []protocol.Message) (protocol.ModelReply, error) {
+func (fileWorkflowProvider) Complete(_ context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+	messages := request.Messages
 	if len(messages) > 1 {
 		return fakeReply([]protocol.Block{protocol.NewTextBlock("done")}, protocol.StopEndTurn), nil
 	}

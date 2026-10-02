@@ -12,12 +12,28 @@ import (
 // shape. It is deterministic and needs no network or credentials.
 type FakeProvider struct{}
 
-func (FakeProvider) Complete(ctx context.Context, messages []protocol.Message) (protocol.ModelReply, error) {
+func (FakeProvider) Complete(ctx context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
 	if err := ctx.Err(); err != nil {
 		return protocol.ModelReply{}, err
 	}
-	if len(messages) == 0 {
-		return protocol.ModelReply{}, fmt.Errorf("fake provider requires a message")
+	if err := request.Validate(); err != nil {
+		return protocol.ModelReply{}, err
+	}
+	if request.MaxTokens > 8192 {
+		return protocol.ModelReply{}, fmt.Errorf("Streaming is required for operations that may take longer than 10 minutes. See https://github.com/anthropics/anthropic-sdk-python#long-requests for more details")
+	}
+	messages := request.Messages
+	finish := func(blocks []protocol.Block, reason protocol.StopReason) (protocol.ModelReply, error) {
+		reply := fakeReply(blocks, reason)
+		count, err := FakePromptTokens(request)
+		if err != nil {
+			return protocol.ModelReply{}, err
+		}
+		reply.Usage.InputTokens, reply.Model = count, request.Model
+		return reply, nil
+	}
+	if len(request.Tools) == 0 {
+		return finish([]protocol.Block{protocol.NewTextBlock(fmt.Sprintf("[summary of %d message(s)]", len(messages)))}, protocol.StopEndTurn)
 	}
 	last := messages[len(messages)-1]
 	if prompt, ok := last.Content.Plain(); ok {
@@ -26,10 +42,10 @@ func (FakeProvider) Complete(ctx context.Context, messages []protocol.Message) (
 		if len(promptRunes) > 60 {
 			prompt = string(promptRunes[:60])
 		}
-		return fakeReply([]protocol.Block{
+		return finish([]protocol.Block{
 			protocol.NewTextBlock("Working on it."),
 			protocol.NewBashUse("toolu_1", "echo handled: "+prompt),
-		}, protocol.StopToolUse), nil
+		}, protocol.StopToolUse)
 	}
 	blocks, ok := last.Content.Blocks()
 	if !ok {
@@ -46,7 +62,34 @@ func (FakeProvider) Complete(ctx context.Context, messages []protocol.Message) (
 	if len(resultRunes) > 200 {
 		resultText = string(resultRunes[:200])
 	}
-	return fakeReply([]protocol.Block{protocol.NewTextBlock("Done. Tool said: " + resultText)}, protocol.StopEndTurn), nil
+	return finish([]protocol.Block{protocol.NewTextBlock("Done. Tool said: " + resultText)}, protocol.StopEndTurn)
+}
+
+// Count the complete provider payload, including system and schemas, with the
+// Python fake's deliberately distinct ASCII/non-ASCII approximation.
+func FakePromptTokens(request protocol.ModelRequest) (int, error) {
+	messages, err := protocol.PythonJSON(request.Messages, false, false)
+	if err != nil {
+		return 0, err
+	}
+	system, err := protocol.PythonJSON(request.System, false, false)
+	if err != nil {
+		return 0, err
+	}
+	tools, err := protocol.PythonJSON(request.Tools, false, false)
+	if err != nil {
+		return 0, err
+	}
+	payload := "[" + messages + ", " + system + ", " + tools + "]"
+	ascii, wide := 0, 0
+	for _, r := range payload {
+		if r < 128 {
+			ascii++
+		} else {
+			wide++
+		}
+	}
+	return ascii/4 + wide + 8, nil
 }
 
 func fakeReply(blocks []protocol.Block, reason protocol.StopReason) protocol.ModelReply {

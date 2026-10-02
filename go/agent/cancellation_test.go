@@ -10,7 +10,7 @@ import (
 
 type cancelledBatchProvider struct{}
 
-func (cancelledBatchProvider) Complete(context.Context, []protocol.Message) (protocol.ModelReply, error) {
+func (cancelledBatchProvider) Complete(context.Context, protocol.ModelRequest) (protocol.ModelReply, error) {
 	return fakeReply([]protocol.Block{
 		protocol.NewBashUse("u1", "echo first"),
 		protocol.NewBashUse("u2", "echo second"),

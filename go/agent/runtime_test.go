@@ -72,7 +72,8 @@ func TestTodoManagerMatchesPythonContracts(t *testing.T) {
 
 type resourceProvider struct{ tools []protocol.Block }
 
-func (provider resourceProvider) Complete(_ context.Context, messages []protocol.Message) (protocol.ModelReply, error) {
+func (provider resourceProvider) Complete(_ context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+	messages := request.Messages
 	if len(messages) == 1 {
 		return fakeReply(provider.tools, protocol.StopToolUse), nil
 	}
@@ -214,12 +215,12 @@ func TestRuntimeCatalogMatchesPythonMetadata(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(session.gate.CatalogNames()) != 8 {
+	if len(session.gate.CatalogNames()) != 9 {
 		t.Fatal("runtime catalogue drift")
 	}
 	for _, expected := range metadata {
 		definition, exists := session.gate.catalog.Lookup(expected.Name)
-		pending := expected.Name == protocol.ToolTask || expected.Name == protocol.ToolCompress
+		pending := expected.Name == protocol.ToolTask
 		if pending {
 			if exists {
 				t.Fatalf("pending tool advertised: %s", expected.Name)

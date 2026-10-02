@@ -79,9 +79,10 @@ func TestToolFailureStillPairsTranscript(t *testing.T) {
 
 func TestFakeProviderTruncatesByCharacters(t *testing.T) {
 	prompt := strings.Repeat("界", 61)
-	reply, err := (FakeProvider{}).Complete(context.Background(), []protocol.Message{{
+	schema, _ := protocol.DefaultToolSchema(protocol.ToolBash)
+	reply, err := (FakeProvider{}).Complete(context.Background(), protocol.ModelRequest{Model: DefaultModel, MaxTokens: DefaultMaxTokens, Purpose: protocol.PurposeAgentTurn, Tools: []protocol.ToolSchema{schema}, Messages: []protocol.Message{{
 		Role: protocol.RoleUser, Content: protocol.PlainContent(prompt),
-	}})
+	}}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,7 +95,8 @@ func TestFakeProviderTruncatesByCharacters(t *testing.T) {
 
 type readFileProvider struct{}
 
-func (readFileProvider) Complete(_ context.Context, messages []protocol.Message) (protocol.ModelReply, error) {
+func (readFileProvider) Complete(_ context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+	messages := request.Messages
 	if len(messages) > 1 {
 		return fakeReply([]protocol.Block{protocol.NewTextBlock("done")}, protocol.StopEndTurn), nil
 	}

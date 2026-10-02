@@ -9,13 +9,14 @@ import (
 	"sync"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	workspacepkg "github.com/luoyjx/mini-loop/go/workspace"
 )
 
 type SessionID string
 type OwnerID string
 
 type Provider interface {
-	Complete(context.Context, []protocol.Message) (protocol.ModelReply, error)
+	Complete(context.Context, protocol.ModelRequest) (protocol.ModelReply, error)
 }
 
 const (
@@ -31,17 +32,28 @@ type BashExecutor interface {
 }
 
 type Session struct {
-	id        SessionID
-	owner     OwnerID
-	provider  Provider
-	gate      *ToolGate
-	mode      PermissionMode
-	workspace string
-	maxRounds int
-	mu        sync.Mutex
-	messages  []protocol.Message
-	events    *sessionEvents
-	todos     *TodoManager
+	id             SessionID
+	owner          OwnerID
+	provider       Provider
+	gate           *ToolGate
+	mode           PermissionMode
+	workspace      string
+	maxRounds      int
+	mu             sync.Mutex
+	messages       []protocol.Message
+	events         *sessionEvents
+	todos          *TodoManager
+	skills         SkillSource
+	model          string
+	maxTokens      int
+	tokenThreshold int
+	systemBuilder  SystemBuilder
+	meter          TokenMeter
+	runtimeFacts   string
+	envelope       string
+	compactor      Compactor
+	files          *workspacepkg.Files
+	compression    *compressionSignal
 }
 
 func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExecutor, maxRounds int) (*Session, error) {
@@ -60,7 +72,48 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 	if id == "" || owner == "" || provider == nil || gate == nil || !mode.Valid() || maxRounds < 1 {
 		return nil, errors.New("session requires id, owner, provider, tool gate, valid mode, and positive maxRounds")
 	}
-	return &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}}, nil
+	session := &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}, model: DefaultModel, maxTokens: DefaultMaxTokens, tokenThreshold: DefaultTokenThreshold, systemBuilder: DefaultSystemBuilder{}, compactor: InMemoryCompactor{DefaultTokenThreshold, 50}}
+	if workspace != "" {
+		files, err := workspacepkg.NewFiles(workspace)
+		if err != nil {
+			return nil, err
+		}
+		session.workspace, session.files, session.compactor = files.Root(), files, NewDefaultCompactor()
+	}
+	return session, nil
+}
+
+func (s *Session) TokenMeter() TokenMeterSnapshot {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.meter.Snapshot()
+}
+
+func (s *Session) compact(ctx context.Context, envelope string, forced bool) error {
+	value := CompactionContext{Messages: append([]protocol.Message(nil), s.messages...), Files: s.files, Provider: s.provider, Model: s.model, Meter: s.meter, Envelope: envelope}
+	var result CompactionResult
+	var err error
+	if forced {
+		result, err = s.compactor.Compact(ctx, value)
+	} else {
+		result, err = s.compactor.MaybeCompact(ctx, value)
+	}
+	// A Go extension may return its zero result on failure. That means no
+	// rewrite; preserve both the existing history and the original error.
+	if err != nil && result.Messages == nil {
+		return err
+	}
+	if validationErr := protocol.ValidateTranscript(result.Messages); validationErr != nil {
+		return fmt.Errorf("compactor transcript: %w", validationErr)
+	}
+	if len(result.Messages) == 0 {
+		return errors.New("compactor returned an empty transcript")
+	}
+	s.messages = append([]protocol.Message(nil), result.Messages...)
+	for _, event := range result.Events {
+		s.events.append(SessionEvent{kind: EventCompact, compact: event})
+	}
+	return err
 }
 
 func (s *Session) ID() SessionID { return s.id }
@@ -126,16 +179,30 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 	var lastText string
 	resumptions := 0
 	for round := 0; round < s.maxRounds; round++ {
+		envelope := s.envelope
+		s.injectRuntimeFacts(envelope)
+		if err := s.compact(ctx, envelope, false); err != nil {
+			return "", err
+		}
 		if err := protocol.ValidateTranscript(s.messages); err != nil {
 			return "", fmt.Errorf("transcript before model call: %w", err)
 		}
-		reply, err := s.provider.Complete(ctx, append([]protocol.Message(nil), s.messages...))
+		request, envelope, err := s.buildRequest()
+		if err != nil {
+			return "", err
+		}
+		if err := request.Validate(); err != nil {
+			return "", fmt.Errorf("model request: %w", err)
+		}
+		s.envelope = envelope
+		reply, err := s.provider.Complete(ctx, request)
 		if err != nil {
 			return "", err
 		}
 		if err := reply.Validate(); err != nil {
 			return "", fmt.Errorf("model reply: %w", err)
 		}
+		s.meter.Observe(reply.Usage, s.messages, envelope)
 		var content protocol.Content
 		if len(reply.Content) == 0 {
 			// The request transcript forbids an empty block array. An empty
@@ -148,6 +215,9 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleAssistant, Content: content})
 
 		results := make([]protocol.Block, 0)
+		if s.compression != nil {
+			s.compression.take()
+		}
 		var roundText string
 		for i, block := range blocks {
 			if text, ok := block.Text(); ok && text.Text != "" {
@@ -190,6 +260,11 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 			return lastText, nil
 		}
 		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+		if s.compression != nil && s.compression.take() {
+			if err := s.compact(ctx, envelope, true); err != nil {
+				return "", err
+			}
+		}
 	}
 	return lastText, fmt.Errorf("hit maxRounds (%d) without finishing", s.maxRounds)
 }

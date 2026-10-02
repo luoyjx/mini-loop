@@ -81,11 +81,13 @@ Record its parity evidence and remaining gaps before checking it off.
       repository verifiers pass from the documented layout)
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
       usage and stop events implemented; other event and state variants remain)
-- [ ] G1 session loop (in-memory fake-provider slice and cancellation repair implemented;
-      request construction, complete lifecycle events, and parallel batches remain)
+- [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
+      fake-provider slice and cancellation repair implemented;
+      complete lifecycle events and parallel batches remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
-      task/compress, durable approvals, action journal and masking remain)
+      compress now defers a real summary after the batch; task, durable approvals,
+      action journal and masking remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -319,3 +321,68 @@ secret masking, and the default HTTP/SSE service. G2 remains incomplete.
 Next: implement the typed context/request pipeline with real compaction and
 subagent execution, then approval/action journals, masking and HTTP/SSE. The
 full objective and G0-G7 remain open.
+
+## 2026-10-02 request and context slice
+
+- `Provider.Complete` now accepts `protocol.ModelRequest` instead of a message
+  slice. The request carries model, output budget, detached messages, optional
+  system text, recursively typed tool schemas and a local purpose. Absent tools
+  and an explicitly empty catalogue remain distinct when serialized. Production
+  default descriptors are embedded in `go/protocol/`, independently compared
+  with the Python export; runtime code never reads `go/testdata/`.
+- One immutable fitted catalogue feeds both the system builder and provider.
+  Python's 60,000-character tool budget, description trim steps, ordered omission
+  and canonical SHA-256 match six exported catalogues, including oversized
+  properties. Skill descriptions now enter actual requests. Changed todo and
+  bucketed pressure reminders enter the message stream, preserving the stable
+  system prefix. Explicit system-builder and compactor interfaces use named
+  contexts/results rather than dynamic state maps.
+- The fake provider counts the complete messages/system/tools payload, preserves
+  requested model identity and checks the Python non-streaming budget ceiling.
+  The live meter includes cached input, learns same-envelope growth, projects
+  signed shrinkage and discards a stale envelope anchor. Summary requests do not
+  anchor it. Three Unicode/wire cases and six meter steps match Python.
+- Workspace-backed sessions run the four default layers: oversized-result
+  spill, pair-safe middle snip, consumed-result micro compaction and a full
+  transcript archive plus model summary. Result markers preserve IDs/error flags;
+  retained tool calls preserve thinking signatures and caller metadata. Archives
+  and spill files use the bound workspace resolver and atomic replacement.
+  Summary requests use 2,000 output tokens, no system or tools, and the last
+  80,000 serialized characters. Typed receipts record pre-replacement provenance
+  and actual summary usage/model. Empty/failed/cancelled summaries preserve
+  paired history; automatic ordinary failures record a bounded failure event.
+- `compress` is the ninth runtime tool, crosses the existing write-risk gate
+  and defers until the whole batch has results. Readonly denial creates no
+  summary archive. Automatic compaction retains Python's ordinary-agent behavior
+  and can write artifacts even under readonly tool mode; a read-only worker must
+  inject `InMemoryCompactor`. The workspace-less Bash convenience constructor
+  uses that strategy by default. Custom compactor errors with a zero result
+  preserve the original error/history; invalid transcript rewrites are rejected.
+- The eleventh Python snapshot also captures four snip/micro histories, result
+  spill content, summary request, archive and receipt. Go integration tests cover
+  whole-batch ordering, summary/live-meter separation, empty and failed summaries,
+  cancellation, workspace escape refusal, detached schema snapshots, changed
+  runtime facts, extension failure and cheap shrink avoiding an unnecessary summary.
+- Validation: `go test ./...`, `go vet ./...`, `go test -race ./...`, eleven-file
+  Python export check, all 19 scanning guards and `git diff --check` passed.
+  `.venv/bin/python -m pytest -q`: 2151 passed, 28 skipped, 24 subtests passed,
+  three existing dependency deprecation warnings. Python reference mutation
+  selectors `compact`, `meter`, `envelope`, `snip` and `summary` caught all
+  17 executions (16 distinct mutations); this is a scoped reference check,
+  not a Go mutation suite or a full 377-guard run. No Python package modules
+  changed, so invariant declarations did not require revalidation.
+- README Mermaid, boundary explanation and interactive source were reviewed
+  together. Archify passed 9/9 showcase checks, zero errors/warnings.
+  Specification SHA-256:
+  `129ce970813466b07051914dcd59b600c327b6f37c16b2658c6187670742a794`
+  (11,762 bytes); generated HTML SHA-256:
+  `3b40ba84e04cef992e6d025c78f5ad2ed89561f205ebf98d02c41ab67d7b641a`
+  (644,727 bytes). Browser visual inspection remains unavailable because
+  local-file navigation was blocked by browser policy. All runtime gates ran
+  on macOS; cross-platform and live-provider audit remain open.
+
+Next: implement bound subagent execution (`task`), then durable approvals/action
+journals, masking, provider cache annotation and HTTP/SSE. Streaming transport,
+provider recovery, optional prompt sections/user resources, token efficiency and
+session restoration remain open. Compaction files are durable artifacts, not a
+Go session-restoration store. The full objective and G0-G7 remain open.

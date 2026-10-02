@@ -12,9 +12,9 @@ typed gate with an immutable executable catalogue, ordered hooks and permission
 modes. `NewSession` registers injected Bash only. `NewWorkspaceSession` binds a
 workspace and registers Bash, `read_file`, `write_file`, `edit_file` and `glob` through
 the same gate. `NewRuntimeSession(RuntimeConfig)` adds `TodoWrite`, `load_skill`
-and `ask_user` with explicit dependencies and state bound to one session and
-owner. Todo and stop events share a typed, sequenced 200-event backlog. `task`
-and `compress` still return an explicit unknown-tool result.
+and `ask_user`, plus deferred `compress`, with explicit dependencies and state
+bound to one session and owner. Todo, stop and compaction events share a typed,
+sequenced 200-event backlog. `task` still returns an explicit unknown-tool result.
 The `workspace` package preserves bounded Unicode reads, line pagination,
 unique exact edits and atomic replacements. Every file path is checked at
 execution; write paths also undergo permission checks. Thirty-four Python cases
@@ -33,15 +33,35 @@ catalogue scenarios cover outputs, hashes and diagnostic counts. Ten todo
 updates and four question variants match real Python outputs; tests also cover
 readonly calls, cancellation, session binding and concurrent skill reads.
 `RuntimeConfig.Skills` is explicit; nil supplies an empty catalogue. Descriptions
-are available but the model request pipeline does not consume them yet. User
+enter the actual model request with fitted, immutable tool schemas. User
 skill layering is pending. A nil question surface reports unavailability;
 an injected `Questioner` returns answered text or an unanswered variant, and is
 not a durable broker. Invalid-name values in diagnostics retain at most 2,048 characters
 and mark truncation, unlike Python's potentially unbounded diagnostic text.
-It records typed pause, refusal and unknown-stop events. The fake provider's
-input usage is still a placeholder until Go builds the full model request.
+`Provider.Complete` now consumes `protocol.ModelRequest`: model, output budget,
+detached messages, optional system text, recursively typed tool schemas and a
+local request purpose. The default system builder names only fitted tools and
+includes skill descriptions; changed todo/pressure facts enter the message
+stream, leaving the stable prefix alone. Schema fitting and fingerprints match
+Python's JSON character budgets and canonical serialization. The fake provider
+counts messages, system and schemas with Python's ASCII/wide-character model.
+The token meter includes cached input, learns same-envelope growth and sees
+signed shrinkage. Summary usage belongs to its receipt, not the live anchor.
+Workspace-backed sessions run result spill, pair-safe snip, consumed-result
+micro compaction and transcript-plus-model summary in that order. `compress`
+passes the write-risk gate and runs after the entire batch has results. Failures,
+empty summaries and cancellation preserve paired history. Archive/spill paths
+use the workspace resolver and atomic replacement. Automatic compaction can
+write artifacts under readonly tool mode, like Python's ordinary agent;
+read-only workers must inject `InMemoryCompactor`. The Bash-only constructor,
+which has no workspace, uses that in-memory strategy by default.
+The context snapshot compares six catalogues, three wire/token cases, four
+cheap-compaction histories, six meter steps, spill output and summary artifacts
+against Python. Cache annotations, masking, team/plan/memory prompt sections,
+and provider recovery remain pending. Compaction files persist, but cannot
+restore a Go session on their own.
 Approvals are an in-process callback, with no durable broker, action journal,
-secret masking, HTTP server or persistence yet. Python
+secret masking, HTTP server or session persistence yet. Python
 contract snapshots and fake reply fixtures are generated into `testdata/` by
 `../python/tools/export_go_contracts.py`.
 

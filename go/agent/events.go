@@ -10,16 +10,21 @@ const EventBacklog = 200
 type SessionEventKind string
 
 const EventTodo SessionEventKind = "todo"
+const EventCompact SessionEventKind = "compact"
 
 // SessionEvent is a closed union. Stop and Todo return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
-	kind  SessionEventKind
-	stop  ProviderStopEvent
-	todos []protocol.TodoItem
+	kind    SessionEventKind
+	stop    ProviderStopEvent
+	todos   []protocol.TodoItem
+	compact CompactionEvent
 }
 
 func (event SessionEvent) Kind() SessionEventKind { return event.kind }
+func (event SessionEvent) Compaction() (CompactionEvent, bool) {
+	return event.compact, event.kind == EventCompact
+}
 func (event SessionEvent) Stop() (ProviderStopEvent, bool) {
 	switch event.kind {
 	case SessionEventKind(EventTurnPaused), SessionEventKind(EventProviderRefusal), SessionEventKind(EventProviderStopUnhandled):
