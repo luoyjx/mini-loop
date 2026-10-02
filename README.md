@@ -266,8 +266,9 @@ package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
 model requests, token metering, four-layer context compaction and typed subagent
 execution with run provenance, action replay and typed journal transitions,
-and a bound approval broker with session grants and textual questions,
-reviewed **2026-10-02** (Go baseline `22afa68` plus the approval-broker slice).
+a bound approval broker with session grants and textual questions, and optional
+registered-secret masking across the implemented Go result/recording paths,
+reviewed **2026-10-02** (Go baseline `2d22c13` plus the secrets slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -319,6 +320,7 @@ flowchart LR
         GoContext["Context pipeline<br/>fitted schemas · skills · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
+        GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Injected BashExecutor"]
@@ -335,6 +337,7 @@ flowchart LR
         GoGate -. permission ask .-> GoApprovals
         GoResources -. textual question .-> GoApprovals
         GoApprovals -. scoped approval events .-> GoSession
+        GoSecrets -. bind gate / context / recording .-> GoSession
         GoResources -->|task / depth gate| GoChildren
         GoChildren --> GoContext
         GoChildren -->|selected tools| GoGate
@@ -398,7 +401,21 @@ The Bash-only constructor has no bound workspace and uses the in-memory
 snip/micro strategy. Internal automatic compaction can write workspace artifacts
 even with a readonly tool mode, matching the Python ordinary-agent path; a
 read-only worker must explicitly select `InMemoryCompactor`. Provider cache
-annotation, application-wide secret masking and user-resource prompt sections remain pending.
+annotation and user-resource prompt sections remain pending. Optional
+`RuntimeConfig.Secrets` binds a typed registry to the gate, compactor, event
+backlog and approval surface. Tool results are masked after post hooks and
+before journal settlement, observers and model results; raw executed arguments
+and live model-call history retain their original values. Deployment masking
+remains off by default. Registered values resolve lazily and stay cached until
+explicit re-registration; failed lookups retry after 60 seconds and unresolved
+or short values are reportable. Matching includes interleaved ANSI controls,
+Unicode characters and longest values first. JSON recording projections mask
+strings and keys before final escaping, with bounded size/depth and last-value
+key collision semantics. Default compaction masks spill files, archives and
+summaries; fresh children retain the same registry. Typed environment APIs
+scrub registered names and select only names mentioned by the command. The
+injected Bash interface does not yet consume that environment automatically;
+the shipped process executor and direct-shell protection remain pending.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
 process-local. `RuntimeConfig.ActionJournal` optionally binds a replay journal:
@@ -411,8 +428,9 @@ memory journal keeps every action identity while bounding retained result text.
 shipped Go SQLite backend remains pending. No journal
 claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child
-state. Application-wide secret masking remains pending. Compaction files are durable local
-artifacts, not a session-restoration store.
+state. Compaction files are durable local artifacts, not a session-restoration
+store. Future HTTP, SQLite, trajectory and optional-feature sinks must use the
+same recording boundary as they are ported.
 `RuntimeConfig.Approvals` optionally binds one process-local broker to the
 permission and textual-question surfaces. It checks session, owner and workspace
 binding, records typed approval rows through an optional `ApprovalStore`, and
@@ -424,7 +442,8 @@ remains answered. Explicit broker cancellation records `cancelled`; cancellation
 of the waiting context removes the pending entry and leaves its last stored row
 pending, matching Python. Store faults are reported without changing the human
 decision. The optional redactor masks previews before JSON escaping and answers
-before storage; it does not provide application-wide masking. Fresh children
+before storage; `RuntimeConfig.Secrets` supplies the registry for the bound
+session without changing a shared broker configuration. Fresh children
 do not inherit the parent broker surface. SQLite rows, restore-time expiry and
 authenticated approval routes remain pending.
 `task` is the tenth runtime tool and crosses the execution-risk gate before
@@ -494,6 +513,8 @@ The Mermaid block above remains the canonical GitHub view.
 | `python/tools/` | Python verification and benchmark scripts |
 | `python/examples/` | Runnable Python custom composition |
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
+| `go/secrets/` | Typed optional credential lookup, environment selection and masking |
+| `go/internal/` | Shared Python filename matching and pinned Unicode/text semantics |
 | `go/testdata/` | Generated Python tool, OpenAPI, and SQLite contract snapshots |
 | `docs/` | Design evidence, research, hardening record, and roadmap |
 | `research-site/` | Read-only browsable projection generated from `docs/*.md` |
@@ -540,12 +561,14 @@ The current Go slice is checked independently:
 cd go
 go test ./...
 go vet ./...
+go test -race ./...
 ```
 
 Check the Python contract snapshot before extending the Go port:
 
 ```sh
 .venv/bin/python python/tools/export_go_contracts.py --check
+.venv/bin/python python/tools/export_go_unicode.py --check
 ```
 
 ## Documentation map

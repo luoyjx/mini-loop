@@ -89,8 +89,9 @@ Record its parity evidence and remaining gaps before checking it off.
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
       a bound provider; optional action replay, journal transitions and bound approval
-      broker/session grants are implemented; SQLite approvals, restore-time expiry
-      and application-wide masking remain)
+      broker/session grants and optional registry masking are implemented;
+      SQLite approvals, restore-time expiry
+      and the real process executor/remaining sink masking remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -579,3 +580,75 @@ authorization under AGENTS.md. This slice adds no dependencies. Session restore,
 leases, shared concurrency limits, stuck detection, full lifecycle, provider
 recovery and remaining optional features are still required. G0-G7 and the full
 port objective remain open.
+
+## 2026-10-02 secrets slice
+
+- `go/secrets.Registry` uses named credential names, a concrete environment map,
+  explicit lookup functions and optional configuration values. Literal/lazy
+  registration, detached process/environment snapshots, credential-shaped name
+  selection, narrow command-name injection APIs and wide value masking preserve
+  the source rules. Successful values remain cached until re-registration;
+  errors, empty/nil lookups and panics are contained and reported by name, with
+  a 60-second retry window. Short values are reported, not masked. Concurrent
+  reads share one lookup flight, and re-registration cannot publish an old
+  in-flight value into the new cache. `Null` retains the unconfigured default.
+- ANSI-interleaved matching covers CSI, OSC and two-byte ESC controls. Values
+  match longest first by Unicode character count; replacements stay literal,
+  including backslashes and an explicitly empty replacement. Name lookup uses
+  full Python lowercase mappings and final sigma; environment patterns use
+  full uppercase mappings, including expanding characters. Generated Unicode
+  14.0.0 tables are checked by `python/tools/export_go_unicode.py --check`.
+  Python filename matching moved to `internal/fnmatch` for shared use, preserving
+  the existing glob wrapper and all 182 source pattern cases.
+- Optional `RuntimeConfig.Secrets` binds the gate, event backlog, compactor and
+  bound approval surface. Tool results are masked after post hooks and before
+  journal settlement, observers and model results, including denied/error paths.
+  Trusted hooks/handlers still receive raw calls; live assistant tool arguments
+  and model requests remain raw, as in Python. Default compaction masks durable
+  spill content, transcript archives and summaries. Ordinary model-authored
+  prose is not rewritten. Children inherit the registry while keeping fresh
+  broker state. Recording copies mask caller metadata without changing its
+  authoritative actor/capabilities; parent event forwarding does not re-mask
+  the same child event. Shared brokers retain each surface's row redactor.
+- `protocol.MapToolInputStrings` maps all ten concrete payloads without mutating
+  the originals. `MaskedPythonJSON` accepts a concrete boundary type and uses a
+  private closed JSON projection for decoded strings/keys before final escaping;
+  numbers/member order are preserved and masked-key collisions use the last
+  value. Its projection decoder rejects over 16 MiB or 256 levels of nesting.
+  No untyped payload or raw JSON is retained in domain/service structs.
+- The fifteenth Python export adds 15 mask recipes, four environment scenarios,
+  ten concrete previews, eleven Unicode casing cases, nested/key-collision
+  projections and actual source rotation/retry outcomes. Runtime tests cover
+  execution versus recording, journal-before-observer order, default-off behavior,
+  per-session shared-broker answers, raw summary requests versus masked artifacts,
+  inherited child registry and detached caller/event metadata. Boundary limits
+  and missing/panicking/concurrent/re-registered lookups are covered.
+- Validation: `go test ./...`, `go vet ./...`, `go test -race ./...`, fifteen-file
+  Python export check, Unicode table check, all 19 scanning guards and
+  `git diff --check` passed. `.venv/bin/python -m pytest -q`: 2151 passed,
+  28 skipped, 24 subtests passed; four warnings (three dependency deprecations
+  and a subprocess cleanup warning about a closed Python event loop). Scoped
+  source reference selectors `tool-result-unmasked-before-the-journal`,
+  `spill-is-unmasked`, `mask-payload-skips-dict-keys`,
+  `approval-preview-masked-after-serialize`, `answer-secret-persisted-raw` and
+  `tool-input-unmasked` caught all six mutations; this is not a Go mutation suite
+  or a full 377-guard run. No Python package modules changed.
+- README baseline, Mermaid, boundary prose and interactive specification were
+  updated together. Archify passed 9/9 showcase checks, zero warnings/errors.
+  Specification SHA-256:
+  `ab335ce669fea17193d13a696e80e1509b5c040075ac606ba5385879dc6026cc`
+  (15,246 bytes); generated HTML SHA-256:
+  `acc305b60a604cba07a4fedecfa9a13a25ed424e4ae6a1b93df9c253ddceadd2`
+  (658,501 bytes). Browser visual review remains unavailable after the earlier
+  local-file policy block. Runtime evidence remains macOS and offline providers.
+
+Next: the real workspace Bash executor, process-group cancellation, bounded
+stdout/stderr capture, typed command-result metadata and consumption of the
+selected environment with direct-call masking; then cache annotation, session
+services and HTTP/SSE. The current injected Bash interface does not automatically
+consume environment selections. Future provider/HTTP/SQLite/trajectory and
+optional-feature sinks still require explicit masking integration. SQLite driver
+dependency authorization is pending under AGENTS.md; this slice adds no
+dependencies. Restoration, leases, concurrency limits, stuck detection, complete
+lifecycle, real provider/recovery and optional features remain open. The full
+port objective and G0-G7 remain active.

@@ -4501,7 +4501,7 @@
       <p class="subtitle">Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals"],"note":"Ten typed tools, children, compaction, optional action replay and bound approvals. SQLite persistence, restore and HTTP remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Ten typed tools, compaction, children, replay, bound approvals and optional secrets. SQLite, real shell, restore and HTTP pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4613,10 +4613,11 @@
         <path data-edge-from="goChildren" data-edge-to="goContext" data-edge-label="fresh context" data-edge-key="27" data-edge-id="goChildContext" data-composition-points="1370,1578;1270,1578;1270,1480;1015,1480;1015,1436" d="M 1370 1578 L 1278 1578 Q 1270 1578 1270 1570 L 1270 1488 Q 1270 1480 1262 1480 L 1023 1480 Q 1015 1480 1015 1472 L 1015 1436" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="goChildren" data-edge-to="goGate" data-edge-label="selected tools" data-edge-key="28" data-edge-id="goChildDispatch" data-composition-points="1535,1540;1535,1500;1710,1500;1710,1310;1510,1310;1510,1256" d="M 1535 1540 L 1535 1508 Q 1535 1500 1543 1500 L 1702 1500 Q 1710 1500 1710 1492 L 1710 1318 Q 1710 1310 1702 1310 L 1518 1310 Q 1510 1310 1510 1302 L 1510 1256" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="goChildren" data-edge-to="goSession" data-edge-label="scoped events" data-edge-key="29" data-edge-id="goChildEvents" data-composition-points="1370,1578;1300,1578;1300,1090;790,1090;790,1218;850,1218" d="M 1370 1578 L 1308 1578 Q 1300 1578 1300 1570 L 1300 1098 Q 1300 1090 1292 1090 L 798 1090 Q 790 1090 790 1098 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="goGate" data-edge-to="goApprovals" data-edge-label="permission ask" data-edge-key="30" data-edge-id="goApprovalAsk" data-composition-points="1510,1180;1510,1110;2060,1110;2060,1056" d="M 1510 1180 L 1510 1118 Q 1510 1110 1518 1110 L 2052 1110 Q 2060 1110 2060 1102 L 2060 1056" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="goResources" data-edge-to="goApprovals" data-edge-label="text question" data-edge-key="31" data-edge-id="goQuestion" data-composition-points="2200,1578;2280,1578;2280,1018;2200,1018" d="M 2200 1578 L 2272 1578 Q 2280 1578 2280 1570 L 2280 1026 Q 2280 1018 2272 1018 L 2200 1018" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="goApprovals" data-edge-to="goSession" data-edge-label="scoped approvals" data-edge-key="32" data-edge-id="goApprovalEvents" data-composition-points="1920,1018;1300,1018;1300,1090;790,1090;790,1218;850,1218" d="M 1920 1018 L 1308 1018 Q 1300 1018 1300 1026 L 1300 1082 Q 1300 1090 1292 1090 L 798 1090 Q 790 1090 790 1098 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="goGate" data-edge-to="goResources" data-edge-label="bound session effect" data-edge-key="33" data-edge-id="goResourceEffect" data-composition-points="1650,1218;1785,1218;1785,1578;1920,1578" d="M 1650 1218 L 1777 1218 Q 1785 1218 1785 1226 L 1785 1570 Q 1785 1578 1793 1578 L 1920 1578" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="goSecrets" data-edge-to="goSession" data-edge-label="bind gate + sinks" data-edge-key="30" data-edge-id="goSecretBinding" data-composition-points="610,1018;790,1018;790,1218;850,1218" d="M 610 1018 L 782 1018 Q 790 1018 790 1026 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goGate" data-edge-to="goApprovals" data-edge-label="permission ask" data-edge-key="31" data-edge-id="goApprovalAsk" data-composition-points="1510,1180;1510,1110;2060,1110;2060,1056" d="M 1510 1180 L 1510 1118 Q 1510 1110 1518 1110 L 2052 1110 Q 2060 1110 2060 1102 L 2060 1056" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goResources" data-edge-to="goApprovals" data-edge-label="text question" data-edge-key="32" data-edge-id="goQuestion" data-composition-points="2200,1578;2280,1578;2280,1018;2200,1018" d="M 2200 1578 L 2272 1578 Q 2280 1578 2280 1570 L 2280 1026 Q 2280 1018 2272 1018 L 2200 1018" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goApprovals" data-edge-to="goSession" data-edge-label="scoped approvals" data-edge-key="33" data-edge-id="goApprovalEvents" data-composition-points="1920,1018;1300,1018;1300,1090;790,1090;790,1218;850,1218" d="M 1920 1018 L 1308 1018 Q 1300 1018 1300 1026 L 1300 1082 Q 1300 1090 1292 1090 L 798 1090 Q 790 1090 790 1098 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goGate" data-edge-to="goResources" data-edge-label="bound session effect" data-edge-key="34" data-edge-id="goResourceEffect" data-composition-points="1650,1218;1785,1218;1785,1578;1920,1578" d="M 1650 1218 L 1777 1218 Q 1785 1218 1785 1226 L 1785 1570 Q 1785 1578 1793 1578 L 1920 1578" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4901,6 +4902,19 @@
         <text data-detail="fine" x="1535" y="1608" class="t-backend" font-size="7" text-anchor="middle">default depth limit: 2</text>
         </g>
 
+        <g id="node-goSecrets" data-node-id="goSecrets" data-node-label="Go Secret Registry" tabindex="0" role="button" aria-label="Focus Go Secret Registry, cached values / masked copies, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="cached values / masked copies" data-node-tag="optional deployment binding" data-node-context="Independent Go port - in progress">
+          <title>Go Secret Registry · cached values / masked copies · Independent Go port - in progress · optional deployment binding</title>
+          <rect x="330" y="980" width="280" height="76" rx="6" class="c-mask"/>
+          <rect x="330" y="980" width="280" height="76" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(336 986) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-detail-anchor x="470" y="1016" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Secret Registry</text>
+        <text data-detail="context" x="470" y="1032" class="t-muted" font-size="9" text-anchor="middle">cached values / masked copies</text>
+        <text data-detail="fine" x="470" y="1048" class="t-security" font-size="7" text-anchor="middle">optional deployment binding</text>
+        </g>
+
         <g id="node-goApprovals" data-node-id="goApprovals" data-node-label="Go Approval Broker" tabindex="0" role="button" aria-label="Focus Go Approval Broker, grants / questions / optional review, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="grants / questions / optional review" data-node-tag="process-local + store seam" data-node-context="Independent Go port - in progress">
           <title>Go Approval Broker · grants / questions / optional review · Independent Go port - in progress · process-local + store seam</title>
           <rect x="1920" y="980" width="280" height="76" rx="6" class="c-mask"/>
@@ -5036,19 +5050,23 @@
           <rect x="1003.8" y="1060" width="72.4" height="14" rx="3" class="c-mask"/>
           <text x="1040" y="1070" class="t-messagebus" font-size="8" text-anchor="middle">scoped events</text>
         </g>
-        <g data-detail="context" data-edge-from="goGate" data-edge-to="goApprovals" data-edge-label="permission ask" data-edge-key="30" data-edge-id="goApprovalAsk">
+        <g data-detail="context" data-edge-from="goSecrets" data-edge-to="goSession" data-edge-label="bind gate + sinks" data-edge-key="30" data-edge-id="goSecretBinding">
+          <rect x="654.2" y="988" width="91.6" height="14" rx="3" class="c-mask"/>
+          <text x="700" y="998" class="t-messagebus" font-size="8" text-anchor="middle">bind gate + sinks</text>
+        </g>
+        <g data-detail="context" data-edge-from="goGate" data-edge-to="goApprovals" data-edge-label="permission ask" data-edge-key="31" data-edge-id="goApprovalAsk">
           <rect x="1741.4" y="1080" width="77.2" height="14" rx="3" class="c-mask"/>
           <text x="1780" y="1090" class="t-messagebus" font-size="8" text-anchor="middle">permission ask</text>
         </g>
-        <g data-detail="context" data-edge-from="goResources" data-edge-to="goApprovals" data-edge-label="text question" data-edge-key="31" data-edge-id="goQuestion">
+        <g data-detail="context" data-edge-from="goResources" data-edge-to="goApprovals" data-edge-label="text question" data-edge-key="32" data-edge-id="goQuestion">
           <rect x="2273.8" y="1450" width="72.4" height="14" rx="3" class="c-mask"/>
           <text x="2310" y="1460" class="t-messagebus" font-size="8" text-anchor="middle">text question</text>
         </g>
-        <g data-detail="context" data-edge-from="goApprovals" data-edge-to="goSession" data-edge-label="scoped approvals" data-edge-key="32" data-edge-id="goApprovalEvents">
+        <g data-detail="context" data-edge-from="goApprovals" data-edge-to="goSession" data-edge-label="scoped approvals" data-edge-key="33" data-edge-id="goApprovalEvents">
           <rect x="1606.6" y="988" width="86.8" height="14" rx="3" class="c-mask"/>
           <text x="1650" y="998" class="t-messagebus" font-size="8" text-anchor="middle">scoped approvals</text>
         </g>
-        <g data-detail="context" data-edge-from="goGate" data-edge-to="goResources" data-edge-label="bound session effect" data-edge-key="33" data-edge-id="goResourceEffect">
+        <g data-detail="context" data-edge-from="goGate" data-edge-to="goResources" data-edge-label="bound session effect" data-edge-key="34" data-edge-id="goResourceEffect">
           <rect x="1797" y="1548" width="106" height="14" rx="3" class="c-mask"/>
           <text x="1850" y="1558" class="t-security" font-size="8" text-anchor="middle">bound session effect</text>
         </g>
@@ -5328,7 +5346,8 @@
           <li>&bull; Go children use capability-selected tools, fresh state and peer provenance</li>
           <li>&bull; Optional Go journals replay terminal results; SQLite backend remains pending</li>
           <li>&bull; Optional bound approvals preserve grants, text answers, reviewer abstention and typed rows; no SQLite backend yet</li>
-          <li>&bull; Preview and stored-answer redaction are optional; application-wide masking remains open</li>
+          <li>&bull; Optional registry masking precedes result settlement and covers implemented events, approvals and compaction files; live arguments stay raw</li>
+          <li>&bull; Typed environment APIs are implemented; real shell consumption and future sink coverage remain open</li>
           <li>&bull; Cache annotation, HTTP, restore and provider recovery remain open</li>
         </ul>
       </div>

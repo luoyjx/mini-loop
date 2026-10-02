@@ -73,6 +73,7 @@ type RuntimeConfig struct {
 	RoleToolPolicy    RoleToolPolicy
 	ActionJournal     ActionJournal
 	Approvals         *ApprovalBroker
+	Secrets           ApprovalRedactor
 }
 
 type runtimeHandler struct {
@@ -209,6 +210,9 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		if err != nil {
 			return nil, err
 		}
+		if config.Secrets != nil {
+			surface.redactor = config.Secrets
+		}
 		approver, questions = surface, surface
 		handler.questions = surface
 	}
@@ -235,11 +239,13 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
+	gate.secrets = config.Secrets
 	session, err := NewSessionWithGate(config.ID, config.Owner, config.Provider, gate, config.Mode, files.Root(), config.MaxRounds)
 	if err != nil {
 		return nil, err
 	}
 	session.todos, session.events = handler.todos, handler.events
+	session.secrets, session.events.secrets = config.Secrets, config.Secrets
 	handler.session = session
 	session.questions = questions
 	if config.Label != "" {

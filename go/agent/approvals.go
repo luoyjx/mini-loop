@@ -161,6 +161,10 @@ const (
 	ReviewDeny    ReviewVerdict = "deny"
 )
 
+type ApprovalPreviewer interface {
+	ApprovalPreview(protocol.ToolInput) (string, error)
+}
+
 type ApprovalReviewer interface {
 	ReviewApproval(context.Context, ApprovalRequest) (ReviewVerdict, error)
 }
@@ -237,6 +241,7 @@ type pendingApproval struct {
 	allowed      bool
 	answer       *string
 	grantOutcome grantOutcome
+	redactor     ApprovalRedactor
 }
 
 // ApprovalBroker is process-local. Store faults are reported, but never change
@@ -267,9 +272,10 @@ func NewApprovalBroker(config ApprovalBrokerConfig) (*ApprovalBroker, error) {
 // A child/foreign session cannot borrow that surface; fresh children have no
 // broker-bound session state in the Python runtime either.
 type ApprovalSurface struct {
-	broker  *ApprovalBroker
-	binding ToolAuthority
-	sink    ApprovalEventSink
+	broker   *ApprovalBroker
+	binding  ToolAuthority
+	sink     ApprovalEventSink
+	redactor ApprovalRedactor
 }
 
 func (broker *ApprovalBroker) ForSession(binding ToolAuthority, sink ApprovalEventSink) (*ApprovalSurface, error) {
@@ -277,7 +283,7 @@ func (broker *ApprovalBroker) ForSession(binding ToolAuthority, sink ApprovalEve
 		return nil, err
 	}
 	binding.RunContext = binding.RunContext.clone()
-	return &ApprovalSurface{broker, binding, sink}, nil
+	return &ApprovalSurface{broker: broker, binding: binding, sink: sink, redactor: broker.redactor}, nil
 }
 func (surface *ApprovalSurface) matches(authority ToolAuthority) bool {
 	return authority.SessionID == surface.binding.SessionID && authority.OwnerID == surface.binding.OwnerID && authority.Workspace == surface.binding.Workspace
@@ -348,8 +354,8 @@ func (broker *ApprovalBroker) persistLocked(pending *pendingApproval, status App
 	}
 	if answer != nil {
 		value := *answer
-		if broker.redactor != nil {
-			value = broker.redactor.MaskText(value)
+		if pending.redactor != nil {
+			value = pending.redactor.MaskText(value)
 		}
 		record.Answer = &value
 	}
@@ -386,6 +392,14 @@ func reviewApproval(ctx context.Context, reviewer ApprovalReviewer, request Appr
 	}()
 	return reviewer.ReviewApproval(ctx, request)
 }
+func (surface *ApprovalSurface) newApproval(snapshot ApprovalSnapshot) (*pendingApproval, error) {
+	pending, err := newApproval(snapshot)
+	if err == nil {
+		pending.redactor = surface.redactor
+	}
+	return pending, err
+}
+
 func (surface *ApprovalSurface) Approve(ctx context.Context, request ApprovalRequest) (bool, error) {
 	if !surface.matches(request.Authority) {
 		return false, nil
@@ -397,11 +411,17 @@ func (surface *ApprovalSurface) Approve(ctx context.Context, request ApprovalReq
 		return false, err
 	}
 	broker := surface.broker
-	shown := request.Call.Input
-	if broker.redactor != nil {
-		shown = broker.redactor.MaskApprovalInput(shown)
+	var preview string
+	var err error
+	if previewer, ok := surface.redactor.(ApprovalPreviewer); ok {
+		preview, err = previewer.ApprovalPreview(request.Call.Input)
+	} else {
+		shown := request.Call.Input
+		if surface.redactor != nil {
+			shown = surface.redactor.MaskApprovalInput(shown)
+		}
+		preview, err = protocol.PythonJSON(shown, true, false)
 	}
-	preview, err := protocol.PythonJSON(shown, true, false)
 	if err != nil {
 		return false, err
 	}
@@ -411,7 +431,7 @@ func (surface *ApprovalSurface) Approve(ctx context.Context, request ApprovalReq
 	hit, granted := broker.grantedLocked(snapshot.SessionID, request.Call.Input)
 	if granted {
 		snapshot.GrantCandidate = hit
-		pending, err := newApproval(snapshot)
+		pending, err := surface.newApproval(snapshot)
 		if err == nil {
 			broker.persistLocked(pending, ApprovalGrantAllowed, nil)
 		}
@@ -446,7 +466,7 @@ func (surface *ApprovalSurface) Approve(ctx context.Context, request ApprovalReq
 			// Source auto-review rows carry no proposed/remembered grant.
 			auto := snapshot
 			auto.GrantCandidate, auto.GrantProposed = GrantCandidate{}, false
-			pending, err := newApproval(auto)
+			pending, err := surface.newApproval(auto)
 			if err != nil {
 				return false, err
 			}
@@ -460,7 +480,7 @@ func (surface *ApprovalSurface) Approve(ctx context.Context, request ApprovalReq
 			return verdict == ReviewAllow, surface.emit(ctx, ApprovalEvent{kind: ApprovalAutoReviewedEvent, tool: snapshot.Tool, rule: snapshot.Rule, verdict: verdict})
 		}
 	}
-	pending, err := newApproval(snapshot)
+	pending, err := surface.newApproval(snapshot)
 	if err != nil {
 		return false, err
 	}
@@ -487,10 +507,10 @@ func (surface *ApprovalSurface) AskQuestion(ctx context.Context, request Questio
 		return NoQuestionAnswer(), err
 	}
 	text := request.Question
-	if surface.broker.redactor != nil {
-		text = surface.broker.redactor.MaskText(text)
+	if surface.redactor != nil {
+		text = surface.redactor.MaskText(text)
 	}
-	pending, err := newApproval(ApprovalSnapshot{SessionID: request.Authority.SessionID, Tool: protocol.ToolAskUser, ToolUseID: request.Authority.ToolUseID, Rule: "ask-user", Message: truncateApproval(text, 2000), Kind: ApprovalQuestion})
+	pending, err := surface.newApproval(ApprovalSnapshot{SessionID: request.Authority.SessionID, Tool: protocol.ToolAskUser, ToolUseID: request.Authority.ToolUseID, Rule: "ask-user", Message: truncateApproval(text, 2000), Kind: ApprovalQuestion})
 	if err != nil {
 		return NoQuestionAnswer(), err
 	}

@@ -857,6 +857,108 @@ def _approval_contracts() -> dict[str, object]:
     return {"candidates": candidates, "cases": records, "secret": secret}
 
 
+
+def _secret_contracts() -> dict[str, object]:
+    """Real registry, typed input preview and Unicode name/casing contracts."""
+    from mini_loop.secrets import SecretRegistry, DEFAULT_SECRET_PATTERNS
+    from unittest.mock import patch
+    secret = 'clé-secrète-"café"\\Ω-0123456789'
+    masks = []
+    specs = [
+        ([('KEY', secret)], 'url=' + secret, {}),
+        ([('KEY', 'TOPSECRET0123')], 'TOP\x1b[31mSECRET0123', {}),
+        ([('KEY', 'TOPSECRET0123')], 'TOP\x1b]0;title\x07SECRET0123', {}),
+        ([('KEY', 'TOPSECRET0123')], 'TOP\x1b]8;;url\x1b\\SECRET0123', {}),
+        ([('KEY', 'TOPSECRET0123')], 'TOP\x1bMSECRET0123', {}),
+        ([('SHORT', 'secret7')], 'secret7 stays', {}),
+        ([('SHORT', 'Ω' * 7)], 'Ω' * 7, {}),
+        ([('KEY', 'Ω' * 8)], 'Ω' * 8, {}),
+        ([('A', '0123456789'), ('B', 'prefix0123456789suffix')], 'prefix0123456789suffix 0123456789', {}),
+        ([('KEY', secret)], secret, {'mask_with': r'\replacement\$1'}),
+        ([('KEY', 'a.b*?[Ω]')], 'a.b*?[Ω]aZbxxxx', {}),
+        ([('KEY', 'line\nsecret-0123')], 'line\nsecret-0123', {}),
+        ([('KEY', '😀' * 8)], '😀' * 8, {}),
+        ([('SHORT', 'xy')], 'xy', {'min_length': 2}),
+        ([('KEY', secret)], secret, {'mask_with': ''}),
+    ]
+    for values, text, settings in specs:
+        registry = SecretRegistry(**settings)
+        for name, value in values:
+            registry.register(name, value)
+        masked = registry.mask(text)
+        masks.append({'values': [{'name': name, 'value': value} for name, value in values],
+                      'text': text, 'settings': settings, 'masked': masked,
+                      'names': registry.names(), 'short': registry.short_values(),
+                      'unresolved': registry.unresolved()})
+    env_cases = []
+    for environment, patterns, extra, command in [
+        ({'API_KEY': 'ordinary', 'X_API_KEY': secret, 'lower_token': 'token-0123', 'EMPTY_SECRET': '', 'CUSTOM': 'custom-0123', 'PATH': '/bin'}, None, ['CUSTOM'], 'echo $x_api_key $CuStOm'),
+        ({'İ_KEY': secret, 'ΑΣ': 'sigma-0123', 'OTHER': 'other-0123'}, [], ['İ_KEY', 'ΑΣ', 'OTHER'], 'echo i\u0307_key ας'),
+        ({'straße_token': secret, 'x_token': 'token-0123'}, ['STRASSE_TOKEN'], [], 'echo STRAßE_TOKEN'),
+        ({'[X_TOKEN': secret, 'z_token': 'token-0123'}, ['[X_TOKEN', '[z-a]_TOKEN'], [], '[x_token'),
+    ]:
+        registry = SecretRegistry.from_environ(environ=environment, extra_names=extra, **({'patterns': patterns} if patterns is not None else {}))
+        env_cases.append({'environment': environment, 'patterns': patterns, 'extra': extra, 'command': command,
+                          'names': registry.names(), 'found': sorted(registry.find_in_text(command)),
+                          'injected': registry.env_for_command(command), 'scrubbed': registry.scrub_env(environment)})
+    registry = SecretRegistry()
+    registry.register('KEY', secret)
+    inputs = [
+        ('bash', {'command': 'echo ' + secret, 'approval_prefix': ['echo', secret]}),
+        ('read_file', {'path': secret, 'limit': 2, 'offset': 0}),
+        ('write_file', {'path': secret, 'content': secret}),
+        ('edit_file', {'path': secret, 'old_text': secret, 'new_text': secret}),
+        ('glob', {'pattern': '*' + secret}),
+        ('TodoWrite', {'items': [{'content': secret, 'status': 'pending', 'activeForm': secret}]}),
+        ('task', {'prompt': secret, 'agent_type': 'Explore'}),
+        ('load_skill', {'name': secret, 'scope': 'agent'}),
+        ('compress', {}), ('ask_user', {'question': secret}),
+    ]
+    previews = [{'block': {'type': 'tool_use', 'id': 'u', 'name': name, 'input': value},
+                 'preview': json.dumps(registry.mask_payload(value))} for name, value in inputs]
+    payload = {'array': [secret, {'key-' + secret: secret}], 'boolean': True, 'nil': None, 'number': 1.25}
+    payload_json = json.dumps(payload, sort_keys=True)
+    payload_masked = json.dumps(registry.mask_payload(json.loads(payload_json)))
+    # Key collision keeps the last value, with the first insertion position.
+    collision = {'first-' + secret: 'first', 'first-<secret-hidden>': 'last'}
+    collision_json = json.dumps(collision, sort_keys=True)
+    collision_masked = json.dumps(registry.mask_payload(json.loads(collision_json)))
+    rotation = SecretRegistry()
+    calls = []
+    def rotated():
+        calls.append(1)
+        return 'old-credential' if len(calls) == 1 else 'new-credential'
+    rotation.register('KEY', rotated)
+    injected = rotation.env_for_command('KEY')
+    old_new = rotation.mask('old-credential new-credential')
+    rotation_calls = len(calls)
+    rotation.register('KEY', 'new-credential')
+    reset = rotation.mask('old-credential new-credential')
+    failure = SecretRegistry()
+    tries = []
+    clock = [0.0]
+    def retry():
+        tries.append(1)
+        if len(tries) == 1:
+            raise RuntimeError('sensitive vault error')
+        return 'retry-credential'
+    failure.register('KEY', retry)
+    with patch('mini_loop.secrets.time.monotonic', side_effect=lambda: clock[0]):
+        initial = failure.mask('retry-credential')
+        unresolved = failure.unresolved()
+        cached_failure = failure.mask('retry-credential')
+        clock[0] = 60.0
+        retried = failure.mask('retry-credential')
+    texts = ['İ_KEY', 'STRAßE_TOKEN', 'ΑΣ', 'ΑΣΑ', "ΑΣ'Α", 'AΣ\u0301', 'Σ', 'AΣ\u0345A', '😀Σ', 'aΣⁱ', 'aΣⁱA']
+    return {'secret': secret, 'default_patterns': DEFAULT_SECRET_PATTERNS,
+            'masks': masks, 'environments': env_cases, 'previews': previews,
+            'payload': {'input': payload_json, 'masked': payload_masked},
+            'collision': {'input': collision_json, 'masked': collision_masked},
+            'rotation': {'injected': injected, 'masked': old_new, 'calls': rotation_calls, 'reset': reset},
+            'failure': {'initial': initial, 'cached': cached_failure, 'unresolved': unresolved,
+                        'retried': retried, 'calls': len(tries), 'remaining': failure.unresolved()},
+            'casing': [{'text': text, 'lower': text.lower(), 'upper': text.upper()} for text in texts]}
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -927,6 +1029,7 @@ def _snapshot() -> dict[str, bytes]:
         subagent_contracts = _subagent_contracts(Path(scratch) / "subagents")
         action_contracts = _action_contracts(Path(scratch) / "actions")
         approval_contracts = _approval_contracts()
+        secret_contracts = _secret_contracts()
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -956,6 +1059,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-subagents.json": _json_bytes(subagent_contracts),
         "python-actions.json": _json_bytes(action_contracts),
         "python-approvals.json": _json_bytes(approval_contracts),
+        "python-secrets.json": _json_bytes(secret_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

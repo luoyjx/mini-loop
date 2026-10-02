@@ -60,6 +60,7 @@ type Session struct {
 	lineage                             *SubagentLineage
 	currentRun                          RunContext
 	questions                           Questioner
+	secrets                             TextMasker
 	subagents                           SubagentProvider
 	rolePolicy                          RoleToolPolicy
 	subagentMaxDepth, subagentMaxRounds int
@@ -103,7 +104,7 @@ func (s *Session) TokenMeter() TokenMeterSnapshot {
 }
 
 func (s *Session) compact(ctx context.Context, envelope string, forced bool) error {
-	value := CompactionContext{Messages: append([]protocol.Message(nil), s.messages...), Files: s.files, Provider: s.provider, Model: s.model, Meter: s.meter, Envelope: envelope}
+	value := CompactionContext{Messages: append([]protocol.Message(nil), s.messages...), Files: s.files, Provider: s.provider, Model: s.model, Meter: s.meter, Envelope: envelope, Secrets: s.secrets}
 	var result CompactionResult
 	var err error
 	if forced {

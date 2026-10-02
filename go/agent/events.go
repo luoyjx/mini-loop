@@ -136,6 +136,7 @@ type sessionEvents struct {
 	records []SessionEventRecord
 	scope   EventScope
 	parent  *sessionEvents
+	secrets TextMasker
 }
 
 func (events *sessionEvents) setScope(scope EventScope) {
@@ -147,6 +148,9 @@ func (events *sessionEvents) setScope(scope EventScope) {
 func (events *sessionEvents) append(event SessionEvent) {
 	events.mu.Lock()
 	scope := events.scope.clone()
+	events.mu.Unlock()
+	event, scope = maskedEvent(events.secrets, event), maskedScope(events.secrets, scope)
+	events.mu.Lock()
 	events.appendLocked(event, scope)
 	events.mu.Unlock()
 	if events.parent != nil {

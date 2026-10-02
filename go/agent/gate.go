@@ -94,6 +94,7 @@ type ToolGate struct {
 	mu        sync.Mutex
 	problems  []string
 	journal   ActionJournal
+	secrets   TextMasker
 }
 
 const maxGateProblems = 100
@@ -151,6 +152,14 @@ func notifyObserver(observer ResultObserver, ctx context.Context, authority Tool
 }
 
 func (gate *ToolGate) finish(ctx context.Context, authority ToolAuthority, call ToolCall, outcome ToolOutcome) ToolOutcome {
+	outcome.Output = maskedText(gate.secrets, outcome.Output)
+	return gate.observe(ctx, authority, call, outcome)
+}
+func (gate *ToolGate) observe(ctx context.Context, authority ToolAuthority, call ToolCall, outcome ToolOutcome) ToolOutcome {
+	for i := range outcome.events {
+		outcome.events[i].Reason = maskedText(gate.secrets, outcome.events[i].Reason)
+		outcome.events[i].Rule = maskedText(gate.secrets, outcome.events[i].Rule)
+	}
 	outcome.ActionID = authority.ActionID
 	for _, observer := range gate.observers {
 		if err := notifyObserver(observer, ctx, authority, call, outcome); err != nil {
@@ -314,6 +323,7 @@ func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, cal
 		}
 		outcome.Output = output
 	}
+	outcome.Output = maskedText(gate.secrets, outcome.Output)
 	if journalStarted {
 		status := ActionCompleted
 		if outcome.Denied {
@@ -326,5 +336,5 @@ func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, cal
 		}
 		journalStarted = false
 	}
-	return gate.finish(ctx, authority, call, outcome), nil
+	return gate.observe(ctx, authority, call, outcome), nil
 }

@@ -68,6 +68,7 @@ type CompactionContext struct {
 	Model    string
 	Meter    TokenMeter
 	Envelope string
+	Secrets  TextMasker
 }
 type CompactionResult struct {
 	Messages []protocol.Message
@@ -265,7 +266,7 @@ func (compactor DefaultCompactor) budget(ctx context.Context, value CompactionCo
 		if err != nil {
 			return result, err
 		}
-		if _, err := value.Files.Write(ctx, protocol.WriteFileInput{Path: path, Content: target.original.Content}); err != nil {
+		if _, err := value.Files.Write(ctx, protocol.WriteFileInput{Path: path, Content: maskedText(value.Secrets, target.original.Content)}); err != nil {
 			return result, err
 		}
 		runes := []rune(target.original.Content)
@@ -336,7 +337,11 @@ func (compactor DefaultCompactor) Compact(ctx context.Context, value CompactionC
 	}
 	var archive strings.Builder
 	for _, message := range value.Messages {
-		line, err := protocol.PythonJSON(message, true, false)
+		var mask func(string) string
+		if value.Secrets != nil {
+			mask = value.Secrets.MaskText
+		}
+		line, err := protocol.MaskedPythonJSON(message, mask, true, false)
 		if err != nil {
 			return result, err
 		}
@@ -376,7 +381,7 @@ func (compactor DefaultCompactor) Compact(ctx context.Context, value CompactionC
 	if pytext.Strip(summary.String()) == "" {
 		return result, errors.New("compaction summary came back empty; refusing to replace the transcript with nothing")
 	}
-	result.Messages = []protocol.Message{{Role: protocol.RoleUser, Content: protocol.PlainContent(fmt.Sprintf("[Context compressed. Full transcript: %s]\n%s\n%s", resolved, SummaryPrefix, summary.String()))}}
+	result.Messages = []protocol.Message{{Role: protocol.RoleUser, Content: protocol.PlainContent(fmt.Sprintf("[Context compressed. Full transcript: %s]\n%s\n%s", resolved, SummaryPrefix, maskedText(value.Secrets, summary.String())))}}
 	result.Events = []CompactionEvent{{kind: CompactAuto, summary: SummaryReceipt{Transcript: resolved, ReplacedMessages: len(value.Messages), ReplacedTokensEstimate: EstimateTokens(value.Messages), InputTokens: reply.Usage.InputTokens, OutputTokens: reply.Usage.OutputTokens, Model: reply.Model}}}
 	return result, nil
 }

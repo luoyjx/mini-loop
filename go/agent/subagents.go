@@ -38,6 +38,7 @@ type SubagentParent struct {
 	subagents                                      SubagentProvider
 	rolePolicy                                     RoleToolPolicy
 	events                                         *sessionEvents
+	secrets                                        TextMasker
 }
 
 func (parent SubagentParent) Authority() ToolAuthority {
@@ -125,7 +126,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	}
 	handler := &runtimeHandler{
 		binding: ToolAuthority{SessionID: id, OwnerID: parent.authority.OwnerID, Workspace: parent.authority.Workspace, Mode: mode},
-		todos:   &TodoManager{}, events: &sessionEvents{parent: parent.events}, skills: parent.skills, questions: questions, compression: &compressionSignal{},
+		todos:   &TodoManager{}, events: &sessionEvents{parent: parent.events, secrets: parent.secrets}, skills: parent.skills, questions: questions, compression: &compressionSignal{},
 	}
 	definitions := append([]ToolDefinition(nil), catalog.ordered...)
 	// Built-in stateful handlers must bind the fresh child. Custom handlers
@@ -143,11 +144,13 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	if err != nil {
 		return "", err
 	}
+	gate.secrets = parent.secrets
 	child, err := NewSessionWithGate(id, parent.authority.OwnerID, parent.provider, gate, mode, parent.authority.Workspace, parent.maxRounds)
 	if err != nil {
 		return "", err
 	}
 	child.label, child.depth = parent.label+">"+strings.ToLower(string(request.Role)), parent.depth+1
+	child.secrets = parent.secrets
 	child.model, child.maxTokens, child.tokenThreshold = parent.model, parent.maxTokens, parent.tokenThreshold
 	child.skills, child.questions, child.compactor = parent.skills, questions, parent.compactor
 	child.subagents, child.rolePolicy = parent.subagents, parent.rolePolicy
@@ -199,7 +202,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 		authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode, RunContext: run.clone()}, label: s.label, depth: s.depth,
 		model: s.model, maxTokens: s.maxTokens, tokenThreshold: s.tokenThreshold, maxRounds: s.subagentMaxRounds, maxDepth: s.subagentMaxDepth,
 		provider: s.provider, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
-		skills: s.skills, questions: s.questions, compactor: s.compactor, subagents: s.subagents, rolePolicy: s.rolePolicy, events: s.events,
+		skills: s.skills, questions: s.questions, compactor: s.compactor, subagents: s.subagents, rolePolicy: s.rolePolicy, events: s.events, secrets: s.secrets,
 	}
 	summary, err := s.subagents.RunSubagent(ctx, SubagentRequest{parent, prompt, role, run.clone()})
 	if err != nil {
