@@ -28,13 +28,14 @@ func TestStopReasonConstantsTrackPythonManifest(t *testing.T) {
 		t.Fatal(err)
 	}
 	var manifest struct {
-		MaxResumptions int    `json:"max_resumptions"`
-		RefusalNotice  string `json:"refusal_notice"`
+		MaxResumptions    int    `json:"max_resumptions"`
+		RefusalNotice     string `json:"refusal_notice"`
+		UnknownToolResult string `json:"unknown_tool_result"`
 	}
 	if err := json.Unmarshal(data, &manifest); err != nil {
 		t.Fatal(err)
 	}
-	if manifest.MaxResumptions != maxResumptions || manifest.RefusalNotice != refusalNotice {
+	if manifest.MaxResumptions != maxResumptions || manifest.RefusalNotice != refusalNotice || manifest.UnknownToolResult != unknownToolResult {
 		t.Fatalf("Python stop contract changed: %+v", manifest)
 	}
 }

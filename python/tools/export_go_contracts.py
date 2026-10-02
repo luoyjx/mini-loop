@@ -35,12 +35,25 @@ def _snapshot() -> dict[str, bytes]:
 
         from mini_loop.builtins import default_registry
         from mini_loop.agent import KNOWN_STOP_REASONS, MAX_RESUMPTIONS, REFUSAL_NOTICE
+        from mini_loop.actions import UNKNOWN_RESULT
         from mini_loop.config import Settings
         from mini_loop.fake_llm import FakeMessage, FakeUsage, TextBlock, ToolUseBlock
         from mini_loop.server import create_app
         from mini_loop.storage import SCHEMA_VERSION, _SCHEMA
 
-        tools = default_registry().schemas()
+        registry = default_registry()
+        tools = registry.schemas()
+        tool_metadata = [
+            {
+                "name": tool.name,
+                "risk": tool.risk,
+                "readonly": tool.readonly,
+                "parallel_safe": tool.parallel_safe,
+                "capabilities": sorted(tool.capabilities),
+            }
+            for name in registry.names()
+            if (tool := registry.get(name)) is not None
+        ]
         openapi = create_app(
             settings=Settings(fake_llm=True, workspace_root=Path(scratch))
         ).openapi()
@@ -89,10 +102,12 @@ def _snapshot() -> dict[str, bytes]:
         "known_stop_reasons": sorted(KNOWN_STOP_REASONS),
         "max_resumptions": MAX_RESUMPTIONS,
         "refusal_notice": REFUSAL_NOTICE,
+        "unknown_tool_result": UNKNOWN_RESULT,
     }
     return {
         "python-contract-manifest.json": _json_bytes(manifest),
         "python-default-tools.json": _json_bytes(tools),
+        "python-default-tool-metadata.json": _json_bytes(tool_metadata),
         "python-fake-replies.json": _json_bytes(reply_snapshot),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

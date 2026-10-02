@@ -94,7 +94,10 @@ func TestFakeProviderTruncatesByCharacters(t *testing.T) {
 
 type readFileProvider struct{}
 
-func (readFileProvider) Complete(context.Context, []protocol.Message) (protocol.ModelReply, error) {
+func (readFileProvider) Complete(_ context.Context, messages []protocol.Message) (protocol.ModelReply, error) {
+	if len(messages) > 1 {
+		return fakeReply([]protocol.Block{protocol.NewTextBlock("done")}, protocol.StopEndTurn), nil
+	}
 	return fakeReply([]protocol.Block{protocol.NewToolUse("u1", protocol.ReadFileToolInput(protocol.ReadFileInput{Path: "a.txt"}))}, protocol.StopToolUse), nil
 }
 
@@ -105,16 +108,22 @@ func (executor *countedBashExecutor) ExecuteBash(context.Context, protocol.BashI
 	return "unexpected", nil
 }
 
-func TestUnsupportedToolDoesNotFallThroughToBash(t *testing.T) {
+func TestUnknownToolReturnsResultWithoutFallingThroughToBash(t *testing.T) {
 	executor := &countedBashExecutor{}
 	session, err := NewSession("s", "owner", readFileProvider{}, executor, 2)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := session.Run(context.Background(), "read a.txt"); err == nil {
-		t.Fatal("initial loop accepted a tool without an executor")
+	if _, err := session.Run(context.Background(), "read a.txt"); err != nil {
+		t.Fatal(err)
 	}
-	if executor.calls != 0 || len(session.Messages()) != 1 {
-		t.Fatal("unsupported tool reached executor or left an unanswered tool_use")
+	messages := session.Messages()
+	if executor.calls != 0 || len(messages) != 4 {
+		t.Fatal("unknown tool reached the bash executor or lacked a paired result")
+	}
+	blocks, _ := messages[2].Content.Blocks()
+	result, _ := blocks[0].ToolResult()
+	if !result.IsError || result.Content != "Unknown tool: read_file" {
+		t.Fatalf("unexpected unknown-tool result: %+v", result)
 	}
 }

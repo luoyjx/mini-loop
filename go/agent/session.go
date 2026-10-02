@@ -19,8 +19,9 @@ type Provider interface {
 }
 
 const (
-	maxResumptions = 8
-	refusalNotice  = "[the model declined to answer this request and returned no content]"
+	maxResumptions    = 8
+	refusalNotice     = "[the model declined to answer this request and returned no content]"
+	unknownToolResult = "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first."
 )
 
 // BashExecutor is deliberately narrow. Future tools must have their own typed
@@ -33,7 +34,9 @@ type Session struct {
 	id         SessionID
 	owner      OwnerID
 	provider   Provider
-	executor   BashExecutor
+	gate       *ToolGate
+	mode       PermissionMode
+	workspace  string
 	maxRounds  int
 	mu         sync.Mutex
 	messages   []protocol.Message
@@ -41,10 +44,22 @@ type Session struct {
 }
 
 func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExecutor, maxRounds int) (*Session, error) {
-	if id == "" || owner == "" || provider == nil || executor == nil || maxRounds < 1 {
-		return nil, errors.New("session requires id, owner, provider, executor, and positive maxRounds")
+	catalog, err := NewBashToolCatalog(executor)
+	if err != nil {
+		return nil, err
 	}
-	return &Session{id: id, owner: owner, provider: provider, executor: executor, maxRounds: maxRounds}, nil
+	gate, err := NewToolGate(catalog, DefaultPermissionPolicy(nil), GateHooks{})
+	if err != nil {
+		return nil, err
+	}
+	return NewSessionWithGate(id, owner, provider, gate, ModeInteractive, "", maxRounds)
+}
+
+func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *ToolGate, mode PermissionMode, workspace string, maxRounds int) (*Session, error) {
+	if id == "" || owner == "" || provider == nil || gate == nil || !mode.Valid() || maxRounds < 1 {
+		return nil, errors.New("session requires id, owner, provider, tool gate, valid mode, and positive maxRounds")
+	}
+	return &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds}, nil
 }
 
 func (s *Session) ID() SessionID { return s.id }
@@ -63,6 +78,21 @@ func (s *Session) StopEvents() []ProviderStopEvent {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	return append([]ProviderStopEvent(nil), s.stopEvents...)
+}
+
+// An interrupted batch must still answer every tool_use before another model
+// request. Completed results keep their real output; remaining effects are
+// explicitly unknown so a model does not blindly retry a side effect.
+func (s *Session) closeInterruptedBatch(blocks []protocol.Block, completed []protocol.Block, start int) {
+	results := append([]protocol.Block(nil), completed...)
+	for _, block := range blocks[start:] {
+		if use, ok := block.ToolUse(); ok {
+			results = append(results, protocol.NewToolResult(use.ID, unknownToolResult, false))
+		}
+	}
+	if len(results) != 0 {
+		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+	}
 }
 
 // Run serializes turns within this session. Different sessions do not share a
@@ -97,16 +127,11 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 			content = protocol.BlockContent(reply.Content...)
 		}
 		blocks := append([]protocol.Block(nil), reply.Content...)
-		for _, block := range blocks {
-			if use, ok := block.ToolUse(); ok && use.Name != protocol.ToolBash {
-				return "", fmt.Errorf("tool %q has no executor in the initial Go loop", use.Name)
-			}
-		}
 		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleAssistant, Content: content})
 
 		results := make([]protocol.Block, 0)
 		var roundText string
-		for _, block := range blocks {
+		for i, block := range blocks {
 			if text, ok := block.Text(); ok && text.Text != "" {
 				roundText += text.Text
 			}
@@ -114,14 +139,14 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 			if !ok {
 				continue
 			}
-			input, _ := use.Input.Bash()
-			output, executeErr := s.executor.ExecuteBash(ctx, input)
-			if executeErr != nil {
-				// The result remains paired even when execution fails. Richer
-				// unknown-effect and approval states belong to G2.
-				output = executeErr.Error()
+			outcome, dispatchErr := s.gate.Dispatch(ctx,
+				ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode},
+				ToolCall{ID: use.ID, Input: use.Input})
+			if dispatchErr != nil {
+				s.closeInterruptedBatch(blocks, results, i)
+				return "", dispatchErr
 			}
-			results = append(results, protocol.NewToolResult(use.ID, output, executeErr != nil))
+			results = append(results, protocol.NewToolResult(use.ID, outcome.Output, outcome.IsError()))
 		}
 		if roundText != "" {
 			lastText = roundText

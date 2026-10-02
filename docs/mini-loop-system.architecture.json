@@ -8,7 +8,7 @@
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
-    "viewBox": [2500, 1100],
+    "viewBox": [2500, 1420],
     "views": [
       {
         "id": "turn-path",
@@ -29,10 +29,10 @@
         "note": "Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."
       },
       {
-        "id": "resource-path",
-        "label": "Scoped skills and memory",
-        "focus": ["authority", "manager", "session", "skillDrafts", "state", "context"],
-        "note": "Preview is process-local; an exact digest commit creates an owner skill that only future session snapshots can load."
+        "id": "go-path",
+        "label": "Go port in progress",
+        "focus": ["goFake", "goSession", "goGate", "goBash"],
+        "note": "Independent in-memory Go loop with typed replies and one tool gate. Injected Bash only; HTTP and durable journals remain pending."
       },
       {
         "id": "personal-skill",
@@ -56,12 +56,17 @@
     { "id": "toolBackends", "type": "backend", "label": "Tool Backends", "sublabel": "files / shell / MCP / sandbox", "pos": [2110, 700], "size": [215, 76] },
     { "id": "coordination", "type": "messagebus", "label": "Async Coordination", "sublabel": "background / cron / teams / workflows", "pos": [1030, 620], "size": [230, 76], "tag": "opt-in surfaces" },
     { "id": "state", "type": "database", "label": "Durable State + Files", "sublabel": "owner resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] },
-    { "id": "decisions", "type": "external", "label": "Decision Providers", "sublabel": "Jev / explicit LLM estimates", "pos": [2110, 540], "size": [220, 76], "tag": "off by default" }
+    { "id": "decisions", "type": "external", "label": "Decision Providers", "sublabel": "Jev / explicit LLM estimates", "pos": [2110, 540], "size": [220, 76], "tag": "off by default" },
+    { "id": "goFake", "type": "external", "label": "Go FakeProvider", "sublabel": "typed model replies", "pos": [330, 1180], "size": [220, 76] },
+    { "id": "goSession", "type": "backend", "label": "Go Session", "sublabel": "serialized in-memory turns", "pos": [850, 1180], "size": [230, 76], "tag": "process-local" },
+    { "id": "goGate", "type": "security", "label": "Go ToolGate", "sublabel": "before / guard / permission / after", "pos": [1370, 1180], "size": [280, 76], "tag": "deny is final" },
+    { "id": "goBash", "type": "backend", "label": "Injected BashExecutor", "sublabel": "only registered default handler", "pos": [1920, 1180], "size": [280, 76] }
   ],
   "boundaries": [
     { "kind": "region", "label": "Control plane", "wraps": ["entry", "authority", "manager", "skillDrafts"], "pad": 24 },
     { "kind": "region", "label": "Per-session runtime", "wraps": ["session", "agent", "context", "toolPolicy"], "pad": 28 },
-    { "kind": "security-group", "label": "Guarded host effects", "wraps": ["toolPolicy", "toolBackends"], "pad": 20 }
+    { "kind": "security-group", "label": "Guarded host effects", "wraps": ["toolPolicy", "toolBackends"], "pad": 20 },
+    { "kind": "region", "label": "Independent Go port - in progress", "wraps": ["goFake", "goSession", "goGate", "goBash"], "pad": 42 }
   ],
   "connections": [
     { "id": "request", "from": "clients", "to": "entry", "label": "request", "variant": "emphasis" },
@@ -81,13 +86,17 @@
     { "id": "inject", "from": "coordination", "to": "session", "label": "inject next turn", "variant": "dashed" },
     { "id": "persist", "from": "session", "to": "state", "label": "epochs / events", "fromSide": "bottom", "toSide": "top" },
     { "id": "recordEffects", "from": "toolPolicy", "to": "state", "label": "action outcomes", "fromSide": "left", "toSide": "right" },
-    { "id": "decisionRequest", "from": "toolPolicy", "to": "decisions", "variant": "dashed" }
+    { "id": "decisionRequest", "from": "toolPolicy", "to": "decisions", "variant": "dashed" },
+    { "id": "goRequest", "from": "goSession", "to": "goFake", "label": "model request", "labelDy": -20 },
+    { "id": "goReply", "from": "goFake", "to": "goSession", "label": "typed reply", "variant": "emphasis" },
+    { "id": "goDispatch", "from": "goSession", "to": "goGate", "label": "typed ToolCall", "variant": "security" },
+    { "id": "goExecute", "from": "goGate", "to": "goBash", "label": "guarded effect", "variant": "security" }
   ],
   "cards": [
     { "dot": "cyan", "title": "Concurrency", "items": ["One lock serializes each session", "Fleet-wide LLM and tool semaphores bound parallel work", "Parallel-safe tool results retain model-call order"] },
     { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Only authenticated HTTP user/final turns enter preview", "Preview cannot publish; commit is a separate caller action", "Agent and user skills retain explicit provenance"] },
     { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] },
     { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] },
-    { "dot": "cyan", "title": "Language layout", "items": ["This map follows the current Python runtime under python/", "Default agent skills resolve from python/skills/", "go/ types tool inputs and model replies; only bash executes in memory", "Go stop events are local; provider recovery and SSE remain open"] }
+    { "dot": "cyan", "title": "Language layout", "items": ["The main map follows the Python runtime under python/", "Go Session now routes tool calls through an immutable catalogue and typed gate", "Only bash is registered by default; Go approvals and stop events are process-local", "Go HTTP, durable action journal and provider recovery remain open"] }
   ]
 }

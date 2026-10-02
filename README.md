@@ -262,8 +262,8 @@ separate:
 ## Architecture
 
 Runtime review baseline: `ad71e05` plus the Python directory split, its
-package-relative default skills path, and typed Go tool inputs and model
-replies, reviewed **2026-10-02**. The optional `decision` tool evaluates
+package-relative default skills path, and the Go typed loop and execution
+gate slice, reviewed **2026-10-02**. The optional `decision` tool evaluates
 explicit state through a configured provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
@@ -308,6 +308,15 @@ flowchart LR
         Trace["Events · trajectory JSONL · trace viewer<br/>audit · problems · runtime posture"]
     end
 
+    subgraph GoPort["Independent Go port · in progress"]
+        GoFake["FakeProvider<br/>typed model replies"]
+        GoSession["Go Session<br/>serialized in-memory turns"]
+        GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
+        GoBash["Injected BashExecutor<br/>only registered default handler"]
+        GoFake <--> GoSession
+        GoSession --> GoGate --> GoBash
+    end
+
     Caller --> Entry
     Manager -->|bind owner · create / restore / route| Session
     Manager -. preview current session .-> Drafts
@@ -332,15 +341,17 @@ flowchart LR
 ```
 <!-- architecture-map:end -->
 
-The diagram describes the current Python runtime under `python/`. The `go/`
-directory is an independent port in progress and is not on this execution
-path. The solid path is one ordinary turn; dotted paths are optional or asynchronous.
+The main diagram describes the current Python runtime under `python/`. The
+separate Go subgraph is an in-memory port in progress and serves no Python or
+HTTP requests. The solid Python path is one ordinary turn; dotted paths are
+optional or asynchronous.
 The Python default agent skills now resolve from `python/skills/` regardless
 of the current working directory; `MINILOOP_SKILLS_DIR` still overrides it.
-The Go port currently types all ten Python default tool inputs but its
-in-memory loop dispatches only `bash`. It records pause, refusal and unknown
-stop outcomes locally; the production event stream and provider recovery are
-still pending. See the parity matrix for remaining gates.
+The Go port types all ten Python default tool inputs, but its immutable
+executable catalogue currently registers only `bash`. The Go session uses one
+typed gate for rewrites, guards, permission, execution and observers; its local
+stop events, in-process approvals and cancellation repair have no durable
+event stream, approval broker or action journal yet. See the parity matrix.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new

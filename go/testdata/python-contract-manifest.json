@@ -22,5 +22,6 @@
   ],
   "max_resumptions": 8,
   "refusal_notice": "[the model declined to answer this request and returned no content]",
-  "sqlite_schema_version": 7
+  "sqlite_schema_version": 7,
+  "unknown_tool_result": "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first."
 }

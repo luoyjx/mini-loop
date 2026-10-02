@@ -81,8 +81,10 @@ Record its parity evidence and remaining gaps before checking it off.
       repository verifiers pass from the documented layout)
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
       usage and stop events implemented; other event and state variants remain)
-- [ ] G1 session loop (in-memory fake-provider slice implemented)
-- [ ] G2 execution gate
+- [ ] G1 session loop (in-memory fake-provider slice and cancellation repair implemented;
+      request construction, bounded events, and parallel batches remain)
+- [ ] G2 execution gate (typed catalogue, ordered gate and basic modes implemented;
+      durable approvals, action journal, masking and remaining handlers remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -143,3 +145,45 @@ Record its parity evidence and remaining gaps before checking it off.
 
 Next: finish the typed event/state contracts and default execution gate, then
 build the HTTP vertical slice against the pinned Python responses.
+
+## 2026-10-02 execution gate slice
+
+- The Python export now includes ordered default-tool risk, readonly,
+  parallel-safe and capability metadata, plus the unknown-effect result text.
+- Go's immutable executable catalogue currently registers Bash only. The
+  session reaches it solely through a typed gate: before rewrite, monotonic
+  guard, permission, handler, after replacement, and final observer. Denials
+  bypass replacement hooks; observer errors and panics do not alter outcomes.
+- Default policy recognizes readonly/interactive/auto, the immutable shell
+  deny list, destructive-command approval, and workspace path escapes. An ask
+  without an approver is denied; auto skips asks but keeps explicit denials.
+  Approval remains an injected callback, with no durable broker yet.
+- Cancellation closes every unanswered tool use with the Python unknown-effect
+  notice, preserving completed results and transcript ordering. Other Python
+  tools are still unregistered in Go and return `Unknown tool`.
+- Validation: `go test ./...`, `go vet ./...`, and `go test -race ./...`
+  passed, including partial-batch cancellation and auto-mode custom denials.
+  Python contract check reports six current files; all 77 module invariant
+  declarations, 19 scan guards and 377 mutation guards passed. The final
+  isolated `.venv/bin/python -m pytest -q`
+  run passed with 2151 tests, 28 skips and 24 subtests. Two earlier full runs
+  each failed one timing-sensitive test; both targeted reruns passed.
+- README Mermaid and the interactive specification now show the independent
+  Go execution path. Generated HTML passed all nine Archify showcase checks,
+  with zero errors or warnings. Browser visual review remains unavailable
+  because the local-file navigation was blocked by the browser policy.
+
+Next: port file handlers with a second path check at execution, add the
+action/approval journal and masking boundary, then expose a default HTTP slice.
+
+The file-tool slice must preserve these Python contracts before registration:
+
+1. Resolve workspace paths at execution and reject traversal or symlink escapes.
+2. Read at most the Python character cap after skipping the requested lines;
+   preserve Unicode counting, newline behavior, pagination and truncation notices.
+3. Write through a sibling temporary file, fsync and rename so failures retain
+   the previous file; report Python's character count in the compatibility text.
+4. Edit only files within the size cap and only one exact occurrence; retain
+   Python's missing-text and ambiguous-text messages and avoid partial writes.
+5. Compare actual Python/Go results for these cases using generated fixtures,
+   including non-ASCII content, absent parents, pagination and failed edits.
