@@ -80,12 +80,14 @@ Record its parity evidence and remaining gaps before checking it off.
 - [x] P1 Python directory split (server smoke, complete Python suite, and
       repository verifiers pass from the documented layout)
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
-      usage, stop/error/stuck/subagent/approval events, run provenance, action and approval records implemented;
+      usage, core lifecycle/status/cancel/stop/error/stuck/subagent/approval events,
+      run provenance, action and approval records implemented;
       other event and state variants remain)
 - [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
       fake-provider slice, cache annotation, stuck detection, scoped child execution,
       exhaustion markers and cancellation repair implemented;
-      complete lifecycle events and parallel batches remain)
+      managed admission/cancellation and bounded subscriptions implemented;
+      remaining hooks/injectors, shared limiters and parallel batches remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
@@ -807,3 +809,91 @@ provider/recovery and durable session storage. SQLite still requires a Go driver
 and the existing dependency authorization question is unanswered. No
 dependencies were added. Owner resources, shared concurrency limits, trajectory,
 Go Seatbelt and optional features remain open; the full G0-G7 goal stays active.
+
+
+## 2026-10-03 lifecycle and managed session slice
+
+- Core model start/end events record request estimates, purposes, requested and
+  served models, usage, prompt tokens, catalogue/system/capability fingerprints
+  and the conversation meter. Summary calls use the same cache/telemetry seam
+  without replacing the live meter anchor. Bounded fingerprint sets retain the
+  source clear-at-512 behavior. Ordinary provider errors emit failed recovery,
+  model error and a bounded error reply; retry/backoff is still pending.
+- Commentary/final-answer text, tool spans and activity associations are typed.
+  Tool-use events precede the unchanged execution gate; result events follow
+  masked settlement and observers, carry failure/denial/replay flags, cap display
+  text at 2,000 Unicode characters and retain detached command metadata.
+  Reconciliation is emitted immediately after verification, before retry/effect
+  settlement. Raw executed arguments/history stay raw; recording copies mask
+  values, schema descriptions, display labels, errors and caller framing.
+- The process-local event bus has a 200-event durable backlog and a 2,000-record
+  live queue per subscription. Slow subscribers drop oldest; ephemeral deltas
+  advance sequence numbers but never enter replay. Publication and optional
+  EventSink callbacks are ordered and detached. Sink errors/panics are contained
+  and masked; slow callbacks can delay the emitter. Callback reentry into emission
+  or the blocking Messages accessor is unsupported. No streaming provider is
+  implemented merely because a typed delta variant exists.
+- NewManagedSession privately owns the core and adds admission, idle/running/error
+  status, status/done/cancelled events, run counts and operator cancellation.
+  The active marker is set after admission; cancellation cannot hit a queued
+  caller. Context cancellation abandons admission promptly, and closure is
+  checked both before and after waiting. Info uses immutable live snapshots and
+  can report awaiting_approval/stuck without waiting for the loop lock. Once a
+  terminal decision is committed, Cancel returns false even while final callbacks
+  finish. Children remain raw sessions and emit no outer status/done events.
+- Event framing includes root session ID, timestamp, sequence and transcript
+  epoch. Appends preserve the epoch; row replacement or shortening opens a new
+  epoch, even with no store. Storage identity is compared on immutable content;
+  no JSON re-encoding of complete history is needed for every event.
+- A batch interrupted by a caller-provided handler panic retains completed
+  outputs and pairs unresolved calls with unknown-effect results. ManagedSession
+  reports a type-only runtime fault, releases admission and can run again.
+- The eighteenth Python export runs nine actual AgentSession paths: completion,
+  pre-hook denial, handler failure, pause/resume, refusal, unknown stop, provider
+  failure, model cancellation and tool cancellation. Go compares every exported
+  event field/order and message history, normalizing random IDs, durations,
+  timestamps, language-specific exception labels and numeric JSON spelling only.
+  The empty Python refusal [] is normalized to the valid Go empty-string content
+  at the fixture boundary. Source display-only probes receive required unused
+  typed fields at the test boundary. Source bus bounds, eight titles and ten tool
+  labels are tested. All previous seventeen snapshots remain byte-identical.
+- Differential runs corrected two older protocol differences: omitted provider
+  caller metadata now remains omitted (explicit null stays null), and paired
+  model results omit is_error even when telemetry reports failure/denial, as the
+  actual Python batch does. Existing failure/denial tests now assert the typed
+  event flags alongside the paired textual response.
+
+- Validation: `go test ./...`, `go vet ./...` and `go test -race ./...`
+  passed. The 18-file Python export check, all 19 scanning guards and
+  `git diff --check` passed. Three scoped Python reference guards caught their
+  mutations: `subscriber-queue-unbounded`, `running-marker-set-before-the-lock`
+  and `external-cancel-leaves-a-dangling-tool`. These are source reference
+  checks, not Go mutations or the full 377-guard sweep. No Python package
+  modules changed, so the package invariant verifier was not required.
+- Full Python validation was run independently after Go/guard processes ended:
+  2149 passed, 28 skipped, 24 subtests passed and two timing failures in 385.89
+  seconds. `test_sessions_run_concurrently` measured 0.802 seconds against its
+  0.5-second ceiling; `test_a_forty_turn_session_stays_fast` measured 1.245
+  seconds against the same ceiling. The targeted rerun passed concurrency but
+  still failed forty turns at 0.848 seconds. A clean `git archive` of HEAD
+  `7090fdf7d309d07b6a2cd74e777d55e8b39af9dd`, with its Python source/test files
+  and the same interpreter, also failed forty turns at 1.235 seconds. This
+  establishes a preexisting timing-gate failure in the current environment;
+  its root cause is unconfirmed. The full Python gate is **not green**. Source
+  runtime/tests and thresholds are unchanged. The full run reported three
+  dependency deprecations and one subprocess teardown warning (event loop closed).
+- README review baseline, canonical Mermaid, boundary prose and interactive
+  source were updated together. Archify delivery passed 9/9 showcase checks
+  with zero errors/warnings. Specification SHA-256:
+  `6cdc6a26840a6db4399ce8dcc95bccb95cc4c75a0f7fddb17ccfcaeda6614e2c`
+  (16,095 bytes); HTML SHA-256:
+  `5c1c5fe84fdf1b587b4ce1f2d773195ae02eb546c1823447ea7fdb81ca787066`
+  (661,082 bytes), output: `docs/mini-loop-system.architecture.html`.
+  Rendered visual review remains skipped following the earlier browser local-file
+  policy block; the automated checks do not establish rendered visual acceptance.
+
+Next: session manager/services and HTTP/SSE, followed by real provider/recovery
+and durable storage. Remaining G1 work includes user-prompt hooks/injectors, todo
+nagging, shared concurrency limits and parallel batches. SQLite driver approval
+is still unanswered; no dependencies were added. Owner resources, trajectories,
+Go Seatbelt and optional features remain open. The G0-G7 goal stays active.

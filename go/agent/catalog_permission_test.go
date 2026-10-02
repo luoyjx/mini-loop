@@ -158,9 +158,10 @@ func TestReadonlySessionDeniesBashAndKeepsTranscriptPaired(t *testing.T) {
 	}
 	blocks, _ := messages[2].Content.Blocks()
 	result, _ := blocks[0].ToolResult()
-	if !result.IsError || result.Content == "" {
+	if result.IsError || result.Content == "" {
 		t.Fatalf("readonly denial was not returned: %+v", result)
 	}
+	assertToolResultTelemetry(t, session, result.ToolUseID, false, true)
 }
 
 type fileProbeHandler struct{ calls int }

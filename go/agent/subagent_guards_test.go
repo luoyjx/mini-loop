@@ -89,7 +89,7 @@ func (mutatingExploreProvider) Complete(_ context.Context, request protocol.Mode
 		blocks, _ := last.Content.Blocks()
 		for _, block := range blocks {
 			result, _ := block.ToolResult()
-			if !result.IsError || !strings.Contains(result.Content, "read-only") {
+			if result.IsError || !strings.Contains(result.Content, "read-only") {
 				return protocol.ModelReply{}, errors.New("explore mutation was not denied")
 			}
 		}
@@ -117,6 +117,14 @@ func TestExploreReadonlyHoldsWithWiderCustomCatalogueAndAutoParent(t *testing.T)
 			t.Fatal("explore wrote a file")
 		}
 	}
+	blocks, _ := session.Messages()[2].Content.Blocks()
+	result, _ := blocks[0].ToolResult()
+	if result.Content != "done" {
+		t.Fatal("child response contract failed", result)
+	}
+	assertToolResultTelemetry(t, session, "write", false, true)
+	assertToolResultTelemetry(t, session, "shell", false, true)
+
 }
 
 type cancelChildProvider struct{ started chan struct{} }
@@ -197,10 +205,33 @@ func TestSharedSubagentProviderAndRolePolicyKeepSessionsIndependent(t *testing.T
 	ids := make(map[MessageID]bool)
 	for _, session := range sessions {
 		events := session.Events()
-		if len(events) != 2 || events[0].Scope.Label != string(session.ID()) || len(session.Messages()) != 0 {
+		rootEvents := []SessionEventRecord{}
+		for _, record := range events {
+			if record.Scope.Label == string(session.ID()) {
+				rootEvents = append(rootEvents, record)
+			}
+		}
+		if len(rootEvents) != 2 || rootEvents[0].Scope.Label != string(session.ID()) || len(session.Messages()) != 0 {
 			t.Fatal("child state leaked into parent or other session")
 		}
-		id := events[0].Scope.RunContext.MessageID()
+		id := rootEvents[0].Scope.RunContext.MessageID()
+		coreEvents := 0
+		for _, record := range events {
+			if record.Event.Kind() == EventStatus || record.Event.Kind() == EventDone {
+				t.Fatal("raw child fabricated outer lifecycle")
+			}
+			if record.Scope.Label == string(session.ID()) {
+				continue
+			}
+			coreEvents++
+			provenance := record.Scope.RunContext.Snapshot()
+			if record.SessionID != session.ID() || record.Scope.Depth != 1 || provenance.ParentMessageID == nil || *provenance.ParentMessageID != id || provenance.Authority != AuthorityPeerAgent {
+				t.Fatal("child lifecycle scope escaped", record.Scope, provenance)
+			}
+		}
+		if coreEvents == 0 {
+			t.Fatal("no child core lifecycle")
+		}
 		if ids[id] {
 			t.Fatal("sessions shared delegation context")
 		}

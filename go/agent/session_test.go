@@ -72,9 +72,10 @@ func TestToolFailureStillPairsTranscript(t *testing.T) {
 	}
 	blocks, _ := session.Messages()[2].Content.Blocks()
 	result, ok := blocks[0].ToolResult()
-	if !ok || !result.IsError {
-		t.Fatal("failed tool was not recorded as an error result")
+	if !ok || result.IsError {
+		t.Fatal("failed tool response violated Python transcript shape")
 	}
+	assertToolResultTelemetry(t, session, result.ToolUseID, true, false)
 }
 
 func TestFakeProviderTruncatesByCharacters(t *testing.T) {
@@ -125,7 +126,8 @@ func TestUnknownToolReturnsResultWithoutFallingThroughToBash(t *testing.T) {
 	}
 	blocks, _ := messages[2].Content.Blocks()
 	result, _ := blocks[0].ToolResult()
-	if !result.IsError || result.Content != "Unknown tool: read_file" {
+	if result.IsError || result.Content != "Unknown tool: read_file" {
 		t.Fatalf("unexpected unknown-tool result: %+v", result)
 	}
+	assertToolResultTelemetry(t, session, result.ToolUseID, true, false)
 }

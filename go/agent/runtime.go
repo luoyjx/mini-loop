@@ -78,6 +78,7 @@ type RuntimeConfig struct {
 	CachePolicy       CachePolicy
 	StuckDetector     StuckDetector
 	StopHooks         []StopHook
+	EventSink         EventSink
 }
 
 type runtimeHandler struct {
@@ -267,8 +268,11 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		session.stuckDetector = config.StuckDetector
 	}
 	session.stopHooks = append([]StopHook(nil), config.StopHooks...)
+	session.bash = config.Bash
 	session.todos, session.events = handler.todos, handler.events
 	session.secrets, session.events.secrets = config.Secrets, config.Secrets
+	session.events.sessionID, session.events.sink = config.ID, config.EventSink
+	session.bindEventHistory()
 	handler.session = session
 	session.questions = questions
 	if config.Label != "" {

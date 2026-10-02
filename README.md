@@ -269,8 +269,9 @@ execution with run provenance, action replay and typed journal transitions,
 a bound approval broker with session grants and textual questions, and optional
 registered-secret masking across the implemented Go result/recording paths,
 and a real foreground workspace shell with typed results, group cancellation
-and bounded capture, plus default cache annotations and bounded stuck detection,
-reviewed **2026-10-03** (Go baseline `068d15e` plus the cache/stuck slice).
+and bounded capture, plus default cache annotations and bounded stuck detection, core lifecycle
+telemetry, bounded subscriptions and managed turn admission/cancellation,
+reviewed **2026-10-03** (Go baseline `7090fdf` plus the lifecycle slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -318,7 +319,8 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoFake["FakeProvider<br/>typed requests · replies · usage"]
-        GoSession["Go Session<br/>serialized turns · typed events · stuck detection"]
+        GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done"]
+        GoSession["Go Session<br/>serialized loop · spans · bounded event bus · stuck"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
@@ -329,6 +331,7 @@ flowchart LR
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>depth limit 2 · round budget 30"]
+        GoManaged --> GoSession
         GoSession --> GoContext --> GoFake
         GoFake --> GoSession
         GoContext --> GoArchives
@@ -390,8 +393,15 @@ and textual-question interfaces; a nil skill source is an empty catalogue,
 and a nil question surface reports unavailability. The deployment skill loader
 snapshots bounded bodies and descriptions and verifies the normalized source
 hash at load time. User-scoped skill layering remains pending. Todo, stop and stuck
-events, compaction receipts, approval events and scoped child events share a typed, sequenced 200-event backlog;
-HTTP/SSE and subscriptions remain pending. Model requests consume one fitted,
+events, model/tool spans, text phases, activity labels, compaction receipts, approval
+events and scoped child events share a typed, sequenced 200-event backlog. Bounded
+subscriptions retain the newest 2,000 live events; late replay excludes ephemeral
+deltas. `EventsAfter` returns only the available in-memory suffix. HTTP/SSE
+and durable cursor gap recovery remain pending. `RuntimeConfig.EventSink` receives
+detached, masked records in publication order; failures become bounded diagnostics
+and do not abort the turn. A slow synchronous sink can delay the emitter. Sinks may
+inspect `ManagedSession.Info`, event snapshots or subscriptions, but must not
+recursively emit or call the blocking `Messages` accessor during a run. Model requests consume one fitted,
 immutable schema snapshot and the deployment skill descriptions. Provider usage
 anchors the token meter; unrelated summary calls do not change that anchor.
 Workspace-backed sessions use the four-layer compactor, which writes bounded
@@ -442,8 +452,8 @@ string executors remain supported. Host execution is the default: workspace
 cwd and the typo blocklist do not provide shell confinement. A typed rebinding
 Sandbox argv seam is implemented, but no Go Seatbelt backend ships yet.
 Runtime process tests ran on macOS; Linux process-group code has not been run
-on a Linux host, and other platforms reject executor construction. Future sink
-masking and complete tool lifecycle events remain pending.
+on a Linux host, and other platforms reject executor construction. Future HTTP,
+provider, durable-storage and optional-feature sink coverage remains pending.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
 process-local. `RuntimeConfig.ActionJournal` optionally binds a replay journal:
@@ -495,7 +505,20 @@ explicit `StopHook` requests continuation. `RuntimeConfig.StuckDetector` can
 select `NullStuckDetector`; children inherit policies and hooks with fresh
 windows and nudge budgets. Optional input absence and explicit JSON null remain
 distinct in wire payloads and identity hashes. Shared concurrency limiters,
-complete lifecycle events and authenticated HTTP ownership remain pending in Go.
+parallel batches, provider streaming/recovery and authenticated HTTP ownership
+remain pending in Go. `NewManagedSession` privately owns a runtime and adds
+context-aware turn admission, idle/running/error status and operator cancellation.
+Queued callers cannot replace the cancellation target; admission is rechecked
+after waiting. `Info` reads immutable live snapshots without waiting for the loop
+lock and refines running activity to awaiting approval or stuck. A turn commits
+its terminal decision before emitting final events; cancellation at that point
+returns false. These services are process-local and do not yet compose a fleet
+manager or expose HTTP routes. Raw child sessions emit core spans and text without
+outer status/done events. Transcript replacement increments event epochs, including
+with no state store. Tool failures and denials retain their flags in telemetry;
+paired model-visible results omit `is_error`, matching Python. Empty refusal
+content uses an empty string because the strict request domain forbids empty
+block arrays. Absent and explicit-null provider caller metadata remain distinct.
 See the parity matrix.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The

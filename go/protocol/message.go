@@ -57,11 +57,12 @@ type ToolResultBlock struct {
 
 // Block is a closed tagged union. Exactly one variant is populated.
 type Block struct {
-	kind       BlockKind
-	text       *TextBlock
-	thinking   *ThinkingBlock
-	toolUse    *ToolUseBlock
-	toolResult *ToolResultBlock
+	callerPresent bool
+	kind          BlockKind
+	text          *TextBlock
+	thinking      *ThinkingBlock
+	toolUse       *ToolUseBlock
+	toolResult    *ToolResultBlock
 }
 
 func NewTextBlock(text string) Block {
@@ -80,13 +81,21 @@ func NewToolUse(id string, input ToolInput) Block {
 	return NewToolUseWithCaller(id, input, nil)
 }
 
+// NewToolUseWithoutCaller preserves a provider block that omits caller.
+// NewToolUseWithCaller(..., nil) retains an explicit JSON null.
+func NewToolUseWithoutCaller(id string, input ToolInput) Block {
+	block := NewToolUseWithCaller(id, input, nil)
+	block.callerPresent = false
+	return block
+}
+
 func NewToolUseWithCaller(id string, input ToolInput, caller *ToolCaller) Block {
 	var detached *ToolCaller
 	if caller != nil {
 		copyOf := *caller
 		detached = &copyOf
 	}
-	return Block{kind: BlockToolUse, toolUse: &ToolUseBlock{ID: id, Name: input.Name(), Input: input.clone(), Caller: detached}}
+	return Block{callerPresent: true, kind: BlockToolUse, toolUse: &ToolUseBlock{ID: id, Name: input.Name(), Input: input.clone(), Caller: detached}}
 }
 
 func NewToolResult(id, content string, isError bool) Block {
@@ -170,11 +179,18 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 			CacheControl *CacheControl `json:"cache_control,omitempty"`
 		}{BlockThinking, *b.thinking, control})
 	case BlockToolUse:
+		var caller *wireOptional[ToolCaller]
+		if b.callerPresent {
+			caller = &wireOptional[ToolCaller]{value: b.toolUse.Caller}
+		}
 		return json.Marshal(struct {
-			Type BlockKind `json:"type"`
-			ToolUseBlock
-			CacheControl *CacheControl `json:"cache_control,omitempty"`
-		}{BlockToolUse, *b.toolUse, control})
+			Type         BlockKind                 `json:"type"`
+			ID           string                    `json:"id"`
+			Name         ToolName                  `json:"name"`
+			Input        ToolInput                 `json:"input"`
+			Caller       *wireOptional[ToolCaller] `json:"caller,omitempty"`
+			CacheControl *CacheControl             `json:"cache_control,omitempty"`
+		}{BlockToolUse, b.toolUse.ID, b.toolUse.Name, b.toolUse.Input, caller, control})
 	case BlockToolResult:
 		return json.Marshal(struct {
 			Type BlockKind `json:"type"`
@@ -242,7 +258,7 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 			ID     string          `json:"id"`
 			Name   ToolName        `json:"name"`
 			Input  json.RawMessage `json:"input"`
-			Caller *ToolCaller     `json:"caller"`
+			Caller json.RawMessage `json:"caller"`
 		}
 		if err := decodeStrict(data, &wire); err != nil {
 			return err
@@ -254,7 +270,15 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-		next = NewToolUseWithCaller(wire.ID, input, wire.Caller)
+		var caller *ToolCaller
+		if len(wire.Caller) > 0 && string(wire.Caller) != "null" {
+			caller = &ToolCaller{}
+			if err := json.Unmarshal(wire.Caller, caller); err != nil {
+				return err
+			}
+		}
+		next = NewToolUseWithCaller(wire.ID, input, caller)
+		next.callerPresent = len(wire.Caller) > 0
 	case BlockToolResult:
 		var wire struct {
 			Type BlockKind `json:"type"`
@@ -282,6 +306,21 @@ type Content struct {
 }
 
 func PlainContent(text string) Content { return Content{plain: &text} }
+
+// SameStorage detects replacement of an immutable transcript row without
+// re-encoding its entire payload. Copies share storage; new content does not.
+func (c Content) SameStorage(other Content) bool {
+	if c.plain != nil || other.plain != nil {
+		return c.plain == other.plain
+	}
+	if len(c.blocks) != len(other.blocks) {
+		return false
+	}
+	if len(c.blocks) == 0 {
+		return true
+	}
+	return &c.blocks[0] == &other.blocks[0]
+}
 
 func BlockContent(blocks ...Block) Content {
 	copyOf := append([]Block(nil), blocks...)

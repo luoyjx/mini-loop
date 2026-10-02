@@ -1,0 +1,3944 @@
+{
+  "bus": {
+    "backlog": 200,
+    "ephemeral_live": 5,
+    "ephemeral_replay": 0,
+    "live_count": 2000,
+    "live_first": 311,
+    "live_last": 2310,
+    "queue": 2000,
+    "replay_count": 200,
+    "replay_first": 2106,
+    "replay_last": 2305
+  },
+  "cases": [
+    {
+      "before": null,
+      "cancelled": false,
+      "events": [
+        {
+          "seq": 1,
+          "session": "completed",
+          "status": "running",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "agent": "completed",
+          "depth": 0,
+          "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "message_id": "msg_1",
+          "schemas": [
+            {
+              "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+              "input_schema": {
+                "properties": {
+                  "approval_prefix": {
+                    "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "run_in_background": {
+                    "description": "Run asynchronously and return a task id immediately.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "type": "object"
+              },
+              "name": "bash"
+            },
+            {
+              "description": "Read a file's contents (workspace-relative path).",
+              "input_schema": {
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "offset": {
+                    "type": "integer"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              },
+              "name": "read_file"
+            },
+            {
+              "description": "Write content to a file (creates parent dirs).",
+              "input_schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "type": "object"
+              },
+              "name": "write_file"
+            },
+            {
+              "description": "Replace the first exact occurrence of old_text with new_text.",
+              "input_schema": {
+                "properties": {
+                  "new_text": {
+                    "type": "string"
+                  },
+                  "old_text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "old_text",
+                  "new_text"
+                ],
+                "type": "object"
+              },
+              "name": "edit_file"
+            },
+            {
+              "description": "Find workspace files matching a glob pattern.",
+              "input_schema": {
+                "properties": {
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pattern"
+                ],
+                "type": "object"
+              },
+              "name": "glob"
+            },
+            {
+              "description": "Create/replace the task checklist. Use for multi-step work.",
+              "input_schema": {
+                "properties": {
+                  "items": {
+                    "items": {
+                      "properties": {
+                        "activeForm": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "status",
+                        "activeForm"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "type": "object"
+              },
+              "name": "TodoWrite"
+            },
+            {
+              "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+              "input_schema": {
+                "properties": {
+                  "agent_type": {
+                    "enum": [
+                      "Explore",
+                      "general-purpose"
+                    ],
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              },
+              "name": "task"
+            },
+            {
+              "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+              "input_schema": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "enum": [
+                      "agent",
+                      "user"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              "name": "load_skill"
+            },
+            {
+              "description": "Manually compress the conversation to free context.",
+              "input_schema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "compress"
+            },
+            {
+              "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+              "input_schema": {
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              },
+              "name": "ask_user"
+            }
+          ],
+          "seq": 2,
+          "session": "completed",
+          "transcript_epoch": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "agent": "completed",
+          "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "depth": 0,
+          "fingerprint": "de152aaad6ce23af",
+          "message_id": "msg_1",
+          "permission_mode": "auto",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "session": "completed",
+          "transcript_epoch": 1,
+          "type": "capability_plan"
+        },
+        {
+          "agent": "completed",
+          "depth": 0,
+          "hash": "d7e3ebe5239c24ee",
+          "message_id": "msg_1",
+          "seq": 4,
+          "session": "completed",
+          "text": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "stable",
+              "type": "text"
+            }
+          ],
+          "transcript_epoch": 1,
+          "type": "system_prompt"
+        },
+        {
+          "agent": "completed",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 8,
+          "max_tokens": 8000,
+          "message_count": 1,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 5,
+          "session": "completed",
+          "span_id": "model_1",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "completed",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 905,
+          "purpose": "agent_turn",
+          "seq": 6,
+          "served_model": "claude-sonnet-4-6",
+          "session": "completed",
+          "span_id": "model_1",
+          "status": "completed",
+          "stop_reason": "tool_use",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 905,
+            "calibrated": true,
+            "calibration": 1.0,
+            "observations": 1
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 905,
+            "output_tokens": 2,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "completed",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "commentary",
+          "seq": 7,
+          "session": "completed",
+          "text": "Inspect files. More context.",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "activity_id": "activity_1",
+          "agent": "completed",
+          "depth": 0,
+          "message_id": "msg_1",
+          "provisional": false,
+          "seq": 8,
+          "session": "completed",
+          "source": "commentary",
+          "title": "Inspect files.",
+          "transcript_epoch": 1,
+          "type": "activity_update"
+        },
+        {
+          "action_id": "action_1",
+          "activity_id": "activity_1",
+          "agent": "completed",
+          "depth": 0,
+          "display": {
+            "object": "main .",
+            "verb": "search"
+          },
+          "id": "u1",
+          "input": {
+            "command": "rg main ."
+          },
+          "message_id": "msg_1",
+          "name": "bash",
+          "parent_span_id": "model_1",
+          "seq": 9,
+          "session": "completed",
+          "span_id": "tool_1",
+          "transcript_epoch": 1,
+          "type": "tool_use"
+        },
+        {
+          "action_id": "action_1",
+          "agent": "completed",
+          "depth": 0,
+          "error": false,
+          "id": "u1",
+          "message_id": "msg_1",
+          "name": "bash",
+          "output": "same",
+          "parent_span_id": "model_1",
+          "seq": 10,
+          "session": "completed",
+          "span_id": "tool_1",
+          "transcript_epoch": 1,
+          "type": "tool_result"
+        },
+        {
+          "agent": "completed",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 87,
+          "max_tokens": 8000,
+          "message_count": 3,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 11,
+          "session": "completed",
+          "span_id": "model_2",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "completed",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 984,
+          "purpose": "agent_turn",
+          "seq": 12,
+          "served_model": "claude-sonnet-4-6",
+          "session": "completed",
+          "span_id": "model_2",
+          "status": "completed",
+          "stop_reason": "end_turn",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 984,
+            "calibrated": true,
+            "calibration": 1.072,
+            "observations": 2
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 984,
+            "output_tokens": 1,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "completed",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "final_answer",
+          "seq": 13,
+          "session": "completed",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "phase": "final_answer",
+          "seq": 14,
+          "session": "completed",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "done"
+        }
+      ],
+      "info": {
+        "activity": "idle",
+        "busy": false,
+        "message_count": 4,
+        "run_count": 1,
+        "status": "idle",
+        "subscribers": 0
+      },
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "Inspect files. More context.",
+              "type": "text"
+            },
+            {
+              "id": "u1",
+              "input": {
+                "command": "rg main ."
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "same",
+              "tool_use_id": "u1",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "complete",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "name": "completed",
+      "output": "complete"
+    },
+    {
+      "before": null,
+      "cancelled": false,
+      "events": [
+        {
+          "seq": 1,
+          "session": "denied",
+          "status": "running",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "agent": "denied",
+          "depth": 0,
+          "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "message_id": "msg_1",
+          "schemas": [
+            {
+              "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+              "input_schema": {
+                "properties": {
+                  "approval_prefix": {
+                    "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "run_in_background": {
+                    "description": "Run asynchronously and return a task id immediately.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "type": "object"
+              },
+              "name": "bash"
+            },
+            {
+              "description": "Read a file's contents (workspace-relative path).",
+              "input_schema": {
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "offset": {
+                    "type": "integer"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              },
+              "name": "read_file"
+            },
+            {
+              "description": "Write content to a file (creates parent dirs).",
+              "input_schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "type": "object"
+              },
+              "name": "write_file"
+            },
+            {
+              "description": "Replace the first exact occurrence of old_text with new_text.",
+              "input_schema": {
+                "properties": {
+                  "new_text": {
+                    "type": "string"
+                  },
+                  "old_text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "old_text",
+                  "new_text"
+                ],
+                "type": "object"
+              },
+              "name": "edit_file"
+            },
+            {
+              "description": "Find workspace files matching a glob pattern.",
+              "input_schema": {
+                "properties": {
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pattern"
+                ],
+                "type": "object"
+              },
+              "name": "glob"
+            },
+            {
+              "description": "Create/replace the task checklist. Use for multi-step work.",
+              "input_schema": {
+                "properties": {
+                  "items": {
+                    "items": {
+                      "properties": {
+                        "activeForm": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "status",
+                        "activeForm"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "type": "object"
+              },
+              "name": "TodoWrite"
+            },
+            {
+              "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+              "input_schema": {
+                "properties": {
+                  "agent_type": {
+                    "enum": [
+                      "Explore",
+                      "general-purpose"
+                    ],
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              },
+              "name": "task"
+            },
+            {
+              "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+              "input_schema": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "enum": [
+                      "agent",
+                      "user"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              "name": "load_skill"
+            },
+            {
+              "description": "Manually compress the conversation to free context.",
+              "input_schema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "compress"
+            },
+            {
+              "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+              "input_schema": {
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              },
+              "name": "ask_user"
+            }
+          ],
+          "seq": 2,
+          "session": "denied",
+          "transcript_epoch": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "agent": "denied",
+          "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "depth": 0,
+          "fingerprint": "de152aaad6ce23af",
+          "message_id": "msg_1",
+          "permission_mode": "auto",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "session": "denied",
+          "transcript_epoch": 1,
+          "type": "capability_plan"
+        },
+        {
+          "agent": "denied",
+          "depth": 0,
+          "hash": "d7e3ebe5239c24ee",
+          "message_id": "msg_1",
+          "seq": 4,
+          "session": "denied",
+          "text": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "stable",
+              "type": "text"
+            }
+          ],
+          "transcript_epoch": 1,
+          "type": "system_prompt"
+        },
+        {
+          "agent": "denied",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 8,
+          "max_tokens": 8000,
+          "message_count": 1,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 5,
+          "session": "denied",
+          "span_id": "model_1",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "denied",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 905,
+          "purpose": "agent_turn",
+          "seq": 6,
+          "served_model": "claude-sonnet-4-6",
+          "session": "denied",
+          "span_id": "model_1",
+          "status": "completed",
+          "stop_reason": "tool_use",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 905,
+            "calibrated": true,
+            "calibration": 1.0,
+            "observations": 1
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 905,
+            "output_tokens": 2,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "denied",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "commentary",
+          "seq": 7,
+          "session": "denied",
+          "text": "Inspect files. More context.",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "activity_id": "activity_1",
+          "agent": "denied",
+          "depth": 0,
+          "message_id": "msg_1",
+          "provisional": false,
+          "seq": 8,
+          "session": "denied",
+          "source": "commentary",
+          "title": "Inspect files.",
+          "transcript_epoch": 1,
+          "type": "activity_update"
+        },
+        {
+          "action_id": "action_1",
+          "activity_id": "activity_1",
+          "agent": "denied",
+          "depth": 0,
+          "display": {
+            "object": "main .",
+            "verb": "search"
+          },
+          "id": "u1",
+          "input": {
+            "command": "rg main ."
+          },
+          "message_id": "msg_1",
+          "name": "bash",
+          "parent_span_id": "model_1",
+          "seq": 9,
+          "session": "denied",
+          "span_id": "tool_1",
+          "transcript_epoch": 1,
+          "type": "tool_use"
+        },
+        {
+          "action_id": "action_1",
+          "agent": "denied",
+          "denied": true,
+          "depth": 0,
+          "error": false,
+          "id": "u1",
+          "message_id": "msg_1",
+          "name": "bash",
+          "output": "blocked by policy",
+          "parent_span_id": "model_1",
+          "seq": 10,
+          "session": "denied",
+          "span_id": "tool_1",
+          "transcript_epoch": 1,
+          "type": "tool_result"
+        },
+        {
+          "agent": "denied",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 90,
+          "max_tokens": 8000,
+          "message_count": 3,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 11,
+          "session": "denied",
+          "span_id": "model_2",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "denied",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 987,
+          "purpose": "agent_turn",
+          "seq": 12,
+          "served_model": "claude-sonnet-4-6",
+          "session": "denied",
+          "span_id": "model_2",
+          "status": "completed",
+          "stop_reason": "end_turn",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 987,
+            "calibrated": true,
+            "calibration": 1.069,
+            "observations": 2
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 987,
+            "output_tokens": 1,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "denied",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "final_answer",
+          "seq": 13,
+          "session": "denied",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "phase": "final_answer",
+          "seq": 14,
+          "session": "denied",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "done"
+        }
+      ],
+      "info": {
+        "activity": "idle",
+        "busy": false,
+        "message_count": 4,
+        "run_count": 1,
+        "status": "idle",
+        "subscribers": 0
+      },
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "Inspect files. More context.",
+              "type": "text"
+            },
+            {
+              "id": "u1",
+              "input": {
+                "command": "rg main ."
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "blocked by policy",
+              "tool_use_id": "u1",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "complete",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "name": "denied",
+      "output": "complete"
+    },
+    {
+      "before": null,
+      "cancelled": false,
+      "events": [
+        {
+          "seq": 1,
+          "session": "failed-tool",
+          "status": "running",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "agent": "failed-tool",
+          "depth": 0,
+          "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "message_id": "msg_1",
+          "schemas": [
+            {
+              "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+              "input_schema": {
+                "properties": {
+                  "approval_prefix": {
+                    "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "run_in_background": {
+                    "description": "Run asynchronously and return a task id immediately.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "type": "object"
+              },
+              "name": "bash"
+            },
+            {
+              "description": "Read a file's contents (workspace-relative path).",
+              "input_schema": {
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "offset": {
+                    "type": "integer"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              },
+              "name": "read_file"
+            },
+            {
+              "description": "Write content to a file (creates parent dirs).",
+              "input_schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "type": "object"
+              },
+              "name": "write_file"
+            },
+            {
+              "description": "Replace the first exact occurrence of old_text with new_text.",
+              "input_schema": {
+                "properties": {
+                  "new_text": {
+                    "type": "string"
+                  },
+                  "old_text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "old_text",
+                  "new_text"
+                ],
+                "type": "object"
+              },
+              "name": "edit_file"
+            },
+            {
+              "description": "Find workspace files matching a glob pattern.",
+              "input_schema": {
+                "properties": {
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pattern"
+                ],
+                "type": "object"
+              },
+              "name": "glob"
+            },
+            {
+              "description": "Create/replace the task checklist. Use for multi-step work.",
+              "input_schema": {
+                "properties": {
+                  "items": {
+                    "items": {
+                      "properties": {
+                        "activeForm": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "status",
+                        "activeForm"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "type": "object"
+              },
+              "name": "TodoWrite"
+            },
+            {
+              "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+              "input_schema": {
+                "properties": {
+                  "agent_type": {
+                    "enum": [
+                      "Explore",
+                      "general-purpose"
+                    ],
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              },
+              "name": "task"
+            },
+            {
+              "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+              "input_schema": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "enum": [
+                      "agent",
+                      "user"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              "name": "load_skill"
+            },
+            {
+              "description": "Manually compress the conversation to free context.",
+              "input_schema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "compress"
+            },
+            {
+              "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+              "input_schema": {
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              },
+              "name": "ask_user"
+            }
+          ],
+          "seq": 2,
+          "session": "failed-tool",
+          "transcript_epoch": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "agent": "failed-tool",
+          "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "depth": 0,
+          "fingerprint": "de152aaad6ce23af",
+          "message_id": "msg_1",
+          "permission_mode": "auto",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "session": "failed-tool",
+          "transcript_epoch": 1,
+          "type": "capability_plan"
+        },
+        {
+          "agent": "failed-tool",
+          "depth": 0,
+          "hash": "d7e3ebe5239c24ee",
+          "message_id": "msg_1",
+          "seq": 4,
+          "session": "failed-tool",
+          "text": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "stable",
+              "type": "text"
+            }
+          ],
+          "transcript_epoch": 1,
+          "type": "system_prompt"
+        },
+        {
+          "agent": "failed-tool",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 8,
+          "max_tokens": 8000,
+          "message_count": 1,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 5,
+          "session": "failed-tool",
+          "span_id": "model_1",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "failed-tool",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 905,
+          "purpose": "agent_turn",
+          "seq": 6,
+          "served_model": "claude-sonnet-4-6",
+          "session": "failed-tool",
+          "span_id": "model_1",
+          "status": "completed",
+          "stop_reason": "tool_use",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 905,
+            "calibrated": true,
+            "calibration": 1.0,
+            "observations": 1
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 905,
+            "output_tokens": 2,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "failed-tool",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "commentary",
+          "seq": 7,
+          "session": "failed-tool",
+          "text": "Inspect files. More context.",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "activity_id": "activity_1",
+          "agent": "failed-tool",
+          "depth": 0,
+          "message_id": "msg_1",
+          "provisional": false,
+          "seq": 8,
+          "session": "failed-tool",
+          "source": "commentary",
+          "title": "Inspect files.",
+          "transcript_epoch": 1,
+          "type": "activity_update"
+        },
+        {
+          "action_id": "action_1",
+          "activity_id": "activity_1",
+          "agent": "failed-tool",
+          "depth": 0,
+          "display": {
+            "object": "main .",
+            "verb": "search"
+          },
+          "id": "u1",
+          "input": {
+            "command": "rg main ."
+          },
+          "message_id": "msg_1",
+          "name": "bash",
+          "parent_span_id": "model_1",
+          "seq": 9,
+          "session": "failed-tool",
+          "span_id": "tool_1",
+          "transcript_epoch": 1,
+          "type": "tool_use"
+        },
+        {
+          "action_id": "action_1",
+          "agent": "failed-tool",
+          "depth": 0,
+          "error": true,
+          "id": "u1",
+          "message_id": "msg_1",
+          "name": "bash",
+          "output": "Error: tool failed",
+          "parent_span_id": "model_1",
+          "seq": 10,
+          "session": "failed-tool",
+          "span_id": "tool_1",
+          "transcript_epoch": 1,
+          "type": "tool_result"
+        },
+        {
+          "agent": "failed-tool",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 91,
+          "max_tokens": 8000,
+          "message_count": 3,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 11,
+          "session": "failed-tool",
+          "span_id": "model_2",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "failed-tool",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 988,
+          "purpose": "agent_turn",
+          "seq": 12,
+          "served_model": "claude-sonnet-4-6",
+          "session": "failed-tool",
+          "span_id": "model_2",
+          "status": "completed",
+          "stop_reason": "end_turn",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 988,
+            "calibrated": true,
+            "calibration": 1.068,
+            "observations": 2
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 988,
+            "output_tokens": 1,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "failed-tool",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "final_answer",
+          "seq": 13,
+          "session": "failed-tool",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "phase": "final_answer",
+          "seq": 14,
+          "session": "failed-tool",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "done"
+        }
+      ],
+      "info": {
+        "activity": "idle",
+        "busy": false,
+        "message_count": 4,
+        "run_count": 1,
+        "status": "idle",
+        "subscribers": 0
+      },
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "Inspect files. More context.",
+              "type": "text"
+            },
+            {
+              "id": "u1",
+              "input": {
+                "command": "rg main ."
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "Error: tool failed",
+              "tool_use_id": "u1",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "complete",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "name": "failed-tool",
+      "output": "complete"
+    },
+    {
+      "before": null,
+      "cancelled": false,
+      "events": [
+        {
+          "seq": 1,
+          "session": "pause",
+          "status": "running",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "agent": "pause",
+          "depth": 0,
+          "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "message_id": "msg_1",
+          "schemas": [
+            {
+              "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+              "input_schema": {
+                "properties": {
+                  "approval_prefix": {
+                    "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "run_in_background": {
+                    "description": "Run asynchronously and return a task id immediately.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "type": "object"
+              },
+              "name": "bash"
+            },
+            {
+              "description": "Read a file's contents (workspace-relative path).",
+              "input_schema": {
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "offset": {
+                    "type": "integer"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              },
+              "name": "read_file"
+            },
+            {
+              "description": "Write content to a file (creates parent dirs).",
+              "input_schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "type": "object"
+              },
+              "name": "write_file"
+            },
+            {
+              "description": "Replace the first exact occurrence of old_text with new_text.",
+              "input_schema": {
+                "properties": {
+                  "new_text": {
+                    "type": "string"
+                  },
+                  "old_text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "old_text",
+                  "new_text"
+                ],
+                "type": "object"
+              },
+              "name": "edit_file"
+            },
+            {
+              "description": "Find workspace files matching a glob pattern.",
+              "input_schema": {
+                "properties": {
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pattern"
+                ],
+                "type": "object"
+              },
+              "name": "glob"
+            },
+            {
+              "description": "Create/replace the task checklist. Use for multi-step work.",
+              "input_schema": {
+                "properties": {
+                  "items": {
+                    "items": {
+                      "properties": {
+                        "activeForm": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "status",
+                        "activeForm"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "type": "object"
+              },
+              "name": "TodoWrite"
+            },
+            {
+              "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+              "input_schema": {
+                "properties": {
+                  "agent_type": {
+                    "enum": [
+                      "Explore",
+                      "general-purpose"
+                    ],
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              },
+              "name": "task"
+            },
+            {
+              "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+              "input_schema": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "enum": [
+                      "agent",
+                      "user"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              "name": "load_skill"
+            },
+            {
+              "description": "Manually compress the conversation to free context.",
+              "input_schema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "compress"
+            },
+            {
+              "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+              "input_schema": {
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              },
+              "name": "ask_user"
+            }
+          ],
+          "seq": 2,
+          "session": "pause",
+          "transcript_epoch": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "agent": "pause",
+          "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "depth": 0,
+          "fingerprint": "de152aaad6ce23af",
+          "message_id": "msg_1",
+          "permission_mode": "auto",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "session": "pause",
+          "transcript_epoch": 1,
+          "type": "capability_plan"
+        },
+        {
+          "agent": "pause",
+          "depth": 0,
+          "hash": "d7e3ebe5239c24ee",
+          "message_id": "msg_1",
+          "seq": 4,
+          "session": "pause",
+          "text": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "stable",
+              "type": "text"
+            }
+          ],
+          "transcript_epoch": 1,
+          "type": "system_prompt"
+        },
+        {
+          "agent": "pause",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 8,
+          "max_tokens": 8000,
+          "message_count": 1,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 5,
+          "session": "pause",
+          "span_id": "model_1",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "pause",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 905,
+          "purpose": "agent_turn",
+          "seq": 6,
+          "served_model": "claude-sonnet-4-6",
+          "session": "pause",
+          "span_id": "model_1",
+          "status": "completed",
+          "stop_reason": "pause_turn",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 905,
+            "calibrated": true,
+            "calibration": 1.0,
+            "observations": 1
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 905,
+            "output_tokens": 1,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "pause",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "commentary",
+          "seq": 7,
+          "session": "pause",
+          "text": "partial",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "agent": "pause",
+          "depth": 0,
+          "message_id": "msg_1",
+          "resumption": 1,
+          "seq": 8,
+          "session": "pause",
+          "stop_reason": "pause_turn",
+          "transcript_epoch": 1,
+          "type": "turn_paused"
+        },
+        {
+          "agent": "pause",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 27,
+          "max_tokens": 8000,
+          "message_count": 2,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 9,
+          "session": "pause",
+          "span_id": "model_2",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "pause",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 924,
+          "purpose": "agent_turn",
+          "seq": 10,
+          "served_model": "claude-sonnet-4-6",
+          "session": "pause",
+          "span_id": "model_2",
+          "status": "completed",
+          "stop_reason": "end_turn",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 924,
+            "calibrated": true,
+            "calibration": 1.0,
+            "observations": 2
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 924,
+            "output_tokens": 1,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "pause",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "final_answer",
+          "seq": 11,
+          "session": "pause",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "phase": "final_answer",
+          "seq": 12,
+          "session": "pause",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "done"
+        }
+      ],
+      "info": {
+        "activity": "idle",
+        "busy": false,
+        "message_count": 3,
+        "run_count": 1,
+        "status": "idle",
+        "subscribers": 0
+      },
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "partial",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "text": "complete",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "name": "pause",
+      "output": "complete"
+    },
+    {
+      "before": null,
+      "cancelled": false,
+      "events": [
+        {
+          "seq": 1,
+          "session": "refusal",
+          "status": "running",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "agent": "refusal",
+          "depth": 0,
+          "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "message_id": "msg_1",
+          "schemas": [
+            {
+              "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+              "input_schema": {
+                "properties": {
+                  "approval_prefix": {
+                    "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "run_in_background": {
+                    "description": "Run asynchronously and return a task id immediately.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "type": "object"
+              },
+              "name": "bash"
+            },
+            {
+              "description": "Read a file's contents (workspace-relative path).",
+              "input_schema": {
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "offset": {
+                    "type": "integer"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              },
+              "name": "read_file"
+            },
+            {
+              "description": "Write content to a file (creates parent dirs).",
+              "input_schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "type": "object"
+              },
+              "name": "write_file"
+            },
+            {
+              "description": "Replace the first exact occurrence of old_text with new_text.",
+              "input_schema": {
+                "properties": {
+                  "new_text": {
+                    "type": "string"
+                  },
+                  "old_text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "old_text",
+                  "new_text"
+                ],
+                "type": "object"
+              },
+              "name": "edit_file"
+            },
+            {
+              "description": "Find workspace files matching a glob pattern.",
+              "input_schema": {
+                "properties": {
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pattern"
+                ],
+                "type": "object"
+              },
+              "name": "glob"
+            },
+            {
+              "description": "Create/replace the task checklist. Use for multi-step work.",
+              "input_schema": {
+                "properties": {
+                  "items": {
+                    "items": {
+                      "properties": {
+                        "activeForm": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "status",
+                        "activeForm"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "type": "object"
+              },
+              "name": "TodoWrite"
+            },
+            {
+              "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+              "input_schema": {
+                "properties": {
+                  "agent_type": {
+                    "enum": [
+                      "Explore",
+                      "general-purpose"
+                    ],
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              },
+              "name": "task"
+            },
+            {
+              "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+              "input_schema": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "enum": [
+                      "agent",
+                      "user"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              "name": "load_skill"
+            },
+            {
+              "description": "Manually compress the conversation to free context.",
+              "input_schema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "compress"
+            },
+            {
+              "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+              "input_schema": {
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              },
+              "name": "ask_user"
+            }
+          ],
+          "seq": 2,
+          "session": "refusal",
+          "transcript_epoch": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "agent": "refusal",
+          "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "depth": 0,
+          "fingerprint": "de152aaad6ce23af",
+          "message_id": "msg_1",
+          "permission_mode": "auto",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "session": "refusal",
+          "transcript_epoch": 1,
+          "type": "capability_plan"
+        },
+        {
+          "agent": "refusal",
+          "depth": 0,
+          "hash": "d7e3ebe5239c24ee",
+          "message_id": "msg_1",
+          "seq": 4,
+          "session": "refusal",
+          "text": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "stable",
+              "type": "text"
+            }
+          ],
+          "transcript_epoch": 1,
+          "type": "system_prompt"
+        },
+        {
+          "agent": "refusal",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 8,
+          "max_tokens": 8000,
+          "message_count": 1,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 5,
+          "session": "refusal",
+          "span_id": "model_1",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "refusal",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 905,
+          "purpose": "agent_turn",
+          "seq": 6,
+          "served_model": "claude-sonnet-4-6",
+          "session": "refusal",
+          "span_id": "model_1",
+          "status": "completed",
+          "stop_reason": "refusal",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 905,
+            "calibrated": true,
+            "calibration": 1.0,
+            "observations": 1
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 905,
+            "output_tokens": 0,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "refusal",
+          "depth": 0,
+          "message_id": "msg_1",
+          "seq": 7,
+          "session": "refusal",
+          "stop_reason": "refusal",
+          "transcript_epoch": 1,
+          "type": "provider_refusal"
+        },
+        {
+          "phase": "final_answer",
+          "seq": 8,
+          "session": "refusal",
+          "text": "[the model declined to answer this request and returned no content]",
+          "transcript_epoch": 1,
+          "type": "done"
+        }
+      ],
+      "info": {
+        "activity": "idle",
+        "busy": false,
+        "message_count": 2,
+        "run_count": 1,
+        "status": "idle",
+        "subscribers": 0
+      },
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        },
+        {
+          "content": [],
+          "role": "assistant"
+        }
+      ],
+      "name": "refusal",
+      "output": "[the model declined to answer this request and returned no content]"
+    },
+    {
+      "before": null,
+      "cancelled": false,
+      "events": [
+        {
+          "seq": 1,
+          "session": "unknown-stop",
+          "status": "running",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "agent": "unknown-stop",
+          "depth": 0,
+          "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "message_id": "msg_1",
+          "schemas": [
+            {
+              "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+              "input_schema": {
+                "properties": {
+                  "approval_prefix": {
+                    "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "run_in_background": {
+                    "description": "Run asynchronously and return a task id immediately.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "type": "object"
+              },
+              "name": "bash"
+            },
+            {
+              "description": "Read a file's contents (workspace-relative path).",
+              "input_schema": {
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "offset": {
+                    "type": "integer"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              },
+              "name": "read_file"
+            },
+            {
+              "description": "Write content to a file (creates parent dirs).",
+              "input_schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "type": "object"
+              },
+              "name": "write_file"
+            },
+            {
+              "description": "Replace the first exact occurrence of old_text with new_text.",
+              "input_schema": {
+                "properties": {
+                  "new_text": {
+                    "type": "string"
+                  },
+                  "old_text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "old_text",
+                  "new_text"
+                ],
+                "type": "object"
+              },
+              "name": "edit_file"
+            },
+            {
+              "description": "Find workspace files matching a glob pattern.",
+              "input_schema": {
+                "properties": {
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pattern"
+                ],
+                "type": "object"
+              },
+              "name": "glob"
+            },
+            {
+              "description": "Create/replace the task checklist. Use for multi-step work.",
+              "input_schema": {
+                "properties": {
+                  "items": {
+                    "items": {
+                      "properties": {
+                        "activeForm": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "status",
+                        "activeForm"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "type": "object"
+              },
+              "name": "TodoWrite"
+            },
+            {
+              "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+              "input_schema": {
+                "properties": {
+                  "agent_type": {
+                    "enum": [
+                      "Explore",
+                      "general-purpose"
+                    ],
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              },
+              "name": "task"
+            },
+            {
+              "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+              "input_schema": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "enum": [
+                      "agent",
+                      "user"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              "name": "load_skill"
+            },
+            {
+              "description": "Manually compress the conversation to free context.",
+              "input_schema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "compress"
+            },
+            {
+              "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+              "input_schema": {
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              },
+              "name": "ask_user"
+            }
+          ],
+          "seq": 2,
+          "session": "unknown-stop",
+          "transcript_epoch": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "agent": "unknown-stop",
+          "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "depth": 0,
+          "fingerprint": "de152aaad6ce23af",
+          "message_id": "msg_1",
+          "permission_mode": "auto",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "session": "unknown-stop",
+          "transcript_epoch": 1,
+          "type": "capability_plan"
+        },
+        {
+          "agent": "unknown-stop",
+          "depth": 0,
+          "hash": "d7e3ebe5239c24ee",
+          "message_id": "msg_1",
+          "seq": 4,
+          "session": "unknown-stop",
+          "text": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "stable",
+              "type": "text"
+            }
+          ],
+          "transcript_epoch": 1,
+          "type": "system_prompt"
+        },
+        {
+          "agent": "unknown-stop",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 8,
+          "max_tokens": 8000,
+          "message_count": 1,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 5,
+          "session": "unknown-stop",
+          "span_id": "model_1",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "unknown-stop",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 905,
+          "purpose": "agent_turn",
+          "seq": 6,
+          "served_model": "claude-sonnet-4-6",
+          "session": "unknown-stop",
+          "span_id": "model_1",
+          "status": "completed",
+          "stop_reason": "future_stop",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 905,
+            "calibrated": true,
+            "calibration": 1.0,
+            "observations": 1
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 905,
+            "output_tokens": 1,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "unknown-stop",
+          "depth": 0,
+          "detail": "unrecognized stop reason, treated as end of turn",
+          "message_id": "msg_1",
+          "seq": 7,
+          "session": "unknown-stop",
+          "stop_reason": "future_stop",
+          "transcript_epoch": 1,
+          "type": "provider_stop_unhandled"
+        },
+        {
+          "agent": "unknown-stop",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "final_answer",
+          "seq": 8,
+          "session": "unknown-stop",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "phase": "final_answer",
+          "seq": 9,
+          "session": "unknown-stop",
+          "text": "complete",
+          "transcript_epoch": 1,
+          "type": "done"
+        }
+      ],
+      "info": {
+        "activity": "idle",
+        "busy": false,
+        "message_count": 2,
+        "run_count": 1,
+        "status": "idle",
+        "subscribers": 0
+      },
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "complete",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "name": "unknown-stop",
+      "output": "complete"
+    },
+    {
+      "before": null,
+      "cancelled": false,
+      "events": [
+        {
+          "seq": 1,
+          "session": "provider-error",
+          "status": "running",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "agent": "provider-error",
+          "depth": 0,
+          "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "message_id": "msg_1",
+          "schemas": [
+            {
+              "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+              "input_schema": {
+                "properties": {
+                  "approval_prefix": {
+                    "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "run_in_background": {
+                    "description": "Run asynchronously and return a task id immediately.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "type": "object"
+              },
+              "name": "bash"
+            },
+            {
+              "description": "Read a file's contents (workspace-relative path).",
+              "input_schema": {
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "offset": {
+                    "type": "integer"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              },
+              "name": "read_file"
+            },
+            {
+              "description": "Write content to a file (creates parent dirs).",
+              "input_schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "type": "object"
+              },
+              "name": "write_file"
+            },
+            {
+              "description": "Replace the first exact occurrence of old_text with new_text.",
+              "input_schema": {
+                "properties": {
+                  "new_text": {
+                    "type": "string"
+                  },
+                  "old_text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "old_text",
+                  "new_text"
+                ],
+                "type": "object"
+              },
+              "name": "edit_file"
+            },
+            {
+              "description": "Find workspace files matching a glob pattern.",
+              "input_schema": {
+                "properties": {
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pattern"
+                ],
+                "type": "object"
+              },
+              "name": "glob"
+            },
+            {
+              "description": "Create/replace the task checklist. Use for multi-step work.",
+              "input_schema": {
+                "properties": {
+                  "items": {
+                    "items": {
+                      "properties": {
+                        "activeForm": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "status",
+                        "activeForm"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "type": "object"
+              },
+              "name": "TodoWrite"
+            },
+            {
+              "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+              "input_schema": {
+                "properties": {
+                  "agent_type": {
+                    "enum": [
+                      "Explore",
+                      "general-purpose"
+                    ],
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              },
+              "name": "task"
+            },
+            {
+              "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+              "input_schema": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "enum": [
+                      "agent",
+                      "user"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              "name": "load_skill"
+            },
+            {
+              "description": "Manually compress the conversation to free context.",
+              "input_schema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "compress"
+            },
+            {
+              "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+              "input_schema": {
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              },
+              "name": "ask_user"
+            }
+          ],
+          "seq": 2,
+          "session": "provider-error",
+          "transcript_epoch": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "agent": "provider-error",
+          "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "depth": 0,
+          "fingerprint": "de152aaad6ce23af",
+          "message_id": "msg_1",
+          "permission_mode": "auto",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "session": "provider-error",
+          "transcript_epoch": 1,
+          "type": "capability_plan"
+        },
+        {
+          "agent": "provider-error",
+          "depth": 0,
+          "hash": "d7e3ebe5239c24ee",
+          "message_id": "msg_1",
+          "seq": 4,
+          "session": "provider-error",
+          "text": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "stable",
+              "type": "text"
+            }
+          ],
+          "transcript_epoch": 1,
+          "type": "system_prompt"
+        },
+        {
+          "agent": "provider-error",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 8,
+          "max_tokens": 8000,
+          "message_count": 1,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 5,
+          "session": "provider-error",
+          "span_id": "model_1",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "action": "failed",
+          "agent": "provider-error",
+          "depth": 0,
+          "error": "RuntimeError: offline fail",
+          "message_id": "msg_1",
+          "seq": 6,
+          "session": "provider-error",
+          "transcript_epoch": 1,
+          "type": "recovery"
+        },
+        {
+          "agent": "provider-error",
+          "depth": 0,
+          "error": "RuntimeError: offline fail",
+          "message_id": "msg_1",
+          "purpose": "agent_turn",
+          "seq": 7,
+          "session": "provider-error",
+          "span_id": "model_1",
+          "status": "error",
+          "transcript_epoch": 1,
+          "type": "model_end"
+        },
+        {
+          "agent": "provider-error",
+          "depth": 0,
+          "error": "RuntimeError: offline fail",
+          "message_id": "msg_1",
+          "seq": 8,
+          "session": "provider-error",
+          "transcript_epoch": 1,
+          "type": "error"
+        },
+        {
+          "phase": "final_answer",
+          "seq": 9,
+          "session": "provider-error",
+          "text": "[Error] RuntimeError: offline fail",
+          "transcript_epoch": 1,
+          "type": "done"
+        }
+      ],
+      "info": {
+        "activity": "idle",
+        "busy": false,
+        "message_count": 2,
+        "run_count": 1,
+        "status": "idle",
+        "subscribers": 0
+      },
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "[Error] RuntimeError: offline fail",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "name": "provider-error",
+      "output": "[Error] RuntimeError: offline fail"
+    },
+    {
+      "before": {
+        "activity": "running",
+        "busy": true,
+        "run_count": 1,
+        "status": "running"
+      },
+      "cancelled": true,
+      "events": [
+        {
+          "seq": 1,
+          "session": "cancel-model",
+          "status": "running",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "agent": "cancel-model",
+          "depth": 0,
+          "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "message_id": "msg_1",
+          "schemas": [
+            {
+              "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+              "input_schema": {
+                "properties": {
+                  "approval_prefix": {
+                    "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "run_in_background": {
+                    "description": "Run asynchronously and return a task id immediately.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "type": "object"
+              },
+              "name": "bash"
+            },
+            {
+              "description": "Read a file's contents (workspace-relative path).",
+              "input_schema": {
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "offset": {
+                    "type": "integer"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              },
+              "name": "read_file"
+            },
+            {
+              "description": "Write content to a file (creates parent dirs).",
+              "input_schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "type": "object"
+              },
+              "name": "write_file"
+            },
+            {
+              "description": "Replace the first exact occurrence of old_text with new_text.",
+              "input_schema": {
+                "properties": {
+                  "new_text": {
+                    "type": "string"
+                  },
+                  "old_text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "old_text",
+                  "new_text"
+                ],
+                "type": "object"
+              },
+              "name": "edit_file"
+            },
+            {
+              "description": "Find workspace files matching a glob pattern.",
+              "input_schema": {
+                "properties": {
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pattern"
+                ],
+                "type": "object"
+              },
+              "name": "glob"
+            },
+            {
+              "description": "Create/replace the task checklist. Use for multi-step work.",
+              "input_schema": {
+                "properties": {
+                  "items": {
+                    "items": {
+                      "properties": {
+                        "activeForm": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "status",
+                        "activeForm"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "type": "object"
+              },
+              "name": "TodoWrite"
+            },
+            {
+              "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+              "input_schema": {
+                "properties": {
+                  "agent_type": {
+                    "enum": [
+                      "Explore",
+                      "general-purpose"
+                    ],
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              },
+              "name": "task"
+            },
+            {
+              "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+              "input_schema": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "enum": [
+                      "agent",
+                      "user"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              "name": "load_skill"
+            },
+            {
+              "description": "Manually compress the conversation to free context.",
+              "input_schema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "compress"
+            },
+            {
+              "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+              "input_schema": {
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              },
+              "name": "ask_user"
+            }
+          ],
+          "seq": 2,
+          "session": "cancel-model",
+          "transcript_epoch": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "agent": "cancel-model",
+          "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "depth": 0,
+          "fingerprint": "de152aaad6ce23af",
+          "message_id": "msg_1",
+          "permission_mode": "auto",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "session": "cancel-model",
+          "transcript_epoch": 1,
+          "type": "capability_plan"
+        },
+        {
+          "agent": "cancel-model",
+          "depth": 0,
+          "hash": "d7e3ebe5239c24ee",
+          "message_id": "msg_1",
+          "seq": 4,
+          "session": "cancel-model",
+          "text": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "stable",
+              "type": "text"
+            }
+          ],
+          "transcript_epoch": 1,
+          "type": "system_prompt"
+        },
+        {
+          "agent": "cancel-model",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 8,
+          "max_tokens": 8000,
+          "message_count": 1,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 5,
+          "session": "cancel-model",
+          "span_id": "model_1",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "cancel-model",
+          "depth": 0,
+          "message_id": "msg_1",
+          "purpose": "agent_turn",
+          "seq": 6,
+          "session": "cancel-model",
+          "span_id": "model_1",
+          "status": "cancelled",
+          "transcript_epoch": 1,
+          "type": "model_end"
+        },
+        {
+          "cancelled": true,
+          "seq": 7,
+          "session": "cancel-model",
+          "status": "idle",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "reason": "stop now",
+          "repaired_tool_uses": [],
+          "seq": 8,
+          "session": "cancel-model",
+          "transcript_epoch": 1,
+          "type": "cancelled"
+        }
+      ],
+      "info": {
+        "activity": "idle",
+        "busy": false,
+        "message_count": 2,
+        "run_count": 1,
+        "status": "idle",
+        "subscribers": 0
+      },
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "[Turn interrupted: stop now]",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "name": "cancel-model",
+      "output": null
+    },
+    {
+      "before": {
+        "activity": "running",
+        "busy": true,
+        "run_count": 1,
+        "status": "running"
+      },
+      "cancelled": true,
+      "events": [
+        {
+          "seq": 1,
+          "session": "cancel-tool",
+          "status": "running",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "agent": "cancel-tool",
+          "depth": 0,
+          "fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "message_id": "msg_1",
+          "schemas": [
+            {
+              "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+              "input_schema": {
+                "properties": {
+                  "approval_prefix": {
+                    "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "run_in_background": {
+                    "description": "Run asynchronously and return a task id immediately.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "command"
+                ],
+                "type": "object"
+              },
+              "name": "bash"
+            },
+            {
+              "description": "Read a file's contents (workspace-relative path).",
+              "input_schema": {
+                "properties": {
+                  "limit": {
+                    "type": "integer"
+                  },
+                  "offset": {
+                    "type": "integer"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              },
+              "name": "read_file"
+            },
+            {
+              "description": "Write content to a file (creates parent dirs).",
+              "input_schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ],
+                "type": "object"
+              },
+              "name": "write_file"
+            },
+            {
+              "description": "Replace the first exact occurrence of old_text with new_text.",
+              "input_schema": {
+                "properties": {
+                  "new_text": {
+                    "type": "string"
+                  },
+                  "old_text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "old_text",
+                  "new_text"
+                ],
+                "type": "object"
+              },
+              "name": "edit_file"
+            },
+            {
+              "description": "Find workspace files matching a glob pattern.",
+              "input_schema": {
+                "properties": {
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pattern"
+                ],
+                "type": "object"
+              },
+              "name": "glob"
+            },
+            {
+              "description": "Create/replace the task checklist. Use for multi-step work.",
+              "input_schema": {
+                "properties": {
+                  "items": {
+                    "items": {
+                      "properties": {
+                        "activeForm": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "content",
+                        "status",
+                        "activeForm"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "type": "object"
+              },
+              "name": "TodoWrite"
+            },
+            {
+              "description": "Delegate isolated work to a subagent with a fresh context. 'Explore' is read-only; 'general-purpose' may also edit files. Returns only the subagent's final summary.",
+              "input_schema": {
+                "properties": {
+                  "agent_type": {
+                    "enum": [
+                      "Explore",
+                      "general-purpose"
+                    ],
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              },
+              "name": "task"
+            },
+            {
+              "description": "Load a named skill's full instructions. Use scope=agent for deployment-provided skills or scope=user for the current owner's skills.",
+              "input_schema": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "enum": [
+                      "agent",
+                      "user"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              },
+              "name": "load_skill"
+            },
+            {
+              "description": "Manually compress the conversation to free context.",
+              "input_schema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "compress"
+            },
+            {
+              "description": "Ask the human operator one clarifying question and wait for their reply. Use sparingly -- prefer acting on the information you have. The reply may take a while; if nobody answers, you will be told so.",
+              "input_schema": {
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              },
+              "name": "ask_user"
+            }
+          ],
+          "seq": 2,
+          "session": "cancel-tool",
+          "transcript_epoch": 1,
+          "type": "tool_catalog"
+        },
+        {
+          "agent": "cancel-tool",
+          "catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "depth": 0,
+          "fingerprint": "de152aaad6ce23af",
+          "message_id": "msg_1",
+          "permission_mode": "auto",
+          "sandbox": "NullSandbox",
+          "sandbox_confined": false,
+          "seq": 3,
+          "session": "cancel-tool",
+          "transcript_epoch": 1,
+          "type": "capability_plan"
+        },
+        {
+          "agent": "cancel-tool",
+          "depth": 0,
+          "hash": "d7e3ebe5239c24ee",
+          "message_id": "msg_1",
+          "seq": 4,
+          "session": "cancel-tool",
+          "text": [
+            {
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "text": "stable",
+              "type": "text"
+            }
+          ],
+          "transcript_epoch": 1,
+          "type": "system_prompt"
+        },
+        {
+          "agent": "cancel-tool",
+          "capability_fingerprint": "de152aaad6ce23af",
+          "depth": 0,
+          "input_tokens_estimate": 8,
+          "max_tokens": 8000,
+          "message_count": 1,
+          "message_id": "msg_1",
+          "model": "claude-sonnet-4-6",
+          "purpose": "agent_turn",
+          "seq": 5,
+          "session": "cancel-tool",
+          "span_id": "model_1",
+          "system_hash": "d7e3ebe5239c24ee",
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "tool_count": 10,
+          "transcript_epoch": 1,
+          "type": "model_start"
+        },
+        {
+          "agent": "cancel-tool",
+          "depth": 0,
+          "message_id": "msg_1",
+          "prompt_tokens": 905,
+          "purpose": "agent_turn",
+          "seq": 6,
+          "served_model": "claude-sonnet-4-6",
+          "session": "cancel-tool",
+          "span_id": "model_1",
+          "status": "completed",
+          "stop_reason": "tool_use",
+          "token_meter": {
+            "anchor_envelope": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af:f379ccb92b911644",
+            "anchor_tokens": 905,
+            "calibrated": true,
+            "calibration": 1.0,
+            "observations": 1
+          },
+          "tool_catalog_fingerprint": "209121f639b2699b2789809c159d0bafc147d41ffd40ea1498d8e3f16974d2af",
+          "transcript_epoch": 1,
+          "type": "model_end",
+          "usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 905,
+            "output_tokens": 2,
+            "service_tier": "standard"
+          }
+        },
+        {
+          "agent": "cancel-tool",
+          "depth": 0,
+          "message_id": "msg_1",
+          "phase": "commentary",
+          "seq": 7,
+          "session": "cancel-tool",
+          "text": "Inspect files. More context.",
+          "transcript_epoch": 1,
+          "type": "assistant_text"
+        },
+        {
+          "activity_id": "activity_1",
+          "agent": "cancel-tool",
+          "depth": 0,
+          "message_id": "msg_1",
+          "provisional": false,
+          "seq": 8,
+          "session": "cancel-tool",
+          "source": "commentary",
+          "title": "Inspect files.",
+          "transcript_epoch": 1,
+          "type": "activity_update"
+        },
+        {
+          "action_id": "action_1",
+          "activity_id": "activity_1",
+          "agent": "cancel-tool",
+          "depth": 0,
+          "display": {
+            "object": "main .",
+            "verb": "search"
+          },
+          "id": "u1",
+          "input": {
+            "command": "rg main ."
+          },
+          "message_id": "msg_1",
+          "name": "bash",
+          "parent_span_id": "model_1",
+          "seq": 9,
+          "session": "cancel-tool",
+          "span_id": "tool_1",
+          "transcript_epoch": 1,
+          "type": "tool_use"
+        },
+        {
+          "cancelled": true,
+          "seq": 10,
+          "session": "cancel-tool",
+          "status": "idle",
+          "transcript_epoch": 1,
+          "type": "status"
+        },
+        {
+          "reason": "stop now",
+          "repaired_tool_uses": [
+            "u1"
+          ],
+          "seq": 11,
+          "session": "cancel-tool",
+          "transcript_epoch": 1,
+          "type": "cancelled"
+        }
+      ],
+      "info": {
+        "activity": "idle",
+        "busy": false,
+        "message_count": 3,
+        "run_count": 1,
+        "status": "idle",
+        "subscribers": 0
+      },
+      "messages": [
+        {
+          "content": "go",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "Inspect files. More context.",
+              "type": "text"
+            },
+            {
+              "id": "u1",
+              "input": {
+                "command": "rg main ."
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first.",
+              "tool_use_id": "u1",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "name": "cancel-tool",
+      "output": null
+    }
+  ],
+  "labels": [
+    {
+      "display": {
+        "object": "a b",
+        "verb": "read"
+      },
+      "input": {
+        "path": "a\nb"
+      },
+      "tool": "read_file"
+    },
+    {
+      "display": {
+        "object": "out",
+        "verb": "write"
+      },
+      "input": {
+        "path": "out"
+      },
+      "tool": "write_file"
+    },
+    {
+      "display": {
+        "object": "out",
+        "verb": "edit"
+      },
+      "input": {
+        "path": "out"
+      },
+      "tool": "edit_file"
+    },
+    {
+      "display": {
+        "object": "*.go",
+        "verb": "search"
+      },
+      "input": {
+        "pattern": "*.go"
+      },
+      "tool": "glob"
+    },
+    {
+      "display": {
+        "object": "needle .",
+        "verb": "search"
+      },
+      "input": {
+        "command": "rg needle ."
+      },
+      "tool": "bash"
+    },
+    {
+      "display": {
+        "object": ".",
+        "verb": "list"
+      },
+      "input": {
+        "command": "ls"
+      },
+      "tool": "bash"
+    },
+    {
+      "display": {
+        "object": "cat a | wc",
+        "verb": "run"
+      },
+      "input": {
+        "command": "cat a | wc"
+      },
+      "tool": "bash"
+    },
+    {
+      "display": {
+        "object": "echo $(whoami)",
+        "verb": "run"
+      },
+      "input": {
+        "command": "echo $(whoami)"
+      },
+      "tool": "bash"
+    },
+    {
+      "display": {
+        "object": "file",
+        "verb": "read"
+      },
+      "input": {
+        "command": "cat file"
+      },
+      "tool": "bash"
+    },
+    {
+      "display": {
+        "object": "compress",
+        "verb": "call"
+      },
+      "input": {},
+      "tool": "compress"
+    }
+  ],
+  "titles": [
+    {
+      "input": null,
+      "title": null
+    },
+    {
+      "input": "",
+      "title": null
+    },
+    {
+      "input": "  # Inspect files. Then write.",
+      "title": "Inspect files."
+    },
+    {
+      "input": "你好。继续",
+      "title": "你好。"
+    },
+    {
+      "input": "> Work! Continue",
+      "title": "Work!"
+    },
+    {
+      "input": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "title": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…"
+    },
+    {
+      "input": "   \n   ",
+      "title": null
+    },
+    {
+      "input": "***",
+      "title": null
+    }
+  ]
+}

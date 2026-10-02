@@ -1,6 +1,9 @@
 package agent
 
-import "github.com/luoyjx/mini-loop/go/protocol"
+import (
+	"github.com/luoyjx/mini-loop/go/protocol"
+	"sort"
+)
 
 // TextMasker acts only on projections/results. Executed calls and live model
 // request arguments retain their original concrete values.
@@ -18,6 +21,65 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	event.runError.detail = mask(event.runError.detail)
+	event.recovery.Error = mask(event.recovery.Error)
+	event.assistantText.Text = mask(event.assistantText.Text)
+	event.delta.Text = mask(event.delta.Text)
+	event.done.Text = mask(event.done.Text)
+	event.cancelled.Reason = mask(event.cancelled.Reason)
+	for i := range event.cancelled.RepairedToolUses {
+		event.cancelled.RepairedToolUses[i] = mask(event.cancelled.RepairedToolUses[i])
+	}
+	event.activity.Title = mask(event.activity.Title)
+	event.activity.ID = ActivityID(mask(string(event.activity.ID)))
+	event.modelStart.Model = mask(event.modelStart.Model)
+	maskStringPointer(mask, &event.modelStart.ToolCatalogFingerprint)
+	maskStringPointer(mask, &event.modelStart.SystemHash)
+	maskStringPointer(mask, &event.modelStart.CapabilityFingerprint)
+	event.modelStart.SpanID = SpanID(mask(string(event.modelStart.SpanID)))
+	event.modelEnd.SpanID = SpanID(mask(string(event.modelEnd.SpanID)))
+	maskStringPointer(mask, &event.modelEnd.Error)
+	maskStringPointer(mask, &event.modelEnd.ServedModel)
+	maskStringPointer(mask, &event.modelEnd.ToolCatalogFingerprint)
+	if event.modelEnd.StopReason != nil {
+		v := protocol.StopReason(mask(string(*event.modelEnd.StopReason)))
+		event.modelEnd.StopReason = &v
+	}
+	if event.modelEnd.TokenMeter != nil {
+		maskStringPointer(mask, &event.modelEnd.TokenMeter.AnchorEnvelope)
+	}
+	event.toolUse.Name = protocol.ToolName(mask(string(event.toolUse.Name)))
+	event.toolUse.ID = mask(event.toolUse.ID)
+	event.toolUse.SpanID = SpanID(mask(string(event.toolUse.SpanID)))
+	event.toolUse.ParentSpanID = SpanID(mask(string(event.toolUse.ParentSpanID)))
+	event.toolUse.ActionID = ActionID(mask(string(event.toolUse.ActionID)))
+	event.toolUse.ActivityID = ActivityID(mask(string(event.toolUse.ActivityID)))
+	if event.kind == EventToolUse {
+		event.toolUse.Input = protocol.MapToolInputStrings(event.toolUse.Input, mask)
+		event.toolUse.Display = ToolLabel(event.toolUse.Input)
+	}
+	event.toolResult.Name = protocol.ToolName(mask(string(event.toolResult.Name)))
+	event.toolResult.Output, event.toolResult.ID = mask(event.toolResult.Output), mask(event.toolResult.ID)
+	event.toolResult.SpanID = SpanID(mask(string(event.toolResult.SpanID)))
+	event.toolResult.ParentSpanID = SpanID(mask(string(event.toolResult.ParentSpanID)))
+	event.toolResult.ActionID = ActionID(mask(string(event.toolResult.ActionID)))
+	event.toolCatalog.Fingerprint = mask(event.toolCatalog.Fingerprint)
+	for i := range event.toolCatalog.Schemas {
+		v := &event.toolCatalog.Schemas[i]
+		v.Name = protocol.ToolName(mask(string(v.Name)))
+		v.Description = mask(v.Description)
+		v.InputSchema = maskedSchema(v.InputSchema, mask)
+	}
+	event.systemPrompt.Hash, event.systemPrompt.System = mask(event.systemPrompt.Hash), mask(event.systemPrompt.System)
+	if event.systemPrompt.Cache != nil {
+		event.systemPrompt.Cache.Type = protocol.CacheType(mask(string(event.systemPrompt.Cache.Type)))
+		event.systemPrompt.Cache.TTL = protocol.CacheTTL(mask(string(event.systemPrompt.Cache.TTL)))
+	}
+	event.capabilityPlan.Fingerprint = mask(event.capabilityPlan.Fingerprint)
+	event.capabilityPlan.CatalogFingerprint = mask(event.capabilityPlan.CatalogFingerprint)
+	event.capabilityPlan.Sandbox = mask(event.capabilityPlan.Sandbox)
+	event.reconcile.Name = protocol.ToolName(mask(string(event.reconcile.Name)))
+	event.reconcile.ActionID = ActionID(mask(string(event.reconcile.ActionID)))
 	event.stuck.signal.Pattern = StuckPattern(mask(string(event.stuck.signal.Pattern)))
 	event.stuck.signal.Detail = mask(event.stuck.signal.Detail)
 	event.stuck.signal.Advice = mask(event.stuck.signal.Advice)
@@ -49,6 +111,40 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 	approval.rule = mask(approval.rule)
 	approval.grant = maskedGrant(masker, approval.grant)
 	return event
+}
+
+func maskStringPointer(mask func(string) string, p **string) {
+	if *p != nil {
+		v := mask(**p)
+		*p = &v
+	}
+}
+func maskedSchema(schema protocol.InputSchema, mask func(string) string) protocol.InputSchema {
+	schema = schema.Clone()
+	schema.Description = mask(schema.Description)
+	for i := range schema.Enum {
+		schema.Enum[i] = mask(schema.Enum[i])
+	}
+	for i := range schema.Required {
+		schema.Required[i] = mask(schema.Required[i])
+	}
+	if schema.Items != nil {
+		v := maskedSchema(*schema.Items, mask)
+		schema.Items = &v
+	}
+	if schema.Properties != nil {
+		v := make(protocol.SchemaProperties, len(*schema.Properties))
+		keys := make([]string, 0, len(*schema.Properties))
+		for key := range *schema.Properties {
+			keys = append(keys, key)
+		}
+		sort.Strings(keys)
+		for _, key := range keys {
+			v[mask(key)] = maskedSchema((*schema.Properties)[key], mask)
+		}
+		schema.Properties = &v
+	}
+	return schema
 }
 func maskedGrant(masker TextMasker, grant GrantCandidate) GrantCandidate {
 	grant = grant.clone()

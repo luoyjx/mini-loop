@@ -1135,6 +1135,142 @@ def _loop_contracts(scratch: Path) -> dict[str, object]:
     return {"caches": caches, "decisions": decisions, "hashes": hashes, "loops": loops}
 
 
+def _lifecycle_contracts(scratch: Path) -> dict[str, object]:
+    """Actual AgentSession runs, event order, cancellation and bounded streams."""
+    import asyncio
+    import dataclasses
+    from mini_loop.agent import Agent
+    from mini_loop.activity import activity_title, tool_label
+    from mini_loop.builtins import default_registry
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+    from mini_loop.registry import Hooks
+    from mini_loop.session import AgentSession, BACKLOG, SUBSCRIBER_QUEUE_MAX
+    from mini_loop.transport import DirectTransport
+
+    cases = []
+    class Deny(Hooks):
+        async def before_tool(self, ctx, call):
+            return "blocked by policy"
+    async def run_case(name):
+        root = scratch / name
+        root.mkdir(parents=True)
+        started = asyncio.Event()
+        never = asyncio.Event()
+        calls = 0
+        def responder(request):
+            nonlocal calls
+            calls += 1
+            if name == "provider-error":
+                raise RuntimeError("offline fail")
+            if name == "refusal":
+                return [], "refusal"
+            if name == "unknown-stop":
+                return [text("complete")], "future_stop"
+            if name == "pause" and calls == 1:
+                return [text("partial")], "pause_turn"
+            if name in ("completed", "denied", "cancel-tool", "failed-tool") and calls == 1:
+                return [text("Inspect files. More context."), tool("bash", _id="u1", command="rg main .")], "tool_use"
+            return [text("complete")], "end_turn"
+        async def handler(ctx, command, **kwargs):
+            if name == "cancel-tool":
+                started.set()
+                await never.wait()
+            if name == "failed-tool":
+                raise ValueError("tool failed")
+            return "same"
+        registry = default_registry()
+        registry.register(dataclasses.replace(registry.get("bash"), handler=handler), replace=True)
+        client = FakeAsyncAnthropic(responder=responder, thinking=False)
+        if name == "cancel-model":
+            async def blocked_create(**kwargs):
+                started.set()
+                await never.wait()
+            client.messages.create = blocked_create
+        session = AgentSession(name, root)
+        session.permission_mode = "auto"
+        session.workspace_bound = True
+        settings = Settings(fake_llm=True, workspace_root=root, skills_dir=root / "empty-skills")
+        agent = Agent(client=client, settings=settings, workspace=root, tools=registry,
+                      hooks=Deny() if name == "denied" else Hooks(), system="stable",
+                      transport=DirectTransport(), emit=session.emit, label=name,
+                      state={"session": session, "permission_mode": "auto"})
+        session.agent = agent
+        live = session.subscribe(replay=False)
+        if name.startswith("cancel-"):
+            task = asyncio.create_task(session.run("go"))
+            await started.wait()
+            before = {k: session.info()[k] for k in ("status", "activity", "busy", "run_count")}
+            cancelled = await session.cancel("stop now")
+            try:
+                await task
+            except asyncio.CancelledError:
+                pass
+            output = None
+        else:
+            before = None
+            cancelled = False
+            output = await session.run("go")
+        events = []
+        identities = {}
+        counters = {}
+        def stable_id(value):
+            if value is None:
+                return None
+            if value not in identities:
+                kind = value.split("_", 1)[0]
+                if kind == "act":
+                    kind = "action" if len(value) > 20 else "activity"
+                counters[kind] = counters.get(kind, 0) + 1
+                identities[value] = f"{kind}_{counters[kind]}"
+            return identities[value]
+        while not live.empty():
+            event = live.get_nowait()
+            projected = {k: v for k, v in event.items()
+                           if k not in ("ts", "duration_ms", "trajectory_id", "trajectory_status",
+                                        "trajectory_recording_error", "state_persisted", "persist_error")}
+            for key in ("span_id", "parent_span_id", "action_id", "activity_id", "message_id", "parent_message_id"):
+                if key in projected:
+                    projected[key] = stable_id(projected[key])
+            events.append(projected)
+        session.unsubscribe(live)
+        info = {k: session.info()[k] for k in ("status", "activity", "busy", "run_count", "message_count", "subscribers")}
+        cases.append({"name": name, "output": output, "before": before, "cancelled": cancelled,
+                      "info": info, "events": events, "messages": agent.messages})
+    async def all_cases():
+        for name in ("completed", "denied", "failed-tool", "pause", "refusal", "unknown-stop",
+                     "provider-error", "cancel-model", "cancel-tool"):
+            await run_case(name)
+        bus = AgentSession("bus", scratch)
+        live = bus.subscribe(replay=False)
+        for _ in range(SUBSCRIBER_QUEUE_MAX + 305):
+            await bus.emit({"type": "status", "status": "idle"})
+        for _ in range(5):
+            await bus.emit({"type": "assistant_delta", "text": "piece", "_ephemeral": True})
+        queued = []
+        while not live.empty():
+            queued.append(live.get_nowait())
+        replay = bus.subscribe()
+        replayed = []
+        while not replay.empty():
+            replayed.append(replay.get_nowait())
+        bus.unsubscribe(live)
+        bus.unsubscribe(replay)
+        return {"backlog": BACKLOG, "queue": SUBSCRIBER_QUEUE_MAX,
+                "live_count": len(queued), "live_first": queued[0]["seq"], "live_last": queued[-1]["seq"],
+                "replay_count": len(replayed), "replay_first": replayed[0]["seq"], "replay_last": replayed[-1]["seq"],
+                "ephemeral_live": sum(bool(e.get("ephemeral")) for e in queued),
+                "ephemeral_replay": sum(bool(e.get("ephemeral")) for e in replayed)}
+    bus = asyncio.run(all_cases())
+    titles = [None, "", "  # Inspect files. Then write.", "你好。继续", "> Work! Continue", "x" * 100, "   \n   ", "***"]
+    labels = [("read_file", {"path": "a\nb"}), ("write_file", {"path": "out"}), ("edit_file", {"path": "out"}),
+              ("glob", {"pattern": "*.go"}), ("bash", {"command": "rg needle ."}), ("bash", {"command": "ls"}),
+              ("bash", {"command": "cat a | wc"}), ("bash", {"command": "echo $(whoami)"}), ("bash", {"command": "cat file"}),
+              ("compress", {})]
+    return {"cases": cases, "bus": bus, "titles": [{"input": v, "title": activity_title(v)} for v in titles],
+            "labels": [{"tool": n, "input": v, "display": tool_label(n, v)} for n, v in labels]}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -1208,6 +1344,7 @@ def _snapshot() -> dict[str, bytes]:
         secret_contracts = _secret_contracts()
         command_contracts = _command_contracts(Path(scratch) / "commands")
         loop_contracts = _loop_contracts(Path(scratch) / "loops")
+        lifecycle_contracts = _lifecycle_contracts(Path(scratch) / "lifecycle")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1240,6 +1377,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-secrets.json": _json_bytes(secret_contracts),
         "python-commands.json": _json_bytes(command_contracts),
         "python-loops.json": _json_bytes(loop_contracts),
+        "python-lifecycle.json": _json_bytes(lifecycle_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

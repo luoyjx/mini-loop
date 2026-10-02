@@ -116,6 +116,9 @@ func (executor *Executor) WithMasker(masker TextMasker) (*Executor, error) {
 }
 
 func (executor *Executor) Workspace() string { return executor.root }
+
+// Configured sandbox argv is not evidence of OS confinement.
+func (executor *Executor) SandboxConfigured() bool { return executor.sandbox != nil }
 func (executor *Executor) ExecuteBash(ctx context.Context, input protocol.BashInput) (string, error) {
 	result, err := executor.ExecuteBashResult(ctx, input)
 	return result.Render(), err

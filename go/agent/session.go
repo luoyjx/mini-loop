@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"sync/atomic"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/skills"
@@ -33,43 +34,51 @@ type BashExecutor interface {
 }
 
 type Session struct {
-	id                                  SessionID
-	owner                               OwnerID
-	provider                            Provider
-	gate                                *ToolGate
-	mode                                PermissionMode
-	workspace                           string
-	maxRounds                           int
-	mu                                  sync.Mutex
-	messages                            []protocol.Message
-	events                              *sessionEvents
-	todos                               *TodoManager
-	skills                              SkillSource
-	model                               string
-	maxTokens                           int
-	tokenThreshold                      int
-	systemBuilder                       SystemBuilder
-	meter                               TokenMeter
-	runtimeFacts                        string
-	envelope                            string
-	compactor                           Compactor
-	files                               *workspacepkg.Files
-	compression                         *compressionSignal
-	label                               string
-	depth                               int
-	lineage                             *SubagentLineage
-	currentRun                          RunContext
-	questions                           Questioner
-	secrets                             TextMasker
-	subagents                           SubagentProvider
-	rolePolicy                          RoleToolPolicy
-	subagentMaxDepth, subagentMaxRounds int
-	cachePolicy                         CachePolicy
-	stuckDetector                       StuckDetector
-	stopHooks                           []StopHook
-	recentSteps                         []ToolStep
-	roundsWithoutTools                  int
-	stuckNudges                         int
+	repairedToolUses                                  []string
+	id                                                SessionID
+	owner                                             OwnerID
+	provider                                          Provider
+	gate                                              *ToolGate
+	mode                                              PermissionMode
+	workspace                                         string
+	maxRounds                                         int
+	mu                                                sync.Mutex
+	messages                                          []protocol.Message
+	events                                            *sessionEvents
+	todos                                             *TodoManager
+	skills                                            SkillSource
+	model                                             string
+	maxTokens                                         int
+	tokenThreshold                                    int
+	systemBuilder                                     SystemBuilder
+	meter                                             TokenMeter
+	runtimeFacts                                      string
+	envelope                                          string
+	compactor                                         Compactor
+	files                                             *workspacepkg.Files
+	compression                                       *compressionSignal
+	label                                             string
+	depth                                             int
+	lineage                                           *SubagentLineage
+	currentRun                                        RunContext
+	questions                                         Questioner
+	secrets                                           TextMasker
+	subagents                                         SubagentProvider
+	rolePolicy                                        RoleToolPolicy
+	subagentMaxDepth, subagentMaxRounds               int
+	cachePolicy                                       CachePolicy
+	stuckDetector                                     StuckDetector
+	stopHooks                                         []StopHook
+	recentSteps                                       []ToolStep
+	roundsWithoutTools                                int
+	stuckNudges                                       int
+	bash                                              BashExecutor
+	lastModelSpan                                     SpanID
+	activityID                                        ActivityID
+	requestCatalog                                    ToolCatalogSnapshot
+	loggedCatalogs, loggedSystems, loggedCapabilities map[string]bool
+	turn                                              chan struct{}
+	live                                              atomic.Pointer[liveRuntime]
 }
 
 func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExecutor, maxRounds int) (*Session, error) {
@@ -85,7 +94,11 @@ func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExe
 	if bound, ok := executor.(interface{ Workspace() string }); ok {
 		root = bound.Workspace()
 	}
-	return NewSessionWithGate(id, owner, provider, gate, ModeInteractive, root, maxRounds)
+	session, err := NewSessionWithGate(id, owner, provider, gate, ModeInteractive, root, maxRounds)
+	if session != nil {
+		session.bash = executor
+	}
+	return session, err
 }
 
 func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *ToolGate, mode PermissionMode, workspace string, maxRounds int) (*Session, error) {
@@ -94,6 +107,12 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 	}
 	session := &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}, model: DefaultModel, maxTokens: DefaultMaxTokens, tokenThreshold: DefaultTokenThreshold, systemBuilder: DefaultSystemBuilder{}, compactor: InMemoryCompactor{DefaultTokenThreshold, 50}}
 	session.cachePolicy, session.stuckDetector = NewDefaultCachePolicy(), NewDefaultStuckDetector()
+	session.turn = make(chan struct{}, 1)
+	session.turn <- struct{}{}
+	session.loggedCatalogs, session.loggedSystems, session.loggedCapabilities = make(map[string]bool), make(map[string]bool), make(map[string]bool)
+	session.events.sessionID = id
+	session.publishLive()
+	session.bindEventHistory()
 	session.label, session.skills = string(id), skills.EmptyCatalog()
 	session.subagents, session.rolePolicy = &InProcessSubagents{}, DefaultRoleToolPolicy()
 	session.subagentMaxDepth, session.subagentMaxRounds = DefaultSubagentMaxDepth, DefaultSubagentMaxRounds
@@ -115,7 +134,9 @@ func (s *Session) TokenMeter() TokenMeterSnapshot {
 }
 
 func (s *Session) compact(ctx context.Context, envelope string, forced bool) error {
-	value := CompactionContext{Messages: append([]protocol.Message(nil), s.messages...), Files: s.files, Provider: s.provider, Model: s.model, Meter: s.meter, Envelope: envelope, Secrets: s.secrets, CachePolicy: s.cachePolicy}
+	// The wrapped provider owns annotation and model telemetry. Standalone
+	// compactors can still use CompactionContext.CachePolicy explicitly.
+	value := CompactionContext{Messages: append([]protocol.Message(nil), s.messages...), Files: s.files, Provider: sessionModelProvider{s}, Model: s.model, Meter: s.meter, Envelope: envelope, Secrets: s.secrets}
 	var result CompactionResult
 	var err error
 	if forced {
@@ -135,6 +156,7 @@ func (s *Session) compact(ctx context.Context, envelope string, forced bool) err
 		return errors.New("compactor returned an empty transcript")
 	}
 	s.messages = append([]protocol.Message(nil), result.Messages...)
+	s.publishLive()
 	for _, event := range result.Events {
 		s.events.append(SessionEvent{kind: EventCompact, compact: event})
 	}
@@ -183,11 +205,12 @@ func (s *Session) closeInterruptedBatch(blocks []protocol.Block, completed []pro
 	results := append([]protocol.Block(nil), completed...)
 	for _, block := range blocks[start:] {
 		if use, ok := block.ToolUse(); ok {
+			s.repairedToolUses = append(s.repairedToolUses, use.ID)
 			results = append(results, protocol.NewToolResult(use.ID, unknownToolResult, false))
 		}
 	}
 	if len(results) != 0 {
-		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+		s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
 	}
 }
 
@@ -202,8 +225,20 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 }
 
 func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunContext) (string, error) {
+	select {
+	case <-s.turn:
+	default:
+		s.events.append(SessionEvent{kind: EventTurnQueued})
+		select {
+		case <-ctx.Done():
+			return "", ctx.Err()
+		case <-s.turn:
+		}
+	}
+	defer func() { s.turn <- struct{}{} }()
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	defer s.publishLive()
 
 	if err := ctx.Err(); err != nil {
 		return "", err
@@ -214,10 +249,12 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 	s.recentSteps = nil
 	s.roundsWithoutTools = 0
 	s.stuckNudges = 0
+	s.repairedToolUses = nil
+	s.activityID = ""
 	s.currentRun = run.clone()
 	s.events.setScope(EventScope{s.label, s.depth, run.clone()})
 	defer func() { s.currentRun = RunContext{} }()
-	s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(prompt)})
+	s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(prompt)})
 	var lastText string
 	resumptions := 0
 	for round := 0; round < s.maxRounds; round++ {
@@ -233,22 +270,18 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 		if err != nil {
 			return "", err
 		}
-		request, err = s.cachePolicy.Annotate(request)
-		if err != nil {
-			return "", err
-		}
-		if err := request.Validate(); err != nil {
-			return "", fmt.Errorf("model request: %w", err)
-		}
 		s.envelope = envelope
-		reply, err := s.provider.Complete(ctx, request)
+		reply, err := s.completeModel(ctx, request, &s.requestCatalog)
 		if err != nil {
-			return "", err
+			if ctx.Err() != nil {
+				return "", ctx.Err()
+			}
+			detail := boundedError(err)
+			text := "[Error] " + detail
+			s.appendMessages(protocol.Message{Role: protocol.RoleAssistant, Content: protocol.BlockContent(protocol.NewTextBlock(text))})
+			s.events.append(SessionEvent{kind: EventError, runError: RunErrorEvent{kind: ErrorProvider, detail: detail}})
+			return text, nil
 		}
-		if err := reply.Validate(); err != nil {
-			return "", fmt.Errorf("model reply: %w", err)
-		}
-		s.meter.Observe(reply.Usage, s.messages, envelope)
 		var content protocol.Content
 		if len(reply.Content) == 0 {
 			// The request transcript forbids an empty block array. An empty
@@ -258,33 +291,36 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			content = protocol.BlockContent(reply.Content...)
 		}
 		blocks := append([]protocol.Block(nil), reply.Content...)
-		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleAssistant, Content: content})
+		s.appendMessages(protocol.Message{Role: protocol.RoleAssistant, Content: content})
+		var roundText string
+		hasTools := false
+		for _, block := range blocks {
+			if text, ok := block.Text(); ok {
+				roundText += text.Text
+			}
+			if _, ok := block.ToolUse(); ok {
+				hasTools = true
+			}
+		}
+		if hasTools {
+			s.appendText(roundText, PhaseCommentary)
+			if title, ok := ActivityTitle(roundText); ok {
+				id, err := newSpan("act_", 8)
+				if err != nil {
+					return "", err
+				}
+				s.activityID = ActivityID(id)
+				s.events.append(SessionEvent{kind: EventActivityUpdate, activity: ActivityUpdateEvent{s.activityID, title}})
+			}
+		}
 
 		results := make([]protocol.Block, 0)
 		if s.compression != nil {
 			s.compression.take()
 		}
-		var roundText string
-		for i, block := range blocks {
-			if text, ok := block.Text(); ok && text.Text != "" {
-				roundText += text.Text
-			}
-			use, ok := block.ToolUse()
-			if !ok {
-				continue
-			}
-			outcome, dispatchErr := s.gate.Dispatch(ctx,
-				ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode, RunContext: run.clone()},
-				ToolCall{ID: use.ID, Input: use.Input})
-			if dispatchErr != nil {
-				s.closeInterruptedBatch(blocks, results, i)
-				return "", dispatchErr
-			}
-			results = append(results, protocol.NewToolResult(use.ID, outcome.Output, outcome.IsError()))
-			if err := s.recordToolStep(use.Input.Name(), outcome); err != nil {
-				s.closeInterruptedBatch(blocks, results, i+1)
-				return "", err
-			}
+		results, err = s.dispatchBatch(ctx, run, blocks)
+		if err != nil {
+			return "", err
 		}
 		if roundText != "" {
 			lastText = roundText
@@ -293,6 +329,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			if reply.StopReason.Resumable() {
 				resumptions++
 				if resumptions <= maxResumptions {
+					s.appendText(roundText, PhaseCommentary)
 					s.recordStop(ProviderStopEvent{kind: EventTurnPaused, reason: reply.StopReason, resumption: resumptions})
 					continue
 				}
@@ -308,6 +345,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 				s.recordStop(ProviderStopEvent{kind: EventProviderStopUnhandled, reason: reply.StopReason, detail: "unrecognized stop reason, treated as end of turn"})
 			}
 			s.roundsWithoutTools++
+			s.publishLive()
 			var continuation *string
 			for _, hook := range s.stopHooks {
 				continuation, err = hook.Stop(ctx, StopContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode, RunContext: run.clone()}, Messages: append([]protocol.Message(nil), s.messages...), LastText: lastText})
@@ -322,6 +360,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 				}
 			}
 			if continuation != nil {
+				s.appendText(roundText, PhaseCommentary)
 				signal, err := s.stuckDetector.Inspect(s.stuckState())
 				if err != nil {
 					return "", err
@@ -334,26 +373,28 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 					}
 					text = signal.Reminder() + "\n\n" + text
 				}
-				s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(text)})
+				s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(text)})
 				continue
 			}
+			s.appendText(roundText, PhaseFinalAnswer)
 			return lastText, nil
 		}
 		s.roundsWithoutTools = 0
+		s.publishLive()
 		signal, inspectErr := s.stuckDetector.Inspect(s.stuckState())
 		if inspectErr != nil {
-			s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+			s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
 			return "", inspectErr
 		}
 		if signal != nil {
 			nudge, headline := s.nudgeOrHalt(*signal)
 			if !nudge {
-				s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+				s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
 				return stoppedText(headline, lastText), nil
 			}
 			results = append(results, protocol.NewTextBlock(signal.Reminder()))
 		}
-		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
+		s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})
 		if s.compression != nil && s.compression.take() {
 			if err := s.compact(ctx, envelope, true); err != nil {
 				return "", err
@@ -370,4 +411,36 @@ func stoppedText(headline, partial string) string {
 		return headline + "\nPartial output before the stop:\n" + partial
 	}
 	return headline
+}
+
+// Repair on every interrupted exit, including a caller-provided handler panic.
+// Already completed results retain their real output; remaining effects are unknown.
+func (s *Session) dispatchBatch(ctx context.Context, run RunContext, blocks []protocol.Block) (results []protocol.Block, err error) {
+	results = []protocol.Block{}
+	next := 0
+	defer func() {
+		if fault := recover(); fault != nil {
+			s.closeInterruptedBatch(blocks, results, next)
+			panic(fault)
+		}
+	}()
+	for i, block := range blocks {
+		next = i
+		use, ok := block.ToolUse()
+		if !ok {
+			continue
+		}
+		outcome, dispatchErr := s.dispatchTool(ctx, run, use)
+		if dispatchErr != nil {
+			s.closeInterruptedBatch(blocks, results, i)
+			return nil, dispatchErr
+		}
+		results = append(results, protocol.NewToolResult(use.ID, outcome.Output, false))
+		next = i + 1
+		if err := s.recordToolStep(use.Input.Name(), outcome); err != nil {
+			s.closeInterruptedBatch(blocks, results, next)
+			return nil, err
+		}
+	}
+	return results, nil
 }

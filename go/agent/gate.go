@@ -184,7 +184,11 @@ func (gate *ToolGate) observe(ctx context.Context, authority ToolAuthority, call
 
 // Dispatch is the only path from a model tool_use to a handler. Guards and
 // permissions see all before-hook rewrites; denials bypass replacement hooks.
-func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, call ToolCall) (returned ToolOutcome, dispatchError error) {
+func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, call ToolCall) (ToolOutcome, error) {
+	return gate.dispatch(ctx, authority, call, nil)
+}
+
+func (gate *ToolGate) dispatch(ctx context.Context, authority ToolAuthority, call ToolCall, reconciled func(ActionReconciliation)) (returned ToolOutcome, dispatchError error) {
 	if err := authority.Validate(); err != nil {
 		return ToolOutcome{}, err
 	}
@@ -290,6 +294,9 @@ func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, cal
 				return ToolOutcome{}, ctx.Err()
 			}
 			outcome.reconciliation = &ActionReconciliation{id, verdict, definition.verifier != nil}
+			if reconciled != nil {
+				reconciled(*outcome.reconciliation)
+			}
 			switch verdict {
 			case EffectAlreadyApplied:
 				outcome.Output, outcome.Replayed = ReconciledActionResult, true

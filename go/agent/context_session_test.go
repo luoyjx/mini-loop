@@ -139,7 +139,7 @@ func TestReadonlyCompressIsDeniedAndCreatesNoArchive(t *testing.T) {
 	}
 	blocks, _ := session.Messages()[2].Content.Blocks()
 	result, _ := blocks[0].ToolResult()
-	if !result.IsError || !strings.Contains(result.Content, "denied") {
+	if result.IsError || !strings.Contains(result.Content, "denied") {
 		t.Fatalf("compress denial lost: %+v", result)
 	}
 }

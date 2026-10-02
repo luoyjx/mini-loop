@@ -145,6 +145,7 @@ func (s *Session) buildRequest() (protocol.ModelRequest, string, error) {
 	if err != nil {
 		return protocol.ModelRequest{}, "", err
 	}
+	s.requestCatalog = snapshot
 	descriptions := ""
 	if s.skills != nil {
 		descriptions = s.skills.Descriptions()
@@ -176,6 +177,6 @@ func (s *Session) injectRuntimeFacts(envelope string) {
 	changed := facts != s.runtimeFacts
 	s.runtimeFacts = facts
 	if changed && facts != "" {
-		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent("<runtime-state>\n" + facts + "\n</runtime-state>")})
+		s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent("<runtime-state>\n" + facts + "\n</runtime-state>")})
 	}
 }

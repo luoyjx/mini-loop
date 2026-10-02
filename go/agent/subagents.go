@@ -129,7 +129,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	}
 	handler := &runtimeHandler{
 		binding: ToolAuthority{SessionID: id, OwnerID: parent.authority.OwnerID, Workspace: parent.authority.Workspace, Mode: mode},
-		todos:   &TodoManager{}, events: &sessionEvents{parent: parent.events, secrets: parent.secrets}, skills: parent.skills, questions: questions, compression: &compressionSignal{},
+		todos:   &TodoManager{}, events: &sessionEvents{parent: parent.events, secrets: parent.secrets, sessionID: parent.events.sessionID}, skills: parent.skills, questions: questions, compression: &compressionSignal{},
 	}
 	definitions := append([]ToolDefinition(nil), catalog.ordered...)
 	// Built-in stateful handlers must bind the fresh child. Custom handlers
@@ -154,6 +154,12 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	}
 	child.label, child.depth = parent.label+">"+strings.ToLower(string(request.Role)), parent.depth+1
 	child.secrets = parent.secrets
+	child.bash = nil
+	for _, definition := range definitions {
+		if handler, ok := definition.handler.(bashHandler); ok {
+			child.bash = handler.executor
+		}
+	}
 	child.model, child.maxTokens, child.tokenThreshold = parent.model, parent.maxTokens, parent.tokenThreshold
 	child.skills, child.questions, child.compactor = parent.skills, questions, parent.compactor
 	if parent.cachePolicy != nil {
@@ -166,6 +172,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	child.subagents, child.rolePolicy = parent.subagents, parent.rolePolicy
 	child.subagentMaxDepth, child.subagentMaxRounds = parent.maxDepth, parent.maxRounds
 	child.todos, child.events, child.compression = handler.todos, handler.events, handler.compression
+	child.bindEventHistory()
 	child.systemBuilder = FixedSystem(fmt.Sprintf("You are a %s subagent in %s. Use tools to %s, then give a concise final summary. No preamble.", request.Role, parent.authority.Workspace, verb))
 	child.lineage = &lineage
 	handler.session = child

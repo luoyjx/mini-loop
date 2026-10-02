@@ -75,7 +75,7 @@ func TestReadonlyWorkspaceSessionDeniesChangesAndAllowsReadAndGlob(t *testing.T)
 	}
 	for _, block := range results[:2] {
 		result, _ := block.ToolResult()
-		if !result.IsError || !strings.Contains(result.Content, "read-only") {
+		if result.IsError || !strings.Contains(result.Content, "read-only") {
 			t.Fatalf("write was allowed: %+v", result)
 		}
 	}

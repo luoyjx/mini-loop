@@ -303,7 +303,7 @@ func (provider *childApprovalModel) Complete(_ context.Context, request protocol
 		for _, block := range blocks {
 			result, _ := block.ToolResult()
 			if result.ToolUseID == "shell" {
-				provider.denied = result.IsError
+				provider.denied = strings.Contains(result.Content, "Permission denied:")
 			}
 			if result.ToolUseID == "question" {
 				provider.unavailable = result.Content == "[ask_user unavailable on this surface: no approval broker]"

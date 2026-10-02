@@ -1090,6 +1090,18 @@ The store is intentionally independent from `event_sink`: exporter failures do
 not stop an agent run, and custom sinks continue to receive live events. See
 [Agent trajectories](docs/TRAJECTORIES.md) for the schema and API.
 
+The Go port exposes `RuntimeConfig.EventSink` over closed `SessionEventRecord`
+variants. Records are masked and detached before publication. The optional sink
+runs synchronously in event order; faults/panics become bounded diagnostics and
+never rewrite tool outcomes. Slow sinks delay the emitter. A sink may inspect
+`ManagedSession.Info`, event snapshots or subscriptions, but must not recursively
+emit or call the blocking `Messages` accessor while a turn owns the loop lock.
+`Subscribe(replay)` returns a closeable bounded live queue; it sheds oldest at
+2,000 events. Replay is only the 200-event non-ephemeral memory backlog;
+`EventsAfter` does not restore a durable gap. `NewManagedSession` adds outer
+status/done/cancelled events; raw child `Session` loops emit only core telemetry.
+This Go library seam does not yet expose HTTP/SSE or a trajectory/state store.
+
 ---
 
 ## 9. Serving a customized fleet

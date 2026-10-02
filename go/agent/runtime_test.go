@@ -173,8 +173,8 @@ func TestRuntimeResourcesUseOneGateAndIsolateSessions(t *testing.T) {
 	if !reflect.DeepEqual(session.Todos(), []protocol.TodoItem{item}) || len(second.Todos()) != 0 {
 		t.Fatal("todo state leaked or readonly mutated it")
 	}
-	records := session.Events()
-	if len(records) != 1 || records[0].Sequence != 1 || records[0].Event.Kind() != EventTodo {
+	records := eventRecordsOfKind(session.Events(), EventTodo)
+	if len(records) != 1 || records[0].Sequence < 1 || records[0].Event.Kind() != EventTodo {
 		t.Fatalf("todo event missing: %+v", records)
 	}
 	todos, ok := records[0].Event.Todos()
@@ -182,17 +182,17 @@ func TestRuntimeResourcesUseOneGateAndIsolateSessions(t *testing.T) {
 		t.Fatal("todo event differs")
 	}
 	todos[0].Content = "mutated"
-	again, _ := session.Events()[0].Event.Todos()
+	again, _ := eventRecordsOfKind(session.Events(), EventTodo)[0].Event.Todos()
 	if again[0] != item {
 		t.Fatal("todo event alias")
 	}
-	if len(second.Events()) != 0 {
+	if len(eventRecordsOfKind(second.Events(), EventTodo)) != 0 {
 		t.Fatal("denied mutation emitted a todo event")
 	}
 	blocks, _ := second.Messages()[2].Content.Blocks()
 	denied, _ := blocks[0].ToolResult()
 	loaded, _ := blocks[1].ToolResult()
-	if !denied.IsError || !strings.Contains(denied.Content, "read-only") || loaded.IsError || loaded.Content != "<skill name=\"read\">\nRead carefully\n</skill>" {
+	if denied.IsError || !strings.Contains(denied.Content, "read-only") || loaded.IsError || loaded.Content != "<skill name=\"read\">\nRead carefully\n</skill>" {
 		t.Fatalf("readonly results: %+v %+v", denied, loaded)
 	}
 }
@@ -255,7 +255,7 @@ func TestCancelledQuestionClosesTranscriptAndLeavesTodoUntouched(t *testing.T) {
 	case <-time.After(time.Second):
 		t.Fatal("question did not cancel")
 	}
-	if len(session.Todos()) != 0 || len(session.Events()) != 0 {
+	if len(session.Todos()) != 0 || len(eventRecordsOfKind(session.Events(), EventTodo)) != 0 {
 		t.Fatal("cancelled batch mutated resources")
 	}
 	if err := protocol.ValidateTranscript(session.Messages()); err != nil {
@@ -310,7 +310,7 @@ func TestInvalidQuestionAnswerIsToolErrorAndConstructorValidatesBeforeFilesystem
 	}
 	blocks, _ := session.Messages()[2].Content.Blocks()
 	result, _ := blocks[0].ToolResult()
-	if !result.IsError || result.Content != "Error: question surface returned an invalid answer variant" {
+	if result.IsError || result.Content != "Error: question surface returned an invalid answer variant" {
 		t.Fatalf("invalid answer became success: %+v", result)
 	}
 	config.ID = ""

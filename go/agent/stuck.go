@@ -222,6 +222,7 @@ func (s *Session) recordToolStep(name protocol.ToolName, outcome ToolOutcome) er
 	if len(s.recentSteps) > StuckWindow {
 		s.recentSteps = append([]ToolStep(nil), s.recentSteps[len(s.recentSteps)-StuckWindow:]...)
 	}
+	s.publishLive()
 	return nil
 }
 func (s *Session) nudgeOrHalt(signal StuckSignal) (bool, string) {
@@ -233,5 +234,6 @@ func (s *Session) nudgeOrHalt(signal StuckSignal) (bool, string) {
 	s.stuckNudges++
 	s.recentSteps = nil
 	s.roundsWithoutTools = 0
+	s.publishLive()
 	return true, ""
 }
