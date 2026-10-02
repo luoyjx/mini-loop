@@ -233,7 +233,12 @@ class Settings:
         )
     )
     skills_dir: Path = field(
-        default_factory=lambda: Path(os.getenv("MINILOOP_SKILLS_DIR", "./skills")).resolve()
+        default_factory=lambda: Path(
+            os.getenv(
+                "MINILOOP_SKILLS_DIR",
+                str(Path(__file__).resolve().parent.parent / "skills"),
+            )
+        ).resolve()
     )
     user_resources_root: Path | None = field(
         default_factory=lambda: (

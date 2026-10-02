@@ -1,7 +1,8 @@
 # mini-loop
 
-A compact, inspectable coding-agent harness served as a concurrent FastAPI
-application.
+A compact, inspectable coding-agent harness. The existing FastAPI implementation
+lives in `python/`; an independent Go implementation is being built in `go/`.
+See the [port plan](GO_PORT_PLAN.md) and [parity matrix](GO_PARITY_MATRIX.md).
 
 mini-loop starts with the `s01` agent loop from
 [`learn-claude-code`](./learn-claude-code/) and adds the runtime boundaries a
@@ -54,8 +55,8 @@ network call:
 ```sh
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-MINILOOP_FAKE_LLM=1 MINILOOP_FAKE_DELAY=0.3 python -m mini_loop
+pip install -r python/requirements.txt
+MINILOOP_FAKE_LLM=1 MINILOOP_FAKE_DELAY=0.3 PYTHONPATH=python python -m mini_loop
 ```
 
 Open <http://127.0.0.1:8000> in two tabs to watch isolated agents run in
@@ -67,13 +68,13 @@ sidebar, a command palette, configurable shortcuts, visited-session navigation,
 light/dark themes, expandable tool records, and a session-tools panel
 for tasks, team, trajectories, transcript, cron, skills, memory, improvements,
 and the fake benchmark. It uses the same REST/SSE and approval boundaries as
-the classic console. See [Web UI design and verification](mini_loop/webui/README.md).
+the classic console. See [Web UI design and verification](python/mini_loop/webui/README.md).
 
 For a real Anthropic-compatible provider:
 
 ```sh
-cp .env.example .env       # set ANTHROPIC_API_KEY, MODEL_ID, and optional base URL
-python -m mini_loop
+cp python/.env.example .env # set ANTHROPIC_API_KEY, MODEL_ID, and optional base URL
+PYTHONPATH=python python -m mini_loop
 ```
 
 ## How one turn works
@@ -136,7 +137,7 @@ default server is production-ready.
 | s09 | memory lifecycle | s10 | per-call runtime prompt |
 
 ```sh
-MINILOOP_FAKE_LLM=1 MINILOOP_FEATURES=all python -m mini_loop
+MINILOOP_FAKE_LLM=1 MINILOOP_FEATURES=all PYTHONPATH=python python -m mini_loop
 ```
 
 </details>
@@ -146,10 +147,10 @@ MINILOOP_FAKE_LLM=1 MINILOOP_FEATURES=all python -m mini_loop
 The default is a development harness, not a host-level multi-tenant sandbox.
 Before binding beyond loopback:
 
-1. Configure token authentication. `python -m mini_loop` refuses an open bind
+1. Configure token authentication. `PYTHONPATH=python python -m mini_loop` refuses an open bind
    without it.
-2. Run `python -m mini_loop.audit` locally, or
-   `python -m mini_loop.audit --url http://host:port` against the live server.
+2. Run `PYTHONPATH=python python -m mini_loop.audit` locally, or
+   `PYTHONPATH=python python -m mini_loop.audit --url http://host:port` against the live server.
 3. Choose explicit sandbox, secret-masking, persistence, and retention policy
    for the trust level of the callers.
 4. Add OS/container isolation and resource limits when prompts or tools are
@@ -230,7 +231,7 @@ async def main():
 asyncio.run(main())
 ```
 
-See [`examples/custom_agent.py`](examples/custom_agent.py) for a composed domain
+See [`examples/custom_agent.py`](python/examples/custom_agent.py) for a composed domain
 agent and [EXTENDING.md](./EXTENDING.md) for every injectable interface.
 
 ## Extend the harness
@@ -260,8 +261,9 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `c3e0ab9` plus the typed-decision integration in this
-iteration, reviewed **2026-09-29**. The optional `decision` tool evaluates
+Runtime review baseline: `ad71e05` plus the Python directory split, its
+package-relative default skills path, and the initial typed Go port, reviewed
+**2026-10-02**. The optional `decision` tool evaluates
 explicit state through a configured provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
@@ -271,7 +273,7 @@ flowchart LR
     Caller["Callers<br/>Python · REST · SSE"]
 
     subgraph Control["Control plane"]
-        Entry["FastAPI / CLI / console<br/>server.py · __main__.py"]
+        Entry["Python FastAPI / CLI / console<br/>python/mini_loop/server.py · __main__.py"]
         Trust["Authentication + ownership<br/>auth.py · RunContext"]
         Manager["SessionManager<br/>composition · scoped resources · shared semaphores"]
         Drafts["Personal-skill drafts<br/>sanitized preview · TTL · process-local"]
@@ -330,7 +332,11 @@ flowchart LR
 ```
 <!-- architecture-map:end -->
 
-The solid path is one ordinary turn; dotted paths are optional or asynchronous.
+The diagram describes the current Python runtime under `python/`. The `go/`
+directory is an independent port in progress and is not on this execution
+path. The solid path is one ordinary turn; dotted paths are optional or asynchronous.
+The Python default agent skills now resolve from `python/skills/` regardless
+of the current working directory; `MINILOOP_SKILLS_DIR` still overrides it.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new
@@ -374,14 +380,16 @@ The Mermaid block above remains the canonical GitHub view.
 
 | Path | Responsibility |
 |---|---|
-| `mini_loop/agent.py` | Async model/tool loop and execution pipeline |
-| `mini_loop/session.py` | Per-session history, lock, events, lease, and persistence bridge |
-| `mini_loop/manager.py` | Composition root, ownership, shared services, session lifecycle |
-| `mini_loop/server.py` | FastAPI factory, REST/SSE surface, embedded console |
-| `mini_loop/builtins.py` | Default and comprehensive tool registries |
-| `mini_loop/workflows/` | Experimental read-only declarative workflow runtime |
-| `tests/` | Offline loop, safety, persistence, concurrency, API, and seam coverage |
-| `examples/` | Runnable custom composition |
+| `python/mini_loop/agent.py` | Python async model/tool loop and execution pipeline |
+| `python/mini_loop/session.py` | Python per-session history, lock, events, lease, and persistence bridge |
+| `python/mini_loop/manager.py` | Python composition root, ownership, shared services, session lifecycle |
+| `python/mini_loop/server.py` | Python FastAPI factory, REST/SSE surface, embedded console |
+| `python/mini_loop/builtins.py` | Python default and comprehensive tool registries |
+| `python/mini_loop/workflows/` | Python experimental read-only declarative workflow runtime |
+| `python/tests/` | Python offline loop, safety, persistence, concurrency, API, and seam coverage |
+| `python/tools/` | Python verification and benchmark scripts |
+| `python/examples/` | Runnable Python custom composition |
+| `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `docs/` | Design evidence, research, hardening record, and roadmap |
 | `research-site/` | Read-only browsable projection generated from `docs/*.md` |
 
@@ -390,7 +398,7 @@ it follows the construction seams from caller identity through serving.
 
 ## Configuration
 
-[`.env.example`](.env.example) is the configuration index. The main groups are:
+[`python/.env.example`](python/.env.example) is the Python configuration index. The main groups are:
 
 | Concern | Variables |
 |---|---|
@@ -411,14 +419,22 @@ The default test suite is offline and deterministic:
 
 ```sh
 .venv/bin/python -m pytest -q
-.venv/bin/python tools/verify_invariants.py
+.venv/bin/python python/tools/verify_invariants.py
 ```
 
 Additional mutation guards and source scans protect load-bearing boundaries:
 
 ```sh
-.venv/bin/python tools/verify_guards.py
-.venv/bin/python tools/verify_scans.py
+.venv/bin/python python/tools/verify_guards.py
+.venv/bin/python python/tools/verify_scans.py
+```
+
+The current Go slice is checked independently:
+
+```sh
+cd go
+go test ./...
+go vet ./...
 ```
 
 ## Documentation map
@@ -433,4 +449,5 @@ Additional mutation guards and source scans protect load-bearing boundaries:
 | What is the verified-loop adoption status? | [Verified loop design](docs/VERIFIED_LOOP_DESIGN.md) |
 | What remains before a broader agent platform? | [Agent Platform Roadmap](docs/AGENT_PLATFORM_ROADMAP.md) |
 | What informed the token-efficiency design? | [Token-efficiency components](docs/TOKEN_EFFICIENCY_COMPONENTS.md) |
+| What is the Python-to-Go migration sequence and current parity? | [Go port plan](GO_PORT_PLAN.md) and [parity matrix](GO_PARITY_MATRIX.md) |
 | Where are the source-level external studies? | [Research Atlas](research-site/README.md) |

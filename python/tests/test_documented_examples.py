@@ -30,7 +30,8 @@ from mini_loop import Agent, SessionManager, Settings
 from mini_loop.builtins import default_registry, full_registry
 from mini_loop.fake_llm import FakeAsyncAnthropic
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+PYTHON_ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = PYTHON_ROOT.parent
 DOCS = ("README.md", "EXTENDING.md")
 
 #: Names an example uses that stand for something the reader supplies. Listed,
@@ -58,7 +59,7 @@ def _preamble(tmp_path):
     workspace = tmp_path / "ws"
     workspace.mkdir(parents=True, exist_ok=True)
     settings = Settings(
-        fake_llm=True, workspace_root=workspace, skills_dir=ROOT / "skills"
+        fake_llm=True, workspace_root=workspace, skills_dir=PYTHON_ROOT / "skills"
     )
     return {
         "settings": settings,
@@ -125,13 +126,14 @@ IDS = [f"{doc}:{index}" for doc, index, _ in _all_blocks()]
 
 
 @pytest.mark.parametrize("doc,index,code", _all_blocks(), ids=IDS)
-def test_a_documented_example_still_works(tmp_path, doc, index, code):
+def test_a_documented_example_still_works(tmp_path, monkeypatch, doc, index, code):
     if _is_shorthand(code):
         pytest.skip("shorthand: `...` stands for the caller's other arguments")
     placeholders = _uses_illustrative(code)
     if placeholders:
         pytest.skip(f"illustrative: stands in for {sorted(placeholders)}")
 
+    monkeypatch.chdir(tmp_path)
     namespace = _preamble(tmp_path)
     namespace["__name__"] = "__doc_example__"
     try:

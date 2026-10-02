@@ -14,7 +14,7 @@
         "Tools"
       ],
       "updatedAt": "2026-09-29",
-      "sourceCommit": "working-tree",
+      "sourceCommit": "ad71e05",
       "sourcePath": "docs/DECISIONS.md",
       "readingMinutes": 8,
       "sections": [

@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Concurrent sessions, scoped knowledge, guarded tools, opt-in typed decisions, and durable evidence",
+    "subtitle": "Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -44,7 +44,7 @@
   },
   "components": [
     { "id": "clients", "type": "external", "label": "Callers", "sublabel": "Python / REST / SSE", "pos": [60, 260], "size": [150, 72] },
-    { "id": "entry", "type": "frontend", "label": "Entry Surface", "sublabel": "FastAPI + CLI + console", "pos": [330, 260], "size": [170, 72] },
+    { "id": "entry", "type": "frontend", "label": "Python Entry", "sublabel": "python/mini_loop: FastAPI + CLI", "pos": [330, 260], "size": [170, 72] },
     { "id": "authority", "type": "security", "label": "Trust Boundary", "sublabel": "Auth + ownership + RunContext", "pos": [650, 260], "size": [210, 72], "tag": "fail closed" },
     { "id": "manager", "type": "backend", "label": "SessionManager", "sublabel": "fleet composition + shared limits", "pos": [1030, 260], "size": [200, 72] },
     { "id": "skillDrafts", "type": "backend", "label": "Personal-skill Preview", "sublabel": "auth turn ledger + TTL draft", "pos": [700, 440], "size": [230, 76], "tag": "process-local" },
@@ -87,6 +87,7 @@
     { "dot": "cyan", "title": "Concurrency", "items": ["One lock serializes each session", "Fleet-wide LLM and tool semaphores bound parallel work", "Parallel-safe tool results retain model-call order"] },
     { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Only authenticated HTTP user/final turns enter preview", "Preview cannot publish; commit is a separate caller action", "Agent and user skills retain explicit provenance"] },
     { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] },
-    { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] }
+    { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] },
+    { "dot": "cyan", "title": "Language layout", "items": ["This map follows the current Python runtime under python/", "Default agent skills resolve from python/skills/", "go/ is an independent port in progress", "Go behavior and parity are tracked separately"] }
   ]
 }

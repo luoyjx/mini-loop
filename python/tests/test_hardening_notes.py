@@ -17,7 +17,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-NOTES = ROOT / "docs" / "HARDENING_NOTES.md"
+NOTES = ROOT.parent / "docs" / "HARDENING_NOTES.md"
 
 
 def _src(relative: str) -> str:

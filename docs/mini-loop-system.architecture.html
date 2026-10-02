@@ -4498,7 +4498,7 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Concurrent sessions, scoped knowledge, guarded tools, opt-in typed decisions, and durable evidence</p>
+      <p class="subtitle">Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress</p>
     </div>
 
     <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"resource-path","label":"Scoped skills and memory","focus":["authority","manager","session","skillDrafts","state","context"],"note":"Preview is process-local; an exact digest commit creates an owner skill that only future session snapshots can load."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
@@ -4546,7 +4546,7 @@
     <div class="diagram-container" data-detail-level="read">
       <svg viewBox="0 0 2500 1100" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Concurrent sessions, scoped knowledge, guarded tools, opt-in typed decisions, and durable evidence</desc>
+        <desc id="archify-diagram-description">Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -4612,8 +4612,8 @@
         <text data-detail="context" x="135" y="310" class="t-muted" font-size="9" text-anchor="middle">Python / REST / SSE</text>
         </g>
 
-        <g id="node-entry" data-node-id="entry" data-node-label="Entry Surface" tabindex="0" role="button" aria-label="Focus Entry Surface, FastAPI + CLI + console, Control plane" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="FastAPI + CLI + console" data-node-context="Control plane">
-          <title>Entry Surface · FastAPI + CLI + console · Control plane</title>
+        <g id="node-entry" data-node-id="entry" data-node-label="Python Entry" tabindex="0" role="button" aria-label="Focus Python Entry, python/mini_loop: FastAPI + CLI, Control plane" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="python/mini_loop: FastAPI + CLI" data-node-context="Control plane">
+          <title>Python Entry · python/mini_loop: FastAPI + CLI · Control plane</title>
           <rect x="330" y="260" width="170" height="72" rx="6" class="c-mask"/>
           <rect x="330" y="260" width="170" height="72" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(336 266) scale(0.6875)">
@@ -4622,8 +4622,8 @@
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text data-detail-anchor x="415" y="294" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Entry Surface</text>
-        <text data-detail="context" x="415" y="310" class="t-muted" font-size="9" text-anchor="middle">FastAPI + CLI + console</text>
+          <text data-detail-anchor x="415" y="294" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Python Entry</text>
+        <text data-detail="context" x="415" y="310" class="t-muted" font-size="9" text-anchor="middle">python/mini_loop: FastAPI + CLI</text>
         </g>
 
         <g id="node-authority" data-node-id="authority" data-node-label="Trust Boundary" tabindex="0" role="button" aria-label="Focus Trust Boundary, Auth + ownership + RunContext, Control plane" aria-pressed="false" data-node-kind="security" data-node-sublabel="Auth + ownership + RunContext" data-node-tag="fail closed" data-node-context="Control plane">
@@ -5093,6 +5093,19 @@
           <li>&bull; Explicit state + batch choice / score / noul questions</li>
           <li>&bull; External-risk approval; judgments never execute actions</li>
           <li>&bull; Jev values retain provenance; LLM estimates are labeled</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot cyan"></div>
+          <h3>Language layout</h3>
+        </div>
+        <ul>
+          <li>&bull; This map follows the current Python runtime under python/</li>
+          <li>&bull; Default agent skills resolve from python/skills/</li>
+          <li>&bull; go/ is an independent port in progress</li>
+          <li>&bull; Go behavior and parity are tracked separately</li>
         </ul>
       </div>
     </div>

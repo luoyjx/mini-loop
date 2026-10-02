@@ -90,6 +90,13 @@ def test_the_default_config_is_valid(tmp_path):
     assert settings.subagent_max_rounds >= 1
 
 
+def test_default_skills_follow_the_python_implementation(tmp_path, monkeypatch):
+    monkeypatch.delenv("MINILOOP_SKILLS_DIR", raising=False)
+    settings = Settings(fake_llm=True, workspace_root=tmp_path / "ws")
+    assert settings.skills_dir == SKILLS.resolve()
+    assert (settings.skills_dir / "code_review" / "SKILL.md").is_file()
+
+
 def test_min_one_is_the_boundary(tmp_path):
     """1 is allowed -- the rule is < 1, not <= 1."""
 

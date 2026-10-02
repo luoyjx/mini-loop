@@ -23,7 +23,7 @@ Everything is injected through **two constructors**:
   *every* session it creates, and then served over HTTP by `create_app`.
 
 A complete, runnable example combining all of the below:
-[`examples/custom_agent.py`](./examples/custom_agent.py).
+[`examples/custom_agent.py`](./python/examples/custom_agent.py).
 
 ---
 
@@ -911,7 +911,7 @@ contract.
 
 ## 5. Skills and user-scoped knowledge
 
-Drop a deployment-managed `skills/<name>/SKILL.md` with frontmatter; it is
+The Python default loads `python/skills/<name>/SKILL.md` with frontmatter; it is
 indexed by description and injected only when the model calls `load_skill`.
 This is the `agent` source shared by the manager.
 
@@ -924,7 +924,7 @@ description: Company refund policy and the steps to issue one.
 ...full instructions the model loads on demand...
 ```
 
-Point the loader at your directory (`MINILOOP_SKILLS_DIR` or
+Point the loader at another deployment directory (`MINILOOP_SKILLS_DIR` or
 `SkillLoader(path)`), or subclass `SkillLoader` to source skills from a DB/CMS.
 Manager-wide use only calls `descriptions()` and `load(name)`. Layering a user
 source additionally requires the construction snapshot exposed by
