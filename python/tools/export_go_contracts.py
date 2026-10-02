@@ -729,6 +729,134 @@ def _action_contracts(scratch: Path) -> dict[str, object]:
     return {"inputs": inputs, "runs": runs, "bounds": bounds, "replays": replays, "shed_result": SHED_RESULT}
 
 
+def _approval_contracts() -> dict[str, object]:
+    """Default-tool grants and actual parked/reviewer broker outcomes."""
+    import asyncio
+    from types import SimpleNamespace
+    from mini_loop.approvals import (ApprovalBroker, GRANT_BANNED_HEADS,
+                                     grant_candidate, grant_banned, proposed_candidate)
+    from mini_loop.registry import ToolCall
+    from mini_loop.secrets import SecretRegistry
+
+    grant_inputs = [
+        {"command": "git status --short"}, {"command": "git"},
+        {"command": "git\u001cstatus --short"},
+        {"command": "git status --short", "approval_prefix": ["git", "status", "--short"]},
+        {"command": "git status --short", "approval_prefix": ["git", "reset"]},
+        {"command": "git status --short", "approval_prefix": ["git"]},
+        {"command": "a b c d e f g", "approval_prefix": ["a", "b", "c", "d", "e", "f"]},
+        {"command": "a b c d e f g", "approval_prefix": ["a", "b", "c", "d", "e", "f", "g"]},
+    ] + [{"command": f"{head} one two", "approval_prefix": [head, "one"]} for head in GRANT_BANNED_HEADS]
+    candidates = []
+    for name, value in [("bash", value) for value in grant_inputs] + [("load_skill", {"name": "review"}), ("compress", {})]:
+        default, proposed = grant_candidate(name, value), proposed_candidate(name, value)
+        candidates.append({"block": {"type": "tool_use", "id": "u", "name": name, "input": value},
+                           "default": default, "proposed": proposed,
+                           "banned": grant_banned(default) if default else False})
+    secret = 'clé-café-secret-Ω-"0123456789'
+    async def one_case(name, *, kind="approval", command="git status --short", proposal=None,
+                       action="allow", remember=False, answer=None, reviewer=None,
+                       masking=False, broken_store=False, repeat=False):
+        writes, events = [], []
+        class Store:
+            def write_approval(self, row):
+                if broken_store:
+                    raise RuntimeError("sensitive detail")
+                writes.append(dict(row))
+        secrets = SecretRegistry()
+        if masking:
+            secrets.register("KEY", secret)
+        broker = ApprovalBroker(timeout=0.005, store=Store())
+        broker.secrets = secrets
+        review_calls = 0
+        async def review(ctx, call, rule):
+            nonlocal review_calls
+            review_calls += 1
+            if reviewer == "error":
+                raise RuntimeError("sensitive detail")
+            return {"allow": True, "deny": False, "abstain": None}[reviewer]
+        if reviewer:
+            broker.reviewer = review
+        class Ctx:
+            agent = SimpleNamespace(state={"session": SimpleNamespace(id="s")}, secrets=secrets)
+            call = ToolCall("ask_user", {}, "u")
+            async def emit_event(self, event_type, **fields):
+                events.append({"type": event_type, **fields})
+        ctx = Ctx()
+        rule = SimpleNamespace(name="test-rule", message="approval needed")
+        value = {"command": command}
+        if proposal is not None:
+            value["approval_prefix"] = proposal
+        call = ToolCall("bash", value, "u")
+        question = secret if masking else "which?"
+        async def invoke():
+            if kind == "question":
+                return await broker.ask_question(ctx, question)
+            return await broker.ask(ctx, call, rule)
+        task = asyncio.create_task(invoke())
+        for _ in range(100):
+            await asyncio.sleep(0)
+            if task.done() or broker.list("s"):
+                break
+        pending = broker.list("s")
+        foreign, twice = None, None
+        if pending and action != "timeout":
+            approval_id = pending[0]["approval_id"]
+            foreign = broker.resolve(approval_id, session_id="foreign", allowed=True)
+            if action == "cancel":
+                broker.cancel_session("s")
+            else:
+                broker.resolve(approval_id, session_id="s", allowed=action == "allow",
+                               remember=remember, answer=answer)
+            twice = broker.resolve(approval_id, session_id="s", allowed=True)
+        result = await task
+        second = await invoke() if repeat else None
+        return {"name": name, "kind": kind, "block": {"type": "tool_use", "id": "u", "name": "bash", "input": value},
+                "question": question, "action": action, "remember": remember,
+                "answer": answer, "reviewer": reviewer, "masking": masking,
+                "broken_store": broken_store, "repeat": repeat,
+                "allowed": result if kind == "approval" else None,
+                "response": result if kind == "question" else None,
+                "second": second, "foreign": foreign, "twice": twice,
+                "writes": writes, "events": events, "problems": len(broker.problems),
+                "review_calls": review_calls, "remaining": broker.list("s")}
+    async def cases():
+        specs = [
+            ("allowed", {}), ("denied", {"action": "deny"}),
+            ("timeout", {"action": "timeout"}), ("cancelled", {"action": "cancel"}),
+            ("question-empty", {"kind": "question", "answer": ""}),
+            ("question-denied", {"kind": "question", "action": "deny", "answer": "ignored"}),
+            ("question-missing", {"kind": "question"}),
+            ("question-timeout", {"kind": "question", "action": "timeout"}),
+            ("question-cancelled", {"kind": "question", "action": "cancel"}),
+            ("masked-question", {"kind": "question", "masking": True, "answer": secret}),
+            ("masked-preview", {"masking": True, "command": "echo " + secret}),
+            ("long-preview", {"command": "echo " + "x" * 500}),
+            ("grant-used", {"remember": True, "repeat": True}),
+            ("proposal-used", {"remember": True, "repeat": True, "proposal": ["git", "status", "--short"]}),
+            ("lying-proposal", {"remember": True, "repeat": True, "proposal": ["git", "reset"]}),
+            ("banned-grant", {"remember": True, "command": "rm -rf build"}),
+            ("auto-allow", {"reviewer": "allow"}), ("auto-deny", {"reviewer": "deny"}),
+            ("auto-abstain", {"reviewer": "abstain", "action": "timeout"}),
+            ("auto-error", {"reviewer": "error"}),
+            ("store-fault", {"broken_store": True}),
+        ]
+        return [await one_case(name, **config) for name, config in specs]
+    records = asyncio.run(cases())
+    for record in records:
+        ids = {}
+        for row in record["writes"] + record["events"]:
+            if "approval_id" in row:
+                source_id = row["approval_id"]
+                ids.setdefault(source_id, f"apr_{len(ids)}")
+                row["approval_id"] = ids[source_id]
+            if "created_at" in row:
+                row["created_at"] = 0
+            if row.get("resolved_at") is not None:
+                row["resolved_at"] = 0
+    return {"candidates": candidates, "cases": records, "secret": secret}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -798,6 +926,7 @@ def _snapshot() -> dict[str, bytes]:
         context_contracts = _context_contracts(Path(scratch) / "context")
         subagent_contracts = _subagent_contracts(Path(scratch) / "subagents")
         action_contracts = _action_contracts(Path(scratch) / "actions")
+        approval_contracts = _approval_contracts()
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -826,6 +955,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-context.json": _json_bytes(context_contracts),
         "python-subagents.json": _json_bytes(subagent_contracts),
         "python-actions.json": _json_bytes(action_contracts),
+        "python-approvals.json": _json_bytes(approval_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

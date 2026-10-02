@@ -184,6 +184,7 @@ func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, cal
 		return ToolOutcome{}, err
 	}
 	authority.ActionID = id
+	authority.ToolUseID = call.ID
 	journalStarted := false
 	defer func() {
 		if ctx.Err() != nil && journalStarted {

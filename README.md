@@ -266,7 +266,8 @@ package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
 model requests, token metering, four-layer context compaction and typed subagent
 execution with run provenance, action replay and typed journal transitions,
-reviewed **2026-10-02** (Go baseline `ab93433` plus the action-journal slice).
+and a bound approval broker with session grants and textual questions,
+reviewed **2026-10-02** (Go baseline `22afa68` plus the approval-broker slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -318,6 +319,7 @@ flowchart LR
         GoContext["Context pipeline<br/>fitted schemas · skills · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
+        GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Injected BashExecutor"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
@@ -330,6 +332,9 @@ flowchart LR
         GoGate --> GoFiles
         GoGate --> GoResources
         GoGate -. replay / reconcile / settle .-> GoActions
+        GoGate -. permission ask .-> GoApprovals
+        GoResources -. textual question .-> GoApprovals
+        GoApprovals -. scoped approval events .-> GoSession
         GoResources -->|task / depth gate| GoChildren
         GoChildren --> GoContext
         GoChildren -->|selected tools| GoGate
@@ -380,7 +385,7 @@ and textual-question interfaces; a nil skill source is an empty catalogue,
 and a nil question surface reports unavailability. The deployment skill loader
 snapshots bounded bodies and descriptions and verifies the normalized source
 hash at load time. User-scoped skill layering remains pending. Todo and stop
-events, compaction receipts and scoped child events share a typed, sequenced 200-event backlog;
+events, compaction receipts, approval events and scoped child events share a typed, sequenced 200-event backlog;
 HTTP/SSE and subscriptions remain pending. Model requests consume one fitted,
 immutable schema snapshot and the deployment skill descriptions. Provider usage
 anchors the token meter; unrelated summary calls do not change that anchor.
@@ -393,7 +398,7 @@ The Bash-only constructor has no bound workspace and uses the in-memory
 snip/micro strategy. Internal automatic compaction can write workspace artifacts
 even with a readonly tool mode, matching the Python ordinary-agent path; a
 read-only worker must explicitly select `InMemoryCompactor`. Provider cache
-annotation, secret masking and user-resource prompt sections remain pending.
+annotation, application-wide secret masking and user-resource prompt sections remain pending.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
 process-local. `RuntimeConfig.ActionJournal` optionally binds a replay journal:
@@ -403,11 +408,25 @@ non-landing. `write_file` has a workspace-bound verifier; Bash has none. Typed
 settlement precedes result observers; cancellation settles as cancelled. The
 memory journal keeps every action identity while bounding retained result text.
 `StoredActionJournal` supplies transitions over an explicit `ActionStore`; the
-shipped Go SQLite backend and durable approval broker remain pending. No journal
+shipped Go SQLite backend remains pending. No journal
 claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child
-state. Secret masking remains pending. Compaction files are durable local
+state. Application-wide secret masking remains pending. Compaction files are durable local
 artifacts, not a session-restoration store.
+`RuntimeConfig.Approvals` optionally binds one process-local broker to the
+permission and textual-question surfaces. It checks session, owner and workspace
+binding, records typed approval rows through an optional `ApprovalStore`, and
+emits typed required/timeout/grant/reviewer events into the session backlog.
+Human remembered grants precede the optional reviewer and expire with explicit
+session cancellation; they are never persisted. Reviewer faults abstain, and
+reviewers cannot bypass readonly or final-deny rules. An empty question answer
+remains answered. Explicit broker cancellation records `cancelled`; cancellation
+of the waiting context removes the pending entry and leaves its last stored row
+pending, matching Python. Store faults are reported without changing the human
+decision. The optional redactor masks previews before JSON escaping and answers
+before storage; it does not provide application-wide masking. Fresh children
+do not inherit the parent broker surface. SQLite rows, restore-time expiry and
+authenticated approval routes remain pending.
 `task` is the tenth runtime tool and crosses the execution-risk gate before
 delegation. The default in-process provider creates a fresh child history,
 todo state and token meter, with a capability-selected subset of the parent

@@ -72,6 +72,7 @@ type RuntimeConfig struct {
 	Subagents         SubagentProvider
 	RoleToolPolicy    RoleToolPolicy
 	ActionJournal     ActionJournal
+	Approvals         *ApprovalBroker
 }
 
 type runtimeHandler struct {
@@ -174,6 +175,9 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 // questions plus deferred compaction to the implemented workspace tools.
 // Task delegates to a fresh child through the explicit subagent seam.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
+	if config.Approvals != nil && (config.Approver != nil || config.Questions != nil) {
+		return nil, errors.New("approval broker conflicts with an explicit approver/question surface")
+	}
 	if config.ID == "" || config.Owner == "" || config.Provider == nil || config.Bash == nil || !config.Mode.Valid() || config.MaxRounds < 1 {
 		return nil, errors.New("runtime session requires valid identity, provider, executor, mode and round limit")
 	}
@@ -199,6 +203,15 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		binding: ToolAuthority{SessionID: config.ID, OwnerID: config.Owner, Workspace: files.Root(), Mode: config.Mode},
 		todos:   &TodoManager{}, events: &sessionEvents{}, skills: source, questions: config.Questions, compression: &compressionSignal{},
 	}
+	approver, questions := config.Approver, config.Questions
+	if config.Approvals != nil {
+		surface, err := config.Approvals.ForSession(handler.binding, sessionApprovalSink{handler.events})
+		if err != nil {
+			return nil, err
+		}
+		approver, questions = surface, surface
+		handler.questions = surface
+	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
 	for _, name := range []protocol.ToolName{protocol.ToolTodoWrite, protocol.ToolTask, protocol.ToolLoadSkill, protocol.ToolCompress, protocol.ToolAskUser} {
 		traits := ToolTraits{Risk: RiskRead, Readonly: true}
@@ -218,7 +231,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
-	gate, err := NewJournaledToolGate(catalog, DefaultPermissionPolicy(config.Approver), config.Hooks, config.ActionJournal)
+	gate, err := NewJournaledToolGate(catalog, DefaultPermissionPolicy(approver), config.Hooks, config.ActionJournal)
 	if err != nil {
 		return nil, err
 	}
@@ -228,7 +241,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	session.todos, session.events = handler.todos, handler.events
 	handler.session = session
-	session.questions = config.Questions
+	session.questions = questions
 	if config.Label != "" {
 		session.label = config.Label
 	}

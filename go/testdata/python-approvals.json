@@ -1,0 +1,2469 @@
+{
+  "candidates": [
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "git",
+        "status"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": null,
+      "proposed": null
+    },
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git\u001cstatus --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "git",
+        "status"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "git",
+        "status"
+      ],
+      "proposed": [
+        "bash",
+        "git",
+        "status",
+        "--short"
+      ]
+    },
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "git",
+            "reset"
+          ],
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "git",
+        "status"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "git"
+          ],
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "git",
+        "status"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ],
+          "command": "a b c d e f g"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "a",
+        "b"
+      ],
+      "proposed": [
+        "bash",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f"
+      ]
+    },
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ],
+          "command": "a b c d e f g"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "a",
+        "b"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "bash",
+            "one"
+          ],
+          "command": "bash one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "bash",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "sh",
+            "one"
+          ],
+          "command": "sh one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "sh",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "zsh",
+            "one"
+          ],
+          "command": "zsh one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "zsh",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "dash",
+            "one"
+          ],
+          "command": "dash one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "dash",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "ksh",
+            "one"
+          ],
+          "command": "ksh one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "ksh",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "python",
+            "one"
+          ],
+          "command": "python one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "python",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "python3",
+            "one"
+          ],
+          "command": "python3 one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "python3",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "node",
+            "one"
+          ],
+          "command": "node one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "node",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "deno",
+            "one"
+          ],
+          "command": "deno one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "deno",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "perl",
+            "one"
+          ],
+          "command": "perl one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "perl",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "ruby",
+            "one"
+          ],
+          "command": "ruby one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "ruby",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "php",
+            "one"
+          ],
+          "command": "php one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "php",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "sudo",
+            "one"
+          ],
+          "command": "sudo one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "sudo",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "doas",
+            "one"
+          ],
+          "command": "doas one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "doas",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "su",
+            "one"
+          ],
+          "command": "su one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "su",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "rm",
+            "one"
+          ],
+          "command": "rm one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "rm",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "eval",
+            "one"
+          ],
+          "command": "eval one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "eval",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "exec",
+            "one"
+          ],
+          "command": "exec one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "exec",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "env",
+            "one"
+          ],
+          "command": "env one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "env",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "xargs",
+            "one"
+          ],
+          "command": "xargs one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "xargs",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "find",
+            "one"
+          ],
+          "command": "find one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "find",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "curl",
+            "one"
+          ],
+          "command": "curl one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "curl",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "wget",
+            "one"
+          ],
+          "command": "wget one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "wget",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "nc",
+            "one"
+          ],
+          "command": "nc one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "nc",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "chmod",
+            "one"
+          ],
+          "command": "chmod one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "chmod",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "chown",
+            "one"
+          ],
+          "command": "chown one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "chown",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "dd",
+            "one"
+          ],
+          "command": "dd one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "dd",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": true,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "mkfs",
+            "one"
+          ],
+          "command": "mkfs one two"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "default": [
+        "bash",
+        "mkfs",
+        "one"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {
+          "name": "review"
+        },
+        "name": "load_skill",
+        "type": "tool_use"
+      },
+      "default": [
+        "load_skill"
+      ],
+      "proposed": null
+    },
+    {
+      "banned": false,
+      "block": {
+        "id": "u",
+        "input": {},
+        "name": "compress",
+        "type": "tool_use"
+      },
+      "default": [
+        "compress"
+      ],
+      "proposed": null
+    }
+  ],
+  "cases": [
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "allowed",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "deny",
+      "allowed": false,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "denied",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "denied",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "timeout",
+      "allowed": false,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        },
+        {
+          "approval_id": "apr_0",
+          "tool": "bash",
+          "type": "approval_timeout",
+          "waited": 0.005
+        }
+      ],
+      "foreign": null,
+      "kind": "approval",
+      "masking": false,
+      "name": "timeout",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": null,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "timeout",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "cancel",
+      "allowed": false,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "cancelled",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "cancelled",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": null,
+      "answer": "",
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": null,
+          "grant_proposed": false,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "rule": "ask-user",
+          "session_id": "s",
+          "tool": "ask_user",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "question",
+      "masking": false,
+      "name": "question-empty",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": "",
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": null,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": "",
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": 0,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "answered",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "deny",
+      "allowed": null,
+      "answer": "ignored",
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": null,
+          "grant_proposed": false,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "rule": "ask-user",
+          "session_id": "s",
+          "tool": "ask_user",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "question",
+      "masking": false,
+      "name": "question-denied",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": null,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": 0,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "declined",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": null,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": null,
+          "grant_proposed": false,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "rule": "ask-user",
+          "session_id": "s",
+          "tool": "ask_user",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "question",
+      "masking": false,
+      "name": "question-missing",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": null,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": 0,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "declined",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "timeout",
+      "allowed": null,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": null,
+          "grant_proposed": false,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "rule": "ask-user",
+          "session_id": "s",
+          "tool": "ask_user",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        },
+        {
+          "approval_id": "apr_0",
+          "tool": "ask_user",
+          "type": "approval_timeout",
+          "waited": 0.005
+        }
+      ],
+      "foreign": null,
+      "kind": "question",
+      "masking": false,
+      "name": "question-timeout",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": null,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": null,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": 0,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "timeout",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "cancel",
+      "allowed": null,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": null,
+          "grant_proposed": false,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "rule": "ask-user",
+          "session_id": "s",
+          "tool": "ask_user",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "question",
+      "masking": false,
+      "name": "question-cancelled",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": null,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "which?",
+          "resolved_at": 0,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "cancelled",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": null,
+      "answer": "clé-café-secret-Ω-\"0123456789",
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": null,
+          "grant_proposed": false,
+          "input_preview": "",
+          "kind": "question",
+          "message": "<secret-hidden>",
+          "rule": "ask-user",
+          "session_id": "s",
+          "tool": "ask_user",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "question",
+      "masking": true,
+      "name": "masked-question",
+      "problems": 0,
+      "question": "clé-café-secret-Ω-\"0123456789",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": "clé-café-secret-Ω-\"0123456789",
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "<secret-hidden>",
+          "resolved_at": null,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": "<secret-hidden>",
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "",
+          "kind": "question",
+          "message": "<secret-hidden>",
+          "resolved_at": 0,
+          "rule": "ask-user",
+          "session_id": "s",
+          "status": "answered",
+          "tool_name": "ask_user",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "echo clé-café-secret-Ω-\"0123456789"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "echo",
+            "clé-café-secret-Ω-\"0123456789"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"echo <secret-hidden>\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": true,
+      "name": "masked-preview",
+      "problems": 0,
+      "question": "clé-café-secret-Ω-\"0123456789",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"echo <secret-hidden>\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"echo <secret-hidden>\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "echo",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "long-preview",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        },
+        {
+          "grant": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "tool": "bash",
+          "type": "approval_grant_recorded"
+        },
+        {
+          "grant": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "rule": "test-rule",
+          "tool": "bash",
+          "type": "approval_grant_used"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "grant-used",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": true,
+      "repeat": true,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": true,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_1",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "grant_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status",
+            "--short"
+          ],
+          "grant_proposed": true,
+          "input_preview": "{\"command\": \"git status --short\", \"approval_prefix\": [\"git\", \"status\", \"--short\"]}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        },
+        {
+          "grant": [
+            "bash",
+            "git",
+            "status",
+            "--short"
+          ],
+          "tool": "bash",
+          "type": "approval_grant_recorded"
+        },
+        {
+          "grant": [
+            "bash",
+            "git",
+            "status",
+            "--short"
+          ],
+          "rule": "test-rule",
+          "tool": "bash",
+          "type": "approval_grant_used"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "proposal-used",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": true,
+      "repeat": true,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": true,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\", \"approval_prefix\": [\"git\", \"status\", \"--short\"]}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\", \"approval_prefix\": [\"git\", \"status\", \"--short\"]}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_1",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\", \"approval_prefix\": [\"git\", \"status\", \"--short\"]}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "grant_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "approval_prefix": [
+            "git",
+            "reset"
+          ],
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\", \"approval_prefix\": [\"git\", \"reset\"]}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        },
+        {
+          "grant": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "tool": "bash",
+          "type": "approval_grant_recorded"
+        },
+        {
+          "grant": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "rule": "test-rule",
+          "tool": "bash",
+          "type": "approval_grant_used"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "lying-proposal",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": true,
+      "repeat": true,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": true,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\", \"approval_prefix\": [\"git\", \"reset\"]}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\", \"approval_prefix\": [\"git\", \"reset\"]}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_1",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\", \"approval_prefix\": [\"git\", \"reset\"]}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "grant_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "rm -rf build"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "rm",
+            "-rf"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"rm -rf build\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        },
+        {
+          "grant": [
+            "bash",
+            "rm",
+            "-rf"
+          ],
+          "reason": "prefix too broad to remember; this run was allowed, the next will ask again",
+          "tool": "bash",
+          "type": "approval_grant_refused"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "banned-grant",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": true,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"rm -rf build\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"rm -rf build\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "decision": "allow",
+          "rule": "test-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        }
+      ],
+      "foreign": null,
+      "kind": "approval",
+      "masking": false,
+      "name": "auto-allow",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 1,
+      "reviewer": "allow",
+      "second": null,
+      "twice": null,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "auto_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": false,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "decision": "deny",
+          "rule": "test-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        }
+      ],
+      "foreign": null,
+      "kind": "approval",
+      "masking": false,
+      "name": "auto-deny",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 1,
+      "reviewer": "deny",
+      "second": null,
+      "twice": null,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "auto_denied",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "timeout",
+      "allowed": false,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        },
+        {
+          "approval_id": "apr_0",
+          "tool": "bash",
+          "type": "approval_timeout",
+          "waited": 0.005
+        }
+      ],
+      "foreign": null,
+      "kind": "approval",
+      "masking": false,
+      "name": "auto-abstain",
+      "problems": 0,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 1,
+      "reviewer": "abstain",
+      "second": null,
+      "twice": null,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "timeout",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "auto-error",
+      "problems": 1,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 1,
+      "reviewer": "error",
+      "second": null,
+      "twice": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": null,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "resolved_at": 0,
+          "rule": "test-rule",
+          "session_id": "s",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "u"
+        }
+      ]
+    },
+    {
+      "action": "allow",
+      "allowed": true,
+      "answer": null,
+      "block": {
+        "id": "u",
+        "input": {
+          "command": "git status --short"
+        },
+        "name": "bash",
+        "type": "tool_use"
+      },
+      "broken_store": true,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval needed",
+          "rule": "test-rule",
+          "session_id": "s",
+          "tool": "bash",
+          "tool_use_id": "u",
+          "type": "approval_required"
+        }
+      ],
+      "foreign": false,
+      "kind": "approval",
+      "masking": false,
+      "name": "store-fault",
+      "problems": 1,
+      "question": "which?",
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "response": null,
+      "review_calls": 0,
+      "reviewer": null,
+      "second": null,
+      "twice": false,
+      "writes": []
+    }
+  ],
+  "secret": "clé-café-secret-Ω-\"0123456789"
+}

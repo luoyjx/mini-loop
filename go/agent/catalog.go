@@ -54,6 +54,7 @@ type ToolAuthority struct {
 	Mode       PermissionMode
 	RunContext RunContext
 	ActionID   ActionID
+	ToolUseID  string
 }
 
 func (authority ToolAuthority) Validate() error {

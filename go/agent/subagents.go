@@ -119,9 +119,13 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	}
 	id := SessionID(parent.authority.SessionID + ">" + SessionID(childContext.MessageID()))
 	lineage := SubagentLineage{Parent: parent.label, DelegationDepth: parent.depth + 1}
+	questions := parent.questions
+	if _, boundBroker := questions.(*ApprovalSurface); boundBroker {
+		questions = nil
+	}
 	handler := &runtimeHandler{
 		binding: ToolAuthority{SessionID: id, OwnerID: parent.authority.OwnerID, Workspace: parent.authority.Workspace, Mode: mode},
-		todos:   &TodoManager{}, events: &sessionEvents{parent: parent.events}, skills: parent.skills, questions: parent.questions, compression: &compressionSignal{},
+		todos:   &TodoManager{}, events: &sessionEvents{parent: parent.events}, skills: parent.skills, questions: questions, compression: &compressionSignal{},
 	}
 	definitions := append([]ToolDefinition(nil), catalog.ordered...)
 	// Built-in stateful handlers must bind the fresh child. Custom handlers
@@ -145,7 +149,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	}
 	child.label, child.depth = parent.label+">"+strings.ToLower(string(request.Role)), parent.depth+1
 	child.model, child.maxTokens, child.tokenThreshold = parent.model, parent.maxTokens, parent.tokenThreshold
-	child.skills, child.questions, child.compactor = parent.skills, parent.questions, parent.compactor
+	child.skills, child.questions, child.compactor = parent.skills, questions, parent.compactor
 	child.subagents, child.rolePolicy = parent.subagents, parent.rolePolicy
 	child.subagentMaxDepth, child.subagentMaxRounds = parent.maxDepth, parent.maxRounds
 	child.todos, child.events, child.compression = handler.todos, handler.events, handler.compression

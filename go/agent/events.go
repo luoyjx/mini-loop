@@ -1,9 +1,11 @@
 package agent
 
 import (
+	"context"
 	"fmt"
-	"github.com/luoyjx/mini-loop/go/protocol"
 	"sync"
+
+	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
 const EventBacklog = 200
@@ -52,7 +54,7 @@ func (event SubagentEvent) Refusal() (int, int, bool) {
 	return event.childDepth, event.limit, event.kind == EventSubagentRefused
 }
 
-// SessionEvent is a closed union. Stop and Todo return detached values only
+// SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
 	kind     SessionEventKind
@@ -61,6 +63,22 @@ type SessionEvent struct {
 	compact  CompactionEvent
 	subagent SubagentEvent
 	runError RunErrorEvent
+	approval ApprovalEvent
+}
+
+func (event SessionEvent) Approval() (ApprovalEvent, bool) {
+	switch ApprovalEventKind(event.kind) {
+	case ApprovalRequiredEvent, ApprovalTimeoutEvent, ApprovalGrantUsedEvent, ApprovalGrantRecordedEvent, ApprovalGrantRefusedEvent, ApprovalAutoReviewedEvent:
+		return event.approval.clone(), true
+	}
+	return ApprovalEvent{}, false
+}
+
+type sessionApprovalSink struct{ events *sessionEvents }
+
+func (sink sessionApprovalSink) EmitApproval(_ context.Context, event ApprovalEvent) error {
+	sink.events.append(SessionEvent{kind: SessionEventKind(event.Kind()), approval: event.clone()})
+	return nil
 }
 
 func (event SessionEvent) Kind() SessionEventKind { return event.kind }
@@ -93,6 +111,7 @@ func (event SessionEvent) Todos() ([]protocol.TodoItem, bool) {
 }
 func (event SessionEvent) clone() SessionEvent {
 	event.todos = append([]protocol.TodoItem(nil), event.todos...)
+	event.approval = event.approval.clone()
 	return event
 }
 

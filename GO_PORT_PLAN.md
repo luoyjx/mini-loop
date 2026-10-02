@@ -80,7 +80,7 @@ Record its parity evidence and remaining gaps before checking it off.
 - [x] P1 Python directory split (server smoke, complete Python suite, and
       repository verifiers pass from the documented layout)
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
-      usage, stop/error/subagent events, run provenance and action records implemented;
+      usage, stop/error/subagent/approval events, run provenance, action and approval records implemented;
       other event and state variants remain)
 - [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
       fake-provider slice, scoped child execution, exhaustion markers and cancellation repair implemented;
@@ -88,8 +88,9 @@ Record its parity evidence and remaining gaps before checking it off.
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
-      a bound provider; optional action replay and journal transitions are implemented;
-      durable approvals, SQLite backend and masking remain)
+      a bound provider; optional action replay, journal transitions and bound approval
+      broker/session grants are implemented; SQLite approvals, restore-time expiry
+      and application-wide masking remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -517,3 +518,64 @@ The SQLite driver dependency authorization is pending under AGENTS.md; this
 slice adds no dependencies. Session restoration, leases, shared limiters,
 stuck detection, complete lifecycle events and remaining optional features are
 still required. The full objective and G0-G7 remain open.
+
+## 2026-10-02 approval broker slice
+
+- `ApprovalBroker` and its session/owner/workspace-bound `ApprovalSurface` use
+  named IDs, kinds, statuses, records, reviewer verdicts and a closed approval
+  event union. The optional `RuntimeConfig.Approvals` binds the approver and
+  textual-question surfaces together; conflicting explicit surfaces are rejected.
+  Nil retains the existing unconfigured default. The broker is process-local,
+  and `ApprovalStore` is only a typed write seam; no Go SQLite backend is shipped.
+- Pending calls remain before execution and action-journal begin. Human decisions,
+  denied/time-out/cancelled states and question text remain distinct; an empty
+  answer is still answered. Duplicate/foreign resolutions cannot settle a row.
+  Explicit session/all cancellation writes `cancelled` and wakes waiters; context
+  cancellation removes the pending entry but leaves its stored row pending,
+  matching the source cancellation window. Store errors/panics produce bounded,
+  credential-free diagnostics without changing the human decision.
+- Grants match the command's own token prefix or the concrete tool name. Bash
+  defaults to two Python-whitespace tokens; honest proposals use two to six.
+  Invalid proposals fall back to the default, and the source's 28 banned heads
+  cannot become remembered grants. Remembered grants are session-only, precede
+  the optional reviewer, and die with explicit session cancellation. Reviewer
+  errors/panics/invalid verdicts abstain; readonly and final-deny policy remain
+  ahead of the broker. Fresh children do not inherit a parent broker surface,
+  even when a custom role catalogue admits mutation or question tools.
+- Optional `ApprovalRedactor` masks typed preview inputs before JSON escaping,
+  question text before publication and answers before storage. It is not the
+  application-wide secrets implementation. The 400-character preview and
+  2,000-character question bounds preserve the current source contracts. Six
+  approval event variants share the sequenced 200-event backlog and caller run
+  provenance; HTTP authentication, event streaming and subscriptions remain open.
+- The fourteenth Python contract export captures 38 grant candidate cases and
+  21 actual broker outcomes, including Unicode/escaped-secret previews, empty
+  questions, grant/proposal reuse, cancellation, reviewer abstention and store
+  faults. Differential normalization changes random IDs and wall-clock timestamps,
+  not decisions or stored rows. Timeout tests verify outcomes/event shape rather
+  than scheduler timing. Broader optional-tool/background inputs remain G6 work.
+- Validation: `go test ./...`, `go vet ./...`, `go test -race ./...`, fourteen-file
+  Python export check, all 19 scanning guards and `git diff --check` passed.
+  `.venv/bin/python -m pytest -q`: 2151 passed, 28 skipped, 24 subtests passed;
+  four warnings (three dependency deprecations and a Python subprocess cleanup
+  warning about a closed event loop). Source reference guard selectors `approval`,
+  `auto-reviewer`, `grants-`, `a-lying-prefix`, `banned-heads`, `question-answer`,
+  `answer-secret` and `ask-leaves` caught all 16 unique mutations (18 executions,
+  since two reviewer cases also match `approval`). This is neither a Go mutation
+  suite nor the full 377-guard sweep. No Python package modules changed.
+- README baseline, canonical Mermaid, boundary prose and interactive source were
+  updated together. Archify passed 9/9 showcase checks, zero warnings/errors.
+  Specification SHA-256:
+  `edbe0a91a356b36c47571fb346fdeb7874fc3ebf74ba04a7965b0015340f93b7`
+  (14,650 bytes); generated HTML SHA-256:
+  `f9087b5b92c608b5e3d7adb0876d382647169703cccc7885ac6ceec20bff22b0`
+  (656,082 bytes). Browser visual review remains unavailable after the earlier
+  local-file policy block. Runtime evidence is macOS, not live provider or
+  cross-platform/restart verification.
+
+Next: application-wide secret masking and cache annotation, session/event
+services and HTTP/SSE; SQLite persistence follows the pending driver dependency
+authorization under AGENTS.md. This slice adds no dependencies. Session restore,
+leases, shared concurrency limits, stuck detection, full lifecycle, provider
+recovery and remaining optional features are still required. G0-G7 and the full
+port objective remain open.

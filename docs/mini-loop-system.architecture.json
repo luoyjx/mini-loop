@@ -31,8 +31,8 @@
       {
         "id": "go-path",
         "label": "Go port in progress",
-        "focus": ["goFake", "goSession", "goGate", "goBash", "goFiles", "goResources", "goContext", "goArchives", "goChildren", "goActions"],
-        "note": "Ten typed tools, children, compaction and optional action replay. SQLite persistence, HTTP and the approval broker remain pending."
+        "focus": ["goFake", "goSession", "goGate", "goBash", "goFiles", "goResources", "goContext", "goArchives", "goChildren", "goActions", "goApprovals"],
+        "note": "Ten typed tools, children, compaction, optional action replay and bound approvals. SQLite persistence, restore and HTTP remain pending."
       },
       {
         "id": "personal-skill",
@@ -66,13 +66,14 @@
     { "id": "goContext", "type": "backend", "label": "Go Context Pipeline", "sublabel": "typed requests / skills / token meter", "pos": [850, 1360], "size": [330, 76], "tag": "four compaction layers" },
     { "id": "goActions", "type": "database", "label": "Go Action Journals", "sublabel": "typed states / replay / retention", "pos": [1370, 1360], "size": [280, 76], "tag": "memory + store interface" },
     { "id": "goChildren", "type": "backend", "label": "Go Subagent Sessions", "sublabel": "role subset / fresh history / peer", "pos": [1370, 1540], "size": [330, 76], "tag": "default depth limit: 2" },
+    { "id": "goApprovals", "type": "security", "label": "Go Approval Broker", "sublabel": "grants / questions / optional review", "pos": [1920, 980], "size": [280, 76], "tag": "process-local + store seam" },
     { "id": "goArchives", "type": "database", "label": "Compaction Artifacts", "sublabel": ".task_outputs / .transcripts", "pos": [330, 1540], "size": [330, 76], "tag": "workspace files" }
   ],
   "boundaries": [
     { "kind": "region", "label": "Control plane", "wraps": ["entry", "authority", "manager", "skillDrafts"], "pad": 24 },
     { "kind": "region", "label": "Per-session runtime", "wraps": ["session", "agent", "context", "toolPolicy"], "pad": 28 },
     { "kind": "security-group", "label": "Guarded host effects", "wraps": ["toolPolicy", "toolBackends"], "pad": 20 },
-    { "kind": "region", "label": "Independent Go port - in progress", "wraps": ["goFake", "goSession", "goGate", "goBash", "goFiles", "goResources", "goContext", "goArchives", "goChildren", "goActions"], "pad": 42 }
+    { "kind": "region", "label": "Independent Go port - in progress", "wraps": ["goFake", "goSession", "goGate", "goBash", "goFiles", "goResources", "goContext", "goArchives", "goChildren", "goActions", "goApprovals"], "pad": 42 }
   ],
   "connections": [
     { "id": "request", "from": "clients", "to": "entry", "label": "request", "variant": "emphasis" },
@@ -105,6 +106,9 @@
     { "id": "goChildContext", "from": "goChildren", "to": "goContext", "label": "fresh context", "fromSide": "left", "toSide": "bottom", "via": [[1270, 1578], [1270, 1480], [1015, 1480]], "labelAt": [1150, 1460] },
     { "id": "goChildDispatch", "from": "goChildren", "to": "goGate", "label": "selected tools", "variant": "security", "fromSide": "top", "toSide": "bottom", "via": [[1535, 1500], [1710, 1500], [1710, 1310], [1510, 1310]], "labelAt": [1710, 1390] },
     { "id": "goChildEvents", "from": "goChildren", "to": "goSession", "label": "scoped events", "variant": "dashed", "fromSide": "left", "toSide": "left", "via": [[1300, 1578], [1300, 1090], [790, 1090], [790, 1218]], "labelAt": [1040, 1070] },
+    { "id": "goApprovalAsk", "from": "goGate", "to": "goApprovals", "label": "permission ask", "variant": "dashed", "fromSide": "top", "toSide": "bottom", "via": [[1510, 1110], [2060, 1110]], "labelAt": [1780, 1090] },
+    { "id": "goQuestion", "from": "goResources", "to": "goApprovals", "label": "text question", "variant": "dashed", "fromSide": "right", "toSide": "right", "via": [[2280, 1578], [2280, 1018]], "labelAt": [2310, 1460] },
+    { "id": "goApprovalEvents", "from": "goApprovals", "to": "goSession", "label": "scoped approvals", "variant": "dashed", "fromSide": "left", "toSide": "left", "via": [[1300, 1018], [1300, 1090], [790, 1090], [790, 1218]], "labelAt": [1650, 998] },
     { "id": "goResourceEffect", "from": "goGate", "to": "goResources", "label": "bound session effect", "variant": "security", "labelAt": [1850, 1558] }
   ],
   "cards": [
@@ -112,6 +116,6 @@
     { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Only authenticated HTTP user/final turns enter preview", "Preview cannot publish; commit is a separate caller action", "Agent and user skills retain explicit provenance"] },
     { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] },
     { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] },
-    { "dot": "cyan", "title": "Language layout", "items": ["The main map follows the Python runtime under python/", "Go NewRuntimeSession registers ten implemented tools behind one typed gate", "Scoped child events share a sequenced 200-event process-local backlog", "Skill source digests are rechecked; questions return text or an unanswered variant", "Go requests consume fitted schemas and skills; compaction archives are workspace files", "Go children use capability-selected tools, fresh state and peer provenance", "Optional Go journals replay terminal results; SQLite backend remains pending", "Cache annotation, HTTP, approval broker and provider recovery remain open"] }
+    { "dot": "cyan", "title": "Language layout", "items": ["The main map follows the Python runtime under python/", "Go NewRuntimeSession registers ten implemented tools behind one typed gate", "Scoped child events share a sequenced 200-event process-local backlog", "Skill source digests are rechecked; questions return text or an unanswered variant", "Go requests consume fitted schemas and skills; compaction archives are workspace files", "Go children use capability-selected tools, fresh state and peer provenance", "Optional Go journals replay terminal results; SQLite backend remains pending", "Optional bound approvals preserve grants, text answers, reviewer abstention and typed rows; no SQLite backend yet", "Preview and stored-answer redaction are optional; application-wide masking remains open", "Cache annotation, HTTP, restore and provider recovery remain open"] }
   ]
 }
