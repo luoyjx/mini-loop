@@ -150,6 +150,106 @@ def _file_contracts(scratch: Path) -> dict[str, object]:
     return {"read_char_cap": READ_CHAR_CAP, "output_cap": OUTPUT_CAP, "cases": cases}
 
 
+def _glob_contracts(scratch: Path) -> dict[str, object]:
+    """Capture Python glob enumeration and fnmatch component semantics."""
+    import fnmatch
+    import itertools
+    from mini_loop.tools import Toolset, OUTPUT_CAP
+
+    base_files = [
+        "alpha.txt", "beta.py", ".hidden.txt", "literal[.txt", "bracket].txt",
+        "slash\\name.txt", "中.txt", "a-b.txt", "q!.txt", "line\nbreak.txt",
+        "file", "dir/nested.txt", "dir/deep/data.py", "dir/.secret.txt",
+        "other/note.txt", ".hidden_dir/inside.txt", "brackets[dir]/a.txt",
+    ]
+    base_directories = ["empty", "dir", "dir/deep", ".hidden_dir", "other",
+                        "brackets[dir]"]
+    base_links = [
+        {"path": "alias", "target": "dir"},
+        {"path": "dangling", "target": "missing"},
+        {"path": "out", "target": "$OUTSIDE"},
+    ]
+    cases = []
+
+    def add(name, pattern, *, files=None, directories=None, links=None, series=None):
+        root = scratch / name / "workspace"
+        outside = scratch / name / "outside"
+        toolset = Toolset(root)
+        root = toolset.workspace
+        outside.mkdir(parents=True)
+        outside = outside.resolve()
+        (outside / "outside.txt").write_text("outside")
+        selected_files = base_files if files is None else files
+        selected_directories = base_directories if directories is None else directories
+        selected_links = base_links if links is None else links
+        for directory in selected_directories:
+            (root / directory).mkdir(parents=True, exist_ok=True)
+        expanded_files = list(selected_files)
+        if series is not None:
+            expanded_files.extend(
+                series["directory"] + series["prefix"] + f"_{i:04d}.txt"
+                for i in range(series["count"])
+            )
+        for filename in expanded_files:
+            target = root / filename
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("")
+        for link in selected_links:
+            target = link["target"].replace("$OUTSIDE", str(outside))
+            (root / link["path"]).symlink_to(target)
+        actual_pattern = pattern.replace("$WORKSPACE", str(root)).replace(
+            "$OUTSIDE", str(outside)
+        )
+        output = toolset.run_glob(actual_pattern).replace(
+            str(root), "$WORKSPACE"
+        ).replace(str(outside), "$OUTSIDE")
+        cases.append({
+            "name": name, "pattern": pattern, "files": selected_files,
+            "directories": selected_directories, "links": selected_links,
+            "series": series, "expected_output": output,
+            "expected_error": output.startswith("Error:"),
+        })
+
+    patterns = [
+        "*", "*.txt", ".*", "**", "**/", "**/*.txt", "**/**/data.py",
+        "dir/**", "dir/**/", "file/**", "missing/**", "*/", "*/nested.txt",
+        "dir/?ested.[t][x][t]", "[ab]*.txt", "[!a]*.txt", "literal[[]*.txt",
+        "bracket[]].txt", "slash\\*.txt", "中.?xt", "nonexistent*", "",
+        "./**/*.py", "dir//*.txt", "dir/../*.txt", "$WORKSPACE/*.txt",
+        "$OUTSIDE/*.txt", "out/*", "alias/**/*.txt", "dangling",
+        "[.]hidden.txt", "empty/", "brackets[[]dir]/*.txt", ".", "[z-a]*",
+    ]
+    for i, pattern in enumerate(patterns):
+        add(f"glob_{i:02d}", pattern)
+    add("glob_loop", "loop", files=[], directories=[],
+        links=[{"path": "loop", "target": "loop"}])
+    add("glob_truncated", "*.txt", files=[], directories=[], links=[],
+        series={"directory": "", "prefix": "中" * 80, "count": 800})
+    add("glob_duplicate_budget", "**/**", files=[], directories=["dir/deep"],
+        links=[], series={"directory": "dir/deep/", "prefix": "中" * 80,
+                          "count": 200})
+
+    names = ["", "abc", "aa", "ab", "a-b", "a\n", "文", "界"]
+    names.extend(list("abcaz-![]^\\&|~中é😀\n"))
+    names = sorted(set(names))
+    components = {
+        "", "*", "?", "**", "***", "a*", "*a", "a?", "?a", "[", "[!",
+        "[]", "[]]", "[!]", "[!]]", "[a-z]", "[!a-z]", "[z-a]", "[!z-a]",
+        "[a-b-c]", "[a--b]", "[--a]", "[a-b-c-d]", "[b-a-d-c]", "[a-]",
+        "[-a]", "[!a-]", "[!-a]", "[^a]", "[[a]", "[&|~]", "[\\]",
+        "中*", "[中-文]", "*[ab]*a", "*?*?*", "a**b*c",
+    }
+    for length in range(4):
+        for body in itertools.product("!-az]", repeat=length):
+            components.add("[" + "".join(body) + "]")
+    matching = [
+        {"pattern": pattern, "matches": fnmatch.filter(names, pattern)}
+        for pattern in sorted(components)
+    ]
+    return {"output_cap": OUTPUT_CAP, "cases": cases, "names": names,
+            "component_patterns": matching}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -213,6 +313,7 @@ def _snapshot() -> dict[str, bytes]:
             for reply in fake_replies
         ]
         file_contracts = _file_contracts(Path(scratch) / "files")
+        glob_contracts = _glob_contracts(Path(scratch) / "globs")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -235,6 +336,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-default-tool-metadata.json": _json_bytes(tool_metadata),
         "python-fake-replies.json": _json_bytes(reply_snapshot),
         "python-file-tools.json": _json_bytes(file_contracts),
+        "python-glob-tools.json": _json_bytes(glob_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

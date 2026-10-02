@@ -23,6 +23,7 @@ func (fileWorkflowProvider) Complete(_ context.Context, messages []protocol.Mess
 		protocol.NewToolUse("w", protocol.WriteFileToolInput(protocol.WriteFileInput{Path: "nested/note.txt", Content: "你好\n"})),
 		protocol.NewToolUse("e", protocol.EditFileToolInput(protocol.EditFileInput{Path: "nested/note.txt", OldText: "你好", NewText: "新内容"})),
 		protocol.NewToolUse("r", protocol.ReadFileToolInput(protocol.ReadFileInput{Path: "nested/note.txt"})),
+		protocol.NewToolUse("g", protocol.GlobToolInput(protocol.GlobInput{Pattern: "nested/*.txt"})),
 	}, protocol.StopToolUse), nil
 }
 
@@ -31,7 +32,7 @@ func TestWorkspaceSessionUsesTypedFileHandlers(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	output, err := session.Run(context.Background(), "write edit read")
+	output, err := session.Run(context.Background(), "write edit read glob")
 	if err != nil || output != "done" {
 		t.Fatalf("turn=%q %v", output, err)
 	}
@@ -40,7 +41,7 @@ func TestWorkspaceSessionUsesTypedFileHandlers(t *testing.T) {
 		t.Fatal(err)
 	}
 	results, _ := messages[2].Content.Blocks()
-	want := []string{"Wrote 3 bytes to nested/note.txt", "Edited nested/note.txt", "新内容"}
+	want := []string{"Wrote 3 bytes to nested/note.txt", "Edited nested/note.txt", "新内容", "nested/note.txt"}
 	if len(results) != len(want) {
 		t.Fatalf("results=%+v", results)
 	}
@@ -52,7 +53,7 @@ func TestWorkspaceSessionUsesTypedFileHandlers(t *testing.T) {
 	}
 }
 
-func TestReadonlyWorkspaceSessionDeniesChangesAndAllowsRead(t *testing.T) {
+func TestReadonlyWorkspaceSessionDeniesChangesAndAllowsReadAndGlob(t *testing.T) {
 	root := t.TempDir()
 	if err := os.Mkdir(filepath.Join(root, "nested"), 0o755); err != nil {
 		t.Fatal(err)
@@ -64,10 +65,13 @@ func TestReadonlyWorkspaceSessionDeniesChangesAndAllowsRead(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := session.Run(context.Background(), "write edit read"); err != nil {
+	if _, err := session.Run(context.Background(), "write edit read glob"); err != nil {
 		t.Fatal(err)
 	}
 	results, _ := session.Messages()[2].Content.Blocks()
+	if len(results) != 4 {
+		t.Fatalf("results=%+v", results)
+	}
 	for _, block := range results[:2] {
 		result, _ := block.ToolResult()
 		if !result.IsError || !strings.Contains(result.Content, "read-only") {
@@ -77,6 +81,10 @@ func TestReadonlyWorkspaceSessionDeniesChangesAndAllowsRead(t *testing.T) {
 	read, _ := results[2].ToolResult()
 	if read.IsError || read.Content != "original" {
 		t.Fatalf("read failed: %+v", read)
+	}
+	glob, _ := results[3].ToolResult()
+	if glob.IsError || glob.Content != "nested/note.txt" {
+		t.Fatalf("glob failed: %+v", glob)
 	}
 }
 
@@ -103,11 +111,11 @@ func TestWorkspaceCatalogMatchesPythonMetadata(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := []protocol.ToolName{protocol.ToolBash, protocol.ToolReadFile, protocol.ToolWriteFile, protocol.ToolEditFile}
+	want := []protocol.ToolName{protocol.ToolBash, protocol.ToolReadFile, protocol.ToolWriteFile, protocol.ToolEditFile, protocol.ToolGlob}
 	if !reflect.DeepEqual(catalog.Names(), want) {
 		t.Fatalf("registered names=%v", catalog.Names())
 	}
-	for _, expected := range metadata[:4] {
+	for _, expected := range metadata[:5] {
 		definition, ok := catalog.Lookup(expected.Name)
 		if !ok || definition.Risk() != expected.Risk || definition.Readonly() != expected.Readonly || definition.ParallelSafe() != expected.ParallelSafe || !reflect.DeepEqual(definition.Capabilities(), expected.Capabilities) {
 			t.Fatalf("metadata drift for %s", expected.Name)

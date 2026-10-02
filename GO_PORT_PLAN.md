@@ -84,7 +84,7 @@ Record its parity evidence and remaining gaps before checking it off.
 - [ ] G1 session loop (in-memory fake-provider slice and cancellation repair implemented;
       request construction, bounded events, and parallel batches remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
-      workspace read/write/edit implemented; glob, durable approvals,
+      workspace read/write/edit/glob implemented; durable approvals,
       action journal, masking and remaining handlers remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
@@ -223,3 +223,40 @@ The file-tool slice must preserve these Python contracts before registration:
 
 Next: port glob and the remaining default handlers, then action/approval
 journals, secret masking, and the default HTTP/SSE service.
+
+## 2026-10-02 glob slice
+
+- `workspace.Files.Glob` is a typed backend in `NewWorkspaceSession` and uses
+  the same readonly execution gate. The workspace catalogue now registers five
+  tools; the Bash-only convenience constructor retains its existing scope.
+- The Python 3.11 `glob` and `fnmatch` implementations supply the reference for
+  recursive `**`, hidden entries, malformed bracket patterns, literal backslashes,
+  lexical path spelling and symlink result filtering. A named-token matcher
+  avoids regex backtracking and untyped domain payloads. Native enumeration is
+  budgeted in Unicode characters before deduplication and final sorting,
+  including duplicate matches and the truncation notice.
+- The eighth generated snapshot captures 38 actual Python glob results and
+  182 filename component patterns across 25 names. Session tests cover readonly
+  execution and ordered file-write/edit/read/glob results; workspace tests cover
+  cancellation, unchanged file contents and a 120-level search with the process
+  descriptor limit reduced to 64. That test exposed and now prevents ancestor
+  handles exhausting the descriptor budget. Go caps open directory handles at
+  16 and resumes deep native cursors with bounded reads. Like the Python source,
+  this is not a snapshot of a concurrently changing filesystem.
+- Validation passed: `go test ./...`, `go vet ./...`, `go test -race ./...`,
+  the eight-file Python contract check, 19 scanning guards, 77 Python invariant
+  declarations, 377 Python mutation guards and `git diff --check`. The isolated
+  `.venv/bin/python -m pytest -q` run passed with 2151 tests, 28 skips,
+  24 subtests and three existing dependency deprecation warnings. The Python
+  mutation checks establish the reference's guards; they do not mutate Go.
+  These results are from macOS; the cross-platform audit remains open.
+- README, parity matrix and interactive architecture are synchronized. Archify
+  passed all nine showcase checks, with no errors or warnings. The specification
+  SHA-256 is `36624bf1632b241409e77f83db8ef5b944cd0f8a6d95cb34ea5c878780a1aff1`
+  (10,236 bytes); generated HTML SHA-256 is
+  `f960bc895717e5bb2b3f8364c6620b9b0b4fa90a62ecee6838d034cbd0f3b59f`
+  (637,718 bytes). Browser visual inspection remains unavailable because
+  local-file navigation was blocked by browser policy.
+
+Next: port the remaining default handlers, then action/approval journals,
+secret masking, and the default HTTP/SSE service. G2 remains incomplete.

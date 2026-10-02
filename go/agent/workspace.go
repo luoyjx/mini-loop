@@ -37,12 +37,15 @@ func (handler workspaceFileHandler) ExecuteTool(ctx context.Context, authority T
 	case protocol.ToolEditFile:
 		value, _ := input.EditFile()
 		return handler.files.Edit(ctx, value)
+	case protocol.ToolGlob:
+		value, _ := input.Glob()
+		return handler.files.Glob(ctx, value)
 	default:
 		return "", errors.New("unsupported workspace file handler")
 	}
 }
 
-// NewWorkspaceToolCatalog adds the three implemented file tools to injected
+// NewWorkspaceToolCatalog adds the four implemented file tools to injected
 // Bash. The remaining Python defaults are not registered until ported.
 func NewWorkspaceToolCatalog(executor BashExecutor, files *workspace.Files) (*ToolCatalog, error) {
 	if files == nil {
@@ -53,10 +56,13 @@ func NewWorkspaceToolCatalog(executor BashExecutor, files *workspace.Files) (*To
 		return nil, err
 	}
 	definitions := append([]ToolDefinition(nil), bash.ordered...)
-	for _, name := range []protocol.ToolName{protocol.ToolReadFile, protocol.ToolWriteFile, protocol.ToolEditFile} {
+	for _, name := range []protocol.ToolName{protocol.ToolReadFile, protocol.ToolWriteFile, protocol.ToolEditFile, protocol.ToolGlob} {
 		traits := ToolTraits{Risk: RiskWrite, Capabilities: []Capability{CapabilityWorkspaceWrite}}
 		if name == protocol.ToolReadFile {
 			traits = ToolTraits{Risk: RiskRead, Readonly: true, ParallelSafe: true, Capabilities: []Capability{CapabilityRepoRead}}
+		}
+		if name == protocol.ToolGlob {
+			traits = ToolTraits{Risk: RiskRead, Readonly: true, ParallelSafe: true, Capabilities: []Capability{CapabilityRepoSearch}}
 		}
 		definition, err := NewToolDefinition(name, traits, workspaceFileHandler{files, name})
 		if err != nil {

@@ -25,6 +25,12 @@ const OutputCap = 50_000
 // again at execution; a permission check alone never authorizes a file path.
 type Files struct{ root string }
 
+type PathEscapeError struct{ Path string }
+
+func (err *PathEscapeError) Error() string {
+	return fmt.Sprintf("Path escapes workspace: %s. Paths are relative to the workspace root; an absolute path only works when it points inside the workspace.", err.Path)
+}
+
 func NewFiles(root string) (*Files, error) {
 	if root == "" {
 		return nil, errors.New("workspace root is required")
@@ -111,7 +117,7 @@ func (files *Files) Resolve(path string) (string, error) {
 	}
 	relative, err := filepath.Rel(files.root, resolved)
 	if err != nil || relative == ".." || strings.HasPrefix(relative, ".."+string(filepath.Separator)) {
-		return "", fmt.Errorf("Path escapes workspace: %s. Paths are relative to the workspace root; an absolute path only works when it points inside the workspace.", path)
+		return "", &PathEscapeError{Path: path}
 	}
 	return resolved, nil
 }

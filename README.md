@@ -263,8 +263,9 @@ separate:
 
 Runtime review baseline: `ad71e05` plus the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
-and workspace file effects, reviewed **2026-10-02**. The optional `decision`
-tool evaluates explicit state through a configured provider; its typed result returns through
+and workspace file effects plus bounded glob search, reviewed **2026-10-02**.
+The optional `decision` tool evaluates explicit state through a configured
+provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
 <!-- architecture-map:start -->
@@ -313,7 +314,7 @@ flowchart LR
         GoSession["Go Session<br/>serialized in-memory turns"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Injected BashExecutor"]
-        GoFiles["Workspace Files<br/>read · write · edit<br/>bound path · atomic replacement"]
+        GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
         GoFake <--> GoSession
         GoSession --> GoGate --> GoBash
         GoGate --> GoFiles
@@ -350,11 +351,13 @@ optional or asynchronous.
 The Python default agent skills now resolve from `python/skills/` regardless
 of the current working directory; `MINILOOP_SKILLS_DIR` still overrides it.
 The Go port types all ten Python default tool inputs, but its immutable
-workspace catalogue registers `bash`, `read_file`, `write_file` and `edit_file`
-through `NewWorkspaceSession`; the older `NewSession` convenience constructor
+workspace catalogue registers `bash`, `read_file`, `write_file`, `edit_file`
+and `glob` through `NewWorkspaceSession`; the older `NewSession` convenience constructor
 still registers Bash only. File effects bind one resolved workspace and check
 paths at execution; write permissions use the same resolver. This file boundary
-does not provide OS shell confinement.
+does not provide OS shell confinement. Glob preserves Python filename matching,
+filters resolved results to the workspace and budgets enumeration before sorting
+and deduplication; it supports cancellation and bounds open directory handles.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers; its local
 stop events, in-process approvals and cancellation repair have no durable
