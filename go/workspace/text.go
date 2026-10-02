@@ -3,8 +3,8 @@ package workspace
 import (
 	"bufio"
 	"fmt"
+	"github.com/luoyjx/mini-loop/go/internal/pytext"
 	"io"
-	"unicode/utf8"
 )
 
 type utf8Issue string
@@ -16,47 +16,10 @@ const (
 	unexpectedEnd       utf8Issue = "unexpected end of data"
 )
 
-// decodeRune implements maximal-subpart replacement, including one replacement
-// for a truncated multibyte prefix. Go's ReadRune replaces each byte instead.
+// Decode through the shared Python UTF-8 replacement contract.
 func decodeRune(data []byte) (rune, int, utf8Issue) {
-	first := data[0]
-	if first < utf8.RuneSelf {
-		return rune(first), 1, validUTF8
-	}
-	length := 0
-	switch {
-	case first >= 0xc2 && first <= 0xdf:
-		length = 2
-	case first >= 0xe0 && first <= 0xef:
-		length = 3
-	case first >= 0xf0 && first <= 0xf4:
-		length = 4
-	default:
-		return utf8.RuneError, 1, invalidStart
-	}
-	for i := 1; i < length; i++ {
-		if i >= len(data) {
-			return utf8.RuneError, i, unexpectedEnd
-		}
-		low, high := byte(0x80), byte(0xbf)
-		if i == 1 {
-			switch first {
-			case 0xe0:
-				low = 0xa0
-			case 0xed:
-				high = 0x9f
-			case 0xf0:
-				low = 0x90
-			case 0xf4:
-				high = 0x8f
-			}
-		}
-		if data[i] < low || data[i] > high {
-			return utf8.RuneError, i, invalidContinuation
-		}
-	}
-	r, size := utf8.DecodeRune(data[:length])
-	return r, size, validUTF8
+	r, size, issue := pytext.DecodeRune(data)
+	return r, size, utf8Issue(issue)
 }
 
 type textReader struct{ reader *bufio.Reader }

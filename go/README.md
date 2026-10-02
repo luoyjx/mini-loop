@@ -9,7 +9,7 @@ unsupported tool names and extra fields at the JSON boundary instead of
 admitting an untyped payload into the runtime. The `agent` package adds an
 injected, in-memory fake-model turn loop. Every tool call now passes through a
 typed gate with an immutable executable catalogue, ordered hooks and permission
-modes. `NewSession` registers injected Bash only. `NewWorkspaceSession` binds a
+modes. `NewSession` registers Bash only and derives a real executor's bound workspace. `NewWorkspaceSession` binds a
 workspace and registers Bash, `read_file`, `write_file`, `edit_file` and `glob` through
 the same gate. `NewRuntimeSession(RuntimeConfig)` adds `TodoWrite`, `load_skill`
 and `ask_user`, plus deferred `compress` and bound `task`: all ten default tools
@@ -54,11 +54,11 @@ passes the write-risk gate and runs after the entire batch has results. Failures
 empty summaries and cancellation preserve paired history. Archive/spill paths
 use the workspace resolver and atomic replacement. Automatic compaction can
 write artifacts under readonly tool mode, like Python's ordinary agent;
-read-only workers must inject `InMemoryCompactor`. The Bash-only constructor,
-which has no workspace, uses that in-memory strategy by default.
+read-only workers must inject `InMemoryCompactor`. The Bash-only constructor uses that in-memory strategy for an unbound injected
+executor; a real bound executor selects workspace compaction.
 The context snapshot compares six catalogues, three wire/token cases, four
 cheap-compaction histories, six meter steps, spill output and summary artifacts
-against Python. Cache annotations, masking, team/plan/memory prompt sections,
+against Python. Cache annotations, future sink masking, team/plan/memory prompt sections,
 and provider recovery remain pending. Compaction files persist, but cannot
 restore a Go session on their own.
 `task` passes the execution-risk gate and uses an explicit `SubagentProvider`.
@@ -105,10 +105,39 @@ claim or exactly-once side-effect guarantee is supplied by these journals.
 The thirteenth Python snapshot compares twelve input/hash/identity cases, memory
 and SQLite transitions, Unicode bounds and ten real replay/reconciliation paths.
 The Go stored-adapter tests use a typed test backing; they do not prove SQLite
-persistence. Approvals remain an in-process callback. Durable broker, secret
-masking, HTTP server and session persistence remain pending. Python
+persistence. The optional bound approval broker now supplies parked requests,
+timeout/cancellation, process-local session grants, reviewer abstention and typed
+approval rows; an injected store is still required for durable writes. Registry
+masking binds implemented results, recordings, approvals and compaction files.
+SQLite adapters, HTTP, provider transport and session persistence remain pending.
+Python
 contract snapshots and fake reply fixtures are generated into `testdata/` by
 `../python/tools/export_go_contracts.py`.
+
+
+`go/shell.Executor` supplies real foreground host execution on macOS/Linux:
+`/bin/sh -c`, an immutable resolved workspace, new process groups, one default
+120-second process/pipe deadline, aggregate bounded capture and typed `Result`.
+Python's capture bound counts decoded characters despite its "bytes" notice;
+Go preserves that behavior, UTF-8 replacement, universal newlines, channel
+separation and tail-preserving rendering. Nonzero exits and timeout/error status
+reach the gate, journal and observer as failures, with detached command metadata.
+Replays have stored text and no fresh process metadata. Cancellation/overflow
+kill the process group; pipe cleanup is bounded to five further seconds. A
+child deliberately detaching into a new session is outside the group.
+
+Create an executor with `shell.New(shell.Config{Workspace: root})` and pass it
+as `RuntimeConfig.Bash`. `RuntimeConfig.Secrets` binds an independent credential
+configuration to a real executor before it captures/projects output, with the
+shared explicit interrupt tracker preserved. Registered ambient names are
+scrubbed; only command-mentioned names are injected. Full-stream masks precede
+truncation and protect split-stream credentials. The legacy string executor
+interface stays supported. The typed `Sandbox` argv seam rebinds to the workspace;
+no Go Seatbelt backend ships and cwd is not confinement. Runtime process tests
+ran on macOS. Linux code has no Linux-host execution evidence; other platforms
+reject construction. The sixteenth Python snapshot covers eight actual commands,
+seven rendering recipes and six typo-blocklist decisions. Complete tool events,
+provider/cache work and additional sink masking remain pending.
 
 ```sh
 cd go

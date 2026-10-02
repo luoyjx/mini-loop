@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/workspace"
 )
@@ -191,6 +192,18 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	files, err := workspace.NewFiles(config.Workspace)
 	if err != nil {
 		return nil, err
+	}
+	// Bind credential scope to an independent real executor before any command
+	// can project/truncate output. Shared caller executors remain unchanged.
+	if executor, ok := config.Bash.(*shell.Executor); ok && config.Secrets != nil {
+		if source, ok := config.Secrets.(shell.SecretSource); ok {
+			config.Bash, err = executor.WithSecrets(source)
+		} else {
+			config.Bash, err = executor.WithMasker(config.Secrets)
+		}
+		if err != nil {
+			return nil, err
+		}
 	}
 	base, err := NewWorkspaceToolCatalog(config.Bash, files)
 	if err != nil {

@@ -1,0 +1,279 @@
+{
+  "commands": [
+    {
+      "cap": 0,
+      "command": "printf 'out\\n'; printf 'err\\n' >&2",
+      "name": "streams",
+      "rendered": "out\nerr",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "out\nerr\n",
+        "stderr": "err\n",
+        "stdout": "out\n",
+        "timed_out": false
+      }
+    },
+    {
+      "cap": 0,
+      "command": "printf 'diagnostic' >&2; exit 7",
+      "name": "nonzero",
+      "rendered": "diagnostic\n(exit 7)",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 7,
+        "overflowed": false,
+        "projection": "diagnostic",
+        "stderr": "diagnostic",
+        "stdout": "",
+        "timed_out": false
+      }
+    },
+    {
+      "cap": 0,
+      "command": "exit 3",
+      "name": "quiet_nonzero",
+      "rendered": "(exit 3)",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 3,
+        "overflowed": false,
+        "projection": "",
+        "stderr": "",
+        "stdout": "",
+        "timed_out": false
+      }
+    },
+    {
+      "cap": 0,
+      "command": "true",
+      "name": "quiet_success",
+      "rendered": "(no output)",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "",
+        "stderr": "",
+        "stdout": "",
+        "timed_out": false
+      }
+    },
+    {
+      "cap": 0,
+      "command": "printf 'a\\r\\nb\\rc\\n'",
+      "name": "newlines",
+      "rendered": "a\nb\nc",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "a\nb\nc\n",
+        "stderr": "",
+        "stdout": "a\nb\nc\n",
+        "timed_out": false
+      }
+    },
+    {
+      "cap": 0,
+      "command": "printf '\\341\\200A\\377\\342\\202'",
+      "name": "invalid_utf8",
+      "rendered": "�A��",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "�A��",
+        "stderr": "",
+        "stdout": "�A��",
+        "timed_out": false
+      }
+    },
+    {
+      "cap": 4,
+      "command": "printf '你好🙂é'",
+      "name": "unicode_at_cap",
+      "rendered": "你好🙂é",
+      "result": {
+        "capture_limit": 4,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "你好🙂é",
+        "stderr": "",
+        "stdout": "你好🙂é",
+        "timed_out": false
+      }
+    },
+    {
+      "cap": 0,
+      "command": "pwd",
+      "name": "cwd",
+      "rendered": "<workspace>",
+      "result": {
+        "capture_limit": 5000000,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "<workspace>\n",
+        "stderr": "",
+        "stdout": "<workspace>\n",
+        "timed_out": false
+      }
+    }
+  ],
+  "dangerous": [
+    {
+      "blocked": true,
+      "command": "sudo echo x"
+    },
+    {
+      "blocked": true,
+      "command": "rm  -rf  /"
+    },
+    {
+      "blocked": false,
+      "command": "SUDO echo x"
+    },
+    {
+      "blocked": false,
+      "command": "r' 'm -rf /"
+    },
+    {
+      "blocked": true,
+      "command": "echo shutdown"
+    },
+    {
+      "blocked": false,
+      "command": "printf safe"
+    }
+  ],
+  "rendering": [
+    {
+      "name": "timeout_partial",
+      "render_chars": 30,
+      "render_sha256": "2dfa67f0cd31116f77ca7da7d2f7fe616d8604fdcd2e76e20747a632659b3870",
+      "result": {
+        "capture_limit": 4,
+        "error": "Error: Timeout (1s)",
+        "exit_code": -9,
+        "overflowed": false,
+        "projection": null,
+        "stderr": "",
+        "stdout": "diagnostic",
+        "timed_out": true
+      },
+      "stdout_repeat": 0,
+      "stdout_suffix": ""
+    },
+    {
+      "name": "overflow",
+      "render_chars": 73,
+      "render_sha256": "89a4ebff2a0dc55aed23568a72c758c7de214a0140a1e907d5d0c6a5f4972e17",
+      "result": {
+        "capture_limit": 4,
+        "error": null,
+        "exit_code": -9,
+        "overflowed": true,
+        "projection": null,
+        "stderr": "",
+        "stdout": "abcd",
+        "timed_out": false
+      },
+      "stdout_repeat": 0,
+      "stdout_suffix": ""
+    },
+    {
+      "name": "empty_overflow",
+      "render_chars": 11,
+      "render_sha256": "efefc15c24ee8645a3f5f6958389db729c1577eb6b32aeac4caab2a86d90daa3",
+      "result": {
+        "capture_limit": 4,
+        "error": null,
+        "exit_code": -9,
+        "overflowed": true,
+        "projection": null,
+        "stderr": "",
+        "stdout": "",
+        "timed_out": false
+      },
+      "stdout_repeat": 0,
+      "stdout_suffix": ""
+    },
+    {
+      "name": "error_without_exit",
+      "render_chars": 32,
+      "render_sha256": "e336af3bd1e7c67744f28cd6d9a4b1a8d801a84f7ceeb8b629052a745b00a0ea",
+      "result": {
+        "capture_limit": 4,
+        "error": "Error: Dangerous command blocked",
+        "exit_code": null,
+        "overflowed": false,
+        "projection": null,
+        "stderr": "",
+        "stdout": "",
+        "timed_out": false
+      },
+      "stdout_repeat": 0,
+      "stdout_suffix": ""
+    },
+    {
+      "name": "projection_authority",
+      "render_chars": 4,
+      "render_sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860",
+      "result": {
+        "capture_limit": 4,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": "safe",
+        "stderr": "unsafe",
+        "stdout": "unsafe",
+        "timed_out": false
+      },
+      "stdout_repeat": 0,
+      "stdout_suffix": ""
+    },
+    {
+      "name": "tail_cap",
+      "render_chars": 49989,
+      "render_sha256": "b40bded1a8655980187d2fc08755dad035f123de020d8b11be49578873bdf2a3",
+      "result": {
+        "capture_limit": 4,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": null,
+        "stderr": "",
+        "stdout": "α",
+        "timed_out": false
+      },
+      "stdout_repeat": 70000,
+      "stdout_suffix": "TAIL"
+    },
+    {
+      "name": "python_strip",
+      "render_chars": 5,
+      "render_sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "result": {
+        "capture_limit": 4,
+        "error": null,
+        "exit_code": 0,
+        "overflowed": false,
+        "projection": null,
+        "stderr": "",
+        "stdout": "\u001c hello \u001f",
+        "timed_out": false
+      },
+      "stdout_repeat": 0,
+      "stdout_suffix": ""
+    }
+  ]
+}

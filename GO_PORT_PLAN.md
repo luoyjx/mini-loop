@@ -89,9 +89,9 @@ Record its parity evidence and remaining gaps before checking it off.
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
       a bound provider; optional action replay, journal transitions and bound approval
-      broker/session grants and optional registry masking are implemented;
+      broker/session grants, optional registry masking and real shell execution are implemented;
       SQLite approvals, restore-time expiry
-      and the real process executor/remaining sink masking remain)
+      and remaining sink masking remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -652,3 +652,81 @@ dependency authorization is pending under AGENTS.md; this slice adds no
 dependencies. Restoration, leases, concurrency limits, stuck detection, complete
 lifecycle, real provider/recovery and optional features remain open. The full
 port objective and G0-G7 remain active.
+
+## 2026-10-03 foreground shell slice
+
+- `go/shell.Executor` is a real `/bin/sh -c` backend with a resolved immutable
+  workspace, default timeout of 120 seconds, optional typed Sandbox argv
+  rebinding and credential source. The original `BashExecutor` string seam
+  remains supported. The real executor additionally returns a concrete `Result`:
+  separate stdout/stderr, optional exit/error/projection, timeout/overflow flags,
+  monotonic duration and capture limit. Rendering preserves quiet/nonzero exits,
+  independent timeout diagnostics, Python whitespace and head/tail truncation.
+- Processes start in a new session on macOS/Linux. One deadline covers both
+  process completion and pipe EOF; a shell exiting first does not lose its group
+  identifier. Cancellation, overflow and explicit `Interrupt` kill the whole
+  group with SIGKILL. The wait goroutine owns reaping; read ends close after a
+  bounded five-second cleanup if a detached descendant retains them. Such a
+  descendant has left the group and is not killed by this executor. Other
+  platforms reject construction; no Windows parity claim is made.
+- Both pipes consume one aggregate capture budget. Python's source calls it a
+  byte bound but counts decoded characters; Go preserves the 5,000,000-character
+  bound and notice, with fixed-size buffered UTF-8/newline decoding. The existing
+  workspace decoder now shares its maximal-subpart UTF-8 decoder with the shell.
+  Output allocation remains bounded by this budget, not by the producer's total
+  output. Exact-fit capture does not report overflow.
+- Registered ambient names are removed before selected command names are added
+  back. Full streams are masked before rendering and truncation; credentials
+  split across stdout/stderr use the safe combined projection. Runtime Secrets
+  config binds a credential-scoped executor copy without changing other sessions;
+  copies retain one explicit process interrupt tracker. Mask-only redactors can
+  override full-stream projection without introducing environment credentials.
+  The direct-caller typo guard is preserved, case-sensitive and explicitly not
+  a confinement boundary. Default execution is on the host; Go Seatbelt remains
+  unimplemented.
+- The common gate detects structured Bash results, records failed status from
+  exit/error/timeout, and supplies detached typed metadata to observers after
+  journal settlement. Replay has stored text and no fresh process metadata,
+  preserving the existing source failure/replay semantics. Binding to a foreign
+  workspace is refused before execution. Full tool lifecycle events are still
+  pending. Bash-only sessions derive a real executor's explicit workspace;
+  arbitrary injected string executors keep their existing unbound behavior.
+- The sixteenth Python export adds eight actual foreground command cases, seven
+  explicit rendering recipes and six blocklist decisions. Real Go tests cover
+  aggregate overflow and exact-fit Unicode, invalid UTF-8/universal newlines,
+  named environment selection, whole-stream/split-stream masks, process and pipe
+  deadlines, exited parents, SIGTERM-ignoring groups, cancellation, interruption,
+  concurrent capture isolation, detached pipe cleanup, Sandbox rebinding/start
+  errors, readonly/foreign binding, replay settlement and runtime cancellation
+  transcript repair. Evidence is local macOS with fake/offline providers.
+
+- Validation: final `go test ./...`, `go vet ./...` and `go test -race ./...`
+  passed. Sixteen-file Python export check, Unicode 14.0.0 table check, all
+  19 scanning guards and `git diff --check` passed. Final standalone full
+  Python run: 2151 passed, 28 skipped, 24 subtests passed, three dependency
+  deprecation warnings. The earlier concurrent run failed only the offline
+  40-turn timing threshold (0.62 seconds versus 0.5); an isolated targeted run
+  and the complete isolated rerun passed, without runtime/test changes.
+  Scoped source reference selectors `bash-reads-all-output-into-memory`,
+  `timeout-hides-the-diagnostic-output`, `cancelled-turn-abandons-the-shell`,
+  `interrupt-spares-the-commands-children` and
+  `finished-shells-linger-in-the-live-set` caught all five mutations. This is
+  not a Go mutation suite or the full 377-guard sweep. No Python package
+  modules changed, so the package invariant verifier was not required.
+- README baseline, canonical Mermaid, boundary prose and interactive source
+  were updated together. Archify passed 9/9 showcase checks, no warnings/errors.
+  Specification SHA-256:
+  `888204f0cba31f2e67fd701705362315dab0d3c59d5f4871b63c8d4684eddce2`
+  (15,316 bytes); generated HTML SHA-256:
+  `755eaf6f720169697b1ad2d262c3edbc24a8e1f071c8695a1fdb4a6d28d86d08`
+  (658,598 bytes). Browser visual review remains unavailable after the earlier
+  local-file policy block. Runtime process evidence remains local macOS.
+
+
+Next: cache annotation, stuck detection, complete session lifecycle/services
+and HTTP/SSE; real provider/recovery and durable session storage follow. SQLite
+requires an external Go driver; the dependency authorization question remains
+pending under AGENTS.md. No dependencies were added in this slice. Remaining
+provider/HTTP/SQLite/trajectory/optional-feature sinks require explicit masking.
+Restoration, leases, shared concurrency limits and optional features remain
+open; the full G0-G7 goal remains active.

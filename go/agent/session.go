@@ -75,7 +75,11 @@ func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExe
 	if err != nil {
 		return nil, err
 	}
-	return NewSessionWithGate(id, owner, provider, gate, ModeInteractive, "", maxRounds)
+	root := ""
+	if bound, ok := executor.(interface{ Workspace() string }); ok {
+		root = bound.Workspace()
+	}
+	return NewSessionWithGate(id, owner, provider, gate, ModeInteractive, root, maxRounds)
 }
 
 func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *ToolGate, mode PermissionMode, workspace string, maxRounds int) (*Session, error) {

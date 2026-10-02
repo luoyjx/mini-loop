@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/shell"
 )
 
 type BeforeDecisionKind string
@@ -56,6 +57,16 @@ type ToolOutcome struct {
 	ActionID       ActionID
 	Replayed       bool
 	reconciliation *ActionReconciliation
+	commandResult  *shell.Metadata
+}
+
+// CommandResult is present only for a newly executed structured Bash call.
+// Replays have the stored text but no freshly observed process metadata.
+func (outcome ToolOutcome) CommandResult() (shell.Metadata, bool) {
+	if outcome.commandResult == nil {
+		return shell.Metadata{}, false
+	}
+	return outcome.commandResult.Clone(), true
 }
 
 func (outcome ToolOutcome) Reconciliation() (ActionReconciliation, bool) {
@@ -303,7 +314,22 @@ func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, cal
 		if err := ctx.Err(); err != nil {
 			return ToolOutcome{}, err
 		}
-		output, executeErr := definition.handler.ExecuteTool(ctx, authority, call.Input)
+		var output string
+		var executeErr error
+		if handler, ok := definition.handler.(detailedToolHandler); ok {
+			var command *shell.Result
+			output, command, executeErr = handler.executeDetailedTool(ctx, authority, call.Input)
+			if command != nil {
+				metadata := command.Metadata()
+				outcome.commandResult = &metadata
+				outcome.Failed = command.Failed()
+			}
+		} else {
+			output, executeErr = definition.handler.ExecuteTool(ctx, authority, call.Input)
+		}
+		if ctx.Err() != nil {
+			return ToolOutcome{}, ctx.Err()
+		}
 		if executeErr != nil {
 			if ctx.Err() != nil {
 				return ToolOutcome{}, ctx.Err()

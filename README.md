@@ -268,7 +268,8 @@ model requests, token metering, four-layer context compaction and typed subagent
 execution with run provenance, action replay and typed journal transitions,
 a bound approval broker with session grants and textual questions, and optional
 registered-secret masking across the implemented Go result/recording paths,
-reviewed **2026-10-02** (Go baseline `2d22c13` plus the secrets slice).
+and a real foreground workspace shell with typed results, group cancellation
+and bounded capture, reviewed **2026-10-03** (Go baseline `033336e` plus the shell slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -323,7 +324,7 @@ flowchart LR
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
-        GoBash["Injected BashExecutor"]
+        GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>depth limit 2 · round budget 30"]
@@ -337,7 +338,7 @@ flowchart LR
         GoGate -. permission ask .-> GoApprovals
         GoResources -. textual question .-> GoApprovals
         GoApprovals -. scoped approval events .-> GoSession
-        GoSecrets -. bind gate / context / recording .-> GoSession
+        GoSecrets -. bind gate / context / recording / shell .-> GoSession
         GoResources -->|task / depth gate| GoChildren
         GoChildren --> GoContext
         GoChildren -->|selected tools| GoGate
@@ -397,8 +398,8 @@ tool-result previews and full transcript archives inside the bound workspace
 before generating a summary. Empty or failed summaries preserve the transcript.
 `NewRuntimeSession` also registers `compress`; it crosses
 the write-risk gate and defers the summary until the whole tool batch is paired.
-The Bash-only constructor has no bound workspace and uses the in-memory
-snip/micro strategy. Internal automatic compaction can write workspace artifacts
+The Bash-only constructor uses in-memory snip/micro for an unbound injected
+executor; a real workspace-bound executor selects the workspace compactor. Internal automatic compaction can write workspace artifacts
 even with a readonly tool mode, matching the Python ordinary-agent path; a
 read-only worker must explicitly select `InMemoryCompactor`. Provider cache
 annotation and user-resource prompt sections remain pending. Optional
@@ -414,8 +415,25 @@ strings and keys before final escaping, with bounded size/depth and last-value
 key collision semantics. Default compaction masks spill files, archives and
 summaries; fresh children retain the same registry. Typed environment APIs
 scrub registered names and select only names mentioned by the command. The
-injected Bash interface does not yet consume that environment automatically;
-the shipped process executor and direct-shell protection remain pending.
+real `go/shell.Executor` consumes this environment before spawning `/bin/sh` in
+its bound workspace. `RuntimeConfig.Secrets` creates a credential-scoped executor
+copy; copies retain the shared explicit interrupt tracker. Full captured streams
+are masked before rendering/truncation, including credentials split across pipes.
+The shared capture budget is 5,000,000 decoded characters, preserving Python's
+existing "bytes" notice; stdout and stderr retain their own channels otherwise.
+A 120-second default deadline covers process exit and pipe EOF. Cancellation,
+timeout and overflow kill the new process group; cleanup closes pipe readers
+after a further bounded five seconds if a detached child still holds them.
+A descendant that deliberately starts a new session is outside that group and
+is not reclaimed by group cancellation. The gate preserves structured failure
+and detached exit/timeout/overflow/duration metadata for observers; replays
+retain stored text without inventing fresh process metadata. Legacy injected
+string executors remain supported. Host execution is the default: workspace
+cwd and the typo blocklist do not provide shell confinement. A typed rebinding
+Sandbox argv seam is implemented, but no Go Seatbelt backend ships yet.
+Runtime process tests ran on macOS; Linux process-group code has not been run
+on a Linux host, and other platforms reject executor construction. Future sink
+masking and complete tool lifecycle events remain pending.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
 process-local. `RuntimeConfig.ActionJournal` optionally binds a replay journal:

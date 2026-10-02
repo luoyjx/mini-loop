@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/shell"
 )
 
 type ToolRisk string
@@ -221,12 +222,33 @@ func (catalog *ToolCatalog) Lookup(name protocol.ToolName) (ToolDefinition, bool
 
 type bashHandler struct{ executor BashExecutor }
 
-func (handler bashHandler) ExecuteTool(ctx context.Context, _ ToolAuthority, input protocol.ToolInput) (string, error) {
+// BashResultExecutor is an optional extension of the original string seam.
+// The built-in shell.Executor supplies masked streams and typed status metadata.
+type BashResultExecutor interface {
+	ExecuteBashResult(context.Context, protocol.BashInput) (shell.Result, error)
+}
+type detailedToolHandler interface {
+	executeDetailedTool(context.Context, ToolAuthority, protocol.ToolInput) (string, *shell.Result, error)
+}
+
+func (handler bashHandler) ExecuteTool(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, error) {
+	output, _, err := handler.executeDetailedTool(ctx, authority, input)
+	return output, err
+}
+func (handler bashHandler) executeDetailedTool(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, *shell.Result, error) {
 	bash, ok := input.Bash()
 	if !ok {
-		return "", errors.New("bash handler received a non-bash input")
+		return "", nil, errors.New("bash handler received a non-bash input")
 	}
-	return handler.executor.ExecuteBash(ctx, bash)
+	if bound, ok := handler.executor.(interface{ Workspace() string }); ok && bound.Workspace() != authority.Workspace {
+		return "", nil, errors.New("bash executor is bound to a different workspace")
+	}
+	if executor, ok := handler.executor.(BashResultExecutor); ok {
+		result, err := executor.ExecuteBashResult(ctx, bash)
+		return result.Render(), &result, err
+	}
+	output, err := handler.executor.ExecuteBash(ctx, bash)
+	return output, nil, err
 }
 
 func NewBashToolCatalog(executor BashExecutor) (*ToolCatalog, error) {

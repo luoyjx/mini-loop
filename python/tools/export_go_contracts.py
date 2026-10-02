@@ -959,6 +959,60 @@ def _secret_contracts() -> dict[str, object]:
                         'retried': retried, 'calls': len(tries), 'remaining': failure.unresolved()},
             'casing': [{'text': text, 'lower': text.lower(), 'upper': text.upper()} for text in texts]}
 
+def _command_contracts(scratch: Path) -> dict[str, object]:
+    """Real host shell results and explicit CommandResult rendering recipes."""
+    import hashlib
+    from dataclasses import asdict
+    from unittest.mock import patch
+    from mini_loop import tools as source
+    scratch.mkdir(parents=True)
+    cases = []
+    recipes = [
+        ("streams", "printf 'out\\n'; printf 'err\\n' >&2", 0),
+        ("nonzero", "printf 'diagnostic' >&2; exit 7", 0),
+        ("quiet_nonzero", "exit 3", 0),
+        ("quiet_success", "true", 0),
+        ("newlines", "printf 'a\\r\\nb\\rc\\n'", 0),
+        ("invalid_utf8", "printf '\\341\\200A\\377\\342\\202'", 0),
+        ("unicode_at_cap", "printf '你好🙂é'", 4),
+        ("cwd", "pwd", 0),
+    ]
+    for name, command, cap in recipes:
+        with patch.object(source, "MAX_BASH_CAPTURE", cap or 5_000_000):
+            result = source.Toolset(scratch).run_bash_result(command)
+        fields = asdict(result)
+        fields.pop("duration_ms")
+        rendered = result.render()
+        if name == "cwd":
+            fields["stdout"] = fields["stdout"].replace(str(scratch.resolve()), "<workspace>")
+            fields["projection"] = fields["projection"].replace(str(scratch.resolve()), "<workspace>")
+            rendered = "<workspace>"
+        cases.append({"name": name, "command": command, "cap": cap, "result": fields, "rendered": rendered})
+
+    rendering = []
+    for name, stdout, stderr, exit_code, timed_out, overflowed, error, projection in [
+        ("timeout_partial", "diagnostic", "", -9, True, False, "Error: Timeout (1s)", None),
+        ("overflow", "abcd", "", -9, False, True, None, None),
+        ("empty_overflow", "", "", -9, False, True, None, None),
+        ("error_without_exit", "", "", None, False, False, "Error: Dangerous command blocked", None),
+        ("projection_authority", "unsafe", "unsafe", 0, False, False, None, "safe"),
+        ("tail_cap", "α" * 70_000 + "TAIL", "", 0, False, False, None, None),
+        ("python_strip", "\x1c hello \x1f", "", 0, False, False, None, None),
+    ]:
+        result = source.CommandResult(stdout, stderr, exit_code, timed_out, overflowed, 0, error, projection, 4)
+        rendered = result.render()
+        fields = asdict(result)
+        fields.pop("duration_ms")
+        if name == "tail_cap":
+            fields["stdout"] = "α"
+        rendering.append({"name": name, "result": fields, "stdout_repeat": 70_000 if name == "tail_cap" else 0,
+                          "stdout_suffix": "TAIL" if name == "tail_cap" else "",
+                          "render_sha256": hashlib.sha256(rendered.encode()).hexdigest(), "render_chars": len(rendered)})
+    return {"commands": cases, "rendering": rendering,
+            "dangerous": [{"command": command, "blocked": source.looks_dangerous(command)} for command in
+                          ["sudo echo x", "rm  -rf  /", "SUDO echo x", "r' 'm -rf /", "echo shutdown", "printf safe"]]}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -1030,6 +1084,7 @@ def _snapshot() -> dict[str, bytes]:
         action_contracts = _action_contracts(Path(scratch) / "actions")
         approval_contracts = _approval_contracts()
         secret_contracts = _secret_contracts()
+        command_contracts = _command_contracts(Path(scratch) / "commands")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1060,6 +1115,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-actions.json": _json_bytes(action_contracts),
         "python-approvals.json": _json_bytes(approval_contracts),
         "python-secrets.json": _json_bytes(secret_contracts),
+        "python-commands.json": _json_bytes(command_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }
