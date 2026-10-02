@@ -94,11 +94,8 @@ func TestFakeProviderTruncatesByCharacters(t *testing.T) {
 
 type readFileProvider struct{}
 
-func (readFileProvider) Complete(context.Context, []protocol.Message) (ModelReply, error) {
-	return ModelReply{
-		Content:    []protocol.Block{protocol.NewToolUse("u1", protocol.ReadFileToolInput(protocol.ReadFileInput{Path: "a.txt"}))},
-		StopReason: StopToolUse,
-	}, nil
+func (readFileProvider) Complete(context.Context, []protocol.Message) (protocol.ModelReply, error) {
+	return fakeReply([]protocol.Block{protocol.NewToolUse("u1", protocol.ReadFileToolInput(protocol.ReadFileInput{Path: "a.txt"}))}, protocol.StopToolUse), nil
 }
 
 type countedBashExecutor struct{ calls int }

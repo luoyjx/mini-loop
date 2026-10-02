@@ -14,21 +14,14 @@ import (
 type SessionID string
 type OwnerID string
 
-type StopReason string
+type Provider interface {
+	Complete(context.Context, []protocol.Message) (protocol.ModelReply, error)
+}
 
 const (
-	StopEndTurn StopReason = "end_turn"
-	StopToolUse StopReason = "tool_use"
+	maxResumptions = 8
+	refusalNotice  = "[the model declined to answer this request and returned no content]"
 )
-
-type ModelReply struct {
-	Content    []protocol.Block
-	StopReason StopReason
-}
-
-type Provider interface {
-	Complete(context.Context, []protocol.Message) (ModelReply, error)
-}
 
 // BashExecutor is deliberately narrow. Future tools must have their own typed
 // request and result path through the common execution gate.
@@ -37,13 +30,14 @@ type BashExecutor interface {
 }
 
 type Session struct {
-	id        SessionID
-	owner     OwnerID
-	provider  Provider
-	executor  BashExecutor
-	maxRounds int
-	mu        sync.Mutex
-	messages  []protocol.Message
+	id         SessionID
+	owner      OwnerID
+	provider   Provider
+	executor   BashExecutor
+	maxRounds  int
+	mu         sync.Mutex
+	messages   []protocol.Message
+	stopEvents []ProviderStopEvent
 }
 
 func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExecutor, maxRounds int) (*Session, error) {
@@ -65,6 +59,12 @@ func (s *Session) Messages() []protocol.Message {
 	return append([]protocol.Message(nil), s.messages...)
 }
 
+func (s *Session) StopEvents() []ProviderStopEvent {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return append([]ProviderStopEvent(nil), s.stopEvents...)
+}
+
 // Run serializes turns within this session. Different sessions do not share a
 // lock and can make model progress concurrently.
 func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
@@ -76,6 +76,7 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 	}
 	s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(prompt)})
 	var lastText string
+	resumptions := 0
 	for round := 0; round < s.maxRounds; round++ {
 		if err := protocol.ValidateTranscript(s.messages); err != nil {
 			return "", fmt.Errorf("transcript before model call: %w", err)
@@ -84,14 +85,18 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		if reply.StopReason != StopEndTurn && reply.StopReason != StopToolUse {
-			return "", fmt.Errorf("unsupported stop reason %q", reply.StopReason)
+		if err := reply.Validate(); err != nil {
+			return "", fmt.Errorf("model reply: %w", err)
 		}
-		content := protocol.BlockContent(reply.Content...)
-		if err := content.Validate(); err != nil {
-			return "", fmt.Errorf("model content: %w", err)
+		var content protocol.Content
+		if len(reply.Content) == 0 {
+			// The request transcript forbids an empty block array. An empty
+			// final response is represented by an empty string in this slice.
+			content = protocol.PlainContent("")
+		} else {
+			content = protocol.BlockContent(reply.Content...)
 		}
-		blocks, _ := content.Blocks()
+		blocks := append([]protocol.Block(nil), reply.Content...)
 		for _, block := range blocks {
 			if use, ok := block.ToolUse(); ok && use.Name != protocol.ToolBash {
 				return "", fmt.Errorf("tool %q has no executor in the initial Go loop", use.Name)
@@ -122,6 +127,23 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 			lastText = roundText
 		}
 		if len(results) == 0 {
+			if reply.StopReason.Resumable() {
+				resumptions++
+				if resumptions <= maxResumptions {
+					s.stopEvents = append(s.stopEvents, ProviderStopEvent{kind: EventTurnPaused, reason: reply.StopReason, resumption: resumptions})
+					continue
+				}
+				s.stopEvents = append(s.stopEvents, ProviderStopEvent{kind: EventProviderStopUnhandled, reason: reply.StopReason, detail: fmt.Sprintf("still paused after %d resumptions", maxResumptions)})
+			}
+			if reply.StopReason == protocol.StopRefusal {
+				s.stopEvents = append(s.stopEvents, ProviderStopEvent{kind: EventProviderRefusal, reason: reply.StopReason})
+				if lastText == "" {
+					lastText = refusalNotice
+				}
+			}
+			if !reply.StopReason.Known() {
+				s.stopEvents = append(s.stopEvents, ProviderStopEvent{kind: EventProviderStopUnhandled, reason: reply.StopReason, detail: "unrecognized stop reason, treated as end of turn"})
+			}
 			return lastText, nil
 		}
 		s.messages = append(s.messages, protocol.Message{Role: protocol.RoleUser, Content: protocol.BlockContent(results...)})

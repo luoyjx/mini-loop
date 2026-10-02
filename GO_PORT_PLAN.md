@@ -79,8 +79,8 @@ Record its parity evidence and remaining gaps before checking it off.
       contracts in `go/testdata/`, and Go cases for each default tool input)
 - [x] P1 Python directory split (server smoke, complete Python suite, and
       repository verifiers pass from the documented layout)
-- [ ] G0 typed Go contracts (message and all default tool input variants
-      implemented; model reply, usage, and event contracts remain)
+- [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
+      usage and stop events implemented; other event and state variants remain)
 - [ ] G1 session loop (in-memory fake-provider slice implemented)
 - [ ] G2 execution gate
 - [ ] G3 HTTP/SSE
@@ -126,5 +126,20 @@ Record its parity evidence and remaining gaps before checking it off.
   passed, including the previously load-sensitive timing case. The earlier
   failures are retained above as part of the audit history.
 
-Next: add typed model replies, usage, stop reasons, and event variants, then
-finish the default loop and its guarded tool dispatcher.
+## 2026-10-02 model reply slice
+
+- Go now decodes completed model replies into named fields, including optional
+  cache usage, and preserves unknown stop reasons for the session to report.
+  The Python contract manifest pins its six known reasons, eight-resumption
+  bound, and refusal notice. Python fake reply fixtures cover tool use, final
+  text, empty refusal, and the optional typed caller field.
+- The in-memory loop resumes `pause_turn` without inventing a user message,
+  bounds repeated pauses, reports refusal and unknown stops through typed
+  local events, and still executes only `bash`.
+- Provider streaming, `max_tokens` recovery, request metering, the full event
+  stream, and the guarded tool dispatcher remain open. The current fake usage
+  reports zero input tokens because system/tool request construction is not yet
+  present in Go.
+
+Next: finish the typed event/state contracts and default execution gate, then
+build the HTTP vertical slice against the pinned Python responses.

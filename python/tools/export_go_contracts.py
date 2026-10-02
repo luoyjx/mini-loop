@@ -34,7 +34,9 @@ def _snapshot() -> dict[str, bytes]:
         os.environ["MINILOOP_WORKSPACE_ROOT"] = scratch
 
         from mini_loop.builtins import default_registry
+        from mini_loop.agent import KNOWN_STOP_REASONS, MAX_RESUMPTIONS, REFUSAL_NOTICE
         from mini_loop.config import Settings
+        from mini_loop.fake_llm import FakeMessage, FakeUsage, TextBlock, ToolUseBlock
         from mini_loop.server import create_app
         from mini_loop.storage import SCHEMA_VERSION, _SCHEMA
 
@@ -42,6 +44,37 @@ def _snapshot() -> dict[str, bytes]:
         openapi = create_app(
             settings=Settings(fake_llm=True, workspace_root=Path(scratch))
         ).openapi()
+
+        fake_replies = [
+            FakeMessage(
+                [
+                    TextBlock("Working on it."),
+                    ToolUseBlock("bash", {"command": "echo handled: go"}, "toolu_1"),
+                ],
+                "tool_use", FakeUsage(13, 2), message_id="msg_fake_000001",
+            ),
+            FakeMessage(
+                [TextBlock("Done. Tool said: handled: go")],
+                "end_turn", FakeUsage(20, 1), message_id="msg_fake_000002",
+            ),
+            FakeMessage([], "refusal", FakeUsage(7, 0), message_id="msg_fake_000003"),
+        ]
+
+        # Keep only the fields the Python agent reads. The SDK-specific
+        # stop_details/container extensions belong to the later G4 adapter.
+        reply_snapshot = [
+            {
+                "id": reply.id,
+                "type": reply.type,
+                "role": reply.role,
+                "model": reply.model,
+                "content": [{"type": block.type, **vars(block)} for block in reply.content],
+                "stop_reason": reply.stop_reason,
+                "stop_sequence": reply.stop_sequence,
+                "usage": vars(reply.usage),
+            }
+            for reply in fake_replies
+        ]
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -53,10 +86,14 @@ def _snapshot() -> dict[str, bytes]:
         "default_tool_names": [tool["name"] for tool in tools],
         "http_operation_count": operations,
         "sqlite_schema_version": SCHEMA_VERSION,
+        "known_stop_reasons": sorted(KNOWN_STOP_REASONS),
+        "max_resumptions": MAX_RESUMPTIONS,
+        "refusal_notice": REFUSAL_NOTICE,
     }
     return {
         "python-contract-manifest.json": _json_bytes(manifest),
         "python-default-tools.json": _json_bytes(tools),
+        "python-fake-replies.json": _json_bytes(reply_snapshot),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

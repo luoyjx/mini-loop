@@ -43,9 +43,10 @@ type ThinkingBlock struct {
 }
 
 type ToolUseBlock struct {
-	ID    string    `json:"id"`
-	Name  ToolName  `json:"name"`
-	Input ToolInput `json:"input"`
+	ID     string      `json:"id"`
+	Name   ToolName    `json:"name"`
+	Input  ToolInput   `json:"input"`
+	Caller *ToolCaller `json:"caller"`
 }
 
 type ToolResultBlock struct {
@@ -76,7 +77,16 @@ func NewBashUse(id, command string) Block {
 }
 
 func NewToolUse(id string, input ToolInput) Block {
-	return Block{kind: BlockToolUse, toolUse: &ToolUseBlock{ID: id, Name: input.Name(), Input: input.clone()}}
+	return NewToolUseWithCaller(id, input, nil)
+}
+
+func NewToolUseWithCaller(id string, input ToolInput, caller *ToolCaller) Block {
+	var detached *ToolCaller
+	if caller != nil {
+		copyOf := *caller
+		detached = &copyOf
+	}
+	return Block{kind: BlockToolUse, toolUse: &ToolUseBlock{ID: id, Name: input.Name(), Input: input.clone(), Caller: detached}}
 }
 
 func NewToolResult(id, content string, isError bool) Block {
@@ -98,6 +108,10 @@ func (b Block) ToolUse() (ToolUseBlock, bool) {
 	}
 	copyOf := *b.toolUse
 	copyOf.Input = copyOf.Input.clone()
+	if copyOf.Caller != nil {
+		caller := *copyOf.Caller
+		copyOf.Caller = &caller
+	}
 	return copyOf, true
 }
 
@@ -119,7 +133,7 @@ func (b Block) Validate() error {
 			return errors.New("thinking block requires a signature and no other variant")
 		}
 	case BlockToolUse:
-		if b.toolUse == nil || b.text != nil || b.thinking != nil || b.toolResult != nil || b.toolUse.ID == "" || b.toolUse.Name != b.toolUse.Input.Name() || b.toolUse.Input.Validate() != nil {
+		if b.toolUse == nil || b.text != nil || b.thinking != nil || b.toolResult != nil || b.toolUse.ID == "" || b.toolUse.Name != b.toolUse.Input.Name() || b.toolUse.Input.Validate() != nil || (b.toolUse.Caller != nil && b.toolUse.Caller.Validate() != nil) {
 			return errors.New("tool_use requires a supported named tool and id")
 		}
 	case BlockToolResult:
@@ -214,10 +228,11 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 		next = NewThinkingBlock(wire.Thinking, wire.Signature)
 	case BlockToolUse:
 		var wire struct {
-			Type  BlockKind       `json:"type"`
-			ID    string          `json:"id"`
-			Name  ToolName        `json:"name"`
-			Input json.RawMessage `json:"input"`
+			Type   BlockKind       `json:"type"`
+			ID     string          `json:"id"`
+			Name   ToolName        `json:"name"`
+			Input  json.RawMessage `json:"input"`
+			Caller *ToolCaller     `json:"caller"`
 		}
 		if err := decodeStrict(data, &wire); err != nil {
 			return err
@@ -229,7 +244,7 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-		next = NewToolUse(wire.ID, input)
+		next = NewToolUseWithCaller(wire.ID, input, wire.Caller)
 	case BlockToolResult:
 		var wire struct {
 			Type BlockKind `json:"type"`

@@ -262,8 +262,8 @@ separate:
 ## Architecture
 
 Runtime review baseline: `ad71e05` plus the Python directory split, its
-package-relative default skills path, and typed Go default-tool inputs, reviewed
-**2026-10-02**. The optional `decision` tool evaluates
+package-relative default skills path, and typed Go tool inputs and model
+replies, reviewed **2026-10-02**. The optional `decision` tool evaluates
 explicit state through a configured provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
 
@@ -338,7 +338,9 @@ path. The solid path is one ordinary turn; dotted paths are optional or asynchro
 The Python default agent skills now resolve from `python/skills/` regardless
 of the current working directory; `MINILOOP_SKILLS_DIR` still overrides it.
 The Go port currently types all ten Python default tool inputs but its
-in-memory loop dispatches only `bash`; see the parity matrix for remaining gates.
+in-memory loop dispatches only `bash`. It records pause, refusal and unknown
+stop outcomes locally; the production event stream and provider recovery are
+still pending. See the parity matrix for remaining gates.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new
