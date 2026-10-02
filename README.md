@@ -263,7 +263,8 @@ separate:
 
 Runtime review baseline: `ad71e05` plus the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
-and workspace file effects plus bounded glob search, reviewed **2026-10-02**.
+and workspace files, bounded glob search, todo/skill/question handlers and
+typed event backlog, reviewed **2026-10-02**.
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -311,13 +312,15 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoFake["FakeProvider<br/>typed model replies"]
-        GoSession["Go Session<br/>serialized in-memory turns"]
+        GoSession["Go Session<br/>serialized turns · typed event backlog"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Injected BashExecutor"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
+        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user<br/>snapshot · digest check · text answer"]
         GoFake <--> GoSession
         GoSession --> GoGate --> GoBash
         GoGate --> GoFiles
+        GoGate --> GoResources
     end
 
     Caller --> Entry
@@ -358,10 +361,20 @@ paths at execution; write permissions use the same resolver. This file boundary
 does not provide OS shell confinement. Glob preserves Python filename matching,
 filters resolved results to the workspace and budgets enumeration before sorting
 and deduplication; it supports cancellation and bounds open directory handles.
+`NewRuntimeSession` adds `TodoWrite`, `load_skill` and `ask_user` through that
+same gate, with state bound to its session and owner. It uses explicit skill
+and textual-question interfaces; a nil skill source is an empty catalogue,
+and a nil question surface reports unavailability. The deployment skill loader
+snapshots bounded bodies and descriptions and verifies the normalized source
+hash at load time. User-scoped skill layering remains pending. Todo and stop
+events share a typed, sequenced 200-event backlog; HTTP/SSE and subscriptions
+remain pending. Skill descriptions are available to callers but the Go model
+request pipeline does not yet consume them.
 The Go session uses one typed gate for rewrites, guards, permission, execution
-and observers; its local
-stop events, in-process approvals and cancellation repair have no durable
-event stream, approval broker or action journal yet. See the parity matrix.
+and observers. Its event backlog, approvals and cancellation repair are
+process-local, with no durable approval broker or action journal yet. `task`
+and `compress` remain unavailable until the subagent and context paths are
+ported. See the parity matrix.
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new

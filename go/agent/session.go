@@ -31,16 +31,17 @@ type BashExecutor interface {
 }
 
 type Session struct {
-	id         SessionID
-	owner      OwnerID
-	provider   Provider
-	gate       *ToolGate
-	mode       PermissionMode
-	workspace  string
-	maxRounds  int
-	mu         sync.Mutex
-	messages   []protocol.Message
-	stopEvents []ProviderStopEvent
+	id        SessionID
+	owner     OwnerID
+	provider  Provider
+	gate      *ToolGate
+	mode      PermissionMode
+	workspace string
+	maxRounds int
+	mu        sync.Mutex
+	messages  []protocol.Message
+	events    *sessionEvents
+	todos     *TodoManager
 }
 
 func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExecutor, maxRounds int) (*Session, error) {
@@ -59,7 +60,7 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 	if id == "" || owner == "" || provider == nil || gate == nil || !mode.Valid() || maxRounds < 1 {
 		return nil, errors.New("session requires id, owner, provider, tool gate, valid mode, and positive maxRounds")
 	}
-	return &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds}, nil
+	return &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}}, nil
 }
 
 func (s *Session) ID() SessionID { return s.id }
@@ -75,9 +76,26 @@ func (s *Session) Messages() []protocol.Message {
 }
 
 func (s *Session) StopEvents() []ProviderStopEvent {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	return append([]ProviderStopEvent(nil), s.stopEvents...)
+	stops := make([]ProviderStopEvent, 0)
+	for _, record := range s.events.snapshot() {
+		if stop, ok := record.Event.Stop(); ok {
+			stops = append(stops, stop)
+		}
+	}
+	return stops
+}
+
+func (s *Session) Events() []SessionEventRecord { return s.events.snapshot() }
+
+func (s *Session) Todos() []protocol.TodoItem {
+	if s.todos == nil {
+		return []protocol.TodoItem{}
+	}
+	return s.todos.Snapshot()
+}
+
+func (s *Session) recordStop(event ProviderStopEvent) {
+	s.events.append(SessionEvent{kind: SessionEventKind(event.Kind()), stop: event})
 }
 
 // An interrupted batch must still answer every tool_use before another model
@@ -155,19 +173,19 @@ func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 			if reply.StopReason.Resumable() {
 				resumptions++
 				if resumptions <= maxResumptions {
-					s.stopEvents = append(s.stopEvents, ProviderStopEvent{kind: EventTurnPaused, reason: reply.StopReason, resumption: resumptions})
+					s.recordStop(ProviderStopEvent{kind: EventTurnPaused, reason: reply.StopReason, resumption: resumptions})
 					continue
 				}
-				s.stopEvents = append(s.stopEvents, ProviderStopEvent{kind: EventProviderStopUnhandled, reason: reply.StopReason, detail: fmt.Sprintf("still paused after %d resumptions", maxResumptions)})
+				s.recordStop(ProviderStopEvent{kind: EventProviderStopUnhandled, reason: reply.StopReason, detail: fmt.Sprintf("still paused after %d resumptions", maxResumptions)})
 			}
 			if reply.StopReason == protocol.StopRefusal {
-				s.stopEvents = append(s.stopEvents, ProviderStopEvent{kind: EventProviderRefusal, reason: reply.StopReason})
+				s.recordStop(ProviderStopEvent{kind: EventProviderRefusal, reason: reply.StopReason})
 				if lastText == "" {
 					lastText = refusalNotice
 				}
 			}
 			if !reply.StopReason.Known() {
-				s.stopEvents = append(s.stopEvents, ProviderStopEvent{kind: EventProviderStopUnhandled, reason: reply.StopReason, detail: "unrecognized stop reason, treated as end of turn"})
+				s.recordStop(ProviderStopEvent{kind: EventProviderStopUnhandled, reason: reply.StopReason, detail: "unrecognized stop reason, treated as end of turn"})
 			}
 			return lastText, nil
 		}

@@ -250,6 +250,139 @@ def _glob_contracts(scratch: Path) -> dict[str, object]:
             "component_patterns": matching}
 
 
+def _runtime_contracts() -> dict[str, object]:
+    """Capture real todo updates and textual question handler outputs."""
+    import asyncio
+    from types import SimpleNamespace
+    from mini_loop.agent import TodoManager, MAX_TODO_FIELD
+    from mini_loop.builtins import _ask_user
+
+    manager = TodoManager()
+    todos = []
+    cases = [
+        [],
+        [{"content": "  阅读资料\x1c", "status": "in_progress", "activeForm": " 正在阅读 "},
+         {"content": "write", "status": "pending", "activeForm": "writing"}],
+        [{"content": "read", "status": "completed", "activeForm": "reading"}],
+        [{"content": "", "status": "pending", "activeForm": "a"}],
+        [{"content": "a", "status": "pending", "activeForm": "\x1f\u3000"}],
+        [{"content": "a", "status": "in_progress", "activeForm": "a"},
+         {"content": "b", "status": "in_progress", "activeForm": "b"}],
+        [{"content": f"task-{i}", "status": "pending", "activeForm": "working"} for i in range(21)],
+        [{"content": "中" * (MAX_TODO_FIELD + 1), "status": "in_progress",
+          "activeForm": "🌱" * (MAX_TODO_FIELD + 1)}],
+        [{"content": "a" * MAX_TODO_FIELD, "status": "completed", "activeForm": "b"}],
+        [],
+    ]
+    for items in cases:
+        try:
+            output, failed = manager.update(items), False
+        except ValueError as exc:
+            output, failed = f"Error: {exc}", True
+        todos.append({"items": items, "output": output, "failed": failed,
+                      "snapshot": manager.snapshot(), "has_open": manager.has_open_items()})
+
+    questions = []
+    class Broker:
+        def __init__(self, answer):
+            self.answer = answer
+        async def ask_question(self, ctx, question):
+            return self.answer
+    for available, answer in [(False, None), (True, None), (True, ""), (True, "用蓝色，保留原文")]:
+        state = {"manager": SimpleNamespace(approvals=Broker(answer))} if available else {}
+        output = asyncio.run(_ask_user(SimpleNamespace(state=state), "哪个颜色？"))
+        questions.append({"available": available, "answer": answer, "output": output})
+    return {"todo_field_cap": MAX_TODO_FIELD, "todos": todos, "questions": questions}
+
+
+def _skill_contracts(scratch: Path) -> dict[str, object]:
+    """Capture the actual deployment skill catalogue, load and digest rules."""
+    from mini_loop.skills import SkillLoader, MAX_SKILL_BODY, MAX_SKILL_DESCRIPTION, MAX_SKILL_CATALOGUE
+
+    cases = []
+    def file(path, text="", *, prefix="", repeat=1, suffix="", hex_bytes="", target=""):
+        return {"path": path, "prefix": prefix, "unit": text, "repeat": repeat,
+                "suffix": suffix, "hex": hex_bytes, "target": target}
+    def add(name, files, loads, *, mutations=(), missing=False):
+        root = scratch / name / "skills"
+        outside = scratch / name / "outside"
+        outside.mkdir(parents=True)
+        (outside / "SKILL.md").write_text("outside")
+        if not missing:
+            root.mkdir(parents=True)
+        def write(recipe):
+            target = root / recipe["path"]
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if recipe["target"]:
+                if recipe["target"] == "$DIRECTORY":
+                    target.mkdir()
+                else:
+                    target.symlink_to(recipe["target"].replace("$OUTSIDE", str(outside)))
+            else:
+                payload = bytes.fromhex(recipe["hex"]) if recipe["hex"] else (
+                    recipe["prefix"] + recipe["unit"] * recipe["repeat"] + recipe["suffix"]
+                ).encode("utf-8")
+                target.write_bytes(payload)
+        for recipe in files:
+            write(recipe)
+        loader = SkillLoader(root)
+        descriptions = loader.descriptions()
+        entries = [{"name": name, "description": skill["meta"].get("description", "-"),
+                    "digest": skill["digest"], "source_digest": skill["source_digest"]}
+                   for name, skill in loader.skills.items()]
+        for mutation in mutations:
+            if mutation.get("remove"):
+                (root / mutation["path"]).unlink()
+            else:
+                write(mutation)
+        results = []
+        for request in loads:
+            output = loader.load(**request)
+            results.append({"input": request, "sha256": hashlib.sha256(output.encode()).hexdigest(),
+                            "failed": output.startswith("Error:")})
+        normalize = lambda value: value.replace(str(root), "$SKILLS").replace(str(outside), "$OUTSIDE")
+        cases.append({"name": name, "files": files, "missing": missing, "mutations": list(mutations),
+                      "descriptions": descriptions, "entries": entries, "loads": results,
+                      "problems": [{"message": normalize(str(problem)), "count": loader.problems.counts[str(problem)]}
+                                   for problem in loader.problems]})
+
+    basic = [file("a/SKILL.md", "---\nname: read\ndescription: Read the source\n---\n\n阅读资料\n"),
+             file("b/SKILL.md", "---\nname: read\n---\nshadow"),
+             file("fallback/SKILL.md", " raw body \n"),
+             file("empty/SKILL.md", "---\nname: empty\ndescription:\n---\nbody")]
+    add("basic", basic, [{"name": name} for name in ["read", "fallback", "empty", "missing", "", "bad/name", "agent:read", "user:read"]]
+        + [{"name": "read", "scope": "agent"}, {"name": "read", "scope": "user"},
+           {"name": "agent:read", "scope": "user"}, {"name": "read", "scope": "invalid"}])
+    for name, text in [
+        ("newlines", "---\r\nname: note\rdescription: 中文\r\n---\r\n\tBody\r\nLine\r\x1c"),
+        ("multiline", "---\nname: note\ndescription: one\n  two\nname: final\n---\nbody"),
+        ("metadata_separators", "---\nname: note\x85description: first\u2028description: final\n---\nbody"),
+        ("malformed", "---\nname: note\n---"),
+        ("immediate", "---\n---\nbody"),
+        ("empty_frontmatter", "---\n\n---\n  body  \n"),
+        ("empty_body", "---\nname: note\n---\n\x1c\u3000\n"),
+        ("invalid_name", "---\nname: x\"></skill>\n---\nbody"),
+        ("exact_body", "---\nname: note\n---\n" + "中" * MAX_SKILL_BODY),
+    ]:
+        add(name, [file("note/SKILL.md", text)], [{"name": "note"}, {"name": "final"}])
+    add("oversized", [file("note/SKILL.md", "中", prefix="---\nname: note\ndescription: " + "🌱" * 201 + "\n---\n", repeat=MAX_SKILL_BODY+100, suffix="\n")], [{"name": "note"}])
+    add("unreadable", [file("broken/SKILL.md", hex_bytes="ff"), file("folder/SKILL.md", target="$DIRECTORY"), *basic[:1]], [{"name": "read"}])
+    add("links", [file("escape/SKILL.md", target="$OUTSIDE/SKILL.md"),
+                  file("loop", target="."), *basic[:1]], [{"name": "read"}])
+    add("missing", [], [{"name": "unknown"}], missing=True)
+    source = file("note/SKILL.md", "---\nname: note\ndescription: Note\n---\nbody\n")
+    for name, mutation in [
+        ("changed", file("note/SKILL.md", "new body")),
+        ("removed", {"path": "note/SKILL.md", "remove": True}),
+        ("identical", source),
+        ("equivalent_newlines", file("note/SKILL.md", "---\r\nname: note\r\ndescription: Note\r\n---\r\nbody\r\n")),
+    ]:
+        add(name, [source], [{"name": "note"}, {"name": "note"}], mutations=[mutation])
+    add("catalogue_cap", [file(f"skill-{i:03d}/SKILL.md", "---\nname: skill-"+f"{i:03d}"+"\ndescription: " + "中"*200 + "\n---\nbody") for i in range(100)], [{"name": "skill-099"}, {"name": "unknown"}])
+    return {"body_cap": MAX_SKILL_BODY, "description_cap": MAX_SKILL_DESCRIPTION,
+            "catalogue_cap": MAX_SKILL_CATALOGUE, "cases": cases}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -314,6 +447,8 @@ def _snapshot() -> dict[str, bytes]:
         ]
         file_contracts = _file_contracts(Path(scratch) / "files")
         glob_contracts = _glob_contracts(Path(scratch) / "globs")
+        runtime_contracts = _runtime_contracts()
+        skill_contracts = _skill_contracts(Path(scratch) / "skills")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -337,6 +472,8 @@ def _snapshot() -> dict[str, bytes]:
         "python-fake-replies.json": _json_bytes(reply_snapshot),
         "python-file-tools.json": _json_bytes(file_contracts),
         "python-glob-tools.json": _json_bytes(glob_contracts),
+        "python-runtime-tools.json": _json_bytes(runtime_contracts),
+        "python-skills.json": _json_bytes(skill_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

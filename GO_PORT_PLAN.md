@@ -82,10 +82,10 @@ Record its parity evidence and remaining gaps before checking it off.
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
       usage and stop events implemented; other event and state variants remain)
 - [ ] G1 session loop (in-memory fake-provider slice and cancellation repair implemented;
-      request construction, bounded events, and parallel batches remain)
+      request construction, complete lifecycle events, and parallel batches remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
-      workspace read/write/edit/glob implemented; durable approvals,
-      action journal, masking and remaining handlers remain)
+      workspace read/write/edit/glob plus todo/skill/question handlers implemented;
+      task/compress, durable approvals, action journal and masking remain)
 - [ ] G3 HTTP/SSE
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -260,3 +260,62 @@ journals, secret masking, and the default HTTP/SSE service.
 
 Next: port the remaining default handlers, then action/approval journals,
 secret masking, and the default HTTP/SSE service. G2 remains incomplete.
+
+## 2026-10-02 session resource slice
+
+- `NewRuntimeSession(RuntimeConfig)` composes eight implemented tools through
+  the existing gate. It adds typed todo state, deployment skill sources and
+  textual questions, binding their handler to one session, owner and workspace.
+  The existing Bash-only and five-tool workspace constructors preserve their
+  scopes. This is still an injected, in-memory runtime, not a standalone service.
+- Todo updates validate the entire input before replacing state. At most 20
+  items are retained, each field is capped at 2,000 Unicode characters, one item
+  may be in progress, and failed updates leave the accepted board intact.
+  Accepted updates emit a typed event. Todo and provider stop events now share
+  a 200-record backlog with monotonic sequence numbers and detached snapshots;
+  subscription delivery, other lifecycle events and durability remain pending.
+- `skills.Catalog` indexes sorted `SKILL.md` sources without following directory
+  symlinks, checks source-root containment, retains first-wins names, isolates
+  unreadable files and bounds model-visible descriptions and bodies. The small
+  frontmatter parser matches Python's line rules, including Unicode metadata
+  separators, rather than parsing general YAML. Strict UTF-8, universal newlines
+  and complete source hashing are streamed; retained body prefixes stay bounded.
+  Source edits or removal refuse loading; identical normalized rewrites still
+  serve. Problems deduplicate under a 50-distinct-message limit with occurrence
+  and eviction counts. Entries and diagnostic snapshots detach their slices.
+- Question answers are an explicit text/unanswered union. A declined or absent
+  answer preserves the Python proceed-on-assumption notice; an empty string is
+  still an answer. Nil surfaces report unavailability, invalid answer variants
+  fail as tool errors, and cancellation closes the tool batch before another
+  model request. The callback receives bound authority, not an approval boolean.
+- Two additional Python snapshots capture 10 todo transitions, four question
+  outputs and 19 skill scenarios. Go compares accepted state, outputs, source
+  and body hashes, load output hashes and diagnostic counts. Tests additionally
+  cover shared-source concurrency, event retention, cross-session refusal,
+  readonly behavior, cancellation and large streamed input.
+- Remaining differences: skill descriptions are exposed but not yet consumed
+  by the model request pipeline; user-source layering and broker persistence
+  remain pending. Go marks and bounds invalid-name prefixes in diagnostics at 2,048
+  characters, while Python may print an unbounded invalid name. `task` and
+  `compress` remain unregistered until their execution paths are ported.
+- Validation passed: `go test ./...`, `go vet ./...`, `go test -race ./...`,
+  the ten-file Python contract check, 19 anchored scanning guards, and
+  `git diff --check`. The Python reference mutation selectors `skill`, `todo`,
+  `ask-user` and `question-answer` caught all 11 selected mutations; this is a
+  scoped reference check, not a Go mutation suite or a new full 377-guard run.
+  The isolated `.venv/bin/python -m pytest -q` run passed with 2151 tests,
+  28 skips, 24 subtests and three dependency deprecation warnings. Python package
+  modules were unchanged, so the Python invariant declaration check was not
+  required for this slice. Results are from macOS; cross-platform audit is open.
+- The README, parity matrix and interactive map describe the new constructor
+  and state boundary. Archify passed all nine showcase checks, with no errors
+  or warnings after diagnosed label-route clearance fixes. Specification SHA-256:
+  `864f8b7d5c1b51b303977ec5855dfaf5159dad21e1d7d39ea7a21047cd0aed34`
+  (10,762 bytes); generated HTML SHA-256:
+  `e4c9b07a1cd2e86562928da0857f1e69f36643d257aadb221edce014125889a0`
+  (640,078 bytes). Browser visual review remains unavailable because local-file
+  navigation was blocked by browser policy.
+
+Next: implement the typed context/request pipeline with real compaction and
+subagent execution, then approval/action journals, masking and HTTP/SSE. The
+full objective and G0-G7 remain open.

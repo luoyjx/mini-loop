@@ -8,7 +8,7 @@
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
-    "viewBox": [2500, 1560],
+    "viewBox": [2500, 1760],
     "views": [
       {
         "id": "turn-path",
@@ -31,8 +31,8 @@
       {
         "id": "go-path",
         "label": "Go port in progress",
-        "focus": ["goFake", "goSession", "goGate", "goBash", "goFiles"],
-        "note": "Independent Go loop with one typed gate for Bash and workspace files. HTTP and durable journals remain pending."
+        "focus": ["goFake", "goSession", "goGate", "goBash", "goFiles", "goResources"],
+        "note": "Eight typed tools behind one gate; bounded events, todo state, verified skill snapshots and text answers. HTTP and journals remain pending."
       },
       {
         "id": "personal-skill",
@@ -58,16 +58,17 @@
     { "id": "state", "type": "database", "label": "Durable State + Files", "sublabel": "owner resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] },
     { "id": "decisions", "type": "external", "label": "Decision Providers", "sublabel": "Jev / explicit LLM estimates", "pos": [2110, 540], "size": [220, 76], "tag": "off by default" },
     { "id": "goFake", "type": "external", "label": "Go FakeProvider", "sublabel": "typed model replies", "pos": [330, 1180], "size": [220, 76] },
-    { "id": "goSession", "type": "backend", "label": "Go Session", "sublabel": "serialized in-memory turns", "pos": [850, 1180], "size": [230, 76], "tag": "process-local" },
+    { "id": "goSession", "type": "backend", "label": "Go Session", "sublabel": "serialized turns + bounded events", "pos": [850, 1180], "size": [230, 76], "tag": "process-local" },
     { "id": "goGate", "type": "security", "label": "Go ToolGate", "sublabel": "before / guard / permission / after", "pos": [1370, 1180], "size": [280, 76], "tag": "deny is final" },
     { "id": "goBash", "type": "backend", "label": "Injected BashExecutor", "sublabel": "process.exec through the gate", "pos": [1920, 1180], "size": [280, 76] },
-    { "id": "goFiles", "type": "backend", "label": "Workspace Files", "sublabel": "read / write / edit / glob", "pos": [1920, 1360], "size": [280, 76], "tag": "atomic replacement" }
+    { "id": "goFiles", "type": "backend", "label": "Workspace Files", "sublabel": "read / write / edit / glob", "pos": [1920, 1360], "size": [280, 76], "tag": "atomic replacement" },
+    { "id": "goResources", "type": "backend", "label": "Session Resources", "sublabel": "TodoWrite / load_skill / ask_user", "pos": [1920, 1540], "size": [280, 76], "tag": "bound session + owner" }
   ],
   "boundaries": [
     { "kind": "region", "label": "Control plane", "wraps": ["entry", "authority", "manager", "skillDrafts"], "pad": 24 },
     { "kind": "region", "label": "Per-session runtime", "wraps": ["session", "agent", "context", "toolPolicy"], "pad": 28 },
     { "kind": "security-group", "label": "Guarded host effects", "wraps": ["toolPolicy", "toolBackends"], "pad": 20 },
-    { "kind": "region", "label": "Independent Go port - in progress", "wraps": ["goFake", "goSession", "goGate", "goBash", "goFiles"], "pad": 42 }
+    { "kind": "region", "label": "Independent Go port - in progress", "wraps": ["goFake", "goSession", "goGate", "goBash", "goFiles", "goResources"], "pad": 42 }
   ],
   "connections": [
     { "id": "request", "from": "clients", "to": "entry", "label": "request", "variant": "emphasis" },
@@ -92,13 +93,14 @@
     { "id": "goReply", "from": "goFake", "to": "goSession", "label": "typed reply", "variant": "emphasis" },
     { "id": "goDispatch", "from": "goSession", "to": "goGate", "label": "typed ToolCall", "variant": "security" },
     { "id": "goExecute", "from": "goGate", "to": "goBash", "label": "guarded effect", "variant": "security", "labelAt": [1674, 1176] },
-    { "id": "goFileEffect", "from": "goGate", "to": "goFiles", "label": "bound file effect", "variant": "security" }
+    { "id": "goFileEffect", "from": "goGate", "to": "goFiles", "label": "bound file effect", "variant": "security", "labelAt": [1850, 1378] },
+    { "id": "goResourceEffect", "from": "goGate", "to": "goResources", "label": "bound session effect", "variant": "security", "labelAt": [1850, 1558] }
   ],
   "cards": [
     { "dot": "cyan", "title": "Concurrency", "items": ["One lock serializes each session", "Fleet-wide LLM and tool semaphores bound parallel work", "Parallel-safe tool results retain model-call order"] },
     { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Only authenticated HTTP user/final turns enter preview", "Preview cannot publish; commit is a separate caller action", "Agent and user skills retain explicit provenance"] },
     { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] },
     { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] },
-    { "dot": "cyan", "title": "Language layout", "items": ["The main map follows the Python runtime under python/", "Go NewWorkspaceSession registers Bash and read/write/edit/glob behind one typed gate", "Files bind a resolved root; Go approvals and stop events are process-local", "Go HTTP, durable action journal and provider recovery remain open"] }
+    { "dot": "cyan", "title": "Language layout", "items": ["The main map follows the Python runtime under python/", "Go NewRuntimeSession registers eight implemented tools behind one typed gate", "Todo and stop events share a sequenced 200-event process-local backlog", "Skill source digests are rechecked; questions return text or an unanswered variant", "Go task/compress, HTTP, durable journals and provider recovery remain open"] }
   ]
 }
