@@ -1,5 +1,9 @@
 # Pi 项目源码级调研与 mini-loop 采用边界
 
+> 历史快照：本文结论只对应 2026-08 的固定版本，不代表当前 Pi。
+> 2026-10-02 的最新复核见 [Pi v1.0.0 源码调研与采用建议](PI_V1_RESEARCH.md)。
+> 其中“没有内建 MCP”“AgentHarness 尚为骨架”等判断已被新版实现改变。
+
 > - 调研日期：2026-08-16
 > - 上游仓库：[earendil-works/pi](https://github.com/earendil-works/pi)
 > - 稳定发布：[`v0.84.2`](https://github.com/earendil-works/pi/releases/tag/v0.84.2)，提交
