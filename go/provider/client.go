@@ -41,6 +41,7 @@ const (
 // Failure contains bounded, credential-scrubbed diagnostic text, never raw wire
 // bytes or a response handle. Status and retry headers retain their own meanings.
 type Failure struct {
+	recoveryKind      protocol.ModelFailureKind
 	Kind              FailureKind
 	Status            int
 	Message           string
@@ -50,6 +51,34 @@ type Failure struct {
 }
 
 func (e *Failure) Error() string { return e.Message }
+
+// RecoveryFailure projects transport evidence without importing the agent.
+func (e *Failure) RecoveryFailure() protocol.ModelFailure {
+	kind := protocol.ModelFailureOther
+	switch e.Kind {
+	case FailureConnection:
+		kind = protocol.ModelFailureConnection
+	case FailureTimeout:
+		kind = protocol.ModelFailureTimeout
+	case FailureStatus:
+		kind = protocol.ModelFailureStatus
+	case FailureStreamingRequired:
+		kind = protocol.ModelFailureStreamingRequired
+	case FailureProtocol:
+		kind = protocol.ModelFailureProtocol
+	case FailureLimit:
+		kind = protocol.ModelFailureLimit
+	}
+	if e.recoveryKind != "" {
+		kind = e.recoveryKind
+	}
+	f := protocol.ModelFailure{Kind: kind, Class: string(e.Class()), Status: e.Status, Message: e.Message}
+	if e.RetryAfterSeconds != nil {
+		v := *e.RetryAfterSeconds
+		f.RetryAfterSeconds = &v
+	}
+	return f
+}
 
 type RetryWaiter interface {
 	Wait(context.Context, time.Duration) error

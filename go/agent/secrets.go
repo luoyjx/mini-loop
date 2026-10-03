@@ -24,6 +24,14 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 	event.sessionForked.Child = SessionID(mask(string(event.sessionForked.Child)))
 	event.runError.detail = mask(event.runError.detail)
 	event.recovery.Error = mask(event.recovery.Error)
+	if event.recovery.Model != nil {
+		v := mask(*event.recovery.Model)
+		event.recovery.Model = &v
+	}
+	if event.recovery.Reason != nil {
+		v := mask(*event.recovery.Reason)
+		event.recovery.Reason = &v
+	}
 	event.assistantText.Text = mask(event.assistantText.Text)
 	event.delta.Text = mask(event.delta.Text)
 	event.delta.StreamID = StreamID(mask(string(event.delta.StreamID)))

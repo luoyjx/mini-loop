@@ -53,6 +53,7 @@ type RuntimeConfig struct {
 	ID                SessionID
 	Owner             OwnerID
 	Provider          Provider
+	Recovery          Recovery
 	Bash              BashExecutor
 	Workspace         string
 	Mode              PermissionMode
@@ -280,6 +281,9 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	session, err := NewSessionWithGate(config.ID, config.Owner, config.Provider, gate, config.Mode, files.Root(), config.MaxRounds)
 	if err != nil {
 		return nil, err
+	}
+	if config.Recovery != nil {
+		session.recovery = config.Recovery
 	}
 	if config.CachePolicy != nil {
 		session.cachePolicy = config.CachePolicy

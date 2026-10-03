@@ -144,7 +144,21 @@ func (c *Client) consumeStream(s *streamAssembly, event string, data []byte, emi
 		return nil
 	}
 	if event == "error" {
-		return &Failure{Kind: FailureStatus, Status: 200, Message: c.statusMessage(200, data)}
+		failure := &Failure{Kind: FailureStatus, Status: 200, Message: c.statusMessage(200, data)}
+		var wire struct {
+			Error struct {
+				Type string `json:"type"`
+			} `json:"error"`
+		}
+		if json.Unmarshal(data, &wire) == nil {
+			switch wire.Error.Type {
+			case "overloaded_error":
+				failure.recoveryKind = protocol.ModelFailureOverloaded
+			case "rate_limit_error":
+				failure.recoveryKind = protocol.ModelFailureRateLimit
+			}
+		}
+		return failure
 	}
 	switch event {
 	case "message_start", "content_block_start", "content_block_delta", "content_block_stop", "message_delta", "message_stop":

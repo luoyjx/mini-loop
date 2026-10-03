@@ -83,6 +83,8 @@ type Session struct {
 	lastModelSpan                                     SpanID
 	lastStreamID                                      StreamID
 	streamedText                                      string
+	recovery                                          Recovery
+	recoveryModel                                     string
 	activityID                                        ActivityID
 	requestCatalog                                    ToolCatalogSnapshot
 	loggedCatalogs, loggedSystems, loggedCapabilities map[string]bool
@@ -115,6 +117,7 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 		return nil, errors.New("session requires id, owner, provider, tool gate, valid mode, and positive maxRounds")
 	}
 	session := &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}, model: DefaultModel, maxTokens: DefaultMaxTokens, tokenThreshold: DefaultTokenThreshold, systemBuilder: DefaultSystemBuilder{}, compactor: InMemoryCompactor{DefaultTokenThreshold, 50}}
+	session.recovery, _ = NewDefaultRecovery(RecoveryConfig{})
 	session.cachePolicy, session.stuckDetector = NewDefaultCachePolicy(), NewDefaultStuckDetector()
 	session.toolLimiter, _ = NewConcurrencyLimiter(DefaultToolConcurrency)
 	session.turn = make(chan struct{}, 1)

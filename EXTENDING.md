@@ -1052,7 +1052,12 @@ payload in the service layer. `provider.NewStreaming` adds the optional consumer
 `protocol.StreamDelta` text/thinking progress, followed by a validated final reply.
 Implementations must stop callbacks before returning, including on failure. Session
 coalescing, stream IDs, masking and managed cancellation repair own progress.
-Agent-level recovery and custom coalescing configuration remain pending.
+`RuntimeConfig.Recovery` and `ManagerServices.Recovery` select a typed policy.
+Nil selects DefaultRecovery; DirectRecovery disables it. RecoveryInput is detached,
+and RecoveryServices supplies named call/event/history/model callbacks. Policies
+must honor contexts, stop callbacks before returning and be safe when shared.
+DefaultRecovery releases model permits during backoff and keeps all attempt state
+local. Custom coalescing configuration remains pending.
 See `go/README.md` for configuration and boundary differences.
 
 ---

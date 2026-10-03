@@ -59,8 +59,8 @@ read-only workers must inject `InMemoryCompactor`. The Bash-only constructor use
 executor; a real bound executor selects workspace compaction.
 The context snapshot compares six catalogues, three wire/token cases, four
 cheap-compaction histories, six meter steps, spill output and summary artifacts
-against Python. Future sink masking, team/plan/memory prompt sections,
-and Agent recovery remain pending. Compaction files persist, but cannot
+against Python. Future sink masking and team/plan/memory prompt sections
+remain pending. Compaction files persist, but cannot
 restore a Go session on their own.
 `task` passes the execution-risk gate and uses an explicit `SubagentProvider`.
 The default `InProcessSubagents` creates fresh child history, todos and meter;
@@ -85,7 +85,7 @@ with an auto parent and shared-provider session isolation under the race detecto
 This library supplies a process-local fleet manager and authenticated HTTP
 ownership through the httpapi handler. Core lifecycle events and shared limiters are implemented.
 Custom broker/state
-inheritance, owner resources and Agent recovery remain open.
+inheritance, owner resources remain open.
 `RuntimeConfig.ActionJournal` and `NewJournaledToolGate` optionally bind a typed
 journal. Stable action IDs hash session/message/tool-use/name; canonical input
 hashes bind final rewritten arguments. Terminal replay does not execute again,
@@ -111,7 +111,7 @@ persistence. The optional bound approval broker now supplies parked requests,
 timeout/cancellation, process-local session grants, reviewer abstention and typed
 approval rows; an injected store is still required for durable writes. Registry
 masking binds implemented results, recordings, approvals and compaction files.
-SQLite adapters, remaining HTTP surfaces, Agent recovery and session persistence
+SQLite adapters, remaining HTTP surfaces, session persistence
 remain pending.
 Python
 contract snapshots and fake reply fixtures are generated into `testdata/` by
@@ -142,7 +142,7 @@ no Go Seatbelt backend ships and cwd is not confinement. Runtime process tests
 ran on macOS. Linux code has no Linux-host execution evidence; other platforms
 reject construction. The sixteenth Python snapshot covers eight actual commands,
 seven rendering recipes and six typo-blocklist decisions. Core tool events are implemented;
-Agent recovery and additional sink masking remain pending.
+additional sink masking remain pending.
 
 Cache and stuck policies are enabled by default. `RuntimeConfig.CachePolicy`
 can select `NullCachePolicy`; `NewCachePolicy(CacheConfig)` controls TTL, stride
@@ -209,8 +209,8 @@ ordered outputs and stuck hashes, six mode decisions, nil/empty prompt rewrites
 and four cross-turn Todo counters. Deterministic Go synchronization tests cover
 shared pool caps and waiting cancellation, exclusive bypass, completed-sibling
 repair, worker joins, panic capacity release, atomic injector validation and
-child seam/pool inheritance. Bounded steering and live modes are implemented below; Agent recovery
-remains open.
+child seam/pool inheritance. Bounded steering and live modes are implemented below; remaining context integrations
+remain open.
 
 `NewSessionManager(ManagerConfig)` owns ordered `ManagedSession` handles. It
 requires a provider and explicit owner identity on every create/lookup operation;
@@ -261,8 +261,7 @@ SDK retry behavior is pinned to Python Anthropic SDK 0.107.1: two retries,
 408/409/429/5xx and connection/timeout/body-read failures, retry override headers,
 0.5..8s exponential backoff with negative jitter and <=60s Retry-After including
 ms/date forms. `Failure` exposes named kind/class/status and separate header
-metadata. This is independent of pending Agent continuation/escalation/compaction
-recovery. Default budget preflight reflects SDK non-streaming limits; custom
+metadata. This is independent of the Agent recovery policy documented below. Default budget preflight reflects SDK non-streaming limits; custom
 timeouts opt out. A whole-attempt deadline and caller context own calls/waits.
 
 Config permits explicit byte limits (default 8 MiB, maximum 64 MiB), 0..10 HTTP
@@ -271,7 +270,7 @@ validates signed thinking and supported default-tool inputs; unknown content and
 nonempty citations fail until typed adapters exist. Nullable SDK text citations
 are omitted. API-key diagnostics are scrubbed; redirects are refused and the
 supplied client's redirect policy is preserved. Description/debug identity never
-prints the key. Advanced request/auth options, full Agent recovery and
+prints the key. Advanced request/auth options and
 production endpoint/cache conformance remain pending. No dependencies were added.
 
 ### Use streaming model calls
@@ -294,10 +293,41 @@ Wire assembly validates stopped text, signed thinking and complete default-tool
 JSON. Configured total wire caps include ignored frames; each frame/line/block and
 session progress are bounded by the protocol's 512 KiB limit. SDK retries cover
 opening failures/statuses, and streaming lifts the direct token ceiling. An owned
-body drop/timeout is surfaced without automatic regeneration until Agent recovery
-ships. Go requires a final delta/stop instead of accepting unchecked partial EOF
+body drop/timeout is surfaced to Agent recovery, which starts a fresh generation. Go requires a final delta/stop instead of accepting unchecked partial EOF
 snapshots. Unknown content deltas, nonempty citations and custom coalescing settings
 remain pending. No external endpoint calls were used to validate this slice.
+
+### Configure Agent recovery
+
+Nil `RuntimeConfig.Recovery` or `ManagerServices.Recovery` selects DefaultRecovery.
+Use `agent.NewDefaultRecovery(agent.RecoveryConfig{FallbackModel: "backup"})`
+for fallback, or `agent.DirectRecovery{}` to disable Agent recovery. SDK transport
+retries remain independent. Optional pointers configure zero retries/continuations
+or disable escalation; values must be within 0..100. Waiter/Jitter dependencies
+must honor contexts and be safe when shared. Attempt state is local to each call.
+
+Defaults match Python: ten transient retries, 0.5..32s exponential base with
+0..25% positive jitter, finite Retry-After seconds capped at 300s, and 300s total
+outer wait. Shared model permits cover a call (and SDK waits), but not outer
+backoff. Three overloads can select the configured fallback; selection persists
+for subsequent session requests, while children/forks start with fresh override
+state. The default does not configure a fallback.
+
+Truncated replies can regenerate at 64K when the budget increases at least 1.5x;
+listed SDK non-streaming ceilings cap that request. A refused unknown-model
+escalation restores its budget and keeps the original partial. Up to three text
+continuations return the entire answer with the final call's usage/identity. A
+truncated reply containing tools returns for dispatch without an orphaning user
+continuation. One reactive shrink preserves tool pairing and rebases retained
+cache markers; it retries only if the outgoing surface shrinks and mirrors live
+agent history explicitly. Internal summaries do not replace the live transcript.
+
+The consumer-owned Recovery seam accepts concrete RecoveryInput/RecoveryServices.
+Provider adapters expose typed protocol.ModelFailure evidence; custom Go errors
+without that interface retain compatible overload/rate/context/streaming message
+classification, but connection errors should expose a typed failure kind. Durable
+recovery state, protected token-efficiency projections and advanced provider
+variants remain pending.
 
 ### Control a managed session
 
@@ -392,7 +422,7 @@ This slice uses process-local manager/backlog/cache/rate state and disabled traj
 workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
 Python; it does not expose a synthetic durable transcript. Full FastAPI validation
 error arrays/coercions, CLI/UI, trajectories,
-optional fleet routes, durable SSE gap recovery, Agent recovery and SQLite are
+optional fleet routes, durable SSE gap recovery, SQLite are
 pending. No dependencies were added.
 
 ```sh

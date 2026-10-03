@@ -278,8 +278,9 @@ REST admission, idempotency/rate bounds and SSE projection, plus bounded steerin
 live permission modes and owned HTTP wakeup, plus completed-boundary conversation
 forks with fresh scratch workspaces and typed lineage, plus an explicit direct
 Anthropic-compatible HTTP adapter and bounded SDK retries, plus typed SSE assembly,
-provisional stream progress and shown-text interruption repair,
-reviewed **2026-10-03** (Go baseline `99d23a0` plus the streaming slice).
+provisional stream progress and shown-text interruption repair, plus typed default
+Agent recovery with retries, escalation, continuation, reactive shrink and fallback,
+reviewed **2026-10-03** (Go baseline `8645782` plus the recovery slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -332,7 +333,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>coalesced progress · interrupted text"]
+        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>coalesced progress · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
@@ -478,15 +479,19 @@ match the pinned Python SDK 0.107.1: two retries, selected status codes, retry o
 headers and bounded SDK backoff/Retry-After rules. Request and reply bytes are capped,
 contexts own calls/waits, redirects are refused, and diagnostics scrub the configured
 API key. No credentials or environment settings are discovered implicitly. This
-adapter supplies SDK-level retry only; Agent continuation/escalation/reactive
-compaction/fallback remain pending. Explicit `provider.NewStreaming` adds bounded
+adapter supplies SDK-level retry; the session now applies separate default Agent
+recovery: at most ten transient retries, bounded outer waits, token escalation,
+whole-answer continuation, one reactive shrink and optional fallback model. Backoff
+waits release shared model permits. Context overflow retries only after request
+shrink, and mirrors paired live history explicitly. Fallback selection persists
+per session; children inherit the policy with fresh fallback state. Explicit `provider.NewStreaming` adds bounded
 SSE assembly and validates text, signed thinking and complete tool JSON before
 returning a final reply. Per-session `StreamingProvider` progress is coalesced at
 200 characters or 200 ms on fragment arrival. Fresh ephemeral stream IDs correlate
 provisional commentary with authoritative final/commentary events; progress never
 replays. Only shown answer text is preserved on managed cancellation, and successful
 streams clear partial state, including internal summaries. Body drops surface to
-the caller without SDK replay; Agent recovery for fresh generations remains pending. Nonempty citation/search/server-tool
+Agent recovery as a fresh generation, whose stream_start supersedes prior progress. Nonempty citation/search/server-tool
 blocks and their typed payloads remain unsupported; nullable SDK text citation
 metadata is omitted. Production endpoint/cache savings are unverified.
 The Go session uses one typed gate for rewrites, guards, permission, execution
@@ -563,7 +568,7 @@ delegation can progress through a child. `NewSessionManager` supplies shared
 eight-slot model/tool pools, a process-local approval broker and bounded-result
 action journal by default. Environment configuration is still pending. Direct HTTP
 and SSE model calls are available through `go/provider.Client` and
-`StreamingClient`; Agent recovery remains pending in Go. `NewManagedSession` privately owns a runtime
+`StreamingClient`; default Agent recovery wraps each attempt. `NewManagedSession` privately owns a runtime
 and adds
 context-aware turn admission, idle/running/error status and operator cancellation.
 Queued callers cannot replace the cancellation target; admission is rechecked

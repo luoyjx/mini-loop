@@ -44,6 +44,7 @@ type BashFactory interface {
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
 	Provider                  Provider
+	Recovery                  Recovery
 	BashFactory               BashFactory
 	Skills                    SkillSource
 	Approvals                 *ApprovalBroker

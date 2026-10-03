@@ -29,6 +29,7 @@ type SubagentParent struct {
 	model                                          string
 	maxTokens, tokenThreshold, maxRounds, maxDepth int
 	provider                                       Provider
+	recovery                                       Recovery
 	catalog                                        *ToolCatalog
 	policy                                         *PermissionPolicy
 	hooks                                          GateHooks
@@ -163,6 +164,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 			child.bash = handler.executor
 		}
 	}
+	child.recovery = parent.recovery
 	child.model, child.maxTokens, child.tokenThreshold = parent.model, parent.maxTokens, parent.tokenThreshold
 	child.skills, child.questions, child.compactor = parent.skills, questions, parent.compactor
 	if parent.cachePolicy != nil {
@@ -224,7 +226,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	parent := SubagentParent{
 		authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
 		model: s.model, maxTokens: s.maxTokens, tokenThreshold: s.tokenThreshold, maxRounds: s.subagentMaxRounds, maxDepth: s.subagentMaxDepth,
-		provider: s.provider, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
+		provider: s.provider, recovery: s.recovery, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
 		promptHooks: append([]UserPromptHook(nil), s.promptHooks...), injectors: append([]MessageInjector(nil), s.injectors...), modelLimiter: s.modelLimiter, toolLimiter: s.toolLimiter,
 		skills: s.skills, questions: s.questions, compactor: s.compactor, subagents: s.subagents, rolePolicy: s.rolePolicy, events: s.events, secrets: s.secrets, cachePolicy: s.cachePolicy, stuckDetector: s.stuckDetector, stopHooks: append([]StopHook(nil), s.stopHooks...),
 	}

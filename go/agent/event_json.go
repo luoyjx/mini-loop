@@ -237,10 +237,7 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 			Verifiable bool              `json:"verifiable"`
 		}{v.Name, v.ActionID, v.Verdict, v.Verifiable})
 	case EventRecovery:
-		return marshalEvent(h, struct {
-			Action RecoveryAction `json:"action"`
-			Error  string         `json:"error"`
-		}{e.recovery.Action, e.recovery.Error})
+		return marshalEvent(h, e.recovery)
 	case EventSubagentStart:
 		v := e.subagent
 		return marshalEvent(h, struct {

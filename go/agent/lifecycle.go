@@ -123,15 +123,28 @@ type ReconcileEvent struct {
 }
 type RecoveryAction string
 
-const RecoveryFailed RecoveryAction = "failed"
+const (
+	RecoveryFailed     RecoveryAction = "failed"
+	RecoveryRetry      RecoveryAction = "retry"
+	RecoveryFallback   RecoveryAction = "fallback_model"
+	RecoveryEscalate   RecoveryAction = "escalate_tokens"
+	RecoveryUnescalate RecoveryAction = "unescalate_tokens"
+	RecoveryReactive   RecoveryAction = "reactive_compact"
+	RecoveryContinue   RecoveryAction = "continue_truncated"
+)
 
 type RecoveryEvent struct {
-	Action RecoveryAction
-	Error  string
+	Action    RecoveryAction `json:"action"`
+	Error     string         `json:"error,omitempty"`
+	Attempt   *int           `json:"attempt,omitempty"`
+	MaxTokens *int           `json:"max_tokens,omitempty"`
+	Capped    *bool          `json:"capped,omitempty"`
+	Model     *string        `json:"model,omitempty"`
+	Reason    *string        `json:"reason,omitempty"`
 }
 
 func (event SessionEvent) Recovery() (RecoveryEvent, bool) {
-	return event.recovery, event.kind == EventRecovery
+	return event.recovery.clone(), event.kind == EventRecovery
 }
 
 type sessionModelProvider struct{ session *Session }
@@ -244,6 +257,9 @@ func (s *Session) appendText(text string, phase TextPhase) {
 	}
 }
 func (s *Session) completeModel(ctx context.Context, request protocol.ModelRequest, catalog *ToolCatalogSnapshot) (protocol.ModelReply, error) {
+	if s.recoveryModel != "" {
+		request.Model = s.recoveryModel
+	}
 	var fingerprint, capability *string
 	if catalog != nil {
 		v := catalog.Fingerprint()
@@ -321,7 +337,24 @@ func (s *Session) completeModel(ctx context.Context, request protocol.ModelReque
 	start := ModelStartEvent{span, request.Purpose, request.Model, len(request.Messages), len(estimated) / 4, len(request.Tools), request.MaxTokens, fingerprint, systemHash, capability}
 	s.events.append(SessionEvent{kind: EventModelStart, modelStart: start})
 	started := time.Now()
-	reply, err := s.limitedComplete(ctx, request)
+	input := RecoveryInput{Request: request, Streaming: false}
+	_, input.Streaming = s.provider.(StreamingProvider)
+	if request.Purpose == protocol.PurposeAgentTurn {
+		input.LiveHistory = append([]protocol.Message(nil), s.messages...)
+	}
+	reply, err := s.recovery.Recover(ctx, input, RecoveryServices{
+		Call: s.limitedComplete,
+		Emit: func(event RecoveryEvent) { s.events.append(SessionEvent{kind: EventRecovery, recovery: event}) },
+		ReplaceHistory: func(messages []protocol.Message) error {
+			if err := protocol.ValidateTranscript(messages); err != nil {
+				return err
+			}
+			s.messages = append([]protocol.Message(nil), messages...)
+			s.publishLive()
+			return nil
+		},
+		SetModel: func(model string) { s.recoveryModel = model },
+	})
 	if err == nil {
 		err = ctx.Err()
 	}
@@ -337,7 +370,6 @@ func (s *Session) completeModel(ctx context.Context, request protocol.ModelReque
 		} else {
 			detail := boundedError(err)
 			end.Error = &detail
-			s.events.append(SessionEvent{kind: EventRecovery, recovery: RecoveryEvent{RecoveryFailed, detail}})
 		}
 		s.events.append(SessionEvent{kind: EventModelEnd, modelEnd: end})
 		return protocol.ModelReply{}, err

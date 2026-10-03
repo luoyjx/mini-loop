@@ -154,6 +154,7 @@ func (event SessionEvent) Todos() ([]protocol.TodoItem, bool) {
 	return append([]protocol.TodoItem{}, event.todos...), true
 }
 func (event SessionEvent) clone() SessionEvent {
+	event.recovery = event.recovery.clone()
 	event.todos = append([]protocol.TodoItem(nil), event.todos...)
 	event.approval = event.approval.clone()
 	event.stuck.signal = event.stuck.signal.clone()

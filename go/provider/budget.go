@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"github.com/luoyjx/mini-loop/go/protocol"
 	"math"
 	"strconv"
 )
@@ -10,12 +11,10 @@ import (
 const PythonSDKBaseline = "0.107.1"
 
 func DirectTokenCeiling(model string) int {
-	switch model {
-	case "claude-opus-4-20250514", "claude-opus-4-0", "claude-4-opus-20250514", "anthropic.claude-opus-4-20250514-v1:0", "claude-opus-4@20250514", "claude-opus-4-1-20250805", "anthropic.claude-opus-4-1-20250805-v1:0", "claude-opus-4-1@20250805":
-		return 8192
-	default:
-		return 128000 / 6
+	if ceiling, ok := protocol.ListedNonStreamingCeiling(model); ok {
+		return ceiling
 	}
+	return 128000 / 6
 }
 
 // Outer agent recovery reads only Retry-After seconds, ignoring the SDK's ms

@@ -90,7 +90,7 @@ Record its parity evidence and remaining gaps before checking it off.
       prompt hooks/injectors, Todo nagging, shared limiters and ordered parallel batches
       implemented; bounded steering and live posture updates implemented;
       direct HTTP provider/SDK retries, typed SSE and provisional progress implemented;
-      Agent recovery and remaining context integrations remain)
+      default Agent recovery implemented; remaining context integrations remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
@@ -105,7 +105,8 @@ Record its parity evidence and remaining gaps before checking it off.
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
-      Agent recovery, advanced variants/options and live-provider audit remain)
+      default Agent recovery implemented; advanced variants/options, custom coalescing
+      and live-provider audit remain)
 - [ ] G5 persistence
 - [ ] G6 optional features
 - [ ] G7 differential and release audit
@@ -1634,3 +1635,98 @@ external-provider conformance or production cache savings is claimed.
 - Host: macOS. External endpoint/cache conformance, Linux runtime and optional
   durable storage/trajectory remain unverified. All HTTP provider tests use local
   httptest or SDK MockTransport with synthetic keys; no paid provider calls.
+
+## 2026-10-03 default Agent recovery slice
+
+Baseline: `8645782` plus this slice. G4 adds the Python DefaultRecovery algorithm
+behind a typed consumer-owned seam; the full goal remains active.
+
+### Implementation and source evidence
+
+- RecoveryInput/RecoveryServices/ModelCall/Recovery are concrete named contracts.
+  Nil runtime/fleet Recovery selects DefaultRecovery; DirectRecovery explicitly
+  opts out. Config is immutable after construction, with no mutable shared retry
+  state. Children/forks inherit policy configuration and start fresh fallback state.
+- SSE overloaded/rate-limit error types retain typed recovery categories even
+  when the human message is neutral, matching the SDK error-body classification.
+  Local HTTP tests verify both regenerate without losing that metadata.
+- Provider Failure exposes detached protocol.ModelFailure, preserving kind, class,
+  status, bounded message and finite Retry-After seconds. SDK's listed model map
+  is now shared in protocol; recovery still distinguishes listed ceilings from
+  the generic direct transport preflight. Message heuristics retain Python's
+  overload/rate/context/streaming recognition; arbitrary Go connection errors
+  need typed connection/timeout evidence instead of Python class-name guessing.
+- Default outer retries: ten, 0.5s exponential base capped at 32s, positive 0..25%
+  jitter. Finite nonnegative Retry-After seconds cap at 300s, with 300s total
+  outer sleep. This budget does not include HTTP/SDK elapsed time. Context owns
+  every wait/call; model permits release between attempts and during outer waits.
+- Three overloads may select a configured fallback, which persists on subsequent
+  session calls. Default fallback is unset. Each model_start/model_end spans the
+  logical recovery call; usage/served identity comes from the final response only.
+- Escalation regenerates to 64K, capped only by a listed direct SDK ceiling, and
+  requires at least 1.5x headroom. Unknown-model SDK refusal restores budget and
+  retains the paid-for front as a continuation chunk. Up to three continuations
+  concatenate all content with final response metadata. Truncated tool replies
+  return for immediate dispatch instead of appending an unanswered continuation.
+- Reactive shrink runs once, retains a tool use/result pair across the cut, and
+  rebases only retained request cache markers. It retries only after actual
+  outgoing token-estimate reduction and mirrors raw live agent history explicitly.
+  Summary/internal calls do not mirror into the conversation. Policy events occur
+  at mutation time, so event epoch tracking observes the rewrite correctly.
+- Recovery event variants carry optional typed attempt/budget/capped/model/reason
+  fields. Projection masks/detaches them before sinks/replay; DefaultRecovery emits
+  failure events, DirectRecovery does not invent them. Existing lifecycle, refusal
+  and direct-provider fixtures remain green after fixing empty-content clone
+  preservation in the continued-reply helper.
+
+Snapshot 26, python-recovery.json, records 24 actual DefaultRecovery/DirectRecovery
+trajectories with complete request, event, wait, final response and mirrored-history
+projections. Error class labels are supplied as typed fixture evidence; terminal
+Go diagnostic type spelling differs and is normalized while action/reason/status
+meaning remains explicit. Tests also cover real dropped SSE regeneration, unique
+stream IDs/no spliced transcript, released shared permits, persistent fallback and
+fresh child state, cache-marker rebasing, bounded jitter/header/config, cancellation
+and detached event pointers.
+
+Remaining G4 includes advanced content/auth/request options, custom coalescing,
+protected token-efficiency projections, unique fake IDs and live endpoint/cache
+conformance. SQLite/durable recovery state, CLI/UI and optional features remain
+G3/G5/G6. No dependencies or Python runtime modules were changed. Constructor
+retry/continuation values are bounded to 0..100 (Python accepts unbounded custom
+integers); empty truncated content fails explicit validation instead of creating
+an invalid empty assistant transcript. G4/G7 are not marked complete.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, `go test -race ./...`: **all passed**,
+  including the final rerun after neutral SSE classification. Commands use
+  isolated `GOCACHE=/tmp/mini-loop-go-stream-cache`, including final recovery
+  corpus, stream/fallback/cache cases and existing runtime suites.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: **26 current
+  snapshots**; prior 25 byte-identical. `verify_scans.py`: **19 anchored** scans.
+  Python recovery.py SHA-256:
+  `bf388d43dcebb900aee263d060f9be9db756a7f30783fffd423f5ae94de99aca`.
+- Four source mutations caught sequentially before export/full Python tests:
+  `continuation-returns-the-tail`, `refused-escalation-loses-the-partial`,
+  `continuation-orphans-a-tool-call`, `a-patient-server-can-hang-a-turn-forever`.
+  Full mutation catalogue and Go mutations were not run. Python package
+  invariants were not rerun because no Python package module changed.
+- Full `.venv/bin/python -m pytest -q`: **2 failed, 2,149 passed, 28 skipped,
+  24 subtests passed**, four warnings, 271.83 seconds. Failures are the existing
+  timing gates: `test_agent.py::test_sessions_run_concurrently` (0.735815s versus
+  0.5s) and `test_double_cost.py::test_a_forty_turn_session_stays_fast` (>0.5s).
+  No Go test/compile overlapped this full run. Python package/test source is
+  unchanged; no causal attribution is proven. Targeted follow-up of both failed
+  tests on 2026-10-04: **2 passed in 0.97s**. The full-suite result remains failed;
+  this follow-up does not establish the cause or replace that result.
+- `git diff --check` and README outline checked. Archify validate/deliver:
+  **9/9 showcase, zero errors/warnings**, correction rounds **0**. Specification:
+  25,675 bytes, SHA-256
+  `d4e9e4048dfe64f87e040c82a434a5d469cb03e52cb8918cf774cae6d0aed54a`;
+  HTML: 664,722 bytes, SHA-256
+  `d0eb681e20bc581259f685bbe09523fa3bf3cc32b171501d064749fa69b5a459`.
+  Diagram type: architecture; output: `docs/mini-loop-system.architecture.html`.
+  Visual review skipped under the existing browser file-access policy block;
+  automated acceptance only is claimed.
+- Host: macOS. External endpoint/cache savings, Linux runtime, durable restore
+  and protected token-efficiency projections remain unverified. No paid calls.

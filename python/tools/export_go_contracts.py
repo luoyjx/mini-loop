@@ -1979,6 +1979,83 @@ def _stream_contracts() -> dict:
             "transport_sha256":hashlib.sha256((REPO_ROOT/"python/mini_loop/transport.py").read_bytes()).hexdigest(),"cases":asyncio.run(collect())}
 
 
+def _recovery_contracts() -> dict:
+    import asyncio
+    import copy
+    from types import SimpleNamespace
+    from unittest.mock import patch
+    from mini_loop.recovery import DefaultRecovery, DirectRecovery
+    from mini_loop.fake_llm import FakeMessage, FakeUsage, TextBlock, ToolUseBlock
+    from mini_loop.agent import _content_payload
+    from mini_loop.recovery import reactive_compact
+
+    base={"model":"unknown-model","max_tokens":8000,"messages":[{"role":"user","content":"write"}]}
+    def text(body,stop="end_turn"):
+        return {"text":body,"stop":stop}
+    def problem(name="ConnectionError",message="dropped",status=0,after=None):
+        return {"error":name,"message":message,"status":status,"after":after}
+    pair=[{"role":"assistant","content":[{"type":"tool_use","id":"u","name":"bash","input":{"command":"pwd"}}]},
+          {"role":"user","content":[{"type":"tool_result","tool_use_id":"u","content":"cwd"}]}]
+    history=[{"role":"user","content":"old "*500}]+pair+[{"role":"assistant" if i%2==0 else "user","content":"turn"} for i in range(5)]
+    def reply(step):
+        blocks=[TextBlock(step.get("text","done"))]
+        if step.get("tool"): blocks.append(ToolUseBlock("bash",{"command":"pwd"},"u"))
+        return FakeMessage(blocks,step.get("stop","end_turn"),FakeUsage(21,4),model="served",message_id="message")
+    async def scenario(spec):
+        kw=copy.deepcopy(base);kw["model"]=spec.get("model",kw["model"]);kw["max_tokens"]=spec.get("budget",8000)
+        if spec.get("long"):kw["messages"]=copy.deepcopy(history)
+        live=copy.deepcopy(kw["messages"])
+        calls,events,waits=[],[],[]
+        async def emit(kind,**fields):events.append({"type":kind,**fields})
+        async def wait(seconds):waits.append(seconds)
+        agent=SimpleNamespace(_send=emit,state={},transport=SimpleNamespace(streaming=spec.get("streaming",False)))
+        async def call(kwargs):
+            calls.append(copy.deepcopy(kwargs))
+            steps=spec["steps"];step=steps[min(len(calls)-1,len(steps)-1)]
+            if step.get("error"):
+                exc=type(step["error"],(Exception,),{})(step["message"])
+                if step.get("status"):exc.status_code=step["status"]
+                if step.get("after") is not None:exc.response=SimpleNamespace(headers={"retry-after":str(step["after"])})
+                raise exc
+            return reply(step)
+        recovery=DirectRecovery() if spec.get("direct") else DefaultRecovery(fallback_model=spec.get("fallback"),max_retries=spec.get("retries",10),escalate=spec.get("escalate",True),max_continuations=spec.get("continuations",3))
+        final=None;error=None
+        with patch("mini_loop.recovery.random.random",return_value=0),patch("mini_loop.recovery.asyncio.sleep",wait):
+            try:
+                result=await recovery.run(agent,kw,call,live_history=live)
+                final={"id":result.id,"type":result.type,"role":result.role,"model":result.model,"content":_content_payload(result.content),"stop_reason":result.stop_reason,"stop_sequence":result.stop_sequence,"usage":vars(result.usage)}
+            except Exception as exc:error=type(exc).__name__
+        return {**spec,"calls":calls,"events":events,"waits":waits,"final":final,"error_class":error,"live":live,"model_override":agent.state.get("recovery_model")}
+    cases=[
+        {"name":"direct","direct":True,"steps":[text("partial","max_tokens")]},
+        {"name":"success","steps":[text("done")]},
+        {"name":"connection","steps":[problem(),text("done")]},
+        {"name":"timeout","steps":[problem("TimeoutError"),text("done")]},
+        {"name":"rate-prose","steps":[problem("Exception","rate limit exceeded"),text("done")]},
+        {"name":"overload-fallback","fallback":"backup","steps":[problem("Exception","overloaded",529)]*3+[text("done")]},
+        {"name":"exhausted","retries":2,"steps":[problem()]},
+        {"name":"wait-limit","steps":[problem("Exception","rate limited",429,300)]},
+        {"name":"after-zero","steps":[problem("Exception","rate limited",429,0),text("done")]},
+        {"name":"after-big","steps":[problem("Exception","rate limited",429,10000),text("done")]},
+        {"name":"after-nan","steps":[problem("Exception","rate limited",429,"nan"),text("done")]},
+        {"name":"after-negative","steps":[problem("Exception","rate limited",429,-1),text("done")]},
+        {"name":"fatal","steps":[problem("ValueError","bad request")]},
+        {"name":"small-headroom","model":"claude-opus-4-1-20250805","steps":[text("front","max_tokens"),text("tail")]},
+        {"name":"known-escalation","model":"claude-opus-4-1-20250805","budget":2000,"steps":[text("discarded","max_tokens"),text("regenerated")]},
+        {"name":"unknown-refusal","steps":[text("front","max_tokens"),problem("ValueError","Streaming is required"),text("tail")]},
+        {"name":"stream-escalation","streaming":True,"steps":[text("discarded","max_tokens"),text("regenerated")]},
+        {"name":"continue","escalate":False,"steps":[text("first","max_tokens"),text("second","max_tokens"),text("last")]},
+        {"name":"continuation-bound","escalate":False,"steps":[text("chunk","max_tokens")]},
+        {"name":"truncated-tool","escalate":False,"steps":[{**text("call","max_tokens"),"tool":True}]},
+        {"name":"continued-tool","escalate":False,"steps":[text("front","max_tokens"),{**text("call","max_tokens"),"tool":True}]},
+        {"name":"reactive-paired","long":True,"steps":[problem("ValueError","prompt is too long"),text("done")]},
+        {"name":"reactive-no-shrink","steps":[problem("ValueError","context_length_exceeded")]},
+        {"name":"reactive-once","long":True,"steps":[problem("ValueError","prompt is too long")]},
+    ]
+    async def collect(): return [await scenario(spec) for spec in cases]
+    return {"cases":asyncio.run(collect()),"pair_compaction":reactive_compact(history),"source_sha256":hashlib.sha256((PYTHON_ROOT/"mini_loop/recovery.py").read_bytes()).hexdigest()}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -2060,6 +2137,7 @@ def _snapshot() -> dict[str, bytes]:
         fork_contracts = _fork_contracts(Path(scratch) / "forks")
         provider_contracts = _provider_contracts()
         stream_contracts = _stream_contracts()
+        recovery_contracts = _recovery_contracts()
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2100,6 +2178,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-forks.json": _json_bytes(fork_contracts),
         "python-provider.json": _json_bytes(provider_contracts),
         "python-streams.json": _json_bytes(stream_contracts),
+        "python-recovery.json": _json_bytes(recovery_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }
