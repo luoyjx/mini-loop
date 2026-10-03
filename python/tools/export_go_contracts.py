@@ -1350,6 +1350,81 @@ def _scheduling_contracts(scratch: Path) -> dict[str, object]:
     return asyncio.run(exercise())
 
 
+def _manager_contracts(scratch: Path) -> dict[str, object]:
+    """Capture actual manager creation/binding, deletion and shared defaults."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager, WorkspaceBindingError, MAX_REMEMBERED_OWNERS
+    from mini_loop.skills import SkillLoader
+
+    scratch.mkdir(parents=True)
+    scratch = scratch.resolve()
+    allowed = scratch / "allowed"
+    checkout = allowed / "repo"
+    outside = scratch / "outside"
+    checkout.mkdir(parents=True)
+    outside.mkdir()
+    (checkout / "keep").write_text("source")
+    (allowed / "alias").symlink_to(checkout, target_is_directory=True)
+    (allowed / "escape").symlink_to(outside, target_is_directory=True)
+    managers = []
+    def manager(name, roots=()):
+        settings = Settings(fake_llm=True, workspace_root=scratch / name,
+                            skills_dir=scratch / "empty-skills", bindable_roots=roots)
+        value = SessionManager(settings, FakeAsyncAnthropic(), skills=SkillLoader(settings.skills_dir))
+        managers.append(value)
+        return value
+    narrow, broad, off = manager("narrow", (allowed,)), manager("broad", (scratch,)), manager("off")
+    cases = []
+    for name, target, requested in [
+        ("disabled", off, checkout), ("checkout", narrow, checkout),
+        ("alias", narrow, allowed / "alias"), ("escape", narrow, allowed / "escape"),
+        ("outside", narrow, outside), ("outside-missing", narrow, outside / "absent"),
+        ("inside-missing", narrow, allowed / "absent"), ("file", narrow, checkout / "keep"),
+        ("own-root", broad, broad.settings.workspace_root),
+        ("own-child", broad, broad.settings.workspace_root / "absent"),
+    ]:
+        try:
+            session = target.create(owner="owner", workspace=requested)
+        except WorkspaceBindingError as error:
+            detail = str(error)
+            reason = ("disabled" if "binding is disabled" in detail else "own-root" if "manager's own" in detail
+                      else "outside" if "outside every" in detail else "not-directory")
+            cases.append({"name": name, "status": error.status, "reason": reason, "workspace": None, "bound": False})
+        else:
+            cases.append({"name": name, "status": 200, "reason": "", "workspace": str(session.workspace.relative_to(scratch)), "bound": session.workspace_bound})
+            target.delete(session.id)
+    core = manager("core")
+    first, second = core.create(owner="first"), core.create(owner="second")
+    fields = ["status", "activity", "busy", "run_count", "permission_mode", "workspace_bound", "model", "message_count", "todos", "subscribers", "sink_error"]
+    initial = {key: first.info()[key] for key in fields}
+    shared = {"model": first.agent.semaphore is second.agent.semaphore,
+              "tools": first.agent.tool_semaphore is second.agent.tool_semaphore,
+              "approvals": core.approvals is first.agent.state["manager"].approvals,
+              "actions": first.agent.state["action_journal"] is second.agent.state["action_journal"]}
+    before = [session.owner for session in core.list()]
+    first_path = first.workspace
+    deleted = core.delete(first.id)
+    owners = {"remembered": core.session_owners.get(first.id), "listing": [session.owner for session in core.list()],
+              "deleted": deleted, "workspace_removed": not first_path.exists(), "unknown_delete": core.delete("missing")}
+    asyncio.run(core.stop())
+    try:
+        core.create(owner="first")
+    except RuntimeError as error:
+        stopped_create = str(error)
+    else:
+        raise AssertionError("stopped manager created a session")
+    for target in managers:
+        asyncio.run(target.stop())
+    return {"binding_cases": cases, "initial": initial, "shared": shared, "owners_before": before,
+            "deleted": owners, "bound_marker": (checkout / "keep").read_text(),
+            "scratch_distinct": first.workspace != second.workspace, "id_length": len(first.id),
+            "max_owners": MAX_REMEMBERED_OWNERS, "default_model_limit": core.settings.max_concurrent_llm,
+            "default_tool_limit": core.settings.max_concurrent_tools, "default_rounds": core.settings.max_turns,
+            "stopped_create": stopped_create, "stop_keeps_scratch": second.workspace.is_dir()}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -1425,6 +1500,7 @@ def _snapshot() -> dict[str, bytes]:
         loop_contracts = _loop_contracts(Path(scratch) / "loops")
         lifecycle_contracts = _lifecycle_contracts(Path(scratch) / "lifecycle")
         scheduling_contracts = _scheduling_contracts(Path(scratch) / "scheduling")
+        manager_contracts = _manager_contracts(Path(scratch) / "manager")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1459,6 +1535,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-loops.json": _json_bytes(loop_contracts),
         "python-lifecycle.json": _json_bytes(lifecycle_contracts),
         "python-scheduling.json": _json_bytes(scheduling_contracts),
+        "python-manager.json": _json_bytes(manager_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

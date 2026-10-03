@@ -1,0 +1,115 @@
+{
+  "binding_cases": [
+    {
+      "bound": false,
+      "name": "disabled",
+      "reason": "disabled",
+      "status": 403,
+      "workspace": null
+    },
+    {
+      "bound": true,
+      "name": "checkout",
+      "reason": "",
+      "status": 200,
+      "workspace": "allowed/repo"
+    },
+    {
+      "bound": true,
+      "name": "alias",
+      "reason": "",
+      "status": 200,
+      "workspace": "allowed/repo"
+    },
+    {
+      "bound": false,
+      "name": "escape",
+      "reason": "outside",
+      "status": 403,
+      "workspace": null
+    },
+    {
+      "bound": false,
+      "name": "outside",
+      "reason": "outside",
+      "status": 403,
+      "workspace": null
+    },
+    {
+      "bound": false,
+      "name": "outside-missing",
+      "reason": "outside",
+      "status": 403,
+      "workspace": null
+    },
+    {
+      "bound": false,
+      "name": "inside-missing",
+      "reason": "not-directory",
+      "status": 400,
+      "workspace": null
+    },
+    {
+      "bound": false,
+      "name": "file",
+      "reason": "not-directory",
+      "status": 400,
+      "workspace": null
+    },
+    {
+      "bound": false,
+      "name": "own-root",
+      "reason": "own-root",
+      "status": 403,
+      "workspace": null
+    },
+    {
+      "bound": false,
+      "name": "own-child",
+      "reason": "own-root",
+      "status": 403,
+      "workspace": null
+    }
+  ],
+  "bound_marker": "source",
+  "default_model_limit": 8,
+  "default_rounds": 50,
+  "default_tool_limit": 8,
+  "deleted": {
+    "deleted": true,
+    "listing": [
+      "second"
+    ],
+    "remembered": "first",
+    "unknown_delete": false,
+    "workspace_removed": true
+  },
+  "id_length": 12,
+  "initial": {
+    "activity": "idle",
+    "busy": false,
+    "message_count": 0,
+    "model": "claude-sonnet-4-6",
+    "permission_mode": "interactive",
+    "run_count": 0,
+    "sink_error": null,
+    "status": "idle",
+    "subscribers": 0,
+    "todos": [],
+    "workspace_bound": false
+  },
+  "max_owners": 10000,
+  "owners_before": [
+    "first",
+    "second"
+  ],
+  "scratch_distinct": true,
+  "shared": {
+    "actions": true,
+    "approvals": true,
+    "model": true,
+    "tools": true
+  },
+  "stop_keeps_scratch": true,
+  "stopped_create": "session manager is stopped"
+}

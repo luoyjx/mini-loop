@@ -272,8 +272,9 @@ and a real foreground workspace shell with typed results, group cancellation
 and bounded capture, plus default cache annotations and bounded stuck detection, core lifecycle
 telemetry, bounded subscriptions and managed turn admission/cancellation,
 plus typed prompt hooks/injectors, Todo reminders and shared model/tool pools
-with ordered parallel groups,
-reviewed **2026-10-03** (Go baseline `0e4d8e0` plus the scheduling slice).
+with ordered parallel groups, and process-local fleet composition, owner-scoped
+lookup, workspace policy and draining deletion/shutdown,
+reviewed **2026-10-03** (Go baseline `a05b499` plus the manager slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -321,6 +322,7 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoFake["FakeProvider<br/>typed requests · replies · usage"]
+        GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
@@ -333,7 +335,7 @@ flowchart LR
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
-        GoManaged --> GoSession
+        GoManager -->|create / own| GoManaged --> GoSession
         GoSession --> GoContext --> GoFake
         GoFake --> GoSession
         GoContext --> GoArchives
@@ -525,8 +527,10 @@ and hooks must synchronize their state and honor context cancellation.
 summary calls; nil is unbounded like a bare Python Agent. Each session has a
 parallel-tool pool of eight unless `ToolLimiter` is explicitly shared. Children
 inherit the exact pools. Exclusive tools bypass the tool pool, so default task
-delegation can progress through a child. No Go fleet composition or environment
-configuration is supplied yet. Provider streaming/recovery and authenticated
+delegation can progress through a child. `NewSessionManager` supplies shared
+eight-slot model/tool pools, a process-local approval broker and bounded-result
+action journal by default. Environment configuration is still pending. Provider
+streaming/recovery and authenticated
 HTTP ownership remain pending in Go. `NewManagedSession` privately owns a runtime
 and adds
 context-aware turn admission, idle/running/error status and operator cancellation.
@@ -534,8 +538,21 @@ Queued callers cannot replace the cancellation target; admission is rechecked
 after waiting. `Info` reads immutable live snapshots without waiting for the loop
 lock and refines running activity to awaiting approval or stuck. A turn commits
 its terminal decision before emitting final events; cancellation at that point
-returns false. These services are process-local and do not yet compose a fleet
-manager or expose HTTP routes. Raw child sessions emit core spans and text without
+returns false. `NewSessionManager` owns these handles and requires an explicit,
+already established owner for create/get/list/cancel/delete. Foreign and missing
+IDs return the same typed error; this is a library boundary, with HTTP authentication
+still pending. Binding is disabled unless allowlisted roots are supplied; resolved
+paths are checked against policy before existence, and the manager scratch root
+cannot be bound. Bound directories are retained. Scratch deletion closes admission,
+revokes approvals, drains the active turn and then reclaims the directory only when
+no live or retiring handle shares it. Stop closes fleet admission and joins pending
+creation and deleted-session cleanup, preserving surviving scratch directories.
+Caller cancellation ends the Stop wait; shutdown continues and can be joined again.
+Factories receive typed session bindings and must not recursively create/delete/stop
+the manager. Nil skills remain an empty catalogue; deployment loading is explicit.
+No HTTP routes, durable restoration or optional fleet services are provided yet.
+The interactive map folds ManagedSession into the Go SessionManager node. Raw
+child sessions emit core spans and text without
 outer status/done events. Transcript replacement increments event epochs, including
 with no state store. Tool failures and denials retain their flags in telemetry;
 paired model-visible results omit `is_error`, matching Python. Empty refusal

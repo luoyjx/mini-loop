@@ -81,8 +81,8 @@ The twelfth Python snapshot covers four role selections, five context snapshots
 and three real child loops (read, write and exhaustion). Go tests also cover
 custom-provider refusal/cancellation, nested task rebinding, readonly Explore
 with an auto parent and shared-provider session isolation under the race detector.
-This library slice does not supply authenticated HTTP ownership or a fleet
-manager. Core lifecycle events and explicit shared limiters are implemented.
+This library slice supplies a process-local fleet manager; authenticated HTTP
+ownership remains pending. Core lifecycle events and shared limiters are implemented.
 Custom broker/state
 inheritance, owner resources and remote provider transport remain open.
 `RuntimeConfig.ActionJournal` and `NewJournaledToolGate` optionally bind a typed
@@ -196,7 +196,8 @@ use a fresh eight-slot pool unless `ToolLimiter` is explicitly shared; children
 inherit the exact pointers. Exclusive tools bypass this pool, including default
 task delegation. A custom parallel classification must cover handler and hook
 safety; do not classify nested task execution as parallel while it waits for the
-same saturated tool pool. No fleet/environment configuration is implemented yet.
+same saturated tool pool. Manager composition is implemented; environment settings
+remain pending.
 An open todo board receives `<reminder>Update your todos.</reminder>` after three
 tool batches without an attempted TodoWrite. The counter persists across user
 turns; child counters are fresh and a TodoWrite attempt resets it even if denied.
@@ -207,6 +208,42 @@ and four cross-turn Todo counters. Deterministic Go synchronization tests cover
 shared pool caps and waiting cancellation, exclusive bypass, completed-sibling
 repair, worker joins, panic capacity release, atomic injector validation and
 child seam/pool inheritance. Steering and provider transport/recovery remain open.
+
+`NewSessionManager(ManagerConfig)` owns ordered `ManagedSession` handles. It
+requires a provider and explicit owner identity on every create/lookup operation;
+missing and foreign IDs both return `ErrSessionNotFound`. Unlike the raw Python
+manager, an omitted owner is rejected and missing deletion returns a typed error
+as well as false. Defaults are interactive mode, 50 rounds, shared model/tool
+pools of eight, an in-memory approval broker and action journal, host shell and
+`./workspaces` scratch root. Nil skills select an empty catalogue; inject a
+deployment catalogue explicitly. No environment loader or HTTP authentication
+is implied.
+
+`WorkspaceFactory` selects scratch paths; `BashFactory` receives immutable
+`SessionBinding` identity/owner/workspace/mode. Custom services must be safe to
+share. Factories may inspect the manager but cannot recursively create/delete/stop
+it. `BindableRoots` opts into existing checkout binding. Paths resolve symlinks
+and home prefixes, with policy checked before existence: disabled/outside/manager
+scratch roots return `WorkspaceBindingError` 403; allowed missing/non-directory
+paths return 400. Bound directories are always retained.
+
+Delete closes admission and revokes approvals before unpublishing, allows five
+seconds for a holder to finish, then cancels and joins it before scratch reclaim.
+Shared live and retiring references prevent early removal. `PreserveWorkspace`
+retains scratch explicitly; `WaitCleanup(ctx)` joins asynchronous deleted holders.
+Remembered owners and masked cleanup diagnostics are capped at 10,000 and 100.
+Go reports removal faults rather than silently discarding them. Stop closes all
+admission, gives current holders 250ms, joins pending construction and cleanup,
+and preserves surviving scratch. Cancelling a Stop caller only ends that wait;
+a later Stop joins the same shutdown. Custom providers/sinks must return so a
+joined shutdown can finish. Durable restore, optional fleet services, fork,
+steering and trajectories remain pending.
+
+The twentieth Python snapshot compares initial status/defaults, shared services,
+creation order, ten workspace outcomes, bound retention, scratch deletion and
+stop. Go synchronization/race tests cover queued turns, deletion/shutdown joins,
+construction faults, shared retiring paths, symlink reclamation and bounded
+owner/diagnostic copies.
 
 ```sh
 cd go

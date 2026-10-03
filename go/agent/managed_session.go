@@ -108,17 +108,18 @@ type activeTurn struct {
 // Its underlying core is private: children use Session directly and do not
 // fabricate outer session status/done events.
 type ManagedSession struct {
-	core         *Session
-	mu           sync.Mutex
-	admission    chan struct{}
-	accepting    bool
-	closedReason string
-	status       SessionStatus
-	active       *activeTurn
-	cancelReason *string
-	createdAt    float64
-	runCount     int
-	approvals    *ApprovalBroker
+	core           *Session
+	mu             sync.Mutex
+	admission      chan struct{}
+	accepting      bool
+	closedReason   string
+	status         SessionStatus
+	active         *activeTurn
+	cancelReason   *string
+	createdAt      float64
+	runCount       int
+	approvals      *ApprovalBroker
+	workspaceBound bool
 }
 
 func NewManagedSession(config RuntimeConfig) (*ManagedSession, error) {
@@ -126,7 +127,7 @@ func NewManagedSession(config RuntimeConfig) (*ManagedSession, error) {
 	if err != nil {
 		return nil, err
 	}
-	session := &ManagedSession{core: core, admission: make(chan struct{}, 1), accepting: true, status: StatusIdle, createdAt: float64(time.Now().UnixMicro()) / 1e6, approvals: config.Approvals}
+	session := &ManagedSession{core: core, admission: make(chan struct{}, 1), accepting: true, status: StatusIdle, createdAt: float64(time.Now().UnixMicro()) / 1e6, approvals: config.Approvals, workspaceBound: config.Workspace != ""}
 	session.admission <- struct{}{}
 	return session, nil
 }
@@ -291,7 +292,7 @@ func (session *ManagedSession) Info() SessionInfo {
 	if value := session.core.SinkError(); value != "" {
 		sink = &value
 	}
-	return SessionInfo{session.ID(), status, activity, busy, reason, session.createdAt, count, session.core.mode, session.core.workspace, session.core.workspace != "", session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
+	return SessionInfo{session.ID(), status, activity, busy, reason, session.createdAt, count, session.core.mode, session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
 }
 func hasStuckSignal(detector StuckDetector, state StuckState) (stuck bool) {
 	defer func() {

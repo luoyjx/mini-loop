@@ -1205,6 +1205,12 @@ hooks and parallel handlers must synchronize state and honor context cancellatio
 fails to an exclusive barrier. Exclusive tools bypass the parallel-tool pool;
 custom nested delegation must avoid holding a permit while waiting for that same
 pool. The Go model pool is explicit (nil is unbounded); its default tool pool has
-eight slots per session, and children inherit the exact pools. A fleet manager
-and environment settings are still pending. See `go/README.md` for concrete
+eight slots per session, and children inherit the exact pools.
+`agent.NewSessionManager` supplies fleet-wide eight-slot pools, a shared broker
+and journal through typed `ManagerServices`. `WorkspaceFactory` selects scratch
+paths and `BashFactory` receives a typed `SessionBinding`; factories must not
+recursively create/delete/stop the manager. Services and callbacks are shared
+and must synchronize mutable state. Explicit owner identities are required;
+HTTP authentication and environment settings remain pending. See `go/README.md`
+for concrete
 semantics and the parity matrix for evidence.

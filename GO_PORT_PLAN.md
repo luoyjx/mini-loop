@@ -96,7 +96,8 @@ Record its parity evidence and remaining gaps before checking it off.
       broker/session grants, optional registry masking and real shell execution are implemented;
       SQLite approvals, restore-time expiry
       and remaining sink masking remain)
-- [ ] G3 HTTP/SSE
+- [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
+      workspace policy and draining delete/stop implemented; routes/auth/SSE remain)
 - [ ] G4 provider
 - [ ] G5 persistence
 - [ ] G6 optional features
@@ -992,3 +993,103 @@ streaming/provider recovery, authenticated HTTP/SSE, SQLite and lease/restart
 behavior, trajectory evidence, owner resources and optional feature services.
 No dependencies added. G0/G1/G2 remain open until their complete required parity
 contracts pass; G3–G7 remain open.
+
+## 2026-10-03 process-local manager slice
+
+**Scope and source evidence**
+
+- Continued on `feat/go-port` from `a05b499`. Reviewed README architecture,
+  manager construction/create/binding/get/list/delete/stop, reclamation and bounded
+  owner history in Python; reviewed `EXTENDING.md` fleet/workspace seams and
+  `HARDENING_NOTES.md` reclamation, cancellation and owner-map constraints.
+- This slice implements a process-local service layer for subsequent HTTP work.
+  G0–G7 remain open; no routes, authentication, transport, environment loader,
+  trajectory/restore or optional fleet services are claimed. SQLite remains
+  pending the existing dependency question; no dependency was added.
+
+**Implementation**
+
+- Added typed `ManagerConfig`, `ManagerServices`, `SessionDefaults`,
+  `CreateSessionRequest`, `SessionBinding`, workspace/Bash factories, manager
+  state, binding errors and deletion/cleanup receipts. Provider is required;
+  identity/workspace are stamped at construction. Default interactive mode,
+  50 rounds, shared model/tool pools of eight, approval broker, in-memory action
+  journal and foreground host shell match the source manager path. Nil skills
+  remain an empty catalogue; deployment loading must be injected until packaging
+  and environment settings are ported.
+- Creates reserve random 12-character IDs, isolate scratch/history and preserve
+  creation order. Construction callbacks execute outside the metadata lock and
+  recheck shutdown/caller cancellation before publication. Configuration slices
+  and system pointers are copied. Factories cannot recursively create/delete/stop
+  the manager; shared services must synchronize mutable state.
+- Get/list/cancel/delete require explicit caller-established owners. Unknown and
+  foreign IDs share `ErrSessionNotFound`. This typed library deliberately differs
+  from Python raw manager's omitted-owner anonymous default and false-only
+  missing deletion; HTTP authentication and anonymous identity establishment
+  remain separate work.
+- Binding resolves home prefixes and symlinks, checks disabled/outside/manager-root
+  policy before existence (403), then checks allowed existing directories (400).
+  Home expansion preserves the lexical symlink/.. suffix until resolution;
+  an additional Go case covers policy after that ordered resolution.
+  Explicit bound directories are retained. Scratch status reports
+  `workspace_bound=false` even though every executor has a resolved cwd.
+- Delete closes admission, unpublishes and revokes approvals, gives an active turn
+  five seconds, then cancels and joins it before scratch removal. Shared live and
+  retiring references prevent early removal. Retiring-reference release and
+  reclamation use the same lock, so simultaneous shared-directory deletion cannot
+  leave both cleaners skipping the final removal. A replaced root symlink is
+  unlinked without following its target. Factory error/empty-path results never
+  become owned cleanup paths. `PreserveWorkspace` and `WaitCleanup` are explicit.
+- Stop closes all admission first, joins pending construction and deleted-session
+  cleanup, and gives current holders 250ms before cancellation. It retains
+  surviving scratch. Caller cancellation ends only the wait; later Stop joins
+  the same shutdown. Non-cooperative provider/sink callbacks can delay draining.
+- Remembered owners are capped at 10,000 and detached from callers; masked cleanup
+  diagnostics are capped at 100 with bounded error text. Go reports removal faults
+  while Python silently ignores them. These are process-local records.
+
+**Evidence and gates**
+
+- Added `python-manager.json`, the twentieth generated contract snapshot, using
+  the actual Python manager: initial info/defaults, shared services, creation
+  order, ten workspace outcomes, bound retention, deletion and stopped creation.
+  Absolute temporary paths, random IDs and timestamps are normalized. The
+  previous nineteen snapshots did not change.
+- Go comparisons consume concrete fixture structs. Synchronization tests cover
+  owner isolation, real default shell, queued admission closure, live workspace
+  retention, deleted-turn shutdown joins, concurrent shared scratch deletion,
+  symlink-only reclamation, construction during stop, factory failures and
+  bounded detached owner/diagnostic views.
+- `go test ./...`, `go vet ./...`, and `go test -race ./...` passed after the
+  final home-path correction. `.venv/bin/python
+  python/tools/export_go_contracts.py --check` reported all twenty current;
+  `.venv/bin/python python/tools/verify_scans.py` passed all nineteen.
+- `.venv/bin/python python/tools/verify_guards.py -k NAME` caught each of
+  `workspace-removal-forgets-its-turn`, `owner-map-grows-without-bound` and
+  `workspace-removal-follows-a-link`. They ran sequentially after full pytest;
+  production source was restored by the mutation runner.
+- `.venv/bin/python -m pytest -q` completed alone in 120.70s: **2,150 passed,
+  28 skipped, 24 subtests passed, 1 failed, 3 warnings**. The remaining failure
+  is `test_double_cost.py::test_a_forty_turn_session_stays_fast`: 0.6906s against
+  the 0.5s wall-clock ceiling. Earlier scheduling/lifecycle checkpoints and a
+  clean historical archive also recorded this timing failure. This gate is
+  **not green**; no thresholds were relaxed and its cause remains unproven.
+  The other two failures from the prior checkpoint passed in this run.
+  Warnings are dependency deprecations. Log: `/tmp/mini-loop-manager-pytest.log`.
+- Python production modules were not changed, so the package invariant verifier
+  was not rerun. `git diff --check` passed; README outline was reviewed. No
+  dependencies added. Full Go/contract evidence does not imply HTTP or durable
+  parity.
+- README baseline, canonical Mermaid, explanations and interactive specification
+  were updated together. The interactive map folds ManagedSession into the Go
+  SessionManager component. Archify delivery passed all 9/9 showcase checks, zero
+  errors/warnings. Spec SHA
+  `253cc93af41edaf73425c9548fb60f3202d4afd199ad7b9342cbc347cbfac272`,
+  HTML SHA `2c803002b2fe744b379bb8c21c5af8093e597efbd5ac2377078754c2d3483187`.
+  A prior browser file-policy block still prevents rendered visual acceptance;
+  this receipt is automated composition evidence.
+
+Next: authenticated HTTP/session routes and SSE over the manager, transcript and
+trajectory/fork/steering boundaries, real provider transport/recovery, environment
+composition, SQLite/restart recovery, optional features and release differential
+checks. Overall goal remains active.
