@@ -1425,6 +1425,128 @@ def _manager_contracts(scratch: Path) -> dict[str, object]:
             "stopped_create": stopped_create, "stop_keeps_scratch": second.workspace.is_dir()}
 
 
+def _http_contracts(scratch: Path) -> dict[str, object]:
+    """Actual FastAPI HTTP admission, ownership, CRUD, replay and SSE framing."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth, NullAuth, refuse_open_bind
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app, _authenticated_message_context
+    from mini_loop.auth import Principal
+    import re
+
+    scratch.mkdir(parents=True)
+    saved = {key: os.environ.get(key) for key in ("MINILOOP_API_TOKENS", "MINILOOP_API_TOKEN")}
+    ids = {}
+    roots = {}
+    def normalize(value):
+        if isinstance(value, dict):
+            return {key: (0 if key in ("created_at", "pid", "started_at", "uptime_s") else
+                          "test-build" if key == "build" else normalize(item))
+                    for key, item in value.items() if key != "posture"}
+        if isinstance(value, list):
+            return [normalize(item) for item in value]
+        if isinstance(value, str):
+            for original, symbol in roots.items():
+                value = value.replace(original, symbol)
+            for original, symbol in ids.items():
+                value = value.replace(original, symbol)
+            return value
+        return value
+    def run(name, authenticated):
+        os.environ.pop("MINILOOP_API_TOKEN", None)
+        if authenticated:
+            os.environ["MINILOOP_API_TOKENS"] = "alice:token-a,bob:token-b"
+        else:
+            os.environ.pop("MINILOOP_API_TOKENS", None)
+        cfg = Settings(fake_llm=True, trajectory_enabled=False, enable_features=False,
+                       workspace_root=scratch / name, skills_dir=scratch / "empty-skills")
+        client = FakeAsyncAnthropic(responder=lambda request: ([text("done")], "end_turn"), thinking=False)
+        manager = SessionManager(cfg, client)
+        cases = []
+        with TestClient(create_app(settings=cfg, manager=manager)) as http:
+            def call(label, method, path, body=None, token=None, key=None, created=None):
+                headers = {}
+                if token is not None:
+                    headers["Authorization"] = "Bearer " + token
+                if key is not None:
+                    headers["Idempotency-Key"] = key
+                response = http.request(method, path, json=body, headers=headers)
+                payload = response.json()
+                if created:
+                    ids[payload["id"]] = created
+                    roots[payload["workspace"]] = "workspace/" + created
+                cases.append({"name": label, "method": method, "path": normalize(path),
+                              "body": body, "headers": headers, "status": response.status_code,
+                              "response": normalize(payload),
+                              "challenge": response.headers.get("www-authenticate")})
+                return payload
+            call("health", "GET", "/healthz")
+            if authenticated:
+                call("missing-auth", "GET", "/sessions")
+                call("query-not-for-data", "GET", "/sessions?access_token=token-a")
+                call("unknown-route-gated", "GET", "/unknown")
+            token = "token-a" if authenticated else None
+            a = call("create", "POST", "/sessions", {}, token=token, created=name+"-a")
+            b = call("create-second", "POST", "/sessions", {"mode": "auto", "system": ""}, token=token, created=name+"-b")
+            sid = a["id"]
+            call("listing", "GET", "/sessions", token=token)
+            call("limit-one", "GET", "/sessions?limit=1", token=token)
+            call("limit-zero", "GET", "/sessions?limit=0", token=token)
+            call("detail", "GET", f"/sessions/{sid}", token=token)
+            if authenticated:
+                call("foreign", "GET", f"/sessions/{sid}", token="token-b")
+            call("unknown", "GET", "/sessions/missing", token=token)
+            call("approvals-empty", "GET", f"/sessions/{sid}/approvals", token=token)
+            call("approval-missing", "POST", f"/sessions/{sid}/approvals/missing", {"decision": "allow"}, token=token)
+            call("message", "POST", f"/sessions/{sid}/messages", {"message": "go"}, token=token, key="retry")
+            call("idempotent", "POST", f"/sessions/{sid}/messages", {"message": "different"}, token=token, key="retry")
+            call("cancel-idle", "POST", f"/sessions/{sid}/cancel", token=token)
+            call("transcript-null", "GET", f"/sessions/{sid}/transcript", token=token)
+            call("method", "POST", "/healthz")
+            call("delete", "DELETE", f"/sessions/{sid}", token=token)
+            call("deleted-cache-not-readable", "POST", f"/sessions/{sid}/messages", {"message": "go"}, token=token, key="retry")
+            call("listing-after-delete", "GET", "/sessions", token=token)
+            # Completed message streams are finite, so TestClient can inspect the
+            # actual EventSourceResponse framing without a hanging observe request.
+            headers = {"Authorization": "Bearer " + token} if token else {}
+            response = http.post(f"/sessions/{b['id']}/messages/stream", json={"message": "go"}, headers=headers)
+            frames = []
+            for block in re.split(r"\r?\n\r?\n", response.text):
+                fields = {}
+                for line in block.splitlines():
+                    key, _, value = line.partition(":")
+                    fields[key] = value.strip()
+                if "data" in fields:
+                    event = json.loads(fields["data"])
+                    frames.append({"id": fields["id"], "event": fields["event"],
+                                   "seq": event["seq"], "type": event["type"], "session": normalize(event["session"])})
+            stream = {"status": response.status_code, "content_type": response.headers["content-type"],
+                      "cache_control": response.headers["cache-control"], "frames": frames}
+        return {"cases": cases, "stream": stream}
+    try:
+        token_auth = TokenAuth({"token-a": "alice", "token-b": "bob"})
+        auth_cases = []
+        for header in (None, "", "Bearer", "Bearer ", "Basic token-a", "Bearer wrong", "bEaReR token-a", "Bearer token-b"):
+            principal = token_auth.authenticate(header)
+            auth_cases.append({"authorization": header, "principal": principal.id if principal else None,
+                               "anonymous": principal.anonymous if principal else False})
+        context = _authenticated_message_context(Principal("alice")).as_dict()
+        context.pop("message_id")
+        return {"auth": auth_cases, "principals": list(token_auth.principals()),
+                "bind": [{"host": host, "refused": refuse_open_bind(host, NullAuth()) is not None}
+                         for host in ("", "localhost", "127.0.0.1", "::1", "0.0.0.0", "remote")],
+                "http_context": context, "authenticated": run("token", True), "anonymous": run("anon", False),
+                "deferred_health_fields": ["posture"]}
+    finally:
+        for key, value in saved.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -1501,6 +1623,7 @@ def _snapshot() -> dict[str, bytes]:
         lifecycle_contracts = _lifecycle_contracts(Path(scratch) / "lifecycle")
         scheduling_contracts = _scheduling_contracts(Path(scratch) / "scheduling")
         manager_contracts = _manager_contracts(Path(scratch) / "manager")
+        http_contracts = _http_contracts(Path(scratch) / "http")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1536,6 +1659,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-lifecycle.json": _json_bytes(lifecycle_contracts),
         "python-scheduling.json": _json_bytes(scheduling_contracts),
         "python-manager.json": _json_bytes(manager_contracts),
+        "python-http.json": _json_bytes(http_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

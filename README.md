@@ -273,8 +273,9 @@ and bounded capture, plus default cache annotations and bounded stuck detection,
 telemetry, bounded subscriptions and managed turn admission/cancellation,
 plus typed prompt hooks/injectors, Todo reminders and shared model/tool pools
 with ordered parallel groups, and process-local fleet composition, owner-scoped
-lookup, workspace policy and draining deletion/shutdown,
-reviewed **2026-10-03** (Go baseline `a05b499` plus the manager slice).
+lookup, workspace policy and draining deletion/shutdown, plus typed HTTP authentication,
+REST admission, idempotency/rate bounds and SSE projection,
+reviewed **2026-10-03** (Go baseline `e6540af` plus the HTTP slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -321,6 +322,8 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
+        GoEntry["Go HTTP / SSE handler<br/>bounded ingress · typed JSON / event projection"]
+        GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoFake["FakeProvider<br/>typed requests · replies · usage"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done"]
@@ -335,6 +338,7 @@ flowchart LR
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
+        GoEntry --> GoTrust --> GoManager
         GoManager -->|create / own| GoManaged --> GoSession
         GoSession --> GoContext --> GoFake
         GoFake --> GoSession
@@ -354,6 +358,7 @@ flowchart LR
     end
 
     Caller --> Entry
+    Caller --> GoEntry
     Manager -->|bind owner · create / restore / route| Session
     Manager -. preview current session .-> Drafts
     Manager -. explicit digest commit .-> Resources
@@ -456,8 +461,9 @@ string executors remain supported. Host execution is the default: workspace
 cwd and the typo blocklist do not provide shell confinement. A typed rebinding
 Sandbox argv seam is implemented, but no Go Seatbelt backend ships yet.
 Runtime process tests ran on macOS; Linux process-group code has not been run
-on a Linux host, and other platforms reject executor construction. Future HTTP,
-provider, durable-storage and optional-feature sink coverage remains pending.
+on a Linux host, and other platforms reject executor construction. Typed HTTP JSON
+and SSE data now use the optional recording projection; provider, durable-storage
+and optional-feature sink coverage remains pending.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
 process-local. `RuntimeConfig.ActionJournal` optionally binds a replay journal:
@@ -471,7 +477,7 @@ shipped Go SQLite backend remains pending. No journal
 claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child
 state. Compaction files are durable local artifacts, not a session-restoration
-store. Future HTTP, SQLite, trajectory and optional-feature sinks must use the
+store. Future SQLite, trajectory and optional-feature sinks must use the
 same recording boundary as they are ported.
 `RuntimeConfig.Approvals` optionally binds one process-local broker to the
 permission and textual-question surfaces. It checks session, owner and workspace
@@ -486,8 +492,9 @@ pending, matching Python. Store faults are reported without changing the human
 decision. The optional redactor masks previews before JSON escaping and answers
 before storage; `RuntimeConfig.Secrets` supplies the registry for the bound
 session without changing a shared broker configuration. Fresh children
-do not inherit the parent broker surface. SQLite rows, restore-time expiry and
-authenticated approval routes remain pending.
+do not inherit the parent broker surface. Authenticated approval routes bind the
+admitted owner and requested session. SQLite rows and restore-time expiry remain
+pending.
 `task` is the tenth runtime tool and crosses the execution-risk gate before
 delegation. The default in-process provider creates a fresh child history,
 todo state and token meter, with a capability-selected subset of the parent
@@ -530,8 +537,7 @@ inherit the exact pools. Exclusive tools bypass the tool pool, so default task
 delegation can progress through a child. `NewSessionManager` supplies shared
 eight-slot model/tool pools, a process-local approval broker and bounded-result
 action journal by default. Environment configuration is still pending. Provider
-streaming/recovery and authenticated
-HTTP ownership remain pending in Go. `NewManagedSession` privately owns a runtime
+streaming/recovery remain pending in Go. `NewManagedSession` privately owns a runtime
 and adds
 context-aware turn admission, idle/running/error status and operator cancellation.
 Queued callers cannot replace the cancellation target; admission is rechecked
@@ -540,8 +546,9 @@ lock and refines running activity to awaiting approval or stuck. A turn commits
 its terminal decision before emitting final events; cancellation at that point
 returns false. `NewSessionManager` owns these handles and requires an explicit,
 already established owner for create/get/list/cancel/delete. Foreign and missing
-IDs return the same typed error; this is a library boundary, with HTTP authentication
-still pending. Binding is disabled unless allowlisted roots are supplied; resolved
+IDs return the same typed error. The HTTP handler binds that owner from one admitted
+principal, with foreign and missing sessions returning the same 404. Binding is
+disabled unless allowlisted roots are supplied; resolved
 paths are checked against policy before existence, and the manager scratch root
 cannot be bound. Bound directories are retained. Scratch deletion closes admission,
 revokes approvals, drains the active turn and then reclaims the directory only when
@@ -550,7 +557,21 @@ creation and deleted-session cleanup, preserving surviving scratch directories.
 Caller cancellation ends the Stop wait; shutdown continues and can be joined again.
 Factories receive typed session bindings and must not recursively create/delete/stop
 the manager. Nil skills remain an empty catalogue; deployment loading is explicit.
-No HTTP routes, durable restoration or optional fleet services are provided yet.
+`go/httpapi.New` returns a standard `http.Handler` over that manager. Twelve method/path
+combinations implement basic health, create/list/detail/delete, message/stream/cancel,
+approvals/resolution, events and the Null-store transcript response. Token/anonymous
+authentication is resolved once; the ten-MiB ingress cap precedes it. An admitted HTTP
+turn remains untrusted, with only the personal-skill capture-source stamp. Completed
+message retries use detached owner/session/key snapshots before spending rate budget;
+non-streaming admission rejects busy turns atomically. Stream submissions queue, and
+a disconnect cancels their own active turn or admission wait. Event observers replay
+the bounded backlog with cursor deduplication and optional envelopes. Typed flat event
+JSON and HTTP responses use the optional recording projection without changing live
+model history; encoder failures return no raw fallback. These are process-local handler
+services: the embedding application owns listening/shutdown and must call
+`RefuseOpenBind` before listening. There is no Go CLI, UI, full health posture, durable
+catch-up, mode/steering/fork route, trajectory or optional fleet service yet. Full
+FastAPI validation detail/coercion parity remains open. Durable restoration is pending.
 The interactive map folds ManagedSession into the Go SessionManager node. Raw
 child sessions emit core spans and text without
 outer status/done events. Transcript replacement increments event epochs, including
@@ -612,6 +633,7 @@ The Mermaid block above remains the canonical GitHub view.
 | `python/tools/` | Python verification and benchmark scripts |
 | `python/examples/` | Runnable Python custom composition |
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
+| `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
 | `go/secrets/` | Typed optional credential lookup, environment selection and masking |
 | `go/internal/` | Shared Python filename matching and pinned Unicode/text semantics |
 | `go/testdata/` | Generated Python tool, OpenAPI, and SQLite contract snapshots |

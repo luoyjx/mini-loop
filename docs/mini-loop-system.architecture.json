@@ -8,124 +8,1191 @@
     "animation": "none",
     "visual_preset": "blueprint",
     "quality_profile": "showcase",
-    "viewBox": [2500, 1760],
+    "viewBox": [
+      2500,
+      1760
+    ],
     "views": [
       {
         "id": "turn-path",
         "label": "One agent turn",
-        "focus": ["clients", "entry", "authority", "manager", "session", "agent", "context", "provider"],
+        "focus": [
+          "clients",
+          "entry",
+          "authority",
+          "manager",
+          "session",
+          "agent",
+          "context",
+          "provider"
+        ],
         "note": "Follow an authenticated request through owner binding into one serialized session and out to the model provider."
       },
       {
         "id": "tool-path",
         "label": "Guarded tool execution",
-        "focus": ["agent", "toolPolicy", "toolBackends", "state", "decisions"],
+        "focus": [
+          "agent",
+          "toolPolicy",
+          "toolBackends",
+          "state",
+          "decisions"
+        ],
         "note": "Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."
       },
       {
         "id": "async-path",
         "label": "Optional orchestration",
-        "focus": ["manager", "coordination", "session", "state"],
+        "focus": [
+          "manager",
+          "coordination",
+          "session",
+          "state"
+        ],
         "note": "Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."
       },
       {
         "id": "go-path",
         "label": "Go port in progress",
-        "focus": ["goManaged", "goFake", "goSession", "goGate", "goBash", "goFiles", "goResources", "goContext", "goArchives", "goChildren", "goActions", "goApprovals", "goSecrets"],
-        "note": "Process-local manager owns scoped handles, shared pools and draining workspace cleanup. HTTP, streaming/recovery and SQLite pending."
+        "focus": [
+          "goEntry",
+          "goManaged",
+          "goFake",
+          "goSession",
+          "goGate",
+          "goBash",
+          "goFiles",
+          "goResources",
+          "goContext",
+          "goArchives",
+          "goChildren",
+          "goActions",
+          "goApprovals",
+          "goSecrets"
+        ],
+        "note": "Typed HTTP/SSE admission binds one principal to process-local sessions. CLI/UI, full posture, provider transport and SQLite remain pending."
       },
       {
         "id": "personal-skill",
         "label": "Capture a personal skill",
-        "focus": ["clients", "entry", "authority", "manager", "session", "skillDrafts", "state", "context"],
+        "focus": [
+          "clients",
+          "entry",
+          "authority",
+          "manager",
+          "session",
+          "skillDrafts",
+          "state",
+          "context"
+        ],
         "note": "Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."
       }
     ]
   },
   "components": [
-    { "id": "clients", "type": "external", "label": "Callers", "sublabel": "Python / REST / SSE", "pos": [60, 260], "size": [150, 72] },
-    { "id": "entry", "type": "frontend", "label": "Python Entry", "sublabel": "python/mini_loop: FastAPI + CLI", "pos": [330, 260], "size": [170, 72] },
-    { "id": "authority", "type": "security", "label": "Trust Boundary", "sublabel": "Auth + ownership + RunContext", "pos": [650, 260], "size": [210, 72], "tag": "fail closed" },
-    { "id": "manager", "type": "backend", "label": "SessionManager", "sublabel": "fleet composition + shared limits", "pos": [1030, 260], "size": [200, 72] },
-    { "id": "skillDrafts", "type": "backend", "label": "Personal-skill Preview", "sublabel": "auth turn ledger + TTL draft", "pos": [700, 440], "size": [230, 76], "tag": "process-local" },
-    { "id": "session", "type": "backend", "label": "AgentSession", "sublabel": "lock + transcript + events", "pos": [1410, 260], "size": [190, 72], "tag": "per session" },
-    { "id": "agent", "type": "backend", "label": "Agent Loop", "sublabel": "model / tools / stop", "pos": [1780, 260], "size": [180, 72], "tag": "async" },
-    { "id": "context", "type": "backend", "label": "Context Pipeline", "sublabel": "agent + owner skills / memory + cache", "pos": [2110, 100], "size": [220, 76] },
-    { "id": "provider", "type": "external", "label": "Model Provider", "sublabel": "streaming transport", "pos": [2110, 410], "size": [200, 72] },
-    { "id": "toolPolicy", "type": "security", "label": "Tool Execution Gate", "sublabel": "catalog + hooks + permissions", "pos": [1780, 540], "size": [210, 76], "tag": "deny is final" },
-    { "id": "toolBackends", "type": "backend", "label": "Tool Backends", "sublabel": "files / shell / MCP / sandbox", "pos": [2110, 700], "size": [215, 76] },
-    { "id": "coordination", "type": "messagebus", "label": "Async Coordination", "sublabel": "background / cron / teams / workflows", "pos": [1030, 620], "size": [230, 76], "tag": "opt-in surfaces" },
-    { "id": "state", "type": "database", "label": "Durable State + Files", "sublabel": "owner resources / SQLite / trajectory", "pos": [1390, 800], "size": [235, 78] },
-    { "id": "decisions", "type": "external", "label": "Decision Providers", "sublabel": "Jev / explicit LLM estimates", "pos": [2110, 540], "size": [220, 76], "tag": "off by default" },
-    { "id": "goFake", "type": "external", "label": "Go FakeProvider", "sublabel": "typed requests / replies + usage", "pos": [330, 1180], "size": [220, 76] },
-    { "id": "goSession", "type": "backend", "label": "Go Session", "sublabel": "hooks / injectors / ordered groups", "pos": [850, 1180], "size": [330, 76], "tag": "process-local" },
-    { "id": "goGate", "type": "security", "label": "Go ToolGate", "sublabel": "before / guard / permission / after", "pos": [1370, 1180], "size": [280, 76], "tag": "deny is final" },
-    { "id": "goBash", "type": "backend", "label": "Workspace shell.Executor", "sublabel": "groups / deadlines / typed results", "pos": [1920, 1180], "size": [280, 76] },
-    { "id": "goFiles", "type": "backend", "label": "Workspace Files", "sublabel": "read / write / edit / glob", "pos": [1920, 1360], "size": [280, 76], "tag": "atomic replacement" },
-    { "id": "goResources", "type": "backend", "label": "Session Resources", "sublabel": "todos / skills / questions / delegation", "pos": [1920, 1540], "size": [280, 76], "tag": "bound session + owner" },
-    { "id": "goContext", "type": "backend", "label": "Go Context Pipeline", "sublabel": "schemas / skills / cache / meter", "pos": [850, 1360], "size": [330, 76], "tag": "four compaction layers" },
-    { "id": "goActions", "type": "database", "label": "Go Action Journals", "sublabel": "typed states / replay / retention", "pos": [1370, 1360], "size": [280, 76], "tag": "memory + store interface" },
-    { "id": "goChildren", "type": "backend", "label": "Go Subagent Sessions", "sublabel": "role subset / inherited seams + pools", "pos": [1370, 1540], "size": [330, 76], "tag": "default depth limit: 2" },
-    { "id": "goSecrets", "type": "security", "label": "Go Secret Registry", "sublabel": "cached values / masked copies", "pos": [330, 980], "size": [280, 76], "tag": "optional deployment binding" },
-    { "id": "goApprovals", "type": "security", "label": "Go Approval Broker", "sublabel": "grants / questions / optional review", "pos": [1920, 980], "size": [280, 76], "tag": "process-local + store seam" },
-    { "id": "goArchives", "type": "database", "label": "Compaction Artifacts", "sublabel": ".task_outputs / .transcripts", "pos": [330, 1540], "size": [330, 76], "tag": "workspace files" },
-    { "id": "goManaged", "type": "backend", "label": "Go SessionManager", "sublabel": "managed handles / workspace cleanup", "pos": [850, 980], "size": [280, 76], "tag": "owners / shared services + pools" }
+    {
+      "id": "clients",
+      "type": "external",
+      "label": "Callers",
+      "sublabel": "Python / REST / SSE",
+      "pos": [
+        60,
+        260
+      ],
+      "size": [
+        150,
+        72
+      ]
+    },
+    {
+      "id": "entry",
+      "type": "frontend",
+      "label": "Python Entry",
+      "sublabel": "python/mini_loop: FastAPI + CLI",
+      "pos": [
+        330,
+        260
+      ],
+      "size": [
+        170,
+        72
+      ]
+    },
+    {
+      "id": "authority",
+      "type": "security",
+      "label": "Trust Boundary",
+      "sublabel": "Auth + ownership + RunContext",
+      "pos": [
+        650,
+        260
+      ],
+      "size": [
+        210,
+        72
+      ],
+      "tag": "fail closed"
+    },
+    {
+      "id": "manager",
+      "type": "backend",
+      "label": "SessionManager",
+      "sublabel": "fleet composition + shared limits",
+      "pos": [
+        1030,
+        260
+      ],
+      "size": [
+        200,
+        72
+      ]
+    },
+    {
+      "id": "skillDrafts",
+      "type": "backend",
+      "label": "Personal-skill Preview",
+      "sublabel": "auth turn ledger + TTL draft",
+      "pos": [
+        700,
+        440
+      ],
+      "size": [
+        230,
+        76
+      ],
+      "tag": "process-local"
+    },
+    {
+      "id": "session",
+      "type": "backend",
+      "label": "AgentSession",
+      "sublabel": "lock + transcript + events",
+      "pos": [
+        1410,
+        260
+      ],
+      "size": [
+        190,
+        72
+      ],
+      "tag": "per session"
+    },
+    {
+      "id": "agent",
+      "type": "backend",
+      "label": "Agent Loop",
+      "sublabel": "model / tools / stop",
+      "pos": [
+        1780,
+        260
+      ],
+      "size": [
+        180,
+        72
+      ],
+      "tag": "async"
+    },
+    {
+      "id": "context",
+      "type": "backend",
+      "label": "Context Pipeline",
+      "sublabel": "agent + owner skills / memory + cache",
+      "pos": [
+        2110,
+        100
+      ],
+      "size": [
+        220,
+        76
+      ]
+    },
+    {
+      "id": "provider",
+      "type": "external",
+      "label": "Model Provider",
+      "sublabel": "streaming transport",
+      "pos": [
+        2110,
+        410
+      ],
+      "size": [
+        200,
+        72
+      ]
+    },
+    {
+      "id": "toolPolicy",
+      "type": "security",
+      "label": "Tool Execution Gate",
+      "sublabel": "catalog + hooks + permissions",
+      "pos": [
+        1780,
+        540
+      ],
+      "size": [
+        210,
+        76
+      ],
+      "tag": "deny is final"
+    },
+    {
+      "id": "toolBackends",
+      "type": "backend",
+      "label": "Tool Backends",
+      "sublabel": "files / shell / MCP / sandbox",
+      "pos": [
+        2110,
+        700
+      ],
+      "size": [
+        215,
+        76
+      ]
+    },
+    {
+      "id": "coordination",
+      "type": "messagebus",
+      "label": "Async Coordination",
+      "sublabel": "background / cron / teams / workflows",
+      "pos": [
+        1030,
+        620
+      ],
+      "size": [
+        230,
+        76
+      ],
+      "tag": "opt-in surfaces"
+    },
+    {
+      "id": "state",
+      "type": "database",
+      "label": "Durable State + Files",
+      "sublabel": "owner resources / SQLite / trajectory",
+      "pos": [
+        1390,
+        800
+      ],
+      "size": [
+        235,
+        78
+      ]
+    },
+    {
+      "id": "decisions",
+      "type": "external",
+      "label": "Decision Providers",
+      "sublabel": "Jev / explicit LLM estimates",
+      "pos": [
+        2110,
+        540
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "tag": "off by default"
+    },
+    {
+      "id": "goFake",
+      "type": "external",
+      "label": "Go FakeProvider",
+      "sublabel": "typed requests / replies + usage",
+      "pos": [
+        330,
+        1180
+      ],
+      "size": [
+        220,
+        76
+      ]
+    },
+    {
+      "id": "goSession",
+      "type": "backend",
+      "label": "Go Session",
+      "sublabel": "hooks / injectors / ordered groups",
+      "pos": [
+        850,
+        1180
+      ],
+      "size": [
+        330,
+        76
+      ],
+      "tag": "process-local"
+    },
+    {
+      "id": "goGate",
+      "type": "security",
+      "label": "Go ToolGate",
+      "sublabel": "before / guard / permission / after",
+      "pos": [
+        1370,
+        1180
+      ],
+      "size": [
+        280,
+        76
+      ],
+      "tag": "deny is final"
+    },
+    {
+      "id": "goBash",
+      "type": "backend",
+      "label": "Workspace shell.Executor",
+      "sublabel": "groups / deadlines / typed results",
+      "pos": [
+        1920,
+        1180
+      ],
+      "size": [
+        280,
+        76
+      ]
+    },
+    {
+      "id": "goFiles",
+      "type": "backend",
+      "label": "Workspace Files",
+      "sublabel": "read / write / edit / glob",
+      "pos": [
+        1920,
+        1360
+      ],
+      "size": [
+        280,
+        76
+      ],
+      "tag": "atomic replacement"
+    },
+    {
+      "id": "goResources",
+      "type": "backend",
+      "label": "Session Resources",
+      "sublabel": "todos / skills / questions / delegation",
+      "pos": [
+        1920,
+        1540
+      ],
+      "size": [
+        280,
+        76
+      ],
+      "tag": "bound session + owner"
+    },
+    {
+      "id": "goContext",
+      "type": "backend",
+      "label": "Go Context Pipeline",
+      "sublabel": "schemas / skills / cache / meter",
+      "pos": [
+        850,
+        1360
+      ],
+      "size": [
+        330,
+        76
+      ],
+      "tag": "four compaction layers"
+    },
+    {
+      "id": "goActions",
+      "type": "database",
+      "label": "Go Action Journals",
+      "sublabel": "typed states / replay / retention",
+      "pos": [
+        1370,
+        1360
+      ],
+      "size": [
+        280,
+        76
+      ],
+      "tag": "memory + store interface"
+    },
+    {
+      "id": "goChildren",
+      "type": "backend",
+      "label": "Go Subagent Sessions",
+      "sublabel": "role subset / inherited seams + pools",
+      "pos": [
+        1370,
+        1540
+      ],
+      "size": [
+        330,
+        76
+      ],
+      "tag": "default depth limit: 2"
+    },
+    {
+      "id": "goSecrets",
+      "type": "security",
+      "label": "Go Secret Registry",
+      "sublabel": "cached values / masked copies",
+      "pos": [
+        330,
+        980
+      ],
+      "size": [
+        280,
+        76
+      ],
+      "tag": "optional deployment binding"
+    },
+    {
+      "id": "goApprovals",
+      "type": "security",
+      "label": "Go Approval Broker",
+      "sublabel": "grants / questions / optional review",
+      "pos": [
+        1920,
+        980
+      ],
+      "size": [
+        280,
+        76
+      ],
+      "tag": "process-local + store seam"
+    },
+    {
+      "id": "goArchives",
+      "type": "database",
+      "label": "Compaction Artifacts",
+      "sublabel": ".task_outputs / .transcripts",
+      "pos": [
+        330,
+        1540
+      ],
+      "size": [
+        330,
+        76
+      ],
+      "tag": "workspace files"
+    },
+    {
+      "id": "goManaged",
+      "type": "backend",
+      "label": "Go SessionManager",
+      "sublabel": "managed handles / workspace cleanup",
+      "pos": [
+        850,
+        980
+      ],
+      "size": [
+        280,
+        76
+      ],
+      "tag": "owners / shared services + pools"
+    },
+    {
+      "id": "goEntry",
+      "type": "backend",
+      "label": "Go HTTP / SSE",
+      "sublabel": "auth / bounded ingress / typed routes",
+      "pos": [
+        330,
+        800
+      ],
+      "size": [
+        330,
+        76
+      ],
+      "tag": "handler library / process-local"
+    }
   ],
   "boundaries": [
-    { "kind": "region", "label": "Control plane", "wraps": ["entry", "authority", "manager", "skillDrafts"], "pad": 24 },
-    { "kind": "region", "label": "Per-session runtime", "wraps": ["session", "agent", "context", "toolPolicy"], "pad": 28 },
-    { "kind": "security-group", "label": "Guarded host effects", "wraps": ["toolPolicy", "toolBackends"], "pad": 20 },
-    { "kind": "region", "label": "Independent Go port - in progress", "wraps": ["goFake", "goSession", "goGate", "goBash", "goFiles", "goResources", "goContext", "goArchives", "goChildren", "goActions", "goApprovals", "goSecrets", "goManaged"], "pad": 42 }
+    {
+      "kind": "region",
+      "label": "Control plane",
+      "wraps": [
+        "entry",
+        "authority",
+        "manager",
+        "skillDrafts"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "Per-session runtime",
+      "wraps": [
+        "session",
+        "agent",
+        "context",
+        "toolPolicy"
+      ],
+      "pad": 28
+    },
+    {
+      "kind": "security-group",
+      "label": "Guarded host effects",
+      "wraps": [
+        "toolPolicy",
+        "toolBackends"
+      ],
+      "pad": 20
+    },
+    {
+      "kind": "region",
+      "label": "Independent Go port - in progress",
+      "wraps": [
+        "goFake",
+        "goSession",
+        "goGate",
+        "goBash",
+        "goFiles",
+        "goResources",
+        "goContext",
+        "goArchives",
+        "goChildren",
+        "goActions",
+        "goApprovals",
+        "goSecrets",
+        "goManaged"
+      ],
+      "pad": 42
+    },
+    {
+      "kind": "region",
+      "label": "Go HTTP admission",
+      "wraps": [
+        "goEntry"
+      ],
+      "pad": 24
+    }
   ],
   "connections": [
-    { "id": "request", "from": "clients", "to": "entry", "label": "request", "variant": "emphasis" },
-    { "id": "authenticate", "from": "entry", "to": "authority", "label": "auth + scope", "variant": "security" },
-    { "id": "route", "from": "authority", "to": "manager", "variant": "security" },
-    { "id": "resolve", "from": "manager", "to": "session", "label": "create / restore", "route": "straight" },
-    { "id": "previewSkill", "from": "manager", "to": "skillDrafts", "label": "auth-turn preview", "variant": "dashed", "fromSide": "left", "toSide": "right", "via": [[970, 296], [970, 478]], "labelAt": [955, 382] },
-    { "id": "commitSkill", "from": "skillDrafts", "to": "state", "label": "explicit digest commit", "variant": "security", "fromSide": "bottom", "toSide": "left", "via": [[815, 760], [1360, 760], [1360, 839]], "labelAt": [1100, 744] },
-    { "id": "activateSkill", "from": "state", "to": "context", "label": "future-session snapshot", "variant": "dashed", "fromSide": "right", "toSide": "right", "via": [[1660, 839], [1660, 930], [2410, 930], [2410, 138]], "labelAt": [2030, 914] },
-    { "id": "serialize", "from": "session", "to": "agent", "label": "serialized turn", "variant": "emphasis" },
-    { "id": "buildContext", "from": "agent", "to": "context" },
-    { "id": "modelRequest", "from": "context", "to": "provider", "label": "model request", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
-    { "id": "modelResponse", "from": "provider", "to": "agent", "label": "text / tools", "variant": "emphasis" },
-    { "id": "toolCalls", "from": "agent", "to": "toolPolicy", "label": "ToolCall batch", "variant": "security", "fromSide": "bottom", "toSide": "top" },
-    { "id": "dispatch", "from": "toolPolicy", "to": "toolBackends", "label": "guarded dispatch", "variant": "security" },
-    { "id": "coordinationOwned", "from": "manager", "to": "coordination", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
-    { "id": "inject", "from": "coordination", "to": "session", "label": "inject next turn", "variant": "dashed" },
-    { "id": "persist", "from": "session", "to": "state", "label": "epochs / events", "fromSide": "bottom", "toSide": "top" },
-    { "id": "recordEffects", "from": "toolPolicy", "to": "state", "label": "action outcomes", "fromSide": "left", "toSide": "right" },
-    { "id": "decisionRequest", "from": "toolPolicy", "to": "decisions", "variant": "dashed" },
-    { "id": "goBuildContext", "from": "goSession", "to": "goContext", "label": "fit + compact", "fromSide": "bottom", "toSide": "top", "labelAt": [1110, 1310] },
-    { "id": "goArchive", "from": "goContext", "to": "goArchives", "label": "spill / archive", "fromSide": "left", "toSide": "right", "via": [[740, 1398], [740, 1578]], "labelAt": [740, 1490] },
-    { "id": "goRequest", "from": "goContext", "to": "goFake", "label": "typed request", "fromSide": "left", "toSide": "right", "via": [[700, 1398], [700, 1218]], "labelAt": [700, 1300] },
-    { "id": "goReply", "from": "goFake", "to": "goSession", "label": "typed reply", "variant": "emphasis" },
-    { "id": "goDispatch", "from": "goSession", "to": "goGate", "label": "groups / barriers", "variant": "security", "labelAt": [1240, 1208] },
-    { "id": "goExecute", "from": "goGate", "to": "goBash", "label": "guarded effect", "variant": "security", "labelAt": [1674, 1176] },
-    { "id": "goFileEffect", "from": "goGate", "to": "goFiles", "label": "bound file effect", "variant": "security", "labelAt": [1850, 1378] },
-    { "id": "goReplay", "from": "goGate", "to": "goActions", "label": "replay / settle", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "via": [[1510, 1280], [1450, 1280], [1450, 1320], [1510, 1320]], "labelAt": [1400, 1330] },
-    { "id": "goDelegate", "from": "goResources", "to": "goChildren", "label": "task / depth gate", "fromSide": "bottom", "toSide": "bottom", "via": [[2060, 1680], [1535, 1680]], "labelAt": [1798, 1660] },
-    { "id": "goChildContext", "from": "goChildren", "to": "goContext", "label": "fresh context", "fromSide": "left", "toSide": "bottom", "via": [[1270, 1578], [1270, 1480], [1015, 1480]], "labelAt": [1150, 1460] },
-    { "id": "goChildDispatch", "from": "goChildren", "to": "goGate", "label": "selected tools", "variant": "security", "fromSide": "top", "toSide": "bottom", "via": [[1535, 1500], [1710, 1500], [1710, 1310], [1510, 1310]], "labelAt": [1710, 1390] },
-    { "id": "goChildEvents", "from": "goChildren", "to": "goSession", "label": "scoped events", "variant": "dashed", "fromSide": "left", "toSide": "left", "via": [[1300, 1578], [1300, 1090], [790, 1090], [790, 1218]], "labelAt": [1040, 1070] },
-    { "id": "goSecretBinding", "from": "goSecrets", "to": "goSession", "label": "bind runtime + shell", "variant": "dashed", "fromSide": "right", "toSide": "left", "via": [[790, 1018], [790, 1218]], "labelAt": [700, 998] },
-    { "id": "goApprovalAsk", "from": "goGate", "to": "goApprovals", "label": "permission ask", "variant": "dashed", "fromSide": "top", "toSide": "bottom", "via": [[1510, 1110], [2060, 1110]], "labelAt": [1780, 1090] },
-    { "id": "goQuestion", "from": "goResources", "to": "goApprovals", "label": "text question", "variant": "dashed", "fromSide": "right", "toSide": "right", "via": [[2280, 1578], [2280, 1018]], "labelAt": [2310, 1460] },
-    { "id": "goApprovalEvents", "from": "goApprovals", "to": "goSession", "label": "scoped approvals", "variant": "dashed", "fromSide": "left", "toSide": "left", "via": [[1300, 1018], [1300, 1090], [790, 1090], [790, 1218]], "labelAt": [1650, 998] },
-    { "id": "goResourceEffect", "from": "goGate", "to": "goResources", "label": "bound session effect", "variant": "security", "labelAt": [1850, 1558] },
-    { "id": "goManagedRun", "from": "goManaged", "to": "goSession", "label": "owns core", "fromSide": "bottom", "toSide": "top", "via": [[990, 1120], [1015, 1120]], "labelAt": [1100, 1140] }
+    {
+      "id": "request",
+      "from": "clients",
+      "to": "entry",
+      "label": "request",
+      "variant": "emphasis"
+    },
+    {
+      "id": "authenticate",
+      "from": "entry",
+      "to": "authority",
+      "label": "auth + scope",
+      "variant": "security"
+    },
+    {
+      "id": "route",
+      "from": "authority",
+      "to": "manager",
+      "variant": "security"
+    },
+    {
+      "id": "resolve",
+      "from": "manager",
+      "to": "session",
+      "label": "create / restore",
+      "route": "straight"
+    },
+    {
+      "id": "previewSkill",
+      "from": "manager",
+      "to": "skillDrafts",
+      "label": "auth-turn preview",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "right",
+      "via": [
+        [
+          970,
+          296
+        ],
+        [
+          970,
+          478
+        ]
+      ],
+      "labelAt": [
+        955,
+        382
+      ]
+    },
+    {
+      "id": "commitSkill",
+      "from": "skillDrafts",
+      "to": "state",
+      "label": "explicit digest commit",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          815,
+          760
+        ],
+        [
+          1360,
+          760
+        ],
+        [
+          1360,
+          839
+        ]
+      ],
+      "labelAt": [
+        1100,
+        744
+      ]
+    },
+    {
+      "id": "activateSkill",
+      "from": "state",
+      "to": "context",
+      "label": "future-session snapshot",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "right",
+      "via": [
+        [
+          1660,
+          839
+        ],
+        [
+          1660,
+          930
+        ],
+        [
+          2410,
+          930
+        ],
+        [
+          2410,
+          138
+        ]
+      ],
+      "labelAt": [
+        2030,
+        914
+      ]
+    },
+    {
+      "id": "serialize",
+      "from": "session",
+      "to": "agent",
+      "label": "serialized turn",
+      "variant": "emphasis"
+    },
+    {
+      "id": "buildContext",
+      "from": "agent",
+      "to": "context"
+    },
+    {
+      "id": "modelRequest",
+      "from": "context",
+      "to": "provider",
+      "label": "model request",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "modelResponse",
+      "from": "provider",
+      "to": "agent",
+      "label": "text / tools",
+      "variant": "emphasis"
+    },
+    {
+      "id": "toolCalls",
+      "from": "agent",
+      "to": "toolPolicy",
+      "label": "ToolCall batch",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "dispatch",
+      "from": "toolPolicy",
+      "to": "toolBackends",
+      "label": "guarded dispatch",
+      "variant": "security"
+    },
+    {
+      "id": "coordinationOwned",
+      "from": "manager",
+      "to": "coordination",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "inject",
+      "from": "coordination",
+      "to": "session",
+      "label": "inject next turn",
+      "variant": "dashed"
+    },
+    {
+      "id": "persist",
+      "from": "session",
+      "to": "state",
+      "label": "epochs / events",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "recordEffects",
+      "from": "toolPolicy",
+      "to": "state",
+      "label": "action outcomes",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "decisionRequest",
+      "from": "toolPolicy",
+      "to": "decisions",
+      "variant": "dashed"
+    },
+    {
+      "id": "goBuildContext",
+      "from": "goSession",
+      "to": "goContext",
+      "label": "fit + compact",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        1110,
+        1310
+      ]
+    },
+    {
+      "id": "goArchive",
+      "from": "goContext",
+      "to": "goArchives",
+      "label": "spill / archive",
+      "fromSide": "left",
+      "toSide": "right",
+      "via": [
+        [
+          740,
+          1398
+        ],
+        [
+          740,
+          1578
+        ]
+      ],
+      "labelAt": [
+        740,
+        1490
+      ]
+    },
+    {
+      "id": "goRequest",
+      "from": "goContext",
+      "to": "goFake",
+      "label": "typed request",
+      "fromSide": "left",
+      "toSide": "right",
+      "via": [
+        [
+          700,
+          1398
+        ],
+        [
+          700,
+          1218
+        ]
+      ],
+      "labelAt": [
+        700,
+        1300
+      ]
+    },
+    {
+      "id": "goReply",
+      "from": "goFake",
+      "to": "goSession",
+      "label": "typed reply",
+      "variant": "emphasis"
+    },
+    {
+      "id": "goDispatch",
+      "from": "goSession",
+      "to": "goGate",
+      "label": "groups / barriers",
+      "variant": "security",
+      "labelAt": [
+        1240,
+        1208
+      ]
+    },
+    {
+      "id": "goExecute",
+      "from": "goGate",
+      "to": "goBash",
+      "label": "guarded effect",
+      "variant": "security",
+      "labelAt": [
+        1674,
+        1176
+      ]
+    },
+    {
+      "id": "goFileEffect",
+      "from": "goGate",
+      "to": "goFiles",
+      "label": "bound file effect",
+      "variant": "security",
+      "labelAt": [
+        1850,
+        1378
+      ]
+    },
+    {
+      "id": "goReplay",
+      "from": "goGate",
+      "to": "goActions",
+      "label": "replay / settle",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          1510,
+          1280
+        ],
+        [
+          1450,
+          1280
+        ],
+        [
+          1450,
+          1320
+        ],
+        [
+          1510,
+          1320
+        ]
+      ],
+      "labelAt": [
+        1400,
+        1330
+      ]
+    },
+    {
+      "id": "goDelegate",
+      "from": "goResources",
+      "to": "goChildren",
+      "label": "task / depth gate",
+      "fromSide": "bottom",
+      "toSide": "bottom",
+      "via": [
+        [
+          2060,
+          1680
+        ],
+        [
+          1535,
+          1680
+        ]
+      ],
+      "labelAt": [
+        1798,
+        1660
+      ]
+    },
+    {
+      "id": "goChildContext",
+      "from": "goChildren",
+      "to": "goContext",
+      "label": "fresh context",
+      "fromSide": "left",
+      "toSide": "bottom",
+      "via": [
+        [
+          1270,
+          1578
+        ],
+        [
+          1270,
+          1480
+        ],
+        [
+          1015,
+          1480
+        ]
+      ],
+      "labelAt": [
+        1150,
+        1460
+      ]
+    },
+    {
+      "id": "goChildDispatch",
+      "from": "goChildren",
+      "to": "goGate",
+      "label": "selected tools",
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "via": [
+        [
+          1535,
+          1500
+        ],
+        [
+          1710,
+          1500
+        ],
+        [
+          1710,
+          1310
+        ],
+        [
+          1510,
+          1310
+        ]
+      ],
+      "labelAt": [
+        1710,
+        1390
+      ]
+    },
+    {
+      "id": "goChildEvents",
+      "from": "goChildren",
+      "to": "goSession",
+      "label": "scoped events",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "left",
+      "via": [
+        [
+          1300,
+          1578
+        ],
+        [
+          1300,
+          1090
+        ],
+        [
+          790,
+          1090
+        ],
+        [
+          790,
+          1218
+        ]
+      ],
+      "labelAt": [
+        1040,
+        1070
+      ]
+    },
+    {
+      "id": "goSecretBinding",
+      "from": "goSecrets",
+      "to": "goSession",
+      "label": "bind runtime + shell",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          790,
+          1018
+        ],
+        [
+          790,
+          1218
+        ]
+      ],
+      "labelAt": [
+        700,
+        998
+      ]
+    },
+    {
+      "id": "goApprovalAsk",
+      "from": "goGate",
+      "to": "goApprovals",
+      "label": "permission ask",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "via": [
+        [
+          1510,
+          1110
+        ],
+        [
+          2060,
+          1110
+        ]
+      ],
+      "labelAt": [
+        1780,
+        1090
+      ]
+    },
+    {
+      "id": "goQuestion",
+      "from": "goResources",
+      "to": "goApprovals",
+      "label": "text question",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "right",
+      "via": [
+        [
+          2280,
+          1578
+        ],
+        [
+          2280,
+          1018
+        ]
+      ],
+      "labelAt": [
+        2310,
+        1460
+      ]
+    },
+    {
+      "id": "goApprovalEvents",
+      "from": "goApprovals",
+      "to": "goSession",
+      "label": "scoped approvals",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "left",
+      "via": [
+        [
+          1300,
+          1018
+        ],
+        [
+          1300,
+          1090
+        ],
+        [
+          790,
+          1090
+        ],
+        [
+          790,
+          1218
+        ]
+      ],
+      "labelAt": [
+        1650,
+        998
+      ]
+    },
+    {
+      "id": "goResourceEffect",
+      "from": "goGate",
+      "to": "goResources",
+      "label": "bound session effect",
+      "variant": "security",
+      "labelAt": [
+        1850,
+        1558
+      ]
+    },
+    {
+      "id": "goManagedRun",
+      "from": "goManaged",
+      "to": "goSession",
+      "label": "owns core",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          990,
+          1120
+        ],
+        [
+          1015,
+          1120
+        ]
+      ],
+      "labelAt": [
+        1100,
+        1140
+      ]
+    },
+    {
+      "id": "goHTTPAdmission",
+      "from": "goEntry",
+      "to": "goManaged",
+      "fromSide": "right",
+      "toSide": "top"
+    }
   ],
   "cards": [
-    { "dot": "cyan", "title": "Concurrency", "items": ["One lock serializes each session", "Fleet-wide LLM and tool semaphores bound parallel work", "Parallel-safe tool results retain model-call order"] },
-    { "dot": "rose", "title": "Trust", "items": ["Authority is stamped before resources are resolved", "Only authenticated HTTP user/final turns enter preview", "Preview cannot publish; commit is a separate caller action", "Agent and user skills retain explicit provenance"] },
-    { "dot": "emerald", "title": "Durability boundary", "items": ["Pending personal-skill drafts are capped, expiring, and process-local", "Committed owner skills and memory are durable local files, not SQLite rows", "Publication is create-only and activates in future sessions"] },
-    { "dot": "amber", "title": "Typed decisions", "items": ["Off by default, including the full feature bundle", "Explicit state + batch choice / score / noul questions", "External-risk approval; judgments never execute actions", "Jev values retain provenance; LLM estimates are labeled"] },
-    { "dot": "cyan", "title": "Language layout", "items": ["The main map follows the Python runtime under python/", "Go NewRuntimeSession registers ten implemented tools behind one typed gate", "SessionManager owns ManagedSession admission/cancel/status and drains scratch cleanup; raw children emit core spans only", "Skill source digests are rechecked; questions return text or an unanswered variant", "Go requests consume fitted schemas and skills; compaction archives are workspace files", "Go children use capability-selected tools, fresh state and peer provenance", "Optional Go journals replay terminal results; SQLite backend remains pending", "Optional bound approvals preserve grants, text answers, reviewer abstention and typed rows; no SQLite backend yet", "Optional registry masking precedes result settlement and covers implemented events, approvals and compaction files; live arguments stay raw", "Real host shell consumes selected credentials, bounds shared capture, masks streams and kills process groups; Seatbelt and future sink coverage remain open", "Default cache uses detached wire annotations; stuck detection keeps 20 steps and nudges once before halting",
+    {
+      "dot": "cyan",
+      "title": "Concurrency",
+      "items": [
+        "One lock serializes each session",
+        "Fleet-wide LLM and tool semaphores bound parallel work",
+        "Parallel-safe tool results retain model-call order"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Trust",
+      "items": [
+        "Authority is stamped before resources are resolved",
+        "Only authenticated HTTP user/final turns enter preview",
+        "Preview cannot publish; commit is a separate caller action",
+        "Agent and user skills retain explicit provenance"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Durability boundary",
+      "items": [
+        "Pending personal-skill drafts are capped, expiring, and process-local",
+        "Committed owner skills and memory are durable local files, not SQLite rows",
+        "Publication is create-only and activates in future sessions"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Typed decisions",
+      "items": [
+        "Off by default, including the full feature bundle",
+        "Explicit state + batch choice / score / noul questions",
+        "External-risk approval; judgments never execute actions",
+        "Jev values retain provenance; LLM estimates are labeled"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Language layout",
+      "items": [
+        "The main map follows the Python runtime under python/",
+        "Go NewRuntimeSession registers ten implemented tools behind one typed gate",
+        "SessionManager owns ManagedSession admission/cancel/status and drains scratch cleanup; raw children emit core spans only",
+        "Skill source digests are rechecked; questions return text or an unanswered variant",
+        "Go requests consume fitted schemas and skills; compaction archives are workspace files",
+        "Go children use capability-selected tools, fresh state and peer provenance",
+        "Optional Go journals replay terminal results; SQLite backend remains pending",
+        "Optional bound approvals preserve grants, text answers, reviewer abstention and typed rows; no SQLite backend yet",
+        "Optional registry masking precedes result settlement and covers implemented events, approvals and compaction files; live arguments stay raw",
+        "Real host shell consumes selected credentials, bounds shared capture, masks streams and kills process groups; Seatbelt and future sink coverage remain open",
+        "Default cache uses detached wire annotations; stuck detection keeps 20 steps and nudges once before halting",
         "Children inherit typed prompt/injector seams, cache/stuck policies and exact model/tool pools with fresh state",
         "Parallel groups preserve result/step order; exclusive tools are barriers and bypass tool permits",
         "Manager shares model/tool pools of eight; bare model calls are unbounded",
-        "Todo reminder counters survive user turns; HTTP, steering, restore and real provider remain open",
+        "Todo reminder counters survive user turns; steering, restore and real provider remain open",
         "Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records",
-        "Transcript rewrites open event epochs; no durable cursor gap recovery or HTTP routes yet"] }
+        "Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending",
+        "Go HTTP handler admits one principal, twelve typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open"
+      ]
+    }
   ]
 }

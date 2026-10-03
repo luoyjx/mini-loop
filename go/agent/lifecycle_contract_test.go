@@ -171,155 +171,16 @@ func (b lifecycleBash) ExecuteBash(ctx context.Context, _ protocol.BashInput) (s
 	return "same", nil
 }
 func projectLifecycle(record SessionEventRecord) lifecycleJSON {
+	data, err := json.Marshal(record)
+	if err != nil {
+		panic(err)
+	}
 	row := lifecycleJSON{}
-	event := record.Event
-	lifecycleField(row, "type", event.Kind())
-	lifecycleField(row, "seq", record.Sequence)
-	lifecycleField(row, "session", record.SessionID)
-	lifecycleField(row, "transcript_epoch", record.TranscriptEpoch)
-	if record.Scope.Label != "" {
-		lifecycleField(row, "agent", record.Scope.Label)
-		lifecycleField(row, "depth", record.Scope.Depth)
-		lifecycleField(row, "message_id", record.Scope.RunContext.MessageID())
+	if err = json.Unmarshal(data, &row); err != nil {
+		panic(err)
 	}
-	switch event.Kind() {
-	case EventStatus:
-		v, _ := event.Status()
-		lifecycleField(row, "status", v.Status)
-		if v.Cancelled {
-			lifecycleField(row, "cancelled", true)
-		}
-	case EventDone:
-		v, _ := event.Done()
-		lifecycleField(row, "text", v.Text)
-		lifecycleField(row, "phase", v.Phase)
-	case EventCancelled:
-		v, _ := event.Cancelled()
-		lifecycleField(row, "reason", v.Reason)
-		lifecycleField(row, "repaired_tool_uses", v.RepairedToolUses)
-	case EventToolCatalog:
-		v, _ := event.ToolCatalog()
-		lifecycleField(row, "fingerprint", v.Fingerprint)
-		lifecycleField(row, "schemas", v.Schemas)
-	case EventCapabilityPlan:
-		v, _ := event.CapabilityPlan()
-		lifecycleField(row, "fingerprint", v.Fingerprint)
-		lifecycleField(row, "catalog_fingerprint", v.CatalogFingerprint)
-		lifecycleField(row, "permission_mode", v.PermissionMode)
-		lifecycleField(row, "sandbox", v.Sandbox)
-		lifecycleField(row, "sandbox_confined", v.SandboxConfined)
-	case EventSystemPrompt:
-		v, _ := event.SystemPrompt()
-		lifecycleField(row, "hash", v.Hash)
-		if v.Cache == nil {
-			lifecycleField(row, "text", v.System)
-		} else {
-			lifecycleField(row, "text", []cacheFixtureBlock{{Type: protocol.BlockText, Text: v.System, Cache: v.Cache}})
-		}
-	case EventModelStart:
-		v, _ := event.ModelStart()
-		lifecycleField(row, "span_id", v.SpanID)
-		lifecycleField(row, "purpose", v.Purpose)
-		lifecycleField(row, "model", v.Model)
-		lifecycleField(row, "message_count", v.MessageCount)
-		lifecycleField(row, "input_tokens_estimate", v.InputTokensEstimate)
-		lifecycleField(row, "tool_count", v.ToolCount)
-		lifecycleField(row, "max_tokens", v.MaxTokens)
-		if v.ToolCatalogFingerprint != nil {
-			lifecycleField(row, "tool_catalog_fingerprint", *v.ToolCatalogFingerprint)
-		}
-		if v.SystemHash != nil {
-			lifecycleField(row, "system_hash", *v.SystemHash)
-		}
-		if v.CapabilityFingerprint != nil {
-			lifecycleField(row, "capability_fingerprint", *v.CapabilityFingerprint)
-		}
-	case EventModelEnd:
-		v, _ := event.ModelEnd()
-		lifecycleField(row, "span_id", v.SpanID)
-		lifecycleField(row, "purpose", v.Purpose)
-		lifecycleField(row, "status", v.Status)
-		if v.Error != nil {
-			lifecycleField(row, "error", *v.Error)
-		}
-		if v.StopReason != nil {
-			lifecycleField(row, "stop_reason", *v.StopReason)
-		}
-		if v.Usage != nil {
-			lifecycleField(row, "usage", v.Usage)
-		}
-		if v.ServedModel != nil {
-			lifecycleField(row, "served_model", *v.ServedModel)
-		}
-		if v.PromptTokens != nil {
-			lifecycleField(row, "prompt_tokens", *v.PromptTokens)
-		}
-		if v.ToolCatalogFingerprint != nil {
-			lifecycleField(row, "tool_catalog_fingerprint", *v.ToolCatalogFingerprint)
-		}
-		if v.TokenMeter != nil {
-			lifecycleField(row, "token_meter", v.TokenMeter)
-		}
-	case EventAssistantText:
-		v, _ := event.AssistantText()
-		lifecycleField(row, "text", v.Text)
-		lifecycleField(row, "phase", v.Phase)
-	case EventActivityUpdate:
-		v, _ := event.ActivityUpdate()
-		lifecycleField(row, "activity_id", v.ID)
-		lifecycleField(row, "title", v.Title)
-		lifecycleField(row, "source", "commentary")
-		lifecycleField(row, "provisional", false)
-	case EventToolUse:
-		v, _ := event.ToolUse()
-		lifecycleField(row, "name", v.Name)
-		lifecycleField(row, "id", v.ID)
-		lifecycleField(row, "input", v.Input)
-		lifecycleField(row, "span_id", v.SpanID)
-		lifecycleField(row, "parent_span_id", v.ParentSpanID)
-		lifecycleField(row, "action_id", v.ActionID)
-		if v.ActivityID != "" {
-			lifecycleField(row, "activity_id", v.ActivityID)
-		}
-		lifecycleField(row, "display", struct {
-			Verb   string `json:"verb"`
-			Object string `json:"object"`
-		}{v.Display.Verb, v.Display.Object})
-	case EventToolResult:
-		v, _ := event.ToolResult()
-		lifecycleField(row, "name", v.Name)
-		lifecycleField(row, "id", v.ID)
-		lifecycleField(row, "output", v.Output)
-		lifecycleField(row, "span_id", v.SpanID)
-		lifecycleField(row, "parent_span_id", v.ParentSpanID)
-		lifecycleField(row, "action_id", v.ActionID)
-		lifecycleField(row, "error", v.Failed)
-		if v.Denied {
-			lifecycleField(row, "denied", true)
-		}
-		if v.Replayed {
-			lifecycleField(row, "replayed", true)
-		}
-	case EventRecovery:
-		v, _ := event.Recovery()
-		lifecycleField(row, "action", v.Action)
-		lifecycleField(row, "error", v.Error)
-	case EventError:
-		v, _ := event.RunError()
-		lifecycleField(row, "error", v.Error())
-	default:
-		v, ok := event.Stop()
-		if !ok {
-			panic(fmt.Sprintf("unprojected %s", event.Kind()))
-		}
-		lifecycleField(row, "stop_reason", v.Reason())
-		if v.Resumption() != 0 {
-			lifecycleField(row, "resumption", v.Resumption())
-		}
-		if v.Detail() != "" {
-			lifecycleField(row, "detail", v.Detail())
-		}
-	}
+	delete(row, "ts")
+	delete(row, "duration_ms")
 	return row
 }
 func normalizeLifecycleIDs(row lifecycleJSON, ids map[string]string, counts map[string]int) {

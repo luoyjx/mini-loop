@@ -13,11 +13,12 @@ type RunAuthority string
 type RunCapability string
 
 const (
-	AuthorityUntrusted       RunAuthority  = "untrusted"
-	AuthorityExplicitHuman   RunAuthority  = "explicit_human"
-	AuthorityPeerAgent       RunAuthority  = "peer_agent"
-	CapabilityWorkflowLaunch RunCapability = "workflow.launch"
-	CapabilityWorkflowManage RunCapability = "workflow.manage"
+	AuthorityUntrusted                   RunAuthority  = "untrusted"
+	AuthorityExplicitHuman               RunAuthority  = "explicit_human"
+	AuthorityPeerAgent                   RunAuthority  = "peer_agent"
+	CapabilityWorkflowLaunch             RunCapability = "workflow.launch"
+	CapabilityWorkflowManage             RunCapability = "workflow.manage"
+	CapabilityPersonalSkillCaptureSource RunCapability = "personal_skill.capture_source"
 )
 
 // RunContext is stamped by a trusted caller, never decoded from model text.
@@ -57,6 +58,22 @@ func newMessageID() (MessageID, error) {
 func DefaultRunContext() (RunContext, error) {
 	id, err := newMessageID()
 	return RunContext{messageID: id, origin: "api", channel: "internal", authority: AuthorityUntrusted, stampedBy: "mini_loop"}, err
+}
+
+// AuthenticatedHTTPRunContext records the admitted principal without granting
+// explicit-human tool authority. Null authentication still stamps anonymous.
+func AuthenticatedHTTPRunContext(actor ActorID) (RunContext, error) {
+	if actor == "" {
+		return RunContext{}, errors.New("HTTP actor must be non-empty")
+	}
+	value, err := DefaultRunContext()
+	if err != nil {
+		return RunContext{}, err
+	}
+	value.origin, value.channel, value.stampedBy = "authenticated_http", "http", "mini_loop.server"
+	value.actorID = &actor
+	value.approved = []RunCapability{CapabilityPersonalSkillCaptureSource}
+	return value, nil
 }
 
 type HumanRunConfig struct {

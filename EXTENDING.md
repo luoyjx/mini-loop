@@ -78,6 +78,13 @@ and any credential channel opened for one surface staying scoped to it. Two
 deliberate differences — constant-time comparison, and refusing to serve rather
 than defaulting open.
 
+The Go handler accepts `httpapi.Authenticator` with named `Principal` results.
+Its `Authenticate` and `Configured` methods must be safe for concurrent requests.
+Authentication runs once at admission; handlers reuse that principal for ownership
+and the untrusted HTTP stamp. `TokenAuth` supports detached owner bindings;
+`AuthFromEnvironment` resolves only token configuration. The embedding application
+must invoke `RefuseOpenBind` before listening; no Go startup CLI ships yet.
+
 ---
 
 ## 0. The policy set — `Harness`
@@ -1128,6 +1135,15 @@ def app():
 uvicorn myapp:app --factory --port 8000
 ```
 
+For the Go slice, pass `agent.NewSessionManager` to `httpapi.New(Config)` and use the
+result as an `http.Server.Handler`. The application owns listening, server shutdown
+and `manager.Stop`. Twelve method/path operations and process-local SSE are present;
+UI, full health posture, optional fleet routes and durable event catch-up remain
+pending. `Config.Now` and shared auth/services must synchronize their state. The
+manager's optional Secrets supply a typed output projection for HTTP JSON/SSE data;
+encoding faults fail closed and live model history remains unchanged. See
+[the Go README](go/README.md) for the explicit composition pattern.
+
 ---
 
 ## 10. Built-in feature modules (s09–s20)
@@ -1210,7 +1226,6 @@ eight slots per session, and children inherit the exact pools.
 and journal through typed `ManagerServices`. `WorkspaceFactory` selects scratch
 paths and `BashFactory` receives a typed `SessionBinding`; factories must not
 recursively create/delete/stop the manager. Services and callbacks are shared
-and must synchronize mutable state. Explicit owner identities are required;
-HTTP authentication and environment settings remain pending. See `go/README.md`
-for concrete
-semantics and the parity matrix for evidence.
+and must synchronize mutable state. Explicit owner identities are required.
+The httpapi handler supplies admitted HTTP ownership; full environment settings
+remain pending. See `go/README.md` for concrete semantics and the parity matrix for evidence.

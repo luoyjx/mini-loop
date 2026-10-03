@@ -150,6 +150,46 @@ func (manager *SessionManager) WorkspaceBindingEnabled() bool {
 }
 func (manager *SessionManager) Approvals() *ApprovalBroker { return manager.config.Services.Approvals }
 
+// RecordingMasker shares the configured projection boundary with embedding services.
+func (manager *SessionManager) RecordingMasker() TextMasker { return manager.config.Services.Secrets }
+
+type ManagerSummary struct {
+	Model                             string
+	ModelConcurrency, ToolConcurrency ConcurrencyLimit
+	Sessions                          int
+	WorkspaceBinding                  bool
+}
+
+func (manager *SessionManager) Summary() ManagerSummary {
+	manager.mu.Lock()
+	defer manager.mu.Unlock()
+	return ManagerSummary{manager.config.Defaults.Model, ConcurrencyLimit(cap(manager.config.Services.ModelLimiter.slots)), ConcurrencyLimit(cap(manager.config.Services.ToolLimiter.slots)), len(manager.sessions), len(manager.config.BindableRoots) > 0}
+}
+
+// ListRecent bounds expensive Info projections before evaluating session state.
+func (manager *SessionManager) ListRecent(owner OwnerID, limit int) []SessionInfo {
+	if limit < 1 {
+		limit = 1
+	}
+	if limit > 500 {
+		limit = 500
+	}
+	manager.mu.Lock()
+	handles := make([]*ManagedSession, 0, limit)
+	for i := len(manager.order) - 1; i >= 0 && len(handles) < limit; i-- {
+		s := manager.sessions[manager.order[i]]
+		if s != nil && owner != "" && s.Owner() == owner {
+			handles = append(handles, s)
+		}
+	}
+	manager.mu.Unlock()
+	result := make([]SessionInfo, 0, len(handles))
+	for _, s := range handles {
+		result = append(result, s.Info())
+	}
+	return result
+}
+
 func (manager *SessionManager) reserveID() (SessionID, error) {
 	manager.mu.Lock()
 	defer manager.mu.Unlock()

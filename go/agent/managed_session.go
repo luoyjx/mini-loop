@@ -170,7 +170,19 @@ func (session *ManagedSession) emitFor(run RunContext, event SessionEvent) {
 	event, scope = maskedEvent(session.core.secrets, event), maskedScope(session.core.secrets, scope)
 	session.core.events.appendScoped(event, scope)
 }
-func (session *ManagedSession) RunWithContext(ctx context.Context, prompt string, run RunContext) (output string, err error) {
+
+var ErrSessionBusy = errors.New("session is running a turn")
+
+func (session *ManagedSession) RunWithContext(ctx context.Context, prompt string, run RunContext) (string, error) {
+	return session.runWithContext(ctx, prompt, run, false)
+}
+
+// TryRunWithContext atomically refuses occupied admission instead of queuing.
+func (session *ManagedSession) TryRunWithContext(ctx context.Context, prompt string, run RunContext) (string, error) {
+	return session.runWithContext(ctx, prompt, run, true)
+}
+
+func (session *ManagedSession) runWithContext(ctx context.Context, prompt string, run RunContext, try bool) (output string, err error) {
 	if err = run.Validate(); err != nil {
 		return "", err
 	}
@@ -180,10 +192,18 @@ func (session *ManagedSession) RunWithContext(ctx context.Context, prompt string
 	if err != nil {
 		return "", err
 	}
-	select {
-	case <-ctx.Done():
-		return "", ctx.Err()
-	case <-session.admission:
+	if try {
+		select {
+		case <-session.admission:
+		default:
+			return "", ErrSessionBusy
+		}
+	} else {
+		select {
+		case <-ctx.Done():
+			return "", ctx.Err()
+		case <-session.admission:
+		}
 	}
 	defer func() { session.admission <- struct{}{} }()
 	if err = ctx.Err(); err != nil {

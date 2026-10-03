@@ -1,0 +1,1284 @@
+{
+  "anonymous": {
+    "cases": [
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "health",
+        "path": "/healthz",
+        "response": {
+          "authenticated": false,
+          "build": "test-build",
+          "experimental_workflows": false,
+          "fake_llm": true,
+          "features": false,
+          "max_concurrent_llm": 8,
+          "max_concurrent_tools": 8,
+          "model": "claude-sonnet-4-6",
+          "pid": 0,
+          "sessions": 0,
+          "started_at": 0,
+          "status": "ok",
+          "trajectories": false,
+          "uptime_s": 0,
+          "workspace_binding": false
+        },
+        "status": 200
+      },
+      {
+        "body": {},
+        "challenge": null,
+        "headers": {},
+        "method": "POST",
+        "name": "create",
+        "path": "/sessions",
+        "response": {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 0,
+          "forked_from": null,
+          "id": "anon-a",
+          "message_count": 0,
+          "model": "claude-sonnet-4-6",
+          "pending_steering": 0,
+          "permission_mode": "interactive",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "workspace/anon-a",
+          "workspace_bound": false
+        },
+        "status": 200
+      },
+      {
+        "body": {
+          "mode": "auto",
+          "system": ""
+        },
+        "challenge": null,
+        "headers": {},
+        "method": "POST",
+        "name": "create-second",
+        "path": "/sessions",
+        "response": {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 0,
+          "forked_from": null,
+          "id": "anon-b",
+          "message_count": 0,
+          "model": "claude-sonnet-4-6",
+          "pending_steering": 0,
+          "permission_mode": "auto",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "workspace/anon-b",
+          "workspace_bound": false
+        },
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "listing",
+        "path": "/sessions",
+        "response": [
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "anon-b",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "auto",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/anon-b",
+            "workspace_bound": false
+          },
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "anon-a",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "interactive",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/anon-a",
+            "workspace_bound": false
+          }
+        ],
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "limit-one",
+        "path": "/sessions?limit=1",
+        "response": [
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "anon-b",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "auto",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/anon-b",
+            "workspace_bound": false
+          }
+        ],
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "limit-zero",
+        "path": "/sessions?limit=0",
+        "response": [
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "anon-b",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "auto",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/anon-b",
+            "workspace_bound": false
+          }
+        ],
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "detail",
+        "path": "/sessions/anon-a",
+        "response": {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 0,
+          "forked_from": null,
+          "id": "anon-a",
+          "message_count": 0,
+          "model": "claude-sonnet-4-6",
+          "pending_steering": 0,
+          "permission_mode": "interactive",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "workspace/anon-a",
+          "workspace_bound": false
+        },
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "unknown",
+        "path": "/sessions/missing",
+        "response": {
+          "detail": "No session 'missing'"
+        },
+        "status": 404
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "approvals-empty",
+        "path": "/sessions/anon-a/approvals",
+        "response": {
+          "approvals": [],
+          "session": "anon-a"
+        },
+        "status": 200
+      },
+      {
+        "body": {
+          "decision": "allow"
+        },
+        "challenge": null,
+        "headers": {},
+        "method": "POST",
+        "name": "approval-missing",
+        "path": "/sessions/anon-a/approvals/missing",
+        "response": {
+          "detail": "No pending approval 'missing'"
+        },
+        "status": 404
+      },
+      {
+        "body": {
+          "message": "go"
+        },
+        "challenge": null,
+        "headers": {
+          "Idempotency-Key": "retry"
+        },
+        "method": "POST",
+        "name": "message",
+        "path": "/sessions/anon-a/messages",
+        "response": {
+          "final": "done",
+          "info": {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "anon-a",
+            "message_count": 2,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "interactive",
+            "run_count": 1,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/anon-a",
+            "workspace_bound": false
+          },
+          "session": "anon-a"
+        },
+        "status": 200
+      },
+      {
+        "body": {
+          "message": "different"
+        },
+        "challenge": null,
+        "headers": {
+          "Idempotency-Key": "retry"
+        },
+        "method": "POST",
+        "name": "idempotent",
+        "path": "/sessions/anon-a/messages",
+        "response": {
+          "final": "done",
+          "info": {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "anon-a",
+            "message_count": 2,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "interactive",
+            "run_count": 1,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/anon-a",
+            "workspace_bound": false
+          },
+          "session": "anon-a"
+        },
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "POST",
+        "name": "cancel-idle",
+        "path": "/sessions/anon-a/cancel",
+        "response": {
+          "cancelled": false,
+          "info": {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "anon-a",
+            "message_count": 2,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "interactive",
+            "run_count": 1,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/anon-a",
+            "workspace_bound": false
+          },
+          "session": "anon-a"
+        },
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "transcript-null",
+        "path": "/sessions/anon-a/transcript",
+        "response": {
+          "detail": "no epoch 0 (current: 0)"
+        },
+        "status": 404
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "POST",
+        "name": "method",
+        "path": "/healthz",
+        "response": {
+          "detail": "Method Not Allowed"
+        },
+        "status": 405
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "DELETE",
+        "name": "delete",
+        "path": "/sessions/anon-a",
+        "response": {
+          "deleted": "anon-a"
+        },
+        "status": 200
+      },
+      {
+        "body": {
+          "message": "go"
+        },
+        "challenge": null,
+        "headers": {
+          "Idempotency-Key": "retry"
+        },
+        "method": "POST",
+        "name": "deleted-cache-not-readable",
+        "path": "/sessions/anon-a/messages",
+        "response": {
+          "detail": "No session 'anon-a'"
+        },
+        "status": 404
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "listing-after-delete",
+        "path": "/sessions",
+        "response": [
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "anon-b",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "auto",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/anon-b",
+            "workspace_bound": false
+          }
+        ],
+        "status": 200
+      }
+    ],
+    "stream": {
+      "cache_control": "no-store",
+      "content_type": "text/event-stream; charset=utf-8",
+      "frames": [
+        {
+          "event": "status",
+          "id": "1",
+          "seq": 1,
+          "session": "anon-b",
+          "type": "status"
+        },
+        {
+          "event": "tool_catalog",
+          "id": "2",
+          "seq": 2,
+          "session": "anon-b",
+          "type": "tool_catalog"
+        },
+        {
+          "event": "capability_plan",
+          "id": "3",
+          "seq": 3,
+          "session": "anon-b",
+          "type": "capability_plan"
+        },
+        {
+          "event": "system_prompt",
+          "id": "4",
+          "seq": 4,
+          "session": "anon-b",
+          "type": "system_prompt"
+        },
+        {
+          "event": "model_start",
+          "id": "5",
+          "seq": 5,
+          "session": "anon-b",
+          "type": "model_start"
+        },
+        {
+          "event": "model_end",
+          "id": "6",
+          "seq": 6,
+          "session": "anon-b",
+          "type": "model_end"
+        },
+        {
+          "event": "assistant_text",
+          "id": "7",
+          "seq": 7,
+          "session": "anon-b",
+          "type": "assistant_text"
+        },
+        {
+          "event": "done",
+          "id": "8",
+          "seq": 8,
+          "session": "anon-b",
+          "type": "done"
+        }
+      ],
+      "status": 200
+    }
+  },
+  "auth": [
+    {
+      "anonymous": false,
+      "authorization": null,
+      "principal": null
+    },
+    {
+      "anonymous": false,
+      "authorization": "",
+      "principal": null
+    },
+    {
+      "anonymous": false,
+      "authorization": "Bearer",
+      "principal": null
+    },
+    {
+      "anonymous": false,
+      "authorization": "Bearer ",
+      "principal": null
+    },
+    {
+      "anonymous": false,
+      "authorization": "Basic token-a",
+      "principal": null
+    },
+    {
+      "anonymous": false,
+      "authorization": "Bearer wrong",
+      "principal": null
+    },
+    {
+      "anonymous": false,
+      "authorization": "bEaReR token-a",
+      "principal": "alice"
+    },
+    {
+      "anonymous": false,
+      "authorization": "Bearer token-b",
+      "principal": "bob"
+    }
+  ],
+  "authenticated": {
+    "cases": [
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "GET",
+        "name": "health",
+        "path": "/healthz",
+        "response": {
+          "authenticated": true,
+          "build": "test-build",
+          "experimental_workflows": false,
+          "fake_llm": true,
+          "features": false,
+          "max_concurrent_llm": 8,
+          "max_concurrent_tools": 8,
+          "model": "claude-sonnet-4-6",
+          "pid": 0,
+          "sessions": 0,
+          "started_at": 0,
+          "status": "ok",
+          "trajectories": false,
+          "uptime_s": 0,
+          "workspace_binding": false
+        },
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": "Bearer",
+        "headers": {},
+        "method": "GET",
+        "name": "missing-auth",
+        "path": "/sessions",
+        "response": {
+          "detail": "a bearer token is required"
+        },
+        "status": 401
+      },
+      {
+        "body": null,
+        "challenge": "Bearer",
+        "headers": {},
+        "method": "GET",
+        "name": "query-not-for-data",
+        "path": "/sessions?access_token=token-a",
+        "response": {
+          "detail": "a bearer token is required"
+        },
+        "status": 401
+      },
+      {
+        "body": null,
+        "challenge": "Bearer",
+        "headers": {},
+        "method": "GET",
+        "name": "unknown-route-gated",
+        "path": "/unknown",
+        "response": {
+          "detail": "a bearer token is required"
+        },
+        "status": 401
+      },
+      {
+        "body": {},
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "POST",
+        "name": "create",
+        "path": "/sessions",
+        "response": {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 0,
+          "forked_from": null,
+          "id": "token-a",
+          "message_count": 0,
+          "model": "claude-sonnet-4-6",
+          "pending_steering": 0,
+          "permission_mode": "interactive",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "workspace/token-a",
+          "workspace_bound": false
+        },
+        "status": 200
+      },
+      {
+        "body": {
+          "mode": "auto",
+          "system": ""
+        },
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "POST",
+        "name": "create-second",
+        "path": "/sessions",
+        "response": {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 0,
+          "forked_from": null,
+          "id": "token-b",
+          "message_count": 0,
+          "model": "claude-sonnet-4-6",
+          "pending_steering": 0,
+          "permission_mode": "auto",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "workspace/token-b",
+          "workspace_bound": false
+        },
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "GET",
+        "name": "listing",
+        "path": "/sessions",
+        "response": [
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "token-b",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "auto",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/token-b",
+            "workspace_bound": false
+          },
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "token-a",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "interactive",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/token-a",
+            "workspace_bound": false
+          }
+        ],
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "GET",
+        "name": "limit-one",
+        "path": "/sessions?limit=1",
+        "response": [
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "token-b",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "auto",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/token-b",
+            "workspace_bound": false
+          }
+        ],
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "GET",
+        "name": "limit-zero",
+        "path": "/sessions?limit=0",
+        "response": [
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "token-b",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "auto",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/token-b",
+            "workspace_bound": false
+          }
+        ],
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "GET",
+        "name": "detail",
+        "path": "/sessions/token-a",
+        "response": {
+          "active_trajectory_id": null,
+          "activity": "idle",
+          "busy": false,
+          "cancel_reason": null,
+          "created_at": 0,
+          "forked_from": null,
+          "id": "token-a",
+          "message_count": 0,
+          "model": "claude-sonnet-4-6",
+          "pending_steering": 0,
+          "permission_mode": "interactive",
+          "run_count": 0,
+          "sink_error": null,
+          "status": "idle",
+          "subscribers": 0,
+          "todos": [],
+          "trajectory_count": 0,
+          "trajectory_recording_error": null,
+          "workflows": [],
+          "workspace": "workspace/token-a",
+          "workspace_bound": false
+        },
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-b"
+        },
+        "method": "GET",
+        "name": "foreign",
+        "path": "/sessions/token-a",
+        "response": {
+          "detail": "No session 'token-a'"
+        },
+        "status": 404
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "GET",
+        "name": "unknown",
+        "path": "/sessions/missing",
+        "response": {
+          "detail": "No session 'missing'"
+        },
+        "status": 404
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "GET",
+        "name": "approvals-empty",
+        "path": "/sessions/token-a/approvals",
+        "response": {
+          "approvals": [],
+          "session": "token-a"
+        },
+        "status": 200
+      },
+      {
+        "body": {
+          "decision": "allow"
+        },
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "POST",
+        "name": "approval-missing",
+        "path": "/sessions/token-a/approvals/missing",
+        "response": {
+          "detail": "No pending approval 'missing'"
+        },
+        "status": 404
+      },
+      {
+        "body": {
+          "message": "go"
+        },
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a",
+          "Idempotency-Key": "retry"
+        },
+        "method": "POST",
+        "name": "message",
+        "path": "/sessions/token-a/messages",
+        "response": {
+          "final": "done",
+          "info": {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "token-a",
+            "message_count": 2,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "interactive",
+            "run_count": 1,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/token-a",
+            "workspace_bound": false
+          },
+          "session": "token-a"
+        },
+        "status": 200
+      },
+      {
+        "body": {
+          "message": "different"
+        },
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a",
+          "Idempotency-Key": "retry"
+        },
+        "method": "POST",
+        "name": "idempotent",
+        "path": "/sessions/token-a/messages",
+        "response": {
+          "final": "done",
+          "info": {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "token-a",
+            "message_count": 2,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "interactive",
+            "run_count": 1,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/token-a",
+            "workspace_bound": false
+          },
+          "session": "token-a"
+        },
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "POST",
+        "name": "cancel-idle",
+        "path": "/sessions/token-a/cancel",
+        "response": {
+          "cancelled": false,
+          "info": {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "token-a",
+            "message_count": 2,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "interactive",
+            "run_count": 1,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/token-a",
+            "workspace_bound": false
+          },
+          "session": "token-a"
+        },
+        "status": 200
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "GET",
+        "name": "transcript-null",
+        "path": "/sessions/token-a/transcript",
+        "response": {
+          "detail": "no epoch 0 (current: 0)"
+        },
+        "status": 404
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {},
+        "method": "POST",
+        "name": "method",
+        "path": "/healthz",
+        "response": {
+          "detail": "Method Not Allowed"
+        },
+        "status": 405
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "DELETE",
+        "name": "delete",
+        "path": "/sessions/token-a",
+        "response": {
+          "deleted": "token-a"
+        },
+        "status": 200
+      },
+      {
+        "body": {
+          "message": "go"
+        },
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a",
+          "Idempotency-Key": "retry"
+        },
+        "method": "POST",
+        "name": "deleted-cache-not-readable",
+        "path": "/sessions/token-a/messages",
+        "response": {
+          "detail": "No session 'token-a'"
+        },
+        "status": 404
+      },
+      {
+        "body": null,
+        "challenge": null,
+        "headers": {
+          "Authorization": "Bearer token-a"
+        },
+        "method": "GET",
+        "name": "listing-after-delete",
+        "path": "/sessions",
+        "response": [
+          {
+            "active_trajectory_id": null,
+            "activity": "idle",
+            "busy": false,
+            "cancel_reason": null,
+            "created_at": 0,
+            "forked_from": null,
+            "id": "token-b",
+            "message_count": 0,
+            "model": "claude-sonnet-4-6",
+            "pending_steering": 0,
+            "permission_mode": "auto",
+            "run_count": 0,
+            "sink_error": null,
+            "status": "idle",
+            "subscribers": 0,
+            "todos": [],
+            "trajectory_count": 0,
+            "trajectory_recording_error": null,
+            "workflows": [],
+            "workspace": "workspace/token-b",
+            "workspace_bound": false
+          }
+        ],
+        "status": 200
+      }
+    ],
+    "stream": {
+      "cache_control": "no-store",
+      "content_type": "text/event-stream; charset=utf-8",
+      "frames": [
+        {
+          "event": "status",
+          "id": "1",
+          "seq": 1,
+          "session": "token-b",
+          "type": "status"
+        },
+        {
+          "event": "tool_catalog",
+          "id": "2",
+          "seq": 2,
+          "session": "token-b",
+          "type": "tool_catalog"
+        },
+        {
+          "event": "capability_plan",
+          "id": "3",
+          "seq": 3,
+          "session": "token-b",
+          "type": "capability_plan"
+        },
+        {
+          "event": "system_prompt",
+          "id": "4",
+          "seq": 4,
+          "session": "token-b",
+          "type": "system_prompt"
+        },
+        {
+          "event": "model_start",
+          "id": "5",
+          "seq": 5,
+          "session": "token-b",
+          "type": "model_start"
+        },
+        {
+          "event": "model_end",
+          "id": "6",
+          "seq": 6,
+          "session": "token-b",
+          "type": "model_end"
+        },
+        {
+          "event": "assistant_text",
+          "id": "7",
+          "seq": 7,
+          "session": "token-b",
+          "type": "assistant_text"
+        },
+        {
+          "event": "done",
+          "id": "8",
+          "seq": 8,
+          "session": "token-b",
+          "type": "done"
+        }
+      ],
+      "status": 200
+    }
+  },
+  "bind": [
+    {
+      "host": "",
+      "refused": false
+    },
+    {
+      "host": "localhost",
+      "refused": false
+    },
+    {
+      "host": "127.0.0.1",
+      "refused": false
+    },
+    {
+      "host": "::1",
+      "refused": false
+    },
+    {
+      "host": "0.0.0.0",
+      "refused": true
+    },
+    {
+      "host": "remote",
+      "refused": true
+    }
+  ],
+  "deferred_health_fields": [
+    "posture"
+  ],
+  "http_context": {
+    "actor_id": "alice",
+    "approved_capabilities": [
+      "personal_skill.capture_source"
+    ],
+    "authority": "untrusted",
+    "channel": "http",
+    "delegated_by": null,
+    "origin": "authenticated_http",
+    "parent_message_id": null,
+    "stamped_by": "mini_loop.server"
+  },
+  "principals": [
+    "alice",
+    "bob"
+  ]
+}

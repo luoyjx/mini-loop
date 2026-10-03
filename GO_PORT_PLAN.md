@@ -97,7 +97,10 @@ Record its parity evidence and remaining gaps before checking it off.
       SQLite approvals, restore-time expiry
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
-      workspace policy and draining delete/stop implemented; routes/auth/SSE remain)
+      workspace policy and draining delete/stop implemented; token/anonymous auth,
+      twelve HTTP method/path operations and process-local SSE implemented;
+      CLI/UI, full health posture, mode/steering/fork, durable catch-up, trajectory,
+      optional routes and complete validation semantics remain)
 - [ ] G4 provider
 - [ ] G5 persistence
 - [ ] G6 optional features
@@ -1093,3 +1096,94 @@ Next: authenticated HTTP/session routes and SSE over the manager, transcript and
 trajectory/fork/steering boundaries, real provider transport/recovery, environment
 composition, SQLite/restart recovery, optional features and release differential
 checks. Overall goal remains active.
+
+
+## 2026-10-03 typed HTTP and SSE slice
+
+Baseline: `e6540af` plus this slice. The independent Go port remains incomplete;
+this checkpoint advances G0/G3 and does not close G3 or the overall outcome.
+
+### Implemented
+
+- `go/httpapi.New(Config)` composes a standard `http.Handler` over the existing
+  owner-scoped manager. Requests and responses use named concrete types. Generic
+  JSON helpers instantiate concrete payloads; no untyped payload enters runtime
+  state. Boundary-only fixture normalization uses RawMessage/maps.
+- `Authenticator` admits one principal per request. Null auth is anonymous;
+  configured bearer bindings use constant-time comparisons, reject conflicting
+  duplicates, preserve environment precedence and accept query tokens only on
+  event streams. The open-bind helper matches Python's loopback policy; the
+  embedding application must call it before listening. No Go startup CLI exists.
+- A ten-MiB declared/streamed body cap wraps all routes before authentication.
+  Security headers cover authentication failures. Foreign and missing sessions
+  are both 404. HTTP RunContext retains untrusted authority while stamping the
+  actor and personal-skill capture-source capability, never human authority.
+- Twelve method/path operations cover basic health; session create/list/detail/
+  delete; message, message stream and cancel; approvals and resolution; events;
+  and transcript's Null-store response. Listing clamps to 1..500 before Info work.
+  Optional trajectories/workflows/steering/fork metadata truthfully stays disabled.
+- Completed message replay keys include owner, session and idempotency key, capped
+  at 1,024; fixed-minute owner rate windows are capped at 4,096 and default off.
+  Cache lookup, rate spending and the in-flight claim form one locked transition.
+  The claim survives cache publication, then releases before network output.
+  ManagedSession.TryRunWithContext atomically refuses a busy turn; normal streams
+  still queue and cannot replace another holder's cancellation target.
+- SSE uses flat typed SessionEventRecord JSON, sequence IDs, event kinds, CRLF,
+  no-store headers, bounded subscriptions, pings, cursor deduplication and optional
+  agent_event envelopes. Closed clients release subscriptions and cancel their own
+  submitted turn/wait. A real uvicorn/httpx source probe verified cancellation
+  while the Python provider was blocked (`cancelled_after_disconnect=True`, busy
+  false before server shutdown); this is separate from the finite-stream fixture.
+- Optional manager Secrets project HTTP JSON and SSE data through the existing
+  bounded recording boundary before escaping. Cached snapshots are projected on
+  output; live model history remains raw. Projection errors/panics fail closed.
+  This Go integration is verified explicitly and is not a claim that every Python
+  optional HTTP sink already has identical masking coverage.
+- The lifecycle fixture now compares the actual Go event wire serializer instead
+  of a hand-written test-only projection. The new twenty-first Python snapshot
+  captures authenticated/anonymous HTTP responses, auth/bind cases, the HTTP stamp
+  and finite SSE frames (40 HTTP responses and 16 frames in total). Previous twenty
+  snapshots remain unchanged. Source's
+  NullStateStore transcript endpoint reports `no epoch 0 (current: 0)` with 404;
+  no synthetic durable transcript is invented.
+
+### Remaining boundaries
+
+Full health posture and source-derived build fingerprint, standalone listening/
+configuration/CLI, UI, mode/steering/fork, trajectory and optional route groups are
+pending. JSON validation returns 422 but does not yet match FastAPI detail arrays,
+scalar coercion or every redirect/method nuance. Empty model overrides differ at
+the library validation boundary. SSE here streams session events, not a real model
+transport; provider streaming/recovery remains G4. Durable cursor gap recovery,
+SQLite, restart and lease recovery remain G5; no dependency was added. Optional
+registered-secret recording does not imply confinement or a default-on registry.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, and `go test -race ./...` pass from `go/`,
+  including actual-source fixture comparison, concurrent replay, authenticated
+  approvals, disconnect ownership and raw-history/recording separation.
+- `.venv/bin/python -m pytest -q`: **2,151 passed, 28 skipped, 24 subtests passed,
+  three deprecation warnings, 154.06s**. The prior forty-turn timing failure did
+  not reproduce in this run; no timing thresholds or Python tests were changed.
+  This passing run does not establish the cause of the prior intermittent failure.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: 21 snapshots
+  current. `.venv/bin/python python/tools/verify_scans.py`: all 19 scans anchored.
+  Python package modules are unchanged, so no package-invariant change is claimed.
+- Related source guards all caught their mutations, invoked separately with
+  `.venv/bin/python python/tools/verify_guards.py -k NAME`:
+  `request-content-length-unchecked`, `request-streamed-bytes-uncounted`,
+  `shared-token-silently-collapses`, `idempotency-key-ignored`,
+  `rate-limit-never-fires`, `sessions-listing-unbounded`. The full mutation
+  catalogue was not rerun for this slice.
+- `git diff --check` passes. README architecture outline is verified. Archify
+  `deliver architecture ... --quality showcase --json` passes **9/9**, zero errors
+  and warnings. Specification: 24,692 bytes, SHA-256
+  `2eb065ea861bcbc4c558ff5e38190c10f2a896a04778f6e086d6b3a2826ae562`;
+  generated HTML: 663,692 bytes, SHA-256
+  `c22d02335e3c32cb439de04ef0a2170b96bb00d0a1663ee356a996b079c60281`.
+  HTML was regenerated from the frozen specification. Rendered visual inspection
+  was not repeated because of the existing browser file-access policy block;
+  acceptance here is the automated geometry/composition check.
+- No dependencies were added. Go process/race evidence is macOS; it does not
+  establish Linux execution or cross-process persistence.

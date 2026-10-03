@@ -1,7 +1,8 @@
 # Go implementation
 
 This directory is the independent Go port of the Python runtime in `../python/`.
-It is under construction and has no standalone agent CLI or HTTP server yet. The
+It is under construction. The httpapi package provides an embeddable HTTP/SSE
+handler; a standalone agent CLI/listener remains pending. The
 protocol package fixes the default fake-model transcript shapes as explicit Go
 types, completed model replies, usage and stop reasons, and has concrete inputs
 for all ten Python default tools. It rejects
@@ -81,8 +82,8 @@ The twelfth Python snapshot covers four role selections, five context snapshots
 and three real child loops (read, write and exhaustion). Go tests also cover
 custom-provider refusal/cancellation, nested task rebinding, readonly Explore
 with an auto parent and shared-provider session isolation under the race detector.
-This library slice supplies a process-local fleet manager; authenticated HTTP
-ownership remains pending. Core lifecycle events and shared limiters are implemented.
+This library supplies a process-local fleet manager and authenticated HTTP
+ownership through the httpapi handler. Core lifecycle events and shared limiters are implemented.
 Custom broker/state
 inheritance, owner resources and remote provider transport remain open.
 `RuntimeConfig.ActionJournal` and `NewJournaledToolGate` optionally bind a typed
@@ -110,7 +111,8 @@ persistence. The optional bound approval broker now supplies parked requests,
 timeout/cancellation, process-local session grants, reviewer abstention and typed
 approval rows; an injected store is still required for durable writes. Registry
 masking binds implemented results, recordings, approvals and compaction files.
-SQLite adapters, HTTP, provider transport and session persistence remain pending.
+SQLite adapters, remaining HTTP surfaces, provider transport and session persistence
+remain pending.
 Python
 contract snapshots and fake reply fixtures are generated into `testdata/` by
 `../python/tools/export_go_contracts.py`.
@@ -216,8 +218,8 @@ manager, an omitted owner is rejected and missing deletion returns a typed error
 as well as false. Defaults are interactive mode, 50 rounds, shared model/tool
 pools of eight, an in-memory approval broker and action journal, host shell and
 `./workspaces` scratch root. Nil skills select an empty catalogue; inject a
-deployment catalogue explicitly. No environment loader or HTTP authentication
-is implied.
+deployment catalogue explicitly. No full environment loader is implied;
+httpapi supplies authentication when explicitly composed below.
 
 `WorkspaceFactory` selects scratch paths; `BashFactory` receives immutable
 `SessionBinding` identity/owner/workspace/mode. Custom services must be safe to
@@ -244,6 +246,53 @@ creation order, ten workspace outcomes, bound retention, scratch deletion and
 stop. Go synchronization/race tests cover queued turns, deletion/shutdown joins,
 construction faults, shared retiring paths, symlink reclamation and bounded
 owner/diagnostic copies.
+
+### Serve the implemented HTTP slice
+
+Compose `httpapi.New` with a manager and `Authenticator`. Resolve token configuration
+with `AuthFromEnvironment(nil)` or pass an explicit snapshot/bindings. Authentication
+is admitted once; its owner flows into session operations and untrusted HTTP
+RunContext. The following is an embedding pattern inside an application that already
+owns `manager` and its lifecycle:
+
+```go
+auth, err := httpapi.AuthFromEnvironment(nil)
+if err != nil { return err }
+if err := httpapi.RefuseOpenBind("127.0.0.1", auth); err != nil { return err }
+handler, err := httpapi.New(httpapi.Config{Manager: manager, Auth: auth})
+if err != nil { return err }
+server := &http.Server{Addr: "127.0.0.1:8000", Handler: handler}
+// The application owns server.Shutdown(ctx) and manager.Stop(ctx).
+return server.ListenAndServe()
+```
+
+There is no Go startup command or listener policy enforcement outside this helper.
+Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
+to development; Config.FakeLLM is explicit rather than inferred from a provider.
+The basic health response omits full effective posture and source build hashing.
+Twelve method/path combinations cover create/list/detail/delete, completed message,
+streamed message, cancel, approval list/resolve, event subscription and Null-store
+transcript, plus health. Foreign and missing sessions both return 404; non-streaming
+messages reject busy turns atomically. Streamed messages queue; disconnect cancels
+that submitted turn or its wait. Observe disconnect only unsubscribes. The event
+wire is a named flat JSON union with sequence IDs and CRLF SSE framing.
+
+All requests pass a ten-MiB admission cap before auth. Event endpoints alone permit
+query-token fallback; headers win. Completed idempotent snapshots are scoped by
+owner/session/key, capped at 1,024, and checked before rate budget. Optional fixed
+minute rate windows are owner-scoped, capped at 4,096, and default off. Listing bounds
+Info work to the latest 1..500 handles. Optional manager Secrets project typed JSON
+and SSE data on output without rewriting live history; projection faults return no
+raw fallback. The new twenty-first source snapshot compares actual finite HTTP/SSE
+responses, with separate Go concurrency and real disconnect tests. The Python live
+disconnect probe was checked separately from that fixture.
+
+This slice uses process-local manager/backlog/cache/rate state and disabled trajectory/
+workflow metadata. Null-store transcript returns 404, current epoch zero, matching
+Python; it does not expose a synthetic durable transcript. Full FastAPI validation
+error arrays/coercions, CLI/UI, permission-mode updates, steering, forks, trajectories,
+optional fleet routes, durable SSE gap recovery, real model transport and SQLite are
+pending. No dependencies were added.
 
 ```sh
 cd go

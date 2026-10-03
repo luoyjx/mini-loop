@@ -4501,7 +4501,7 @@
       <p class="subtitle">Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Process-local manager owns scoped handles, shared pools and draining workspace cleanup. HTTP, streaming/recovery and SQLite pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed HTTP/SSE admission binds one principal to process-local sessions. CLI/UI, full posture, provider transport and SQLite remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4582,6 +4582,9 @@
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="3" x="288" y="938" width="1954" height="698" rx="12" class="c-region" stroke-width="1"/>
         <text x="296" y="956" class="t-cloud" font-size="9" font-weight="600">Independent Go port - in progress</text>
 
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="4" x="306" y="776" width="378" height="120" rx="12" class="c-region" stroke-width="1"/>
+        <text x="314" y="794" class="t-cloud" font-size="9" font-weight="600">Go HTTP admission</text>
+
         <!-- Connection paths (before components for correct z-order) -->
         <path data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request" data-composition-points="210,296;330,296" d="M 210 296 L 330 296" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="entry" data-edge-to="authority" data-edge-label="auth + scope" data-edge-key="1" data-edge-id="authenticate" data-composition-points="500,296;650,296" d="M 500 296 L 650 296" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
@@ -4619,6 +4622,7 @@
         <path data-edge-from="goApprovals" data-edge-to="goSession" data-edge-label="scoped approvals" data-edge-key="33" data-edge-id="goApprovalEvents" data-composition-points="1920,1018;1300,1018;1300,1090;790,1090;790,1218;850,1218" d="M 1920 1018 L 1308 1018 Q 1300 1018 1300 1026 L 1300 1082 Q 1300 1090 1292 1090 L 798 1090 Q 790 1090 790 1098 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goGate" data-edge-to="goResources" data-edge-label="bound session effect" data-edge-key="34" data-edge-id="goResourceEffect" data-composition-points="1650,1218;1785,1218;1785,1578;1920,1578" d="M 1650 1218 L 1777 1218 Q 1785 1218 1785 1226 L 1785 1570 Q 1785 1578 1793 1578 L 1920 1578" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="goManaged" data-edge-to="goSession" data-edge-label="owns core" data-edge-key="35" data-edge-id="goManagedRun" data-composition-points="990,1056;990,1120;1015,1120;1015,1180" d="M 990 1056 L 990 1112 Q 990 1120 998 1120 L 1007 1120 Q 1015 1120 1015 1128 L 1015 1180" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="goEntry" data-edge-to="goManaged" data-edge-key="36" data-edge-id="goHTTPAdmission" data-composition-points="660,838;990,838;990,980" d="M 660 838 L 982 838 Q 990 838 990 846 L 990 980" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4954,6 +4958,18 @@
         <text data-detail="fine" x="990" y="1048" class="t-backend" font-size="7" text-anchor="middle">owners / shared services + pools</text>
         </g>
 
+        <g id="node-goEntry" data-node-id="goEntry" data-node-label="Go HTTP / SSE" tabindex="0" role="button" aria-label="Focus Go HTTP / SSE, auth / bounded ingress / typed routes, Go HTTP admission" aria-pressed="false" data-node-kind="backend" data-node-sublabel="auth / bounded ingress / typed routes" data-node-tag="handler library / process-local" data-node-context="Go HTTP admission">
+          <title>Go HTTP / SSE · auth / bounded ingress / typed routes · Go HTTP admission · handler library / process-local</title>
+          <rect x="330" y="800" width="330" height="76" rx="6" class="c-mask"/>
+          <rect x="330" y="800" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(336 806) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="495" y="836" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go HTTP / SSE</text>
+        <text data-detail="context" x="495" y="852" class="t-muted" font-size="9" text-anchor="middle">auth / bounded ingress / typed routes</text>
+        <text data-detail="fine" x="495" y="868" class="t-backend" font-size="7" text-anchor="middle">handler library / process-local</text>
+        </g>
+
         <!-- Connection labels -->
         <g data-detail="context" data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request">
           <rect x="248.2" y="276" width="43.6" height="14" rx="3" class="c-mask"/>
@@ -5087,6 +5103,7 @@
           <rect x="1073.4" y="1130" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
           <text x="1100" y="1140" class="t-muted" font-size="8" text-anchor="middle">owns core</text>
         </g>
+
 
         <!-- Legend -->
         <g data-legend-bridge>
@@ -5369,9 +5386,10 @@
           <li>&bull; Children inherit typed prompt/injector seams, cache/stuck policies and exact model/tool pools with fresh state</li>
           <li>&bull; Parallel groups preserve result/step order; exclusive tools are barriers and bypass tool permits</li>
           <li>&bull; Manager shares model/tool pools of eight; bare model calls are unbounded</li>
-          <li>&bull; Todo reminder counters survive user turns; HTTP, steering, restore and real provider remain open</li>
+          <li>&bull; Todo reminder counters survive user turns; steering, restore and real provider remain open</li>
           <li>&bull; Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records</li>
-          <li>&bull; Transcript rewrites open event epochs; no durable cursor gap recovery or HTTP routes yet</li>
+          <li>&bull; Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending</li>
+          <li>&bull; Go HTTP handler admits one principal, twelve typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open</li>
         </ul>
       </div>
     </div>
