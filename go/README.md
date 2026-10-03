@@ -209,7 +209,8 @@ ordered outputs and stuck hashes, six mode decisions, nil/empty prompt rewrites
 and four cross-turn Todo counters. Deterministic Go synchronization tests cover
 shared pool caps and waiting cancellation, exclusive bypass, completed-sibling
 repair, worker joins, panic capacity release, atomic injector validation and
-child seam/pool inheritance. Steering and provider transport/recovery remain open.
+child seam/pool inheritance. Bounded steering and live modes are implemented below; provider transport/recovery
+remain open.
 
 `NewSessionManager(ManagerConfig)` owns ordered `ManagedSession` handles. It
 requires a provider and explicit owner identity on every create/lookup operation;
@@ -239,13 +240,45 @@ admission, gives current holders 250ms, joins pending construction and cleanup,
 and preserves surviving scratch. Cancelling a Stop caller only ends that wait;
 a later Stop joins the same shutdown. Custom providers/sinks must return so a
 joined shutdown can finish. Durable restore, optional fleet services, fork,
-steering and trajectories remain pending.
+durable steering and trajectories remain pending.
 
 The twentieth Python snapshot compares initial status/defaults, shared services,
 creation order, ten workspace outcomes, bound retention, scratch deletion and
 stop. Go synchronization/race tests cover queued turns, deletion/shutdown joins,
 construction faults, shared retiring paths, symlink reclamation and bounded
 owner/diagnostic copies.
+
+### Control a managed session
+
+`Steer(text)` parks input for the next round/turn and reports queue length.
+The queue holds 100 entries, drops oldest, and caps each at 16,000 Unicode
+characters plus a visible truncation marker. `ChangePermissionMode(mode)` updates
+readonly/interactive/auto without blocking on the model. Permission evaluation
+reads current mode after before/guard hooks; already made decisions and parked
+approvals remain governed by their existing lifecycle. After the first run starts,
+a real change queues the source meaning gloss in a separate posture_update. Initial
+changes and no-ops are silent. Builtin control injections follow custom injectors
+and precede context facts/compaction. Fresh children cannot drain parent controls.
+TryRunWithSnapshot captures completion Info before releasing admission for a
+completed HTTP response/cache. Info exposes live permission_mode and pending_steering.
+Registered secrets mask
+recorded delivery events; raw input reaches the live model history.
+
+`SubmitSteering` (also `SessionManager.Steer(owner,id,text)`) implements HTTP wakeup.
+On an idle handle it atomically publishes a background active holder, starts the
+text as an ordinary default-untrusted turn, and returns DeliveryNewTurn. Busy
+handles queue and return DeliverySteering. Manager deletion/shutdown owns joining
+these holders; request disconnect does not. StopAccepting refuses late control
+calls. A steer sent after the final round may wait for the next turn, matching
+source. These controls are process-local: durable steering/restoration and
+persist_error reporting remain pending. Posture notes retain source's uncapped
+queue; the steering count bound does not describe posture state.
+
+The twenty-second snapshot compares six actual Python control scenarios and six
+HTTP responses. Targeted Go tests cover before-hook mode changes, Unicode/batch
+bounds, concurrent control updates, child isolation, masking, simultaneous wakeups,
+request cancellation and manager shutdown. They establish delivery, not obedience
+by a live model.
 
 ### Serve the implemented HTTP slice
 
@@ -270,9 +303,9 @@ There is no Go startup command or listener policy enforcement outside this helpe
 Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
 to development; Config.FakeLLM is explicit rather than inferred from a provider.
 The basic health response omits full effective posture and source build hashing.
-Twelve method/path combinations cover create/list/detail/delete, completed message,
+Fourteen method/path combinations cover create/list/detail/delete, completed message,
 streamed message, cancel, approval list/resolve, event subscription and Null-store
-transcript, plus health. Foreign and missing sessions both return 404; non-streaming
+transcript, plus health, mode and steer. Foreign and missing sessions both return 404; non-streaming
 messages reject busy turns atomically. Streamed messages queue; disconnect cancels
 that submitted turn or its wait. Observe disconnect only unsubscribes. The event
 wire is a named flat JSON union with sequence IDs and CRLF SSE framing.
@@ -288,9 +321,9 @@ responses, with separate Go concurrency and real disconnect tests. The Python li
 disconnect probe was checked separately from that fixture.
 
 This slice uses process-local manager/backlog/cache/rate state and disabled trajectory/
-workflow metadata. Null-store transcript returns 404, current epoch zero, matching
+workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
 Python; it does not expose a synthetic durable transcript. Full FastAPI validation
-error arrays/coercions, CLI/UI, permission-mode updates, steering, forks, trajectories,
+error arrays/coercions, CLI/UI, forks, trajectories,
 optional fleet routes, durable SSE gap recovery, real model transport and SQLite are
 pending. No dependencies were added.
 

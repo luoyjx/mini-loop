@@ -97,16 +97,17 @@ type GateHooks struct {
 }
 
 type ToolGate struct {
-	catalog   *ToolCatalog
-	policy    *PermissionPolicy
-	before    []BeforeHook
-	guards    []GuardHook
-	after     []AfterHook
-	observers []ResultObserver
-	mu        sync.Mutex
-	problems  []string
-	journal   ActionJournal
-	secrets   TextMasker
+	modeSource permissionModeSource
+	catalog    *ToolCatalog
+	policy     *PermissionPolicy
+	before     []BeforeHook
+	guards     []GuardHook
+	after      []AfterHook
+	observers  []ResultObserver
+	mu         sync.Mutex
+	problems   []string
+	journal    ActionJournal
+	secrets    TextMasker
 }
 
 const maxGateProblems = 100
@@ -259,6 +260,9 @@ func (gate *ToolGate) dispatch(ctx context.Context, authority ToolAuthority, cal
 	risk := RiskUnclassified
 	if exists {
 		risk = definition.risk
+	}
+	if gate.modeSource != nil {
+		authority.Mode = gate.modeSource.CurrentMode()
 	}
 	permission, err := gate.policy.Evaluate(ctx, authority, call, risk, exists)
 	if ctx.Err() != nil {

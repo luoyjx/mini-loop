@@ -57,6 +57,16 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 		h.ParentMessageID = record.Scope.RunContext.Snapshot().ParentMessageID
 	}
 	switch e.kind {
+	case EventSteeringDelivered:
+		return marshalEvent(h, struct {
+			Count int    `json:"count"`
+			Text  string `json:"text"`
+		}{e.steeringDelivered.Count, e.steeringDelivered.Text})
+	case EventPostureUpdate:
+		return marshalEvent(h, struct {
+			Count int    `json:"count"`
+			Text  string `json:"text"`
+		}{e.postureUpdate.Count, e.postureUpdate.Text})
 	case EventStatus:
 		return marshalEvent(h, struct {
 			Status    SessionStatus `json:"status"`

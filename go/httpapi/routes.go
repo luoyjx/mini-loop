@@ -28,6 +28,8 @@ func (s *Server) register(path string, handlers map[string]http.HandlerFunc) {
 	})
 }
 func (s *Server) routes() {
+	s.register("/sessions/{session_id}/mode", map[string]http.HandlerFunc{"POST": s.mode})
+	s.register("/sessions/{session_id}/steer", map[string]http.HandlerFunc{"POST": s.steer})
 	s.register("/healthz", map[string]http.HandlerFunc{"GET": s.health})
 	s.register("/sessions", map[string]http.HandlerFunc{"POST": s.create, "GET": s.list})
 	s.register("/sessions/{session_id}", map[string]http.HandlerFunc{"GET": s.get, "DELETE": s.delete})
@@ -161,7 +163,7 @@ func (s *Server) message(w http.ResponseWriter, r *http.Request) {
 		writeJSON(s, w, 500, ErrorResponse{"message identity failed"})
 		return
 	}
-	final, err := session.TryRunWithContext(r.Context(), *req.Message, run)
+	result, err := session.TryRunWithSnapshot(r.Context(), *req.Message, run)
 	if err != nil {
 		release()
 		if errors.Is(err, agent.ErrSessionBusy) {
@@ -171,7 +173,7 @@ func (s *Server) message(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	response := MessageResponse{session.ID(), final, info(session.Info())}
+	response := MessageResponse{session.ID(), result.Final, info(result.Info)}
 	if key.Key != "" {
 		s.mu.Lock()
 		if len(s.cache) >= MaxIdempotencyKeys {
@@ -236,4 +238,52 @@ func (s *Server) transcript(w http.ResponseWriter, r *http.Request) {
 	// NullStateStore has transcript_epoch but returns zero. No live-memory
 	// transcript is substituted for this durable HTTP surface.
 	writeJSON(s, w, 404, ErrorResponse{fmt.Sprintf("no epoch %d (current: 0)", target)})
+}
+
+func (s *Server) mode(w http.ResponseWriter, r *http.Request) {
+	req, ok := decodeBody[ModeRequest](s, w, r)
+	if !ok {
+		return
+	}
+	if !req.Mode.Valid() {
+		writeJSON(s, w, 422, ErrorResponse{"invalid permission mode"})
+		return
+	}
+	session, ok := s.require(w, r)
+	if !ok {
+		return
+	}
+	mode, err := session.ChangePermissionMode(req.Mode)
+	if err != nil {
+		writeJSON(s, w, 503, ErrorResponse{"session is closed"})
+		return
+	}
+	writeJSON(s, w, 200, ModeResponse{session.ID(), mode})
+}
+func (s *Server) steer(w http.ResponseWriter, r *http.Request) {
+	req, ok := decodeBody[MessageRequest](s, w, r)
+	if !ok {
+		return
+	}
+	if req.Message == nil {
+		writeJSON(s, w, 422, ErrorResponse{"message is required"})
+		return
+	}
+	session, ok := s.require(w, r)
+	if !ok {
+		return
+	}
+	if !s.rate(w, principal(r.Context())) {
+		return
+	}
+	receipt, err := s.manager.Steer(principal(r.Context()).ID, session.ID(), *req.Message)
+	if err != nil {
+		if errors.Is(err, agent.ErrSessionNotFound) {
+			writeJSON(s, w, 404, ErrorResponse{"No session '" + string(session.ID()) + "'"})
+		} else {
+			writeJSON(s, w, 503, ErrorResponse{"session is closed"})
+		}
+		return
+	}
+	writeJSON(s, w, 200, receipt)
 }

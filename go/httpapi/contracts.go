@@ -38,11 +38,10 @@ type ApprovalRequest struct {
 	Remember bool             `json:"remember"`
 }
 
-// These fields describe the current disabled trajectory/workflow/fork/steering
+// These fields describe the current disabled trajectory/workflow/fork
 // paths. No synthetic durable transcript or optional service is exposed.
 type SessionInfo struct {
 	agent.SessionInfo
-	PendingSteering          int              `json:"pending_steering"`
 	ActiveTrajectoryID       *string          `json:"active_trajectory_id"`
 	TrajectoryCount          int              `json:"trajectory_count"`
 	TrajectoryRecordingError *string          `json:"trajectory_recording_error"`
@@ -89,4 +88,12 @@ type HealthResponse struct {
 	Trajectories          bool                   `json:"trajectories"`
 	WorkspaceBinding      bool                   `json:"workspace_binding"`
 	Sessions              int                    `json:"sessions"`
+}
+
+type ModeRequest struct {
+	Mode agent.PermissionMode `json:"mode"`
+}
+type ModeResponse struct {
+	Session        agent.SessionID      `json:"session"`
+	PermissionMode agent.PermissionMode `json:"permission_mode"`
 }

@@ -1425,6 +1425,132 @@ def _manager_contracts(scratch: Path) -> dict[str, object]:
             "stopped_create": stopped_create, "stop_keeps_scratch": second.workspace.is_dir()}
 
 
+def _control_contracts(scratch: Path) -> dict[str, object]:
+    """Actual bounded steering, live posture changes and HTTP wakeup."""
+    from mini_loop import SessionManager, Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+    from mini_loop.server import create_app
+    from fastapi.testclient import TestClient
+    import threading
+    import time
+    import asyncio
+
+    scratch.mkdir(parents=True)
+    def settings(name):
+        return Settings(fake_llm=True, trajectory_enabled=False, enable_features=False,
+                        workspace_root=scratch / name, skills_dir=scratch / "empty-skills")
+    def wrappers(messages, tag):
+        return [m["content"] for m in messages if isinstance(m.get("content"), str)
+                and m["content"].startswith("<" + tag + ">")]
+    async def scenario(name):
+        calls = []
+        box = {}
+        def responder(kwargs):
+            calls.append(kwargs["messages"])
+            if name == "mid-round" and len(calls) == 1:
+                box["session"].steer("actually, use staging")
+                box["session"].change_permission_mode("readonly")
+                return [tool("write_file", path="landed.txt", content="landed", _id="write")], "tool_use"
+            return [text("done")], "end_turn"
+        manager = SessionManager(settings(name), FakeAsyncAnthropic(responder=responder, thinking=False))
+        session = box["session"] = manager.create()
+        if name == "ordered":
+            session.steer("first"); session.steer("second")
+        elif name == "unicode":
+            session.steer("🙂" * 16001)
+        elif name == "overflow":
+            for i in range(102): session.steer("input-" + str(i))
+        elif name == "pre-first":
+            session.change_permission_mode("auto")
+        before = session.info()["pending_steering"]
+        await session.run("go")
+        if name == "posture-batch":
+            for mode in ("auto", "readonly", "interactive", "interactive"):
+                session.change_permission_mode(mode)
+        await session.run("again")
+        events = [{"type": event["type"], "count": event["count"], "text": event["text"]}
+                  for event in session._backlog if event["type"] in ("steering_delivered", "posture_update")]
+        result = {"name": name, "queued_before": before,
+                  "pending_after": session.info()["pending_steering"], "mode": session.permission_mode,
+                  "interjections": wrappers(session.agent.messages, "user_interjection"),
+                  "postures": wrappers(session.agent.messages, "posture_update"), "events": events,
+                  "request_interjections": [len(wrappers(c, "user_interjection")) for c in calls],
+                  "request_postures": [len(wrappers(c, "posture_update")) for c in calls],
+                  "capability_modes": [event["permission_mode"] for event in session._backlog
+                                       if event["type"] == "capability_plan"],
+                  "file_exists": (session.workspace / "landed.txt").exists()}
+        await manager.stop()
+        return result
+    scenarios = asyncio.run(_gather_controls(scenario))
+    saved = {key: os.environ.get(key) for key in ("MINILOOP_API_TOKENS", "MINILOOP_API_TOKEN")}
+    try:
+        os.environ["MINILOOP_API_TOKENS"] = "alice:token-a,bob:token-b"
+        os.environ.pop("MINILOOP_API_TOKEN", None)
+        entered = threading.Event()
+        release = asyncio.Event()
+        count = 0
+        def responder(kwargs):
+            nonlocal count
+            count += 1
+            if count == 1: return [tool("TodoWrite", items=[], _id="todo")], "tool_use"
+            return [text("done")], "end_turn"
+        fake = FakeAsyncAnthropic(responder=responder, thinking=False)
+        original = fake.messages.create
+        async def create(**kwargs):
+            if count == 0:
+                entered.set()
+                await release.wait()
+            return await original(**kwargs)
+        fake.messages.create = create
+        manager = SessionManager(settings("http"), fake)
+        cases = []
+        with TestClient(create_app(settings=settings("http"), manager=manager)) as http:
+            headers = {"Authorization": "Bearer token-a"}
+            sid = http.post("/sessions", json={}, headers=headers).json()["id"]
+            session = manager._sessions[sid]
+            def call(name, path, body, token="token-a"):
+                r = http.post("/sessions/"+sid+"/"+path, json=body,
+                              headers={"Authorization": "Bearer "+token})
+                payload = r.json()
+                if isinstance(payload, dict) and "session" in payload: payload["session"] = "session"
+                if isinstance(payload, dict) and isinstance(payload.get("detail"), str):
+                    payload["detail"] = payload["detail"].replace(sid, "session")
+                cases.append({"name":name,"path":path,"body":body,"token":token,
+                              "status":r.status_code,"response":payload})
+            call("mode-pre-first", "mode", {"mode":"auto"})
+            call("foreign-mode", "mode", {"mode":"readonly"}, "token-b")
+            future = http.portal.start_task_soon(session.run, "go")
+            if not entered.wait(5): raise RuntimeError("control fixture provider did not enter")
+            try:
+                call("busy-steer", "steer", {"message":"use staging"})
+                call("foreign-steer", "steer", {"message":"foreign"}, "token-b")
+                call("mode-live", "mode", {"mode":"readonly"})
+                pending_busy = session.info()["pending_steering"]
+            finally:
+                http.portal.call(release.set)
+            future.result(timeout=5)
+            call("idle-steer", "steer", {"message":"check deploy"})
+            deadline = time.monotonic() + 5
+            while not (session.run_count == 2 and not session.busy):
+                if time.monotonic() > deadline: raise RuntimeError("idle steer never completed")
+                time.sleep(.001)
+            http_result = {"cases":cases,"busy_pending":pending_busy,
+                           "run_count":session.run_count,"pending_after":session.info()["pending_steering"],
+                           "interjections":wrappers(session.agent.messages,"user_interjection"),
+                           "postures":wrappers(session.agent.messages,"posture_update")}
+        return {"max_chars":16000,"max_queue":100,"scenarios":scenarios,"http":http_result}
+    finally:
+        for key,value in saved.items():
+            if value is None: os.environ.pop(key,None)
+            else: os.environ[key]=value
+
+
+async def _gather_controls(scenario):
+    # Sequential because each scenario owns real workspace/session lifecycle.
+    return [await scenario(name) for name in
+            ("ordered", "unicode", "overflow", "pre-first", "posture-batch", "mid-round")]
+
+
 def _http_contracts(scratch: Path) -> dict[str, object]:
     """Actual FastAPI HTTP admission, ownership, CRUD, replay and SSE framing."""
     from fastapi.testclient import TestClient
@@ -1624,6 +1750,7 @@ def _snapshot() -> dict[str, bytes]:
         scheduling_contracts = _scheduling_contracts(Path(scratch) / "scheduling")
         manager_contracts = _manager_contracts(Path(scratch) / "manager")
         http_contracts = _http_contracts(Path(scratch) / "http")
+        control_contracts = _control_contracts(Path(scratch) / "controls")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1660,6 +1787,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-scheduling.json": _json_bytes(scheduling_contracts),
         "python-manager.json": _json_bytes(manager_contracts),
         "python-http.json": _json_bytes(http_contracts),
+        "python-controls.json": _json_bytes(control_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

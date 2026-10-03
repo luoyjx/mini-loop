@@ -1137,7 +1137,8 @@ uvicorn myapp:app --factory --port 8000
 
 For the Go slice, pass `agent.NewSessionManager` to `httpapi.New(Config)` and use the
 result as an `http.Server.Handler`. The application owns listening, server shutdown
-and `manager.Stop`. Twelve method/path operations and process-local SSE are present;
+and `manager.Stop`. Fourteen method/path operations, mode/steering and
+process-local SSE are present;
 UI, full health posture, optional fleet routes and durable event catch-up remain
 pending. `Config.Now` and shared auth/services must synchronize their state. The
 manager's optional Secrets supply a typed output projection for HTTP JSON/SSE data;
@@ -1229,3 +1230,13 @@ recursively create/delete/stop the manager. Services and callbacks are shared
 and must synchronize mutable state. Explicit owner identities are required.
 The httpapi handler supplies admitted HTTP ownership; full environment settings
 remain pending. See `go/README.md` for concrete semantics and the parity matrix for evidence.
+
+Managed Go controls are separate from the transcript/model lock. A before/guard
+hook may call ChangePermissionMode; the gate loads current mode at permission
+selection after those hooks. UserPromptHooks and Injectors receive a detached
+mode snapshot at callback entry. Builtin steering/posture injection follows custom
+injectors and precedes compaction; child sessions inherit custom seams but cannot
+consume parent control queues. Steer is synchronous and parks even when idle;
+SubmitSteering additionally wakes an idle owned turn. Manager shutdown/deletion
+joins that active holder. Neither control text nor posture wrappers grant human
+or workflow authority. See `go/README.md` for queue and persistence boundaries.

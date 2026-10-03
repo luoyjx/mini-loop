@@ -76,29 +76,31 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
-	kind           SessionEventKind
-	stop           ProviderStopEvent
-	todos          []protocol.TodoItem
-	compact        CompactionEvent
-	subagent       SubagentEvent
-	runError       RunErrorEvent
-	approval       ApprovalEvent
-	stuck          StuckEvent
-	modelStart     ModelStartEvent
-	modelEnd       ModelEndEvent
-	assistantText  AssistantTextEvent
-	delta          AssistantDeltaEvent
-	toolUse        ToolUseEvent
-	toolResult     ToolResultEvent
-	toolCatalog    ToolCatalogEvent
-	systemPrompt   SystemPromptEvent
-	capabilityPlan CapabilityPlanEvent
-	activity       ActivityUpdateEvent
-	reconcile      ReconcileEvent
-	status         StatusEvent
-	done           DoneEvent
-	cancelled      CancelledEvent
-	recovery       RecoveryEvent
+	steeringDelivered SteeringDeliveredEvent
+	postureUpdate     PostureUpdateEvent
+	kind              SessionEventKind
+	stop              ProviderStopEvent
+	todos             []protocol.TodoItem
+	compact           CompactionEvent
+	subagent          SubagentEvent
+	runError          RunErrorEvent
+	approval          ApprovalEvent
+	stuck             StuckEvent
+	modelStart        ModelStartEvent
+	modelEnd          ModelEndEvent
+	assistantText     AssistantTextEvent
+	delta             AssistantDeltaEvent
+	toolUse           ToolUseEvent
+	toolResult        ToolResultEvent
+	toolCatalog       ToolCatalogEvent
+	systemPrompt      SystemPromptEvent
+	capabilityPlan    CapabilityPlanEvent
+	activity          ActivityUpdateEvent
+	reconcile         ReconcileEvent
+	status            StatusEvent
+	done              DoneEvent
+	cancelled         CancelledEvent
+	recovery          RecoveryEvent
 }
 
 func (event SessionEvent) Stuck() (StuckEvent, bool) {

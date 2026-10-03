@@ -274,8 +274,9 @@ telemetry, bounded subscriptions and managed turn admission/cancellation,
 plus typed prompt hooks/injectors, Todo reminders and shared model/tool pools
 with ordered parallel groups, and process-local fleet composition, owner-scoped
 lookup, workspace policy and draining deletion/shutdown, plus typed HTTP authentication,
-REST admission, idempotency/rate bounds and SSE projection,
-reviewed **2026-10-03** (Go baseline `e6540af` plus the HTTP slice).
+REST admission, idempotency/rate bounds and SSE projection, plus bounded steering,
+live permission modes and owned HTTP wakeup,
+reviewed **2026-10-03** (Go baseline `6a11877` plus the controls slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -327,6 +328,7 @@ flowchart LR
         GoFake["FakeProvider<br/>typed requests · replies · usage"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done"]
+        GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
@@ -339,7 +341,8 @@ flowchart LR
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoEntry --> GoTrust --> GoManager
-        GoManager -->|create / own| GoManaged --> GoSession
+        GoManager -->|create / own| GoManaged --> GoControls --> GoSession
+        GoControls -. mode at permission evaluation .-> GoGate
         GoSession --> GoContext --> GoFake
         GoFake --> GoSession
         GoContext --> GoArchives
@@ -557,9 +560,9 @@ creation and deleted-session cleanup, preserving surviving scratch directories.
 Caller cancellation ends the Stop wait; shutdown continues and can be joined again.
 Factories receive typed session bindings and must not recursively create/delete/stop
 the manager. Nil skills remain an empty catalogue; deployment loading is explicit.
-`go/httpapi.New` returns a standard `http.Handler` over that manager. Twelve method/path
+`go/httpapi.New` returns a standard `http.Handler` over that manager. Fourteen method/path
 combinations implement basic health, create/list/detail/delete, message/stream/cancel,
-approvals/resolution, events and the Null-store transcript response. Token/anonymous
+approvals/resolution, mode/steer, events and the Null-store transcript response. Token/anonymous
 authentication is resolved once; the ten-MiB ingress cap precedes it. An admitted HTTP
 turn remains untrusted, with only the personal-skill capture-source stamp. Completed
 message retries use detached owner/session/key snapshots before spending rate budget;
@@ -570,9 +573,24 @@ JSON and HTTP responses use the optional recording projection without changing l
 model history; encoder failures return no raw fallback. These are process-local handler
 services: the embedding application owns listening/shutdown and must call
 `RefuseOpenBind` before listening. There is no Go CLI, UI, full health posture, durable
-catch-up, mode/steering/fork route, trajectory or optional fleet service yet. Full
+catch-up, fork route, trajectory or optional fleet service yet. Full
 FastAPI validation detail/coercion parity remains open. Durable restoration is pending.
-The interactive map folds ManagedSession into the Go SessionManager node. Raw
+Managed controls have a separate lock from model/transcript execution. Library
+`Steer` parks at most 100 inputs, each capped at 16,000 Unicode characters with a
+truncation marker, dropping the oldest. The next round injects one ordered
+`user_interjection` after custom injectors and before context budgeting; events
+project the first 2,000 characters. HTTP steering of an idle session publishes an
+owned background holder before responding and runs the original text as a new
+turn; busy steering queues for the next round. Request disconnect does not own
+this background turn, but manager deletion/shutdown drains it. It uses default
+untrusted provenance, matching Python's steer wakeup. Mode changes become effective
+at permission evaluation after before/guard hooks; prior decisions are not revoked.
+After the first run starts, a real mode change queues a separate harness-authored
+`posture_update` with its meaning for the model. Pre-first changes and no-ops stay
+silent. Fresh children retain their selected mode and never drain parent controls.
+Steering and posture state are process-local; SQLite queue persistence/restoration
+remains pending. The interactive map folds ManagedSession into the Go SessionManager
+node and its controls into Go Session. Raw
 child sessions emit core spans and text without
 outer status/done events. Transcript replacement increments event epochs, including
 with no state store. Tool failures and denials retain their flags in telemetry;

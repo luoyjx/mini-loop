@@ -26,6 +26,8 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 	event.assistantText.Text = mask(event.assistantText.Text)
 	event.delta.Text = mask(event.delta.Text)
 	event.done.Text = mask(event.done.Text)
+	event.steeringDelivered.Text = mask(event.steeringDelivered.Text)
+	event.postureUpdate.Text = mask(event.postureUpdate.Text)
 	event.cancelled.Reason = mask(event.cancelled.Reason)
 	for i := range event.cancelled.RepairedToolUses {
 		event.cancelled.RepairedToolUses[i] = mask(event.cancelled.RepairedToolUses[i])

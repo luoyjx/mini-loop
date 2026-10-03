@@ -51,21 +51,22 @@ func (event SessionEvent) Cancelled() (CancelledEvent, bool) {
 }
 
 type SessionInfo struct {
-	ID             SessionID           `json:"id"`
-	Status         SessionStatus       `json:"status"`
-	Activity       SessionActivity     `json:"activity"`
-	Busy           bool                `json:"busy"`
-	CancelReason   *string             `json:"cancel_reason"`
-	CreatedAt      float64             `json:"created_at"`
-	RunCount       int                 `json:"run_count"`
-	PermissionMode PermissionMode      `json:"permission_mode"`
-	Workspace      string              `json:"workspace"`
-	WorkspaceBound bool                `json:"workspace_bound"`
-	Model          string              `json:"model"`
-	MessageCount   int                 `json:"message_count"`
-	Todos          []protocol.TodoItem `json:"todos"`
-	Subscribers    int                 `json:"subscribers"`
-	SinkError      *string             `json:"sink_error"`
+	ID              SessionID           `json:"id"`
+	Status          SessionStatus       `json:"status"`
+	Activity        SessionActivity     `json:"activity"`
+	Busy            bool                `json:"busy"`
+	CancelReason    *string             `json:"cancel_reason"`
+	CreatedAt       float64             `json:"created_at"`
+	RunCount        int                 `json:"run_count"`
+	PermissionMode  PermissionMode      `json:"permission_mode"`
+	PendingSteering int                 `json:"pending_steering"`
+	Workspace       string              `json:"workspace"`
+	WorkspaceBound  bool                `json:"workspace_bound"`
+	Model           string              `json:"model"`
+	MessageCount    int                 `json:"message_count"`
+	Todos           []protocol.TodoItem `json:"todos"`
+	Subscribers     int                 `json:"subscribers"`
+	SinkError       *string             `json:"sink_error"`
 }
 type liveRuntime struct {
 	MessageCount int
@@ -127,6 +128,8 @@ func NewManagedSession(config RuntimeConfig) (*ManagedSession, error) {
 	if err != nil {
 		return nil, err
 	}
+	core.control = &sessionControl{mode: core.mode}
+	core.gate.modeSource = core.control
 	session := &ManagedSession{core: core, admission: make(chan struct{}, 1), accepting: true, status: StatusIdle, createdAt: float64(time.Now().UnixMicro()) / 1e6, approvals: config.Approvals, workspaceBound: config.Workspace != ""}
 	session.admission <- struct{}{}
 	return session, nil
@@ -174,15 +177,28 @@ func (session *ManagedSession) emitFor(run RunContext, event SessionEvent) {
 var ErrSessionBusy = errors.New("session is running a turn")
 
 func (session *ManagedSession) RunWithContext(ctx context.Context, prompt string, run RunContext) (string, error) {
-	return session.runWithContext(ctx, prompt, run, false)
+	return session.runWithContext(ctx, prompt, run, false, nil)
 }
 
 // TryRunWithContext atomically refuses occupied admission instead of queuing.
 func (session *ManagedSession) TryRunWithContext(ctx context.Context, prompt string, run RunContext) (string, error) {
-	return session.runWithContext(ctx, prompt, run, true)
+	return session.runWithContext(ctx, prompt, run, true, nil)
 }
 
-func (session *ManagedSession) runWithContext(ctx context.Context, prompt string, run RunContext, try bool) (output string, err error) {
+// ManagedTurnResult captures completion before another holder takes admission.
+type ManagedTurnResult struct {
+	Final string
+	Info  SessionInfo
+}
+
+func (session *ManagedSession) TryRunWithSnapshot(ctx context.Context, prompt string, run RunContext) (ManagedTurnResult, error) {
+	var result ManagedTurnResult
+	var err error
+	result.Final, err = session.runWithContext(ctx, prompt, run, true, &result.Info)
+	return result, err
+}
+
+func (session *ManagedSession) runWithContext(ctx context.Context, prompt string, run RunContext, try bool, snapshot *SessionInfo) (output string, err error) {
 	if err = run.Validate(); err != nil {
 		return "", err
 	}
@@ -214,13 +230,26 @@ func (session *ManagedSession) runWithContext(ctx context.Context, prompt string
 		session.mu.Unlock()
 		return "", err
 	}
+	turnCtx, active := session.beginTurnLocked(ctx)
+	session.mu.Unlock()
+	output, err = session.runActive(turnCtx, prompt, run, active)
+	if snapshot != nil && err == nil {
+		*snapshot = session.Info()
+	}
+	return output, err
+}
+
+// Caller holds mu and owns admission; publication precedes an async response.
+func (session *ManagedSession) beginTurnLocked(ctx context.Context) (context.Context, *activeTurn) {
 	turnCtx, cancel := context.WithCancel(ctx)
 	active := &activeTurn{cancel: cancel, done: make(chan struct{})}
 	session.active = active
 	session.status = StatusRunning
 	session.runCount++
-	session.mu.Unlock()
-	defer cancel()
+	return turnCtx, active
+}
+func (session *ManagedSession) runActive(turnCtx context.Context, prompt string, run RunContext, active *activeTurn) (output string, err error) {
+	defer active.cancel()
 	defer func() {
 		if fault := recover(); fault != nil {
 			err = fmt.Errorf("runtime panicked: %T", fault)
@@ -312,7 +341,8 @@ func (session *ManagedSession) Info() SessionInfo {
 	if value := session.core.SinkError(); value != "" {
 		sink = &value
 	}
-	return SessionInfo{session.ID(), status, activity, busy, reason, session.createdAt, count, session.core.mode, session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
+	mode, queued := session.core.control.snapshot()
+	return SessionInfo{session.ID(), status, activity, busy, reason, session.createdAt, count, mode, queued, session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
 }
 func hasStuckSignal(detector StuckDetector, state StuckState) (stuck bool) {
 	defer func() {

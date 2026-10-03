@@ -4501,7 +4501,7 @@
       <p class="subtitle">Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed HTTP/SSE admission binds one principal to process-local sessions. CLI/UI, full posture, provider transport and SQLite remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed HTTP/SSE and live controls feed owned turns. CLI/UI, full posture, provider transport and SQLite remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4621,7 +4621,7 @@
         <path data-edge-from="goResources" data-edge-to="goApprovals" data-edge-label="text question" data-edge-key="32" data-edge-id="goQuestion" data-composition-points="2200,1578;2280,1578;2280,1018;2200,1018" d="M 2200 1578 L 2272 1578 Q 2280 1578 2280 1570 L 2280 1026 Q 2280 1018 2272 1018 L 2200 1018" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goApprovals" data-edge-to="goSession" data-edge-label="scoped approvals" data-edge-key="33" data-edge-id="goApprovalEvents" data-composition-points="1920,1018;1300,1018;1300,1090;790,1090;790,1218;850,1218" d="M 1920 1018 L 1308 1018 Q 1300 1018 1300 1026 L 1300 1082 Q 1300 1090 1292 1090 L 798 1090 Q 790 1090 790 1098 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goGate" data-edge-to="goResources" data-edge-label="bound session effect" data-edge-key="34" data-edge-id="goResourceEffect" data-composition-points="1650,1218;1785,1218;1785,1578;1920,1578" d="M 1650 1218 L 1777 1218 Q 1785 1218 1785 1226 L 1785 1570 Q 1785 1578 1793 1578 L 1920 1578" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
-        <path data-edge-from="goManaged" data-edge-to="goSession" data-edge-label="owns core" data-edge-key="35" data-edge-id="goManagedRun" data-composition-points="990,1056;990,1120;1015,1120;1015,1180" d="M 990 1056 L 990 1112 Q 990 1120 998 1120 L 1007 1120 Q 1015 1120 1015 1128 L 1015 1180" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="goManaged" data-edge-to="goSession" data-edge-label="owned turn" data-edge-key="35" data-edge-id="goManagedRun" data-composition-points="990,1056;990,1120;1015,1120;1015,1180" d="M 990 1056 L 990 1112 Q 990 1120 998 1120 L 1007 1120 Q 1015 1120 1015 1128 L 1015 1180" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="goEntry" data-edge-to="goManaged" data-edge-key="36" data-edge-id="goHTTPAdmission" data-composition-points="660,838;990,838;990,980" d="M 660 838 L 982 838 Q 990 838 990 846 L 990 980" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 
         <!-- Components -->
@@ -4810,15 +4810,15 @@
         <text data-detail="context" x="440" y="1232" class="t-muted" font-size="9" text-anchor="middle">typed requests / replies + usage</text>
         </g>
 
-        <g id="node-goSession" data-node-id="goSession" data-node-label="Go Session" tabindex="0" role="button" aria-label="Focus Go Session, hooks / injectors / ordered groups, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="hooks / injectors / ordered groups" data-node-tag="process-local" data-node-context="Independent Go port - in progress">
-          <title>Go Session · hooks / injectors / ordered groups · Independent Go port - in progress · process-local</title>
+        <g id="node-goSession" data-node-id="goSession" data-node-label="Go Session" tabindex="0" role="button" aria-label="Focus Go Session, steering / posture / ordered groups, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="steering / posture / ordered groups" data-node-tag="process-local" data-node-context="Independent Go port - in progress">
+          <title>Go Session · steering / posture / ordered groups · Independent Go port - in progress · process-local</title>
           <rect x="850" y="1180" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="1180" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 1186) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="1015" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Session</text>
-        <text data-detail="context" x="1015" y="1232" class="t-muted" font-size="9" text-anchor="middle">hooks / injectors / ordered groups</text>
+        <text data-detail="context" x="1015" y="1232" class="t-muted" font-size="9" text-anchor="middle">steering / posture / ordered groups</text>
         <text data-detail="fine" x="1015" y="1248" class="t-backend" font-size="7" text-anchor="middle">process-local</text>
         </g>
 
@@ -5099,9 +5099,9 @@
           <rect x="1797" y="1548" width="106" height="14" rx="3" class="c-mask"/>
           <text x="1850" y="1558" class="t-security" font-size="8" text-anchor="middle">bound session effect</text>
         </g>
-        <g data-detail="context" data-edge-from="goManaged" data-edge-to="goSession" data-edge-label="owns core" data-edge-key="35" data-edge-id="goManagedRun">
-          <rect x="1073.4" y="1130" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
-          <text x="1100" y="1140" class="t-muted" font-size="8" text-anchor="middle">owns core</text>
+        <g data-detail="context" data-edge-from="goManaged" data-edge-to="goSession" data-edge-label="owned turn" data-edge-key="35" data-edge-id="goManagedRun">
+          <rect x="1071" y="1130" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="1100" y="1140" class="t-muted" font-size="8" text-anchor="middle">owned turn</text>
         </g>
 
 
@@ -5386,10 +5386,12 @@
           <li>&bull; Children inherit typed prompt/injector seams, cache/stuck policies and exact model/tool pools with fresh state</li>
           <li>&bull; Parallel groups preserve result/step order; exclusive tools are barriers and bypass tool permits</li>
           <li>&bull; Manager shares model/tool pools of eight; bare model calls are unbounded</li>
-          <li>&bull; Todo reminder counters survive user turns; steering, restore and real provider remain open</li>
+          <li>&bull; Todo reminder counters survive user turns; durable steering, restore and real provider remain open</li>
           <li>&bull; Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records</li>
           <li>&bull; Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending</li>
-          <li>&bull; Go HTTP handler admits one principal, twelve typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open</li>
+          <li>&bull; Go HTTP handler admits one principal, fourteen typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open</li>
+          <li>&bull; Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks</li>
+          <li>&bull; HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls</li>
         </ul>
       </div>
     </div>

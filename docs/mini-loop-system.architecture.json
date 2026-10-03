@@ -70,7 +70,7 @@
           "goApprovals",
           "goSecrets"
         ],
-        "note": "Typed HTTP/SSE admission binds one principal to process-local sessions. CLI/UI, full posture, provider transport and SQLite remain pending."
+        "note": "Typed HTTP/SSE and live controls feed owned turns. CLI/UI, full posture, provider transport and SQLite remain pending."
       },
       {
         "id": "personal-skill",
@@ -311,7 +311,7 @@
       "id": "goSession",
       "type": "backend",
       "label": "Go Session",
-      "sublabel": "hooks / injectors / ordered groups",
+      "sublabel": "steering / posture / ordered groups",
       "pos": [
         850,
         1180
@@ -1105,7 +1105,7 @@
       "id": "goManagedRun",
       "from": "goManaged",
       "to": "goSession",
-      "label": "owns core",
+      "label": "owned turn",
       "fromSide": "bottom",
       "toSide": "top",
       "via": [
@@ -1188,10 +1188,12 @@
         "Children inherit typed prompt/injector seams, cache/stuck policies and exact model/tool pools with fresh state",
         "Parallel groups preserve result/step order; exclusive tools are barriers and bypass tool permits",
         "Manager shares model/tool pools of eight; bare model calls are unbounded",
-        "Todo reminder counters survive user turns; steering, restore and real provider remain open",
+        "Todo reminder counters survive user turns; durable steering, restore and real provider remain open",
         "Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records",
         "Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending",
-        "Go HTTP handler admits one principal, twelve typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open"
+        "Go HTTP handler admits one principal, fourteen typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open",
+        "Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks",
+        "HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls"
       ]
     }
   ]

@@ -88,7 +88,8 @@ Record its parity evidence and remaining gaps before checking it off.
       exhaustion markers and cancellation repair implemented;
       managed admission/cancellation and bounded subscriptions implemented;
       prompt hooks/injectors, Todo nagging, shared limiters and ordered parallel batches
-      implemented; steering, transport/recovery and remaining context integrations remain)
+      implemented; bounded steering and live posture updates implemented;
+      transport/recovery and remaining context integrations remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
@@ -98,8 +99,8 @@ Record its parity evidence and remaining gaps before checking it off.
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
-      twelve HTTP method/path operations and process-local SSE implemented;
-      CLI/UI, full health posture, mode/steering/fork, durable catch-up, trajectory,
+      fourteen HTTP method/path operations, mode/steering and process-local SSE implemented;
+      CLI/UI, full health posture, fork, durable catch-up, trajectory,
       optional routes and complete validation semantics remain)
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -1187,3 +1188,116 @@ registered-secret recording does not imply confinement or a default-on registry.
   acceptance here is the automated geometry/composition check.
 - No dependencies were added. Go process/race evidence is macOS; it does not
   establish Linux execution or cross-process persistence.
+
+
+## 2026-10-03 live controls and wakeup slice
+
+Baseline: `6a11877` plus this slice. G1/G3 advance; the original full-port outcome
+remains active. No dependency or Python runtime change is part of this slice.
+
+### Python contract and typed implementation
+
+- `ManagedSession.Steer` is a synchronous, process-local parking API callable
+  from a provider/hook while the model is running. A separate `sessionControl`
+  mutex protects named permission mode, steering and posture state without
+  waiting for the transcript lock. The queue preserves arrival order, caps at
+  100, and drops the oldest. Each input retains at most 16,000 Unicode characters
+  plus `\n[steer truncated]`; scanning only the prefix avoids a whole-input rune
+  allocation. Empty text remains accepted.
+- After custom message injectors and before context facts/compaction, one user
+  message wraps the drained batch in `<user_interjection>`. A typed
+  SteeringDeliveredEvent records count and the first 2,000 characters. The live
+  queue/history stays raw; registered-secret masking applies to event/HTTP copies.
+  Delivery is once within the process; history retains the previous injection.
+- `ChangePermissionMode` validates the three named modes before changing state.
+  The gate loads the current mode after before/guard hooks, just before permission
+  evaluation, preserving the single execution gate. Mode changes do not cancel
+  pending approvals or revoke a decision already made. Capability fingerprints,
+  extension authority snapshots, stop hooks and parent bindings see current mode;
+  children keep their own selected mode and do not inherit control queues.
+- A real change after the first run has started queues the exact Python meaning
+  gloss in a separate `<posture_update>` message/event at the next model round.
+  Initial changes and no-ops queue nothing. Multiple changes join in order with
+  newlines. The posture-note queue retains source's uncapped behavior; the bounded
+  steering claim does not apply to this separate queue.
+- Two authenticated operations bring the handler total to fourteen:
+  `POST /sessions/{id}/mode` and `POST /sessions/{id}/steer`. Foreign/missing IDs
+  share 404. Steering spends owner rate budget; mode updates do not.
+- HTTP steering of an idle session wakes a background turn and returns
+  `{queued: 0, busy: false, delivered: new_turn}`; busy steering queues and returns
+  `delivered: steering`. Admission selection and holder publication occur under
+  the managed lock before the response, so simultaneous wakeups cannot publish
+  extra idle turns. The existing managed active holder makes deletion/shutdown
+  cancel and join the background turn. The request context does not cancel it.
+  The wakeup uses default untrusted provenance, like Python's `session.run(text)`;
+  it does not grant human/workflow authority or an HTTP capture stamp.
+- `TryRunWithSnapshot` fixes the completion boundary for completed HTTP messages:
+  it captures named SessionInfo before releasing admission, so a queued turn or
+  idle wakeup cannot rewrite the returned turn's run count/status. A deterministic
+  waiting second holder proves the result stays idle/count-one while current state
+  has already reached running/count-two. The idempotency cache stores that snapshot.
+- A steer arriving after the last model round may remain queued for a future turn,
+  as in source. No retroactive model obedience or extra final round is invented.
+
+### Evidence and remaining work
+
+The twenty-second source snapshot runs six real managed scenarios: ordered
+steers, Unicode truncation, drop-oldest bounds, silent pre-first mode change,
+batched notes/no-op, and provider-time steer plus readonly refusal before a file
+write. It records wrappers, delivery JSON, pending counts, mode, actual file effect
+per-request injection counts and changing capability modes. Its HTTP portion uses a blocked async provider
+and the actual FastAPI app for six mode/steer responses, busy/idle wakeup and owner
+refusals. The previous twenty-one snapshots remain byte-identical.
+
+Go tests compare the actual event serializer and model inputs, verify a mode
+changed inside a before hook prevents the same call's write, exercise 250 concurrent
+control mutations while a model is blocked, preserve raw history while masking
+recordings, and prove a child cannot consume parent steering. HTTP tests cover
+concurrent wakeups, background ownership across request cancellation, shutdown
+joins, closed controls, validation status and the owner rate budget.
+
+SQLite pending-steering persistence, masked durable queue projection, restore-time
+redelivery and persistence diagnostics remain G5. Full FastAPI validation shapes,
+CLI/UI, health posture/build fingerprint, fork/trajectory/optional routes and real
+model transport/recovery remain open. The fake proves delivery and effects, not
+live-model obedience; operator-gated Python provider tests remain skipped.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, `go test -race ./...` pass from `go/`,
+  including the final completion-snapshot and capability-mode cases.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: 22 snapshots
+  current, previous 21 byte-identical. `verify_scans.py`: all 19 scans anchored.
+  Guard mutations and final fixture generation/checks ran separately; Python
+  package source is unchanged. No package-invariant change is claimed.
+- Ten related source mutations are caught, invoked individually using
+  `.venv/bin/python python/tools/verify_guards.py -k NAME`:
+  `steering-is-never-delivered`, `steer-drops-the-callers-words`,
+  `steer-queue-unbounded`, `steer-size-unbounded`,
+  `a-stranger-steers-the-session`, `idle-steer-parks-forever`,
+  `posture-changes-happen-behind-the-models-back`,
+  `readonly-mode-asks-instead-of-refusing`, `auto-mode-widens-what-is-refused`,
+  `capability-plan-ignores-permission-mode`. The full mutation catalogue was
+  not rerun for this slice. These source checks complement the actual Go tests;
+  they do not imply a Go mutation catalogue exists.
+- Initial full Python run: **2 failed, 2,149 passed, 28 skipped, 24 subtests passed,
+  three warnings, 140.48s**. Failures were `test_sessions_run_concurrently`
+  (1.1058s against <0.5s) and `test_a_forty_turn_session_stays_fast`
+  (1.2064s against <0.5s). Both then passed together in an isolated targeted run
+  (2 passed, 0.71s). No test or timing threshold changed; the cause remains
+  unconfirmed. Final full rerun after other checks: **1 failed, 2,150 passed,
+  28 skipped, 24 subtests passed, four warnings, 160.01s**. Only the forty-turn
+  threshold failed (0.5503s against <0.5s); the concurrency case passed. The fourth
+  warning was an unraisable BaseSubprocessTransport destructor exception after an
+  event loop closed. No causal link to the timing failure is established. The full
+  Python gate is **not green**; targeted passes do not override this result.
+- `git diff --check` and README outline are verified. Archify deliver passes
+  **9/9 showcase checks**, zero errors and warnings. Specification: 24,976 bytes,
+  SHA-256 `8a76e0de6c51edad91303ceb093c97e79cae088170059bf8bac964ce8ce3af2d`;
+  HTML: 663,993 bytes,
+  SHA-256 `131614742d80b3373826ac246d706b5b249b93361fd61c470ab4b562a6006366`.
+  The exact frozen JSON produced the HTML. No rendered visual inspection was
+  repeated because of the existing browser file-access policy block; only
+  automated geometry/composition acceptance is claimed.
+- No dependencies added. Evidence is on macOS; Linux execution, live-provider
+  obedience and cross-process queue durability are not established.

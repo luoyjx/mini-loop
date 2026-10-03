@@ -40,6 +40,7 @@ type Session struct {
 	provider                                          Provider
 	gate                                              *ToolGate
 	mode                                              PermissionMode
+	control                                           *sessionControl
 	workspace                                         string
 	maxRounds                                         int
 	mu                                                sync.Mutex
@@ -255,6 +256,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 		if err := s.injectMessages(ctx); err != nil {
 			return "", err
 		}
+		s.injectControls()
 		s.injectRuntimeFacts(envelope)
 		if err := s.compact(ctx, envelope, false); err != nil {
 			return "", err
@@ -344,7 +346,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			s.publishLive()
 			var continuation *string
 			for _, hook := range s.stopHooks {
-				continuation, err = hook.Stop(ctx, StopContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode, RunContext: run.clone()}, Messages: append([]protocol.Message(nil), s.messages...), LastText: lastText})
+				continuation, err = hook.Stop(ctx, StopContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.permissionMode(), RunContext: run.clone()}, Messages: append([]protocol.Message(nil), s.messages...), LastText: lastText})
 				if err != nil {
 					return "", err
 				}

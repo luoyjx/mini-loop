@@ -242,7 +242,7 @@ func (s *Session) completeModel(ctx context.Context, request protocol.ModelReque
 		if rememberFingerprint(s.loggedCatalogs, v) {
 			s.events.append(SessionEvent{kind: EventToolCatalog, toolCatalog: ToolCatalogEvent{v, catalog.Schemas()}})
 		}
-		plan := CapabilityPlanEvent{CatalogFingerprint: v, PermissionMode: s.mode, Sandbox: "NullSandbox"}
+		plan := CapabilityPlanEvent{CatalogFingerprint: v, PermissionMode: s.permissionMode(), Sandbox: "NullSandbox"}
 		if executor, ok := s.bash.(interface{ SandboxConfigured() bool }); ok && executor.SandboxConfigured() {
 			plan.Sandbox = "GoSandbox"
 		}
@@ -382,7 +382,7 @@ func (s *Session) dispatchToolAnnounced(ctx context.Context, run RunContext, use
 		announce()
 	}
 	started := time.Now()
-	outcome, err := s.gate.dispatch(ctx, ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.mode, RunContext: run.clone()}, call, func(v ActionReconciliation) {
+	outcome, err := s.gate.dispatch(ctx, ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.permissionMode(), RunContext: run.clone()}, call, func(v ActionReconciliation) {
 		s.events.append(SessionEvent{kind: EventReconcile, reconcile: ReconcileEvent{use.Input.Name(), v.ActionID, v.Verdict, v.Verifiable}})
 	})
 	if err != nil {
