@@ -1,0 +1,1024 @@
+{
+  "builtin": {
+    "descriptions": "  - code_review: Checklist and conventions for reviewing a code change before approval.",
+    "loaded": "<skill name=\"code_review\">\n# Code Review\n\nWhen asked to review a change, work through these in order and report findings\ngrouped by severity (blocker / should-fix / nit):\n\n1. **Correctness** — does it do what it claims? Look for off-by-one, wrong\n   conditionals, unhandled error paths, and resource leaks.\n2. **Tests** — is the new behavior covered? Would the tests fail if the change\n   were reverted?\n3. **Security** — untrusted input reaching shell/SQL/filesystem; secrets in\n   code; path traversal; missing authz checks.\n4. **Clarity** — names match intent, no dead code, comments explain *why* not\n   *what*.\n5. **Scope** — the diff does one thing; unrelated churn is split out.\n\nEnd with a one-line verdict: APPROVE / REQUEST CHANGES, and the single most\nimportant thing to fix.\n</skill>",
+    "source_sha256": "4a9f532576f95b728ccbfbc155f00180572048ccc2f64c5072cf2f14d301a781"
+  },
+  "cases": [
+    {
+      "env": {},
+      "error": null,
+      "name": "defaults",
+      "settings": {
+        "api_key": null,
+        "approval_timeout": 300.0,
+        "ast_outline_binary": "ast-outline",
+        "ast_outline_enabled": false,
+        "ast_outline_max_output_bytes": 1000000,
+        "ast_outline_sha256": null,
+        "ast_outline_timeout": 10.0,
+        "base_url": null,
+        "bash_timeout": 120,
+        "bindable_roots": [],
+        "decision_mode": "off",
+        "decision_model": "jev-latest",
+        "enable_features": false,
+        "enable_workflows": false,
+        "fake_llm": false,
+        "fallback_model": null,
+        "guardian_enabled": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "max_tokens": 8000,
+        "max_turns": 50,
+        "memory_root": null,
+        "model": "claude-sonnet-4-6",
+        "rate_limit_per_minute": 0,
+        "repo_root": null,
+        "skills_dir": "<builtin>",
+        "spill_dir": "<cwd>/var/spill",
+        "subagent_max_depth": 2,
+        "subagent_max_rounds": 30,
+        "team_idle_poll": 1.0,
+        "team_idle_timeout": 60.0,
+        "token_efficiency_artifact_ttl_seconds": 3600.0,
+        "token_efficiency_max_artifact_bytes": 2000000,
+        "token_efficiency_max_total_bytes": 20000000,
+        "token_efficiency_mode": "off",
+        "token_efficiency_persist_raw": true,
+        "token_efficiency_raw_min_bytes": 16384,
+        "token_efficiency_response_style": "normal",
+        "token_threshold": 100000,
+        "trajectory_capture_content": true,
+        "trajectory_enabled": true,
+        "trajectory_root": null,
+        "typesafe_api_key": null,
+        "user_resources_root": null,
+        "workflow_max_agents": 32,
+        "workflow_max_concurrent_agents": 4,
+        "workflow_max_rounds": 4,
+        "workflow_wall_time_seconds": 900.0,
+        "workspace_root": "<cwd>/workspaces"
+      }
+    },
+    {
+      "env": {
+        "ANTHROPIC_API_KEY": "fixture-secret-key",
+        "ANTHROPIC_BASE_URL": "https://provider.invalid/anthropic",
+        "MINILOOP_APPROVAL_TIMEOUT": "45",
+        "MINILOOP_BASH_TIMEOUT": "30",
+        "MINILOOP_BINDABLE_ROOTS": "one: :../two",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_FALLBACK_MODEL": "backup",
+        "MINILOOP_MAX_CONCURRENT_LLM": "2",
+        "MINILOOP_MAX_CONCURRENT_TOOLS": "3",
+        "MINILOOP_MAX_TOKENS": "1_024",
+        "MINILOOP_MAX_TURNS": "4",
+        "MINILOOP_RATE_LIMIT_PER_MINUTE": "6",
+        "MINILOOP_SPILL_DIR": "",
+        "MINILOOP_SUBAGENT_MAX_DEPTH": "1",
+        "MINILOOP_SUBAGENT_MAX_ROUNDS": "5",
+        "MINILOOP_TOKEN_THRESHOLD": "5000",
+        "MINILOOP_TRAJECTORIES": "off",
+        "MINILOOP_WORKSPACE_ROOT": "nested/work",
+        "MODEL_ID": "source-model"
+      },
+      "error": null,
+      "name": "core-overrides",
+      "settings": {
+        "api_key": "<set>",
+        "approval_timeout": 45.0,
+        "ast_outline_binary": "ast-outline",
+        "ast_outline_enabled": false,
+        "ast_outline_max_output_bytes": 1000000,
+        "ast_outline_sha256": null,
+        "ast_outline_timeout": 10.0,
+        "base_url": "https://provider.invalid/anthropic",
+        "bash_timeout": 30,
+        "bindable_roots": [
+          "<cwd>/one",
+          "<parent>/two"
+        ],
+        "decision_mode": "off",
+        "decision_model": "jev-latest",
+        "enable_features": false,
+        "enable_workflows": false,
+        "fake_llm": true,
+        "fallback_model": "backup",
+        "guardian_enabled": false,
+        "max_concurrent_llm": 2,
+        "max_concurrent_tools": 3,
+        "max_tokens": 1024,
+        "max_turns": 4,
+        "memory_root": null,
+        "model": "source-model",
+        "rate_limit_per_minute": 6,
+        "repo_root": null,
+        "skills_dir": "<builtin>",
+        "spill_dir": null,
+        "subagent_max_depth": 1,
+        "subagent_max_rounds": 5,
+        "team_idle_poll": 1.0,
+        "team_idle_timeout": 60.0,
+        "token_efficiency_artifact_ttl_seconds": 3600.0,
+        "token_efficiency_max_artifact_bytes": 2000000,
+        "token_efficiency_max_total_bytes": 20000000,
+        "token_efficiency_mode": "off",
+        "token_efficiency_persist_raw": true,
+        "token_efficiency_raw_min_bytes": 16384,
+        "token_efficiency_response_style": "normal",
+        "token_threshold": 5000,
+        "trajectory_capture_content": true,
+        "trajectory_enabled": false,
+        "trajectory_root": null,
+        "typesafe_api_key": null,
+        "user_resources_root": null,
+        "workflow_max_agents": 32,
+        "workflow_max_concurrent_agents": 4,
+        "workflow_max_rounds": 4,
+        "workflow_wall_time_seconds": 900.0,
+        "workspace_root": "<cwd>/nested/work"
+      }
+    },
+    {
+      "env": {
+        "MINILOOP_AST_OUTLINE_BINARY": "/operator/ast-outline",
+        "MINILOOP_AST_OUTLINE_ENABLED": "yes",
+        "MINILOOP_AST_OUTLINE_MAX_OUTPUT_BYTES": "100",
+        "MINILOOP_AST_OUTLINE_SHA256": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "MINILOOP_AST_OUTLINE_TIMEOUT": "2.5",
+        "MINILOOP_DECISIONS": "JEV",
+        "MINILOOP_EXPERIMENTAL_WORKFLOWS": "true",
+        "MINILOOP_FEATURES": "all",
+        "MINILOOP_GUARDIAN": "on",
+        "MINILOOP_TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS": "12.5",
+        "MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES": "30",
+        "MINILOOP_TOKEN_EFFICIENCY_MAX_TOTAL_BYTES": "40",
+        "MINILOOP_TOKEN_EFFICIENCY_MODE": " Enforce ",
+        "MINILOOP_TOKEN_EFFICIENCY_PERSIST_RAW": "no",
+        "MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES": "20",
+        "MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE": "CONCISE",
+        "MINILOOP_WORKFLOW_MAX_AGENTS": "3",
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "2",
+        "MINILOOP_WORKFLOW_MAX_ROUNDS": "1",
+        "MINILOOP_WORKFLOW_WALL_TIME_SECONDS": "25.5",
+        "TYPESAFE_API_KEY": "fixture-typesafe-secret"
+      },
+      "error": null,
+      "name": "optional-settings",
+      "settings": {
+        "api_key": null,
+        "approval_timeout": 300.0,
+        "ast_outline_binary": "/operator/ast-outline",
+        "ast_outline_enabled": true,
+        "ast_outline_max_output_bytes": 100,
+        "ast_outline_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ast_outline_timeout": 2.5,
+        "base_url": null,
+        "bash_timeout": 120,
+        "bindable_roots": [],
+        "decision_mode": "jev",
+        "decision_model": "jev-latest",
+        "enable_features": true,
+        "enable_workflows": true,
+        "fake_llm": false,
+        "fallback_model": null,
+        "guardian_enabled": true,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "max_tokens": 8000,
+        "max_turns": 50,
+        "memory_root": null,
+        "model": "claude-sonnet-4-6",
+        "rate_limit_per_minute": 0,
+        "repo_root": null,
+        "skills_dir": "<builtin>",
+        "spill_dir": "<cwd>/var/spill",
+        "subagent_max_depth": 2,
+        "subagent_max_rounds": 30,
+        "team_idle_poll": 1.0,
+        "team_idle_timeout": 60.0,
+        "token_efficiency_artifact_ttl_seconds": 12.5,
+        "token_efficiency_max_artifact_bytes": 30,
+        "token_efficiency_max_total_bytes": 40,
+        "token_efficiency_mode": "enforce",
+        "token_efficiency_persist_raw": false,
+        "token_efficiency_raw_min_bytes": 20,
+        "token_efficiency_response_style": "concise",
+        "token_threshold": 100000,
+        "trajectory_capture_content": true,
+        "trajectory_enabled": true,
+        "trajectory_root": null,
+        "typesafe_api_key": "<set>",
+        "user_resources_root": null,
+        "workflow_max_agents": 3,
+        "workflow_max_concurrent_agents": 2,
+        "workflow_max_rounds": 1,
+        "workflow_wall_time_seconds": 25.5,
+        "workspace_root": "<cwd>/workspaces"
+      }
+    },
+    {
+      "env": {
+        "MINILOOP_MEMORY_ROOT": "memory",
+        "MINILOOP_REPO_ROOT": "repo",
+        "MINILOOP_SKILLS_DIR": "skills",
+        "MINILOOP_TRAJECTORY_ROOT": "traces",
+        "MINILOOP_USER_RESOURCES_ROOT": "users"
+      },
+      "error": null,
+      "name": "paths",
+      "settings": {
+        "api_key": null,
+        "approval_timeout": 300.0,
+        "ast_outline_binary": "ast-outline",
+        "ast_outline_enabled": false,
+        "ast_outline_max_output_bytes": 1000000,
+        "ast_outline_sha256": null,
+        "ast_outline_timeout": 10.0,
+        "base_url": null,
+        "bash_timeout": 120,
+        "bindable_roots": [],
+        "decision_mode": "off",
+        "decision_model": "jev-latest",
+        "enable_features": false,
+        "enable_workflows": false,
+        "fake_llm": false,
+        "fallback_model": null,
+        "guardian_enabled": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "max_tokens": 8000,
+        "max_turns": 50,
+        "memory_root": "<cwd>/memory",
+        "model": "claude-sonnet-4-6",
+        "rate_limit_per_minute": 0,
+        "repo_root": "<cwd>/repo",
+        "skills_dir": "<cwd>/skills",
+        "spill_dir": "<cwd>/var/spill",
+        "subagent_max_depth": 2,
+        "subagent_max_rounds": 30,
+        "team_idle_poll": 1.0,
+        "team_idle_timeout": 60.0,
+        "token_efficiency_artifact_ttl_seconds": 3600.0,
+        "token_efficiency_max_artifact_bytes": 2000000,
+        "token_efficiency_max_total_bytes": 20000000,
+        "token_efficiency_mode": "off",
+        "token_efficiency_persist_raw": true,
+        "token_efficiency_raw_min_bytes": 16384,
+        "token_efficiency_response_style": "normal",
+        "token_threshold": 100000,
+        "trajectory_capture_content": true,
+        "trajectory_enabled": true,
+        "trajectory_root": "<cwd>/traces",
+        "typesafe_api_key": null,
+        "user_resources_root": "<cwd>/users",
+        "workflow_max_agents": 32,
+        "workflow_max_concurrent_agents": 4,
+        "workflow_max_rounds": 4,
+        "workflow_wall_time_seconds": 900.0,
+        "workspace_root": "<cwd>/workspaces"
+      }
+    },
+    {
+      "env": {
+        "MINILOOP_MEMORY_ROOT": "",
+        "MINILOOP_SKILLS_DIR": "",
+        "MINILOOP_SPILL_DIR": "  ",
+        "MINILOOP_USER_RESOURCES_ROOT": "",
+        "MINILOOP_WORKSPACE_ROOT": ""
+      },
+      "error": null,
+      "name": "empty-paths",
+      "settings": {
+        "api_key": null,
+        "approval_timeout": 300.0,
+        "ast_outline_binary": "ast-outline",
+        "ast_outline_enabled": false,
+        "ast_outline_max_output_bytes": 1000000,
+        "ast_outline_sha256": null,
+        "ast_outline_timeout": 10.0,
+        "base_url": null,
+        "bash_timeout": 120,
+        "bindable_roots": [],
+        "decision_mode": "off",
+        "decision_model": "jev-latest",
+        "enable_features": false,
+        "enable_workflows": false,
+        "fake_llm": false,
+        "fallback_model": null,
+        "guardian_enabled": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "max_tokens": 8000,
+        "max_turns": 50,
+        "memory_root": null,
+        "model": "claude-sonnet-4-6",
+        "rate_limit_per_minute": 0,
+        "repo_root": null,
+        "skills_dir": "<cwd>",
+        "spill_dir": null,
+        "subagent_max_depth": 2,
+        "subagent_max_rounds": 30,
+        "team_idle_poll": 1.0,
+        "team_idle_timeout": 60.0,
+        "token_efficiency_artifact_ttl_seconds": 3600.0,
+        "token_efficiency_max_artifact_bytes": 2000000,
+        "token_efficiency_max_total_bytes": 20000000,
+        "token_efficiency_mode": "off",
+        "token_efficiency_persist_raw": true,
+        "token_efficiency_raw_min_bytes": 16384,
+        "token_efficiency_response_style": "normal",
+        "token_threshold": 100000,
+        "trajectory_capture_content": true,
+        "trajectory_enabled": true,
+        "trajectory_root": null,
+        "typesafe_api_key": null,
+        "user_resources_root": null,
+        "workflow_max_agents": 32,
+        "workflow_max_concurrent_agents": 4,
+        "workflow_max_rounds": 4,
+        "workflow_wall_time_seconds": 900.0,
+        "workspace_root": "<cwd>"
+      }
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_TOKENS": " ",
+        "MINILOOP_TEAM_IDLE_POLL": "",
+        "MINILOOP_TRAJECTORY_CAPTURE_CONTENT": ""
+      },
+      "error": null,
+      "name": "empty-numeric",
+      "settings": {
+        "api_key": null,
+        "approval_timeout": 300.0,
+        "ast_outline_binary": "ast-outline",
+        "ast_outline_enabled": false,
+        "ast_outline_max_output_bytes": 1000000,
+        "ast_outline_sha256": null,
+        "ast_outline_timeout": 10.0,
+        "base_url": null,
+        "bash_timeout": 120,
+        "bindable_roots": [],
+        "decision_mode": "off",
+        "decision_model": "jev-latest",
+        "enable_features": false,
+        "enable_workflows": false,
+        "fake_llm": false,
+        "fallback_model": null,
+        "guardian_enabled": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "max_tokens": 8000,
+        "max_turns": 50,
+        "memory_root": null,
+        "model": "claude-sonnet-4-6",
+        "rate_limit_per_minute": 0,
+        "repo_root": null,
+        "skills_dir": "<builtin>",
+        "spill_dir": "<cwd>/var/spill",
+        "subagent_max_depth": 2,
+        "subagent_max_rounds": 30,
+        "team_idle_poll": 1.0,
+        "team_idle_timeout": 60.0,
+        "token_efficiency_artifact_ttl_seconds": 3600.0,
+        "token_efficiency_max_artifact_bytes": 2000000,
+        "token_efficiency_max_total_bytes": 20000000,
+        "token_efficiency_mode": "off",
+        "token_efficiency_persist_raw": true,
+        "token_efficiency_raw_min_bytes": 16384,
+        "token_efficiency_response_style": "normal",
+        "token_threshold": 100000,
+        "trajectory_capture_content": false,
+        "trajectory_enabled": true,
+        "trajectory_root": null,
+        "typesafe_api_key": null,
+        "user_resources_root": null,
+        "workflow_max_agents": 32,
+        "workflow_max_concurrent_agents": 4,
+        "workflow_max_rounds": 4,
+        "workflow_wall_time_seconds": 900.0,
+        "workspace_root": "<cwd>/workspaces"
+      }
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_TOKENS": "+１２_３",
+        "MINILOOP_TEAM_IDLE_POLL": "١.٢_٥"
+      },
+      "error": null,
+      "name": "unicode-numbers",
+      "settings": {
+        "api_key": null,
+        "approval_timeout": 300.0,
+        "ast_outline_binary": "ast-outline",
+        "ast_outline_enabled": false,
+        "ast_outline_max_output_bytes": 1000000,
+        "ast_outline_sha256": null,
+        "ast_outline_timeout": 10.0,
+        "base_url": null,
+        "bash_timeout": 120,
+        "bindable_roots": [],
+        "decision_mode": "off",
+        "decision_model": "jev-latest",
+        "enable_features": false,
+        "enable_workflows": false,
+        "fake_llm": false,
+        "fallback_model": null,
+        "guardian_enabled": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "max_tokens": 123,
+        "max_turns": 50,
+        "memory_root": null,
+        "model": "claude-sonnet-4-6",
+        "rate_limit_per_minute": 0,
+        "repo_root": null,
+        "skills_dir": "<builtin>",
+        "spill_dir": "<cwd>/var/spill",
+        "subagent_max_depth": 2,
+        "subagent_max_rounds": 30,
+        "team_idle_poll": 1.25,
+        "team_idle_timeout": 60.0,
+        "token_efficiency_artifact_ttl_seconds": 3600.0,
+        "token_efficiency_max_artifact_bytes": 2000000,
+        "token_efficiency_max_total_bytes": 20000000,
+        "token_efficiency_mode": "off",
+        "token_efficiency_persist_raw": true,
+        "token_efficiency_raw_min_bytes": 16384,
+        "token_efficiency_response_style": "normal",
+        "token_threshold": 100000,
+        "trajectory_capture_content": true,
+        "trajectory_enabled": true,
+        "trajectory_root": null,
+        "typesafe_api_key": null,
+        "user_resources_root": null,
+        "workflow_max_agents": 32,
+        "workflow_max_concurrent_agents": 4,
+        "workflow_max_rounds": 4,
+        "workflow_wall_time_seconds": 900.0,
+        "workspace_root": "<cwd>/workspaces"
+      }
+    },
+    {
+      "env": {
+        "MINILOOP_FAKE_LLM": "False",
+        "MINILOOP_FEATURES": "FALSE"
+      },
+      "error": null,
+      "name": "legacy-flags",
+      "settings": {
+        "api_key": null,
+        "approval_timeout": 300.0,
+        "ast_outline_binary": "ast-outline",
+        "ast_outline_enabled": false,
+        "ast_outline_max_output_bytes": 1000000,
+        "ast_outline_sha256": null,
+        "ast_outline_timeout": 10.0,
+        "base_url": null,
+        "bash_timeout": 120,
+        "bindable_roots": [],
+        "decision_mode": "off",
+        "decision_model": "jev-latest",
+        "enable_features": true,
+        "enable_workflows": false,
+        "fake_llm": true,
+        "fallback_model": null,
+        "guardian_enabled": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "max_tokens": 8000,
+        "max_turns": 50,
+        "memory_root": null,
+        "model": "claude-sonnet-4-6",
+        "rate_limit_per_minute": 0,
+        "repo_root": null,
+        "skills_dir": "<builtin>",
+        "spill_dir": "<cwd>/var/spill",
+        "subagent_max_depth": 2,
+        "subagent_max_rounds": 30,
+        "team_idle_poll": 1.0,
+        "team_idle_timeout": 60.0,
+        "token_efficiency_artifact_ttl_seconds": 3600.0,
+        "token_efficiency_max_artifact_bytes": 2000000,
+        "token_efficiency_max_total_bytes": 20000000,
+        "token_efficiency_mode": "off",
+        "token_efficiency_persist_raw": true,
+        "token_efficiency_raw_min_bytes": 16384,
+        "token_efficiency_response_style": "normal",
+        "token_threshold": 100000,
+        "trajectory_capture_content": true,
+        "trajectory_enabled": true,
+        "trajectory_root": null,
+        "typesafe_api_key": null,
+        "user_resources_root": null,
+        "workflow_max_agents": 32,
+        "workflow_max_concurrent_agents": 4,
+        "workflow_max_rounds": 4,
+        "workflow_wall_time_seconds": 900.0,
+        "workspace_root": "<cwd>/workspaces"
+      }
+    },
+    {
+      "env": {
+        "MINILOOP_TRAJECTORIES": "FaLsE",
+        "MINILOOP_TRAJECTORY_CAPTURE_CONTENT": " YeS "
+      },
+      "error": null,
+      "name": "boolean-case",
+      "settings": {
+        "api_key": null,
+        "approval_timeout": 300.0,
+        "ast_outline_binary": "ast-outline",
+        "ast_outline_enabled": false,
+        "ast_outline_max_output_bytes": 1000000,
+        "ast_outline_sha256": null,
+        "ast_outline_timeout": 10.0,
+        "base_url": null,
+        "bash_timeout": 120,
+        "bindable_roots": [],
+        "decision_mode": "off",
+        "decision_model": "jev-latest",
+        "enable_features": false,
+        "enable_workflows": false,
+        "fake_llm": false,
+        "fallback_model": null,
+        "guardian_enabled": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "max_tokens": 8000,
+        "max_turns": 50,
+        "memory_root": null,
+        "model": "claude-sonnet-4-6",
+        "rate_limit_per_minute": 0,
+        "repo_root": null,
+        "skills_dir": "<builtin>",
+        "spill_dir": "<cwd>/var/spill",
+        "subagent_max_depth": 2,
+        "subagent_max_rounds": 30,
+        "team_idle_poll": 1.0,
+        "team_idle_timeout": 60.0,
+        "token_efficiency_artifact_ttl_seconds": 3600.0,
+        "token_efficiency_max_artifact_bytes": 2000000,
+        "token_efficiency_max_total_bytes": 20000000,
+        "token_efficiency_mode": "off",
+        "token_efficiency_persist_raw": true,
+        "token_efficiency_raw_min_bytes": 16384,
+        "token_efficiency_response_style": "normal",
+        "token_threshold": 100000,
+        "trajectory_capture_content": true,
+        "trajectory_enabled": false,
+        "trajectory_root": null,
+        "typesafe_api_key": null,
+        "user_resources_root": null,
+        "workflow_max_agents": 32,
+        "workflow_max_concurrent_agents": 4,
+        "workflow_max_rounds": 4,
+        "workflow_wall_time_seconds": 900.0,
+        "workspace_root": "<cwd>/workspaces"
+      }
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_TOKENS": "8k"
+      },
+      "error": "MINILOOP_MAX_TOKENS='8k' is not an integer; refusing to guess. Unset MINILOOP_MAX_TOKENS to use the default.",
+      "name": "integer-typo",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TEAM_IDLE_POLL": "soon"
+      },
+      "error": "MINILOOP_TEAM_IDLE_POLL='soon' is not a number; refusing to guess. Unset MINILOOP_TEAM_IDLE_POLL to use the default.",
+      "name": "float-typo",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TEAM_IDLE_POLL": "0x1p0"
+      },
+      "error": "MINILOOP_TEAM_IDLE_POLL='0x1p0' is not a number; refusing to guess. Unset MINILOOP_TEAM_IDLE_POLL to use the default.",
+      "name": "float-hex-rejected",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TRAJECTORY_CAPTURE_CONTENT": "flase"
+      },
+      "error": "MINILOOP_TRAJECTORY_CAPTURE_CONTENT='flase' is not a boolean (1/true/yes/on or 0/false/no/off); refusing to guess. Unset MINILOOP_TRAJECTORY_CAPTURE_CONTENT to use the default.",
+      "name": "boolean-typo",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_MODE": "auto"
+      },
+      "error": "token_efficiency_mode must be one of: off, shadow, enforce",
+      "name": "bad-mode",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE": "terse"
+      },
+      "error": "token_efficiency_response_style must be one of: normal, concise",
+      "name": "bad-style",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_DECISIONS": "auto"
+      },
+      "error": "decision_mode must be one of: off, llm, jev",
+      "name": "bad-decision",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_DECISIONS": "jev"
+      },
+      "error": "Jev decisions require TYPESAFE_API_KEY",
+      "name": "jev-no-key",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_AST_OUTLINE_ENABLED": "true"
+      },
+      "error": "enabled ast-outline requires an operator-pinned absolute binary path",
+      "name": "ast-unpinned",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_AST_OUTLINE_SHA256": "wrong"
+      },
+      "error": "ast_outline_sha256 must be 64 lowercase hex characters",
+      "name": "ast-bad-digest",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES": "3000000"
+      },
+      "error": "token_efficiency_raw_min_bytes must not exceed token_efficiency_max_artifact_bytes",
+      "name": "raw-limit-crossed",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES": "30000000"
+      },
+      "error": "token_efficiency_max_artifact_bytes must not exceed token_efficiency_max_total_bytes",
+      "name": "artifact-limit-crossed",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "5"
+      },
+      "error": "workflow_max_concurrent_agents must not exceed 4",
+      "name": "workflow-cap",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_WORKFLOW_MAX_AGENTS": "3"
+      },
+      "error": "workflow_max_agents must be greater than or equal to workflow_max_concurrent_agents",
+      "name": "workflow-shortage",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_RATE_LIMIT_PER_MINUTE": "-1"
+      },
+      "error": "rate_limit_per_minute must be 0 (off) or positive",
+      "name": "rate-negative",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_TOKENS": "0"
+      },
+      "error": "max_tokens must be at least 1",
+      "name": "nonpositive-max_tokens-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_TOKENS": "-1"
+      },
+      "error": "max_tokens must be at least 1",
+      "name": "nonpositive-max_tokens--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_THRESHOLD": "0"
+      },
+      "error": "token_threshold must be at least 1",
+      "name": "nonpositive-token_threshold-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_THRESHOLD": "-1"
+      },
+      "error": "token_threshold must be at least 1",
+      "name": "nonpositive-token_threshold--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_CONCURRENT_LLM": "0"
+      },
+      "error": "max_concurrent_llm must be at least 1",
+      "name": "nonpositive-max_concurrent_llm-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_CONCURRENT_LLM": "-1"
+      },
+      "error": "max_concurrent_llm must be at least 1",
+      "name": "nonpositive-max_concurrent_llm--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_CONCURRENT_TOOLS": "0"
+      },
+      "error": "max_concurrent_tools must be at least 1",
+      "name": "nonpositive-max_concurrent_tools-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_CONCURRENT_TOOLS": "-1"
+      },
+      "error": "max_concurrent_tools must be at least 1",
+      "name": "nonpositive-max_concurrent_tools--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_TURNS": "0"
+      },
+      "error": "max_turns must be at least 1",
+      "name": "nonpositive-max_turns-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_MAX_TURNS": "-1"
+      },
+      "error": "max_turns must be at least 1",
+      "name": "nonpositive-max_turns--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_SUBAGENT_MAX_ROUNDS": "0"
+      },
+      "error": "subagent_max_rounds must be at least 1",
+      "name": "nonpositive-subagent_max_rounds-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_SUBAGENT_MAX_ROUNDS": "-1"
+      },
+      "error": "subagent_max_rounds must be at least 1",
+      "name": "nonpositive-subagent_max_rounds--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_SUBAGENT_MAX_DEPTH": "0"
+      },
+      "error": "subagent_max_depth must be at least 1",
+      "name": "nonpositive-subagent_max_depth-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_SUBAGENT_MAX_DEPTH": "-1"
+      },
+      "error": "subagent_max_depth must be at least 1",
+      "name": "nonpositive-subagent_max_depth--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_BASH_TIMEOUT": "0"
+      },
+      "error": "bash_timeout must be at least 1",
+      "name": "nonpositive-bash_timeout-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_BASH_TIMEOUT": "-1"
+      },
+      "error": "bash_timeout must be at least 1",
+      "name": "nonpositive-bash_timeout--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_APPROVAL_TIMEOUT": "0"
+      },
+      "error": "approval_timeout must be positive",
+      "name": "nonpositive-approval_timeout-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_APPROVAL_TIMEOUT": "-1"
+      },
+      "error": "approval_timeout must be positive",
+      "name": "nonpositive-approval_timeout--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TEAM_IDLE_POLL": "0"
+      },
+      "error": "team_idle_poll must be positive",
+      "name": "nonpositive-team_idle_poll-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TEAM_IDLE_POLL": "-1"
+      },
+      "error": "team_idle_poll must be positive",
+      "name": "nonpositive-team_idle_poll--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TEAM_IDLE_TIMEOUT": "0"
+      },
+      "error": "team_idle_timeout must be positive",
+      "name": "nonpositive-team_idle_timeout-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TEAM_IDLE_TIMEOUT": "-1"
+      },
+      "error": "team_idle_timeout must be positive",
+      "name": "nonpositive-team_idle_timeout--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES": "0"
+      },
+      "error": "token_efficiency_raw_min_bytes must be positive",
+      "name": "nonpositive-token_efficiency_raw_min_bytes-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES": "-1"
+      },
+      "error": "token_efficiency_raw_min_bytes must be positive",
+      "name": "nonpositive-token_efficiency_raw_min_bytes--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS": "0"
+      },
+      "error": "token_efficiency_artifact_ttl_seconds must be positive",
+      "name": "nonpositive-token_efficiency_artifact_ttl_seconds-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS": "-1"
+      },
+      "error": "token_efficiency_artifact_ttl_seconds must be positive",
+      "name": "nonpositive-token_efficiency_artifact_ttl_seconds--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES": "0"
+      },
+      "error": "token_efficiency_max_artifact_bytes must be positive",
+      "name": "nonpositive-token_efficiency_max_artifact_bytes-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES": "-1"
+      },
+      "error": "token_efficiency_max_artifact_bytes must be positive",
+      "name": "nonpositive-token_efficiency_max_artifact_bytes--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_MAX_TOTAL_BYTES": "0"
+      },
+      "error": "token_efficiency_max_total_bytes must be positive",
+      "name": "nonpositive-token_efficiency_max_total_bytes-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_TOKEN_EFFICIENCY_MAX_TOTAL_BYTES": "-1"
+      },
+      "error": "token_efficiency_max_total_bytes must be positive",
+      "name": "nonpositive-token_efficiency_max_total_bytes--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_AST_OUTLINE_TIMEOUT": "0"
+      },
+      "error": "ast_outline_timeout must be positive",
+      "name": "nonpositive-ast_outline_timeout-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_AST_OUTLINE_TIMEOUT": "-1"
+      },
+      "error": "ast_outline_timeout must be positive",
+      "name": "nonpositive-ast_outline_timeout--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_AST_OUTLINE_MAX_OUTPUT_BYTES": "0"
+      },
+      "error": "ast_outline_max_output_bytes must be positive",
+      "name": "nonpositive-ast_outline_max_output_bytes-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_AST_OUTLINE_MAX_OUTPUT_BYTES": "-1"
+      },
+      "error": "ast_outline_max_output_bytes must be positive",
+      "name": "nonpositive-ast_outline_max_output_bytes--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "0"
+      },
+      "error": "workflow_max_concurrent_agents must be at least 1",
+      "name": "nonpositive-workflow_max_concurrent_agents-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "-1"
+      },
+      "error": "workflow_max_concurrent_agents must be at least 1",
+      "name": "nonpositive-workflow_max_concurrent_agents--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_WORKFLOW_MAX_ROUNDS": "0"
+      },
+      "error": "workflow_max_rounds must be at least 1",
+      "name": "nonpositive-workflow_max_rounds-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_WORKFLOW_MAX_ROUNDS": "-1"
+      },
+      "error": "workflow_max_rounds must be at least 1",
+      "name": "nonpositive-workflow_max_rounds--1",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_WORKFLOW_WALL_TIME_SECONDS": "0"
+      },
+      "error": "workflow_wall_time_seconds must be positive",
+      "name": "nonpositive-workflow_wall_time_seconds-0",
+      "settings": null
+    },
+    {
+      "env": {
+        "MINILOOP_WORKFLOW_WALL_TIME_SECONDS": "-1"
+      },
+      "error": "workflow_wall_time_seconds must be positive",
+      "name": "nonpositive-workflow_wall_time_seconds--1",
+      "settings": null
+    }
+  ],
+  "source_sha256": "36c35d10ea76351a788591f8103391ce745c36bb8223a5247097f93bc15df7e4"
+}

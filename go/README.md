@@ -2,7 +2,8 @@
 
 This directory is the independent Go port of the Python runtime in `../python/`.
 It is under construction. The httpapi package provides an embeddable HTTP/SSE
-handler; a standalone agent CLI/listener remains pending. The
+handler; `cmd/miniloop` now provides standalone HTTP startup and signal shutdown.
+UI and the remaining Python default services are still pending. The
 protocol package fixes the default fake-model transcript shapes as explicit Go
 types, completed model replies, usage and stop reasons, and has concrete inputs
 for all ten Python default tools. It rejects
@@ -198,8 +199,8 @@ use a fresh eight-slot pool unless `ToolLimiter` is explicitly shared; children
 inherit the exact pointers. Exclusive tools bypass this pool, including default
 task delegation. A custom parallel classification must cover handler and hook
 safety; do not classify nested task execution as parallel while it waits for the
-same saturated tool pool. Manager composition is implemented; environment settings
-remain pending.
+same saturated tool pool. Manager composition and typed environment settings are
+implemented; the standalone launcher composes the supported services.
 An open todo board receives `<reminder>Update your todos.</reminder>` after three
 tool batches without an attempted TodoWrite. The counter persists across user
 turns; child counters are fresh and a TodoWrite attempt resets it even if denied.
@@ -413,6 +414,64 @@ busy returns 409 and success returns child Info. This implementation is
 process-local. Python's configured StateStore flush before the first child turn
 remains pending in Go.
 
+### Run the standalone HTTP server
+
+The binary embeds the same default `code_review` skill as `python/skills`, and
+can run from outside the checkout with no Python interpreter. From this directory:
+
+```sh
+MINILOOP_FAKE_LLM=1 MINILOOP_TRAJECTORIES=0 MINILOOP_SPILL_DIR= go run ./cmd/miniloop
+# Or build, then run with the same explicit environment settings:
+go build -o /tmp/miniloop ./cmd/miniloop
+/tmp/miniloop --dump-config
+```
+
+`HOST` defaults to `127.0.0.1`, `PORT` to `8000` (zero selects an ephemeral port).
+To use the real HTTP model adapter, supply `ANTHROPIC_API_KEY`, optional
+`ANTHROPIC_BASE_URL` and `MODEL_ID` instead of enabling the fake client. No real
+provider was contacted during port verification. Token auth uses
+`MINILOOP_API_TOKEN` or owner bindings in `MINILOOP_API_TOKENS`; an unauthenticated
+non-loopback host, blank host or actual wildcard listener is refused. Sessions
+start in interactive permission mode. Shell execution uses the host, with no sandbox.
+
+`config.Load` covers all 49 Python Settings fields with named enums, optional values,
+integer limits and checked durations. An explicit environment map is isolated from
+process configuration; nil reads process variables. Loading and `--dump-config` do
+not create workspace directories. The launcher passes supported model/budget/depth,
+concurrency, approval, Bash timeout, fallback, rate and workspace settings into owned
+services, and captures `MINILOOP_FAKE_DELAY`. `MINILOOP_SKILLS_DIR` selects a
+filesystem catalogue with the existing digest recheck; absent selects the compiled skill.
+Configuration errors fail instead of guessing, including invalid inactive feature bounds.
+
+Python defaults enable trajectory recording and a separate oversized-tool-output
+spill store. Those services are not ported, so serving requires explicit
+`MINILOOP_TRAJECTORIES=0` and `MINILOOP_SPILL_DIR=`. The launcher also refuses enabled
+feature/workflow/guardian/decision/token-efficiency/AST integrations and configured
+owner-resource/memory roots. Inactive optional settings remain typed and validated.
+Ordinary workspace compaction artifacts are already implemented; they do not replace
+the unavailable complete tool-output spill store. No dependency was added.
+
+`--dump-config` emits a **settings-and-availability** report with credential presence,
+URL credential/query/fragment removal, build revision, process-local state and unavailable
+activations. It creates no manager or listener and makes no provider probe; it does
+not implement Python's full effective harness/tool posture. There is no `.env`
+discovery/override or reload. Go additionally rejects nonfinite/overflowing numbers
+and positive durations smaller than one nanosecond; representability limits differ
+from Python's arbitrary integers/floats. Fake delay is checked even with a real client.
+
+SIGINT/SIGTERM cancel HTTP request contexts and manager-owned background turns;
+shutdown joins the HTTP server and manager under a ten-second independent timeout,
+then closes the owned provider transport. Header reads are limited to five seconds,
+idle connections to sixty seconds and headers to one MiB; no global write timeout
+cuts off model calls or SSE. This is process-local serving, with UI, trajectory,
+durable restart/SQLite and optional fleet routes still pending.
+
+The 28th source snapshot compares 64 actual Python Settings outcomes and the default
+skill bytes/descriptions/load output. Real TCP tests cover authenticated tool execution,
+foreign owners, actual bind refusal, active model/queued SSE shutdown, model options,
+Bash timeout and side-effect-free inspection. A built binary was also exercised outside
+the repository, including SIGTERM during a delayed call.
+
 ### Serve the implemented HTTP slice
 
 Compose `httpapi.New` with a manager and `Authenticator`. Resolve token configuration
@@ -432,7 +491,9 @@ server := &http.Server{Addr: "127.0.0.1:8000", Handler: handler}
 return server.ListenAndServe()
 ```
 
-There is no Go startup command or listener policy enforcement outside this helper.
+For standalone startup, use `cmd/miniloop` above: it enforces requested and actual
+listener policy and owns shutdown. For custom composition, the embedding application
+retains that responsibility.
 Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
 to development; Config.FakeLLM is explicit rather than inferred from a provider.
 The basic health response omits full effective posture and source build hashing.
@@ -456,7 +517,7 @@ disconnect probe was checked separately from that fixture.
 This slice uses process-local manager/backlog/cache/rate state and disabled trajectory/
 workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
 Python; it does not expose a synthetic durable transcript. Full FastAPI validation
-error arrays/coercions, CLI/UI, trajectories,
+error arrays/coercions, UI, trajectories,
 optional fleet routes, durable SSE gap recovery, SQLite are
 pending. No dependencies were added.
 

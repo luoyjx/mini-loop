@@ -2135,6 +2135,67 @@ def _progress_contracts() -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT/"python/mini_loop"/name).read_bytes()).hexdigest() for name in ("transport.py","fake_llm.py")}, **asyncio.run(collect())}
 
 
+def _configuration_contracts(scratch: Path) -> dict:
+    """Execute actual Settings environment factories, validation and builtin skills."""
+    import dataclasses
+    import hashlib
+    from unittest.mock import patch
+    from mini_loop.config import Settings
+    from mini_loop.skills import SkillLoader
+
+    scratch.mkdir(parents=True, exist_ok=True)
+    scratch = scratch.resolve()
+    cases = [
+        ("defaults", {}),
+        ("core-overrides", {"MODEL_ID":"source-model","ANTHROPIC_API_KEY":"fixture-secret-key","ANTHROPIC_BASE_URL":"https://provider.invalid/anthropic", "MINILOOP_MAX_TOKENS":"1_024","MINILOOP_TOKEN_THRESHOLD":"5000","MINILOOP_MAX_CONCURRENT_LLM":"2","MINILOOP_MAX_CONCURRENT_TOOLS":"3","MINILOOP_MAX_TURNS":"4","MINILOOP_SUBAGENT_MAX_ROUNDS":"5","MINILOOP_SUBAGENT_MAX_DEPTH":"1","MINILOOP_BASH_TIMEOUT":"30","MINILOOP_APPROVAL_TIMEOUT":"45","MINILOOP_RATE_LIMIT_PER_MINUTE":"6","MINILOOP_FALLBACK_MODEL":"backup","MINILOOP_WORKSPACE_ROOT":"nested/work","MINILOOP_BINDABLE_ROOTS":"one: :../two","MINILOOP_SPILL_DIR":"", "MINILOOP_TRAJECTORIES":"off", "MINILOOP_FAKE_LLM":"1"}),
+        ("optional-settings", {"MINILOOP_TOKEN_EFFICIENCY_MODE":" Enforce ","MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE":"CONCISE","MINILOOP_TOKEN_EFFICIENCY_PERSIST_RAW":"no","MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES":"20","MINILOOP_TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS":"12.5","MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES":"30","MINILOOP_TOKEN_EFFICIENCY_MAX_TOTAL_BYTES":"40","MINILOOP_AST_OUTLINE_ENABLED":"yes","MINILOOP_AST_OUTLINE_BINARY":"/operator/ast-outline","MINILOOP_AST_OUTLINE_SHA256":"A"*64,"MINILOOP_AST_OUTLINE_TIMEOUT":"2.5","MINILOOP_AST_OUTLINE_MAX_OUTPUT_BYTES":"100","MINILOOP_FEATURES":"all","MINILOOP_GUARDIAN":"on","MINILOOP_DECISIONS":"JEV","TYPESAFE_API_KEY":"fixture-typesafe-secret","MINILOOP_EXPERIMENTAL_WORKFLOWS":"true","MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS":"2","MINILOOP_WORKFLOW_MAX_AGENTS":"3","MINILOOP_WORKFLOW_MAX_ROUNDS":"1","MINILOOP_WORKFLOW_WALL_TIME_SECONDS":"25.5"}),
+        ("paths", {"MINILOOP_SKILLS_DIR":"skills", "MINILOOP_USER_RESOURCES_ROOT":"users", "MINILOOP_MEMORY_ROOT":"memory", "MINILOOP_REPO_ROOT":"repo", "MINILOOP_TRAJECTORY_ROOT":"traces"}),
+        ("empty-paths", {"MINILOOP_WORKSPACE_ROOT":"","MINILOOP_SKILLS_DIR":"", "MINILOOP_SPILL_DIR":"  ","MINILOOP_USER_RESOURCES_ROOT":"", "MINILOOP_MEMORY_ROOT":""}),
+        ("empty-numeric", {"MINILOOP_MAX_TOKENS":" ","MINILOOP_TEAM_IDLE_POLL":"", "MINILOOP_TRAJECTORY_CAPTURE_CONTENT":""}),
+        ("unicode-numbers", {"MINILOOP_MAX_TOKENS":"+１２_３", "MINILOOP_TEAM_IDLE_POLL":"١.٢_٥"}),
+        ("legacy-flags", {"MINILOOP_FAKE_LLM":"False", "MINILOOP_FEATURES":"FALSE"}),
+        ("boolean-case", {"MINILOOP_TRAJECTORIES":"FaLsE", "MINILOOP_TRAJECTORY_CAPTURE_CONTENT":" YeS "}),
+        ("integer-typo", {"MINILOOP_MAX_TOKENS":"8k"}),
+        ("float-typo", {"MINILOOP_TEAM_IDLE_POLL":"soon"}),
+        ("float-hex-rejected", {"MINILOOP_TEAM_IDLE_POLL":"0x1p0"}),
+        ("boolean-typo", {"MINILOOP_TRAJECTORY_CAPTURE_CONTENT":"flase"}),
+        ("bad-mode", {"MINILOOP_TOKEN_EFFICIENCY_MODE":"auto"}),
+        ("bad-style", {"MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE":"terse"}),
+        ("bad-decision", {"MINILOOP_DECISIONS":"auto"}),
+        ("jev-no-key", {"MINILOOP_DECISIONS":"jev"}),
+        ("ast-unpinned", {"MINILOOP_AST_OUTLINE_ENABLED":"true"}),
+        ("ast-bad-digest", {"MINILOOP_AST_OUTLINE_SHA256":"wrong"}),
+        ("raw-limit-crossed", {"MINILOOP_TOKEN_EFFICIENCY_RAW_MIN_BYTES":"3000000"}),
+        ("artifact-limit-crossed", {"MINILOOP_TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES":"30000000"}),
+        ("workflow-cap", {"MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS":"5"}),
+        ("workflow-shortage", {"MINILOOP_WORKFLOW_MAX_AGENTS":"3"}),
+        ("rate-negative", {"MINILOOP_RATE_LIMIT_PER_MINUTE":"-1"}),
+    ]
+    positive = ["MAX_TOKENS","TOKEN_THRESHOLD","MAX_CONCURRENT_LLM","MAX_CONCURRENT_TOOLS","MAX_TURNS","SUBAGENT_MAX_ROUNDS","SUBAGENT_MAX_DEPTH","BASH_TIMEOUT","APPROVAL_TIMEOUT","TEAM_IDLE_POLL","TEAM_IDLE_TIMEOUT","TOKEN_EFFICIENCY_RAW_MIN_BYTES","TOKEN_EFFICIENCY_ARTIFACT_TTL_SECONDS","TOKEN_EFFICIENCY_MAX_ARTIFACT_BYTES","TOKEN_EFFICIENCY_MAX_TOTAL_BYTES","AST_OUTLINE_TIMEOUT","AST_OUTLINE_MAX_OUTPUT_BYTES","WORKFLOW_MAX_CONCURRENT_AGENTS","WORKFLOW_MAX_ROUNDS","WORKFLOW_WALL_TIME_SECONDS"]
+    cases.extend((f"nonpositive-{name.lower()}-{v}", {f"MINILOOP_{name}":str(v)}) for name in positive for v in (0,-1))
+    rows=[]
+    cwd=Path.cwd()
+    try:
+        os.chdir(scratch)
+        for name, env in cases:
+            error=None; result=None
+            with patch.dict(os.environ, env, clear=True):
+                try:
+                    cfg=Settings()
+                    result=dataclasses.asdict(cfg)
+                    for key,value in list(result.items()):
+                        if key.endswith("_key"): result[key]="<set>" if value else None
+                        elif isinstance(value,Path): result[key]=str(value).replace(str(scratch),"<cwd>").replace(str(scratch.parent),"<parent>")
+                        elif isinstance(value,tuple): result[key]=[str(v).replace(str(scratch),"<cwd>").replace(str(scratch.parent),"<parent>") for v in value]
+                    if "MINILOOP_SKILLS_DIR" not in env: result["skills_dir"]="<builtin>"
+                except ValueError as exc: error=str(exc)
+            rows.append({"name":name,"env":env,"settings":result,"error":error})
+    finally: os.chdir(cwd)
+    loader=SkillLoader(REPO_ROOT/"python/skills")
+    return {"source_sha256":hashlib.sha256((REPO_ROOT/"python/mini_loop/config.py").read_bytes()).hexdigest(),
+            "cases":rows,"builtin":{"descriptions":loader.descriptions(),"loaded":loader.load("code_review"),"source_sha256":hashlib.sha256((REPO_ROOT/"python/skills/code_review/SKILL.md").read_bytes()).hexdigest()}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -2218,6 +2279,7 @@ def _snapshot() -> dict[str, bytes]:
         stream_contracts = _stream_contracts()
         recovery_contracts = _recovery_contracts()
         progress_contracts = _progress_contracts()
+        configuration_contracts = _configuration_contracts(Path(scratch) / "config")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2260,6 +2322,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-streams.json": _json_bytes(stream_contracts),
         "python-recovery.json": _json_bytes(recovery_contracts),
         "python-progress.json": _json_bytes(progress_contracts),
+        "python-configuration.json": _json_bytes(configuration_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

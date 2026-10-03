@@ -281,7 +281,8 @@ Anthropic-compatible HTTP adapter and bounded SDK retries, plus typed SSE assemb
 provisional stream progress and shown-text interruption repair, plus typed default
 Agent recovery with retries, escalation, continuation, reactive shrink and fallback,
 plus captured stream-progress settings and stateful signed fake-model calls,
-reviewed **2026-10-04** (Go baseline `3f4c110` plus the progress/fake slice).
+plus typed environment settings, embedded default skills and a standalone HTTP launcher,
+reviewed **2026-10-04** (Go baseline `05a5b53` plus the configuration/launcher slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -328,6 +329,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · activation check · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE handler<br/>bounded ingress · typed JSON / event projection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
@@ -345,7 +347,8 @@ flowchart LR
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
-        GoEntry --> GoTrust --> GoManager
+        GoLaunch --> GoEntry --> GoTrust --> GoManager
+        GoLaunch -. construct / stop .-> GoManager
         GoManager -->|create / fork / own| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
         GoSession --> GoContext --> GoProvider
@@ -392,7 +395,16 @@ flowchart LR
 
 The main diagram describes the current Python runtime under `python/`. The
 separate Go subgraph is a process-local port in progress with an embeddable
-HTTP handler; it runs independently of Python and has no bundled listener.
+HTTP handler and a standalone `go/cmd/miniloop` launcher. It runs independently
+of Python, embeds the default code-review skill, and owns listening and shutdown.
+The launcher requires explicit `MINILOOP_TRAJECTORIES=0` and an empty
+`MINILOOP_SPILL_DIR` until those Python default services are ported; other
+configured but unavailable features also refuse activation. It reads an environment
+snapshot without `.env` discovery, uses typed settings, and checks both the requested
+host and actual listener before admitting unauthenticated traffic. `--dump-config`
+reports redacted settings/availability without creating a runtime or probing a model;
+it is not the full Python effective-posture report. See
+[Go startup](go/README.md#run-the-standalone-http-server).
 The solid Python path is one ordinary turn; dotted paths are
 optional or asynchronous.
 The Python default agent skills now resolve from `python/skills/` regardless
@@ -479,7 +491,8 @@ served-model identity, signed thinking and default-tool input variants. HTTP ret
 match the pinned Python SDK 0.107.1: two retries, selected status codes, retry override
 headers and bounded SDK backoff/Retry-After rules. Request and reply bytes are capped,
 contexts own calls/waits, redirects are refused, and diagnostics scrub the configured
-API key. No credentials or environment settings are discovered implicitly. This
+API key. The adapter never discovers credentials; the launcher explicitly passes
+its validated environment settings. This
 adapter supplies SDK-level retry; the session now applies separate default Agent
 recovery: at most ten transient retries, bounded outer waits, token escalation,
 whole-answer continuation, one reactive shrink and optional fallback model. Backoff
@@ -494,7 +507,8 @@ zero or negative values flush every nonempty fragment. Clock callbacks must be
 concurrency-safe when shared. A fake client owns an atomic message-ID sequence,
 prepends signed thinking by default, and exposes an explicit streaming view that
 lifts the direct ceiling. Thinking, responder, delay and ceiling settings are typed
-and explicit; no fake delay environment discovery is implemented. Fresh ephemeral stream IDs correlate
+and explicit; the standalone launcher captures `MINILOOP_FAKE_DELAY` and passes
+it at fake-client construction. Fresh ephemeral stream IDs correlate
 provisional commentary with authoritative final/commentary events; progress never
 replays. Only shown answer text is preserved on managed cancellation, and successful
 streams clear partial state, including internal summaries. Body drops surface to
@@ -607,8 +621,9 @@ the bounded backlog with cursor deduplication and optional envelopes. Typed flat
 JSON and HTTP responses use the optional recording projection without changing live
 model history; encoder failures return no raw fallback. These are process-local handler
 services: the embedding application owns listening/shutdown and must call
-`RefuseOpenBind` before listening. There is no Go CLI, UI, full health posture, durable
-catch-up, trajectory or optional fleet service yet. Full
+`RefuseOpenBind` before listening. The standalone launcher supplies that ownership
+and additionally checks its actual listener. UI, full health posture, durable
+catch-up, trajectory or optional fleet services remain pending. Full
 FastAPI validation detail/coercion parity remains open. Durable restoration is pending.
 Managed controls have a separate lock from model/transcript execution. Library
 `Steer` parks at most 100 inputs, each capped at 16,000 Unicode characters with a
@@ -634,7 +649,7 @@ event and reclaims its unused scratch directory. Empty histories and repaired
 cancellation boundaries can fork. Go forks remain process-local; Python with a real
 StateStore also flushes the fork before its first turn, which remains G5 work here.
 The interactive map folds ManagedSession into the Go SessionManager
-node and its controls into Go Session. Raw
+node, folds the launcher into Go HTTP / SSE, and folds controls into Go Session. Raw
 child sessions emit core spans and text without
 outer status/done events. Transcript replacement increments event epochs, including
 with no state store. Tool failures and denials retain their flags in telemetry;

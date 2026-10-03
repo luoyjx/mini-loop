@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress",
+    "subtitle": "Python runtime in python/; independent Go startup, owned HTTP/SSE and guarded turns; persistence/optional port work remains",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -70,7 +70,7 @@
           "goApprovals",
           "goSecrets"
         ],
-        "note": "Typed HTTP/SSE, controls and forks feed owned turns. Direct/SSE model calls exist; Default Agent recovery exists; SQLite remains pending."
+        "note": "Typed startup owns HTTP/SSE and shutdown. Direct/stream models and default recovery exist; trajectory, spill, UI and SQLite remain pending."
       },
       {
         "id": "personal-skill",
@@ -489,8 +489,8 @@
     {
       "id": "goEntry",
       "type": "backend",
-      "label": "Go HTTP / SSE",
-      "sublabel": "auth / bounded ingress / typed routes",
+      "label": "Go Startup / HTTP / SSE",
+      "sublabel": "settings / auth / listener / shutdown",
       "pos": [
         330,
         800
@@ -499,7 +499,7 @@
         330,
         76
       ],
-      "tag": "handler library / process-local"
+      "tag": "process-local / explicit trajectory off"
     }
   ],
   "boundaries": [
@@ -556,7 +556,7 @@
     },
     {
       "kind": "region",
-      "label": "Go HTTP admission",
+      "label": "Go startup / HTTP admission",
       "wraps": [
         "goEntry"
       ],
@@ -1191,13 +1191,17 @@
         "Todo reminder counters survive user turns; durable steering, restore and remaining context integrations remain open",
         "Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records",
         "Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending",
-        "Go HTTP handler admits one principal, fifteen typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open",
+        "Go HTTP handler admits one principal, fifteen typed route operations and masked JSON/SSE data; UI, full posture and optional routes remain open",
         "Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks",
         "HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls",
         "Fork copies completed paired history into fresh scratch; typed lineage and source events are process-local, first-turn persistence awaits SQLite",
         "Explicit direct HTTP provider preserves typed cache wire, served model and signed thinking; typed SSE assembly and SDK retries are separate from default Agent recovery",
         "Provider byte caps, caller-owned deadlines/waits, credential-scrubbed diagnostics and redirect refusal are implemented; configurable coalesced masked progress is ephemeral and cancellation preserves shown text; outer waits release permits; fallback and paired reactive shrink are session-owned; production conformance remains unverified",
-        "Go fake clients own call IDs, signed thinking, typed responders and explicit direct/stream views; child and fork sessions retain captured progress thresholds"
+        "Go fake clients own call IDs, signed thinking, typed responders and explicit direct/stream views; child and fork sessions retain captured progress thresholds",
+        "The Go entry node includes cmd/miniloop and launcher: typed settings, activation checks, requested/actual bind guards, owned TCP listener and joined signal shutdown",
+        "All 49 Python settings are typed; 64 source cases compare defaults, overrides and refusal. Embedded default skill matches Python and needs no checkout",
+        "Serving requires explicit trajectories off and empty full-output spill path; enabled unavailable features refuse activation. Existing compaction artifacts are separate",
+        "Dump-config reports credential-free settings/availability without files or model probes; full posture, dotenv discovery, UI, durable SQLite and optional services remain pending"
       ]
     }
   ]

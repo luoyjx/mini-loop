@@ -101,7 +101,8 @@ Record its parity evidence and remaining gaps before checking it off.
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
       fifteen HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
-      CLI/UI, full health posture, durable catch-up, trajectory,
+      typed settings, standalone HTTP launcher and embedded default skills implemented;
+      UI, full health posture, durable catch-up, trajectory,
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
@@ -1817,3 +1818,108 @@ No production endpoint or paid model calls were made.
 - `git diff --check` and README outline: **passed**. Host: macOS; Linux
   runtime and live endpoint/cache behavior remain unverified. No dependencies
   or paid model calls.
+
+## 2026-10-04 typed configuration and standalone launcher slice
+
+Base: `05a5b53` (stream progress/stateful fake). G3 advances; the overall port
+remains incomplete and G0–G7 remain open.
+
+### Implementation and source evidence
+
+- `go/config.Settings` models all 49 Python dataclass fields using named modes,
+  optional pointers, integer bounds and explicit seconds. Environment parsing
+  preserves source defaults, Unicode decimal digits, between-digit underscores,
+  strict boolean normalization, exact legacy fake/feature truthiness, path
+  resolution and positive/cross-field validation. Credentials use an explicit
+  reveal seam and detached credential-free snapshots; diagnostics remove URL
+  userinfo/query/fragment data.
+- Source exporter snapshot 28, `python-configuration.json`, executes actual
+  `Settings()` under 64 isolated environment cases: default/core/optional/path
+  overrides, malformed numbers/booleans/enums, AST pinning, artifact/workflow
+  relationships and forty zero/negative positive-bound failures. It also pins
+  the actual default skill bytes, descriptions and loaded wrapper. Existing
+  27 snapshots remain byte-identical. Tests compare every accepted setting and
+  the reject/accept outcome, without claiming literal Python exception messages.
+- `go/skills` embeds the exact `python/skills/code_review/SKILL.md` deployment
+  asset. The standalone binary needs no Python or source checkout. Explicit
+  filesystem catalogues keep their bounded reader, UTF-8/newline behavior and
+  digest recheck; builtin data is immutable compiled content.
+- `launcher.New` resolves an explicitly owned fake/direct model adapter, skill
+  catalogue, configured fallback recovery, bound shell, manager defaults/shared
+  pools/approval timeout/workspace binding, auth, rate settings and HTTP handler.
+  Failed construction cleans owned services. Loading/inspection creates no files.
+  `App.Serve` owns its TCP listener, rechecks the actual bind address, and joins
+  HTTP plus manager shutdown. The command supplies bounded cleanup on every exit.
+- `cmd/miniloop` adds HTTP startup and SIGINT/SIGTERM handling, HOST/PORT, captured
+  fake delay, and redacted settings-and-availability inspection. Empty hosts are
+  refused because Go's empty TCP host binds all interfaces. Requested and actual
+  unauthenticated binds are both checked. Header/idle deadlines exist; global
+  read/write deadlines do not terminate long model/SSE calls. Signal cancellation
+  cancels request contexts as well as manager-owned turns, then uses an independent
+  ten-second shutdown deadline and closes the owned provider transport.
+
+### Remaining boundaries
+
+Python enables trajectory recording and a separate full-output spill store by
+default. Serving currently requires explicit `MINILOOP_TRAJECTORIES=0` and empty
+`MINILOOP_SPILL_DIR`; enabling those unavailable services or feature/workflow/
+guardian/decision/token-efficiency/AST/owner-resource/memory integrations fails
+activation. Inactive optional settings still validate. Existing compaction spill
+artifacts do not implement the separate complete tool-output store. Implementing
+these defaults is remaining work, not a changed default or a claim of full parity.
+
+Go performs no `.env` discovery/override, reload, manager/provider posture probe or
+Python source-build fingerprint. The inspection report is intentionally labeled
+settings-and-availability, not full effective posture. Go adds finite number/int/
+duration bounds (minimum one nanosecond for positive durations), and validates
+fake delay even when the real provider is selected. Python's constructor creates
+its workspace; pure Go loading leaves creation to manager construction. No new
+dependency or production model invocation occurred. UI, exact FastAPI validation,
+trajectory/durable restoration/SQLite and optional capabilities remain pending.
+
+### Validation
+
+- Narrow configuration/launcher/command/skills tests: **passed** after the final
+  64-case snapshot was generated. The real upstream HTTP test checks model/output
+  settings and the embedded skill in the request, then observes a configured
+  one-second timeout from the actual manager-bound Bash tool in the next request.
+- `GOCACHE=/tmp/mini-loop-go-stream-cache go test ./...`, `go vet ./...`, and
+  `go test -race ./...` from `go/`: **passed** on the final runtime/test code.
+- Built `/tmp/mini-loop-go-launcher` with standard Go tooling. Outside-repository
+  startup, no-file inspection, authenticated HTTP create/mode/tool round, and
+  SIGTERM both at idle and during a one-hour fake delay: **passed**, exit 0.
+  Go TCP tests also join an active message and queued SSE stream on shutdown.
+- `export_go_contracts.py --check`: **28 files current**; the previous 27 snapshots
+  are byte-identical. New source case 64 rejects hexadecimal float syntax that Go
+  strconv accepts but Python float refuses. `verify_scans.py`: **19 anchored**.
+- Source mutation checks: **5 caught** (`config-guesses-a-number`,
+  `config-guesses-a-duration`, `config-reads-a-typo-as-true`,
+  `bash-timeout-zero-times-out-everything`, `approval-timeout-zero-denies-everything`).
+  These pin Python reference guards; Go fixture/bounds tests independently check
+  the port. Python package invariants were not rerun: no package module changed.
+- Python full suite, first run: **1 failed, 2150 passed, 28 skipped, 3 warnings,
+  24 subtests passed**, 200.72s. Existing `test_a_forty_turn_session_stays_fast`
+  measured 0.898939s against its unchanged <0.5s gate. Individual reruns measured
+  0.620813s and 0.700156s and still failed.
+- Python full suite, final run: **2 failed, 2149 passed, 28 skipped, 3 warnings,
+  24 subtests passed**, 196.32s. Existing `test_sessions_run_concurrently` measured
+  0.624537s and the forty-turn case 0.648273s, both against <0.5s. Final isolated
+  pair: **1 passed, 1 failed**, 1.43s; concurrency passed, forty turns measured
+  0.727225s. No Python runtime/test source or gate was changed. A live process
+  snapshot showed substantial other CPU work; attribution was not proven. Python's
+  full gate is **not green**; this remains a source performance validation limit.
+- Archify architecture `validate` and `deliver --quality showcase`: **9/9**, zero
+  composition errors/warnings. One schema repair shortened the Go view note to
+  its 140-character bound; no geometry repair was required. Frozen JSON SHA-256
+  `c88dc5e7228491624dd6c6134be2f6fbac97c504bfa5cd04f5360ff885721166`,
+  26,598 bytes; HTML SHA-256
+  `7ea7725a686adc4154b3c06fad8ed65ccc2e44fbfc5b4caa489c1dd2e7af6ad3`,
+  665,812 bytes. Interactive HTML was generated, not hand-edited. Visual inspection
+  remains unperformed because the earlier local-file browser access was denied;
+  no alternate access bypass was attempted.
+- README architecture baseline/outline and `git diff --check`: **passed**. Host:
+  macOS; no Linux execution or production endpoint/cache evidence, no dependencies.
+
+Next G3 work is to port the Python default full-output spill and trajectory services
+so standalone startup no longer needs those explicit opt-outs. UI/full posture,
+G5 durability and G6 optional services remain on the plan; overall goal stays active.

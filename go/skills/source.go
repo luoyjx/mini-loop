@@ -116,7 +116,11 @@ func readSource(ctx context.Context, path string) (sourceRecord, error) {
 		return sourceRecord{}, err
 	}
 	defer handle.Close()
-	reader := bufio.NewReader(handle)
+	return readSourceReader(ctx, handle)
+}
+
+func readSourceReader(ctx context.Context, source io.Reader) (sourceRecord, error) {
+	reader := bufio.NewReader(source)
 	digest := sha256.New()
 	hashed := bufio.NewWriter(digest)
 	full := boundedText{limit: MaxBody}

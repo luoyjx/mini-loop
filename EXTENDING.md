@@ -83,7 +83,8 @@ Its `Authenticate` and `Configured` methods must be safe for concurrent requests
 Authentication runs once at admission; handlers reuse that principal for ownership
 and the untrusted HTTP stamp. `TokenAuth` supports detached owner bindings;
 `AuthFromEnvironment` resolves only token configuration. The embedding application
-must invoke `RefuseOpenBind` before listening; no Go startup CLI ships yet.
+must invoke `RefuseOpenBind` before listening. The standalone Go launcher owns
+that check, additionally checks the actual listener, and refuses blank hosts.
 
 ---
 
@@ -1166,7 +1167,11 @@ uvicorn myapp:app --factory --port 8000
 
 For the Go slice, pass `agent.NewSessionManager` to `httpapi.New(Config)` and use the
 result as an `http.Server.Handler`. The application owns listening, server shutdown
-and `manager.Stop`. Fourteen method/path operations, mode/steering and
+and `manager.Stop`. Alternatively, `config.Load` and `launcher.New` compose the
+supported process-local services; `App.Serve(ctx, listener)` owns the listener and
+joins HTTP/manager shutdown on cancellation. The application still calls `App.Stop`
+when listener acquisition or a pre-serve guard fails. `cmd/miniloop` supplies this
+lifecycle and signal handling. Fifteen method/path operations, mode/steering and
 process-local SSE are present;
 UI, full health posture, optional fleet routes and durable event catch-up remain
 pending. `Config.Now` and shared auth/services must synchronize their state. The
@@ -1257,8 +1262,11 @@ and journal through typed `ManagerServices`. `WorkspaceFactory` selects scratch
 paths and `BashFactory` receives a typed `SessionBinding`; factories must not
 recursively create/delete/stop the manager. Services and callbacks are shared
 and must synchronize mutable state. Explicit owner identities are required.
-The httpapi handler supplies admitted HTTP ownership; full environment settings
-remain pending. See `go/README.md` for concrete semantics and the parity matrix for evidence.
+The httpapi handler supplies admitted HTTP ownership; `config` resolves all 49
+source settings and `launcher` passes the supported subset into owned services,
+rejecting unavailable activations. Inspection is settings/availability only, with
+full effective posture, `.env` discovery, trajectory and complete spill services
+pending. See `go/README.md` for concrete semantics and the parity matrix for evidence.
 
 Managed Go controls are separate from the transcript/model lock. A before/guard
 hook may call ChangePermissionMode; the gate loads current mode at permission

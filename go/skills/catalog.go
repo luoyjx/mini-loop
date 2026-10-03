@@ -50,6 +50,7 @@ type Entry struct {
 }
 
 type Catalog struct {
+	builtin                      bool
 	ordered                      []Entry
 	entries                      map[string]Entry
 	mu                           sync.Mutex
@@ -273,6 +274,9 @@ func (catalog *Catalog) Load(ctx context.Context, input protocol.LoadSkillInput)
 	entry, exists := catalog.entries[name]
 	if !exists {
 		return "", fmt.Errorf("Unknown skill '%s'. Available: %s", name, catalog.available())
+	}
+	if catalog.builtin {
+		return "<skill name=\"" + name + "\">\n" + entry.Body + "\n</skill>", nil
 	}
 	current, err := readSource(ctx, entry.Path)
 	if ctx.Err() != nil {
