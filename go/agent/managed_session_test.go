@@ -43,7 +43,7 @@ func TestSubscriptionBoundsReplayAndEphemeralMatchPython(t *testing.T) {
 		bus.append(SessionEvent{kind: EventStatus, status: StatusEvent{Status: StatusIdle}})
 	}
 	for i := 0; i < 5; i++ {
-		bus.append(SessionEvent{kind: EventAssistantDelta, delta: AssistantDeltaEvent{"piece"}})
+		bus.append(SessionEvent{kind: EventAssistantDelta, delta: AssistantDeltaEvent{Text: "piece"}})
 	}
 	live.Close()
 	records := []SessionEventRecord{}
@@ -133,7 +133,7 @@ func TestTranscriptEpochTracksReplacementNotAppendOrEphemeral(t *testing.T) {
 	history = append(history, protocol.Message{Role: protocol.RoleAssistant, Content: protocol.BlockContent(protocol.NewTextBlock("reply"))})
 	emit()
 	history[0].Content = protocol.PlainContent("first") // same text, new immutable storage
-	bus.append(SessionEvent{kind: EventAssistantDelta, delta: AssistantDeltaEvent{"piece"}})
+	bus.append(SessionEvent{kind: EventAssistantDelta, delta: AssistantDeltaEvent{Text: "piece"}})
 	emit()
 	history = history[:1]
 	emit()

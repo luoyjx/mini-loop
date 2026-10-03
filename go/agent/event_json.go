@@ -91,13 +91,23 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 		}{e.runError.Error()})
 	case EventAssistantText:
 		return marshalEvent(h, struct {
-			Text  string    `json:"text"`
-			Phase TextPhase `json:"phase"`
-		}{e.assistantText.Text, e.assistantText.Phase})
+			Text     string    `json:"text"`
+			Phase    TextPhase `json:"phase"`
+			StreamID StreamID  `json:"stream_id,omitempty"`
+		}{e.assistantText.Text, e.assistantText.Phase, e.assistantText.StreamID})
 	case EventAssistantDelta:
 		return marshalEvent(h, struct {
-			Text string `json:"text"`
-		}{e.delta.Text})
+			Text        string    `json:"text"`
+			StreamID    StreamID  `json:"stream_id,omitempty"`
+			Phase       TextPhase `json:"phase,omitempty"`
+			Provisional bool      `json:"provisional,omitempty"`
+		}{e.delta.Text, e.delta.StreamID, e.delta.Phase, e.delta.Provisional})
+	case EventStreamStart:
+		return marshalEvent(h, struct {
+			StreamID    StreamID  `json:"stream_id"`
+			Phase       TextPhase `json:"phase"`
+			Provisional bool      `json:"provisional"`
+		}{e.streamStart.StreamID, e.streamStart.Phase, e.streamStart.Provisional})
 	case EventTurnQueued:
 		return marshalEvent(h, struct{}{})
 	case EventActivityUpdate:

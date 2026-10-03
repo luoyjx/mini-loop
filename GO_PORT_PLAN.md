@@ -89,8 +89,8 @@ Record its parity evidence and remaining gaps before checking it off.
       managed admission/cancellation and bounded subscriptions implemented;
       prompt hooks/injectors, Todo nagging, shared limiters and ordered parallel batches
       implemented; bounded steering and live posture updates implemented;
-      direct HTTP provider/SDK retries implemented;
-      streaming/Agent recovery and remaining context integrations remain)
+      direct HTTP provider/SDK retries, typed SSE and provisional progress implemented;
+      Agent recovery and remaining context integrations remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
@@ -103,8 +103,9 @@ Record its parity evidence and remaining gaps before checking it off.
       fifteen HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
       CLI/UI, full health posture, durable catch-up, trajectory,
       optional routes and complete validation semantics remain)
-- [ ] G4 provider (direct HTTP, typed normalization and bounded SDK retries implemented;
-      streaming, Agent recovery, advanced variants/options and live-provider audit remain)
+- [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
+      and streamed-text cancellation repair implemented;
+      Agent recovery, advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence
 - [ ] G6 optional features
 - [ ] G7 differential and release audit
@@ -1505,3 +1506,131 @@ completion or default provider switch is claimed.
 - Host: macOS. External live-provider conformance, cache benefit and Linux runtime
   behavior remain unverified. SDK mock HTTP and local real HTTP tests consume no
   external credentials or paid provider calls.
+
+## 2026-10-03 typed streaming and interrupted-text slice
+
+Baseline: `99d23a0` plus this slice. G4 adds explicit SSE model transport and
+session-owned progress. Python remains unchanged outside its contract exporter;
+Go's default Fake/direct provider selection remains explicit. G4 and the overall
+port remain incomplete.
+
+### Source contract and implementation
+
+- Actual Anthropic SDK 0.107.1 `AsyncMessageStream.accumulate_event` and SSE
+  decoding provide the source contract: text/thinking appends, signature replaces,
+  input JSON fragments replace the initial tool input, final usage updates only
+  present fields, response model remains authoritative, and HTTP SDK retries stop
+  after successful response headers. Streaming bypasses the direct token ceiling.
+- `provider.NewStreaming(Config)` constructs a shared `StreamingClient` implementing
+  the existing Provider and optional consumer-owned StreamingProvider. Both use
+  concrete requests/replies. Callback deltas have closed text/thinking kinds;
+  callbacks are synchronous and stop before return. A standalone Complete can
+  discard progress without discarding its final reply.
+- SSE reads support CR/LF/CRLF, comments, multiline data and missing JSON type
+  (using the event name), with network reads splitting UTF-8 and JSON arbitrarily.
+  Unknown SSE event names and ping are ignored as in the SDK. Total wire bytes
+  including ignored frames obey configured reply limits; individual frames,
+  lines and assembled blocks obey the protocol 512 KiB bound.
+- Partial input bytes exist only in the bounded ingress accumulator. A stopped
+  block is converted to a concrete ToolInput and validated; incomplete tool inputs
+  and unsigned thinking never enter transcripts or execute tools. Text/thinking
+  progress is separate from stored signed thinking blocks. Text builders avoid
+  repeated whole-answer copies while accumulating fragments.
+- SDK retries cover failed opening/status responses. Once headers succeed, body
+  drops/timeouts/errors return without replaying inside the adapter. Request IDs
+  and finite Retry-After seconds stay typed; configured API-key diagnostics are
+  scrubbed. Response bodies close on success, failure, consumer stop and cancel.
+- A session selects StreamingProvider when its configured Provider implements the
+  optional interface, retaining shared model permits, cache annotation, telemetry,
+  served-model identity and usage. Direct providers preserve one-shot behavior.
+  Existing manager/fork/child provider inheritance also carries the stream seam;
+  all mutable accumulation belongs to the receiving session/call.
+- Each send starts a fresh ephemeral `stream_start`, then coalesces progress at
+  200 Unicode characters or 200 ms checked on fragment arrival (no timer flush),
+  matching Python defaults. Delta events are masked provisional commentary with
+  the same stream ID that final assistant_text uses for authoritative phase.
+  Both ephemeral variants are offered live but excluded from replay/history epoch
+  accounting. Optional recording sinks receive detached masked progress records.
+- Only flushed answer text, never thinking or pending fragments, is recoverable
+  on managed cancellation. Repair appends it above the interruption marker only
+  when no dangling tool results need immediate pairing. Partial text clears on
+  successful completion, including internal compaction calls, and after repair.
+
+### Evidence, differences and remaining work
+
+`python-streams.json` is snapshot 25. Nine actual SDK/StreamingTransport calls
+capture final replies, raw SDK text/thinking deltas, coalesced masked progress,
+partial state, HTTP body/attempt headers, retries and closed bodies. Cases include
+CR, CRLF, multiline data, missing type, HTTP 429 before opening, empty refusal,
+midstream ReadError and an SSE error frame. The fixture records exact SDK and
+Python transport source hashes. SDK-only nullable citations/parsed_output metadata
+are omitted explicitly from the consumed projection.
+
+Go compares all nine final outcomes/progress streams/HTTP attempts. SDK streaming
+leaves a body ReadError as its raw httpx class; Go uses a named, bounded connection
+Failure instead. The drop case compares the connection category rather than
+claiming identical error-class strings. Read timeouts likewise use named timeout
+Failure. Session tests
+compare eight coalesced transport outcomes and partial state (network-read drop
+is covered by the provider and cancellation tests). Real httptest model calls run
+a complete signed-thinking/write_file/final-answer round through a fleet session,
+checking next-request thinking signature/tool pairing, filesystem effect, cache
+wire, served-model usage and final phase/stream correlation. Other cases test
+owned cancel/read timeout, consumer callback failure, body close, invalid UTF-8,
+unsupported delta, ordering/index/signature/JSON errors, line/total bounds, fresh
+generations, shown-text repair and successful internal-call clearing. Thirty-two
+shared-client calls check isolation under the race detector.
+
+Go deliberately requires message_delta/message_stop and stopped validated blocks
+before accepting a final reply. The SDK may expose an unchecked partial snapshot
+at clean EOF; Go reports an incomplete connection failure. Go rejects invalid
+indices/discriminator mismatches/unknown content delta variants explicitly; SDK
+accumulation is more permissive. Nonempty citations, advanced content/request/auth
+variants and custom coalescing settings remain pending. Dropped streams do not yet
+regenerate automatically: DefaultRecovery retry/continuation/escalation/fallback/
+reactive compaction is the next G4 work. No durable SQLite state, CLI/UI streaming,
+external-provider conformance or production cache savings is claimed.
+
+### Validation
+
+- Streaming-targeted Go tests passed before the final gates, including the
+  actual SDK corpus, real tool round/cancellation/timeout and child inheritance.
+- Final `go test ./...`, `go vet ./...`, `go test -race ./...`: **all passed**.
+  A prior attempt encountered missing files in the host's shared Go build cache;
+  final commands use isolated `GOCACHE=/tmp/mini-loop-go-stream-cache`. No
+  dependencies were added. Intermediate fixture/helper compile mismatches were
+  corrected before these final gates; no unsuccessful attempt is counted as green.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: **25 current
+  files**. Prior 24 snapshots are byte-identical. `verify_scans.py`: **19 anchored**.
+  SDK 0.107.1 `_streaming.py` SHA-256:
+  `65b4253475703abbdbcccdab8b2ae1a9451bc787c6f617b8cd0f8a5e7340347d`;
+  `lib/streaming/_messages.py`:
+  `cf8088c4e60919a7d4d67c3dcfba6c16ff17eef28fd69348174e584c0630047b`;
+  Python `transport.py`:
+  `ce7fc744213272848cc5ba01e06b851d49ca106da0560746d5ae7b6929503873`.
+- Four source guards caught, run sequentially before the final exporter/Python
+  suite: `stream-deltas-unmasked`, `completed-stream-leaves-stale-partial`,
+  `deltas-are-replayed`, `retry-does-not-announce-itself`. Full catalogue and Go
+  mutation catalogue were not run. Package invariants were not rerun because
+  no Python package module changed; only the export tool changed.
+- Full `.venv/bin/python -m pytest -q`: **1 failed, 2,150 passed, 28 skipped,
+  24 subtests passed**, three dependency warnings, 278.24 seconds. Sole failure:
+  `test_double_cost.py::test_a_forty_turn_session_stays_fast`, measured 1.136820s
+  against the existing 0.5s gate. Go final commands overlapped this run, but no
+  causal attribution to scheduler/load is proven. Targeted follow-up
+  `.venv/bin/python -m pytest -q python/tests/test_double_cost.py`: **1 failed,
+  11 passed**, 1.44 seconds; the same gate measured 0.639308s. The timing gate
+  remains failing in this iteration and is not described as passing.
+  Python runtime and the performance test are unchanged in this slice.
+- `git diff --check` and README outline checked. Archify validation/delivery:
+  **9/9 showcase, zero errors/warnings**, correction rounds **0**. Frozen
+  specification: 25,562 bytes, SHA-256
+  `23100ec84701bdda73eaad19aed9c2045470c0dcb87372babbf8a25986a6a558`;
+  artifact: 664,609 bytes, SHA-256
+  `ca18410228be28c91c2709ad128932d6e7b4be06240d6a63c4d12d766404c8f4`.
+  Diagram type: architecture; output: `docs/mini-loop-system.architecture.html`.
+  Visual review remains skipped under the existing browser file-access policy
+  block; automated acceptance only is claimed.
+- Host: macOS. External endpoint/cache conformance, Linux runtime and optional
+  durable storage/trajectory remain unverified. All HTTP provider tests use local
+  httptest or SDK MockTransport with synthetic keys; no paid provider calls.

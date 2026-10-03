@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 
@@ -358,6 +359,8 @@ func hasStuckSignal(detector StuckDetector, state StuckState) (stuck bool) {
 func (s *Session) recordInterruption(reason string) []string {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	partial := strings.TrimSpace(s.streamedText)
+	s.streamedText = ""
 	repaired := append([]string{}, s.repairedToolUses...)
 	if len(s.messages) > 0 {
 		last := s.messages[len(s.messages)-1]
@@ -376,7 +379,11 @@ func (s *Session) recordInterruption(reason string) []string {
 		}
 	}
 	if len(repaired) == 0 {
-		s.appendMessages(protocol.Message{Role: protocol.RoleAssistant, Content: protocol.BlockContent(protocol.NewTextBlock("[Turn interrupted: " + reason + "]"))})
+		note := "[Turn interrupted: " + reason + "]"
+		if partial != "" {
+			note = partial + "\n" + note
+		}
+		s.appendMessages(protocol.Message{Role: protocol.RoleAssistant, Content: protocol.BlockContent(protocol.NewTextBlock(note))})
 	}
 	return repaired
 }

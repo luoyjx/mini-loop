@@ -34,6 +34,7 @@ const (
 	EventActivityUpdate SessionEventKind = "activity_update"
 	EventTurnQueued     SessionEventKind = "turn_queued"
 	EventAssistantDelta SessionEventKind = "assistant_delta"
+	EventStreamStart    SessionEventKind = "stream_start"
 	EventReconcile      SessionEventKind = "reconcile"
 	EventRecovery       SessionEventKind = "recovery"
 )
@@ -61,15 +62,21 @@ type ModelEndEvent struct {
 	ToolCatalogFingerprint *string
 	TokenMeter             *TokenMeterSnapshot
 }
-type AssistantDeltaEvent struct{ Text string }
+type AssistantDeltaEvent struct {
+	Text        string
+	StreamID    StreamID
+	Phase       TextPhase
+	Provisional bool
+}
 
 func (event SessionEvent) AssistantDelta() (AssistantDeltaEvent, bool) {
 	return event.delta, event.kind == EventAssistantDelta
 }
 
 type AssistantTextEvent struct {
-	Text  string
-	Phase TextPhase
+	Text     string
+	Phase    TextPhase
+	StreamID StreamID
 }
 type ToolUseEvent struct {
 	Name                 protocol.ToolName
@@ -206,7 +213,9 @@ func (event SessionEvent) ActivityUpdate() (ActivityUpdateEvent, bool) {
 func (event SessionEvent) Reconcile() (ReconcileEvent, bool) {
 	return event.reconcile, event.kind == EventReconcile
 }
-func (event SessionEvent) Ephemeral() bool { return event.kind == EventAssistantDelta }
+func (event SessionEvent) Ephemeral() bool {
+	return event.kind == EventAssistantDelta || event.kind == EventStreamStart
+}
 
 func newSpan(prefix string, size int) (string, error) {
 	var b [8]byte
@@ -231,7 +240,7 @@ func rememberFingerprint(seen map[string]bool, value string) bool {
 }
 func (s *Session) appendText(text string, phase TextPhase) {
 	if text != "" {
-		s.events.append(SessionEvent{kind: EventAssistantText, assistantText: AssistantTextEvent{text, phase}})
+		s.events.append(SessionEvent{kind: EventAssistantText, assistantText: AssistantTextEvent{Text: text, Phase: phase, StreamID: s.lastStreamID}})
 	}
 }
 func (s *Session) completeModel(ctx context.Context, request protocol.ModelRequest, catalog *ToolCatalogSnapshot) (protocol.ModelReply, error) {
@@ -363,6 +372,11 @@ func (s *Session) limitedComplete(ctx context.Context, request protocol.ModelReq
 		return protocol.ModelReply{}, err
 	}
 	defer lease.Release()
+	if provider, ok := s.provider.(StreamingProvider); ok {
+		return s.streamingComplete(ctx, provider, request)
+	}
+	s.lastStreamID = ""
+	s.streamedText = ""
 	return s.provider.Complete(ctx, request)
 }
 

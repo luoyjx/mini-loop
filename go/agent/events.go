@@ -91,6 +91,7 @@ type SessionEvent struct {
 	modelEnd          ModelEndEvent
 	assistantText     AssistantTextEvent
 	delta             AssistantDeltaEvent
+	streamStart       StreamStartEvent
 	toolUse           ToolUseEvent
 	toolResult        ToolResultEvent
 	toolCatalog       ToolCatalogEvent

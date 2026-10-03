@@ -1878,6 +1878,107 @@ def _provider_contracts() -> dict[str, object]:
             "cases":asyncio.run(gather())}
 
 
+def _stream_contracts() -> dict:
+    import asyncio
+    import anthropic
+    import httpx
+    import json
+    import hashlib
+    from types import SimpleNamespace
+    from unittest.mock import patch
+    from anthropic.lib.streaming._messages import AsyncMessageStream
+    from mini_loop.transport import StreamingTransport, DELTA_COALESCE_SECONDS, DELTA_COALESCE_CHARS
+
+    start = {"id":"msg_stream", "type":"message", "role":"assistant", "model":"served-stream",
+             "content":[],"stop_reason":None,"stop_sequence":None,
+             "usage":{"input_tokens":12,"output_tokens":0,"cache_read_input_tokens":3,"cache_creation_input_tokens":5,"service_tier":"standard"}}
+    def event(kind, **fields): return {"type":kind, **fields}
+    events = [event("message_start",message=start),
+              event("content_block_start",index=0,content_block={"type":"thinking","thinking":"","signature":""}),
+              event("content_block_delta",index=0,delta={"type":"thinking_delta","thinking":"秘密"*105}),
+              event("content_block_delta",index=0,delta={"type":"signature_delta","signature":"signed-proof"}),
+              event("content_block_stop",index=0),
+              event("content_block_start",index=1,content_block={"type":"text","text":"","citations":None}),
+              event("content_block_delta",index=1,delta={"type":"text_delta","text":"你好 world"*30}),
+              event("content_block_delta",index=1,delta={"type":"text_delta","text":"!"}),
+              event("content_block_stop",index=1),
+              event("content_block_start",index=2,content_block={"type":"tool_use","id":"tool-stream","name":"write_file","input":{},"caller":{"type":"direct"}}),
+              event("content_block_delta",index=2,delta={"type":"input_json_delta","partial_json":'{"path":"artifact.txt",'}),
+              event("content_block_delta",index=2,delta={"type":"input_json_delta","partial_json":'"content":"你好\\n"}'}),
+              event("content_block_stop",index=2),
+              event("message_delta",delta={"stop_reason":"tool_use","stop_sequence":None},usage={"output_tokens":9,"input_tokens":20,"cache_read_input_tokens":7,"cache_creation_input_tokens":0}),
+              event("message_stop")]
+    request={"model":"requested-stream","max_tokens":64000,"messages":[{"role":"user","content":"go"}]}
+    class Body(httpx.AsyncByteStream):
+        def __init__(self,data,drop): self.data,self.drop,self.closed=data,drop,False
+        async def __aiter__(self):
+            # Fragment UTF-8, line endings and every JSON token across reads.
+            for offset in range(0,len(self.data),3): yield self.data[offset:offset+3]
+            if self.drop: raise httpx.ReadError("stream dropped")
+        async def aclose(self): self.closed=True
+    async def scenario(spec):
+        selected=events
+        if spec.get("drop"):
+            selected=events[:8] # both a flushed delta and a pending tail
+        if spec.get("error"):
+            selected=events[:8]+[event("error",error={"type":"overloaded_error","message":"overloaded"})]
+        if spec.get("empty"):
+            selected=[events[0],event("message_delta",delta={"stop_reason":"refusal","stop_sequence":None},usage={"output_tokens":0}),events[-1]]
+        ending=spec.get("ending","\n")
+        lines=[]
+        for item in selected:
+            data=json.dumps(item,ensure_ascii=False)
+            if spec.get("no_type"): data=json.dumps({k:v for k,v in item.items() if k!="type"},ensure_ascii=False)
+            # multiline data only splits at whitespace-safe JSON punctuation
+            if spec.get("multiline"): data=data.replace(', "index"',',\n"index"')
+            lines.extend([": comment", "event: "+item["type"], *["data: "+part for part in data.split("\n")], "", "event: ping", 'data: {"type":"ping"}', ""])
+        payload=(ending.join(lines)+ending).encode()
+        frames,waits,bodies,progress,captured=[],[],[],[],[]
+        async def respond(req):
+            frames.append({"body":json.loads(req.content),"retry":req.headers["x-stainless-retry-count"],"accept":req.headers["accept"]})
+            if spec.get("retry") and len(frames)==1: return httpx.Response(429,json={"error":{"message":"retry"}},headers={"retry-after":"1"})
+            body=Body(payload,spec.get("drop",False));bodies.append(body)
+            return httpx.Response(200,stream=body,headers={"content-type":"text/event-stream"})
+        async def wait(delay): waits.append(delay)
+        async def send(kind, **fields):
+            ephemeral=fields.pop("_ephemeral",False)
+            captured.append({"type":kind,**fields,"ephemeral":ephemeral})
+        class Secrets:
+            def mask(self,text): return text.replace("秘密","[REDACTED]")
+        agent=SimpleNamespace(client=anthropic.AsyncAnthropic(api_key="fixture-key",base_url="https://provider.invalid/",http_client=httpx.AsyncClient(transport=httpx.MockTransport(respond))),secrets=Secrets(),_send=send,streamed_text="stale",_last_stream_id=None)
+        reply=None;error=None
+        real_iter = AsyncMessageStream.__aiter__
+        async def watch(stream):
+            async for item in real_iter(stream):
+                if item.type == "content_block_delta":
+                    delta=item.delta
+                    if delta.type=="text_delta": progress.append({"kind":"text","text":delta.text})
+                    if delta.type=="thinking_delta": progress.append({"kind":"thinking","text":delta.thinking})
+                yield item
+        class StableUUID: hex="0123456789abcdef"*2
+        with patch.object(AsyncMessageStream,"__aiter__",watch),patch("mini_loop.transport.uuid.uuid4",return_value=StableUUID()),patch("mini_loop.transport.time",SimpleNamespace(monotonic=lambda:0)),patch("anthropic._base_client.anyio.sleep",wait),patch("anthropic._base_client.random",return_value=0):
+            try:
+                reply=await StreamingTransport().send(agent,request)
+                content=[]
+                for block in reply.content:
+                    row=block.model_dump()
+                    if row["type"]=="text":
+                        row.pop("citations",None)
+                        row.pop("parsed_output",None)
+                    if row["type"]=="tool_use": row={k:row[k] for k in ("type","id","name","input","caller")}
+                    content.append(row)
+                reply={"id":reply.id,"type":reply.type,"role":reply.role,"model":reply.model,"content":content,"stop_reason":reply.stop_reason,"stop_sequence":reply.stop_sequence,
+                       "usage":{k:getattr(reply.usage,k) for k in ("input_tokens","output_tokens","cache_read_input_tokens","cache_creation_input_tokens","service_tier")}}
+            except Exception as exc: error=type(exc).__name__
+        await agent.client.close()
+        return {"name":spec["name"],"wire":payload.decode(),"frames":frames,"waits":waits,"reply":reply,"error_class":error,"events":captured,"raw_deltas":progress,"partial":agent.streamed_text,"closed":all(b.closed for b in bodies)}
+    async def collect():
+        return [await scenario(spec) for spec in [{"name":"complete"},{"name":"crlf","ending":"\r\n"},{"name":"cr","ending":"\r"},{"name":"multiline","multiline":True},{"name":"no-type","no_type":True},{"name":"retry","retry":True},{"name":"refusal","empty":True},{"name":"drop","drop":True},{"name":"error","error":True}]]
+    return {"sdk_version":anthropic.__version__,"request":request,"coalesce_chars":DELTA_COALESCE_CHARS,"coalesce_seconds":DELTA_COALESCE_SECONDS,"default_coalesce_chars":DELTA_COALESCE_CHARS,"default_coalesce_seconds":DELTA_COALESCE_SECONDS,
+            "source_sha256":{name:hashlib.sha256((Path(anthropic.__file__).parent/name).read_bytes()).hexdigest() for name in ("lib/streaming/_messages.py","_streaming.py")},
+            "transport_sha256":hashlib.sha256((REPO_ROOT/"python/mini_loop/transport.py").read_bytes()).hexdigest(),"cases":asyncio.run(collect())}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -1958,6 +2059,7 @@ def _snapshot() -> dict[str, bytes]:
         control_contracts = _control_contracts(Path(scratch) / "controls")
         fork_contracts = _fork_contracts(Path(scratch) / "forks")
         provider_contracts = _provider_contracts()
+        stream_contracts = _stream_contracts()
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1997,6 +2099,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-controls.json": _json_bytes(control_contracts),
         "python-forks.json": _json_bytes(fork_contracts),
         "python-provider.json": _json_bytes(provider_contracts),
+        "python-streams.json": _json_bytes(stream_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

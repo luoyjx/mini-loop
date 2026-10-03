@@ -85,7 +85,7 @@ with an auto parent and shared-provider session isolation under the race detecto
 This library supplies a process-local fleet manager and authenticated HTTP
 ownership through the httpapi handler. Core lifecycle events and shared limiters are implemented.
 Custom broker/state
-inheritance, owner resources and streaming/provider recovery remain open.
+inheritance, owner resources and Agent recovery remain open.
 `RuntimeConfig.ActionJournal` and `NewJournaledToolGate` optionally bind a typed
 journal. Stable action IDs hash session/message/tool-use/name; canonical input
 hashes bind final rewritten arguments. Terminal replay does not execute again,
@@ -111,7 +111,7 @@ persistence. The optional bound approval broker now supplies parked requests,
 timeout/cancellation, process-local session grants, reviewer abstention and typed
 approval rows; an injected store is still required for durable writes. Registry
 masking binds implemented results, recordings, approvals and compaction files.
-SQLite adapters, remaining HTTP surfaces, streaming/Agent recovery and session persistence
+SQLite adapters, remaining HTTP surfaces, Agent recovery and session persistence
 remain pending.
 Python
 contract snapshots and fake reply fixtures are generated into `testdata/` by
@@ -142,7 +142,7 @@ no Go Seatbelt backend ships and cwd is not confinement. Runtime process tests
 ran on macOS. Linux code has no Linux-host execution evidence; other platforms
 reject construction. The sixteenth Python snapshot covers eight actual commands,
 seven rendering recipes and six typo-blocklist decisions. Core tool events are implemented;
-provider streaming/recovery and additional sink masking remain pending.
+Agent recovery and additional sink masking remain pending.
 
 Cache and stuck policies are enabled by default. `RuntimeConfig.CachePolicy`
 can select `NullCachePolicy`; `NewCachePolicy(CacheConfig)` controls TTL, stride
@@ -209,8 +209,8 @@ ordered outputs and stuck hashes, six mode decisions, nil/empty prompt rewrites
 and four cross-turn Todo counters. Deterministic Go synchronization tests cover
 shared pool caps and waiting cancellation, exclusive bypass, completed-sibling
 repair, worker joins, panic capacity release, atomic injector validation and
-child seam/pool inheritance. Bounded steering and live modes are implemented below; provider streaming/Agent recovery
-remain open.
+child seam/pool inheritance. Bounded steering and live modes are implemented below; Agent recovery
+remains open.
 
 `NewSessionManager(ManagerConfig)` owns ordered `ManagedSession` handles. It
 requires a provider and explicit owner identity on every create/lookup operation;
@@ -271,8 +271,33 @@ validates signed thinking and supported default-tool inputs; unknown content and
 nonempty citations fail until typed adapters exist. Nullable SDK text citations
 are omitted. API-key diagnostics are scrubbed; redirects are refused and the
 supplied client's redirect policy is preserved. Description/debug identity never
-prints the key. Streaming, advanced request/auth options, full Agent recovery and
+prints the key. Advanced request/auth options, full Agent recovery and
 production endpoint/cache conformance remain pending. No dependencies were added.
+
+### Use streaming model calls
+
+`provider.NewStreaming(provider.Config{BaseURL: endpoint, APIKey: key})` selects
+SSE explicitly and can replace the Provider in the same runtime/fleet configuration.
+The session detects the consumer-owned `StreamingProvider` interface. Callbacks
+carry named `protocol.StreamDelta` text/thinking variants and run synchronously;
+they must stop before the provider returns. The returned ModelReply remains the
+only authoritative model response used by tool dispatch and token accounting.
+
+Every send has a fresh ephemeral stream_start, coalesced masked assistant_delta
+progress (200 Unicode chars or 200 ms on incoming fragments), then final
+assistant_text events correlated by stream_id and classified commentary/final_answer.
+Ephemeral progress does not replay. Only flushed text, never thinking or pending
+fragments, is retained above a managed cancellation marker. Successful streams
+clear partial text before returning, including compaction summaries.
+
+Wire assembly validates stopped text, signed thinking and complete default-tool
+JSON. Configured total wire caps include ignored frames; each frame/line/block and
+session progress are bounded by the protocol's 512 KiB limit. SDK retries cover
+opening failures/statuses, and streaming lifts the direct token ceiling. An owned
+body drop/timeout is surfaced without automatic regeneration until Agent recovery
+ships. Go requires a final delta/stop instead of accepting unchecked partial EOF
+snapshots. Unknown content deltas, nonempty citations and custom coalescing settings
+remain pending. No external endpoint calls were used to validate this slice.
 
 ### Control a managed session
 
@@ -367,7 +392,7 @@ This slice uses process-local manager/backlog/cache/rate state and disabled traj
 workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
 Python; it does not expose a synthetic durable transcript. Full FastAPI validation
 error arrays/coercions, CLI/UI, trajectories,
-optional fleet routes, durable SSE gap recovery, provider streaming/Agent recovery and SQLite are
+optional fleet routes, durable SSE gap recovery, Agent recovery and SQLite are
 pending. No dependencies were added.
 
 ```sh

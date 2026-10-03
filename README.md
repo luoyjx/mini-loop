@@ -277,8 +277,9 @@ lookup, workspace policy and draining deletion/shutdown, plus typed HTTP authent
 REST admission, idempotency/rate bounds and SSE projection, plus bounded steering,
 live permission modes and owned HTTP wakeup, plus completed-boundary conversation
 forks with fresh scratch workspaces and typed lineage, plus an explicit direct
-Anthropic-compatible HTTP adapter and bounded SDK retries,
-reviewed **2026-10-03** (Go baseline `22d3ca2` plus the direct-provider slice).
+Anthropic-compatible HTTP adapter and bounded SDK retries, plus typed SSE assembly,
+provisional stream progress and shown-text interruption repair,
+reviewed **2026-10-03** (Go baseline `99d23a0` plus the streaming slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -327,11 +328,11 @@ flowchart LR
     subgraph GoPort["Independent Go port · in progress"]
         GoEntry["Go HTTP / SSE handler<br/>bounded ingress · typed JSON / event projection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Fake · direct Anthropic-compatible HTTP<br/>typed replies · usage · SDK retries"]
+        GoProvider["Model providers<br/>Fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events"]
+        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>coalesced progress · interrupted text"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
@@ -478,7 +479,14 @@ headers and bounded SDK backoff/Retry-After rules. Request and reply bytes are c
 contexts own calls/waits, redirects are refused, and diagnostics scrub the configured
 API key. No credentials or environment settings are discovered implicitly. This
 adapter supplies SDK-level retry only; Agent continuation/escalation/reactive
-compaction/fallback and streaming remain pending. Nonempty citation/search/server-tool
+compaction/fallback remain pending. Explicit `provider.NewStreaming` adds bounded
+SSE assembly and validates text, signed thinking and complete tool JSON before
+returning a final reply. Per-session `StreamingProvider` progress is coalesced at
+200 characters or 200 ms on fragment arrival. Fresh ephemeral stream IDs correlate
+provisional commentary with authoritative final/commentary events; progress never
+replays. Only shown answer text is preserved on managed cancellation, and successful
+streams clear partial state, including internal summaries. Body drops surface to
+the caller without SDK replay; Agent recovery for fresh generations remains pending. Nonempty citation/search/server-tool
 blocks and their typed payloads remain unsupported; nullable SDK text citation
 metadata is omitted. Production endpoint/cache savings are unverified.
 The Go session uses one typed gate for rewrites, guards, permission, execution
@@ -554,8 +562,8 @@ inherit the exact pools. Exclusive tools bypass the tool pool, so default task
 delegation can progress through a child. `NewSessionManager` supplies shared
 eight-slot model/tool pools, a process-local approval broker and bounded-result
 action journal by default. Environment configuration is still pending. Direct HTTP
-is available through `go/provider.Client`, while provider
-streaming and Agent recovery remain pending in Go. `NewManagedSession` privately owns a runtime
+and SSE model calls are available through `go/provider.Client` and
+`StreamingClient`; Agent recovery remains pending in Go. `NewManagedSession` privately owns a runtime
 and adds
 context-aware turn admission, idle/running/error status and operator cancellation.
 Queued callers cannot replace the cancellation target; admission is rechecked

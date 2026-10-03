@@ -1047,7 +1047,12 @@ The Go `agent.Provider` consumer accepts concrete `protocol.ModelRequest` and
 `ModelReply`. `go/provider.New` supplies an explicit direct Anthropic-compatible
 HTTP adapter with SDK-level bounded retries, cache wire annotations and served-model
 identity. It reads no environment/profile credentials and retains no dynamic
-payload in the service layer. Streaming and Agent-level recovery remain pending.
+payload in the service layer. `provider.NewStreaming` adds the optional consumer-owned
+`agent.StreamingProvider` seam: synchronous, context-owned callbacks carry only
+`protocol.StreamDelta` text/thinking progress, followed by a validated final reply.
+Implementations must stop callbacks before returning, including on failure. Session
+coalescing, stream IDs, masking and managed cancellation repair own progress.
+Agent-level recovery and custom coalescing configuration remain pending.
 See `go/README.md` for configuration and boundary differences.
 
 ---

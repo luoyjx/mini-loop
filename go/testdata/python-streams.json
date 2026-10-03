@@ -1,0 +1,882 @@
+{
+  "cases": [
+    {
+      "closed": true,
+      "error_class": null,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "[REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED]",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "!",
+          "type": "assistant_delta"
+        }
+      ],
+      "frames": [
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "0"
+        }
+      ],
+      "name": "complete",
+      "partial": "",
+      "raw_deltas": [
+        {
+          "kind": "thinking",
+          "text": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密"
+        },
+        {
+          "kind": "text",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world"
+        },
+        {
+          "kind": "text",
+          "text": "!"
+        }
+      ],
+      "reply": {
+        "content": [
+          {
+            "signature": "signed-proof",
+            "thinking": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密",
+            "type": "thinking"
+          },
+          {
+            "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world!",
+            "type": "text"
+          },
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "id": "tool-stream",
+            "input": {
+              "content": "你好\n",
+              "path": "artifact.txt"
+            },
+            "name": "write_file",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_stream",
+        "model": "served-stream",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 7,
+          "input_tokens": 20,
+          "output_tokens": 9,
+          "service_tier": "standard"
+        }
+      },
+      "waits": [],
+      "wire": ": comment\nevent: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"msg_stream\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"served-stream\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 12, \"output_tokens\": 0, \"cache_read_input_tokens\": 3, \"cache_creation_input_tokens\": 5, \"service_tier\": \"standard\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"thinking\", \"thinking\": \"\", \"signature\": \"\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"thinking_delta\", \"thinking\": \"秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"signature_delta\", \"signature\": \"signed-proof\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"\", \"citations\": null}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"!\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 2, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool-stream\", \"name\": \"write_file\", \"input\": {}, \"caller\": {\"type\": \"direct\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"path\\\":\\\"artifact.txt\\\",\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"content\\\":\\\"你好\\\\n\\\"}\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 2}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 9, \"input_tokens\": 20, \"cache_read_input_tokens\": 7, \"cache_creation_input_tokens\": 0}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n"
+    },
+    {
+      "closed": true,
+      "error_class": null,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "[REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED]",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "!",
+          "type": "assistant_delta"
+        }
+      ],
+      "frames": [
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "0"
+        }
+      ],
+      "name": "crlf",
+      "partial": "",
+      "raw_deltas": [
+        {
+          "kind": "thinking",
+          "text": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密"
+        },
+        {
+          "kind": "text",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world"
+        },
+        {
+          "kind": "text",
+          "text": "!"
+        }
+      ],
+      "reply": {
+        "content": [
+          {
+            "signature": "signed-proof",
+            "thinking": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密",
+            "type": "thinking"
+          },
+          {
+            "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world!",
+            "type": "text"
+          },
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "id": "tool-stream",
+            "input": {
+              "content": "你好\n",
+              "path": "artifact.txt"
+            },
+            "name": "write_file",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_stream",
+        "model": "served-stream",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 7,
+          "input_tokens": 20,
+          "output_tokens": 9,
+          "service_tier": "standard"
+        }
+      },
+      "waits": [],
+      "wire": ": comment\r\nevent: message_start\r\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"msg_stream\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"served-stream\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 12, \"output_tokens\": 0, \"cache_read_input_tokens\": 3, \"cache_creation_input_tokens\": 5, \"service_tier\": \"standard\"}}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_start\r\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"thinking\", \"thinking\": \"\", \"signature\": \"\"}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_delta\r\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"thinking_delta\", \"thinking\": \"秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密\"}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_delta\r\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"signature_delta\", \"signature\": \"signed-proof\"}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_stop\r\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_start\r\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"\", \"citations\": null}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_delta\r\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world\"}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_delta\r\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"!\"}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_stop\r\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_start\r\ndata: {\"type\": \"content_block_start\", \"index\": 2, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool-stream\", \"name\": \"write_file\", \"input\": {}, \"caller\": {\"type\": \"direct\"}}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_delta\r\ndata: {\"type\": \"content_block_delta\", \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"path\\\":\\\"artifact.txt\\\",\"}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_delta\r\ndata: {\"type\": \"content_block_delta\", \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"content\\\":\\\"你好\\\\n\\\"}\"}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: content_block_stop\r\ndata: {\"type\": \"content_block_stop\", \"index\": 2}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: message_delta\r\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 9, \"input_tokens\": 20, \"cache_read_input_tokens\": 7, \"cache_creation_input_tokens\": 0}}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n: comment\r\nevent: message_stop\r\ndata: {\"type\": \"message_stop\"}\r\n\r\nevent: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n"
+    },
+    {
+      "closed": true,
+      "error_class": null,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "[REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED]",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "!",
+          "type": "assistant_delta"
+        }
+      ],
+      "frames": [
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "0"
+        }
+      ],
+      "name": "cr",
+      "partial": "",
+      "raw_deltas": [
+        {
+          "kind": "thinking",
+          "text": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密"
+        },
+        {
+          "kind": "text",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world"
+        },
+        {
+          "kind": "text",
+          "text": "!"
+        }
+      ],
+      "reply": {
+        "content": [
+          {
+            "signature": "signed-proof",
+            "thinking": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密",
+            "type": "thinking"
+          },
+          {
+            "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world!",
+            "type": "text"
+          },
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "id": "tool-stream",
+            "input": {
+              "content": "你好\n",
+              "path": "artifact.txt"
+            },
+            "name": "write_file",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_stream",
+        "model": "served-stream",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 7,
+          "input_tokens": 20,
+          "output_tokens": 9,
+          "service_tier": "standard"
+        }
+      },
+      "waits": [],
+      "wire": ": comment\revent: message_start\rdata: {\"type\": \"message_start\", \"message\": {\"id\": \"msg_stream\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"served-stream\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 12, \"output_tokens\": 0, \"cache_read_input_tokens\": 3, \"cache_creation_input_tokens\": 5, \"service_tier\": \"standard\"}}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_start\rdata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"thinking\", \"thinking\": \"\", \"signature\": \"\"}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_delta\rdata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"thinking_delta\", \"thinking\": \"秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密\"}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_delta\rdata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"signature_delta\", \"signature\": \"signed-proof\"}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_stop\rdata: {\"type\": \"content_block_stop\", \"index\": 0}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_start\rdata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"\", \"citations\": null}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_delta\rdata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world\"}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_delta\rdata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"!\"}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_stop\rdata: {\"type\": \"content_block_stop\", \"index\": 1}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_start\rdata: {\"type\": \"content_block_start\", \"index\": 2, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool-stream\", \"name\": \"write_file\", \"input\": {}, \"caller\": {\"type\": \"direct\"}}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_delta\rdata: {\"type\": \"content_block_delta\", \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"path\\\":\\\"artifact.txt\\\",\"}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_delta\rdata: {\"type\": \"content_block_delta\", \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"content\\\":\\\"你好\\\\n\\\"}\"}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: content_block_stop\rdata: {\"type\": \"content_block_stop\", \"index\": 2}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: message_delta\rdata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 9, \"input_tokens\": 20, \"cache_read_input_tokens\": 7, \"cache_creation_input_tokens\": 0}}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r: comment\revent: message_stop\rdata: {\"type\": \"message_stop\"}\r\revent: ping\rdata: {\"type\":\"ping\"}\r\r"
+    },
+    {
+      "closed": true,
+      "error_class": null,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "[REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED]",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "!",
+          "type": "assistant_delta"
+        }
+      ],
+      "frames": [
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "0"
+        }
+      ],
+      "name": "multiline",
+      "partial": "",
+      "raw_deltas": [
+        {
+          "kind": "thinking",
+          "text": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密"
+        },
+        {
+          "kind": "text",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world"
+        },
+        {
+          "kind": "text",
+          "text": "!"
+        }
+      ],
+      "reply": {
+        "content": [
+          {
+            "signature": "signed-proof",
+            "thinking": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密",
+            "type": "thinking"
+          },
+          {
+            "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world!",
+            "type": "text"
+          },
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "id": "tool-stream",
+            "input": {
+              "content": "你好\n",
+              "path": "artifact.txt"
+            },
+            "name": "write_file",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_stream",
+        "model": "served-stream",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 7,
+          "input_tokens": 20,
+          "output_tokens": 9,
+          "service_tier": "standard"
+        }
+      },
+      "waits": [],
+      "wire": ": comment\nevent: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"msg_stream\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"served-stream\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 12, \"output_tokens\": 0, \"cache_read_input_tokens\": 3, \"cache_creation_input_tokens\": 5, \"service_tier\": \"standard\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\",\ndata: \"index\": 0, \"content_block\": {\"type\": \"thinking\", \"thinking\": \"\", \"signature\": \"\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\",\ndata: \"index\": 0, \"delta\": {\"type\": \"thinking_delta\", \"thinking\": \"秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\",\ndata: \"index\": 0, \"delta\": {\"type\": \"signature_delta\", \"signature\": \"signed-proof\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\",\ndata: \"index\": 0}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\",\ndata: \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"\", \"citations\": null}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\",\ndata: \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\",\ndata: \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"!\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\",\ndata: \"index\": 1}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\",\ndata: \"index\": 2, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool-stream\", \"name\": \"write_file\", \"input\": {}, \"caller\": {\"type\": \"direct\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\",\ndata: \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"path\\\":\\\"artifact.txt\\\",\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\",\ndata: \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"content\\\":\\\"你好\\\\n\\\"}\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\",\ndata: \"index\": 2}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 9, \"input_tokens\": 20, \"cache_read_input_tokens\": 7, \"cache_creation_input_tokens\": 0}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n"
+    },
+    {
+      "closed": true,
+      "error_class": null,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "[REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED]",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "!",
+          "type": "assistant_delta"
+        }
+      ],
+      "frames": [
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "0"
+        }
+      ],
+      "name": "no-type",
+      "partial": "",
+      "raw_deltas": [
+        {
+          "kind": "thinking",
+          "text": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密"
+        },
+        {
+          "kind": "text",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world"
+        },
+        {
+          "kind": "text",
+          "text": "!"
+        }
+      ],
+      "reply": {
+        "content": [
+          {
+            "signature": "signed-proof",
+            "thinking": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密",
+            "type": "thinking"
+          },
+          {
+            "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world!",
+            "type": "text"
+          },
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "id": "tool-stream",
+            "input": {
+              "content": "你好\n",
+              "path": "artifact.txt"
+            },
+            "name": "write_file",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_stream",
+        "model": "served-stream",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 7,
+          "input_tokens": 20,
+          "output_tokens": 9,
+          "service_tier": "standard"
+        }
+      },
+      "waits": [],
+      "wire": ": comment\nevent: message_start\ndata: {\"message\": {\"id\": \"msg_stream\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"served-stream\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 12, \"output_tokens\": 0, \"cache_read_input_tokens\": 3, \"cache_creation_input_tokens\": 5, \"service_tier\": \"standard\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"index\": 0, \"content_block\": {\"type\": \"thinking\", \"thinking\": \"\", \"signature\": \"\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"index\": 0, \"delta\": {\"type\": \"thinking_delta\", \"thinking\": \"秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"index\": 0, \"delta\": {\"type\": \"signature_delta\", \"signature\": \"signed-proof\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"index\": 0}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"\", \"citations\": null}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"!\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"index\": 1}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"index\": 2, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool-stream\", \"name\": \"write_file\", \"input\": {}, \"caller\": {\"type\": \"direct\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"path\\\":\\\"artifact.txt\\\",\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"content\\\":\\\"你好\\\\n\\\"}\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"index\": 2}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_delta\ndata: {\"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 9, \"input_tokens\": 20, \"cache_read_input_tokens\": 7, \"cache_creation_input_tokens\": 0}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_stop\ndata: {}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n"
+    },
+    {
+      "closed": true,
+      "error_class": null,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "[REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED]",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "!",
+          "type": "assistant_delta"
+        }
+      ],
+      "frames": [
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "0"
+        },
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "1"
+        }
+      ],
+      "name": "retry",
+      "partial": "",
+      "raw_deltas": [
+        {
+          "kind": "thinking",
+          "text": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密"
+        },
+        {
+          "kind": "text",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world"
+        },
+        {
+          "kind": "text",
+          "text": "!"
+        }
+      ],
+      "reply": {
+        "content": [
+          {
+            "signature": "signed-proof",
+            "thinking": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密",
+            "type": "thinking"
+          },
+          {
+            "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world!",
+            "type": "text"
+          },
+          {
+            "caller": {
+              "type": "direct"
+            },
+            "id": "tool-stream",
+            "input": {
+              "content": "你好\n",
+              "path": "artifact.txt"
+            },
+            "name": "write_file",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_stream",
+        "model": "served-stream",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 7,
+          "input_tokens": 20,
+          "output_tokens": 9,
+          "service_tier": "standard"
+        }
+      },
+      "waits": [
+        1.0
+      ],
+      "wire": ": comment\nevent: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"msg_stream\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"served-stream\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 12, \"output_tokens\": 0, \"cache_read_input_tokens\": 3, \"cache_creation_input_tokens\": 5, \"service_tier\": \"standard\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"thinking\", \"thinking\": \"\", \"signature\": \"\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"thinking_delta\", \"thinking\": \"秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"signature_delta\", \"signature\": \"signed-proof\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"\", \"citations\": null}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"!\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 1}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 2, \"content_block\": {\"type\": \"tool_use\", \"id\": \"tool-stream\", \"name\": \"write_file\", \"input\": {}, \"caller\": {\"type\": \"direct\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"{\\\"path\\\":\\\"artifact.txt\\\",\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 2, \"delta\": {\"type\": \"input_json_delta\", \"partial_json\": \"\\\"content\\\":\\\"你好\\\\n\\\"}\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 2}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"tool_use\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 9, \"input_tokens\": 20, \"cache_read_input_tokens\": 7, \"cache_creation_input_tokens\": 0}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n"
+    },
+    {
+      "closed": true,
+      "error_class": null,
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "type": "stream_start"
+        }
+      ],
+      "frames": [
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "0"
+        }
+      ],
+      "name": "refusal",
+      "partial": "",
+      "raw_deltas": [],
+      "reply": {
+        "content": [],
+        "id": "msg_stream",
+        "model": "served-stream",
+        "role": "assistant",
+        "stop_reason": "refusal",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 12,
+          "output_tokens": 0,
+          "service_tier": "standard"
+        }
+      },
+      "waits": [],
+      "wire": ": comment\nevent: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"msg_stream\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"served-stream\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 12, \"output_tokens\": 0, \"cache_read_input_tokens\": 3, \"cache_creation_input_tokens\": 5, \"service_tier\": \"standard\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_delta\ndata: {\"type\": \"message_delta\", \"delta\": {\"stop_reason\": \"refusal\", \"stop_sequence\": null}, \"usage\": {\"output_tokens\": 0}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: message_stop\ndata: {\"type\": \"message_stop\"}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n"
+    },
+    {
+      "closed": true,
+      "error_class": "ReadError",
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "[REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED]",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+          "type": "assistant_delta"
+        }
+      ],
+      "frames": [
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "0"
+        }
+      ],
+      "name": "drop",
+      "partial": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+      "raw_deltas": [
+        {
+          "kind": "thinking",
+          "text": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密"
+        },
+        {
+          "kind": "text",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world"
+        },
+        {
+          "kind": "text",
+          "text": "!"
+        }
+      ],
+      "reply": null,
+      "waits": [],
+      "wire": ": comment\nevent: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"msg_stream\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"served-stream\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 12, \"output_tokens\": 0, \"cache_read_input_tokens\": 3, \"cache_creation_input_tokens\": 5, \"service_tier\": \"standard\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"thinking\", \"thinking\": \"\", \"signature\": \"\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"thinking_delta\", \"thinking\": \"秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"signature_delta\", \"signature\": \"signed-proof\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"\", \"citations\": null}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"!\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n"
+    },
+    {
+      "closed": true,
+      "error_class": "APIStatusError",
+      "events": [
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "type": "stream_start"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "[REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED][REDACTED]",
+          "type": "assistant_delta"
+        },
+        {
+          "ephemeral": true,
+          "phase": "commentary",
+          "provisional": true,
+          "stream_id": "stream_0123456789abcdef",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+          "type": "assistant_delta"
+        }
+      ],
+      "frames": [
+        {
+          "accept": "application/json",
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": "go",
+                "role": "user"
+              }
+            ],
+            "model": "requested-stream",
+            "stream": true
+          },
+          "retry": "0"
+        }
+      ],
+      "name": "error",
+      "partial": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world",
+      "raw_deltas": [
+        {
+          "kind": "thinking",
+          "text": "秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密"
+        },
+        {
+          "kind": "text",
+          "text": "你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world"
+        },
+        {
+          "kind": "text",
+          "text": "!"
+        }
+      ],
+      "reply": null,
+      "waits": [],
+      "wire": ": comment\nevent: message_start\ndata: {\"type\": \"message_start\", \"message\": {\"id\": \"msg_stream\", \"type\": \"message\", \"role\": \"assistant\", \"model\": \"served-stream\", \"content\": [], \"stop_reason\": null, \"stop_sequence\": null, \"usage\": {\"input_tokens\": 12, \"output_tokens\": 0, \"cache_read_input_tokens\": 3, \"cache_creation_input_tokens\": 5, \"service_tier\": \"standard\"}}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 0, \"content_block\": {\"type\": \"thinking\", \"thinking\": \"\", \"signature\": \"\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"thinking_delta\", \"thinking\": \"秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密秘密\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 0, \"delta\": {\"type\": \"signature_delta\", \"signature\": \"signed-proof\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_stop\ndata: {\"type\": \"content_block_stop\", \"index\": 0}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_start\ndata: {\"type\": \"content_block_start\", \"index\": 1, \"content_block\": {\"type\": \"text\", \"text\": \"\", \"citations\": null}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world你好 world\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: content_block_delta\ndata: {\"type\": \"content_block_delta\", \"index\": 1, \"delta\": {\"type\": \"text_delta\", \"text\": \"!\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n: comment\nevent: error\ndata: {\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"overloaded\"}}\n\nevent: ping\ndata: {\"type\":\"ping\"}\n\n"
+    }
+  ],
+  "coalesce_chars": 200,
+  "coalesce_seconds": 0.2,
+  "default_coalesce_chars": 200,
+  "default_coalesce_seconds": 0.2,
+  "request": {
+    "max_tokens": 64000,
+    "messages": [
+      {
+        "content": "go",
+        "role": "user"
+      }
+    ],
+    "model": "requested-stream"
+  },
+  "sdk_version": "0.107.1",
+  "source_sha256": {
+    "_streaming.py": "65b4253475703abbdbcccdab8b2ae1a9451bc787c6f617b8cd0f8a5e7340347d",
+    "lib/streaming/_messages.py": "cf8088c4e60919a7d4d67c3dcfba6c16ff17eef28fd69348174e584c0630047b"
+  },
+  "transport_sha256": "ce7fc744213272848cc5ba01e06b851d49ca106da0560746d5ae7b6929503873"
+}

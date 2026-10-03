@@ -81,6 +81,8 @@ type Session struct {
 	stuckNudges                                       int
 	bash                                              BashExecutor
 	lastModelSpan                                     SpanID
+	lastStreamID                                      StreamID
+	streamedText                                      string
 	activityID                                        ActivityID
 	requestCatalog                                    ToolCatalogSnapshot
 	loggedCatalogs, loggedSystems, loggedCapabilities map[string]bool
