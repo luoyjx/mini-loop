@@ -21,6 +21,7 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	event.sessionForked.Child = SessionID(mask(string(event.sessionForked.Child)))
 	event.runError.detail = mask(event.runError.detail)
 	event.recovery.Error = mask(event.recovery.Error)
 	event.assistantText.Text = mask(event.assistantText.Text)

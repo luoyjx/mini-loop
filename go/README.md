@@ -239,7 +239,7 @@ Go reports removal faults rather than silently discarding them. Stop closes all
 admission, gives current holders 250ms, joins pending construction and cleanup,
 and preserves surviving scratch. Cancelling a Stop caller only ends that wait;
 a later Stop joins the same shutdown. Custom providers/sinks must return so a
-joined shutdown can finish. Durable restore, optional fleet services, fork,
+joined shutdown can finish. Durable restore, optional fleet services,
 durable steering and trajectories remain pending.
 
 The twentieth Python snapshot compares initial status/defaults, shared services,
@@ -280,6 +280,23 @@ bounds, concurrent control updates, child isolation, masking, simultaneous wakeu
 request cancellation and manager shutdown. They establish delivery, not obedience
 by a live model.
 
+### Fork a completed conversation
+
+`manager.Fork(ctx, owner, sourceID)` returns a fresh scratch session initialized
+with an independent copy of an idle paired transcript and named `ForkLineage`.
+It inherits owner, explicit system and current permission mode; the manager's
+default model, fresh Todo board and empty control queues apply. Workspace files
+are not copied. Source admission pins only the detached snapshot; busy/open
+boundaries are refused. Later source turns/idle wakeup can progress during child
+provisioning without changing that captured history. Construction failure releases admission and cleans unused
+scratch; shutdown joins pending creation. Successful forks emit `session_forked`
+in the source stream, and child detail/listing exposes `forked_from`.
+
+The HTTP route is `POST /sessions/{id}/fork`: ownership precedes rate budget,
+busy returns 409 and success returns child Info. This implementation is
+process-local. Python's configured StateStore flush before the first child turn
+remains pending in Go.
+
 ### Serve the implemented HTTP slice
 
 Compose `httpapi.New` with a manager and `Authenticator`. Resolve token configuration
@@ -303,9 +320,9 @@ There is no Go startup command or listener policy enforcement outside this helpe
 Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
 to development; Config.FakeLLM is explicit rather than inferred from a provider.
 The basic health response omits full effective posture and source build hashing.
-Fourteen method/path combinations cover create/list/detail/delete, completed message,
+Fifteen method/path combinations cover create/list/detail/delete, completed message,
 streamed message, cancel, approval list/resolve, event subscription and Null-store
-transcript, plus health, mode and steer. Foreign and missing sessions both return 404; non-streaming
+transcript, plus health, mode, steer and fork. Foreign and missing sessions both return 404; non-streaming
 messages reject busy turns atomically. Streamed messages queue; disconnect cancels
 that submitted turn or its wait. Observe disconnect only unsubscribes. The event
 wire is a named flat JSON union with sequence IDs and CRLF SSE framing.
@@ -323,7 +340,7 @@ disconnect probe was checked separately from that fixture.
 This slice uses process-local manager/backlog/cache/rate state and disabled trajectory/
 workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
 Python; it does not expose a synthetic durable transcript. Full FastAPI validation
-error arrays/coercions, CLI/UI, forks, trajectories,
+error arrays/coercions, CLI/UI, trajectories,
 optional fleet routes, durable SSE gap recovery, real model transport and SQLite are
 pending. No dependencies were added.
 

@@ -28,6 +28,7 @@ func (s *Server) register(path string, handlers map[string]http.HandlerFunc) {
 	})
 }
 func (s *Server) routes() {
+	s.register("/sessions/{session_id}/fork", map[string]http.HandlerFunc{"POST": s.fork})
 	s.register("/sessions/{session_id}/mode", map[string]http.HandlerFunc{"POST": s.mode})
 	s.register("/sessions/{session_id}/steer", map[string]http.HandlerFunc{"POST": s.steer})
 	s.register("/healthz", map[string]http.HandlerFunc{"GET": s.health})
@@ -41,6 +42,26 @@ func (s *Server) routes() {
 	s.register("/sessions/{session_id}/events", map[string]http.HandlerFunc{"GET": s.observe})
 	s.register("/sessions/{session_id}/transcript", map[string]http.HandlerFunc{"GET": s.transcript})
 	s.mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { writeJSON(s, w, 404, ErrorResponse{"Not Found"}) })
+}
+
+func (s *Server) fork(w http.ResponseWriter, r *http.Request) {
+	session, ok := s.require(w, r)
+	if !ok || !s.rate(w, principal(r.Context())) {
+		return
+	}
+	child, err := s.manager.Fork(r.Context(), principal(r.Context()).ID, session.ID())
+	if err != nil {
+		switch {
+		case errors.Is(err, agent.ErrForkBusy):
+			writeJSON(s, w, 409, ErrorResponse{err.Error()})
+		case errors.Is(err, agent.ErrSessionNotFound):
+			writeJSON(s, w, 404, ErrorResponse{"No session '" + string(session.ID()) + "'"})
+		default:
+			writeJSON(s, w, 503, ErrorResponse{"session fork unavailable"})
+		}
+		return
+	}
+	writeJSON(s, w, 200, info(child.Info()))
 }
 func (s *Server) health(w http.ResponseWriter, r *http.Request) {
 	v := s.manager.Summary()

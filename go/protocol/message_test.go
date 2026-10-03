@@ -119,3 +119,30 @@ func TestContentBoundary(t *testing.T) {
 		t.Fatal("oversized message accepted")
 	}
 }
+
+func TestContentCloneDetachesAllVariantsAndLargeHistoryRows(t *testing.T) {
+	input := TodoWriteToolInput(TodoWriteInput{Items: []TodoItem{{Content: "original", Status: TodoPending, ActiveForm: "working"}}})
+	c := BlockContent(NewTextBlock("text"), NewThinkingBlock("thought", "signature"), NewToolUseWithCaller("todo", input, &ToolCaller{kind: CallerDirect}), NewToolResult("todo", "result", true))
+	copyOf := c.Clone()
+	if c.SameStorage(copyOf) {
+		t.Fatal("block array shared")
+	}
+	copyOf.blocks[0].text.Text = "changed"
+	copyOf.blocks[1].thinking.Signature = "changed"
+	copyOf.blocks[2].toolUse.Input.todoWrite.Items[0].Content = "changed"
+	copyOf.blocks[2].toolUse.Caller.kind = "changed"
+	copyOf.blocks[3].toolResult.Content = "changed"
+	if c.blocks[0].text.Text != "text" || c.blocks[1].thinking.Signature != "signature" || c.blocks[2].toolUse.Input.todoWrite.Items[0].Content != "original" || c.blocks[2].toolUse.Caller.kind != CallerDirect || c.blocks[3].toolResult.Content != "result" {
+		t.Fatal("nested variant shared")
+	}
+	for _, value := range []string{"", strings.Repeat("x", MaxWireBytes+1)} {
+		original := PlainContent(value)
+		detached := original.Clone()
+		if original.SameStorage(detached) || *detached.plain != value {
+			t.Fatal("string clone uses wire limit or shared pointer")
+		}
+	}
+	if !copyOf.blocks[2].callerPresent {
+		t.Fatal("caller presence lost")
+	}
+}

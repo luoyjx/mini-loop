@@ -1551,6 +1551,108 @@ async def _gather_controls(scenario):
             ("ordered", "unicode", "overflow", "pre-first", "posture-batch", "mid-round")]
 
 
+def _fork_contracts(scratch: Path) -> dict[str, object]:
+    """Actual completed-boundary fork, fresh state and owner-scoped HTTP."""
+    import asyncio
+    import copy
+    import threading
+    from fastapi.testclient import TestClient
+    from mini_loop import SessionManager, Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+    from mini_loop.server import create_app
+
+    def settings(name):
+        return Settings(fake_llm=True, model="default-model", trajectory_enabled=False,
+                        enable_features=False, workspace_root=scratch / name,
+                        skills_dir=scratch / "empty-skills")
+    async def probe():
+        seen = []
+        def responder(kwargs):
+            seen.append(copy.deepcopy(kwargs))
+            if len(seen) == 1:
+                return [tool("TodoWrite", items=[{"content":"source task", "status":"pending",
+                                                  "activeForm":"working"}], _id="todo")], "tool_use"
+            return [text("noted")], "end_turn"
+        manager = SessionManager(settings("runtime"), FakeAsyncAnthropic(responder=responder, thinking=False))
+        source = manager.create(system="fixed source system", model="source-model", permission_mode="auto", owner="alice")
+        (source.workspace / "source-only.txt").write_text("source")
+        await source.run("the codeword is xyzzy")
+        source.steer("parked source input")
+        source.change_permission_mode("readonly")
+        child = await manager.fork_session(source.id)
+        initial = child.info()
+        lineage = {**initial["forked_from"], "session":"source"}
+        history = copy.deepcopy(child.agent.messages)
+        initial_state = {key:initial[key] for key in ("status", "activity", "busy", "cancel_reason",
+                         "run_count", "permission_mode", "pending_steering", "workspace_bound",
+                         "model", "message_count", "todos", "subscribers", "forked_from")}
+        initial_state["forked_from"] = lineage
+        await child.run("what was the codeword?")
+        source_events = [{"type":e["type"], "child":"child", "message_count":e["message_count"]}
+                         for e in source._backlog if e["type"] == "session_forked"]
+        result = {"initial":initial_state, "history":history,
+                  "child_request_model":seen[-1]["model"], "child_request_system":seen[-1]["system"],
+                  "child_request_messages":seen[-1]["messages"],
+                  "source_unchanged":source.agent.messages == history,
+                  "workspace_distinct":source.workspace != child.workspace,
+                  "child_marker_exists":(child.workspace / "source-only.txt").exists(),
+                  "source_pending":source.info()["pending_steering"],
+                  "source_events":source_events}
+        child.agent.messages[0]["content"] = "EDITED-IN-CHILD"
+        result["rows_independent"] = source.agent.messages[0]["content"] == history[0]["content"]
+        empty = manager.create(owner="alice")
+        empty_child = await manager.fork_session(empty.id)
+        result["empty"] = {"message_count":empty_child.info()["message_count"],
+                           "forked_from":{"session":"empty", "message_count":0}}
+        await manager.stop()
+        return result
+    result = asyncio.run(probe())
+    saved = {key:os.environ.get(key) for key in ("MINILOOP_API_TOKENS", "MINILOOP_API_TOKEN")}
+    try:
+        os.environ["MINILOOP_API_TOKENS"] = "alice:token-a,bob:token-b"
+        os.environ.pop("MINILOOP_API_TOKEN", None)
+        entered = threading.Event()
+        release = asyncio.Event()
+        fake = FakeAsyncAnthropic(responder=lambda _:([text("noted")], "end_turn"), thinking=False)
+        original = fake.messages.create
+        async def delayed(**kwargs):
+            entered.set()
+            await release.wait()
+            return await original(**kwargs)
+        fake.messages.create = delayed
+        manager = SessionManager(settings("http"), fake)
+        cases = []
+        with TestClient(create_app(settings=settings("http"), manager=manager)) as http:
+            headers = {"Authorization":"Bearer token-a"}
+            sid = http.post("/sessions", json={}, headers=headers).json()["id"]
+            session = manager._sessions[sid]
+            def call(name, session_id=sid, token="token-a"):
+                response = http.post("/sessions/" + session_id + "/fork", headers={"Authorization":"Bearer " + token})
+                payload = response.json()
+                if "id" in payload:
+                    payload["id"] = "child"
+                    payload["created_at"] = 0
+                    payload["workspace"] = "child-workspace"
+                    payload["forked_from"]["session"] = "source"
+                if "detail" in payload: payload["detail"] = payload["detail"].replace(sid,"source")
+                cases.append({"name":name, "token":token, "status":response.status_code, "response":payload})
+            call("foreign", token="token-b")
+            call("missing", session_id="missing")
+            call("empty")
+            future = http.portal.start_task_soon(session.run, "go")
+            if not entered.wait(5): raise RuntimeError("fork fixture provider did not enter")
+            try: call("busy")
+            finally: http.portal.call(release.set)
+            future.result(timeout=5)
+            call("completed")
+        result["http"] = cases
+    finally:
+        for key,value in saved.items():
+            if value is None: os.environ.pop(key,None)
+            else: os.environ[key] = value
+    return result
+
+
 def _http_contracts(scratch: Path) -> dict[str, object]:
     """Actual FastAPI HTTP admission, ownership, CRUD, replay and SSE framing."""
     from fastapi.testclient import TestClient
@@ -1751,6 +1853,7 @@ def _snapshot() -> dict[str, bytes]:
         manager_contracts = _manager_contracts(Path(scratch) / "manager")
         http_contracts = _http_contracts(Path(scratch) / "http")
         control_contracts = _control_contracts(Path(scratch) / "controls")
+        fork_contracts = _fork_contracts(Path(scratch) / "forks")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1788,6 +1891,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-manager.json": _json_bytes(manager_contracts),
         "python-http.json": _json_bytes(http_contracts),
         "python-controls.json": _json_bytes(control_contracts),
+        "python-forks.json": _json_bytes(fork_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

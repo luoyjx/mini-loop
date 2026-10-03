@@ -70,7 +70,7 @@
           "goApprovals",
           "goSecrets"
         ],
-        "note": "Typed HTTP/SSE and live controls feed owned turns. CLI/UI, full posture, provider transport and SQLite remain pending."
+        "note": "Typed HTTP/SSE, live controls and completed-history forks feed owned turns. CLI/UI, provider transport and SQLite remain pending."
       },
       {
         "id": "personal-skill",
@@ -475,7 +475,7 @@
       "id": "goManaged",
       "type": "backend",
       "label": "Go SessionManager",
-      "sublabel": "managed handles / workspace cleanup",
+      "sublabel": "handles / fork / workspace cleanup",
       "pos": [
         850,
         980
@@ -1105,7 +1105,7 @@
       "id": "goManagedRun",
       "from": "goManaged",
       "to": "goSession",
-      "label": "owned turn",
+      "label": "turn / fork",
       "fromSide": "bottom",
       "toSide": "top",
       "via": [
@@ -1191,9 +1191,10 @@
         "Todo reminder counters survive user turns; durable steering, restore and real provider remain open",
         "Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records",
         "Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending",
-        "Go HTTP handler admits one principal, fourteen typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open",
+        "Go HTTP handler admits one principal, fifteen typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open",
         "Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks",
-        "HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls"
+        "HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls",
+        "Fork copies completed paired history into fresh scratch; typed lineage and source events are process-local, first-turn persistence awaits SQLite"
       ]
     }
   ]

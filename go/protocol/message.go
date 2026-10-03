@@ -307,6 +307,40 @@ type Content struct {
 
 func PlainContent(text string) Content { return Content{plain: &text} }
 
+// Clone detaches every row, block and tool input without a wire-size limit.
+// Forks copy valid accumulated histories which can exceed a single JSON frame.
+func (c Content) Clone() Content {
+	if c.plain != nil {
+		return PlainContent(*c.plain)
+	}
+	blocks := make([]Block, len(c.blocks))
+	for i, b := range c.blocks {
+		blocks[i] = b
+		if b.text != nil {
+			v := *b.text
+			blocks[i].text = &v
+		}
+		if b.thinking != nil {
+			v := *b.thinking
+			blocks[i].thinking = &v
+		}
+		if b.toolResult != nil {
+			v := *b.toolResult
+			blocks[i].toolResult = &v
+		}
+		if b.toolUse != nil {
+			v := *b.toolUse
+			v.Input = v.Input.clone()
+			if v.Caller != nil {
+				caller := *v.Caller
+				v.Caller = &caller
+			}
+			blocks[i].toolUse = &v
+		}
+	}
+	return Content{blocks: blocks}
+}
+
 // SameStorage detects replacement of an immutable transcript row without
 // re-encoding its entire payload. Copies share storage; new content does not.
 func (c Content) SameStorage(other Content) bool {

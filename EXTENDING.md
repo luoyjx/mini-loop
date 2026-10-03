@@ -1107,7 +1107,10 @@ emit or call the blocking `Messages` accessor while a turn owns the loop lock.
 2,000 events. Replay is only the 200-event non-ephemeral memory backlog;
 `EventsAfter` does not restore a durable gap. `NewManagedSession` adds outer
 status/done/cancelled events; raw child `Session` loops emit only core telemetry.
-This Go library seam does not yet expose HTTP/SSE or a trajectory/state store.
+The Go HTTP handler projects the same bounded events into SSE. A trajectory/state
+store and durable cursor gap recovery remain pending. Manager conversation forks
+copy completed history and expose lineage/source events through this seam; their
+first-turn persistence still awaits a Go session store.
 
 ---
 

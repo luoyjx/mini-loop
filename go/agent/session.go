@@ -52,6 +52,8 @@ type Session struct {
 	maxTokens                                         int
 	tokenThreshold                                    int
 	systemBuilder                                     SystemBuilder
+	explicitSystem                                    *string
+	forkedFrom                                        *ForkLineage
 	meter                                             TokenMeter
 	runtimeFacts                                      string
 	envelope                                          string

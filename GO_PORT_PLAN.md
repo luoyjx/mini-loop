@@ -99,8 +99,8 @@ Record its parity evidence and remaining gaps before checking it off.
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
-      fourteen HTTP method/path operations, mode/steering and process-local SSE implemented;
-      CLI/UI, full health posture, fork, durable catch-up, trajectory,
+      fifteen HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
+      CLI/UI, full health posture, durable catch-up, trajectory,
       optional routes and complete validation semantics remain)
 - [ ] G4 provider
 - [ ] G5 persistence
@@ -1301,3 +1301,96 @@ live-model obedience; operator-gated Python provider tests remain skipped.
   automated geometry/composition acceptance is claimed.
 - No dependencies added. Evidence is on macOS; Linux execution, live-provider
   obedience and cross-process queue durability are not established.
+
+
+## 2026-10-03 completed-boundary fork slice
+
+Baseline: `07aaf13` plus this slice. G0/G3 advance; the full-port goal remains
+active. Python runtime behavior is unchanged and no dependencies were added.
+
+### Python contract and typed implementation
+
+- Python `SessionManager.fork_session` copies an idle transcript, retaining owner,
+  explicit system and current permission mode. The child uses manager default
+  model/settings, fresh tool state and a newly provisioned scratch workspace.
+  A bound source does not bind its child or copy workspace files. Pending steering,
+  posture notes, run counters, cancellation state, Todo board and telemetry stay
+  with the source. Historical runtime-state notes remain ordinary copied text.
+- Named `ForkLineage` and `SessionForkedEvent` replace the static HTTP lineage
+  placeholder. Lineage is detached in `Info`; history and lineage are initialized
+  before manager publication. The source records the child's ID and snapshot count
+  through the normal masked event serializer, backlog/subscription/sink boundary.
+- Go `Fork(ctx, owner, id)` admits the source atomically and refuses an occupied
+  admission slot with Python's exact open-turn error. This also covers Go's short
+  terminal-event/release interval and simultaneous fork construction. An admission
+  token pins the history only until its detached snapshot is captured; mode/control
+  updates retain their independent lock. Construction does not expose an empty
+  child. Snapshotting validates every paired row, allowing an empty history and
+  repaired cancellation history. `protocol.Content.Clone` detaches string/block
+  storage, thinking, caller metadata and typed tool-input arrays without JSON
+  roundtrip size limits. Source callbacks do not hold the transcript mutex while
+  factories or event sinks run.
+- Fork creation uses the existing reservation/workspace/construction lifecycle.
+  Manager shutdown joins it; cancelled/failed/unpublished creation cleans unused
+  scratch and emits no successful fork event. A source admitted before concurrent
+  deletion may still finish a fork from its captured boundary, matching an operation
+  already admitted against the live source. The token is released before child
+  provisioning so later source turns and idle HTTP steering can progress while
+  factories run; their changes cannot alter the captured fork boundary.
+  Child workspace policy is the existing
+  configured factory; custom factories may deliberately share paths.
+- `POST /sessions/{id}/fork` makes fifteen method/path operations. Ownership lookup
+  precedes owner rate budget, busy sources return 409, foreign/missing share 404,
+  and successful child `Info` is returned without a request body requirement.
+
+### Differential evidence and remaining work
+
+The twenty-third generated snapshot, `python-forks.json`, executes real Python
+manager and FastAPI paths. It records paired Todo history, inherited fixed system
+/current readonly mode, manager default model, fresh child board/counters/queues,
+workspace marker absence, source divergence/isolation, empty forks, source events
+and five HTTP outcomes (foreign, missing, empty, busy and completed). Go compares
+actual request wire/cache projection and event JSON as well as typed history/Info.
+Additional tests cover cancelled dispatched Bash results (completed plus unknown),
+invalid open histories, construction failure, source wakeup while a
+factory is blocked, idle steering during the copy itself, snapshot independence
+from later source turns, shutdown join/cleanup and owner-scoped child routes/listings.
+
+Python with a real StateStore flushes the copied history before its first turn;
+Go has no shipped session store, so fork durability/restart and durable source
+events remain G5. Provider transport/recovery, CLI/UI, health posture, trajectory,
+optional services, user resources and complete FastAPI validation are still open.
+No claim of complete G0-G7 parity or cross-process durability is made.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, `go test -race ./...` run from `go/`,
+  **all pass**, including the final source-wakeup/copy concurrency cases.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: **23 current
+  snapshots**, previous 22 byte-identical. `.venv/bin/python
+  python/tools/verify_scans.py`: all **19** scans anchored.
+- `.venv/bin/python python/tools/verify_guards.py -k fork`: **4 caught** source
+  mutations (`fork-cuts-an-open-turn`, `fork-shares-mutable-rows`,
+  `a-stranger-forks-the-session`, `fork-leaves-no-trace-in-the-source`).
+  Mutations completed before exporter/full-suite runs. The whole source mutation
+  catalogue was not rerun, and no Go mutation catalogue is claimed.
+- Full Python `.venv/bin/python -m pytest -q`: **1 failed, 2,150 passed,
+  28 skipped, 24 subtests passed, three warnings, 221.24s**. The sole failure is
+  `python/tests/test_double_cost.py::test_a_forty_turn_session_stays_fast`: 0.7194s
+  against <0.5s. Targeted follow-up with that test and `test_session_fork.py`:
+  **1 failed, 7 passed, one warning, 2.74s**; the performance case still measured
+  0.7276s, while all seven fork tests passed. Python runtime and test thresholds
+  are unchanged. The cause is unconfirmed; the full Python gate is **not green**.
+  Python package invariants were not rerun because no package module changed.
+- `git diff --check` and README outline checked. Archify deliver: **9/9 showcase**,
+  zero errors/warnings, correction rounds **0**. Exact frozen specification:
+  25,142 bytes, SHA-256
+  `72d7ef586b6eff686b53e5d49596dc44624efa85a5cca13cd0c16197ac72bb6d`; generated
+  HTML: 664,177 bytes, SHA-256
+  `2b7f1b2398315dbbe0106a72522456eed94af50cc7aba52a4fd57afad582b4c7`.
+  Diagram type: architecture. Output:
+  `docs/mini-loop-system.architecture.html`. Rendered visual review is skipped
+  because of the existing browser file-access policy restriction; automated
+  acceptance does not prove rendered visual review.
+- No dependencies added. Validation host is macOS; live providers, Linux behavior
+  and cross-process fork durability remain unverified.

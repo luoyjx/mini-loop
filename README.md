@@ -275,8 +275,9 @@ plus typed prompt hooks/injectors, Todo reminders and shared model/tool pools
 with ordered parallel groups, and process-local fleet composition, owner-scoped
 lookup, workspace policy and draining deletion/shutdown, plus typed HTTP authentication,
 REST admission, idempotency/rate bounds and SSE projection, plus bounded steering,
-live permission modes and owned HTTP wakeup,
-reviewed **2026-10-03** (Go baseline `6a11877` plus the controls slice).
+live permission modes and owned HTTP wakeup, plus completed-boundary conversation
+forks with fresh scratch workspaces and typed lineage,
+reviewed **2026-10-03** (Go baseline `07aaf13` plus the fork slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -327,7 +328,7 @@ flowchart LR
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoFake["FakeProvider<br/>typed requests · replies · usage"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
-        GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done"]
+        GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
@@ -341,7 +342,7 @@ flowchart LR
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoEntry --> GoTrust --> GoManager
-        GoManager -->|create / own| GoManaged --> GoControls --> GoSession
+        GoManager -->|create / fork / own| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
         GoSession --> GoContext --> GoFake
         GoFake --> GoSession
@@ -386,8 +387,9 @@ flowchart LR
 <!-- architecture-map:end -->
 
 The main diagram describes the current Python runtime under `python/`. The
-separate Go subgraph is an in-memory port in progress and serves no Python or
-HTTP requests. The solid Python path is one ordinary turn; dotted paths are
+separate Go subgraph is a process-local port in progress with an embeddable
+HTTP handler; it runs independently of Python and has no bundled listener.
+The solid Python path is one ordinary turn; dotted paths are
 optional or asynchronous.
 The Python default agent skills now resolve from `python/skills/` regardless
 of the current working directory; `MINILOOP_SKILLS_DIR` still overrides it.
@@ -408,8 +410,9 @@ hash at load time. User-scoped skill layering remains pending. Todo, stop and st
 events, model/tool spans, text phases, activity labels, compaction receipts, approval
 events and scoped child events share a typed, sequenced 200-event backlog. Bounded
 subscriptions retain the newest 2,000 live events; late replay excludes ephemeral
-deltas. `EventsAfter` returns only the available in-memory suffix. HTTP/SSE
-and durable cursor gap recovery remain pending. `RuntimeConfig.EventSink` receives
+deltas. `EventsAfter` returns only the available in-memory suffix. HTTP/SSE replays
+that bounded suffix; durable cursor gap recovery remains pending.
+`RuntimeConfig.EventSink` receives
 detached, masked records in publication order; failures become bounded diagnostics
 and do not abort the turn. A slow synchronous sink can delay the emitter. Sinks may
 inspect `ManagedSession.Info`, event snapshots or subscriptions, but must not
@@ -560,9 +563,9 @@ creation and deleted-session cleanup, preserving surviving scratch directories.
 Caller cancellation ends the Stop wait; shutdown continues and can be joined again.
 Factories receive typed session bindings and must not recursively create/delete/stop
 the manager. Nil skills remain an empty catalogue; deployment loading is explicit.
-`go/httpapi.New` returns a standard `http.Handler` over that manager. Fourteen method/path
+`go/httpapi.New` returns a standard `http.Handler` over that manager. Fifteen method/path
 combinations implement basic health, create/list/detail/delete, message/stream/cancel,
-approvals/resolution, mode/steer, events and the Null-store transcript response. Token/anonymous
+approvals/resolution, mode/steer/fork, events and the Null-store transcript response. Token/anonymous
 authentication is resolved once; the ten-MiB ingress cap precedes it. An admitted HTTP
 turn remains untrusted, with only the personal-skill capture-source stamp. Completed
 message retries use detached owner/session/key snapshots before spending rate budget;
@@ -573,7 +576,7 @@ JSON and HTTP responses use the optional recording projection without changing l
 model history; encoder failures return no raw fallback. These are process-local handler
 services: the embedding application owns listening/shutdown and must call
 `RefuseOpenBind` before listening. There is no Go CLI, UI, full health posture, durable
-catch-up, fork route, trajectory or optional fleet service yet. Full
+catch-up, trajectory or optional fleet service yet. Full
 FastAPI validation detail/coercion parity remains open. Durable restoration is pending.
 Managed controls have a separate lock from model/transcript execution. Library
 `Steer` parks at most 100 inputs, each capped at 16,000 Unicode characters with a
@@ -589,7 +592,16 @@ After the first run starts, a real mode change queues a separate harness-authore
 `posture_update` with its meaning for the model. Pre-first changes and no-ops stay
 silent. Fresh children retain their selected mode and never drain parent controls.
 Steering and posture state are process-local; SQLite queue persistence/restoration
-remains pending. The interactive map folds ManagedSession into the Go SessionManager
+remains pending. Manager `Fork` and the owner-scoped HTTP fork route copy only an
+idle, paired transcript while holding source admission. The child inherits explicit
+system and current mode, uses the manager default model, and has fresh tool/control
+state and a newly provisioned scratch workspace. Typed `forked_from` lineage and
+cloned history are installed before publication; `session_forked` appears in the
+source stream after successful construction. Failed construction emits no success
+event and reclaims its unused scratch directory. Empty histories and repaired
+cancellation boundaries can fork. Go forks remain process-local; Python with a real
+StateStore also flushes the fork before its first turn, which remains G5 work here.
+The interactive map folds ManagedSession into the Go SessionManager
 node and its controls into Go Session. Raw
 child sessions emit core spans and text without
 outer status/done events. Transcript replacement increments event epochs, including

@@ -60,6 +60,7 @@ type SessionInfo struct {
 	RunCount        int                 `json:"run_count"`
 	PermissionMode  PermissionMode      `json:"permission_mode"`
 	PendingSteering int                 `json:"pending_steering"`
+	ForkedFrom      *ForkLineage        `json:"forked_from"`
 	Workspace       string              `json:"workspace"`
 	WorkspaceBound  bool                `json:"workspace_bound"`
 	Model           string              `json:"model"`
@@ -342,7 +343,7 @@ func (session *ManagedSession) Info() SessionInfo {
 		sink = &value
 	}
 	mode, queued := session.core.control.snapshot()
-	return SessionInfo{session.ID(), status, activity, busy, reason, session.createdAt, count, mode, queued, session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
+	return SessionInfo{session.ID(), status, activity, busy, reason, session.createdAt, count, mode, queued, clonePointer(session.core.forkedFrom), session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
 }
 func hasStuckSignal(detector StuckDetector, state StuckState) (stuck bool) {
 	defer func() {

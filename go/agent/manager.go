@@ -225,6 +225,11 @@ func (manager *SessionManager) finishCreate(id SessionID) {
 }
 
 func (manager *SessionManager) Create(ctx context.Context, request CreateSessionRequest) (session *ManagedSession, err error) {
+	return manager.create(ctx, request, nil)
+}
+
+// seed is installed before the handle becomes visible to Get/List or shutdown.
+func (manager *SessionManager) create(ctx context.Context, request CreateSessionRequest, seed *forkSnapshot) (session *ManagedSession, err error) {
 	if err = ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -308,6 +313,12 @@ func (manager *SessionManager) Create(ctx context.Context, request CreateSession
 		return nil, err
 	}
 	session.workspaceBound = !scratch
+	session.core.explicitSystem = clonePointer(system)
+	if seed != nil {
+		session.core.messages = seed.messages
+		session.core.forkedFrom = clonePointer(&seed.lineage)
+		session.core.publishLive()
+	}
 	manager.mu.Lock()
 	defer manager.mu.Unlock()
 	if manager.state != ManagerActive {

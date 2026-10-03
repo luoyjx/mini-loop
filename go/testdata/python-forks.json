@@ -1,0 +1,240 @@
+{
+  "child_marker_exists": false,
+  "child_request_messages": [
+    {
+      "content": "the codeword is xyzzy",
+      "role": "user"
+    },
+    {
+      "content": [
+        {
+          "id": "todo",
+          "input": {
+            "items": [
+              {
+                "activeForm": "working",
+                "content": "source task",
+                "status": "pending"
+              }
+            ]
+          },
+          "name": "TodoWrite",
+          "type": "tool_use"
+        }
+      ],
+      "role": "assistant"
+    },
+    {
+      "content": [
+        {
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "content": "[ ] source task\n\n(0/1 completed)",
+          "tool_use_id": "todo",
+          "type": "tool_result"
+        }
+      ],
+      "role": "user"
+    },
+    {
+      "content": "<runtime-state>\nCurrent TodoWrite state:\n[ ] source task\n\n(0/1 completed)\n</runtime-state>",
+      "role": "user"
+    },
+    {
+      "content": [
+        {
+          "text": "noted",
+          "type": "text"
+        }
+      ],
+      "role": "assistant"
+    },
+    {
+      "content": "what was the codeword?",
+      "role": "user"
+    }
+  ],
+  "child_request_model": "default-model",
+  "child_request_system": [
+    {
+      "cache_control": {
+        "type": "ephemeral"
+      },
+      "text": "fixed source system",
+      "type": "text"
+    }
+  ],
+  "empty": {
+    "forked_from": {
+      "message_count": 0,
+      "session": "empty"
+    },
+    "message_count": 0
+  },
+  "history": [
+    {
+      "content": "the codeword is xyzzy",
+      "role": "user"
+    },
+    {
+      "content": [
+        {
+          "id": "todo",
+          "input": {
+            "items": [
+              {
+                "activeForm": "working",
+                "content": "source task",
+                "status": "pending"
+              }
+            ]
+          },
+          "name": "TodoWrite",
+          "type": "tool_use"
+        }
+      ],
+      "role": "assistant"
+    },
+    {
+      "content": [
+        {
+          "content": "[ ] source task\n\n(0/1 completed)",
+          "tool_use_id": "todo",
+          "type": "tool_result"
+        }
+      ],
+      "role": "user"
+    },
+    {
+      "content": "<runtime-state>\nCurrent TodoWrite state:\n[ ] source task\n\n(0/1 completed)\n</runtime-state>",
+      "role": "user"
+    },
+    {
+      "content": [
+        {
+          "text": "noted",
+          "type": "text"
+        }
+      ],
+      "role": "assistant"
+    }
+  ],
+  "http": [
+    {
+      "name": "foreign",
+      "response": {
+        "detail": "No session 'source'"
+      },
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "name": "missing",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "name": "empty",
+      "response": {
+        "active_trajectory_id": null,
+        "activity": "idle",
+        "busy": false,
+        "cancel_reason": null,
+        "created_at": 0,
+        "forked_from": {
+          "message_count": 0,
+          "session": "source"
+        },
+        "id": "child",
+        "message_count": 0,
+        "model": "default-model",
+        "pending_steering": 0,
+        "permission_mode": "interactive",
+        "run_count": 0,
+        "sink_error": null,
+        "status": "idle",
+        "subscribers": 0,
+        "todos": [],
+        "trajectory_count": 0,
+        "trajectory_recording_error": null,
+        "workflows": [],
+        "workspace": "child-workspace",
+        "workspace_bound": false
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "name": "busy",
+      "response": {
+        "detail": "cannot fork a busy session: its transcript tail is an open turn, not a completed boundary. Wait for the turn to finish or cancel it."
+      },
+      "status": 409,
+      "token": "token-a"
+    },
+    {
+      "name": "completed",
+      "response": {
+        "active_trajectory_id": null,
+        "activity": "idle",
+        "busy": false,
+        "cancel_reason": null,
+        "created_at": 0,
+        "forked_from": {
+          "message_count": 2,
+          "session": "source"
+        },
+        "id": "child",
+        "message_count": 2,
+        "model": "default-model",
+        "pending_steering": 0,
+        "permission_mode": "interactive",
+        "run_count": 0,
+        "sink_error": null,
+        "status": "idle",
+        "subscribers": 0,
+        "todos": [],
+        "trajectory_count": 0,
+        "trajectory_recording_error": null,
+        "workflows": [],
+        "workspace": "child-workspace",
+        "workspace_bound": false
+      },
+      "status": 200,
+      "token": "token-a"
+    }
+  ],
+  "initial": {
+    "activity": "idle",
+    "busy": false,
+    "cancel_reason": null,
+    "forked_from": {
+      "message_count": 5,
+      "session": "source"
+    },
+    "message_count": 5,
+    "model": "default-model",
+    "pending_steering": 0,
+    "permission_mode": "readonly",
+    "run_count": 0,
+    "status": "idle",
+    "subscribers": 0,
+    "todos": [],
+    "workspace_bound": false
+  },
+  "rows_independent": true,
+  "source_events": [
+    {
+      "child": "child",
+      "message_count": 5,
+      "type": "session_forked"
+    }
+  ],
+  "source_pending": 1,
+  "source_unchanged": true,
+  "workspace_distinct": true
+}

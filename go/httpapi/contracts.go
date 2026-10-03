@@ -38,15 +38,14 @@ type ApprovalRequest struct {
 	Remember bool             `json:"remember"`
 }
 
-// These fields describe the current disabled trajectory/workflow/fork
+// These fields describe the current disabled trajectory/workflow
 // paths. No synthetic durable transcript or optional service is exposed.
 type SessionInfo struct {
 	agent.SessionInfo
-	ActiveTrajectoryID       *string          `json:"active_trajectory_id"`
-	TrajectoryCount          int              `json:"trajectory_count"`
-	TrajectoryRecordingError *string          `json:"trajectory_recording_error"`
-	ForkedFrom               *agent.SessionID `json:"forked_from"`
-	Workflows                [0]struct{}      `json:"workflows"`
+	ActiveTrajectoryID       *string     `json:"active_trajectory_id"`
+	TrajectoryCount          int         `json:"trajectory_count"`
+	TrajectoryRecordingError *string     `json:"trajectory_recording_error"`
+	Workflows                [0]struct{} `json:"workflows"`
 }
 
 func info(v agent.SessionInfo) SessionInfo { return SessionInfo{SessionInfo: v} }
