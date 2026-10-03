@@ -4501,7 +4501,7 @@
       <p class="subtitle">Python runtime in python/: concurrent sessions, guarded tools, optional decisions, and evidence; Go port in progress</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed HTTP/SSE, live controls and completed-history forks feed owned turns. CLI/UI, provider transport and SQLite remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed HTTP/SSE, controls and forks feed owned turns. Direct model HTTP exists; streaming, Agent recovery and SQLite remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4798,16 +4798,16 @@
         <text data-detail="fine" x="2220" y="608" class="t-external" font-size="7" text-anchor="middle">off by default</text>
         </g>
 
-        <g id="node-goFake" data-node-id="goFake" data-node-label="Go FakeProvider" tabindex="0" role="button" aria-label="Focus Go FakeProvider, typed requests / replies + usage, Independent Go port - in progress" aria-pressed="false" data-node-kind="external" data-node-sublabel="typed requests / replies + usage" data-node-context="Independent Go port - in progress">
-          <title>Go FakeProvider · typed requests / replies + usage · Independent Go port - in progress</title>
+        <g id="node-goFake" data-node-id="goFake" data-node-label="Go model providers" tabindex="0" role="button" aria-label="Focus Go model providers, Fake / direct HTTP / SDK retries, Independent Go port - in progress" aria-pressed="false" data-node-kind="external" data-node-sublabel="Fake / direct HTTP / SDK retries" data-node-context="Independent Go port - in progress">
+          <title>Go model providers · Fake / direct HTTP / SDK retries · Independent Go port - in progress</title>
           <rect x="330" y="1180" width="220" height="76" rx="6" class="c-mask"/>
           <rect x="330" y="1180" width="220" height="76" rx="6" class="c-external" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(336 1186) scale(0.6875)">
             <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-detail-anchor x="440" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go FakeProvider</text>
-        <text data-detail="context" x="440" y="1232" class="t-muted" font-size="9" text-anchor="middle">typed requests / replies + usage</text>
+          <text data-detail-anchor x="440" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go model providers</text>
+        <text data-detail="context" x="440" y="1232" class="t-muted" font-size="9" text-anchor="middle">Fake / direct HTTP / SDK retries</text>
         </g>
 
         <g id="node-goSession" data-node-id="goSession" data-node-label="Go Session" tabindex="0" role="button" aria-label="Focus Go Session, steering / posture / ordered groups, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="steering / posture / ordered groups" data-node-tag="process-local" data-node-context="Independent Go port - in progress">
@@ -5386,13 +5386,15 @@
           <li>&bull; Children inherit typed prompt/injector seams, cache/stuck policies and exact model/tool pools with fresh state</li>
           <li>&bull; Parallel groups preserve result/step order; exclusive tools are barriers and bypass tool permits</li>
           <li>&bull; Manager shares model/tool pools of eight; bare model calls are unbounded</li>
-          <li>&bull; Todo reminder counters survive user turns; durable steering, restore and real provider remain open</li>
+          <li>&bull; Todo reminder counters survive user turns; durable steering, restore and streaming/Agent recovery remain open</li>
           <li>&bull; Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records</li>
           <li>&bull; Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending</li>
           <li>&bull; Go HTTP handler admits one principal, fifteen typed route operations and masked JSON/SSE data; CLI/UI, full posture and optional routes remain open</li>
           <li>&bull; Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks</li>
           <li>&bull; HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls</li>
           <li>&bull; Fork copies completed paired history into fresh scratch; typed lineage and source events are process-local, first-turn persistence awaits SQLite</li>
+          <li>&bull; Explicit direct HTTP provider preserves typed cache wire, served model and signed thinking; bounded SDK retries are separate from pending Agent recovery</li>
+          <li>&bull; Provider byte caps, caller-owned deadlines/waits, credential-scrubbed diagnostics and redirect refusal are implemented; production conformance remains unverified</li>
         </ul>
       </div>
     </div>

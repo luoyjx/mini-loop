@@ -89,7 +89,8 @@ Record its parity evidence and remaining gaps before checking it off.
       managed admission/cancellation and bounded subscriptions implemented;
       prompt hooks/injectors, Todo nagging, shared limiters and ordered parallel batches
       implemented; bounded steering and live posture updates implemented;
-      transport/recovery and remaining context integrations remain)
+      direct HTTP provider/SDK retries implemented;
+      streaming/Agent recovery and remaining context integrations remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
@@ -102,7 +103,8 @@ Record its parity evidence and remaining gaps before checking it off.
       fifteen HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
       CLI/UI, full health posture, durable catch-up, trajectory,
       optional routes and complete validation semantics remain)
-- [ ] G4 provider
+- [ ] G4 provider (direct HTTP, typed normalization and bounded SDK retries implemented;
+      streaming, Agent recovery, advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence
 - [ ] G6 optional features
 - [ ] G7 differential and release audit
@@ -1394,3 +1396,112 @@ No claim of complete G0-G7 parity or cross-process durability is made.
   acceptance does not prove rendered visual review.
 - No dependencies added. Validation host is macOS; live providers, Linux behavior
   and cross-process fork durability remain unverified.
+
+
+## 2026-10-03 direct provider and SDK retry slice
+
+Baseline: `22d3ca2` plus this slice. G4 advances with a real HTTP adapter using
+only Go's standard library. The full-port goal stays active; no dependency or
+Python runtime change is included.
+
+### Source contract and implementation
+
+- Python `AnthropicCompatibleProvider.create_client` constructs AsyncAnthropic
+  with its SDK defaults. This is a separate retry layer from `DefaultRecovery`:
+  SDK 0.107.1 retries two times by default for connection/read/timeout failures,
+  408/409/429/5xx, or `x-should-retry: true`; false overrides status classification.
+  The fixture records the exact installed source hashes, not only version text.
+- `go/provider.Client` implements the existing concrete `agent.Provider` seam
+  without a special execution path. Config validates an explicit API key/base
+  URL, optional standard HTTP client, byte limits, deadline, retry count and
+  concurrency-safe waiter/jitter/clock dependencies. No environment, profile
+  or bearer-token discovery occurs. Describe/String/GoString carry no credential.
+- SDK backoff is 0.5s × 2^attempt capped at 8s with 0..25% negative jitter,
+  unlike Agent recovery's 32s cap and positive jitter. SDK honors finite positive
+  Retry-After up to 60s, including ms precedence and date parsing; larger, zero,
+  negative, non-finite or malformed values fall back to SDK backoff. Original
+  finite nonnegative Retry-After seconds remain a separate typed field for future
+  Agent recovery's different 300s policy. Waits and calls honor caller cancellation.
+- Default non-streaming budget preflight matches the pinned SDK: eight listed
+  Opus aliases cap at 8,192; other models cap at floor(128,000/6) under its
+  600-second estimate. An explicitly configured custom timeout bypasses this
+  preflight, as in the SDK's custom-timeout path. These are SDK transport limits,
+  not assertions about model capacity. Future SDK drift requires fixture review.
+- Requests use `ModelRequest.MarshalJSON` so fitted schemas/system/message cache
+  annotations are preserved and local Purpose stays off the wire. The endpoint
+  preserves its base path and appends `/v1/messages`; API version is 2023-06-01.
+  Retry-count headers are updated while body bytes remain identical.
+- Bounded local ingress DTOs discard unconsumed response-level/usage SDK metadata
+  and construct validated concrete replies. Consumed text, signed thinking,
+  default-tool inputs, caller metadata, usage/cache fields and served-model alias
+  retain their meanings. SDK-normalized missing tool caller becomes explicit null.
+  Nullable text citation metadata is omitted; nonempty citations and unsupported
+  server/search/redacted blocks fail explicitly until their typed variants ship.
+- Named FailureKind/ErrorClass, status, request ID and distinct retry metadata
+  preserve HTTP failure categories. Diagnostics are bounded and scrub the API key;
+  transport failures do not print arbitrary client error strings. Body handles
+  close on success/failure. The adapter defaults to 8 MiB request/reply caps
+  (configurable up to 64 MiB) and bounds configured retries to 0..10.
+- Go adds a whole-attempt 10-minute deadline instead of SDK per-operation
+  connect/read/write/pool timeouts, refuses redirects to prevent forwarding
+  x-api-key to a different endpoint, and rejects credential/query/fragment base
+  URLs. Custom HTTP clients are shallow-copied so their redirect policy stays
+  untouched; injected transports/waiters must honor contexts and be thread-safe.
+
+### Evidence and remaining work
+
+`python-provider.json` is the twenty-fourth source snapshot: 33 actual
+AsyncAnthropic scenarios over httpx.MockTransport, with SDK sleep/random/time
+patched only to record deterministic waits. It captures request body/path/headers,
+consumed reply projection, error class/status, preflight requests and descriptions.
+Prior 23 snapshots remain unchanged. Go compares every request/attempt, final
+reply/error, delay and listed model ceiling. This is actual SDK protocol evidence,
+not a claim that an external endpoint was called.
+
+Go httptest tests exercise real HTTP timeout/cancellation and a complete two-call
+agent tool round, confirming workspace write effects, immediate tool pairing,
+served-model alias and usage telemetry. Additional tests cover response cap+1
+reads, body close, request rejection before sending, malformed/unsupported replies,
+credential-scrubbed errors/debug identity, redirect refusal without mutating a
+supplied client, owned backoff waits and 32 concurrent calls with isolated bodies.
+
+Streaming event assembly/coalescing/provisional generations, interrupted text
+repair, Agent DefaultRecovery continuation/escalation/fallback/reactive compaction,
+advanced request options, credential profiles/bearer environment discovery and
+full content variants remain G4. Shared model permits currently cover each
+Complete call, including its SDK waits. Live external conformance/cache savings
+are unverified and operator-gated Python live tests remain skipped. No G4/G7
+completion or default provider switch is claimed.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, `go test -race ./...`: **all pass**, including
+  the final UTF-8/nullable metadata and HTTP runtime cases. No new dependency.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: **24 current
+  files**, prior 23 byte-identical; `verify_scans.py`: **19 anchored** scans.
+  SDK version: 0.107.1. SDK `_base_client.py` SHA-256:
+  `a6a53bd97f9cfe4ec55231791dd77961dc3a65da8b37799bb36e54c7e7e19d7e`;
+  `_constants.py`:
+  `c000de52a63796cb1e1742fa8c87a7f8f7b17d0d3a14eb5fd9d5444970ccf36f`;
+  `resources/messages/messages.py`:
+  `fb911dc0fd234fd1989de303928e322bd7796c074f54332f1a6b97e4183c51e5`.
+- Three source mutations caught using sequential `verify_guards.py -k NAME`:
+  `served-model-never-recorded`, `provider-seam-ignores-the-fake-flag`,
+  `describe-leaks-the-credential`. Mutations finished before final export/full
+  Python gates. The full mutation catalogue was not rerun, and no Go mutation
+  catalogue is claimed. Python package invariants were not rerun because no
+  Python package module changed.
+- `.venv/bin/python -m pytest -q`: **2,151 passed, 28 skipped, 24 subtests
+  passed**, three dependency deprecation warnings, 132.01 seconds. The previous
+  checkpoint's timing failure remains historical; this run passed the full gate.
+- `git diff --check` and README outline checked. Archify deliver: **9/9 showcase**,
+  zero errors/warnings, correction rounds **0**. Specification: 25,495 bytes,
+  SHA-256 `d4d4f5f95f2456f70d1331affa9b130f5783812def6710af452475d810cb70fd`;
+  HTML: 664,569 bytes, SHA-256
+  `6f2e458c48247a9a6f28c62357e0c49f9cc091df13e99c2132d375afcbc0be63`.
+  Diagram type: architecture; output: `docs/mini-loop-system.architecture.html`.
+  Visual review is skipped under the existing browser file-access policy block;
+  only automated geometry/composition acceptance is claimed.
+- Host: macOS. External live-provider conformance, cache benefit and Linux runtime
+  behavior remain unverified. SDK mock HTTP and local real HTTP tests consume no
+  external credentials or paid provider calls.

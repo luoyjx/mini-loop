@@ -1,0 +1,5307 @@
+{
+  "cases": [
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "success",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "waits": []
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "2"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "retry-408",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        408,
+        408,
+        200
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "2"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "retry-409",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        409,
+        409,
+        200
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "2"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "retry-429",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        429,
+        200
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "2"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "retry-500",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        500,
+        500,
+        200
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "2"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "retry-529",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        529,
+        529,
+        200
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "error_class": "InternalServerError",
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "2"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "exhausted",
+      "reply": null,
+      "status": 503,
+      "statuses": [
+        503
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "error_class": "BadRequestError",
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "bad-request",
+      "reply": null,
+      "status": 400,
+      "statuses": [
+        400
+      ],
+      "waits": []
+    },
+    {
+      "error_class": "AuthenticationError",
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "unauthorized",
+      "reply": null,
+      "status": 401,
+      "statuses": [
+        401
+      ],
+      "waits": []
+    },
+    {
+      "error_class": "PermissionDeniedError",
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "forbidden",
+      "reply": null,
+      "status": 403,
+      "statuses": [
+        403
+      ],
+      "waits": []
+    },
+    {
+      "error_class": "NotFoundError",
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "missing",
+      "reply": null,
+      "status": 404,
+      "statuses": [
+        404
+      ],
+      "waits": []
+    },
+    {
+      "error_class": "UnprocessableEntityError",
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "invalid",
+      "reply": null,
+      "status": 422,
+      "statuses": [
+        422
+      ],
+      "waits": []
+    },
+    {
+      "error_class": "BadRequestError",
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "2"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "x-should-retry": "true"
+      },
+      "name": "retry-forced",
+      "reply": null,
+      "status": 400,
+      "statuses": [
+        400
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "error_class": "InternalServerError",
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "x-should-retry": "false"
+      },
+      "name": "retry-denied",
+      "reply": null,
+      "status": 503,
+      "statuses": [
+        503
+      ],
+      "waits": []
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "15"
+      },
+      "name": "seconds",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        15.0
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "Tue, 14 Nov 2023 22:13:40 GMT"
+      },
+      "name": "date",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        20.0
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "15",
+        "retry-after-ms": "1250"
+      },
+      "name": "milliseconds",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        1.25
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "15",
+        "retry-after-ms": "bad"
+      },
+      "name": "ms-invalid",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        15.0
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "15",
+        "retry-after-ms": "nan"
+      },
+      "name": "ms-nan",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "0"
+      },
+      "name": "header-0",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "-1"
+      },
+      "name": "header--1",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "300"
+      },
+      "name": "header-300",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "inf"
+      },
+      "name": "header-inf",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "nan"
+      },
+      "name": "header-nan",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "headers": {
+        "retry-after": "bad"
+      },
+      "name": "header-bad",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        429,
+        200
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "2"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "connection",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        "connection",
+        "connection",
+        200
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "error_class": "APITimeoutError",
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "2"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "timeout",
+      "reply": null,
+      "status": 0,
+      "statuses": [
+        "timeout"
+      ],
+      "waits": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        },
+        {
+          "body": {
+            "max_tokens": 8000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "1"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "name": "interrupted-body",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "statuses": [
+        "body",
+        200
+      ],
+      "waits": [
+        0.5
+      ]
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 21333,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "max_tokens": 21333,
+      "name": "generic-ceiling",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "waits": []
+    },
+    {
+      "error_class": "ValueError",
+      "frames": [],
+      "max_tokens": 21334,
+      "name": "generic-preflight",
+      "reply": null,
+      "status": 0,
+      "waits": []
+    },
+    {
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 8192,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "claude-opus-4-1-20250805",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "max_tokens": 8192,
+      "model": "claude-opus-4-1-20250805",
+      "name": "opus-ceiling",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "waits": []
+    },
+    {
+      "error_class": "ValueError",
+      "frames": [],
+      "max_tokens": 8193,
+      "model": "claude-opus-4-1-20250805",
+      "name": "opus-preflight",
+      "reply": null,
+      "status": 0,
+      "waits": []
+    },
+    {
+      "custom_timeout": true,
+      "error_class": null,
+      "frames": [
+        {
+          "body": {
+            "max_tokens": 64000,
+            "messages": [
+              {
+                "content": [
+                  {
+                    "cache_control": {
+                      "type": "ephemeral"
+                    },
+                    "text": "go",
+                    "type": "text"
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "model": "requested-model",
+            "system": [
+              {
+                "cache_control": {
+                  "type": "ephemeral"
+                },
+                "text": "fixed system",
+                "type": "text"
+              }
+            ],
+            "tools": [
+              {
+                "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+                "input_schema": {
+                  "properties": {
+                    "approval_prefix": {
+                      "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "command": {
+                      "type": "string"
+                    },
+                    "run_in_background": {
+                      "description": "Run asynchronously and return a task id immediately.",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "command"
+                  ],
+                  "type": "object"
+                },
+                "name": "bash"
+              }
+            ]
+          },
+          "headers": {
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+            "x-api-key": "fixture-key",
+            "x-stainless-retry-count": "0"
+          },
+          "method": "POST",
+          "path": "https://provider.invalid/proxy/v1/messages"
+        }
+      ],
+      "max_tokens": 64000,
+      "name": "custom-timeout",
+      "reply": {
+        "content": [
+          {
+            "signature": "signed",
+            "thinking": "private thought",
+            "type": "thinking"
+          },
+          {
+            "text": "working",
+            "type": "text"
+          },
+          {
+            "caller": null,
+            "id": "tool-1",
+            "input": {
+              "command": "echo handled"
+            },
+            "name": "bash",
+            "type": "tool_use"
+          }
+        ],
+        "id": "msg_actual",
+        "model": "served-alias",
+        "role": "assistant",
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation_input_tokens": 5,
+          "cache_read_input_tokens": 3,
+          "input_tokens": 11,
+          "output_tokens": 7,
+          "service_tier": "standard"
+        }
+      },
+      "status": 0,
+      "waits": []
+    }
+  ],
+  "descriptions": [
+    {
+      "credential": "<set>",
+      "endpoint": "https://api.anthropic.com",
+      "name": "anthropic",
+      "wire": "anthropic"
+    },
+    {
+      "credential": "<set>",
+      "endpoint": "https://provider.invalid/proxy/",
+      "name": "anthropic-compatible",
+      "wire": "anthropic"
+    }
+  ],
+  "omitted_nullable_sdk_fields": [
+    "text.citations"
+  ],
+  "request": {
+    "max_tokens": 8000,
+    "messages": [
+      {
+        "content": [
+          {
+            "cache_control": {
+              "type": "ephemeral"
+            },
+            "text": "go",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "requested-model",
+    "system": [
+      {
+        "cache_control": {
+          "type": "ephemeral"
+        },
+        "text": "fixed system",
+        "type": "text"
+      }
+    ],
+    "tools": [
+      {
+        "description": "Run a shell command. The session workspace is the working directory, so relative paths resolve there and no cd is needed unless you mean to work elsewhere. Returns combined stdout+stderr.",
+        "input_schema": {
+          "properties": {
+            "approval_prefix": {
+              "description": "Optional: when this command will need approval and is part of a routine you expect to repeat, propose the command prefix the human may remember for the rest of the session, e.g. [\"git\", \"pull\"]. It must be the command's own leading words, at least two; interpreter, deleter, and escalator heads are never remembered.",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "command": {
+              "type": "string"
+            },
+            "run_in_background": {
+              "description": "Run asynchronously and return a task id immediately.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "command"
+          ],
+          "type": "object"
+        },
+        "name": "bash"
+      }
+    ]
+  },
+  "sdk_max_retries": 2,
+  "sdk_model_ceilings": {
+    "anthropic.claude-opus-4-1-20250805-v1:0": 8192,
+    "anthropic.claude-opus-4-20250514-v1:0": 8192,
+    "claude-4-opus-20250514": 8192,
+    "claude-opus-4-0": 8192,
+    "claude-opus-4-1-20250805": 8192,
+    "claude-opus-4-1@20250805": 8192,
+    "claude-opus-4-20250514": 8192,
+    "claude-opus-4@20250514": 8192
+  },
+  "sdk_source_sha256": {
+    "_base_client.py": "a6a53bd97f9cfe4ec55231791dd77961dc3a65da8b37799bb36e54c7e7e19d7e",
+    "_constants.py": "c000de52a63796cb1e1742fa8c87a7f8f7b17d0d3a14eb5fd9d5444970ccf36f",
+    "resources/messages/messages.py": "fb911dc0fd234fd1989de303928e322bd7796c074f54332f1a6b97e4183c51e5"
+  },
+  "sdk_version": "0.107.1"
+}

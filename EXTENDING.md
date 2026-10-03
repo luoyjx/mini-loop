@@ -1043,6 +1043,13 @@ system=, max_tokens=)` returning `.content` (blocks) + `.stop_reason` works.
 * **Offline:** `MINILOOP_FAKE_LLM=1` uses `FakeAsyncAnthropic`; in tests inject
   a `scripted([...])` responder for exact tool sequences.
 
+The Go `agent.Provider` consumer accepts concrete `protocol.ModelRequest` and
+`ModelReply`. `go/provider.New` supplies an explicit direct Anthropic-compatible
+HTTP adapter with SDK-level bounded retries, cache wire annotations and served-model
+identity. It reads no environment/profile credentials and retains no dynamic
+payload in the service layer. Streaming and Agent-level recovery remain pending.
+See `go/README.md` for configuration and boundary differences.
+
 ---
 
 ## 7. Workspace provisioning — `workspace_factory`

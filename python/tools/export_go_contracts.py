@@ -1775,6 +1775,109 @@ def _http_contracts(scratch: Path) -> dict[str, object]:
                 os.environ[key] = value
 
 
+def _provider_contracts() -> dict[str, object]:
+    """Real pinned SDK requests/replies and HTTP retry behavior, offline."""
+    import asyncio
+    import anthropic
+    import httpx
+    from unittest.mock import patch
+    from anthropic._constants import DEFAULT_TIMEOUT, MODEL_NONSTREAMING_TOKENS
+    from mini_loop.providers import AnthropicCompatibleProvider
+    from mini_loop.builtins import default_registry
+
+    request = {"model":"requested-model", "max_tokens":8000,
+               "system":[{"type":"text", "text":"fixed system", "cache_control":{"type":"ephemeral"}}],
+               "messages":[{"role":"user", "content":[{"type":"text", "text":"go",
+                                                           "cache_control":{"type":"ephemeral"}}]}],
+               "tools":[default_registry().get("bash").schema]}
+    response = {"id":"msg_actual", "type":"message", "role":"assistant", "model":"served-alias",
+                "content":[{"type":"thinking", "thinking":"private thought", "signature":"signed"},
+                           {"type":"text", "text":"working", "citations":None},
+                           {"type":"tool_use", "id":"tool-1", "name":"bash", "input":{"command":"echo handled"}}],
+                "stop_reason":"tool_use", "stop_sequence":None, "stop_details":None, "container":None,
+                "usage":{"input_tokens":11,"output_tokens":7,"cache_read_input_tokens":3,
+                         "cache_creation_input_tokens":5,"service_tier":"standard",
+                         "cache_creation":{"ephemeral_5m_input_tokens":5,"ephemeral_1h_input_tokens":0},
+                         "server_tool_use":None}}
+    class BrokenBody(httpx.AsyncByteStream):
+        async def __aiter__(self):
+            yield b'{"id":"partial'
+            raise httpx.ReadError("body interrupted")
+    async def scenario(spec):
+        frames, waits = [], []
+        sequence = spec.get("statuses",[200])
+        async def responder(req):
+            frames.append({"path":str(req.url), "method":req.method,
+                           "headers":{k:req.headers[k] for k in ("x-api-key","anthropic-version","x-stainless-retry-count","content-type")},
+                           "body":__import__("json").loads(req.content)})
+            index = len(frames)-1
+            status = sequence[min(index,len(sequence)-1)]
+            if status == "connection": raise httpx.ConnectError("broken socket", request=req)
+            if status == "timeout": raise httpx.ReadTimeout("socket timed out", request=req)
+            if status == "body": return httpx.Response(200, stream=BrokenBody(), headers={"content-type":"application/json"})
+            body = response if status==200 else {"type":"error", "error":{"type":"fixture_error","message":"fixture failure"}}
+            return httpx.Response(status, json=body, headers={"request-id":"request-fixture", **spec.get("headers",{})})
+        async def wait(seconds): waits.append(seconds)
+        client = anthropic.AsyncAnthropic(api_key="fixture-key", base_url="https://provider.invalid/proxy/",
+                                         http_client=httpx.AsyncClient(transport=httpx.MockTransport(responder), timeout=DEFAULT_TIMEOUT),
+                                         **({"timeout":3} if spec.get("custom_timeout") else {}))
+        kwargs = {**request, "model":spec.get("model",request["model"]), "max_tokens":spec.get("max_tokens",8000)}
+        with patch("anthropic._base_client.random", return_value=0), patch("anthropic._base_client.anyio.sleep", wait), patch("anthropic._base_client.time.time", return_value=1700000000):
+            try:
+                reply = await client.messages.create(**kwargs)
+                # Normalize only consumed domain fields; nullable citations are
+                # an explicit unported SDK metadata field, not fake evidence.
+                content = []
+                for block in reply.content:
+                    row = block.model_dump()
+                    if row["type"]=="text": row.pop("citations",None)
+                    content.append(row)
+                payload = {k:getattr(reply,k) for k in ("id","type","role","model","stop_reason","stop_sequence")}
+                payload["content"] = content
+                payload["usage"] = {k:getattr(reply.usage,k) for k in ("input_tokens","output_tokens","cache_read_input_tokens","cache_creation_input_tokens","service_tier")}
+                outcome = {"reply":payload, "error_class":None, "status":0}
+            except Exception as error:
+                outcome = {"reply":None,"error_class":type(error).__name__,"status":getattr(error,"status_code",0)}
+        await client.close()
+        return {**spec, "frames":frames, "waits":waits, **outcome}
+    cases = [
+        {"name":"success"},
+        *[{"name":"retry-"+str(code),"statuses":[code,code,200]} for code in (408,409,429,500,529)],
+        {"name":"exhausted","statuses":[503]},
+        {"name":"bad-request","statuses":[400]},
+        {"name":"unauthorized","statuses":[401]},
+        {"name":"forbidden","statuses":[403]},
+        {"name":"missing","statuses":[404]},
+        {"name":"invalid","statuses":[422]},
+        {"name":"retry-forced","statuses":[400],"headers":{"x-should-retry":"true"}},
+        {"name":"retry-denied","statuses":[503],"headers":{"x-should-retry":"false"}},
+        {"name":"seconds","statuses":[429,200],"headers":{"retry-after":"15"}},
+        {"name":"date","statuses":[429,200],"headers":{"retry-after":"Tue, 14 Nov 2023 22:13:40 GMT"}},
+        {"name":"milliseconds","statuses":[429,200],"headers":{"retry-after-ms":"1250","retry-after":"15"}},
+        {"name":"ms-invalid","statuses":[429,200],"headers":{"retry-after-ms":"bad","retry-after":"15"}},
+        {"name":"ms-nan","statuses":[429,200],"headers":{"retry-after-ms":"nan","retry-after":"15"}},
+        *[{"name":"header-"+value,"statuses":[429,200],"headers":{"retry-after":value}} for value in ("0","-1","300","inf","nan","bad")],
+        {"name":"connection","statuses":["connection","connection",200]},
+        {"name":"timeout","statuses":["timeout"]},
+        {"name":"interrupted-body","statuses":["body",200]},
+        {"name":"generic-ceiling","max_tokens":21333},
+        {"name":"generic-preflight","max_tokens":21334},
+        {"name":"opus-ceiling","model":"claude-opus-4-1-20250805","max_tokens":8192},
+        {"name":"opus-preflight","model":"claude-opus-4-1-20250805","max_tokens":8193},
+        {"name":"custom-timeout","max_tokens":64000,"custom_timeout":True},
+    ]
+    async def gather():
+        return [await scenario(spec) for spec in cases]
+    return {"sdk_version":anthropic.__version__,"sdk_max_retries":2,
+            "sdk_source_sha256":{name:hashlib.sha256((Path(anthropic.__file__).parent / name).read_bytes()).hexdigest()
+                                 for name in ("_base_client.py", "_constants.py", "resources/messages/messages.py")},
+            "sdk_model_ceilings":MODEL_NONSTREAMING_TOKENS,
+            "omitted_nullable_sdk_fields":["text.citations"], "request":request,
+            "descriptions":[AnthropicCompatibleProvider(api_key="fixture-key").describe(),
+                            AnthropicCompatibleProvider(base_url="https://provider.invalid/proxy/",api_key="fixture-key").describe()],
+            "cases":asyncio.run(gather())}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -1854,6 +1957,7 @@ def _snapshot() -> dict[str, bytes]:
         http_contracts = _http_contracts(Path(scratch) / "http")
         control_contracts = _control_contracts(Path(scratch) / "controls")
         fork_contracts = _fork_contracts(Path(scratch) / "forks")
+        provider_contracts = _provider_contracts()
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -1892,6 +1996,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-http.json": _json_bytes(http_contracts),
         "python-controls.json": _json_bytes(control_contracts),
         "python-forks.json": _json_bytes(fork_contracts),
+        "python-provider.json": _json_bytes(provider_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

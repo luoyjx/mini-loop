@@ -276,8 +276,9 @@ with ordered parallel groups, and process-local fleet composition, owner-scoped
 lookup, workspace policy and draining deletion/shutdown, plus typed HTTP authentication,
 REST admission, idempotency/rate bounds and SSE projection, plus bounded steering,
 live permission modes and owned HTTP wakeup, plus completed-boundary conversation
-forks with fresh scratch workspaces and typed lineage,
-reviewed **2026-10-03** (Go baseline `07aaf13` plus the fork slice).
+forks with fresh scratch workspaces and typed lineage, plus an explicit direct
+Anthropic-compatible HTTP adapter and bounded SDK retries,
+reviewed **2026-10-03** (Go baseline `22d3ca2` plus the direct-provider slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -326,7 +327,7 @@ flowchart LR
     subgraph GoPort["Independent Go port · in progress"]
         GoEntry["Go HTTP / SSE handler<br/>bounded ingress · typed JSON / event projection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoFake["FakeProvider<br/>typed requests · replies · usage"]
+        GoProvider["Model providers<br/>Fake · direct Anthropic-compatible HTTP<br/>typed replies · usage · SDK retries"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
@@ -344,8 +345,8 @@ flowchart LR
         GoEntry --> GoTrust --> GoManager
         GoManager -->|create / fork / own| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
-        GoSession --> GoContext --> GoFake
-        GoFake --> GoSession
+        GoSession --> GoContext --> GoProvider
+        GoProvider --> GoSession
         GoContext --> GoArchives
         GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
@@ -468,8 +469,18 @@ cwd and the typo blocklist do not provide shell confinement. A typed rebinding
 Sandbox argv seam is implemented, but no Go Seatbelt backend ships yet.
 Runtime process tests ran on macOS; Linux process-group code has not been run
 on a Linux host, and other platforms reject executor construction. Typed HTTP JSON
-and SSE data now use the optional recording projection; provider, durable-storage
-and optional-feature sink coverage remains pending.
+and SSE data now use the optional recording projection; durable-storage
+and optional-feature sink coverage remains pending. The explicit `go/provider.Client`
+sends typed Anthropic-compatible requests over HTTP, retaining cache annotations,
+served-model identity, signed thinking and default-tool input variants. HTTP retries
+match the pinned Python SDK 0.107.1: two retries, selected status codes, retry override
+headers and bounded SDK backoff/Retry-After rules. Request and reply bytes are capped,
+contexts own calls/waits, redirects are refused, and diagnostics scrub the configured
+API key. No credentials or environment settings are discovered implicitly. This
+adapter supplies SDK-level retry only; Agent continuation/escalation/reactive
+compaction/fallback and streaming remain pending. Nonempty citation/search/server-tool
+blocks and their typed payloads remain unsupported; nullable SDK text citation
+metadata is omitted. Production endpoint/cache savings are unverified.
 The Go session uses one typed gate for rewrites, guards, permission, execution
 and observers. Its event backlog, approvals and cancellation repair are
 process-local. `RuntimeConfig.ActionJournal` optionally binds a replay journal:
@@ -542,8 +553,9 @@ parallel-tool pool of eight unless `ToolLimiter` is explicitly shared. Children
 inherit the exact pools. Exclusive tools bypass the tool pool, so default task
 delegation can progress through a child. `NewSessionManager` supplies shared
 eight-slot model/tool pools, a process-local approval broker and bounded-result
-action journal by default. Environment configuration is still pending. Provider
-streaming/recovery remain pending in Go. `NewManagedSession` privately owns a runtime
+action journal by default. Environment configuration is still pending. Direct HTTP
+is available through `go/provider.Client`, while provider
+streaming and Agent recovery remain pending in Go. `NewManagedSession` privately owns a runtime
 and adds
 context-aware turn admission, idle/running/error status and operator cancellation.
 Queued callers cannot replace the cancellation target; admission is rechecked

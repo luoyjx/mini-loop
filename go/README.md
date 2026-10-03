@@ -60,7 +60,7 @@ executor; a real bound executor selects workspace compaction.
 The context snapshot compares six catalogues, three wire/token cases, four
 cheap-compaction histories, six meter steps, spill output and summary artifacts
 against Python. Future sink masking, team/plan/memory prompt sections,
-and provider recovery remain pending. Compaction files persist, but cannot
+and Agent recovery remain pending. Compaction files persist, but cannot
 restore a Go session on their own.
 `task` passes the execution-risk gate and uses an explicit `SubagentProvider`.
 The default `InProcessSubagents` creates fresh child history, todos and meter;
@@ -85,7 +85,7 @@ with an auto parent and shared-provider session isolation under the race detecto
 This library supplies a process-local fleet manager and authenticated HTTP
 ownership through the httpapi handler. Core lifecycle events and shared limiters are implemented.
 Custom broker/state
-inheritance, owner resources and remote provider transport remain open.
+inheritance, owner resources and streaming/provider recovery remain open.
 `RuntimeConfig.ActionJournal` and `NewJournaledToolGate` optionally bind a typed
 journal. Stable action IDs hash session/message/tool-use/name; canonical input
 hashes bind final rewritten arguments. Terminal replay does not execute again,
@@ -111,7 +111,7 @@ persistence. The optional bound approval broker now supplies parked requests,
 timeout/cancellation, process-local session grants, reviewer abstention and typed
 approval rows; an injected store is still required for durable writes. Registry
 masking binds implemented results, recordings, approvals and compaction files.
-SQLite adapters, remaining HTTP surfaces, provider transport and session persistence
+SQLite adapters, remaining HTTP surfaces, streaming/Agent recovery and session persistence
 remain pending.
 Python
 contract snapshots and fake reply fixtures are generated into `testdata/` by
@@ -142,7 +142,7 @@ no Go Seatbelt backend ships and cwd is not confinement. Runtime process tests
 ran on macOS. Linux code has no Linux-host execution evidence; other platforms
 reject construction. The sixteenth Python snapshot covers eight actual commands,
 seven rendering recipes and six typo-blocklist decisions. Core tool events are implemented;
-real provider transport and additional sink masking remain pending.
+provider streaming/recovery and additional sink masking remain pending.
 
 Cache and stuck policies are enabled by default. `RuntimeConfig.CachePolicy`
 can select `NullCachePolicy`; `NewCachePolicy(CacheConfig)` controls TTL, stride
@@ -209,7 +209,7 @@ ordered outputs and stuck hashes, six mode decisions, nil/empty prompt rewrites
 and four cross-turn Todo counters. Deterministic Go synchronization tests cover
 shared pool caps and waiting cancellation, exclusive bypass, completed-sibling
 repair, worker joins, panic capacity release, atomic injector validation and
-child seam/pool inheritance. Bounded steering and live modes are implemented below; provider transport/recovery
+child seam/pool inheritance. Bounded steering and live modes are implemented below; provider streaming/Agent recovery
 remain open.
 
 `NewSessionManager(ManagerConfig)` owns ordered `ManagedSession` handles. It
@@ -247,6 +247,32 @@ creation order, ten workspace outcomes, bound retention, scratch deletion and
 stop. Go synchronization/race tests cover queued turns, deletion/shutdown joins,
 construction faults, shared retiring paths, symlink reclamation and bounded
 owner/diagnostic copies.
+
+### Use the direct HTTP model adapter
+
+`provider.New(provider.Config{BaseURL: endpoint, APIKey: key})` returns a concrete
+`agent.Provider` usable in `ManagerServices.Provider` or `RuntimeConfig.Provider`.
+Construction reads no environment/profile credentials. The default endpoint is
+`https://api.anthropic.com`; a compatible base path is retained before appending
+`/v1/messages`. The adapter preserves typed request cache annotations and reports
+the response's served model and usage through existing model events.
+
+SDK retry behavior is pinned to Python Anthropic SDK 0.107.1: two retries,
+408/409/429/5xx and connection/timeout/body-read failures, retry override headers,
+0.5..8s exponential backoff with negative jitter and <=60s Retry-After including
+ms/date forms. `Failure` exposes named kind/class/status and separate header
+metadata. This is independent of pending Agent continuation/escalation/compaction
+recovery. Default budget preflight reflects SDK non-streaming limits; custom
+timeouts opt out. A whole-attempt deadline and caller context own calls/waits.
+
+Config permits explicit byte limits (default 8 MiB, maximum 64 MiB), 0..10 HTTP
+retries, a client, and concurrency-safe waiter/clock/jitter seams. Reply ingress
+validates signed thinking and supported default-tool inputs; unknown content and
+nonempty citations fail until typed adapters exist. Nullable SDK text citations
+are omitted. API-key diagnostics are scrubbed; redirects are refused and the
+supplied client's redirect policy is preserved. Description/debug identity never
+prints the key. Streaming, advanced request/auth options, full Agent recovery and
+production endpoint/cache conformance remain pending. No dependencies were added.
 
 ### Control a managed session
 
@@ -341,7 +367,7 @@ This slice uses process-local manager/backlog/cache/rate state and disabled traj
 workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
 Python; it does not expose a synthetic durable transcript. Full FastAPI validation
 error arrays/coercions, CLI/UI, trajectories,
-optional fleet routes, durable SSE gap recovery, real model transport and SQLite are
+optional fleet routes, durable SSE gap recovery, provider streaming/Agent recovery and SQLite are
 pending. No dependencies were added.
 
 ```sh
