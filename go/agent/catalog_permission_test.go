@@ -99,7 +99,7 @@ func TestPermissionModesAndImmutableDenyList(t *testing.T) {
 	if handler.calls != 2 {
 		t.Fatalf("denied calls reached handler: %d", handler.calls)
 	}
-	if _, err := NewSessionWithGate("s", "owner", FakeProvider{}, gate, "invalid", "", 2); err == nil {
+	if _, err := NewSessionWithGate("s", "owner", &FakeProvider{}, gate, "invalid", "", 2); err == nil {
 		t.Fatal("invalid permission mode admitted")
 	}
 }
@@ -142,7 +142,7 @@ func TestReadonlySessionDeniesBashAndKeepsTranscriptPaired(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	session, err := NewSessionWithGate("s", "owner", FakeProvider{}, gate, ModeReadonly, "", 3)
+	session, err := NewSessionWithGate("s", "owner", &FakeProvider{}, gate, ModeReadonly, "", 3)
 	if err != nil {
 		t.Fatal(err)
 	}

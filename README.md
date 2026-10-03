@@ -280,7 +280,8 @@ forks with fresh scratch workspaces and typed lineage, plus an explicit direct
 Anthropic-compatible HTTP adapter and bounded SDK retries, plus typed SSE assembly,
 provisional stream progress and shown-text interruption repair, plus typed default
 Agent recovery with retries, escalation, continuation, reactive shrink and fallback,
-reviewed **2026-10-03** (Go baseline `8645782` plus the recovery slice).
+plus captured stream-progress settings and stateful signed fake-model calls,
+reviewed **2026-10-04** (Go baseline `3f4c110` plus the progress/fake slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -329,11 +330,11 @@ flowchart LR
     subgraph GoPort["Independent Go port · in progress"]
         GoEntry["Go HTTP / SSE handler<br/>bounded ingress · typed JSON / event projection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>coalesced progress · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback"]
+        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
@@ -486,8 +487,14 @@ waits release shared model permits. Context overflow retries only after request
 shrink, and mirrors paired live history explicitly. Fallback selection persists
 per session; children inherit the policy with fresh fallback state. Explicit `provider.NewStreaming` adds bounded
 SSE assembly and validates text, signed thinking and complete tool JSON before
-returning a final reply. Per-session `StreamingProvider` progress is coalesced at
-200 characters or 200 ms on fragment arrival. Fresh ephemeral stream IDs correlate
+returning a final reply. Per-session `StreamingProvider` progress defaults to coalescing at
+200 Unicode characters or 200 ms on fragment arrival. Explicit captured
+`StreamProgressConfig` thresholds propagate through manager/fork/child construction;
+zero or negative values flush every nonempty fragment. Clock callbacks must be
+concurrency-safe when shared. A fake client owns an atomic message-ID sequence,
+prepends signed thinking by default, and exposes an explicit streaming view that
+lifts the direct ceiling. Thinking, responder, delay and ceiling settings are typed
+and explicit; no fake delay environment discovery is implemented. Fresh ephemeral stream IDs correlate
 provisional commentary with authoritative final/commentary events; progress never
 replays. Only shown answer text is preserved on managed cancellation, and successful
 streams clear partial state, including internal summaries. Body drops surface to

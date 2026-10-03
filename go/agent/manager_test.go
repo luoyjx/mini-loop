@@ -56,7 +56,7 @@ func createManaged(t *testing.T, m *SessionManager, request CreateSessionRequest
 func TestManagerCreatesIsolatesOwnersAndSharesDefaultServices(t *testing.T) {
 	var bindings []SessionBinding
 	var mu sync.Mutex
-	config := managerTestConfig(filepath.Join(t.TempDir(), "scratch"), FakeProvider{})
+	config := managerTestConfig(filepath.Join(t.TempDir(), "scratch"), &FakeProvider{})
 	config.Services.BashFactory = bashFactoryFunc(func(_ context.Context, b SessionBinding) (BashExecutor, error) {
 		mu.Lock()
 		bindings = append(bindings, b)
@@ -118,7 +118,7 @@ func TestManagerCreatesIsolatesOwnersAndSharesDefaultServices(t *testing.T) {
 }
 
 func TestManagerDefaultHostShellAndExplicitSessionOverrides(t *testing.T) {
-	m := makeManager(t, managerTestConfig(t.TempDir(), FakeProvider{}))
+	m := makeManager(t, managerTestConfig(t.TempDir(), &FakeProvider{}))
 	model, system := "custom-model", ""
 	s := createManaged(t, m, CreateSessionRequest{Owner: "owner", Model: &model, System: &system, PermissionMode: ModeAuto})
 	model = "mutated"
@@ -146,7 +146,7 @@ func TestManagerBindingPoliciesBeforeExistenceAndBoundDeletion(t *testing.T) {
 	os.MkdirAll(checkout, 0700)
 	os.Mkdir(outside, 0700)
 	os.WriteFile(filepath.Join(checkout, "keep"), []byte("source"), 0600)
-	config := managerTestConfig(filepath.Join(base, "scratch"), FakeProvider{})
+	config := managerTestConfig(filepath.Join(base, "scratch"), &FakeProvider{})
 	config.BindableRoots = []string{allowed, base}
 	m := makeManager(t, config)
 	// Narrow roots after constructing a separate manager; public config was copied.
@@ -188,7 +188,7 @@ func TestManagerBindingPoliciesBeforeExistenceAndBoundDeletion(t *testing.T) {
 	if data, err := os.ReadFile(filepath.Join(checkout, "keep")); err != nil || string(data) != "source" {
 		t.Fatal("bound checkout reclaimed", err)
 	}
-	off := makeManager(t, managerTestConfig(filepath.Join(base, "off"), FakeProvider{}))
+	off := makeManager(t, managerTestConfig(filepath.Join(base, "off"), &FakeProvider{}))
 	_, err := off.Create(context.Background(), CreateSessionRequest{Owner: "owner", Workspace: &checkout})
 	var refusal *WorkspaceBindingError
 	if !errors.As(err, &refusal) || refusal.Status != BindingForbidden || off.WorkspaceBindingEnabled() {
@@ -300,7 +300,7 @@ func TestManagerSharedRetiringWorkspaceAndSymlinkReclamation(t *testing.T) {
 	if _, err := os.Stat(shared); !os.IsNotExist(err) {
 		t.Fatal("last retiring reference leaked scratch", err)
 	}
-	other := makeManager(t, managerTestConfig(filepath.Join(base, "other"), FakeProvider{}))
+	other := makeManager(t, managerTestConfig(filepath.Join(base, "other"), &FakeProvider{}))
 	s := createManaged(t, other, CreateSessionRequest{Owner: "owner"})
 	path := s.Info().Workspace
 	target := filepath.Join(base, "operator")
@@ -320,7 +320,7 @@ func TestManagerSharedRetiringWorkspaceAndSymlinkReclamation(t *testing.T) {
 func TestManagerConcurrentSharedScratchDeletesReclaimLastReference(t *testing.T) {
 	base := t.TempDir()
 	shared := filepath.Join(base, "shared")
-	config := managerTestConfig(filepath.Join(base, "root"), FakeProvider{})
+	config := managerTestConfig(filepath.Join(base, "root"), &FakeProvider{})
 	config.WorkspaceFactory = workspaceFactoryFunc(func(context.Context, SessionID) (string, error) { return shared, nil })
 	m := makeManager(t, config)
 	a := createManaged(t, m, CreateSessionRequest{Owner: "owner"})
@@ -371,7 +371,7 @@ func TestManagerHomeBindingPreservesSymlinkParentOrder(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Setenv("HOME", home)
-	config := managerTestConfig(filepath.Join(base, "root"), FakeProvider{})
+	config := managerTestConfig(filepath.Join(base, "root"), &FakeProvider{})
 	config.BindableRoots = []string{outside}
 	m := makeManager(t, config)
 	requested := "~/alias/../checkout"
@@ -389,7 +389,7 @@ func TestManagerStopDuringCreateAndFailedFactoryOwnership(t *testing.T) {
 	base := t.TempDir()
 	entered, release := make(chan struct{}), make(chan struct{})
 	path := filepath.Join(base, "allocation")
-	config := managerTestConfig(filepath.Join(base, "root"), FakeProvider{})
+	config := managerTestConfig(filepath.Join(base, "root"), &FakeProvider{})
 	config.WorkspaceFactory = workspaceFactoryFunc(func(context.Context, SessionID) (string, error) { close(entered); <-release; return path, nil })
 	m := makeManager(t, config)
 	created := make(chan error, 1)
@@ -412,7 +412,7 @@ func TestManagerStopDuringCreateAndFailedFactoryOwnership(t *testing.T) {
 	os.Mkdir(sentinel, 0700)
 	for _, failure := range []string{"error", "empty"} {
 		t.Run(failure, func(t *testing.T) {
-			cfg := managerTestConfig(filepath.Join(base, failure), FakeProvider{})
+			cfg := managerTestConfig(filepath.Join(base, failure), &FakeProvider{})
 			cfg.WorkspaceFactory = workspaceFactoryFunc(func(context.Context, SessionID) (string, error) {
 				if failure == "error" {
 					return sentinel, errors.New("not allocated")
@@ -431,7 +431,7 @@ func TestManagerStopDuringCreateAndFailedFactoryOwnership(t *testing.T) {
 }
 
 func TestManagerOwnerAndCleanupDiagnosticsStayBoundedDetached(t *testing.T) {
-	m := makeManager(t, managerTestConfig(t.TempDir(), FakeProvider{}))
+	m := makeManager(t, managerTestConfig(t.TempDir(), &FakeProvider{}))
 	for i := 0; i < MaxRememberedOwners+3; i++ {
 		session := &ManagedSession{core: &Session{id: SessionID(fmt.Sprint(i)), owner: "owner"}}
 		m.mu.Lock()
@@ -488,7 +488,7 @@ func TestManagerInvalidDefaultsDoNotAllocateWorkspace(t *testing.T) {
 	for _, kind := range []string{"provider", "budget", "mode", "pool", "prompt", "injector"} {
 		t.Run(kind, func(t *testing.T) {
 			root := filepath.Join(t.TempDir(), "unallocated")
-			cfg := managerTestConfig(root, FakeProvider{})
+			cfg := managerTestConfig(root, &FakeProvider{})
 			switch kind {
 			case "provider":
 				cfg.Services.Provider = nil

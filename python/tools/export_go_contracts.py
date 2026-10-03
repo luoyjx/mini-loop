@@ -2056,6 +2056,85 @@ def _recovery_contracts() -> dict:
     return {"cases":asyncio.run(collect()),"pair_compaction":reactive_compact(history),"source_sha256":hashlib.sha256((PYTHON_ROOT/"mini_loop/recovery.py").read_bytes()).hexdigest()}
 
 
+def _progress_contracts() -> dict:
+    """Actual configurable StreamingTransport and stateful fake-client calls."""
+    import asyncio
+    import hashlib
+    from types import SimpleNamespace
+    from unittest.mock import patch
+    from mini_loop.transport import StreamingTransport
+    from mini_loop.fake_llm import FakeAsyncAnthropic, FakeMessage, FakeUsage, _FakeStreamEvent
+    from mini_loop.builtins import default_registry
+
+    async def progress(spec):
+        clock = [0.0]
+        events = []
+        class Stream:
+            async def __aenter__(self): return self
+            async def __aexit__(self, *exc): return False
+            async def __aiter__(self):
+                for piece in spec["pieces"]:
+                    clock[0] = piece["seconds"]
+                    yield _FakeStreamEvent(piece["text"], 0, piece["kind"])
+                if spec.get("fail"): raise ConnectionError("script stream dropped")
+            async def get_final_message(self): return FakeMessage([], "end_turn")
+        async def send(kind, **fields):
+            ephemeral = fields.pop("_ephemeral", False)
+            fields["stream_id"] = "<stream-id>"
+            events.append({"type": kind, **fields, "ephemeral": ephemeral})
+        class Secrets:
+            def mask(self, value): return value.replace("秘密", "[REDACTED]")
+        agent = SimpleNamespace(client=SimpleNamespace(messages=SimpleNamespace(stream=lambda **kwargs: Stream())),
+                                secrets=Secrets(), _send=send, streamed_text="stale", _last_stream_id=None)
+        options = {}
+        if "chars" in spec: options["coalesce_chars"] = spec["chars"]
+        if "duration" in spec: options["coalesce_seconds"] = spec["duration"]
+        failure = None
+        with patch("mini_loop.transport.time", SimpleNamespace(monotonic=lambda: clock[0])):
+            try: await StreamingTransport(**options).send(agent, {})
+            except ConnectionError as exc: failure = str(exc)
+        return {**spec, "events": events, "partial": agent.streamed_text, "failure": failure}
+
+    def piece(text, seconds=0, kind="text"): return {"text": text, "seconds": seconds, "kind": kind}
+    specs = [
+        {"name":"defaults", "pieces":[piece("界a"),piece("b"),piece("c")]},
+        {"name":"characters", "chars":4, "duration":999, "pieces":[piece("界a"),piece("bc"),piece("d")]},
+        {"name":"elapsed", "chars":999, "duration":0.1, "pieces":[piece("A",0.09),piece("B",0.1),piece("C",0.11),piece("D",0.3)]},
+        {"name":"zero-characters", "chars":0, "duration":999, "pieces":[piece(""),piece("a"),piece("b")]},
+        {"name":"zero-duration", "chars":999, "duration":0, "pieces":[piece(""),piece("a"),piece("b")]},
+        {"name":"negative-characters", "chars":-1, "duration":999, "pieces":[piece("a"),piece("b")]},
+        {"name":"negative-duration", "chars":999, "duration":-1, "pieces":[piece("a"),piece("b")]},
+        {"name":"mixed-interrupted", "chars":3, "duration":999, "pieces":[piece("秘密",kind="thinking"),piece("A"),piece("B")], "fail":True},
+        {"name":"unshown-interrupted", "chars":999, "duration":999, "pieces":[piece("hidden")], "fail":True},
+    ]
+    def dump(reply):
+        return {"id":reply.id,"type":reply.type,"role":reply.role,"model":reply.model,
+                "content":[{"type":block.type, **vars(block)} for block in reply.content],
+                "stop_reason":reply.stop_reason,"stop_sequence":reply.stop_sequence,"usage":vars(reply.usage)}
+    async def fake():
+        schema = default_registry().schemas()[0]
+        # The selected tool is bash; pin the name instead of relying on catalogue order.
+        schema = next(s for s in default_registry().schemas() if s["name"] == "bash")
+        request = {"model":"fake-requested", "max_tokens":8000, "messages":[{"role":"user","content":"go"}], "tools":[schema]}
+        rows=[]
+        for enabled in (True,False):
+            client=FakeAsyncAnthropic(thinking=enabled,delay=0)
+            for method in ("direct","direct","stream","direct","stream"):
+                if method=="direct": reply=await client.messages.create(**request); deltas=[]
+                else:
+                    async with client.messages.stream(**request) as stream:
+                        deltas=[]
+                        async for event in stream:
+                            value=event.delta
+                            if hasattr(value,"thinking"): deltas.append({"kind":"thinking","text":value.thinking})
+                            else: deltas.append({"kind":"text","text":value.text})
+                        reply=await stream.get_final_message()
+                rows.append({"thinking":enabled,"method":method,"calls":client.calls,"reply":dump(reply),"deltas":deltas})
+        return {"request":request,"rows":rows}
+    async def collect(): return {"progress":[await progress(s) for s in specs],"fake":await fake()}
+    return {"source_sha256":{name:hashlib.sha256((REPO_ROOT/"python/mini_loop"/name).read_bytes()).hexdigest() for name in ("transport.py","fake_llm.py")}, **asyncio.run(collect())}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -2138,6 +2217,7 @@ def _snapshot() -> dict[str, bytes]:
         provider_contracts = _provider_contracts()
         stream_contracts = _stream_contracts()
         recovery_contracts = _recovery_contracts()
+        progress_contracts = _progress_contracts()
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2179,6 +2259,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-provider.json": _json_bytes(provider_contracts),
         "python-streams.json": _json_bytes(stream_contracts),
         "python-recovery.json": _json_bytes(recovery_contracts),
+        "python-progress.json": _json_bytes(progress_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

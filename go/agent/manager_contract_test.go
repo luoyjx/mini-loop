@@ -59,7 +59,7 @@ func readManagerContract(t *testing.T) managerContract {
 
 func TestManagerCreationDeletionAndDefaultsMatchPython(t *testing.T) {
 	contract := readManagerContract(t)
-	m := makeManager(t, ManagerConfig{WorkspaceRoot: t.TempDir(), Services: ManagerServices{Provider: FakeProvider{}}})
+	m := makeManager(t, ManagerConfig{WorkspaceRoot: t.TempDir(), Services: ManagerServices{Provider: &FakeProvider{}}})
 	first := createManaged(t, m, CreateSessionRequest{Owner: "first"})
 	second := createManaged(t, m, CreateSessionRequest{Owner: "second"})
 	initial := first.Info()
@@ -126,9 +126,9 @@ func TestManagerBindingCasesMatchPython(t *testing.T) {
 	os.WriteFile(filepath.Join(checkout, "keep"), []byte("source"), 0600)
 	os.Symlink(checkout, filepath.Join(base, "allowed", "alias"))
 	os.Symlink(outside, filepath.Join(base, "allowed", "escape"))
-	narrow := makeManager(t, ManagerConfig{WorkspaceRoot: filepath.Join(base, "narrow"), BindableRoots: []string{filepath.Join(base, "allowed")}, Services: ManagerServices{Provider: FakeProvider{}}})
-	broad := makeManager(t, ManagerConfig{WorkspaceRoot: filepath.Join(base, "broad"), BindableRoots: []string{base}, Services: ManagerServices{Provider: FakeProvider{}}})
-	off := makeManager(t, ManagerConfig{WorkspaceRoot: filepath.Join(base, "off"), Services: ManagerServices{Provider: FakeProvider{}}})
+	narrow := makeManager(t, ManagerConfig{WorkspaceRoot: filepath.Join(base, "narrow"), BindableRoots: []string{filepath.Join(base, "allowed")}, Services: ManagerServices{Provider: &FakeProvider{}}})
+	broad := makeManager(t, ManagerConfig{WorkspaceRoot: filepath.Join(base, "broad"), BindableRoots: []string{base}, Services: ManagerServices{Provider: &FakeProvider{}}})
+	off := makeManager(t, ManagerConfig{WorkspaceRoot: filepath.Join(base, "off"), Services: ManagerServices{Provider: &FakeProvider{}}})
 	for _, entry := range contract.BindingCases {
 		t.Run(entry.Name, func(t *testing.T) {
 			manager, path := narrow, checkout

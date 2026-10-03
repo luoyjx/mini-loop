@@ -105,8 +105,8 @@ Record its parity evidence and remaining gaps before checking it off.
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
-      default Agent recovery implemented; advanced variants/options, custom coalescing
-      and live-provider audit remain)
+      default Agent recovery, configurable coalescing and stateful signed fake clients
+      implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence
 - [ ] G6 optional features
 - [ ] G7 differential and release audit
@@ -1730,3 +1730,90 @@ an invalid empty assistant transcript. G4/G7 are not marked complete.
   automated acceptance only is claimed.
 - Host: macOS. External endpoint/cache savings, Linux runtime, durable restore
   and protected token-efficiency projections remain unverified. No paid calls.
+
+## 2026-10-04 stream progress and stateful fake slice
+
+Baseline: `3f4c110` plus this slice. G4 closes configurable progress and fake-client
+identity/thinking/stream behavior; the complete Go port remains active.
+
+### Python contract and typed implementation
+
+- StreamProgressConfig captures optional character and duration thresholds plus a
+  named StreamClock. Nil selects 200 Unicode characters/200 ms. Explicit zero or
+  negative thresholds flush each nonempty fragment, matching Python's constructor
+  behavior. Empty fragments do not trigger a flush. Duration checks occur only on
+  arrivals; no timer flush is added. Go time.Duration expresses finite durations;
+  Python's nonfinite float settings are not a representable Go configuration.
+- Runtime constructors copy threshold values; manager captures them before later
+  session creation/fork; children inherit the same policy with fresh generation
+  buffers and shown-answer state. Shared custom clocks must be concurrency-safe.
+- FakeProvider is now a pointer-owned client with an atomic call sequence. Its
+  zero value and typed NewFakeProvider defaults match Python's default responder,
+  signed thinking, zero direct delay and 8192 nonstreaming ceiling. Existing call
+  sites now pass pointers; copying a used client is unsupported.
+- FakeProviderConfig captures Thinking, Delay, NonStreamingCeiling,
+  DisableNonStreamingCeiling and a named FakeResponder returning FakeGeneration.
+  The client stamps usage/model/message identity and optional thinking. Direct
+  calls advance before delay/responder; streaming advances after the responder,
+  with the Python pre-increment thinking-signature ordinal. Delay honors contexts;
+  rejected requests consume no ordinal, while cancellation in an admitted delay
+  consumes that ordinal. Responder callbacks receive detached requests and must
+  synchronize shared state and honor contexts.
+- fake.Streaming() is an explicit view over the same client, never an implicit
+  switch for direct sessions. It lifts the direct ceiling, ignores direct delay,
+  fragments text/thinking into thirds by Unicode characters and stops callbacks
+  before return. Default tool-use ID remains toolu_1, as in Python; only client
+  message IDs are a call sequence. Thinking signatures survive actual tool rounds.
+- protocol.Block.Thinking exposes a detached named value; no dynamic payload,
+  dependency or Python runtime module changes were introduced.
+
+### Differential evidence and remaining work
+
+Snapshot 27, python-progress.json, records nine actual Python StreamingTransport
+scenarios using a timed event adapter: defaults, character/elapsed thresholds,
+zero/negative thresholds, mixed thinking/text masking/interruption and an unshown
+failed tail. It compares every event and raw recoverable partial. The existing
+SDK wire corpus remains separate. Ten actual FakeAsyncAnthropic direct/stream
+calls compare complete replies, signatures, input/output/cache usage, model IDs,
+client call counts and Unicode fragments for thinking enabled/disabled.
+
+Go tests inspect publication while still inside a provider callback, proving
+manager snapshot/fork/child thresholds apply before final flush. They also prove
+32 concurrent shared-client calls retain unique identities/signatures, independent
+clients restart their own sequence, direct ceiling rejection consumes no ordinal,
+streaming lifts that ceiling, and delay cancellation retains the admitted ordinal.
+A complete fake streaming tool round validates paired signed history and clears
+completed progress. Prior 26 snapshots are byte-identical.
+
+Fake delay environment discovery, advanced content/request/auth modes, protected
+token-efficiency projections and live endpoint/cache conformance remain G4/G7.
+CLI/UI, durable restoration/persistence and optional services remain G3/G5/G6.
+No production endpoint or paid model calls were made.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, `go test -race ./...`: **all passed**.
+  Commands use `GOCACHE=/tmp/mini-loop-go-stream-cache` and include complete
+  agent/provider/protocol/HTTP/workspace/shell suites, not only new cases.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: **27 current
+  snapshots**, prior 26 byte-identical. `verify_scans.py`: **19 anchored scans**.
+  No Python package-module changes; package invariants were not rerun.
+- Three source mutations caught sequentially before the final export/Python run:
+  `completed-stream-leaves-stale-partial`, `thinking-replayed-as-answer`,
+  `stream-deltas-unmasked`. Full mutation catalogue and Go mutation checks were
+  not run; no broader mutation claim is made.
+- Full `.venv/bin/python -m pytest -q`: **2,151 passed, 28 skipped,
+  24 subtests passed**, three existing deprecation warnings, 94.09 seconds.
+  No Go compile/test or source mutation overlapped this full run. This successful
+  run does not establish the cause of prior timing-gate failures.
+- Archify validate/deliver: **9/9 showcase, zero errors/warnings**, correction
+  rounds **0**. Diagram type: architecture. Output:
+  `docs/mini-loop-system.architecture.html`. Specification 25,860 bytes:
+  `4314931ecd6fd8c1b9196672f63cb70a0d5295b065c2960317d37efb23c6e681`;
+  HTML 664,931 bytes:
+  `264044e41d892e29c9d3777e55c1d9307959413076381b6020cf921d6133d8b5`.
+  Visual review skipped under the existing browser file-access policy block;
+  automated acceptance only is claimed.
+- `git diff --check` and README outline: **passed**. Host: macOS; Linux
+  runtime and live endpoint/cache behavior remain unverified. No dependencies
+  or paid model calls.

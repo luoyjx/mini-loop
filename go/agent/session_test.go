@@ -17,11 +17,11 @@ func (echoExecutor) ExecuteBash(_ context.Context, input protocol.BashInput) (st
 }
 
 func TestFakeTurnAndSessionIsolation(t *testing.T) {
-	a, err := NewSession("a", "owner-a", FakeProvider{}, echoExecutor{}, 4)
+	a, err := NewSession("a", "owner-a", &FakeProvider{}, echoExecutor{}, 4)
 	if err != nil {
 		t.Fatal(err)
 	}
-	b, err := NewSession("b", "owner-b", FakeProvider{}, echoExecutor{}, 4)
+	b, err := NewSession("b", "owner-b", &FakeProvider{}, echoExecutor{}, 4)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,7 +60,7 @@ func (failingExecutor) ExecuteBash(context.Context, protocol.BashInput) (string,
 }
 
 func TestToolFailureStillPairsTranscript(t *testing.T) {
-	session, err := NewSession("a", "owner", FakeProvider{}, failingExecutor{}, 4)
+	session, err := NewSession("a", "owner", &FakeProvider{}, failingExecutor{}, 4)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -81,13 +81,13 @@ func TestToolFailureStillPairsTranscript(t *testing.T) {
 func TestFakeProviderTruncatesByCharacters(t *testing.T) {
 	prompt := strings.Repeat("界", 61)
 	schema, _ := protocol.DefaultToolSchema(protocol.ToolBash)
-	reply, err := (FakeProvider{}).Complete(context.Background(), protocol.ModelRequest{Model: DefaultModel, MaxTokens: DefaultMaxTokens, Purpose: protocol.PurposeAgentTurn, Tools: []protocol.ToolSchema{schema}, Messages: []protocol.Message{{
+	reply, err := (&FakeProvider{}).Complete(context.Background(), protocol.ModelRequest{Model: DefaultModel, MaxTokens: DefaultMaxTokens, Purpose: protocol.PurposeAgentTurn, Tools: []protocol.ToolSchema{schema}, Messages: []protocol.Message{{
 		Role: protocol.RoleUser, Content: protocol.PlainContent(prompt),
 	}}})
 	if err != nil {
 		t.Fatal(err)
 	}
-	use, ok := reply.Content[1].ToolUse()
+	use, ok := reply.Content[2].ToolUse()
 	input, bash := use.Input.Bash()
 	if !ok || !bash || input.Command != "echo handled: "+strings.Repeat("界", 60) {
 		t.Fatalf("Python character truncation changed: %+v", use)

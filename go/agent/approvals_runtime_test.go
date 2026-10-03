@@ -260,7 +260,7 @@ func TestBrokerDefaultsAndConflictingRuntimeSeams(t *testing.T) {
 	if _, err := NewApprovalBroker(ApprovalBrokerConfig{Timeout: -time.Second}); err == nil {
 		t.Fatal("negative timeout")
 	}
-	config := runtimeConfig(t.TempDir(), FakeProvider{})
+	config := runtimeConfig(t.TempDir(), &FakeProvider{})
 	config.Approvals, config.Approver = broker, approverFunc(func(context.Context, ApprovalRequest) (bool, error) { return true, nil })
 	if _, err := NewRuntimeSession(config); err == nil {
 		t.Fatal("ambiguous broker/approver")

@@ -83,6 +83,7 @@ type Session struct {
 	lastModelSpan                                     SpanID
 	lastStreamID                                      StreamID
 	streamedText                                      string
+	streamProgress                                    streamProgressPolicy
 	recovery                                          Recovery
 	recoveryModel                                     string
 	activityID                                        ActivityID
@@ -118,6 +119,7 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 	}
 	session := &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}, model: DefaultModel, maxTokens: DefaultMaxTokens, tokenThreshold: DefaultTokenThreshold, systemBuilder: DefaultSystemBuilder{}, compactor: InMemoryCompactor{DefaultTokenThreshold, 50}}
 	session.recovery, _ = NewDefaultRecovery(RecoveryConfig{})
+	session.streamProgress = streamProgress(StreamProgressConfig{})
 	session.cachePolicy, session.stuckDetector = NewDefaultCachePolicy(), NewDefaultStuckDetector()
 	session.toolLimiter, _ = NewConcurrencyLimiter(DefaultToolConcurrency)
 	session.turn = make(chan struct{}, 1)

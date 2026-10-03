@@ -300,7 +300,7 @@ func TestEverySubagentProviderObeysDepthQuotaAndTelemetry(t *testing.T) {
 	}
 	for _, depth := range []int{1, 2} {
 		provider := &cannedSubagents{summary: strings.Repeat("界", 2500)}
-		config := runtimeConfig(t.TempDir(), FakeProvider{})
+		config := runtimeConfig(t.TempDir(), &FakeProvider{})
 		config.Subagents = provider
 		config.Depth = depth
 		session, err := NewRuntimeSession(config)
@@ -338,7 +338,7 @@ func TestEverySubagentProviderObeysDepthQuotaAndTelemetry(t *testing.T) {
 func TestSubagentErrorsAndEmptySummary(t *testing.T) {
 	for _, failure := range []error{nil, errors.New("remote worker failed"), context.Canceled} {
 		provider := &cannedSubagents{err: failure}
-		config := runtimeConfig(t.TempDir(), FakeProvider{})
+		config := runtimeConfig(t.TempDir(), &FakeProvider{})
 		config.Subagents = provider
 		session, err := NewRuntimeSession(config)
 		if err != nil {

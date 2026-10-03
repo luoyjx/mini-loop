@@ -294,8 +294,43 @@ JSON. Configured total wire caps include ignored frames; each frame/line/block a
 session progress are bounded by the protocol's 512 KiB limit. SDK retries cover
 opening failures/statuses, and streaming lifts the direct token ceiling. An owned
 body drop/timeout is surfaced to Agent recovery, which starts a fresh generation. Go requires a final delta/stop instead of accepting unchecked partial EOF
-snapshots. Unknown content deltas, nonempty citations and custom coalescing settings
-remain pending. No external endpoint calls were used to validate this slice.
+snapshots. Unknown content deltas and nonempty citations remain pending. No external endpoint calls were used to validate this slice.
+
+### Configure stream progress and offline clients
+
+`RuntimeConfig.StreamProgress` and `ManagerServices.StreamProgress` capture typed
+character/duration thresholds and an optional `StreamClock`. Nil fields select
+200 Unicode characters/200 ms. Explicit zero or negative thresholds publish every
+nonempty fragment, matching Python. Duration is checked on fragment arrival; there
+is no timer-only flush. Clock callbacks are synchronous and must be safe when
+shared. Constructor snapshots reach future forks and fresh children; each stream
+still owns fresh buffers, shown-answer state and an independent generation ID.
+
+```go
+chars, duration := 400, 100*time.Millisecond
+config.StreamProgress = agent.StreamProgressConfig{
+    CoalesceChars: &chars, CoalesceDuration: &duration,
+}
+fake := agent.NewFakeProvider(agent.FakeProviderConfig{})
+config.Provider = fake // direct; no streaming or environment discovery implied
+config.Provider = fake.Streaming() // explicit stream view over the same client
+```
+
+A `*FakeProvider` owns an atomic call sequence (`msg_fake_000001`, ...). The zero
+value `&agent.FakeProvider{}` and NewFakeProvider defaults enable signed thinking,
+use the one-bash-then-summary responder, zero delay, and an 8192 direct ceiling.
+Thinking signatures use the Python direct/stream ordinal convention; final usage
+counts all blocks and the full request, and reports the requested model. Streaming
+lifts the ceiling, ignores the direct delay, and fragments text/thinking by Unicode
+characters as Python does. Bare FakeProvider has no streaming interface.
+
+`FakeProviderConfig` captures an optional Thinking pointer, explicit Delay,
+NonStreamingCeiling pointer, DisableNonStreamingCeiling flag and typed
+FakeResponder. A responder returns FakeGeneration content/stop reason; the client
+stamps message identity, thinking, usage and model. Shared responders must honor
+contexts and synchronize state. Use pointers and do not copy clients after use.
+No `MINILOOP_FAKE_DELAY` discovery is implemented yet. The fake proves offline
+protocol/runtime behavior, not endpoint conformance or cache reuse.
 
 ### Configure Agent recovery
 

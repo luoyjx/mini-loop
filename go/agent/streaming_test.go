@@ -65,7 +65,7 @@ func TestStreamingEventsAndPartialsMatchPython(t *testing.T) {
 			}))
 			defer server.Close()
 			client, _ := provider.NewStreaming(provider.Config{APIKey: "fixture-key", BaseURL: server.URL})
-			s, _ := NewSession("stream", "owner", FakeProvider{}, &echoExecutor{}, 2)
+			s, _ := NewSession("stream", "owner", &FakeProvider{}, &echoExecutor{}, 2)
 			s.events.secrets = streamMask{}
 			live := s.events.subscribe(false)
 			_, err := s.streamingComplete(context.Background(), client, fixture.Request)

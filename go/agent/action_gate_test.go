@@ -161,7 +161,7 @@ func TestRuntimeJournalReplayUsesRunIdentityAndKeepsSessionsSeparate(t *testing.
 	run := actionContext(t)
 	var group sync.WaitGroup
 	for i := 0; i < 4; i++ {
-		config := runtimeConfig(t.TempDir(), FakeProvider{})
+		config := runtimeConfig(t.TempDir(), &FakeProvider{})
 		config.ID = SessionID(string(rune('a' + i)))
 		config.ActionJournal = journal
 		config.Bash = &subagentBashSpy{}

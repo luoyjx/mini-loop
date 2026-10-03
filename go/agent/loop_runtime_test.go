@@ -214,7 +214,7 @@ func TestFakeProviderRejectsMoreThanFourCacheBreakpoints(t *testing.T) {
 	if len(request.Cache.Messages)+boolCount(request.Cache.System != nil) <= CacheMaxBreakpoints {
 		t.Fatal("test did not exceed the supported breakpoint count")
 	}
-	if _, err := (FakeProvider{}).Complete(context.Background(), request); err == nil {
+	if _, err := (&FakeProvider{}).Complete(context.Background(), request); err == nil {
 		t.Fatal("fake silently accepted unsupported breakpoint count")
 	}
 }
@@ -231,7 +231,7 @@ func TestCachePolicyAppliesToSummaryRequest(t *testing.T) {
 		t.Fatal(err)
 	}
 	policy := &countingCachePolicy{}
-	value := CompactionContext{Messages: []protocol.Message{{Role: protocol.RoleUser, Content: protocol.PlainContent("prompt")}}, Files: files, Provider: FakeProvider{}, Model: DefaultModel, CachePolicy: policy}
+	value := CompactionContext{Messages: []protocol.Message{{Role: protocol.RoleUser, Content: protocol.PlainContent("prompt")}}, Files: files, Provider: &FakeProvider{}, Model: DefaultModel, CachePolicy: policy}
 	if _, err := NewDefaultCompactor().Compact(context.Background(), value); err != nil {
 		t.Fatal(err)
 	}

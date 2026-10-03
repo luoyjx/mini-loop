@@ -150,7 +150,7 @@ func TestLoopExtensionsAndPoolsReachFreshChild(t *testing.T) {
 }
 
 func TestTodoReminderCounterPersistsAcrossTurnsAndAttemptResets(t *testing.T) {
-	session, err := NewRuntimeSession(runtimeConfig(t.TempDir(), FakeProvider{}))
+	session, err := NewRuntimeSession(runtimeConfig(t.TempDir(), &FakeProvider{}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -203,7 +203,7 @@ func TestTodoReminderCounterPersistsAcrossTurnsAndAttemptResets(t *testing.T) {
 
 func TestRuntimeRejectsNilLoopExtensionsAndZeroPools(t *testing.T) {
 	for _, kind := range []string{"hook", "injector", "pool"} {
-		config := runtimeConfig("/invalid/unavailable/workspace", FakeProvider{})
+		config := runtimeConfig("/invalid/unavailable/workspace", &FakeProvider{})
 		switch kind {
 		case "hook":
 			config.UserPromptHooks = []UserPromptHook{nil}

@@ -111,6 +111,13 @@ func (b Block) Text() (TextBlock, bool) {
 	return *b.text, true
 }
 
+func (b Block) Thinking() (ThinkingBlock, bool) {
+	if b.thinking == nil {
+		return ThinkingBlock{}, false
+	}
+	return *b.thinking, true
+}
+
 func (b Block) ToolUse() (ToolUseBlock, bool) {
 	if b.toolUse == nil || b.kind != BlockToolUse {
 		return ToolUseBlock{}, false

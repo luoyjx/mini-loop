@@ -45,6 +45,7 @@ type BashFactory interface {
 type ManagerServices struct {
 	Provider                  Provider
 	Recovery                  Recovery
+	StreamProgress            StreamProgressConfig
 	BashFactory               BashFactory
 	Skills                    SkillSource
 	Approvals                 *ApprovalBroker

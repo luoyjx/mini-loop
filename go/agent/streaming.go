@@ -22,6 +22,48 @@ type StreamID string
 const DefaultDeltaCoalesceChars = 200
 const DefaultDeltaCoalesceDuration = 200 * time.Millisecond
 
+// StreamClock supplies elapsed time on fragment arrival. Implementations must
+// be safe to share across sessions; there is no background flush timer.
+type StreamClock interface{ Now() time.Time }
+type monotonicStreamClock struct{}
+
+func (monotonicStreamClock) Now() time.Time { return time.Now() }
+
+// Nil thresholds select defaults; explicit zero or negative thresholds flush
+// each nonempty fragment, matching Python StreamingTransport. Constructors copy
+// threshold values; later caller changes cannot reconfigure running sessions.
+type StreamProgressConfig struct {
+	CoalesceChars    *int
+	CoalesceDuration *time.Duration
+	Clock            StreamClock
+}
+
+func (config StreamProgressConfig) clone() StreamProgressConfig {
+	config.CoalesceChars = clonePointer(config.CoalesceChars)
+	config.CoalesceDuration = clonePointer(config.CoalesceDuration)
+	return config
+}
+
+type streamProgressPolicy struct {
+	chars    int
+	duration time.Duration
+	clock    StreamClock
+}
+
+func streamProgress(config StreamProgressConfig) streamProgressPolicy {
+	policy := streamProgressPolicy{DefaultDeltaCoalesceChars, DefaultDeltaCoalesceDuration, monotonicStreamClock{}}
+	if config.CoalesceChars != nil {
+		policy.chars = *config.CoalesceChars
+	}
+	if config.CoalesceDuration != nil {
+		policy.duration = *config.CoalesceDuration
+	}
+	if config.Clock != nil {
+		policy.clock = config.Clock
+	}
+	return policy
+}
+
 type StreamStartEvent struct {
 	StreamID    StreamID
 	Phase       TextPhase
@@ -45,7 +87,7 @@ func (s *Session) streamingComplete(ctx context.Context, provider StreamingProvi
 	var pending, answer, shown strings.Builder
 	totalBytes := 0
 	chars := 0
-	lastFlush := time.Now()
+	lastFlush := s.streamProgress.clock.Now()
 	flush := func() {
 		if pending.Len() == 0 {
 			return
@@ -56,7 +98,7 @@ func (s *Session) streamingComplete(ctx context.Context, provider StreamingProvi
 		pending.Reset()
 		answer.Reset()
 		chars = 0
-		lastFlush = time.Now()
+		lastFlush = s.streamProgress.clock.Now()
 	}
 	reply, err := provider.CompleteStream(ctx, request, func(delta protocol.StreamDelta) error {
 		if err := ctx.Err(); err != nil {
@@ -64,6 +106,9 @@ func (s *Session) streamingComplete(ctx context.Context, provider StreamingProvi
 		}
 		if (delta.Kind != protocol.DeltaText && delta.Kind != protocol.DeltaThinking) || !utf8.ValidString(delta.Text) {
 			return errors.New("invalid streaming progress")
+		}
+		if delta.Text == "" {
+			return nil
 		}
 		totalBytes += len(delta.Text)
 		if totalBytes > protocol.MaxWireBytes {
@@ -74,7 +119,7 @@ func (s *Session) streamingComplete(ctx context.Context, provider StreamingProvi
 		if delta.Kind == protocol.DeltaText {
 			answer.WriteString(delta.Text)
 		}
-		if chars >= DefaultDeltaCoalesceChars || time.Since(lastFlush) >= DefaultDeltaCoalesceDuration {
+		if chars >= s.streamProgress.chars || s.streamProgress.clock.Now().Sub(lastFlush) >= s.streamProgress.duration {
 			flush()
 		}
 		return nil

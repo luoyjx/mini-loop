@@ -54,6 +54,7 @@ type RuntimeConfig struct {
 	Owner             OwnerID
 	Provider          Provider
 	Recovery          Recovery
+	StreamProgress    StreamProgressConfig
 	Bash              BashExecutor
 	Workspace         string
 	Mode              PermissionMode
@@ -285,6 +286,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if config.Recovery != nil {
 		session.recovery = config.Recovery
 	}
+	session.streamProgress = streamProgress(config.StreamProgress)
 	if config.CachePolicy != nil {
 		session.cachePolicy = config.CachePolicy
 	}

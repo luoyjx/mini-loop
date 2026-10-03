@@ -173,7 +173,7 @@ func TestRequestJSONAndBudgetMatchPython(t *testing.T) {
 		if err != nil || count != fixture.FakeTokens {
 			t.Fatalf("case %d fake count %d != %d", i, count, fixture.FakeTokens)
 		}
-		reply, err := (FakeProvider{}).Complete(context.Background(), request)
+		reply, err := (&FakeProvider{}).Complete(context.Background(), request)
 		if err != nil || reply.Usage.InputTokens != fixture.FakeTokens || reply.Model != DefaultModel {
 			t.Fatalf("case %d usage not connected: %v", i, err)
 		}

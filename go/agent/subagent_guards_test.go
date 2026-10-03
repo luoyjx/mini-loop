@@ -174,7 +174,7 @@ func TestSharedSubagentProviderAndRolePolicyKeepSessionsIndependent(t *testing.T
 	policy := DefaultRoleToolPolicy()
 	sessions := make([]*Session, 2)
 	for i := range sessions {
-		config := runtimeConfig(t.TempDir(), FakeProvider{})
+		config := runtimeConfig(t.TempDir(), &FakeProvider{})
 		config.ID = SessionID(string(rune('a' + i)))
 		config.Owner = OwnerID(string(rune('x' + i)))
 		config.Subagents = provider

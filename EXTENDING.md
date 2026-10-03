@@ -1057,7 +1057,16 @@ Nil selects DefaultRecovery; DirectRecovery disables it. RecoveryInput is detach
 and RecoveryServices supplies named call/event/history/model callbacks. Policies
 must honor contexts, stop callbacks before returning and be safe when shared.
 DefaultRecovery releases model permits during backoff and keeps all attempt state
-local. Custom coalescing configuration remains pending.
+local. `RuntimeConfig.StreamProgress` and `ManagerServices.StreamProgress` capture
+optional character/duration thresholds and a named StreamClock. Nil thresholds
+select 200 Unicode characters/200 ms; explicit zero or negative values flush each
+nonempty fragment. The clock runs synchronously on arrival/flush and must be safe
+when shared. Children/forks retain captured settings with fresh pending buffers.
+`NewFakeProvider(FakeProviderConfig)` creates one stateful fake client; use pointers,
+including `&FakeProvider{}` for defaults, and do not copy a used client. Typed
+FakeResponder callbacks return FakeGeneration; identity/usage/thinking remain
+client-owned. Responders must honor contexts and synchronize shared state.
+`fake.Streaming()` selects an explicit streaming view over that same sequence.
 See `go/README.md` for configuration and boundary differences.
 
 ---

@@ -109,7 +109,7 @@ func TestRuntimeUsesRealBashAndRepairsCancellation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	session, err := NewRuntimeSession(RuntimeConfig{ID: "shell", Owner: "owner", Workspace: root, Provider: FakeProvider{}, Bash: executor, Mode: ModeAuto, MaxRounds: 3})
+	session, err := NewRuntimeSession(RuntimeConfig{ID: "shell", Owner: "owner", Workspace: root, Provider: &FakeProvider{}, Bash: executor, Mode: ModeAuto, MaxRounds: 3})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -162,7 +162,7 @@ func TestRuntimeRegistryBindsSharedExecutorWithoutChangingOtherSessions(t *testi
 	for _, value := range []string{"credential-alpha", "credential-bravo"} {
 		registry := secrets.New(secrets.Config{})
 		registry.RegisterValue("SESSION_BASH_TOKEN", value)
-		session, err := NewRuntimeSession(RuntimeConfig{ID: SessionID(value), Owner: "owner", Workspace: root, Provider: FakeProvider{}, Bash: executor, Secrets: registry, Mode: ModeAuto, MaxRounds: 3})
+		session, err := NewRuntimeSession(RuntimeConfig{ID: SessionID(value), Owner: "owner", Workspace: root, Provider: &FakeProvider{}, Bash: executor, Secrets: registry, Mode: ModeAuto, MaxRounds: 3})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -182,7 +182,7 @@ func TestBashOnlyConstructorDerivesRealExecutorWorkspace(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	session, err := NewSession("shell-only", "owner", FakeProvider{}, executor, 3)
+	session, err := NewSession("shell-only", "owner", &FakeProvider{}, executor, 3)
 	if err != nil {
 		t.Fatal(err)
 	}
