@@ -41,6 +41,7 @@ A complete, runnable example combining all of the below:
 | `caching.py` | `CachePolicy` | `cache_policy=` | where prompt-cache breakpoints go |
 | `storage.py` | `StateStore` | `state_store=` | whether a session survives a restart |
 | `secrets.py` | `SecretRegistry` | `secrets=` | which credentials a tool can see or print |
+| `spill.py` | `SpillStore` | `spill=` / `Harness.spill` | where already-masked oversized string-Bash output is preserved |
 | `sandbox.py` | `Sandbox` | `sandbox=` | what the shell can reach on the host |
 | `stuck.py` | `StuckDetector` | `stuck_detector=` | when a repeating agent is nudged or halted |
 | `recovery.py` | `RecoveryPolicy` | `recovery=` | retry/backoff/token-escalation/fallback on LLM errors |
@@ -1265,8 +1266,17 @@ and must synchronize mutable state. Explicit owner identities are required.
 The httpapi handler supplies admitted HTTP ownership; `config` resolves all 49
 source settings and `launcher` passes the supported subset into owned services,
 rejecting unavailable activations. Inspection is settings/availability only, with
-full effective posture, `.env` discovery, trajectory and complete spill services
-pending. See `go/README.md` for concrete semantics and the parity matrix for evidence.
+full effective posture, `.env` discovery and trajectory pending. Typed
+`RuntimeConfig.Spill` / `ManagerServices.Spill` accept `spill.Store`; the launcher
+best-effort constructs `spill.LocalStore`. Runtime binds a real shell executor
+independently, retaining its credential scope and process tracker. A custom store
+accepts already-masked `spill.Request` and returns an opaque `spill.Ref`; it must
+synchronize shared state. Failures/panics leave the command preview intact. Namespace
+is storage grouping, not authorization. Python `run_bash` and Go `ExecuteBash`
+preserve oversized string output, while the actual default structured Bash adapters
+bypass this policy in both languages. Do not infer preservation from store presence.
+Injected non-shell executors own their policy; read/glob do not use this seam.
+See `go/README.md` for concrete semantics and the parity matrix for evidence.
 
 Managed Go controls are separate from the transcript/model lock. A before/guard
 hook may call ChangePermissionMode; the gate loads current mode at permission

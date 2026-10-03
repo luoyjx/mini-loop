@@ -1,0 +1,440 @@
+{
+  "bash": [
+    {
+      "broken": false,
+      "command": "printf 'short'",
+      "enabled": true,
+      "name": "short",
+      "preserved": [],
+      "render_chars": 5,
+      "render_sha256": "f9b0078b5df596d2ea19010c001bbd009e651de2c57e8fb7e355f31eb9d3f739",
+      "secret": false
+    },
+    {
+      "broken": false,
+      "command": "awk 'BEGIN {for(i=0;i<50000;i++)printf \"A\"}'",
+      "enabled": true,
+      "name": "exact-cap",
+      "preserved": [],
+      "render_chars": 50000,
+      "render_sha256": "50cbe91e7bc072a7a58eef057cad901d2d3eb30e544a6f30ad0b2bd32274f753",
+      "secret": false
+    },
+    {
+      "broken": false,
+      "command": "awk 'BEGIN {for(i=0;i<60000;i++)printf \"A\";printf \"TAIL\"}'",
+      "enabled": true,
+      "name": "oversized",
+      "preserved": [
+        {
+          "bytes": 60004,
+          "sha256": "e21ac9e11e417b39d9d86c05d6f5dce6ad1f6143c9481285778cf1763d224e52"
+        }
+      ],
+      "render_chars": 50144,
+      "render_sha256": "1b85e668eb3073c6e812afbee8b91c2006a1d1645620932603b5d0871f930e7c",
+      "secret": false
+    },
+    {
+      "broken": false,
+      "command": "awk 'BEGIN {for(i=0;i<15001;i++)printf \"你好🙂é\";printf \"TAIL\"}'",
+      "enabled": true,
+      "name": "unicode",
+      "preserved": [
+        {
+          "bytes": 180016,
+          "sha256": "a182c2ac44068ffb9336b5960474294faae14244090bb1c0245812b2ba6e0d09"
+        }
+      ],
+      "render_chars": 50145,
+      "render_sha256": "2c5897c70aba327aafaaeeff39c8a12c2384df3c94449c7dea4df4d3d7803fa4",
+      "secret": false
+    },
+    {
+      "broken": false,
+      "command": "awk 'BEGIN {for(i=0;i<60000;i++)printf \"A\";printf \"TAIL\"}'; exit 7",
+      "enabled": true,
+      "name": "nonzero",
+      "preserved": [
+        {
+          "bytes": 60004,
+          "sha256": "e21ac9e11e417b39d9d86c05d6f5dce6ad1f6143c9481285778cf1763d224e52"
+        }
+      ],
+      "render_chars": 50153,
+      "render_sha256": "baa215407b742db3f0925f9e843af82b8f7f8ba3b5413fc1d078caf91fbc702b",
+      "secret": false
+    },
+    {
+      "broken": false,
+      "command": "awk 'BEGIN {for(i=0;i<60000;i++)printf \"A\";printf \"TAIL\"}'",
+      "enabled": false,
+      "name": "without-store",
+      "preserved": [],
+      "render_chars": 49989,
+      "render_sha256": "be6adc718bc8e7fb03529c05a20b9cb2aafe935c3c1d54b96ad76ea8b233f929",
+      "secret": false
+    },
+    {
+      "broken": true,
+      "command": "awk 'BEGIN {for(i=0;i<60000;i++)printf \"A\";printf \"TAIL\"}'",
+      "enabled": true,
+      "name": "failing-store",
+      "preserved": [],
+      "render_chars": 49989,
+      "render_sha256": "be6adc718bc8e7fb03529c05a20b9cb2aafe935c3c1d54b96ad76ea8b233f929",
+      "secret": false
+    },
+    {
+      "broken": false,
+      "command": "awk 'BEGIN {for(i=0;i<60000;i++)printf \"A\";printf \"TAIL\"}'; printf 'fixture-'; printf 'secret' >&2",
+      "enabled": true,
+      "name": "split-secret",
+      "preserved": [
+        {
+          "bytes": 60019,
+          "sha256": "bc39105325aafe8eea9431272297afd0307ac4f19a6a0dc4bec4de079af6bf67"
+        }
+      ],
+      "render_chars": 50144,
+      "render_sha256": "80f0963e7ae498cc9730e96612e4d90e070515a62f77e3c5bceee87f1088bd43",
+      "secret": true
+    }
+  ],
+  "collision": {
+    "original": "first",
+    "refused": true
+  },
+  "default_adapter": {
+    "command": "awk 'BEGIN {for(i=0;i<60000;i++)printf \"A\";printf \"TAIL\"}'",
+    "final": "done",
+    "preserved": 0,
+    "render_chars": 49989,
+    "render_sha256": "be6adc718bc8e7fb03529c05a20b9cb2aafe935c3c1d54b96ad76ea8b233f929"
+  },
+  "leaf_symlink": {
+    "refused": true,
+    "victim": "original"
+  },
+  "managers": [
+    {
+      "available": true,
+      "name": "enabled"
+    },
+    {
+      "available": false,
+      "name": "disabled"
+    },
+    {
+      "available": false,
+      "name": "root-is-file"
+    }
+  ],
+  "max_bytes": 8000000,
+  "projections": [
+    {
+      "error": "Error: Timeout (1s)",
+      "name": "timeout-projection",
+      "preserved": [
+        {
+          "bytes": 60004,
+          "sha256": "e305f67d418ae9811fdef7aa99b290a77730f69f7c6dcb2a1dd9b108477a2265"
+        }
+      ],
+      "projection": true,
+      "render_chars": 50164,
+      "render_sha256": "15a0224fa12a7677a8165acc965c48cf0940c2c4139e5404572383a18af151e3",
+      "stderr": "tail",
+      "stdout_pattern": "B",
+      "stdout_prefix": "",
+      "stdout_repeat": 60000,
+      "stdout_suffix": ""
+    },
+    {
+      "error": "Error: failed",
+      "name": "error-without-projection",
+      "preserved": [],
+      "projection": false,
+      "render_chars": 50003,
+      "render_sha256": "998544181e768e113f380762b271d2df1110b0944f796f8706b2c3520f130137",
+      "stderr": "",
+      "stdout_pattern": "B",
+      "stdout_prefix": "",
+      "stdout_repeat": 60000,
+      "stdout_suffix": ""
+    },
+    {
+      "error": null,
+      "name": "strip-before-save",
+      "preserved": [
+        {
+          "bytes": 60000,
+          "sha256": "f14a22a5638cee620006cc91fd75472f8a4557cc9a885105f0c7850b673f39ef"
+        }
+      ],
+      "projection": false,
+      "render_chars": 50144,
+      "render_sha256": "3f74ef00bef3f8efad41e0b2c44a7fef3179ee438aeb5070c1ee1206c72526fd",
+      "stderr": "",
+      "stdout_pattern": "B",
+      "stdout_prefix": "\u001c ",
+      "stdout_repeat": 60000,
+      "stdout_suffix": " \u001f"
+    }
+  ],
+  "source_sha256": {
+    "builtins.py": "a6da6310ee8c82db4d4b802dc83632ad16146ae7b22643e631bfa137206caa70",
+    "manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "spill.py": "4e9784fbe5ff41819fc1fe15cafdd381d6950cdf1922d366da4e3ce4f353f4f0",
+    "tools.py": "8d357c320fddeb93238622be0d6f5fdeb6e7804867ac507c82b2622dcdb22af7"
+  },
+  "stores": [
+    {
+      "error": null,
+      "name": "plain",
+      "namespace": "s1",
+      "pattern": "already masked",
+      "repeat": 1,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 14,
+          "locator": "<store>/session-e8bc163c82eee187/feedfacedeadbeef-bash.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-e8bc163c82eee187/feedfacedeadbeef-bash.txt or grep <pattern> <store>/session-e8bc163c82eee187/feedfacedeadbeef-bash.txt"
+        },
+        "root_mode": 448,
+        "sha256": "f794db1bbf28334594ca30de17debc2a7c9b75f7dda41795a03cfe35a4fb3d7b"
+      },
+      "suggestion": "bash.txt"
+    },
+    {
+      "error": null,
+      "name": "empty",
+      "namespace": "",
+      "pattern": "",
+      "repeat": 1,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 0,
+          "locator": "<store>/session-e3b0c44298fc1c14/feedfacedeadbeef-spill.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-e3b0c44298fc1c14/feedfacedeadbeef-spill.txt or grep <pattern> <store>/session-e3b0c44298fc1c14/feedfacedeadbeef-spill.txt"
+        },
+        "root_mode": 448,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "suggestion": ""
+    },
+    {
+      "error": null,
+      "name": "unicode",
+      "namespace": "会话🙂",
+      "pattern": "你好🙂\nline\r\n",
+      "repeat": 7,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 119,
+          "locator": "<store>/session-c6cc9d4e72e74259/feedfacedeadbeef-_.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-c6cc9d4e72e74259/feedfacedeadbeef-_.txt or grep <pattern> <store>/session-c6cc9d4e72e74259/feedfacedeadbeef-_.txt"
+        },
+        "root_mode": 448,
+        "sha256": "1ded374f4a805da0ec27dce6e0821c797dbe7d19a690e8152b08c9fb330cd9ce"
+      },
+      "suggestion": "世界/🙂.txt"
+    },
+    {
+      "error": null,
+      "name": "traversal",
+      "namespace": "../../session",
+      "pattern": "safe",
+      "repeat": 1,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 4,
+          "locator": "<store>/session-17fc5bf96c1ab0f7/feedfacedeadbeef-_._evil_._result.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-17fc5bf96c1ab0f7/feedfacedeadbeef-_._evil_._result.txt or grep <pattern> <store>/session-17fc5bf96c1ab0f7/feedfacedeadbeef-_._evil_._result.txt"
+        },
+        "root_mode": 448,
+        "sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860"
+      },
+      "suggestion": "../../evil/../result.txt"
+    },
+    {
+      "error": null,
+      "name": "absolute-hint",
+      "namespace": "/absolute/session",
+      "pattern": "safe",
+      "repeat": 1,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 4,
+          "locator": "<store>/session-59d4266035a21a0b/feedfacedeadbeef-_tmp_evil.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-59d4266035a21a0b/feedfacedeadbeef-_tmp_evil.txt or grep <pattern> <store>/session-59d4266035a21a0b/feedfacedeadbeef-_tmp_evil.txt"
+        },
+        "root_mode": 448,
+        "sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860"
+      },
+      "suggestion": "/tmp/evil.txt"
+    },
+    {
+      "error": null,
+      "name": "hidden",
+      "namespace": "s1",
+      "pattern": "safe",
+      "repeat": 1,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 4,
+          "locator": "<store>/session-e8bc163c82eee187/feedfacedeadbeef-hidden",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-e8bc163c82eee187/feedfacedeadbeef-hidden or grep <pattern> <store>/session-e8bc163c82eee187/feedfacedeadbeef-hidden"
+        },
+        "root_mode": 448,
+        "sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860"
+      },
+      "suggestion": ".hidden"
+    },
+    {
+      "error": null,
+      "name": "dots",
+      "namespace": "s1",
+      "pattern": "safe",
+      "repeat": 1,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 4,
+          "locator": "<store>/session-e8bc163c82eee187/feedfacedeadbeef-spill.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-e8bc163c82eee187/feedfacedeadbeef-spill.txt or grep <pattern> <store>/session-e8bc163c82eee187/feedfacedeadbeef-spill.txt"
+        },
+        "root_mode": 448,
+        "sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860"
+      },
+      "suggestion": "..."
+    },
+    {
+      "error": null,
+      "name": "embedded-dots",
+      "namespace": "s1",
+      "pattern": "safe",
+      "repeat": 1,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 4,
+          "locator": "<store>/session-e8bc163c82eee187/feedfacedeadbeef-a.b.c.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-e8bc163c82eee187/feedfacedeadbeef-a.b.c.txt or grep <pattern> <store>/session-e8bc163c82eee187/feedfacedeadbeef-a.b.c.txt"
+        },
+        "root_mode": 448,
+        "sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860"
+      },
+      "suggestion": "a...b..c.txt"
+    },
+    {
+      "error": null,
+      "name": "long-hint",
+      "namespace": "s1",
+      "pattern": "safe",
+      "repeat": 1,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 4,
+          "locator": "<store>/session-e8bc163c82eee187/feedfacedeadbeef-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-e8bc163c82eee187/feedfacedeadbeef-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA or grep <pattern> <store>/session-e8bc163c82eee187/feedfacedeadbeef-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "root_mode": 448,
+        "sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860"
+      },
+      "suggestion": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.txt"
+    },
+    {
+      "error": null,
+      "name": "shell-hint",
+      "namespace": "s1",
+      "pattern": "safe",
+      "repeat": 1,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 4,
+          "locator": "<store>/session-e8bc163c82eee187/feedfacedeadbeef-_command_quoted_name.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-e8bc163c82eee187/feedfacedeadbeef-_command_quoted_name.txt or grep <pattern> <store>/session-e8bc163c82eee187/feedfacedeadbeef-_command_quoted_name.txt"
+        },
+        "root_mode": 448,
+        "sha256": "8b3369944dd2a3fab39e32d1aeb1f763946a458ae3e6368a46432adc8f3a0860"
+      },
+      "suggestion": "$(command)\n;quoted'name.txt"
+    },
+    {
+      "error": null,
+      "name": "byte-ceiling",
+      "namespace": "s1",
+      "pattern": "x",
+      "repeat": 8000000,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 8000000,
+          "locator": "<store>/session-e8bc163c82eee187/feedfacedeadbeef-bash.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-e8bc163c82eee187/feedfacedeadbeef-bash.txt or grep <pattern> <store>/session-e8bc163c82eee187/feedfacedeadbeef-bash.txt"
+        },
+        "root_mode": 448,
+        "sha256": "00878df72bfc9096f89fa7b88a807e627ee949a4628f374d91f08948d53b8643"
+      },
+      "suggestion": "bash.txt"
+    },
+    {
+      "error": "ValueError",
+      "name": "byte-overflow",
+      "namespace": "s1",
+      "pattern": "x",
+      "repeat": 8000001,
+      "result": null,
+      "suggestion": "bash.txt"
+    },
+    {
+      "error": null,
+      "name": "unicode-byte-ceiling",
+      "namespace": "s1",
+      "pattern": "🙂",
+      "repeat": 2000000,
+      "result": {
+        "file_mode": 384,
+        "namespace_mode": 448,
+        "ref": {
+          "bytes": 8000000,
+          "locator": "<store>/session-e8bc163c82eee187/feedfacedeadbeef-bash.txt",
+          "retrieval_hint": "outside the workspace; read it with bash, e.g. sed -n '1,200p' <store>/session-e8bc163c82eee187/feedfacedeadbeef-bash.txt or grep <pattern> <store>/session-e8bc163c82eee187/feedfacedeadbeef-bash.txt"
+        },
+        "root_mode": 448,
+        "sha256": "95136a3f1db25c1a3ff771bff81b895cb3cd10dfa891323187da59a9276543ba"
+      },
+      "suggestion": "bash.txt"
+    },
+    {
+      "error": "ValueError",
+      "name": "unicode-byte-overflow",
+      "namespace": "s1",
+      "pattern": "🙂",
+      "repeat": 2000001,
+      "result": null,
+      "suggestion": "bash.txt"
+    }
+  ],
+  "token": "feedfacedeadbeef"
+}

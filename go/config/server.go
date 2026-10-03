@@ -80,7 +80,6 @@ func (s Settings) Unsupported() []UnsupportedSetting {
 		}
 	}
 	add(s.TrajectoryEnabled, "MINILOOP_TRAJECTORIES", "trajectory persistence is not implemented; explicitly set 0 for process-local serving")
-	add(s.SpillDir != nil, "MINILOOP_SPILL_DIR", "full oversized-tool-output preservation is not implemented; explicitly set an empty value")
 	add(s.EnableFeatures, "MINILOOP_FEATURES", "comprehensive feature services are not implemented")
 	add(s.EnableWorkflows, "MINILOOP_EXPERIMENTAL_WORKFLOWS", "workflow services are not implemented")
 	add(s.GuardianEnabled, "MINILOOP_GUARDIAN", "guardian implementation is not available")

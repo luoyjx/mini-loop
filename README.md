@@ -282,7 +282,8 @@ provisional stream progress and shown-text interruption repair, plus typed defau
 Agent recovery with retries, escalation, continuation, reactive shrink and fallback,
 plus captured stream-progress settings and stateful signed fake-model calls,
 plus typed environment settings, embedded default skills and a standalone HTTP launcher,
-reviewed **2026-10-04** (Go baseline `05a5b53` plus the configuration/launcher slice).
+plus a typed private spill store and masked string-Bash preservation,
+reviewed **2026-10-04** (Go baseline `5928c71` plus the spill slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -343,7 +344,7 @@ flowchart LR
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
-        GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result"]
+        GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -587,7 +588,8 @@ parallel-tool pool of eight unless `ToolLimiter` is explicitly shared. Children
 inherit the exact pools. Exclusive tools bypass the tool pool, so default task
 delegation can progress through a child. `NewSessionManager` supplies shared
 eight-slot model/tool pools, a process-local approval broker and bounded-result
-action journal by default. Environment configuration is still pending. Direct HTTP
+action journal by default. Typed environment configuration and the standalone
+launcher are implemented. Direct HTTP
 and SSE model calls are available through `go/provider.Client` and
 `StreamingClient`; default Agent recovery wraps each attempt. `NewManagedSession` privately owns a runtime
 and adds
@@ -609,6 +611,25 @@ creation and deleted-session cleanup, preserving surviving scratch directories.
 Caller cancellation ends the Stop wait; shutdown continues and can be joined again.
 Factories receive typed session bindings and must not recursively create/delete/stop
 the manager. Nil skills remain an empty catalogue; deployment loading is explicit.
+The launcher best-effort constructs a private `spill.LocalStore` at the configured
+root (`./var/spill` by default; empty disables it). Typed `ManagerServices.Spill`
+and `RuntimeConfig.Spill` bind the store to independent real shell executors,
+retaining selected credentials and shared process cancellation. `ExecuteBash`
+corresponds to Python's string `run_bash`: over 50,000 characters it preserves the
+already-masked captured output, then appends an opaque locator and retrieval hint.
+The default Bash adapter calls `ExecuteBashResult` instead; **both actual Python
+and Go currently bypass preservation on this structured path**. The store being
+configured does not imply the default tool preserves its full output. Compaction
+artifacts remain a separate workspace path. Spill namespaces use the workspace
+basename, hashed for grouping; they are not owner ACLs. The local store limits
+artifacts to 8,000,000 UTF-8 bytes, creates a private root/new namespace (0700)
+and exclusive leaves (0600), and syncs the file. Existing namespaces are retained
+as in Python. Leaf exclusivity does not confine parent-directory races or sandbox
+the host shell. Store errors keep the preview; no TTL or automatic purge exists,
+and deletion/shutdown retains evidence. Go additionally rejects invalid UTF-8,
+honors cancellation and checks short writes. Failed-write cleanup checks the leaf
+identity before removing it; that check and unlink are not atomic against host tampering.
+
 `go/httpapi.New` returns a standard `http.Handler` over that manager. Fifteen method/path
 combinations implement basic health, create/list/detail/delete, message/stream/cancel,
 approvals/resolution, mode/steer/fork, events and the Null-store transcript response. Token/anonymous

@@ -101,7 +101,7 @@ Record its parity evidence and remaining gaps before checking it off.
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
       fifteen HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
-      typed settings, standalone HTTP launcher and embedded default skills implemented;
+      typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
       UI, full health posture, durable catch-up, trajectory,
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
@@ -1923,3 +1923,94 @@ trajectory/durable restoration/SQLite and optional capabilities remain pending.
 Next G3 work is to port the Python default full-output spill and trajectory services
 so standalone startup no longer needs those explicit opt-outs. UI/full posture,
 G5 durability and G6 optional services remain on the plan; overall goal stays active.
+
+## 2026-10-04 private spill and string-Bash preservation slice
+
+Base: `5928c71` (typed configuration and standalone launcher). G3 advances;
+the overall port remains incomplete. No dependencies or Python runtime behavior
+were changed.
+
+### Implementation and actual source boundary
+
+- Added named `spill.Namespace`, `Request`, `Ref` and `Store`, with a stdlib
+  `LocalStore`. It preserves already-masked UTF-8 bytes, an 8,000,000-byte ceiling,
+  SHA-256 namespace grouping, sanitized filenames, 16-hex random prefixes,
+  private root/new namespace permissions (0700), exclusive leaves (0600), and
+  file sync before successful return. Namespaces group by workspace basename,
+  as Python Toolset does; they are not session ownership ACLs.
+- `shell.ExecuteBash` now matches Python string `Toolset.run_bash`: outputs over
+  50,000 Unicode characters save stripped full captured text and append a locator,
+  byte count and retrieval hint. Split streams are masked before projection and
+  preservation. Store errors or plugin panics keep the same preview. Captured
+  text remains bounded by the shell cap; Unicode text can exceed the independent
+  store byte cap and then retain just its preview.
+- **Actual source gap:** Python's default `_bash` calls `run_bash_result`, which
+  has no preservation call. An actual managed Python tool round with 60,004 output
+  characters returns a 49,989-character preview and creates zero spill artifacts.
+  Go's default typed Bash handler calls `ExecuteBashResult` and preserves that
+  behavior. The new string policy is a compatibility surface, not a claim that
+  default model-visible Bash results now preserve complete output. Any future
+  source behavior correction must be a separate explicit change.
+- Typed `RuntimeConfig.Spill` and `ManagerServices.Spill` bind the service to an
+  independent real shell executor, preserving credential scope and shared process
+  tracking. The caller's executor remains unchanged. Completed forks retain the
+  service with a fresh workspace namespace; selected child handlers inherit the
+  bound executor. Custom non-shell executors own their preservation policy.
+- Launcher startup best-effort constructs a store at the configured root
+  (`./var/spill` by default). Empty disables it; root construction failure disables
+  preservation without failing startup, matching Python manager behavior. Spill
+  is no longer listed as an unsupported activation. Trajectory still requires
+  explicit opt-out; other unavailable integrations retain their refusal checks.
+  Config inspection creates no directories and reports settings/availability only.
+- Go additionally checks invalid UTF-8, context cancellation and short writes;
+  failed-write cleanup checks that the leaf still has the created inode before
+  attempting removal. The identity check and unlink are not atomic against host
+  tampering. Python does not
+  verify short writes or clean up a failed partial leaf. Neither implementation
+  confines parent-component filesystem races or establishes a host-shell sandbox.
+  Existing namespaces are retained; no TTL/purge is implemented, and session
+  deletion/application stop retain spill evidence. Compaction's workspace artifacts
+  remain separate.
+
+### Differential evidence and validation
+
+The 29th snapshot executes fourteen real Python store cases, ordinary collisions,
+a planted leaf symlink, eight real Bash commands (including Unicode, nonzero exit,
+no store, broken store and a split secret), three CommandResult projection recipes,
+the actual managed default adapter, and three manager construction cases. Content
+and normalized previews compare byte SHA-256 digests, with explicit character/byte
+counts and modes. Previous 28 snapshots remain unchanged. Go tests also cover 32
+concurrent unique writes, cancellation/invalid text, plugin panic containment,
+independent credential rebinding, fresh fork namespaces and retained stop evidence.
+
+- Narrow `go test ./spill ./shell ./agent ./launcher ./config ./cmd/miniloop` passed.
+- Full `go test ./...`, `go vet ./...`, and `go test -race ./...` passed.
+- `export_go_contracts.py --check`: **29 files current**.
+- `verify_scans.py`: **19 scanning guards anchored**.
+- Three source mutation checks caught their mutants:
+  `spill-save-failure-breaks-the-tool-call`, `spill-artifact-is-world-readable`,
+  and `spill-follows-a-planted-symlink`. Source mutations were restored before
+  starting the full Python suite. No Python package-module changes require an
+  invariants rerun in this iteration.
+- A freshly built binary ran outside the checkout with fake provider,
+  trajectory opt-out and **default spill settings**. `--dump-config` created no
+  files; startup created a 0700 spill root; an authenticated auto-mode real-shell
+  tool round completed; the structured adapter created zero preservation artifacts;
+  SIGTERM exited 0 and retained the root. No paid provider was contacted.
+- README architecture baseline/Mermaid/boundary explanation, extension seams,
+  Go README and parity matrix were updated. The architecture JSON was regenerated
+  into HTML, with Archify showcase **9/9 checks, zero errors/warnings**.
+  JSON: 26,957 bytes, SHA-256
+  `f21d3232d2f9cb8670ce98f5c42605dcec57367b88a5d29d7b8ee60e961be8a6`.
+  HTML: 666,368 bytes, SHA-256
+  `5aa13a1a3d31167eafaa956ecd2628a22235c91bffa6caf5b3b2c3446169a1bb`.
+  Visual inspection remains unperformed: prior local HTML browser access was
+  denied, and no alternate access was used to bypass that restriction.
+- Full `.venv/bin/python -m pytest -q`: **2,151 passed, 28 skipped,
+  24 subtests passed, three dependency deprecation warnings, 246.36s**. Unlike
+  the preceding launcher checkpoint, this full run has no timing-test failures.
+- Final `git diff --check` passed.
+
+Next G3 work is the default trajectory service and its REST/UI evidence boundaries.
+SQLite persistence/restore/leases, UI, optional services and the full release audit
+remain open; G0–G7 are not marked complete by this slice.

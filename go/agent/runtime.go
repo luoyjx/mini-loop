@@ -8,6 +8,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
+	"github.com/luoyjx/mini-loop/go/spill"
 	"github.com/luoyjx/mini-loop/go/workspace"
 )
 
@@ -50,6 +51,7 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	Spill             spill.Store
 	ID                SessionID
 	Owner             OwnerID
 	Provider          Provider
@@ -227,6 +229,12 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		} else {
 			config.Bash, err = executor.WithMasker(config.Secrets)
 		}
+		if err != nil {
+			return nil, err
+		}
+	}
+	if executor, ok := config.Bash.(*shell.Executor); ok && config.Spill != nil {
+		config.Bash, err = executor.WithSpill(config.Spill)
 		if err != nil {
 			return nil, err
 		}

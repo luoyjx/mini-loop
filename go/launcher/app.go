@@ -18,6 +18,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/provider"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
+	"github.com/luoyjx/mini-loop/go/spill"
 )
 
 type BuildIdentity struct {
@@ -87,6 +88,7 @@ func (f boundBashFactory) BashFor(ctx context.Context, binding agent.SessionBind
 }
 
 type App struct {
+	spill          spill.Store
 	manager        *agent.SessionManager
 	handler        *httpapi.Server
 	transport      *http.Transport
@@ -138,6 +140,14 @@ func New(ctx context.Context, settings config.Settings, server config.ServerSett
 		}
 		model = client
 	}
+	var preservation spill.Store
+	if settings.SpillDir != nil {
+		// Python manager construction treats an unavailable root as best-effort.
+		// Do not keep a typed-nil store in the interface.
+		if local, err := spill.NewLocalStore(*settings.SpillDir); err == nil {
+			preservation = local
+		}
+	}
 	var catalog *skills.Catalog
 	var err error
 	if settings.SkillsDir == config.BuiltinSkills {
@@ -165,7 +175,7 @@ func New(ctx context.Context, settings config.Settings, server config.ServerSett
 	manager, err := agent.NewSessionManager(agent.ManagerConfig{WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
-		Services: agent.ManagerServices{Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{time.Duration(settings.BashTimeout) * time.Second}}})
+		Services: agent.ManagerServices{Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
 	if err != nil {
 		if transport != nil {
 			transport.CloseIdleConnections()
@@ -187,7 +197,7 @@ func New(ctx context.Context, settings config.Settings, server config.ServerSett
 		}
 		return nil, err
 	}
-	return &App{manager: manager, handler: handler, transport: transport, shutdown: server.ShutdownTimeout, authConfigured: auth != nil && auth.Configured()}, nil
+	return &App{spill: preservation, manager: manager, handler: handler, transport: transport, shutdown: server.ShutdownTimeout, authConfigured: auth != nil && auth.Configured()}, nil
 }
 func (a *App) Handler() http.Handler { return a.handler }
 func (a *App) Stop(ctx context.Context) error {

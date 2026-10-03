@@ -70,7 +70,7 @@
           "goApprovals",
           "goSecrets"
         ],
-        "note": "Typed startup owns HTTP/SSE and shutdown. Direct/stream models and default recovery exist; trajectory, spill, UI and SQLite remain pending."
+        "note": "Typed startup and private string-Bash spill exist; structured defaults bypass spill. Trajectory, UI and SQLite remain pending."
       },
       {
         "id": "personal-skill",
@@ -349,7 +349,8 @@
       "size": [
         280,
         76
-      ]
+      ],
+      "tag": "masked string spill; typed bypass"
     },
     {
       "id": "goFiles",
@@ -1200,8 +1201,9 @@
         "Go fake clients own call IDs, signed thinking, typed responders and explicit direct/stream views; child and fork sessions retain captured progress thresholds",
         "The Go entry node includes cmd/miniloop and launcher: typed settings, activation checks, requested/actual bind guards, owned TCP listener and joined signal shutdown",
         "All 49 Python settings are typed; 64 source cases compare defaults, overrides and refusal. Embedded default skill matches Python and needs no checkout",
-        "Serving requires explicit trajectories off and empty full-output spill path; enabled unavailable features refuse activation. Existing compaction artifacts are separate",
-        "Dump-config reports credential-free settings/availability without files or model probes; full posture, dotenv discovery, UI, durable SQLite and optional services remain pending"
+        "Serving requires explicit trajectories off; a private spill.Store is best-effort configured by default. String Bash preserves masked captures; actual structured defaults bypass it in Python and Go. Compaction artifacts are separate",
+        "Dump-config reports credential-free settings/availability without files or model probes; full posture, dotenv discovery, UI, durable SQLite and optional services remain pending",
+        "Typed ManagerServices/RuntimeConfig spill binding retains credential scope and process tracking; hashed workspace namespaces are grouping, not ACLs. Exclusive private leaves do not confine parent races; no TTL/purge, and shutdown retains evidence"
       ]
     }
   ]

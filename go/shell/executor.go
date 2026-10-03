@@ -15,6 +15,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/internal/pytext"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/secrets"
+	"github.com/luoyjx/mini-loop/go/spill"
 	"github.com/luoyjx/mini-loop/go/workspace"
 )
 
@@ -32,6 +33,7 @@ type Sandbox interface {
 	Argv(string) ([]string, error)
 }
 type Config struct {
+	Spill        spill.Store
 	Workspace    string
 	Timeout      time.Duration
 	CaptureLimit int
@@ -39,6 +41,7 @@ type Config struct {
 	Sandbox      Sandbox
 }
 type Executor struct {
+	spill        spill.Store
 	root         string
 	timeout      time.Duration
 	captureLimit int
@@ -88,13 +91,23 @@ func New(config Config) (*Executor, error) {
 			return nil, errors.New("sandbox binding returned nil")
 		}
 	}
-	return &Executor{root: files.Root(), timeout: config.Timeout, captureLimit: config.CaptureLimit, secrets: config.Secrets, sandbox: config.Sandbox, processes: &processTracker{live: make(map[*os.Process]chan struct{})}}, nil
+	return &Executor{spill: config.Spill, root: files.Root(), timeout: config.Timeout, captureLimit: config.CaptureLimit, secrets: config.Secrets, sandbox: config.Sandbox, processes: &processTracker{live: make(map[*os.Process]chan struct{})}}, nil
 }
 
 // WithSecrets returns an independent executor using the same bound process
 // configuration. A session never changes a shared executor's credential scope.
 func (executor *Executor) WithSecrets(source SecretSource) (*Executor, error) {
-	clone, err := New(Config{Workspace: executor.root, Timeout: executor.timeout, CaptureLimit: executor.captureLimit, Secrets: source, Sandbox: executor.sandbox})
+	clone, err := New(Config{Workspace: executor.root, Timeout: executor.timeout, CaptureLimit: executor.captureLimit, Secrets: source, Sandbox: executor.sandbox, Spill: executor.spill})
+	if err == nil {
+		clone.processes = executor.processes
+	}
+	return clone, err
+}
+
+// WithSpill returns an independent executor bound to the same workspace,
+// credentials and process tracker. Nil explicitly disables its string spill policy.
+func (executor *Executor) WithSpill(store spill.Store) (*Executor, error) {
+	clone, err := New(Config{Workspace: executor.root, Timeout: executor.timeout, CaptureLimit: executor.captureLimit, Secrets: executor.secrets, Sandbox: executor.sandbox, Spill: store})
 	if err == nil {
 		clone.processes = executor.processes
 	}
@@ -121,7 +134,7 @@ func (executor *Executor) Workspace() string { return executor.root }
 func (executor *Executor) SandboxConfigured() bool { return executor.sandbox != nil }
 func (executor *Executor) ExecuteBash(ctx context.Context, input protocol.BashInput) (string, error) {
 	result, err := executor.ExecuteBashResult(ctx, input)
-	return result.Render(), err
+	return executor.projectBash(ctx, result), err
 }
 
 // Interrupt kills all active foreground groups, including pipe-holding children

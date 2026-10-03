@@ -26,7 +26,7 @@ func TestDumpConfigReportsDefaultsWithoutStartupOrSecrets(t *testing.T) {
 	if err := json.Unmarshal(out.Bytes(), &report); err != nil {
 		t.Fatal(err)
 	}
-	if report.Kind != "settings-and-availability" || !report.Authenticated || len(report.Unsupported) != 2 || report.StateStore != "process-local" {
+	if report.Kind != "settings-and-availability" || !report.Authenticated || len(report.Unsupported) != 1 || report.StateStore != "process-local" {
 		t.Fatal(report)
 	}
 	if _, err := os.Stat(env["MINILOOP_WORKSPACE_ROOT"]); !os.IsNotExist(err) {

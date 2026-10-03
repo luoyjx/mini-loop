@@ -2135,6 +2135,146 @@ def _progress_contracts() -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT/"python/mini_loop"/name).read_bytes()).hexdigest() for name in ("transport.py","fake_llm.py")}, **asyncio.run(collect())}
 
 
+def _spill_contracts(scratch: Path) -> dict:
+    """Pin actual private-store behavior and both Bash projection entry points."""
+    import asyncio
+    import hashlib
+    import stat
+    from unittest.mock import patch
+    from mini_loop.spill import LocalSpillStore, MAX_SPILL_BYTES
+    from mini_loop.tools import Toolset, CommandResult
+    from mini_loop.secrets import SecretRegistry
+    from mini_loop import Settings, SessionManager
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+
+    scratch.mkdir(parents=True, exist_ok=True)
+    scratch = scratch.resolve()
+    token = "feedfacedeadbeef"
+    stores = []
+    recipes = [
+        ("plain", "s1", "bash.txt", "already masked", 1),
+        ("empty", "", "", "", 1),
+        ("unicode", "会话🙂", "世界/🙂.txt", "你好🙂\nline\r\n", 7),
+        ("traversal", "../../session", "../../evil/../result.txt", "safe", 1),
+        ("absolute-hint", "/absolute/session", "/tmp/evil.txt", "safe", 1),
+        ("hidden", "s1", ".hidden", "safe", 1),
+        ("dots", "s1", "...", "safe", 1),
+        ("embedded-dots", "s1", "a...b..c.txt", "safe", 1),
+        ("long-hint", "s1", "A" * 100 + ".txt", "safe", 1),
+        ("shell-hint", "s1", "$(command)\n;quoted'name.txt", "safe", 1),
+        ("byte-ceiling", "s1", "bash.txt", "x", MAX_SPILL_BYTES),
+        ("byte-overflow", "s1", "bash.txt", "x", MAX_SPILL_BYTES + 1),
+        ("unicode-byte-ceiling", "s1", "bash.txt", "🙂", MAX_SPILL_BYTES // 4),
+        ("unicode-byte-overflow", "s1", "bash.txt", "🙂", MAX_SPILL_BYTES // 4 + 1),
+    ]
+    for name, namespace, suggestion, pattern, repeat in recipes:
+        root = scratch / name
+        root.mkdir()
+        root.chmod(0o777)  # constructor must tighten an inherited root
+        store = LocalSpillStore(root)
+        content = pattern * repeat
+        result = None
+        error = None
+        with patch("mini_loop.spill._secrets.token_hex", return_value=token):
+            try:
+                ref = store.save_text(session_id=namespace, tool_name="bash", label="output", suggested_name=suggestion, content=content)
+                artifact = Path(ref.locator)
+                saved = artifact.read_bytes()
+                result = {"ref": {"locator": ref.locator.replace(str(root), "<store>"), "bytes": ref.bytes, "retrieval_hint": ref.retrieval_hint.replace(str(root), "<store>")}, "sha256": hashlib.sha256(saved).hexdigest(), "root_mode": stat.S_IMODE(root.stat().st_mode), "namespace_mode": stat.S_IMODE(artifact.parent.stat().st_mode), "file_mode": stat.S_IMODE(artifact.stat().st_mode)}
+            except (ValueError, OSError) as exc:
+                error = type(exc).__name__
+        stores.append({"name":name, "namespace":namespace, "suggestion":suggestion, "pattern":pattern, "repeat":repeat, "result":result, "error":error})
+
+    collision_store = LocalSpillStore(scratch / "collision")
+    with patch("mini_loop.spill._secrets.token_hex", return_value=token):
+        first = collision_store.save_text(session_id="s1", tool_name="bash", label="output", suggested_name="bash.txt", content="first")
+        try:
+            collision_store.save_text(session_id="s1", tool_name="bash", label="output", suggested_name="bash.txt", content="second")
+        except FileExistsError:
+            collision = {"refused":True, "original":Path(first.locator).read_text()}
+        victim = scratch / "victim.txt"
+        victim.write_text("original")
+        Path(first.locator).unlink()
+        Path(first.locator).symlink_to(victim)
+        try:
+            collision_store.save_text(session_id="s1", tool_name="bash", label="output", suggested_name="bash.txt", content="attacker")
+        except FileExistsError:
+            symlink = {"refused":True, "victim":victim.read_text()}
+
+    class BrokenStore:
+        def save_text(self, **kwargs):
+            raise OSError("fixture store failure")
+
+    bash = []
+    long_command = "awk 'BEGIN {for(i=0;i<60000;i++)printf \"A\";printf \"TAIL\"}'"
+    for name, command, enabled, broken, secret in [
+        ("short", "printf 'short'", True, False, False),
+        ("exact-cap", "awk 'BEGIN {for(i=0;i<50000;i++)printf \"A\"}'", True, False, False),
+        ("oversized", long_command, True, False, False),
+        ("unicode", "awk 'BEGIN {for(i=0;i<15001;i++)printf \"你好🙂é\";printf \"TAIL\"}'", True, False, False),
+        ("nonzero", long_command + "; exit 7", True, False, False),
+        ("without-store", long_command, False, False, False),
+        ("failing-store", long_command, True, True, False),
+        ("split-secret", long_command + "; printf 'fixture-'; printf 'secret' >&2", True, False, True),
+    ]:
+        root = scratch / ("bash-" + name)
+        store = LocalSpillStore(root) if enabled and not broken else (BrokenStore() if broken else None)
+        registry = SecretRegistry()
+        if secret:
+            registry.register("DEMO", "fixture-secret")
+        toolset = Toolset(scratch / ("ws-" + name), spill=store, secrets=registry)
+        rendered = toolset.run_bash(command)
+        artifacts = list(root.rglob("*.txt")) if root.exists() else []
+        preserved = []
+        for path in artifacts:
+            raw = path.read_bytes()
+            rendered = rendered.replace(str(path), "<artifact>")
+            preserved.append({"sha256":hashlib.sha256(raw).hexdigest(), "bytes":len(raw)})
+        bash.append({"name":name, "command":command, "enabled":enabled, "broken":broken, "secret":secret, "render_sha256":hashlib.sha256(rendered.encode()).hexdigest(), "render_chars":len(rendered), "preserved":preserved})
+
+    # This executes the actual default tool adapter inside a managed turn. The
+    # structured path currently bypasses run_bash's preservation policy.
+    def responder(request):
+        if request["messages"][-1]["role"] == "user" and isinstance(request["messages"][-1]["content"], str):
+            return [tool("bash", _id="spill-tool", command=long_command)], "tool_use"
+        return [text("done")], "end_turn"
+    manager = SessionManager(Settings(fake_llm=True, trajectory_enabled=False, workspace_root=scratch / "managed-ws", spill_dir=scratch / "managed-spill"), FakeAsyncAnthropic(responder=responder))
+    session = manager.create(permission_mode="auto")
+    final = asyncio.run(session.run("spill probe"))
+    result_text = session.agent.messages[-2]["content"][0]["content"]
+    default_adapter = {"command":long_command, "final":final, "render_sha256":hashlib.sha256(result_text.encode()).hexdigest(), "render_chars":len(result_text), "preserved":len(list(manager.spill.root.rglob("*.txt")))}
+
+    projections = []
+    for name, stdout, stderr, error, projection in [
+        ("timeout-projection", "B" * 60000, "tail", "Error: Timeout (1s)", "B" * 60000 + "tail"),
+        ("error-without-projection", "B" * 60000, "", "Error: failed", None),
+        ("strip-before-save", "\x1c " + "B" * 60000 + " \x1f", "", None, None),
+    ]:
+        root = scratch / ("projection-" + name)
+        store = LocalSpillStore(root)
+        toolset = Toolset(scratch / ("projection-ws-" + name), spill=store)
+        result = CommandResult(stdout, stderr, 0, error is not None, False, 0, error, projection)
+        with patch.object(toolset, "run_bash_result", return_value=result):
+            rendered = toolset.run_bash("ignored fixture command")
+        artifacts = list(root.rglob("*.txt"))
+        hashes = []
+        for path in artifacts:
+            raw = path.read_bytes()
+            rendered = rendered.replace(str(path), "<artifact>")
+            hashes.append({"bytes":len(raw), "sha256":hashlib.sha256(raw).hexdigest()})
+        projections.append({"name":name, "stdout_prefix":"\x1c " if name == "strip-before-save" else "", "stdout_pattern":"B", "stdout_repeat":60000, "stdout_suffix":" \x1f" if name == "strip-before-save" else "", "stderr":stderr, "error":error, "projection":projection is not None, "render_sha256":hashlib.sha256(rendered.encode()).hexdigest(), "render_chars":len(rendered), "preserved":hashes})
+
+    manager_cases = []
+    for name in ("enabled", "disabled", "root-is-file"):
+        root = scratch / ("manager-" + name)
+        if name == "root-is-file":
+            root.write_text("not a directory")
+        manager = SessionManager(Settings(fake_llm=True, trajectory_enabled=False, workspace_root=scratch / ("manager-ws-" + name), spill_dir=None if name == "disabled" else root), FakeAsyncAnthropic())
+        manager_cases.append({"name":name, "available":manager.spill is not None})
+
+    return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("spill.py", "tools.py", "builtins.py", "manager.py")}, "max_bytes":MAX_SPILL_BYTES, "token":token, "stores":stores, "collision":collision, "leaf_symlink":symlink, "bash":bash, "projections":projections, "default_adapter":default_adapter, "managers":manager_cases}
+
+
 def _configuration_contracts(scratch: Path) -> dict:
     """Execute actual Settings environment factories, validation and builtin skills."""
     import dataclasses
@@ -2280,6 +2420,7 @@ def _snapshot() -> dict[str, bytes]:
         recovery_contracts = _recovery_contracts()
         progress_contracts = _progress_contracts()
         configuration_contracts = _configuration_contracts(Path(scratch) / "config")
+        spill_contracts = _spill_contracts(Path(scratch) / "spill")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2323,6 +2464,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-recovery.json": _json_bytes(recovery_contracts),
         "python-progress.json": _json_bytes(progress_contracts),
         "python-configuration.json": _json_bytes(configuration_contracts),
+        "python-spill.json": _json_bytes(spill_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

@@ -4501,7 +4501,7 @@
       <p class="subtitle">Python runtime in python/; independent Go startup, owned HTTP/SSE and guarded turns; persistence/optional port work remains</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed startup owns HTTP/SSE and shutdown. Direct/stream models and default recovery exist; trajectory, spill, UI and SQLite remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed startup and private string-Bash spill exist; structured defaults bypass spill. Trajectory, UI and SQLite remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4835,8 +4835,8 @@
         <text data-detail="fine" x="1510" y="1248" class="t-security" font-size="7" text-anchor="middle">deny is final</text>
         </g>
 
-        <g id="node-goBash" data-node-id="goBash" data-node-label="Workspace shell.Executor" tabindex="0" role="button" aria-label="Focus Workspace shell.Executor, groups / deadlines / typed results, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="groups / deadlines / typed results" data-node-context="Independent Go port - in progress">
-          <title>Workspace shell.Executor · groups / deadlines / typed results · Independent Go port - in progress</title>
+        <g id="node-goBash" data-node-id="goBash" data-node-label="Workspace shell.Executor" tabindex="0" role="button" aria-label="Focus Workspace shell.Executor, groups / deadlines / typed results, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="groups / deadlines / typed results" data-node-tag="masked string spill; typed bypass" data-node-context="Independent Go port - in progress">
+          <title>Workspace shell.Executor · groups / deadlines / typed results · Independent Go port - in progress · masked string spill; typed bypass</title>
           <rect x="1920" y="1180" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1920" y="1180" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1926 1186) scale(0.6875)">
@@ -4844,6 +4844,7 @@
           </g>
           <text data-detail-anchor x="2060" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Workspace shell.Executor</text>
         <text data-detail="context" x="2060" y="1232" class="t-muted" font-size="9" text-anchor="middle">groups / deadlines / typed results</text>
+        <text data-detail="fine" x="2060" y="1248" class="t-backend" font-size="7" text-anchor="middle">masked string spill; typed bypass</text>
         </g>
 
         <g id="node-goFiles" data-node-id="goFiles" data-node-label="Workspace Files" tabindex="0" role="button" aria-label="Focus Workspace Files, read / write / edit / glob, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="read / write / edit / glob" data-node-tag="atomic replacement" data-node-context="Independent Go port - in progress">
@@ -5398,8 +5399,9 @@
           <li>&bull; Go fake clients own call IDs, signed thinking, typed responders and explicit direct/stream views; child and fork sessions retain captured progress thresholds</li>
           <li>&bull; The Go entry node includes cmd/miniloop and launcher: typed settings, activation checks, requested/actual bind guards, owned TCP listener and joined signal shutdown</li>
           <li>&bull; All 49 Python settings are typed; 64 source cases compare defaults, overrides and refusal. Embedded default skill matches Python and needs no checkout</li>
-          <li>&bull; Serving requires explicit trajectories off and empty full-output spill path; enabled unavailable features refuse activation. Existing compaction artifacts are separate</li>
+          <li>&bull; Serving requires explicit trajectories off; a private spill.Store is best-effort configured by default. String Bash preserves masked captures; actual structured defaults bypass it in Python and Go. Compaction artifacts are separate</li>
           <li>&bull; Dump-config reports credential-free settings/availability without files or model probes; full posture, dotenv discovery, UI, durable SQLite and optional services remain pending</li>
+          <li>&bull; Typed ManagerServices/RuntimeConfig spill binding retains credential scope and process tracking; hashed workspace namespaces are grouping, not ACLs. Exclusive private leaves do not confine parent races; no TTL/purge, and shutdown retains evidence</li>
         </ul>
       </div>
     </div>

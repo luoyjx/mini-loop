@@ -128,7 +128,7 @@ func TestUnsupportedActivationAndNetworkSettings(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(defaults.Unsupported()) != 2 || defaults.RequireSupported() == nil {
+	if len(defaults.Unsupported()) != 1 || defaults.RequireSupported() == nil {
 		t.Fatal(defaults.Unsupported())
 	}
 	supported, err := Load(map[string]string{"MINILOOP_TRAJECTORIES": "0", "MINILOOP_SPILL_DIR": ""}, LoadOptions{Directory: t.TempDir()})

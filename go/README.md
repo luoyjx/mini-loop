@@ -420,7 +420,7 @@ The binary embeds the same default `code_review` skill as `python/skills`, and
 can run from outside the checkout with no Python interpreter. From this directory:
 
 ```sh
-MINILOOP_FAKE_LLM=1 MINILOOP_TRAJECTORIES=0 MINILOOP_SPILL_DIR= go run ./cmd/miniloop
+MINILOOP_FAKE_LLM=1 MINILOOP_TRAJECTORIES=0 go run ./cmd/miniloop
 # Or build, then run with the same explicit environment settings:
 go build -o /tmp/miniloop ./cmd/miniloop
 /tmp/miniloop --dump-config
@@ -443,13 +443,16 @@ services, and captures `MINILOOP_FAKE_DELAY`. `MINILOOP_SKILLS_DIR` selects a
 filesystem catalogue with the existing digest recheck; absent selects the compiled skill.
 Configuration errors fail instead of guessing, including invalid inactive feature bounds.
 
-Python defaults enable trajectory recording and a separate oversized-tool-output
-spill store. Those services are not ported, so serving requires explicit
-`MINILOOP_TRAJECTORIES=0` and `MINILOOP_SPILL_DIR=`. The launcher also refuses enabled
+Trajectory recording remains pending, so serving requires explicit
+`MINILOOP_TRAJECTORIES=0`. The launcher best-effort constructs the separate private
+spill store at `MINILOOP_SPILL_DIR` (default `./var/spill`; empty disables it).
+A root construction failure disables preservation while startup continues, matching
+Python. The launcher also refuses enabled
 feature/workflow/guardian/decision/token-efficiency/AST integrations and configured
 owner-resource/memory roots. Inactive optional settings remain typed and validated.
-Ordinary workspace compaction artifacts are already implemented; they do not replace
-the unavailable complete tool-output spill store. No dependency was added.
+Ordinary workspace compaction artifacts remain separate from the private store.
+The default structured Bash tool currently bypasses string-output preservation in
+both Python and Go; see the preservation section below. No dependency was added.
 
 `--dump-config` emits a **settings-and-availability** report with credential presence,
 URL credential/query/fragment removal, build revision, process-local state and unavailable
@@ -471,6 +474,42 @@ skill bytes/descriptions/load output. Real TCP tests cover authenticated tool ex
 foreign owners, actual bind refusal, active model/queued SSE shutdown, model options,
 Bash timeout and side-effect-free inspection. A built binary was also exercised outside
 the repository, including SIGTERM during a delayed call.
+
+### Preserve oversized string-Bash output
+
+`spill.Store.SaveText(context.Context, spill.Request)` accepts already-masked text
+and returns a typed `spill.Ref` with opaque locator, byte count and retrieval hint.
+`spill.LocalStore` matches the Python private root/new namespace permissions (0700),
+exclusive leaf creation (0600), SHA-256 namespace grouping, safe filenames, random
+16-hex prefix, exact UTF-8 content and 8,000,000-byte limit. Files are synced before
+success; existing names or symlinks are never overwritten. A namespace is a storage
+group, not an owner ACL; existing namespace permissions are retained as in Python.
+Parent-directory races are not confined by leaf exclusivity. There is no TTL or
+purge, and manager deletion/shutdown does not remove these artifacts.
+
+Set `shell.Config.Spill` for direct use, or `agent.RuntimeConfig.Spill` /
+`ManagerServices.Spill` for scoped composition. Runtime binding clones a real shell
+executor without mutating a caller's executor, and preserves credential selection,
+masking and process tracking. Forks use fresh workspace names; selected child tools
+inherit the bound executor. Injected non-shell executors own their preservation policy.
+
+`ExecuteBash` matches Python `Toolset.run_bash`: after full-stream masking, outputs
+over 50,000 Unicode characters save their stripped captured text and append a
+retrieval note. Save errors/panics keep the same preview. Capture bounds still apply;
+this is the complete captured text, not an unbounded producer transcript. A Unicode
+capture may exceed the store's byte limit and retain only its preview. Cancellation,
+invalid UTF-8 and short-write checks plus best-effort cleanup of a failed leaf are
+additional Go behavior. Cleanup checks inode identity before unlinking; the check
+and unlink are not atomic against host tampering. Retrieval hints are text and
+are not executed by the store.
+
+**Actual default behavior:** Python's built-in Bash calls `run_bash_result`, and
+Go's built-in Bash calls `ExecuteBashResult`. These structured surfaces currently
+bypass the string preservation policy. The 29th actual-source snapshot checks both
+interfaces and a managed Python tool round (zero preservation artifacts). It also
+pins fourteen local-store cases, collision/symlink refusal, eight real shell cases,
+three projection cases and three best-effort manager construction cases. This
+source behavior is recorded as a gap, not advertised as default full-output storage.
 
 ### Serve the implemented HTTP slice
 
