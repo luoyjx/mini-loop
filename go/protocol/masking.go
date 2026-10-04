@@ -52,6 +52,23 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 			value := SkillScope(mask(string(*input.loadSkill.Scope)))
 			input.loadSkill.Scope = &value
 		}
+	case ToolCreateTask:
+		input.createTask.Subject = mask(input.createTask.Subject)
+		if input.createTask.Description != nil {
+			v := mask(*input.createTask.Description)
+			input.createTask.Description = &v
+		}
+		if input.createTask.Worktree != nil {
+			v := mask(*input.createTask.Worktree)
+			input.createTask.Worktree = &v
+		}
+		if input.createTask.BlockedBy != nil {
+			for i, value := range *input.createTask.BlockedBy {
+				(*input.createTask.BlockedBy)[i] = mask(value)
+			}
+		}
+	case ToolGetTask, ToolClaimTask, ToolCompleteTask:
+		input.taskRef.TaskID = mask(input.taskRef.TaskID)
 	case ToolAskUser:
 		input.askUser.Question = mask(input.askUser.Question)
 	}

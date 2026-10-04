@@ -2280,6 +2280,130 @@ def _trajectory_contracts(scratch: Path) -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("trajectory.py", "session.py", "agent.py", "server.py")}, "stores":cases, "rounding":[{"input":value, "output":round(value, 3)} for value in (25.12355, -25.12355, 1.2345, -1.2345, 0.0005, -0.0005, 2.675, 1.0625, -1.0625, 0.00001)], "managed":asyncio.run(collect()), "http":{"seed":normalize(seed), "routes":routes}}
 
 
+def _task_contracts(scratch: Path) -> dict:
+    """Actual persistent task transitions, privacy, bounded views and owned HTTP."""
+    import asyncio
+    from dataclasses import asdict
+    from unittest.mock import patch
+    from mini_loop.tasks import TaskStore, Task, install_tasks
+    from mini_loop.registry import ToolRegistry
+    from mini_loop.secrets import SecretRegistry
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+    secret = 'clé-secrète-"café"\\Ω-0123456789'
+    specifications = [
+        ('flow', [
+            {'op':'render'}, {'op':'create','subject':'write the report'},
+            {'op':'create','subject':'review it','dependencies':['task_000000000001']},
+            {'op':'claim','id':'task_000000000002','owner':'alice'},
+            {'op':'complete','id':'task_000000000001','owner':'alice'},
+            {'op':'claim','id':'task_000000000001','owner':'alice'},
+            {'op':'claim','id':'task_000000000001','owner':'bob'},
+            {'op':'complete','id':'task_000000000001','owner':'bob'},
+            {'op':'bind','id':'task_000000000002','name':'review-branch'},
+            {'op':'complete','id':'task_000000000001','owner':'alice'},
+            {'op':'can_start','id':'task_000000000002'}, {'op':'runnable'},
+            {'op':'claim','id':'task_000000000002','owner':'alice'},
+            {'op':'complete','id':'task_000000000002'}, {'op':'render'},
+            {'op':'list'}, {'op':'load','id':'task_000000000002'},
+            {'op':'claim','id':'task_000000000001','owner':'alice'},
+            {'op':'load','id':'task_missing'}, {'op':'can_start','id':'task_missing'},
+            {'op':'complete','id':'task_missing'}, {'op':'claim','id':'task_missing','owner':'a'},
+            {'op':'bind','id':'task_missing','name':'valid'}]),
+        ('missing', [ {'op':'create','subject':'forward','dependencies':['task_later']},
+            {'op':'render'}, {'op':'runnable'}, {'op':'render'}]),
+        ('validation', [ {'op':'create','subject':'bad','dependencies':['../escape']},
+            {'op':'create','subject':'bad','worktree':'..'},
+            {'op':'create','subject':'bad','worktree':'bad/name'},
+            {'op':'load','id':'../escape'}, {'op':'create','subject':'empty tree','worktree':''},
+            {'op':'bind','id':'task_000000000001','name':'.'},
+            {'op':'bind','id':'task_000000000001','name':'x'*65}, {'op':'list'}]),
+        ('crash', [ {'op':'create','subject':'work'},
+            {'op':'marker','id':'task_000000000001','text':'ghost'},
+            {'op':'claim','id':'task_000000000001','owner':'bob'}, {'op':'load','id':'task_000000000001'}]),
+        ('corrupt', [ {'op':'file','name':'task_broken.json','text':'{unfinished'},
+            {'op':'file','name':'task_wrong.json','text':'{"id":"task_wrong"}'},
+            {'op':'file','name':'other.json','text':'{unfinished'}, {'op':'list'}, {'op':'render'}]),
+        ('bounded', [ {'op':'batch','count':55,'subject':'plain'},
+            {'op':'create','subject':'界'*17000,'description':'D'*17000},
+            {'op':'render'}, {'op':'load','id':'task_000000000056'}]),
+        ('masked', [ {'op':'create','subject':'use '+secret,'description':secret},
+            {'op':'load','id':'task_000000000001'}, {'op':'claim','id':'task_000000000001','owner':secret},
+            {'op':'load','id':'task_000000000001'}, {'op':'render'}]),
+    ]
+    cases=[]
+    for name, specs in specifications:
+        counter=[0]
+        def new_id(self):
+            counter[0]+=1
+            return f'task_{counter[0]:012d}'
+        secrets=SecretRegistry() if name=='masked' else None
+        if secrets is not None: secrets.register('KEY',secret)
+        store=TaskStore(scratch/name,secrets=secrets)
+        steps=[]
+        with patch.object(TaskStore,'_new_id',new_id):
+            for spec in specs:
+                value=None;error=None
+                try:
+                    op=spec['op'];tid=spec.get('id')
+                    if op=='create':value=asdict(store.create(spec['subject'],spec.get('description',''),spec.get('dependencies'),spec.get('worktree')))
+                    elif op=='claim':value=store.claim(tid,spec['owner'])
+                    elif op=='complete':value=store.complete(tid,spec.get('owner'))
+                    elif op=='bind':value=store.bind_worktree(tid,spec['name'])
+                    elif op=='load':
+                        task=store.load(tid);value=asdict(task) if task else None
+                    elif op=='list':value=[asdict(task) for task in store.list()]
+                    elif op=='runnable':value=[asdict(task) for task in store.runnable()]
+                    elif op=='can_start':value=store.can_start(tid)
+                    elif op=='render':value=store.render()
+                    elif op=='file':(store.dir/spec['name']).write_text(spec['text'])
+                    elif op=='marker':store._marker(tid).write_text(spec['text'])
+                    elif op=='batch':
+                        for _ in range(spec['count']):store.create(spec['subject'])
+                except (ValueError, OSError) as exc:error=str(exc)
+                steps.append({'input':spec,'value':value,'error':error,'problems':store.problems.summary(),
+                              'total':store.problems.total(),'dropped':store.problems.dropped})
+        cases.append({'name':name,'secret':secret if secrets is not None else None,'steps':steps})
+    registry=install_tasks(ToolRegistry())
+    from mini_loop.registry import ToolContext
+    from types import SimpleNamespace
+    tool_steps=[]
+    context=ToolContext(SimpleNamespace(label='main',secrets=None),scratch/'tools',{})
+    with patch.object(TaskStore,'_new_id',lambda self:'task_000000000001'):
+        for name,arguments in [('create_task',{'subject':'tool work','description':'details','blockedBy':None,'worktree':None}),
+                               ('list_tasks',{}),('get_task',{'task_id':'task_000000000001'}),
+                               ('claim_task',{'task_id':'task_000000000001'}),
+                               ('complete_task',{'task_id':'task_000000000001'}),
+                               ('get_task',{'task_id':'task_000000000001'})]:
+            tool_steps.append({'name':name,'input':arguments,'output':asyncio.run(registry.get(name).run(context,**arguments))})
+    schemas=registry.schemas()
+    settings=Settings(fake_llm=True,enable_features=False,workspace_root=scratch/'http',skills_dir=scratch/'skills',spill_dir=None)
+    manager=SessionManager(settings,FakeAsyncAnthropic())
+    app=create_app(settings=settings,manager=manager)
+    http_cases=[];seed=[]
+    with TestClient(app) as client:
+        app.state.auth=TokenAuth({'token-a':'alice','token-b':'bob'})
+        sid=client.post('/sessions',json={},headers={'Authorization':'Bearer token-a'}).json()['id']
+        def request(name,session,token):
+            response=client.get(f'/sessions/{session}/tasks',headers={'Authorization':'Bearer '+token} if token else {})
+            value=response.json()
+            if 'session' in value:value['session']='session-fixture'
+            if isinstance(value,dict) and isinstance(value.get('detail'),str):value['detail']=value['detail'].replace(sid,'session-fixture')
+            http_cases.append({'name':name,'session':'session-fixture' if session==sid else session,'token':token,'status':response.status_code,'body':value})
+        request('empty',sid,'token-a')
+        board=TaskStore(manager._sessions[sid].workspace)
+        first=Task('task_first','write report');second=Task('task_second','review',blockedBy=[first.id])
+        board.save(first);board.save(second);board.claim(first.id,'alice')
+        seed=[asdict(task) for task in board.list()]
+        request('owned',sid,'token-a');request('foreign',sid,'token-b');request('missing','missing','token-a');request('unauthenticated',sid,'')
+    return {'cases':cases,'tools':tool_steps,'schemas':schemas,'metadata':[{'name':name,'readonly':registry.get(name).readonly,'risk':registry.get(name).risk,'capabilities':sorted(registry.get(name).capabilities)} for name in registry.names()],
+            'http':{'seed':seed,'cases':http_cases}}
+
+
 def _webui_contracts(scratch: Path) -> dict:
     """Actual public browser shells, protected data and immutable asset identities."""
     import hashlib
@@ -2705,6 +2829,7 @@ def _snapshot() -> dict[str, bytes]:
         trajectory_contracts = _trajectory_contracts(Path(scratch) / "trajectory")
         trace_view_contracts = _trace_view_contracts(Path(scratch) / "trace-view")
         webui_contracts = _webui_contracts(Path(scratch) / "webui")
+        task_contracts = _task_contracts(Path(scratch) / "tasks")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2752,6 +2877,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-trajectory.json": _json_bytes(trajectory_contracts),
         "python-trace-view.json": _json_bytes(trace_view_contracts),
         "python-webui.json": _json_bytes(webui_contracts),
+        "python-tasks.json": _json_bytes(task_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

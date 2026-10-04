@@ -371,7 +371,7 @@
       "id": "goResources",
       "type": "backend",
       "label": "Session Resources",
-      "sublabel": "todos / skills / questions / delegation",
+      "sublabel": "core resources / optional task graph",
       "pos": [
         1920,
         1540
@@ -380,7 +380,7 @@
         280,
         76
       ],
-      "tag": "bound session + owner"
+      "tag": "bound session / graph tools opt-in"
     },
     {
       "id": "goContext",
@@ -1192,7 +1192,7 @@
         "Todo reminder counters survive user turns; durable steering, restore and remaining context integrations remain open",
         "Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records",
         "Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending",
-        "Go HTTP handler admits one principal, twenty-two route operations and masked JSON/SSE data; optional UI APIs and full posture remain open",
+        "Go HTTP handler admits one principal, twenty-three route operations and masked JSON/SSE data; optional UI APIs and full posture remain open",
         "Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks",
         "HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls",
         "Fork copies completed paired history into fresh scratch; typed lineage and source events are process-local, first-turn persistence awaits SQLite",
@@ -1211,7 +1211,9 @@
         "Owned HTML reads use the eight-MiB source ceiling. The offline CLI renders exports or session chronology to 0600 files; no HTTP principal or restore authority is invented",
         "Filtered VisitRecords yields detached wire bytes without client-held append locks; limit counts yielded records and may scan the whole file",
         "Go entry also embeds public console/UI shells from the Python source: no static mount or runtime checkout, while data requests retain authentication",
-        "Browser core create/send/tool/final/trajectory flows are verified; optional Tasks/Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark/Audit pane APIs remain pending"
+        "Go Resources aggregates explicit TaskTools: five typed graph tools, masked atomic workspace records, dependency gates and exclusive owner markers; comprehensive feature activation remains unsupported",
+        "Owned Tasks HTTP reads admit session ownership before fresh store access and do not consume claims. Orphan markers report for operator repair; no leases or host ACLs",
+        "Browser core create/send/tool/final/trajectory flows are verified; optional Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark/Audit pane APIs remain pending"
       ]
     }
   ]

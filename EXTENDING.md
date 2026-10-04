@@ -1170,6 +1170,25 @@ purge runs after manager drain. File recording has no session-restoration author
 file-size checks before Build. The standalone traceview CLI is an operator reader,
 with no synthetic HTTP principal. Original CSS and filter JS are embedded.
 
+### Go persistent task graph seam
+
+`RuntimeConfig.TaskTools` and `ManagerServices.TaskTools` explicitly install
+create_task/list_tasks/get_task/claim_task/complete_task, preserving the ten
+base tools and the single bound execution gate. The task store is initialized
+lazily after permission/context checks, with the runtime's credential projection.
+Task owners are agent labels; HTTP principals control access to the workspace,
+which is a separate ownership boundary. Manager forks retain activation and
+start with a new scratch board. Custom role policies can explicitly select the
+otherwise unclassified optional tools; fresh child handlers bind their own state.
+
+`tasks.New(Config)` is also an operator library capability. It accepts a concrete
+workspace and text masker; shared stores coordinate in process through bounded
+striped locks and arbitrate claims across processes through exclusive markers.
+It does not confine a host-edited `.tasks` symlink or provide a process lease.
+Structured HTTP reads use a fresh store after session ownership admission; an
+empty board may create its directory, matching Python. Readers never complete
+or consume tasks. Diagnostics retain 50 distinct messages and occurrence counts.
+
 ## 9. Serving a customized fleet
 
 Build your `SessionManager` with all the seams above, then hand it to the app
@@ -1200,7 +1219,7 @@ and `manager.Stop`. Alternatively, `config.Load` and `launcher.New` compose the
 supported process-local services; `App.Serve(ctx, listener)` owns the listener and
 joins HTTP/manager shutdown on cancellation. The application still calls `App.Stop`
 when listener acquisition or a pre-serve guard fails. `cmd/miniloop` supplies this
-lifecycle and signal handling. Twenty-two method/path operations, mode/steering,
+lifecycle and signal handling. Twenty-three method/path operations, mode/steering,
 process-local SSE and
 embedded public console/UI shells are present. The browser keeps authenticated
 data requests; no host static directory is mounted. Full health posture, optional

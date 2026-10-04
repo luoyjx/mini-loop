@@ -17,12 +17,15 @@ func (field *nullField) UnmarshalJSON(data []byte) error {
 }
 
 type inputNullFields struct {
-	Background     nullField `json:"run_in_background"`
-	ApprovalPrefix nullField `json:"approval_prefix"`
-	Limit          nullField `json:"limit"`
-	Offset         nullField `json:"offset"`
-	AgentType      nullField `json:"agent_type"`
-	Scope          nullField `json:"scope"`
+	TaskDescription  nullField `json:"description"`
+	TaskDependencies nullField `json:"blockedBy"`
+	TaskWorktree     nullField `json:"worktree"`
+	Background       nullField `json:"run_in_background"`
+	ApprovalPrefix   nullField `json:"approval_prefix"`
+	Limit            nullField `json:"limit"`
+	Offset           nullField `json:"offset"`
+	AgentType        nullField `json:"agent_type"`
+	Scope            nullField `json:"scope"`
 }
 
 // wireOptional is used only in concretely instantiated encoding boundary structs.
@@ -61,6 +64,14 @@ func (input ToolInput) marshalOptionalJSON() ([]byte, error) {
 			Prompt    string                   `json:"prompt"`
 			AgentType *wireOptional[AgentType] `json:"agent_type,omitempty"`
 		}{v.Prompt, optionalWire(v.AgentType, input.nulls.AgentType)})
+	case ToolCreateTask:
+		v := input.createTask
+		return json.Marshal(struct {
+			Subject     string                  `json:"subject"`
+			Description *wireOptional[string]   `json:"description,omitempty"`
+			BlockedBy   *wireOptional[[]string] `json:"blockedBy,omitempty"`
+			Worktree    *wireOptional[string]   `json:"worktree,omitempty"`
+		}{v.Subject, optionalWire(v.Description, input.nulls.TaskDescription), optionalWire(v.BlockedBy, input.nulls.TaskDependencies), optionalWire(v.Worktree, input.nulls.TaskWorktree)})
 	case ToolLoadSkill:
 		v := input.loadSkill
 		return json.Marshal(struct {

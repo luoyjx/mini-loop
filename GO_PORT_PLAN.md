@@ -100,7 +100,7 @@ Record its parity evidence and remaining gaps before checking it off.
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
-      twenty-two HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
+      twenty-three HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
       typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
       per-run file recording and owner-scoped read/export implemented;
       typed HTML ledger, offline traceview CLI and filtered record visitor implemented;
@@ -111,7 +111,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; other groups remain)
 - [ ] G7 differential and release audit
 
 ## 2026-10-02 checkpoint
@@ -2238,3 +2238,81 @@ The default Null-store Transcript response remains source-equivalent, not durabl
   `e63543d514696941af899e0261fb4aedab07db5182a8b74a93ee5608440dca1d`
   (667,925 bytes). Architecture visual review remains skipped due the previously
   denied local HTML access; product-page browser inspection is separate evidence.
+
+
+## 2026-10-04 persistent task graph slice
+
+Reviewed base: `b5eb2f1`. Previous turn made authoritative implementation progress.
+This advances G0/G2/G3/G6; G0–G7 remain open.
+
+### Implementation and actual source boundary
+
+- `go/tasks` has named Task/ID/Owner/Status/Diagnostics values, dependency readiness,
+  create/save/load/list/render/runnable/claim/complete/worktree binding operations.
+  Unknown status/malformed open dataclass coercions are rejected at wire admission.
+- Subject/description caps, Unicode previews, first-to-last field JSON ordering,
+  structural credential masking, same-directory atomic replacement, file fsync and
+  best-effort directory sync match source. Modes follow umask. Go adds a 64 MiB
+  read cap; save also uses the existing bounded recording projection. No dependency.
+- Process-local coordination uses 32 striped root locks rather than an unbounded
+  root-lock map. Exclusive `.owner` creation is the cross-process claim authority.
+  Crash-window markers remain, report the holder/operator path and never authorize
+  takeover. Completed state lands before marker removal; no leases or general
+  cross-process serialization are claimed.
+- Render scans all rows for missing dependencies, keeps the 50-row tail and previews
+  subjects at 200 characters. Complete task data remains addressable. Diagnostics
+  retain 50 distinct messages with occurrence/eviction counts; files are not pruned.
+- Named closed protocol variants, cloning, optional-null identity, canonical hashes
+  and input masking cover the five graph tools. Description null is rejected as a
+  non-string wire variant; dependencies/worktree null keep source default behavior.
+- Explicit `RuntimeConfig.TaskTools` / `ManagerServices.TaskTools` opt-in installs
+  five tools through the existing handler/gate. Readonly refusal precedes directory
+  creation; task ownership uses the agent label, not an invented HTTP actor. Manager
+  sessions get separate boards; forks retain activation and start fresh. Comprehensive
+  `MINILOOP_FEATURES` remains unsupported and the ten defaults stay unchanged.
+- A twenty-third operation, GET `/sessions/{id}/tasks`, admits the owner before
+  opening the fresh workspace store. It lists typed rows without descriptions and
+  never consumes claim state. Like source, an empty read can create the directory;
+  the file store is an operator capability, not a host symlink sandbox/ACL.
+- Snapshot 33 executes 53 Python store steps, six actual installed-tool outputs,
+  five schemas/traits and five owner/foreign/missing/empty/unauthenticated HTTP
+  outcomes. Previous 32 snapshots remain unchanged. Real Go subprocess contention
+  admits one claimant and spent-marker tests prove completed work cannot reopen.
+
+### Remaining work
+
+Other optional services and panel APIs, comprehensive feature activation, full health
+posture, SQLite recovery, durable SSE catch-up and full validation semantics remain.
+Persistent task files do not restore a Go session, task runner or process lease.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, and `go test -race ./...`: pass.
+  `cmd/miniloop` built and ran outside the checkout with an isolated fake provider.
+- `.venv/bin/python -m pytest -q`: **2151 passed, 28 skipped, 24 subtests
+  passed in 101.70 s**, with three existing dependency deprecation warnings.
+- Source contract exporter `--check`: 33 files current; source browser assets:
+  four files current. The previous 32 snapshots and Python package modules have
+  no changes. `verify_scans.py` confirms all 19 scanning guards are anchored.
+- Seven selected task guard mutations were caught: credential-field masking,
+  mask-before-serialize, missing dependencies, row cap, subject cap, corrupt-file
+  reporting and exclusive cross-process claims. Full regression ran afterward.
+  `verify_invariants.py` is not applicable: no Python package module changed.
+- Source fixture comparisons cover all 53 store steps, six full installed-tool
+  outputs, five schemas/traits and five HTTP results. Tests also cover typed
+  input cloning/null/canonical/masking boundaries, readonly no-directory refusal,
+  manager activation, owner workspaces, fresh forks and real subprocess claims.
+- The real built-binary browser showed two structured task rows and their owner/
+  dependency states. An independent Go library invocation completed the first
+  task, confirmed the second was runnable and claimed it. Refresh displayed
+  completed/in_progress states. Source UI still labels stored dependency IDs
+  `blocked by` even when the blocker has completed; this source wording is
+  preserved, and the store's readiness/claim evidence is separate.
+  The browser tab was closed and the isolated server exited cleanly after SIGTERM.
+- README outline and `git diff --check`: pass. Archify delivered 9/9 showcase,
+  zero errors/warnings, correction_rounds: 0. Specification SHA-256:
+  `6d6818447cb145b5ea330dbc404bcfaf751d0f23d043f46b52233c6e171f2b35`
+  (28,768 bytes); artifact SHA-256:
+  `5b1ee063dd948c6cf7041f91d12469ca26b297af126ad1f1590348334660c358`
+  (668,366 bytes). Architecture visual review remains skipped due previously
+  denied local HTML access; the actual product-page layout was inspected.

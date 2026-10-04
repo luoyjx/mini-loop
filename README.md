@@ -286,7 +286,8 @@ plus a typed private spill store and masked string-Bash preservation,
 plus default per-run trajectory JSONL recording and owner-scoped list/inspect/export,
 plus the typed HTML ledger, filtered record visitor and independent traceview CLI,
 plus the embedded public development console and full browser shell,
-reviewed **2026-10-04** (Go baseline `2651690` plus the embedded-browser slice).
+plus an optional typed persistent task graph and owned task-board HTTP view,
+reviewed **2026-10-04** (Go baseline `b5eb2f1` plus the persistent-task slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -353,7 +354,7 @@ flowchart LR
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
-        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
+        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional persistent task tools · masked file graph<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
         GoEntry -->|public static documents| GoBrowser
@@ -678,9 +679,9 @@ single-record limit. `VisitRecords` streams detached encoded values with a typed
 query and yielded-record limit; filters may scan the entire file. It holds no
 append lock across a visitor. Offline reads are an operator capability.
 
-`go/httpapi.New` returns a standard `http.Handler` over that manager. Twenty-two method/path
+`go/httpapi.New` returns a standard `http.Handler` over that manager. Twenty-three method/path
 combinations implement basic health, create/list/detail/delete, message/stream/cancel,
-approvals/resolution, mode/steer/fork, events, five trajectory read/view/export operations,
+approvals/resolution, mode/steer/fork, events, the owned task-board view, five trajectory read/view/export operations,
 the public `/` console and `/ui` shell, and the Null-store transcript response. Token/anonymous
 authentication is resolved once; the ten-MiB ingress cap precedes it. An admitted HTTP
 turn remains untrusted, with only the personal-skill capture-source stamp. Completed
@@ -699,9 +700,21 @@ Both browser documents use embedded copies of the Python source HTML/CSS/JS.
 `python/tools/export_go_webui.py --check` verifies the copies; no Python process,
 source checkout, external assets or static directory mount is needed at runtime.
 The UI's existing core session/turn/approval/control/trajectory flows consume the
-typed Go APIs. Optional Tasks/Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark and
+typed Go APIs. Optional Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark and
 Self-audit APIs remain unimplemented, so those panes currently show source error
 states. Serving the complete source shell is not full UI feature parity.
+`go/tasks` is a named file-backed task graph under each workspace's `.tasks`.
+Explicit `RuntimeConfig.TaskTools` / `ManagerServices.TaskTools` install five tools
+through the same bound handler and execution gate; they are off by default and
+are distinct from the default `task` delegation tool. Dependencies gate claims;
+exclusive owner markers arbitrate across processes, and abandoned markers report
+without takeover. Writes mask before escaping, fsync a fresh file, rename beside
+the target and best-effort sync the directory. Rendering retains the last 50
+rows with 200-character subjects and missing-dependency diagnostics. The owned
+HTTP Tasks view checks admission before opening the board and lists structured
+records without consuming claims. File state is workspace-local; no lease,
+automatic stale-claim takeover or session recovery is implied. Comprehensive
+`MINILOOP_FEATURES` activation remains unsupported until the other groups ship.
 Managed controls have a separate lock from model/transcript execution. Library
 `Steer` parks at most 100 inputs, each capped at 16,000 Unicode characters with a
 truncation marker, dropping the oldest. The next round injects one ordered

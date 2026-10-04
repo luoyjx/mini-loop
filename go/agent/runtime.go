@@ -9,6 +9,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/spill"
+	"github.com/luoyjx/mini-loop/go/tasks"
 	"github.com/luoyjx/mini-loop/go/workspace"
 )
 
@@ -51,6 +52,7 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	TaskTools         bool
 	Trajectories      TrajectoryWriter
 	Build             string
 	Spill             spill.Store
@@ -93,6 +95,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	taskStore   *tasks.Store
 	mu          sync.Mutex
 	binding     ToolAuthority
 	todos       *TodoManager
@@ -135,6 +138,15 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolCreateTask, protocol.ToolListTasks, protocol.ToolGetTask, protocol.ToolClaimTask, protocol.ToolCompleteTask:
+		if handler.taskStore == nil {
+			var err error
+			handler.taskStore, err = tasks.New(tasks.Config{Workspace: handler.binding.Workspace, Secrets: handler.session.secrets})
+			if err != nil {
+				return "", err
+			}
+		}
+		return handler.executeTaskBoard(input)
 	case protocol.ToolTask:
 		value, _ := input.Task()
 		role := RoleExplore
@@ -279,6 +291,19 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 			return nil, err
 		}
 		definitions = append(definitions, definition)
+	}
+	if config.TaskTools {
+		for _, schema := range protocol.TaskBoardSchemas() {
+			traits := ToolTraits{Risk: RiskWrite}
+			if schema.Name == protocol.ToolListTasks || schema.Name == protocol.ToolGetTask {
+				traits = ToolTraits{Risk: RiskRead, Readonly: true}
+			}
+			definition, err := NewToolDefinitionWithSchema(schema, traits, handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
+		}
 	}
 	catalog, err := NewToolCatalog(definitions...)
 	if err != nil {

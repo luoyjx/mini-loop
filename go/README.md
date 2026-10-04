@@ -585,6 +585,45 @@ errors propagate. No append lock spans the visitor. Snapshot 31 compares eleven
 actual Python complete HTML pages, exported-file assembly, nine iterator outcomes,
 four HTTP page/error responses and exact CSS/JS hashes. No dependency was added.
 
+### Persistent workspace task graph
+
+`RuntimeConfig.TaskTools: true` or `ManagerServices.TaskTools: true` explicitly
+adds create_task/list_tasks/get_task/claim_task/complete_task to the ten defaults.
+The default `task` is child delegation; these five operate persistent task records.
+The standalone launcher keeps comprehensive `MINILOOP_FEATURES` unsupported.
+Library opt-in does not pretend the full optional bundle is available.
+
+`tasks.New(tasks.Config{Workspace: path, Secrets: masker})` exposes named Task,
+ID/Owner/Status, dependency, worktree and diagnostic records. A board is under
+`.tasks`, initialized lazily by runtime tools. Only unblocked pending tasks can
+be claimed; an exclusive `.owner` file arbitrates between processes. A stale
+marker reports its holder/crash window and is retained for operator inspection.
+Completion writes completed state before removing the spent marker. There is
+no lease, automatic stale-marker takeover or general cross-process write lock.
+
+Writes cap subject/description at 16,000 characters with a notice, mask the
+structure before JSON escaping, fsync a fresh same-directory file and rename,
+then best-effort sync the directory. Creation modes follow the process umask
+like source. Go adds a 64 MiB record-read cap and uses 32 striped process locks.
+List/render still scan the whole board; only display is bounded to 50 tail rows
+and 200-character subjects. Missing dependencies are reported across all rows.
+Diagnostics retain 50 distinct messages with total/eviction counts. Complete
+records remain addressable by ID, and task files are not automatically pruned.
+
+GET `/sessions/{id}/tasks` checks owner before fresh store access and returns
+structured rows without descriptions or consuming claim markers. It works with
+tool opt-in disabled, as Python does. New empty views may create `.tasks`.
+Workspace sharing and operator library access are not host ACLs; host-edited
+parent/symlink paths are not confined by this file store. Scratch deletion still
+removes its board; retained/bound workspaces can reopen files across processes.
+Typed decoding rejects unknown status and malformed non-string inputs; Python's
+open dataclass coercions are not a Go domain contract. No dependency was added.
+
+Snapshot 33 runs 53 source store steps, six actual installed-tool outputs,
+five schemas/traits and five HTTP results. Go tests add real process contention,
+readonly refusal before directory creation, argument cloning/masking/null identity,
+manager/fork activation and fresh workspace isolation.
+
 ### Open the browser console
 
 The standalone binary serves the original Python development console at `/` and
@@ -601,7 +640,7 @@ Refresh and verify the embedded inputs from the repository root:
 ```
 
 Core create/message/SSE/control/approval/trajectory flows have implemented APIs.
-Optional Tasks/Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark/Self-audit
+Optional Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark/Self-audit
 panels still need Go services and currently display the source error states.
 Serving the full interface is not complete UI feature parity. Snapshot 32 compares
 16 Python HTTP outcomes and exact source assets; 37 real JS interaction regressions
@@ -632,9 +671,9 @@ retains that responsibility.
 Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
 to development; Config.FakeLLM is explicit rather than inferred from a provider.
 The basic health response omits full effective posture and source build hashing.
-Twenty-two method/path combinations cover create/list/detail/delete, completed message,
+Twenty-three method/path combinations cover create/list/detail/delete, completed message,
 streamed message, cancel, approval list/resolve, event subscription and Null-store
-transcript, public `/` and `/ui` shells, plus health, mode, steer, fork and five trajectory read/view/export operations. Foreign and missing sessions both return 404; non-streaming
+transcript, public `/` and `/ui` shells, owned Tasks view, plus health, mode, steer, fork and five trajectory read/view/export operations. Foreign and missing sessions both return 404; non-streaming
 messages reject busy turns atomically. Streamed messages queue; disconnect cancels
 that submitted turn or its wait. Observe disconnect only unsubscribes. The event
 wire is a named flat JSON union with sequence IDs and CRLF SSE framing.

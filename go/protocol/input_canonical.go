@@ -66,7 +66,15 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 			Name  string                    `json:"name"`
 			Scope *wireOptional[SkillScope] `json:"scope,omitempty"`
 		}{v.Name, optionalWire(v.Scope, input.nulls.Scope)}, false, compact)
-	case ToolGlob, ToolCompress, ToolAskUser:
+	case ToolCreateTask:
+		v := input.createTask
+		return PythonJSON(struct {
+			BlockedBy   *wireOptional[[]string] `json:"blockedBy,omitempty"`
+			Description *wireOptional[string]   `json:"description,omitempty"`
+			Subject     string                  `json:"subject"`
+			Worktree    *wireOptional[string]   `json:"worktree,omitempty"`
+		}{optionalWire(v.BlockedBy, input.nulls.TaskDependencies), optionalWire(v.Description, input.nulls.TaskDescription), v.Subject, optionalWire(v.Worktree, input.nulls.TaskWorktree)}, false, compact)
+	case ToolGlob, ToolCompress, ToolAskUser, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask:
 		// These payloads already have sorted field order.
 		return PythonJSON(input, false, compact)
 	default:

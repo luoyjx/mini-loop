@@ -8,15 +8,20 @@ import (
 )
 
 const (
-	ToolReadFile  ToolName = "read_file"
-	ToolWriteFile ToolName = "write_file"
-	ToolEditFile  ToolName = "edit_file"
-	ToolGlob      ToolName = "glob"
-	ToolTodoWrite ToolName = "TodoWrite"
-	ToolTask      ToolName = "task"
-	ToolLoadSkill ToolName = "load_skill"
-	ToolCompress  ToolName = "compress"
-	ToolAskUser   ToolName = "ask_user"
+	ToolReadFile     ToolName = "read_file"
+	ToolWriteFile    ToolName = "write_file"
+	ToolEditFile     ToolName = "edit_file"
+	ToolGlob         ToolName = "glob"
+	ToolTodoWrite    ToolName = "TodoWrite"
+	ToolTask         ToolName = "task"
+	ToolLoadSkill    ToolName = "load_skill"
+	ToolCompress     ToolName = "compress"
+	ToolAskUser      ToolName = "ask_user"
+	ToolCreateTask   ToolName = "create_task"
+	ToolListTasks    ToolName = "list_tasks"
+	ToolGetTask      ToolName = "get_task"
+	ToolClaimTask    ToolName = "claim_task"
+	ToolCompleteTask ToolName = "complete_task"
 )
 
 // DefaultToolNames is the complete Python default_registry inventory at the
@@ -109,18 +114,20 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
-	name      ToolName
-	nulls     inputNullFields
-	bash      BashInput
-	readFile  ReadFileInput
-	writeFile WriteFileInput
-	editFile  EditFileInput
-	glob      GlobInput
-	todoWrite TodoWriteInput
-	task      TaskInput
-	loadSkill LoadSkillInput
-	compress  CompressInput
-	askUser   AskUserInput
+	name       ToolName
+	nulls      inputNullFields
+	bash       BashInput
+	readFile   ReadFileInput
+	writeFile  WriteFileInput
+	editFile   EditFileInput
+	glob       GlobInput
+	todoWrite  TodoWriteInput
+	task       TaskInput
+	loadSkill  LoadSkillInput
+	compress   CompressInput
+	askUser    AskUserInput
+	createTask CreateTaskInput
+	taskRef    TaskReferenceInput
 }
 
 func BashToolInput(value BashInput) ToolInput {
@@ -148,6 +155,41 @@ func LoadSkillToolInput(value LoadSkillInput) ToolInput {
 func CompressToolInput() ToolInput { return ToolInput{name: ToolCompress} }
 func AskUserToolInput(value AskUserInput) ToolInput {
 	return ToolInput{name: ToolAskUser, askUser: value}
+}
+
+func CreateTaskToolInput(value CreateTaskInput) ToolInput {
+	return ToolInput{name: ToolCreateTask, createTask: cloneCreateTask(value)}
+}
+func ListTasksToolInput() ToolInput { return ToolInput{name: ToolListTasks} }
+func GetTaskToolInput(value TaskReferenceInput) ToolInput {
+	return ToolInput{name: ToolGetTask, taskRef: value}
+}
+func ClaimTaskToolInput(value TaskReferenceInput) ToolInput {
+	return ToolInput{name: ToolClaimTask, taskRef: value}
+}
+func CompleteTaskToolInput(value TaskReferenceInput) ToolInput {
+	return ToolInput{name: ToolCompleteTask, taskRef: value}
+}
+func (input ToolInput) CreateTask() (CreateTaskInput, bool) {
+	return cloneCreateTask(input.createTask), input.name == ToolCreateTask
+}
+func (input ToolInput) TaskReference() (TaskReferenceInput, bool) {
+	return input.taskRef, input.name == ToolGetTask || input.name == ToolClaimTask || input.name == ToolCompleteTask
+}
+func cloneCreateTask(value CreateTaskInput) CreateTaskInput {
+	if value.Description != nil {
+		v := *value.Description
+		value.Description = &v
+	}
+	if value.BlockedBy != nil {
+		v := append([]string{}, (*value.BlockedBy)...)
+		value.BlockedBy = &v
+	}
+	if value.Worktree != nil {
+		v := *value.Worktree
+		value.Worktree = &v
+	}
+	return value
 }
 
 func (input ToolInput) Name() ToolName { return input.name }
@@ -260,6 +302,8 @@ func (input ToolInput) clone() (result ToolInput) {
 	case ToolTask:
 		value, _ := input.Task()
 		return TaskToolInput(value)
+	case ToolCreateTask:
+		return CreateTaskToolInput(input.createTask)
 	case ToolLoadSkill:
 		value, _ := input.LoadSkill()
 		return LoadSkillToolInput(value)
@@ -271,7 +315,7 @@ func (input ToolInput) clone() (result ToolInput) {
 func (input ToolInput) Validate() error {
 	switch input.name {
 	case ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
-		ToolCompress, ToolAskUser:
+		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask:
 		return nil
 	case ToolTodoWrite:
 		for i, item := range input.todoWrite.Items {
@@ -297,7 +341,7 @@ func (input ToolInput) Validate() error {
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
 	switch input.name {
-	case ToolBash, ToolReadFile, ToolTask, ToolLoadSkill:
+	case ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask:
 		return input.marshalOptionalJSON()
 	}
 	if err := input.Validate(); err != nil {
@@ -322,6 +366,10 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 		return json.Marshal(input.loadSkill)
 	case ToolCompress:
 		return json.Marshal(input.compress)
+	case ToolListTasks:
+		return []byte("{}"), nil
+	case ToolGetTask, ToolClaimTask, ToolCompleteTask:
+		return json.Marshal(input.taskRef)
 	case ToolAskUser:
 		return json.Marshal(input.askUser)
 	default:
@@ -465,6 +513,37 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 			return result, err
 		}
 		result = CompressToolInput()
+	case ToolCreateTask:
+		var wire struct {
+			Subject     *string   `json:"subject"`
+			Description *string   `json:"description"`
+			BlockedBy   *[]string `json:"blockedBy"`
+			Worktree    *string   `json:"worktree"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Subject == nil {
+			return result, errors.New("create_task requires subject")
+		}
+		result = CreateTaskToolInput(CreateTaskInput{*wire.Subject, wire.Description, wire.BlockedBy, wire.Worktree})
+	case ToolListTasks:
+		var wire struct{}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		result = ListTasksToolInput()
+	case ToolGetTask, ToolClaimTask, ToolCompleteTask:
+		var wire struct {
+			TaskID *string `json:"task_id"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.TaskID == nil {
+			return result, errors.New("task tool requires task_id")
+		}
+		result = ToolInput{name: name, taskRef: TaskReferenceInput{*wire.TaskID}}
 	case ToolAskUser:
 		var wire struct {
 			Question *string `json:"question"`
@@ -481,6 +560,9 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	}
 	if err := json.Unmarshal(data, &result.nulls); err != nil {
 		return ToolInput{}, err
+	}
+	if result.name == ToolCreateTask && result.nulls.TaskDescription {
+		return ToolInput{}, errors.New("task description must be a string")
 	}
 	if err := result.Validate(); err != nil {
 		return ToolInput{}, err
