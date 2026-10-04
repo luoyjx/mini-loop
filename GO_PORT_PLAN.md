@@ -100,10 +100,11 @@ Record its parity evidence and remaining gaps before checking it off.
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
-      nineteen HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
+      twenty HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
       typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
       per-run file recording and owner-scoped read/export implemented;
-      UI, full health posture, durable catch-up, trajectory HTML view,
+      typed HTML ledger, offline traceview CLI and filtered record visitor implemented;
+      main console UI, full health posture, durable catch-up,
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
@@ -2097,3 +2098,78 @@ file boundary. Implementation gates and delivery receipts are recorded below.
   in 99.45 s**. The failed first run remains recorded above.
 - `git diff --check`: pass. Python package modules were not changed, so
   verify_invariants is not applicable to the exporter-only change.
+
+
+## 2026-10-04 typed trajectory ledger and reader slice
+
+Reviewed base: `d79ac86`. This advances G0/G3/G5; G0–G7 remain open.
+
+### Implementation and actual source boundary
+
+- `go/traceview` folds recorded wire JSON into named Ledger/Row/Field/Metrics
+  structures. Dynamic JSON remains transient in decoding/formatting; domain rows
+  contain plain inspector strings and concrete scalar fields. Model/tool spans fold
+  by span ID, child agent/depth remain visible, every request shares one numbering
+  space, and only parent agent-turn calls advance parent steps.
+- Unknown events remain visible; reference catalog/system/capability payloads collapse
+  into compact rows with detailed inspectors. Bookkeeping/done mirrors collapse
+  without hiding a final answer. Unclosed spans show in-flight/start markers, never
+  fabricated duration. Usage totals cover every row before the 2000-row tail cap.
+  Source preview/inspector character limits and omission notices are preserved.
+- One escaping boundary covers all supplied HTML text. Embedded CSS/filter JavaScript
+  preserve the actual Python source language, font stack, spacing and light/dark
+  colors. HTML is self-contained. Generation time is explicit for repeatable tests.
+- A twentieth HTTP operation, GET `/trajectories/{id}/view`, checks recorded owner
+  before size/full-document reading, shares the eight-MiB source cap and existing
+  security headers, and applies the configured recording projection before rendering.
+- Independent `cmd/traceview` reads an exported file, trajectory ID or up to 500
+  recent stored session turns in chronological order and writes new HTML at 0600.
+  Flags may follow the target as in argparse. Missing end means interrupted; blank
+  lines are ignored, malformed JSON marks partial, and the last end wins. Existing
+  output modes remain unchanged; writes are not fsynced, as in Python.
+- The offline file reader has no whole-file HTTP size cap. It retains the previously
+  documented Go 64 MiB record limit. Operator-selected reads have no HTTP ownership
+  admission or filesystem sandbox claim. No dependency was added.
+- `TrajectoryReader.VisitRecords` accepts a typed type/limit query and detached
+  encoded bytes at the visitor boundary. Nil types includes headers/ends; empty types
+  yields none. Limits count yielded records, so filters can scan the whole file.
+  Missing/open-unreadable files yield none like Python; cancellation/visitor errors
+  propagate, and no append lock spans callbacks.
+- Source snapshot 31 executes eleven complete HTML scenarios, exported-file assembly,
+  nine iterator outcomes, four real HTTP owner/foreign/invalid/oversized results,
+  and source CSS/JS hashes. Existing thirty snapshots remain unchanged. Tests compare
+  entire rendered HTML byte for byte, not merely the presence of route names.
+
+### Remaining work
+
+Main console UI/browser assets, full health/effective posture, full FastAPI validation,
+SQLite state/lease/approval recovery, durable SSE catch-up and optional integrations
+remain. File evidence and offline ledgers do not restore sessions. Source's open JSON
+coercions for malformed records are not a broad Go domain contract; strict typed
+runtime decoding remains intentional and further wire-variant audit belongs to G7.
+
+### Validation
+
+- `go test ./...`, `go vet ./...` and `go test -race ./...` passed; both
+  `cmd/miniloop` and `cmd/traceview` built successfully.
+- The source exporter regenerated snapshot 31 and its `--check` passed with all
+  31 files current. The previous thirty snapshots and Python package modules have
+  no changes. `verify_scans.py` confirmed all 19 scanning guards are anchored.
+- `verify_guards.py` caught all eight selected trace-view/ownership/reference
+  mutations. Source files were restored before the final export/check and tests.
+- Built binaries ran outside the checkout over real TCP: owned HTML returned 200,
+  a foreign owner returned 404, injection rendered as escaped text, file/session
+  CLI inputs produced new 0600 HTML, and graceful server shutdown exited zero.
+- The actual Go page was visually inspected in the browser. Child nesting and
+  open-span markers remained visible; expanding a tool showed its inspector and
+  searching `compaction_summary` filtered the rows. The browser test server was
+  stopped after verification.
+- Archify regenerated the interactive map from JSON: 9/9 checks, zero errors and
+  zero warnings. The delivered JSON/HTML SHA-256 digests match the saved receipt.
+  Architecture-map visual inspection remains unperformed because local HTML
+  access was denied; the independently allowed product-page inspection above is
+  separate evidence.
+- `.venv/bin/python -m pytest -q`: **2151 passed, 28 skipped, 24 subtests
+  passed in 81.97 s**, with three existing dependency deprecation warnings.
+- `git diff --check` passed and the README outline was verified.
+  `verify_invariants.py` is not applicable: no Python package module changed.

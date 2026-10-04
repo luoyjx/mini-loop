@@ -3,6 +3,7 @@ package httpapi
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/luoyjx/mini-loop/go/traceview"
 	"net/http"
 	"strconv"
 
@@ -169,4 +170,46 @@ func commaBytes(size int64) string {
 		text = text[:i] + "," + text[i:]
 	}
 	return text
+}
+
+func (s *Server) viewTrajectory(w http.ResponseWriter, r *http.Request) {
+	store := s.trajectoryStore(w)
+	if store == nil {
+		return
+	}
+	id, ok := s.ownedTrajectory(w, r, store)
+	if !ok {
+		return
+	}
+	size, err := store.ByteSize(id)
+	if err != nil {
+		writeJSON(s, w, 404, ErrorResponse{fmt.Sprintf("No trajectory '%s'", id)})
+		return
+	}
+	if size > MaxTrajectoryJSONBytes {
+		writeJSON(s, w, 413, ErrorResponse{fmt.Sprintf("trajectory is %s bytes; too large to render as one page (limit %s). Download it with /export?format=jsonl, which streams.", commaBytes(size), commaBytes(MaxTrajectoryJSONBytes))})
+		return
+	}
+	data, err := store.JSON(id, MaxTrajectoryJSONBytes)
+	if err != nil {
+		if err == trajectory.ErrTooLarge {
+			writeJSON(s, w, 413, ErrorResponse{"trajectory grew beyond JSON limit; use the JSONL export"})
+		} else {
+			writeJSON(s, w, 404, ErrorResponse{fmt.Sprintf("No trajectory '%s'", id)})
+		}
+		return
+	}
+	data, err = recordingJSON(s, json.RawMessage(data))
+	if err != nil {
+		writeJSON(s, w, 500, ErrorResponse{"recording projection failed"})
+		return
+	}
+	ledger, err := traceview.Build(data)
+	if err != nil {
+		writeJSON(s, w, 500, ErrorResponse{"trajectory view could not be rendered"})
+		return
+	}
+	page := traceview.Render([]traceview.Ledger{ledger}, "mini-loop trace · "+string(id), s.now())
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Write([]byte(page))
 }

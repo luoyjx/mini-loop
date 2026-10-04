@@ -86,7 +86,13 @@ type TrajectoryWriter interface {
 	Finish(TrajectoryID, TrajectoryFinish) error
 	Count(SessionID) (int, error)
 }
+type TrajectoryEventQuery struct {
+	Types []SessionEventKind
+	Limit int
+}
+
 type TrajectoryReader interface {
+	VisitRecords(context.Context, TrajectoryID, TrajectoryEventQuery, func([]byte) error) error
 	List(TrajectoryQuery) ([]TrajectorySummary, error)
 	Summary(TrajectoryID) (TrajectorySummary, error)
 	JSON(TrajectoryID, int64) ([]byte, error)

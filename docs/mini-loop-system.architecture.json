@@ -70,7 +70,7 @@
           "goApprovals",
           "goSecrets"
         ],
-        "note": "Typed startup, private spill and owned per-run JSONL exist. Structured Bash bypasses spill; HTML UI and SQLite restore remain pending."
+        "note": "Typed serving, private spill, owned JSONL and HTML ledgers exist. Structured Bash bypasses spill; main console and SQLite remain pending."
       },
       {
         "id": "personal-skill",
@@ -491,7 +491,7 @@
       "id": "goEntry",
       "type": "backend",
       "label": "Go Startup / HTTP / SSE",
-      "sublabel": "settings / auth / listener / shutdown",
+      "sublabel": "listener / ledger CLI / owned HTML",
       "pos": [
         330,
         800
@@ -500,7 +500,7 @@
         330,
         76
       ],
-      "tag": "process-local sessions / default JSONL"
+      "tag": "server + ledger CLI / source assets"
     }
   ],
   "boundaries": [
@@ -1192,7 +1192,7 @@
         "Todo reminder counters survive user turns; durable steering, restore and remaining context integrations remain open",
         "Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records",
         "Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending",
-        "Go HTTP handler admits one principal, nineteen typed route operations and masked JSON/SSE data; UI, full posture and optional routes remain open",
+        "Go HTTP handler admits one principal, twenty typed route operations and masked JSON/SSE data; UI, full posture and optional routes remain open",
         "Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks",
         "HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls",
         "Fork copies completed paired history into fresh scratch; typed lineage and source events are process-local, first-turn persistence awaits SQLite",
@@ -1206,7 +1206,10 @@
         "Typed ManagerServices/RuntimeConfig spill binding retains credential scope and process tracking; hashed workspace namespaces are grouping, not ACLs. Exclusive private leaves do not confine parent races; no TTL/purge, and shutdown retains evidence",
         "Go SessionManager aggregates the per-run file service: ordered masked full fields stay outside the live backlog; terminal finish precedes live persistence receipts",
         "Four owned trajectory list/inspect/export operations read retained files after deletion/restart; JSON caps eight MiB, JSONL streams without client-held append locks",
-        "Explicit library purge joins writers first; file evidence has no session restore, fsync guarantee, cross-process lease or host ACL. HTML viewer remains pending"
+        "Explicit library purge joins writers first; file evidence has no session restore, fsync guarantee, cross-process lease or host ACL. HTML viewer and operator CLI preserve source CSS/JS and typed rows",
+        "Go entry aggregates the independent traceview CLI/renderer: span pairs, child depth, request numbering, unknown rows, real timing and bounded inspectors",
+        "Owned HTML reads use the eight-MiB source ceiling. The offline CLI renders exports or session chronology to 0600 files; no HTTP principal or restore authority is invented",
+        "Filtered VisitRecords yields detached wire bytes without client-held append locks; limit counts yielded records and may scan the whole file"
       ]
     }
   ]

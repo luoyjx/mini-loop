@@ -2280,6 +2280,94 @@ def _trajectory_contracts(scratch: Path) -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("trajectory.py", "session.py", "agent.py", "server.py")}, "stores":cases, "rounding":[{"input":value, "output":round(value, 3)} for value in (25.12355, -25.12355, 1.2345, -1.2345, 0.0005, -0.0005, 2.675, 1.0625, -1.0625, 0.00001)], "managed":asyncio.run(collect()), "http":{"seed":normalize(seed), "routes":routes}}
 
 
+def _trace_view_contracts(scratch: Path) -> dict:
+    """Execute the existing ledger fold, HTML renderer, file CLI reader and iterator."""
+    import hashlib
+    from unittest.mock import patch
+    from types import SimpleNamespace
+    from mini_loop import trace_view
+    from mini_loop.trajectory import TrajectoryStore
+    scratch.mkdir(parents=True, exist_ok=True)
+    injection = "<script>alert('unsafe')</script>&\"你好🙂"
+    base = {"trajectory_id":"traj_fixture", "session":"session-fixture", "run_index":2,
+            "status":"completed", "started_at":1000.0, "ended_at":1010.0,
+            "duration_ms":10000.0, "input":"inspect " + injection, "output":"done", "error":None,
+            "metrics":{"model_calls":1,"tool_calls":1,"tool_errors":0,"errors":0}, "partial":False}
+    def start(span="m1", seq=1, **values):
+        return {"type":"model_start", "seq":seq,"ts":1000.5,"span_id":span,
+                "purpose":"agent_turn","model":"requested","message_count":2,"tool_count":10,"max_tokens":8000,**values}
+    def end(span="m1", seq=2, **values):
+        return {"type":"model_end","seq":seq,"ts":1001.0,"span_id":span,"status":"completed",
+                "duration_ms":500.0,"stop_reason":"end_turn","usage":{"input_tokens":1234,"output_tokens":12},**values}
+    def tool(span="t1", **values):
+        return {"type":"tool_use","seq":3,"ts":1001.0,"span_id":span,"name":"bash","id":"call-1","input":{"command":"echo " + injection},**values}
+    def result(span="t1", **values):
+        return {"type":"tool_result","seq":4,"ts":1001.25,"span_id":span,"output":injection,"duration_ms":250.0,"error":False,"denied":False,**values}
+    scenarios = [
+        ("complete",[start(),end(served_model="actual",model_output=[{"type":"text","text":injection}]),tool(),result(command_result={"exit_code":0},replayed=True),{"type":"assistant_text","seq":5,"ts":1002.0,"text":injection},{"type":"done","text":"mirrored"},{"type":"trajectory_end"}],{}),
+        ("open",[start(),tool()],{"status":"interrupted","ended_at":None,"duration_ms":None,"output":None,"partial":True}),
+        ("denied",[tool(),result(denied=True)],{}),
+        ("failed",[start(),end(status="error",error=injection),tool(),result(error=True)],{"status":"error","error":injection}),
+        ("nested-requests",[start(),start("child",2,agent="main>explore",depth=1),tool(agent="main>explore",depth=1),start("compact",5,purpose="compaction_summary"),end("child",6),result(),{"type":"steering_delivered","seq":7,"ts":1003.0,"text":injection,"count":2}],{}),
+        ("references",[{"type":"tool_catalog","seq":1,"ts":1000.2,"schemas":[{"name":f"tool_{i}","input_schema":{"type":"object"}} for i in range(40)],"fingerprint":"catalog-hash"},{"type":"system_prompt","seq":2,"ts":1000.3,"hash":"system-hash","text":"You are an agent. "*200},{"type":"capability_plan","seq":3,"ts":1000.4,"permission_mode":"auto","sandbox_confined":False,"fingerprint":"plan-hash"}],{}),
+        ("unknown-and-orphans",[{"type":"future-event","seq":1,"ts":1000.5,"nested":{"secret":injection},"flag":True},end("missing"),result("missing"),{"type":"done","seq":5,"text":injection},{"type":"compact","seq":6,"kind":"failed","messages_removed":12}],{"output":None}),
+        ("unicode-caps",[{"type":"assistant_text","seq":1,"ts":1001.0,"text":"你好🙂\x1c"*6000}],{}),
+        ("tail-cap",[start(),end(),start("m2",3),end("m2",4),*[{"type":"assistant_text","seq":i+10,"ts":1002.0+i/1000,"text":f"row {i}"} for i in range(2010)]],{}),
+        ("numeric-and-whitespace",[{"type":"future-number","seq":9007199254740993,"ts":1000.0,"values":[1000000.0,1e-5,1e16,-0.0,1.234567890123456],"text":"a\x1cb\x1dc\x1ed\x1ff"}],{}),
+        ("empty-and-null",[{"type":"model_start","span_id":"m1"},{"type":"model_end","span_id":"m1"},{"type":"tool_use","span_id":"t1"},{"type":"tool_result","span_id":"t1"},{"type":None}],{"input":None,"output":None,"metrics":{"input_tokens":999,"output_tokens":999}}),
+    ]
+    cases=[]
+    for name,events,over in scenarios:
+        # The identical serialized input preserves object key order for both renderers.
+        document=json.loads(json.dumps({**base,"events":events,**over},ensure_ascii=False,sort_keys=True))
+        ledger=trace_view.build_ledger(document)
+        with patch("mini_loop.trace_view.time.strftime",return_value="2000-01-02 03:04:05"):
+            page=trace_view.render_html([ledger],title="mini-loop trace · fixture")
+        cases.append({"name":name,"document":document,"page":page,
+                      "row_count":len(ledger["rows"]),"omitted":ledger["omitted"],"metrics":ledger["metrics"],
+                      "kinds":[row["kind"] for row in ledger["rows"]],"ended_at":ledger["ended_at"]})
+    raw='\n'.join(json.dumps(record,ensure_ascii=False) for record in [
+        {"record_type":"trajectory_start","trajectory_id":"traj_fixture","session":"session-fixture","run_index":1,"started_at":1000.0,"input":injection},
+        {"record_type":"event",**start()}, {"record_type":"event",**end()},
+        {"record_type":"event","type":"assistant_text","seq":3,"ts":1001.5,"text":injection},
+        {"record_type":"trajectory_end","status":"completed","ended_at":1002.0,"output":"final","duration_ms":2000.0,"metrics":{"model_calls":1}},
+        {"record_type":"trajectory_end","status":"cancelled","ended_at":1003.0,"output":"last-end","duration_ms":3000.0,"metrics":{"model_calls":1}},
+    ])+'\n\n{"broken":\n'
+    exported=scratch/"copied.jsonl";exported.write_text(raw)
+    assembled=trace_view.assemble_file(exported)
+    with patch("mini_loop.trace_view.time.strftime",return_value="2000-01-02 03:04:05"):
+        file_page=trace_view.render_html([trace_view.build_ledger(assembled)],title="mini-loop trace · fixture")
+    store=TrajectoryStore(scratch/"iterator")
+    with patch("mini_loop.trajectory.uuid.uuid4",return_value=SimpleNamespace(hex="a"*32)), patch("mini_loop.trajectory.time.time",return_value=1000.0):
+        tid=store.start(session_id="session-fixture",run_index=1,input_text="input")
+    for event in ({"type":"model_start","seq":1},{"type":"tool_use","seq":2},{"type":"assistant_text","seq":3}):store.append(tid,event)
+    with store._path(tid).open("a") as handle:handle.write('{"broken":\n')
+    iterator=[]
+    for types,limit in ((None,10), (None,2), ([],10), (["model_start","assistant_text"],10), (["tool_use"],1), (["missing"],1), ([""],10), (None,0), (None,-1)):
+        iterator.append({"types":types,"limit":limit,"records":list(store.iter_events(tid,types=None if types is None else set(types),limit=limit))})
+    from fastapi.testclient import TestClient
+    from mini_loop import Settings, SessionManager
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.server import create_app
+    cfg=Settings(fake_llm=True,trajectory_enabled=True,workspace_root=scratch/"http-ws",trajectory_root=scratch/"http-traces")
+    manager=SessionManager(cfg,FakeAsyncAnthropic())
+    with patch("mini_loop.trajectory.uuid.uuid4",return_value=SimpleNamespace(hex="c"*32)), patch("mini_loop.trajectory.time.time",return_value=1000.0):
+        http_id=manager.trajectories.start(session_id="session-fixture",run_index=1,owner="alice",input_text=injection)
+    for event in scenarios[0][1]: manager.trajectories.append(http_id,event)
+    with patch("mini_loop.trajectory.time.time",return_value=1010.0): manager.trajectories.finish(http_id,status="completed",output="done",duration_ms=10000.0)
+    http_seed=manager.trajectories.raw(http_id)
+    http_cases=[]
+    with patch.dict(os.environ,{"MINILOOP_API_TOKENS":"alice:token-a,bob:token-b","MINILOOP_API_TOKEN":""}), patch("mini_loop.trace_view.time.strftime",return_value="2000-01-02 03:04:05"):
+        with TestClient(create_app(settings=cfg,manager=manager)) as client:
+            for name,path,token in (("owner",f"/trajectories/{http_id}/view","token-a"),("foreign",f"/trajectories/{http_id}/view","token-b"),("invalid","/trajectories/traj_bad/view","token-a")):
+                response=client.get(path,headers={"Authorization":"Bearer "+token})
+                http_cases.append({"name":name,"path":path,"token":token,"status":response.status_code,"body":response.text,"content_type":response.headers.get("content-type"),"csp":response.headers.get("content-security-policy")})
+            with manager.trajectories._path(http_id).open("a") as handle: handle.write("x"*8388608+"\n")
+            response=client.get(f"/trajectories/{http_id}/view",headers={"Authorization":"Bearer token-a"})
+            http_cases.append({"name":"oversized","path":f"/trajectories/{http_id}/view","token":"token-a","status":response.status_code,"body":response.text,"content_type":response.headers.get("content-type"),"csp":response.headers.get("content-security-policy")})
+    return {"source_sha256":{name:hashlib.sha256((REPO_ROOT/"python/mini_loop"/name).read_bytes()).hexdigest() for name in ("trace_view.py","trajectory.py","server.py")},"css_sha256":hashlib.sha256(trace_view._CSS.encode()).hexdigest(),"js_sha256":hashlib.sha256(trace_view._FILTER_JS.encode()).hexdigest(),"cases":cases,"file":{"raw":raw,"page":file_page},"iterator":{"id":tid,"raw":store.raw(tid),"cases":iterator},"http":{"id":http_id,"seed":http_seed,"cases":http_cases}}
+
+
 def _spill_contracts(scratch: Path) -> dict:
     """Pin actual private-store behavior and both Bash projection entry points."""
     import asyncio
@@ -2567,6 +2655,7 @@ def _snapshot() -> dict[str, bytes]:
         configuration_contracts = _configuration_contracts(Path(scratch) / "config")
         spill_contracts = _spill_contracts(Path(scratch) / "spill")
         trajectory_contracts = _trajectory_contracts(Path(scratch) / "trajectory")
+        trace_view_contracts = _trace_view_contracts(Path(scratch) / "trace-view")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2612,6 +2701,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-configuration.json": _json_bytes(configuration_contracts),
         "python-spill.json": _json_bytes(spill_contracts),
         "python-trajectory.json": _json_bytes(trajectory_contracts),
+        "python-trace-view.json": _json_bytes(trace_view_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

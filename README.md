@@ -284,7 +284,8 @@ plus captured stream-progress settings and stateful signed fake-model calls,
 plus typed environment settings, embedded default skills and a standalone HTTP launcher,
 plus a typed private spill store and masked string-Bash preservation,
 plus default per-run trajectory JSONL recording and owner-scoped list/inspect/export,
-reviewed **2026-10-04** (Go baseline `097ada3` plus the trajectory slice).
+plus the typed HTML ledger, filtered record visitor and independent traceview CLI,
+reviewed **2026-10-04** (Go baseline `d79ac86` plus the trace-view slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -340,6 +341,8 @@ flowchart LR
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
+        GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
+        GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
@@ -359,6 +362,9 @@ flowchart LR
         GoContext --> GoArchives
         GoManaged -->|start / ordered capture / finish| GoTraces
         GoEntry -. owner-scoped list / inspect / export .-> GoTraces
+        GoEntry -->|owned bounded document| GoTraceView
+        GoTraceCLI -->|operator read| GoTraces
+        GoTraceCLI --> GoTraceView
         GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
         GoGate --> GoResources
@@ -656,11 +662,21 @@ Python. The store uses 32 process-local striped locks and adds a 64 MiB single-r
 limit. Append close is not an fsync guarantee, locks do not coordinate processes,
 and filenames/owner fields are not a host filesystem sandbox or ACL. Files survive
 restart, but do not restore transcripts, leases or durable SSE cursors. The Python
-HTML trajectory viewer and event iterator remain unported.
+HTML ledger is available at `/trajectories/{id}/view`, after the same owner and
+eight-MiB checks. The independent `go/cmd/traceview` renders an exported file,
+trajectory ID or recorded session to a self-contained 0600 HTML file. Its typed
+rows fold span pairs, preserve child depth/request numbering and retain unknown
+events as inspector text; unclosed spans have no invented duration. Totals cover
+all rows before the 2000-row tail cap; previews and inspectors retain Python
+character caps. Embedded CSS/filter JS match the source language and typography.
+The file CLI has no whole-file eight-MiB cap; its reader retains Go's 64 MiB
+single-record limit. `VisitRecords` streams detached encoded values with a typed
+query and yielded-record limit; filters may scan the entire file. It holds no
+append lock across a visitor. Offline reads are an operator capability.
 
-`go/httpapi.New` returns a standard `http.Handler` over that manager. Nineteen method/path
+`go/httpapi.New` returns a standard `http.Handler` over that manager. Twenty method/path
 combinations implement basic health, create/list/detail/delete, message/stream/cancel,
-approvals/resolution, mode/steer/fork, events, four trajectory read/export operations,
+approvals/resolution, mode/steer/fork, events, five trajectory read/view/export operations,
 and the Null-store transcript response. Token/anonymous
 authentication is resolved once; the ten-MiB ingress cap precedes it. An admitted HTTP
 turn remains untrusted, with only the personal-skill capture-source stamp. Completed
@@ -673,7 +689,7 @@ model history; encoder failures return no raw fallback. These are process-local 
 services: the embedding application owns listening/shutdown and must call
 `RefuseOpenBind` before listening. The standalone launcher supplies that ownership
 and additionally checks its actual listener. UI, full health posture, durable
-catch-up, trajectory HTML view or optional fleet services remain pending. Full
+catch-up or optional fleet services remain pending. Full
 FastAPI validation detail/coercion parity remains open. Durable restoration is pending.
 Managed controls have a separate lock from model/transcript execution. Library
 `Steer` parks at most 100 inputs, each capped at 16,000 Unicode characters with a
@@ -700,7 +716,8 @@ cancellation boundaries can fork. Go forks remain process-local; Python with a r
 StateStore also flushes the fork before its first turn, which remains G5 work here.
 The interactive map folds ManagedSession into the Go SessionManager
 node together with its private trajectory file service, folds the launcher into
-Go HTTP / SSE, and folds controls into Go Session. Raw
+Go HTTP / SSE together with the independent ledger CLI/renderer, and folds
+controls into Go Session. Raw
 child sessions emit core spans and text without
 outer status/done events. Transcript replacement increments event epochs, including
 with no state store. Tool failures and denials retain their flags in telemetry;

@@ -28,6 +28,7 @@ func (s *Server) register(path string, handlers map[string]http.HandlerFunc) {
 	})
 }
 func (s *Server) routes() {
+	s.register("/trajectories/{trajectory_id}/view", map[string]http.HandlerFunc{"GET": s.viewTrajectory})
 	s.register("/sessions/{session_id}/trajectories", map[string]http.HandlerFunc{"GET": s.listTrajectories})
 	s.register("/trajectories", map[string]http.HandlerFunc{"GET": s.listTrajectories})
 	s.register("/trajectories/{trajectory_id}", map[string]http.HandlerFunc{"GET": s.getTrajectory})

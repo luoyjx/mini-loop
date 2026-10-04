@@ -468,7 +468,7 @@ SIGINT/SIGTERM cancel HTTP request contexts and manager-owned background turns;
 shutdown joins the HTTP server and manager under a ten-second independent timeout,
 then closes the owned provider transport. Header reads are limited to five seconds,
 idle connections to sixty seconds and headers to one MiB; no global write timeout
-cuts off model calls or SSE. This is process-local serving, with UI, trajectory HTML view,
+cuts off model calls or SSE. This is process-local serving, with the main console UI,
 session restart/SQLite and optional fleet routes still pending.
 
 The 28th source snapshot compares 64 actual Python Settings outcomes and the default
@@ -541,11 +541,49 @@ New roots use 0700 and files 0600; reused modes match Python. There are 32 proce
 striped locks, a Go-specific 64 MiB record cap, and no file fsync or process lease.
 Evidence persistence does not provide session restore or durable event catch-up.
 The store retains at most 50 distinct diagnostic messages with occurrence/eviction
-counts. The HTML viewer and filtered event iterator remain pending. The thirtieth
+counts. The HTML viewer and filtered record visitor are implemented below. The thirtieth
 source snapshot covers eight source files, seven managed cases, sixteen HTTP outcomes
 and ten duration rounding boundaries. Tests add concurrent appends, masking, full
 versus live text bounds, terminal publication ordering, stream failure, active purge,
 JSON refusal, retained owner reads and default launcher activation. No dependency added.
+
+### Inspect a trajectory as an HTML ledger
+
+GET `/trajectories/{id}/view` returns the existing Python ledger design as a
+self-contained page. Owner checks precede file size and full JSON reading; the
+page shares the eight-MiB source limit and response security headers. Every input,
+output, label and inspector field crosses the same escaping boundary. Source CSS
+and filter JS are embedded without translating labels or substituting typography.
+
+`traceview.Build` returns named Ledger/Row/Field/Metrics values; encoded JSON remains
+transient at decoding. Span pairs fold once; child depth/agent labels remain visible,
+request numbers cover normal and compaction calls, and parent step numbering excludes
+child calls. Unknown events render generically. Reference payloads live in inspectors.
+Unclosed spans show start markers and `in flight`. Totals are computed before keeping
+the last 2000 rows; previews use 240 characters and inspector fields 20,000, with
+explicit omission markers. Render accepts an explicit generation timestamp.
+
+The offline CLI accepts an export file, trajectory ID or recorded session (up to
+500 recent turns rendered chronologically), with flags before or after the target:
+
+```sh
+go run ./cmd/traceview /path/to/export.jsonl -o /tmp/run.trace.html
+go run ./cmd/traceview SESSION_ID --root /path/to/.trajectories --output /tmp/session.trace.html
+```
+
+New output files use 0600; existing output modes remain unchanged like Python.
+Missing file end records mean interrupted; malformed JSON marks partial, blank lines
+are ignored and the last end wins. Operator-selected files have no whole-file HTTP
+size cap, but retain the Go store's 64 MiB per-line limit. Operator reads do not claim
+HTTP ownership admission, filesystem confinement or crash-durable writes.
+
+`TrajectoryReader.VisitRecords(ctx,id,TrajectoryEventQuery,visitor)` streams detached
+wire bytes. Nil Types means all record types (including headers/ends); an empty slice
+means none. Limit counts yielded records, so a filtered query may scan the entire
+file. Missing/unreadable files yield no records as in Python; cancellation and visitor
+errors propagate. No append lock spans the visitor. Snapshot 31 compares eleven
+actual Python complete HTML pages, exported-file assembly, nine iterator outcomes,
+four HTTP page/error responses and exact CSS/JS hashes. No dependency was added.
 
 ### Serve the implemented HTTP slice
 
@@ -572,9 +610,9 @@ retains that responsibility.
 Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
 to development; Config.FakeLLM is explicit rather than inferred from a provider.
 The basic health response omits full effective posture and source build hashing.
-Nineteen method/path combinations cover create/list/detail/delete, completed message,
+Twenty method/path combinations cover create/list/detail/delete, completed message,
 streamed message, cancel, approval list/resolve, event subscription and Null-store
-transcript, plus health, mode, steer, fork and four trajectory read/export operations. Foreign and missing sessions both return 404; non-streaming
+transcript, plus health, mode, steer, fork and five trajectory read/view/export operations. Foreign and missing sessions both return 404; non-streaming
 messages reject busy turns atomically. Streamed messages queue; disconnect cancels
 that submitted turn or its wait. Observe disconnect only unsubscribes. The event
 wire is a named flat JSON union with sequence IDs and CRLF SSE framing.
@@ -592,7 +630,7 @@ disconnect probe was checked separately from that fixture.
 This slice uses process-local manager/backlog/cache/rate state, file-backed trajectories
 and disabled workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
 Python; it does not expose a synthetic durable transcript. Full FastAPI validation
-error arrays/coercions, UI, trajectory HTML view,
+error arrays/coercions, main console UI,
 optional fleet routes, durable SSE gap recovery, SQLite are
 pending. No dependencies were added.
 

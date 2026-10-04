@@ -1145,7 +1145,10 @@ first-turn persistence still awaits a Go session store.
 ### Go trajectory recording seam
 
 `agent.TrajectoryWriter` owns typed Start/Append/Finish/Count operations;
-`TrajectoryReader` owns List/Summary/JSON/ByteSize/Stream/DeleteForSession.
+`TrajectoryReader` owns List/Summary/JSON/ByteSize/Stream/DeleteForSession and
+VisitRecords. The visitor receives detached encoded bytes and a typed type/limit
+query; nil types includes headers/ends, an empty type slice yields none. Its limit
+counts yielded records, not scanned lines; no append lock spans callbacks.
 `TrajectoryStore` combines them for `ManagerServices.Trajectories`.
 `RuntimeConfig.Trajectories` supplies only the writer to ManagedSession; bare core
 sessions and children do not open independent outer recordings. `Build` is explicit
@@ -1162,6 +1165,10 @@ or call blocking Messages; inspection through Info and detached event snapshots 
 safe. Reader ownership enforcement belongs to the HTTP/manager caller; raw library
 store access is an operator capability. Default deletion retains files, and explicit
 purge runs after manager drain. File recording has no session-restoration authority.
+`traceview.Build` decodes wire JSON into named ledger rows and plain inspector strings;
+`Render` applies one HTML escaping boundary. The HTTP view uses recorded-owner and
+file-size checks before Build. The standalone traceview CLI is an operator reader,
+with no synthetic HTTP principal. Original CSS and filter JS are embedded.
 
 ## 9. Serving a customized fleet
 
