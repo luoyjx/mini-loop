@@ -13,6 +13,8 @@ type eventSystemBlock struct {
 }
 
 type eventHeader struct {
+	*TrajectoryStamp
+	*TrajectoryTerminal
 	Type            SessionEventKind `json:"type"`
 	Seq             EventSequence    `json:"seq"`
 	TS              float64          `json:"ts"`
@@ -48,7 +50,7 @@ func marshalEvent[T any](header eventHeader, payload T) ([]byte, error) {
 
 func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 	e := record.Event
-	h := eventHeader{Type: e.kind, Seq: record.Sequence, TS: record.Timestamp, Session: record.SessionID, Epoch: record.TranscriptEpoch, Ephemeral: e.Ephemeral()}
+	h := eventHeader{TrajectoryStamp: record.Trajectory, TrajectoryTerminal: record.Terminal, Type: e.kind, Seq: record.Sequence, TS: record.Timestamp, Session: record.SessionID, Epoch: record.TranscriptEpoch, Ephemeral: e.Ephemeral()}
 	if record.Scope.Label != "" {
 		depth := record.Scope.Depth
 		h.Agent = record.Scope.Label
@@ -57,6 +59,15 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 		h.ParentMessageID = record.Scope.RunContext.Snapshot().ParentMessageID
 	}
 	switch e.kind {
+	case EventTrajectoryStart:
+		return marshalEvent(h, struct {
+			RunIndex int `json:"run_index"`
+		}{e.trajectory.RunIndex})
+	case EventTrajectoryEnd:
+		return marshalEvent(h, struct {
+			Status     TrajectoryStatus `json:"status"`
+			DurationMS float64          `json:"duration_ms"`
+		}{e.trajectory.Status, e.trajectory.DurationMS})
 	case EventSessionForked:
 		return marshalEvent(h, e.sessionForked)
 	case EventSteeringDelivered:

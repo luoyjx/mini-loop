@@ -1,0 +1,1701 @@
+{
+  "http": {
+    "routes": [
+      {
+        "body": [
+          {
+            "build": "fixture-build",
+            "duration_ms": 25.5,
+            "ended_at": 1001.125,
+            "group_id": "<session>",
+            "id": "<trajectory>",
+            "input_preview": "inspect",
+            "metrics": {
+              "errors": 0,
+              "event_count": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "tool_errors": 0
+            },
+            "model": "fixture-model",
+            "owner": "alice",
+            "partial": false,
+            "run_index": 1,
+            "session": "<session>",
+            "started_at": 1000.25,
+            "status": "completed",
+            "trace_id": "<trajectory>",
+            "trajectory_id": "<trajectory>",
+            "workspace": "<workspace>"
+          }
+        ],
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "owner-list",
+        "path": "/trajectories",
+        "status": 200,
+        "token": "token-a"
+      },
+      {
+        "body": [],
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "foreign-list",
+        "path": "/trajectories",
+        "status": 200,
+        "token": "token-b"
+      },
+      {
+        "body": [
+          {
+            "build": "fixture-build",
+            "duration_ms": 25.5,
+            "ended_at": 1001.125,
+            "group_id": "<session>",
+            "id": "<trajectory>",
+            "input_preview": "inspect",
+            "metrics": {
+              "errors": 0,
+              "event_count": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "tool_errors": 0
+            },
+            "model": "fixture-model",
+            "owner": "alice",
+            "partial": false,
+            "run_index": 1,
+            "session": "<session>",
+            "started_at": 1000.25,
+            "status": "completed",
+            "trace_id": "<trajectory>",
+            "trajectory_id": "<trajectory>",
+            "workspace": "<workspace>"
+          }
+        ],
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "session-list",
+        "path": "/sessions/<session>/trajectories",
+        "status": 200,
+        "token": "token-a"
+      },
+      {
+        "body": {
+          "detail": "No session '<session>'"
+        },
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "foreign-session-list",
+        "path": "/sessions/<session>/trajectories",
+        "status": 404,
+        "token": "token-b"
+      },
+      {
+        "body": [
+          {
+            "build": "fixture-build",
+            "duration_ms": 25.5,
+            "ended_at": 1001.125,
+            "group_id": "<session>",
+            "id": "<trajectory>",
+            "input_preview": "inspect",
+            "metrics": {
+              "errors": 0,
+              "event_count": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "tool_errors": 0
+            },
+            "model": "fixture-model",
+            "owner": "alice",
+            "partial": false,
+            "run_index": 1,
+            "session": "<session>",
+            "started_at": 1000.25,
+            "status": "completed",
+            "trace_id": "<trajectory>",
+            "trajectory_id": "<trajectory>",
+            "workspace": "<workspace>"
+          }
+        ],
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "session-filter",
+        "path": "/trajectories?session_id=<session>&limit=0",
+        "status": 200,
+        "token": "token-a"
+      },
+      {
+        "body": {
+          "duration_ms": 25.5,
+          "ended_at": 1001.125,
+          "error": null,
+          "events": [],
+          "group_id": "<session>",
+          "id": "<trajectory>",
+          "input": "inspect",
+          "metadata": {
+            "build": "fixture-build",
+            "model": "fixture-model",
+            "workspace": "<workspace>"
+          },
+          "metrics": {
+            "errors": 0,
+            "event_count": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "tool_errors": 0
+          },
+          "output": "done",
+          "owner": "alice",
+          "partial": false,
+          "run_index": 1,
+          "schema_version": "mini-loop.trajectory.v1",
+          "session": "<session>",
+          "started_at": 1000.25,
+          "status": "completed",
+          "trace_id": "<trajectory>",
+          "trajectory_id": "<trajectory>"
+        },
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "inspect",
+        "path": "/trajectories/<trajectory>",
+        "status": 200,
+        "token": "token-a"
+      },
+      {
+        "body": {
+          "detail": "No such trajectory"
+        },
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "foreign-inspect",
+        "path": "/trajectories/<trajectory>",
+        "status": 404,
+        "token": "token-b"
+      },
+      {
+        "body": {
+          "duration_ms": 25.5,
+          "ended_at": 1001.125,
+          "error": null,
+          "events": [],
+          "group_id": "<session>",
+          "id": "<trajectory>",
+          "input": "inspect",
+          "metadata": {
+            "build": "fixture-build",
+            "model": "fixture-model",
+            "workspace": "<workspace>"
+          },
+          "metrics": {
+            "errors": 0,
+            "event_count": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "tool_errors": 0
+          },
+          "output": "done",
+          "owner": "alice",
+          "partial": false,
+          "run_index": 1,
+          "schema_version": "mini-loop.trajectory.v1",
+          "session": "<session>",
+          "started_at": 1000.25,
+          "status": "completed",
+          "trace_id": "<trajectory>",
+          "trajectory_id": "<trajectory>"
+        },
+        "content_type": "application/json",
+        "disposition": "attachment; filename=\"<trajectory>.json\"",
+        "name": "export-json",
+        "path": "/trajectories/<trajectory>/export",
+        "status": 200,
+        "token": "token-a"
+      },
+      {
+        "body": [
+          {
+            "group_id": "<session>",
+            "input": "inspect",
+            "metadata": {
+              "build": "fixture-build",
+              "model": "fixture-model",
+              "workspace": "<workspace>"
+            },
+            "owner": "alice",
+            "record_type": "trajectory_start",
+            "run_index": 1,
+            "schema_version": "mini-loop.trajectory.v1",
+            "session": "<session>",
+            "started_at": 1000.25,
+            "trace_id": "<trajectory>",
+            "trajectory_id": "<trajectory>"
+          },
+          {
+            "duration_ms": 25.5,
+            "ended_at": 1001.125,
+            "error": null,
+            "group_id": "<session>",
+            "metrics": {
+              "errors": 0,
+              "event_count": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "tool_errors": 0
+            },
+            "output": "done",
+            "owner": "alice",
+            "record_type": "trajectory_end",
+            "session": "<session>",
+            "status": "completed",
+            "trace_id": "<trajectory>",
+            "trajectory_id": "<trajectory>"
+          }
+        ],
+        "content_type": "application/x-ndjson",
+        "disposition": "attachment; filename=\"<trajectory>.jsonl\"",
+        "name": "export-jsonl",
+        "path": "/trajectories/<trajectory>/export?format=jsonl",
+        "status": 200,
+        "token": "token-a"
+      },
+      {
+        "body": {
+          "detail": "No such trajectory"
+        },
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "foreign-export",
+        "path": "/trajectories/<trajectory>/export?format=jsonl",
+        "status": 404,
+        "token": "token-b"
+      },
+      {
+        "body": {
+          "detail": "format must be 'json' or 'jsonl'"
+        },
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "invalid-format",
+        "path": "/trajectories/<trajectory>/export?format=csv",
+        "status": 400,
+        "token": "token-a"
+      },
+      {
+        "body": {
+          "detail": "No trajectory 'traj_bad'"
+        },
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "invalid-id",
+        "path": "/trajectories/traj_bad",
+        "status": 404,
+        "token": "token-a"
+      },
+      {
+        "body": {
+          "duration_ms": 25.5,
+          "ended_at": 1001.125,
+          "error": null,
+          "events": [],
+          "group_id": "<session>",
+          "id": "<trajectory>",
+          "input": "inspect",
+          "metadata": {
+            "build": "fixture-build",
+            "model": "fixture-model",
+            "workspace": "<workspace>"
+          },
+          "metrics": {
+            "errors": 0,
+            "event_count": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "tool_errors": 0
+          },
+          "output": "done",
+          "owner": "alice",
+          "partial": false,
+          "run_index": 1,
+          "schema_version": "mini-loop.trajectory.v1",
+          "session": "<session>",
+          "started_at": 1000.25,
+          "status": "completed",
+          "trace_id": "<trajectory>",
+          "trajectory_id": "<trajectory>"
+        },
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "retained-after-delete",
+        "path": "/trajectories/<trajectory>",
+        "status": 200,
+        "token": "token-a"
+      },
+      {
+        "body": [
+          {
+            "build": "fixture-build",
+            "duration_ms": 25.5,
+            "ended_at": 1001.125,
+            "group_id": "<session>",
+            "id": "<trajectory>",
+            "input_preview": "inspect",
+            "metrics": {
+              "errors": 0,
+              "event_count": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "tool_errors": 0
+            },
+            "model": "fixture-model",
+            "owner": "alice",
+            "partial": false,
+            "run_index": 1,
+            "session": "<session>",
+            "started_at": 1000.25,
+            "status": "completed",
+            "trace_id": "<trajectory>",
+            "trajectory_id": "<trajectory>",
+            "workspace": "<workspace>"
+          }
+        ],
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "retained-list",
+        "path": "/trajectories",
+        "status": 200,
+        "token": "token-a"
+      },
+      {
+        "body": {
+          "duration_ms": 25.5,
+          "ended_at": 1001.125,
+          "error": null,
+          "events": [],
+          "group_id": "<session>",
+          "id": "<trajectory>",
+          "input": "inspect",
+          "metadata": {
+            "build": "fixture-build",
+            "model": "fixture-model",
+            "workspace": "<workspace>"
+          },
+          "metrics": {
+            "errors": 0,
+            "event_count": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "tool_errors": 0
+          },
+          "output": "done",
+          "owner": "alice",
+          "partial": false,
+          "run_index": 1,
+          "schema_version": "mini-loop.trajectory.v1",
+          "session": "<session>",
+          "started_at": 1000.25,
+          "status": "completed",
+          "trace_id": "<trajectory>",
+          "trajectory_id": "<trajectory>"
+        },
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "retained-after-restart",
+        "path": "/trajectories/<trajectory>",
+        "status": 200,
+        "token": "token-a"
+      },
+      {
+        "body": {
+          "detail": "No such trajectory"
+        },
+        "content_type": "application/json",
+        "disposition": null,
+        "name": "foreign-after-restart",
+        "path": "/trajectories/<trajectory>",
+        "status": 404,
+        "token": "token-b"
+      }
+    ],
+    "seed": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"<trajectory>\",\"trace_id\":\"<trajectory>\",\"group_id\":\"<session>\",\"session\":\"<session>\",\"owner\":\"alice\",\"run_index\":1,\"started_at\":1000.25,\"input\":\"inspect\",\"metadata\":{\"model\":\"fixture-model\",\"workspace\":\"<workspace>\",\"build\":\"fixture-build\"}}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"<trajectory>\",\"trace_id\":\"<trajectory>\",\"group_id\":\"<session>\",\"session\":\"<session>\",\"owner\":\"alice\",\"status\":\"completed\",\"ended_at\":1001.125,\"duration_ms\":25.5,\"output\":\"done\",\"error\":null,\"metrics\":{\"event_count\":0,\"model_calls\":0,\"tool_calls\":0,\"tool_errors\":0,\"errors\":0}}\n"
+  },
+  "managed": [
+    {
+      "active": false,
+      "count": 1,
+      "ephemeral_recorded": false,
+      "final": "done",
+      "live_output_chars": 2000,
+      "name": "completed",
+      "owner": "alice",
+      "recorded_types": [
+        "trajectory_start",
+        "status",
+        "tool_catalog",
+        "capability_plan",
+        "system_prompt",
+        "model_start",
+        "model_end",
+        "tool_use",
+        "tool_result",
+        "model_start",
+        "model_end",
+        "assistant_text",
+        "trajectory_end",
+        "done"
+      ],
+      "recording_error": false,
+      "request_count": 2,
+      "request_has_full_result": true,
+      "status": "completed",
+      "stored_output_chars": 6000,
+      "stored_terminal_status": "completed",
+      "terminal_persisted": true,
+      "terminal_status": "completed"
+    },
+    {
+      "active": false,
+      "count": 1,
+      "ephemeral_recorded": false,
+      "final": "[Error] RuntimeError: fixture provider failure",
+      "live_output_chars": null,
+      "name": "provider-error",
+      "owner": "alice",
+      "recorded_types": [
+        "trajectory_start",
+        "status",
+        "tool_catalog",
+        "capability_plan",
+        "system_prompt",
+        "model_start",
+        "recovery",
+        "model_end",
+        "error",
+        "trajectory_end",
+        "done"
+      ],
+      "recording_error": false,
+      "request_count": 1,
+      "request_has_full_result": false,
+      "status": "error",
+      "stored_output_chars": null,
+      "stored_terminal_status": "error",
+      "terminal_persisted": true,
+      "terminal_status": "error"
+    },
+    {
+      "active": false,
+      "count": 1,
+      "ephemeral_recorded": false,
+      "final": null,
+      "live_output_chars": null,
+      "name": "cancelled",
+      "owner": "alice",
+      "recorded_types": [
+        "trajectory_start",
+        "status",
+        "tool_catalog",
+        "capability_plan",
+        "system_prompt",
+        "model_start",
+        "model_end",
+        "trajectory_end",
+        "status"
+      ],
+      "recording_error": false,
+      "request_count": 1,
+      "request_has_full_result": false,
+      "status": "cancelled",
+      "stored_output_chars": null,
+      "stored_terminal_status": "cancelled",
+      "terminal_persisted": true,
+      "terminal_status": "cancelled"
+    },
+    {
+      "active": false,
+      "count": 0,
+      "ephemeral_recorded": false,
+      "final": "done",
+      "live_output_chars": 2000,
+      "name": "disabled",
+      "owner": null,
+      "recorded_types": [],
+      "recording_error": false,
+      "request_count": 0,
+      "request_has_full_result": false,
+      "status": null,
+      "stored_output_chars": null,
+      "stored_terminal_status": null,
+      "terminal_persisted": null,
+      "terminal_status": "disabled"
+    },
+    {
+      "active": false,
+      "count": 0,
+      "ephemeral_recorded": false,
+      "final": "done",
+      "live_output_chars": 2000,
+      "name": "start-failure",
+      "owner": null,
+      "recorded_types": [],
+      "recording_error": true,
+      "request_count": 0,
+      "request_has_full_result": false,
+      "status": null,
+      "stored_output_chars": null,
+      "stored_terminal_status": null,
+      "terminal_persisted": null,
+      "terminal_status": "disabled"
+    },
+    {
+      "active": false,
+      "count": 1,
+      "ephemeral_recorded": false,
+      "final": "done",
+      "live_output_chars": 2000,
+      "name": "append-failure",
+      "owner": "alice",
+      "recorded_types": [],
+      "recording_error": true,
+      "request_count": 0,
+      "request_has_full_result": false,
+      "status": "completed",
+      "stored_output_chars": null,
+      "stored_terminal_status": null,
+      "terminal_persisted": false,
+      "terminal_status": "completed"
+    },
+    {
+      "active": false,
+      "count": 1,
+      "ephemeral_recorded": false,
+      "final": "done",
+      "live_output_chars": 2000,
+      "name": "finish-failure",
+      "owner": "alice",
+      "recorded_types": [
+        "trajectory_start",
+        "status",
+        "tool_catalog",
+        "capability_plan",
+        "system_prompt",
+        "model_start",
+        "model_end",
+        "tool_use",
+        "tool_result",
+        "model_start",
+        "model_end",
+        "assistant_text",
+        "trajectory_end",
+        "done"
+      ],
+      "recording_error": true,
+      "request_count": 2,
+      "request_has_full_result": true,
+      "status": "running",
+      "stored_output_chars": 6000,
+      "stored_terminal_status": "completed",
+      "terminal_persisted": false,
+      "terminal_status": "completed"
+    }
+  ],
+  "rounding": [
+    {
+      "input": 25.12355,
+      "output": 25.124
+    },
+    {
+      "input": -25.12355,
+      "output": -25.124
+    },
+    {
+      "input": 1.2345,
+      "output": 1.234
+    },
+    {
+      "input": -1.2345,
+      "output": -1.234
+    },
+    {
+      "input": 0.0005,
+      "output": 0.001
+    },
+    {
+      "input": -0.0005,
+      "output": -0.001
+    },
+    {
+      "input": 2.675,
+      "output": 2.675
+    },
+    {
+      "input": 1.0625,
+      "output": 1.062
+    },
+    {
+      "input": -1.0625,
+      "output": -1.062
+    },
+    {
+      "input": 1e-05,
+      "output": 0.0
+    }
+  ],
+  "source_sha256": {
+    "agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "server.py": "d24e4a5371b48b0ab95c9f0b6cdf39f121f5684507e40c9426f066d5034cc479",
+    "session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+    "trajectory.py": "27bf501f8869f6bf6533a555c3697bc5a657bc5fee5e0922e98fcee032cdbaa2"
+  },
+  "stores": [
+    {
+      "capture_content": true,
+      "count": 1,
+      "document": {
+        "duration_ms": null,
+        "ended_at": null,
+        "error": null,
+        "events": [
+          {
+            "model_input": {
+              "messages": [
+                {
+                  "content": "private prompt",
+                  "role": "user"
+                }
+              ],
+              "system": "private system"
+            },
+            "record_type": "event",
+            "seq": 1,
+            "session": "session-a",
+            "ts": 11.0,
+            "type": "model_start"
+          },
+          {
+            "input": {
+              "command": "private command"
+            },
+            "name": "bash",
+            "record_type": "event",
+            "seq": 2,
+            "session": "session-a",
+            "ts": 12.0,
+            "type": "tool_use"
+          },
+          {
+            "denied": false,
+            "error": false,
+            "output": "private output",
+            "record_type": "event",
+            "seq": 3,
+            "session": "session-a",
+            "ts": 13.0,
+            "type": "tool_result"
+          },
+          {
+            "denied": true,
+            "error": false,
+            "output": "denied",
+            "record_type": "event",
+            "seq": 4,
+            "session": "session-a",
+            "ts": 14.0,
+            "type": "tool_result"
+          },
+          {
+            "error": "private exception",
+            "record_type": "event",
+            "seq": 5,
+            "session": "session-a",
+            "ts": 15.0,
+            "type": "error"
+          },
+          {
+            "record_type": "event",
+            "seq": 6,
+            "session": "session-a",
+            "text": "private final",
+            "ts": 16.0,
+            "type": "assistant_text"
+          }
+        ],
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂",
+        "metadata": {
+          "build": "fixture-build",
+          "custom": {
+            "content": "private nested"
+          },
+          "model": "fixture-model",
+          "system": "private system",
+          "workspace": "<workspace>"
+        },
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "output": null,
+        "owner": "alice",
+        "partial": true,
+        "run_index": 2,
+        "schema_version": "mini-loop.trajectory.v1",
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "running",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "file_mode": 384,
+      "name": "open",
+      "raw": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"run_index\":2,\"started_at\":1000.25,\"input\":\"你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂\",\"metadata\":{\"model\":\"fixture-model\",\"workspace\":\"<workspace>\",\"build\":\"fixture-build\",\"system\":\"private system\",\"custom\":{\"content\":\"private nested\"}}}\n{\"type\":\"model_start\",\"model_input\":{\"messages\":[{\"role\":\"user\",\"content\":\"private prompt\"}],\"system\":\"private system\"},\"seq\":1,\"ts\":11.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_use\",\"name\":\"bash\",\"input\":{\"command\":\"private command\"},\"seq\":2,\"ts\":12.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"private output\",\"error\":false,\"denied\":false,\"seq\":3,\"ts\":13.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"denied\",\"error\":false,\"denied\":true,\"seq\":4,\"ts\":14.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"error\",\"error\":\"private exception\",\"seq\":5,\"ts\":15.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"assistant_text\",\"text\":\"private final\",\"seq\":6,\"ts\":16.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n",
+      "root_mode": 448,
+      "summary": {
+        "build": "fixture-build",
+        "duration_ms": null,
+        "ended_at": null,
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input_preview": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂…",
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "model": "fixture-model",
+        "owner": "alice",
+        "partial": true,
+        "run_index": 2,
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "running",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "workspace": "<workspace>"
+      }
+    },
+    {
+      "capture_content": true,
+      "count": 1,
+      "document": {
+        "duration_ms": null,
+        "ended_at": null,
+        "error": null,
+        "events": [
+          {
+            "model_input": {
+              "messages": [
+                {
+                  "content": "private prompt",
+                  "role": "user"
+                }
+              ],
+              "system": "private system"
+            },
+            "record_type": "event",
+            "seq": 1,
+            "session": "session-a",
+            "ts": 11.0,
+            "type": "model_start"
+          },
+          {
+            "input": {
+              "command": "private command"
+            },
+            "name": "bash",
+            "record_type": "event",
+            "seq": 2,
+            "session": "session-a",
+            "ts": 12.0,
+            "type": "tool_use"
+          },
+          {
+            "denied": false,
+            "error": false,
+            "output": "private output",
+            "record_type": "event",
+            "seq": 3,
+            "session": "session-a",
+            "ts": 13.0,
+            "type": "tool_result"
+          },
+          {
+            "denied": true,
+            "error": false,
+            "output": "denied",
+            "record_type": "event",
+            "seq": 4,
+            "session": "session-a",
+            "ts": 14.0,
+            "type": "tool_result"
+          },
+          {
+            "error": "private exception",
+            "record_type": "event",
+            "seq": 5,
+            "session": "session-a",
+            "ts": 15.0,
+            "type": "error"
+          },
+          {
+            "record_type": "event",
+            "seq": 6,
+            "session": "session-a",
+            "text": "private final",
+            "ts": 16.0,
+            "type": "assistant_text"
+          }
+        ],
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂",
+        "metadata": {
+          "build": "fixture-build",
+          "custom": {
+            "content": "private nested"
+          },
+          "model": "fixture-model",
+          "system": "private system",
+          "workspace": "<workspace>"
+        },
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "output": null,
+        "owner": "alice",
+        "partial": true,
+        "run_index": 2,
+        "schema_version": "mini-loop.trajectory.v1",
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "interrupted",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "file_mode": 384,
+      "name": "restarted",
+      "raw": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"run_index\":2,\"started_at\":1000.25,\"input\":\"你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂\",\"metadata\":{\"model\":\"fixture-model\",\"workspace\":\"<workspace>\",\"build\":\"fixture-build\",\"system\":\"private system\",\"custom\":{\"content\":\"private nested\"}}}\n{\"type\":\"model_start\",\"model_input\":{\"messages\":[{\"role\":\"user\",\"content\":\"private prompt\"}],\"system\":\"private system\"},\"seq\":1,\"ts\":11.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_use\",\"name\":\"bash\",\"input\":{\"command\":\"private command\"},\"seq\":2,\"ts\":12.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"private output\",\"error\":false,\"denied\":false,\"seq\":3,\"ts\":13.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"denied\",\"error\":false,\"denied\":true,\"seq\":4,\"ts\":14.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"error\",\"error\":\"private exception\",\"seq\":5,\"ts\":15.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"assistant_text\",\"text\":\"private final\",\"seq\":6,\"ts\":16.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n",
+      "root_mode": 448,
+      "summary": {
+        "build": "fixture-build",
+        "duration_ms": null,
+        "ended_at": null,
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input_preview": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂…",
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "model": "fixture-model",
+        "owner": "alice",
+        "partial": true,
+        "run_index": 2,
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "interrupted",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "workspace": "<workspace>"
+      }
+    },
+    {
+      "capture_content": true,
+      "count": 1,
+      "document": {
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "error": null,
+        "events": [
+          {
+            "model_input": {
+              "messages": [
+                {
+                  "content": "private prompt",
+                  "role": "user"
+                }
+              ],
+              "system": "private system"
+            },
+            "record_type": "event",
+            "seq": 1,
+            "session": "session-a",
+            "ts": 11.0,
+            "type": "model_start"
+          },
+          {
+            "input": {
+              "command": "private command"
+            },
+            "name": "bash",
+            "record_type": "event",
+            "seq": 2,
+            "session": "session-a",
+            "ts": 12.0,
+            "type": "tool_use"
+          },
+          {
+            "denied": false,
+            "error": false,
+            "output": "private output",
+            "record_type": "event",
+            "seq": 3,
+            "session": "session-a",
+            "ts": 13.0,
+            "type": "tool_result"
+          },
+          {
+            "denied": true,
+            "error": false,
+            "output": "denied",
+            "record_type": "event",
+            "seq": 4,
+            "session": "session-a",
+            "ts": 14.0,
+            "type": "tool_result"
+          },
+          {
+            "error": "private exception",
+            "record_type": "event",
+            "seq": 5,
+            "session": "session-a",
+            "ts": 15.0,
+            "type": "error"
+          },
+          {
+            "record_type": "event",
+            "seq": 6,
+            "session": "session-a",
+            "text": "private final",
+            "ts": 16.0,
+            "type": "assistant_text"
+          }
+        ],
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂",
+        "metadata": {
+          "build": "fixture-build",
+          "custom": {
+            "content": "private nested"
+          },
+          "model": "fixture-model",
+          "system": "private system",
+          "workspace": "<workspace>"
+        },
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "output": "private final",
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "schema_version": "mini-loop.trajectory.v1",
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "completed",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "file_mode": 384,
+      "name": "completed",
+      "raw": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"run_index\":2,\"started_at\":1000.25,\"input\":\"你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂\",\"metadata\":{\"model\":\"fixture-model\",\"workspace\":\"<workspace>\",\"build\":\"fixture-build\",\"system\":\"private system\",\"custom\":{\"content\":\"private nested\"}}}\n{\"type\":\"model_start\",\"model_input\":{\"messages\":[{\"role\":\"user\",\"content\":\"private prompt\"}],\"system\":\"private system\"},\"seq\":1,\"ts\":11.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_use\",\"name\":\"bash\",\"input\":{\"command\":\"private command\"},\"seq\":2,\"ts\":12.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"private output\",\"error\":false,\"denied\":false,\"seq\":3,\"ts\":13.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"denied\",\"error\":false,\"denied\":true,\"seq\":4,\"ts\":14.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"error\",\"error\":\"private exception\",\"seq\":5,\"ts\":15.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"assistant_text\",\"text\":\"private final\",\"seq\":6,\"ts\":16.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"status\":\"completed\",\"ended_at\":1001.125,\"duration_ms\":25.124,\"output\":\"private final\",\"error\":null,\"metrics\":{\"event_count\":6,\"model_calls\":1,\"tool_calls\":1,\"tool_errors\":1,\"errors\":1}}\n",
+      "root_mode": 448,
+      "summary": {
+        "build": "fixture-build",
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input_preview": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂…",
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "model": "fixture-model",
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "completed",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "workspace": "<workspace>"
+      }
+    },
+    {
+      "capture_content": true,
+      "count": 1,
+      "document": {
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "error": null,
+        "events": [
+          {
+            "model_input": {
+              "messages": [
+                {
+                  "content": "private prompt",
+                  "role": "user"
+                }
+              ],
+              "system": "private system"
+            },
+            "record_type": "event",
+            "seq": 1,
+            "session": "session-a",
+            "ts": 11.0,
+            "type": "model_start"
+          },
+          {
+            "input": {
+              "command": "private command"
+            },
+            "name": "bash",
+            "record_type": "event",
+            "seq": 2,
+            "session": "session-a",
+            "ts": 12.0,
+            "type": "tool_use"
+          },
+          {
+            "denied": false,
+            "error": false,
+            "output": "private output",
+            "record_type": "event",
+            "seq": 3,
+            "session": "session-a",
+            "ts": 13.0,
+            "type": "tool_result"
+          },
+          {
+            "denied": true,
+            "error": false,
+            "output": "denied",
+            "record_type": "event",
+            "seq": 4,
+            "session": "session-a",
+            "ts": 14.0,
+            "type": "tool_result"
+          },
+          {
+            "error": "private exception",
+            "record_type": "event",
+            "seq": 5,
+            "session": "session-a",
+            "ts": 15.0,
+            "type": "error"
+          },
+          {
+            "record_type": "event",
+            "seq": 6,
+            "session": "session-a",
+            "text": "private final",
+            "ts": 16.0,
+            "type": "assistant_text"
+          }
+        ],
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂",
+        "metadata": {
+          "build": "fixture-build",
+          "custom": {
+            "content": "private nested"
+          },
+          "model": "fixture-model",
+          "system": "private system",
+          "workspace": "<workspace>"
+        },
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "output": "private final",
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "schema_version": "mini-loop.trajectory.v1",
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "cancelled",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "file_mode": 384,
+      "name": "cancelled",
+      "raw": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"run_index\":2,\"started_at\":1000.25,\"input\":\"你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂\",\"metadata\":{\"model\":\"fixture-model\",\"workspace\":\"<workspace>\",\"build\":\"fixture-build\",\"system\":\"private system\",\"custom\":{\"content\":\"private nested\"}}}\n{\"type\":\"model_start\",\"model_input\":{\"messages\":[{\"role\":\"user\",\"content\":\"private prompt\"}],\"system\":\"private system\"},\"seq\":1,\"ts\":11.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_use\",\"name\":\"bash\",\"input\":{\"command\":\"private command\"},\"seq\":2,\"ts\":12.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"private output\",\"error\":false,\"denied\":false,\"seq\":3,\"ts\":13.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"denied\",\"error\":false,\"denied\":true,\"seq\":4,\"ts\":14.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"error\",\"error\":\"private exception\",\"seq\":5,\"ts\":15.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"assistant_text\",\"text\":\"private final\",\"seq\":6,\"ts\":16.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"status\":\"cancelled\",\"ended_at\":1001.125,\"duration_ms\":25.124,\"output\":\"private final\",\"error\":null,\"metrics\":{\"event_count\":6,\"model_calls\":1,\"tool_calls\":1,\"tool_errors\":1,\"errors\":1}}\n",
+      "root_mode": 448,
+      "summary": {
+        "build": "fixture-build",
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input_preview": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂…",
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "model": "fixture-model",
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "cancelled",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "workspace": "<workspace>"
+      }
+    },
+    {
+      "capture_content": true,
+      "count": 1,
+      "document": {
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "error": "private error",
+        "events": [
+          {
+            "model_input": {
+              "messages": [
+                {
+                  "content": "private prompt",
+                  "role": "user"
+                }
+              ],
+              "system": "private system"
+            },
+            "record_type": "event",
+            "seq": 1,
+            "session": "session-a",
+            "ts": 11.0,
+            "type": "model_start"
+          },
+          {
+            "input": {
+              "command": "private command"
+            },
+            "name": "bash",
+            "record_type": "event",
+            "seq": 2,
+            "session": "session-a",
+            "ts": 12.0,
+            "type": "tool_use"
+          },
+          {
+            "denied": false,
+            "error": false,
+            "output": "private output",
+            "record_type": "event",
+            "seq": 3,
+            "session": "session-a",
+            "ts": 13.0,
+            "type": "tool_result"
+          },
+          {
+            "denied": true,
+            "error": false,
+            "output": "denied",
+            "record_type": "event",
+            "seq": 4,
+            "session": "session-a",
+            "ts": 14.0,
+            "type": "tool_result"
+          },
+          {
+            "error": "private exception",
+            "record_type": "event",
+            "seq": 5,
+            "session": "session-a",
+            "ts": 15.0,
+            "type": "error"
+          },
+          {
+            "record_type": "event",
+            "seq": 6,
+            "session": "session-a",
+            "text": "private final",
+            "ts": 16.0,
+            "type": "assistant_text"
+          }
+        ],
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂",
+        "metadata": {
+          "build": "fixture-build",
+          "custom": {
+            "content": "private nested"
+          },
+          "model": "fixture-model",
+          "system": "private system",
+          "workspace": "<workspace>"
+        },
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "output": "private final",
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "schema_version": "mini-loop.trajectory.v1",
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "error",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "file_mode": 384,
+      "name": "error",
+      "raw": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"run_index\":2,\"started_at\":1000.25,\"input\":\"你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂\",\"metadata\":{\"model\":\"fixture-model\",\"workspace\":\"<workspace>\",\"build\":\"fixture-build\",\"system\":\"private system\",\"custom\":{\"content\":\"private nested\"}}}\n{\"type\":\"model_start\",\"model_input\":{\"messages\":[{\"role\":\"user\",\"content\":\"private prompt\"}],\"system\":\"private system\"},\"seq\":1,\"ts\":11.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_use\",\"name\":\"bash\",\"input\":{\"command\":\"private command\"},\"seq\":2,\"ts\":12.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"private output\",\"error\":false,\"denied\":false,\"seq\":3,\"ts\":13.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"denied\",\"error\":false,\"denied\":true,\"seq\":4,\"ts\":14.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"error\",\"error\":\"private exception\",\"seq\":5,\"ts\":15.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"assistant_text\",\"text\":\"private final\",\"seq\":6,\"ts\":16.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"status\":\"error\",\"ended_at\":1001.125,\"duration_ms\":25.124,\"output\":\"private final\",\"error\":\"private error\",\"metrics\":{\"event_count\":6,\"model_calls\":1,\"tool_calls\":1,\"tool_errors\":1,\"errors\":1}}\n",
+      "root_mode": 448,
+      "summary": {
+        "build": "fixture-build",
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input_preview": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂…",
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "model": "fixture-model",
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "error",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "workspace": "<workspace>"
+      }
+    },
+    {
+      "capture_content": true,
+      "count": 1,
+      "document": {
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "error": null,
+        "events": [
+          {
+            "model_input": {
+              "messages": [
+                {
+                  "content": "private prompt",
+                  "role": "user"
+                }
+              ],
+              "system": "private system"
+            },
+            "record_type": "event",
+            "seq": 1,
+            "session": "session-a",
+            "ts": 11.0,
+            "type": "model_start"
+          },
+          {
+            "input": {
+              "command": "private command"
+            },
+            "name": "bash",
+            "record_type": "event",
+            "seq": 2,
+            "session": "session-a",
+            "ts": 12.0,
+            "type": "tool_use"
+          },
+          {
+            "denied": false,
+            "error": false,
+            "output": "private output",
+            "record_type": "event",
+            "seq": 3,
+            "session": "session-a",
+            "ts": 13.0,
+            "type": "tool_result"
+          },
+          {
+            "denied": true,
+            "error": false,
+            "output": "denied",
+            "record_type": "event",
+            "seq": 4,
+            "session": "session-a",
+            "ts": 14.0,
+            "type": "tool_result"
+          },
+          {
+            "error": "private exception",
+            "record_type": "event",
+            "seq": 5,
+            "session": "session-a",
+            "ts": 15.0,
+            "type": "error"
+          },
+          {
+            "record_type": "event",
+            "seq": 6,
+            "session": "session-a",
+            "text": "private final",
+            "ts": 16.0,
+            "type": "assistant_text"
+          }
+        ],
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂",
+        "metadata": {
+          "build": "fixture-build",
+          "custom": {
+            "content": "private nested"
+          },
+          "model": "fixture-model",
+          "system": "private system",
+          "workspace": "<workspace>"
+        },
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "output": "private final",
+        "owner": "alice",
+        "partial": true,
+        "run_index": 2,
+        "schema_version": "mini-loop.trajectory.v1",
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "completed",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "file_mode": 384,
+      "name": "malformed-tail",
+      "raw": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"run_index\":2,\"started_at\":1000.25,\"input\":\"你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂\",\"metadata\":{\"model\":\"fixture-model\",\"workspace\":\"<workspace>\",\"build\":\"fixture-build\",\"system\":\"private system\",\"custom\":{\"content\":\"private nested\"}}}\n{\"type\":\"model_start\",\"model_input\":{\"messages\":[{\"role\":\"user\",\"content\":\"private prompt\"}],\"system\":\"private system\"},\"seq\":1,\"ts\":11.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_use\",\"name\":\"bash\",\"input\":{\"command\":\"private command\"},\"seq\":2,\"ts\":12.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"private output\",\"error\":false,\"denied\":false,\"seq\":3,\"ts\":13.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"denied\",\"error\":false,\"denied\":true,\"seq\":4,\"ts\":14.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"error\",\"error\":\"private exception\",\"seq\":5,\"ts\":15.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"assistant_text\",\"text\":\"private final\",\"seq\":6,\"ts\":16.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"status\":\"completed\",\"ended_at\":1001.125,\"duration_ms\":25.124,\"output\":\"private final\",\"error\":null,\"metrics\":{\"event_count\":6,\"model_calls\":1,\"tool_calls\":1,\"tool_errors\":1,\"errors\":1}}\n{\"truncated\":\n",
+      "root_mode": 448,
+      "summary": {
+        "build": "fixture-build",
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input_preview": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂…",
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "model": "fixture-model",
+        "owner": "alice",
+        "partial": true,
+        "run_index": 2,
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "completed",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "workspace": "<workspace>"
+      }
+    },
+    {
+      "capture_content": true,
+      "count": 1,
+      "document": {
+        "duration_ms": 30.25,
+        "ended_at": 1002.5,
+        "error": null,
+        "events": [
+          {
+            "model_input": {
+              "messages": [
+                {
+                  "content": "private prompt",
+                  "role": "user"
+                }
+              ],
+              "system": "private system"
+            },
+            "record_type": "event",
+            "seq": 1,
+            "session": "session-a",
+            "ts": 11.0,
+            "type": "model_start"
+          },
+          {
+            "input": {
+              "command": "private command"
+            },
+            "name": "bash",
+            "record_type": "event",
+            "seq": 2,
+            "session": "session-a",
+            "ts": 12.0,
+            "type": "tool_use"
+          },
+          {
+            "denied": false,
+            "error": false,
+            "output": "private output",
+            "record_type": "event",
+            "seq": 3,
+            "session": "session-a",
+            "ts": 13.0,
+            "type": "tool_result"
+          },
+          {
+            "denied": true,
+            "error": false,
+            "output": "denied",
+            "record_type": "event",
+            "seq": 4,
+            "session": "session-a",
+            "ts": 14.0,
+            "type": "tool_result"
+          },
+          {
+            "error": "private exception",
+            "record_type": "event",
+            "seq": 5,
+            "session": "session-a",
+            "ts": 15.0,
+            "type": "error"
+          },
+          {
+            "record_type": "event",
+            "seq": 6,
+            "session": "session-a",
+            "text": "private final",
+            "ts": 16.0,
+            "type": "assistant_text"
+          }
+        ],
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂",
+        "metadata": {
+          "build": "fixture-build",
+          "custom": {
+            "content": "private nested"
+          },
+          "model": "fixture-model",
+          "system": "private system",
+          "workspace": "<workspace>"
+        },
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "output": null,
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "schema_version": "mini-loop.trajectory.v1",
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "cancelled",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "file_mode": 384,
+      "name": "last-end-wins",
+      "raw": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"run_index\":2,\"started_at\":1000.25,\"input\":\"你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂\",\"metadata\":{\"model\":\"fixture-model\",\"workspace\":\"<workspace>\",\"build\":\"fixture-build\",\"system\":\"private system\",\"custom\":{\"content\":\"private nested\"}}}\n{\"type\":\"model_start\",\"model_input\":{\"messages\":[{\"role\":\"user\",\"content\":\"private prompt\"}],\"system\":\"private system\"},\"seq\":1,\"ts\":11.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_use\",\"name\":\"bash\",\"input\":{\"command\":\"private command\"},\"seq\":2,\"ts\":12.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"private output\",\"error\":false,\"denied\":false,\"seq\":3,\"ts\":13.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"denied\",\"error\":false,\"denied\":true,\"seq\":4,\"ts\":14.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"error\",\"error\":\"private exception\",\"seq\":5,\"ts\":15.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"assistant_text\",\"text\":\"private final\",\"seq\":6,\"ts\":16.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"status\":\"completed\",\"ended_at\":1001.125,\"duration_ms\":25.124,\"output\":\"private final\",\"error\":null,\"metrics\":{\"event_count\":6,\"model_calls\":1,\"tool_calls\":1,\"tool_errors\":1,\"errors\":1}}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"status\":\"cancelled\",\"ended_at\":1002.5,\"duration_ms\":30.25,\"output\":null,\"error\":null,\"metrics\":{\"event_count\":6,\"model_calls\":1,\"tool_calls\":1,\"tool_errors\":1,\"errors\":1}}\n",
+      "root_mode": 448,
+      "summary": {
+        "build": "fixture-build",
+        "duration_ms": 30.25,
+        "ended_at": 1002.5,
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input_preview": "你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂你好🙂…",
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 1
+        },
+        "model": "fixture-model",
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "cancelled",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "workspace": "<workspace>"
+      }
+    },
+    {
+      "capture_content": false,
+      "count": 1,
+      "document": {
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "error": null,
+        "events": [
+          {
+            "model_input": "[redacted: dict, 2 item(s)]",
+            "record_type": "event",
+            "seq": 1,
+            "session": "session-a",
+            "ts": 11.0,
+            "type": "model_start"
+          },
+          {
+            "input": "[redacted: dict, 1 item(s)]",
+            "name": "bash",
+            "record_type": "event",
+            "seq": 2,
+            "session": "session-a",
+            "ts": 12.0,
+            "type": "tool_use"
+          },
+          {
+            "denied": false,
+            "error": "[redacted: bool, 1 item(s)]",
+            "output": "[redacted: 14 chars]",
+            "record_type": "event",
+            "seq": 3,
+            "session": "session-a",
+            "ts": 13.0,
+            "type": "tool_result"
+          },
+          {
+            "denied": true,
+            "error": "[redacted: bool, 1 item(s)]",
+            "output": "[redacted: 6 chars]",
+            "record_type": "event",
+            "seq": 4,
+            "session": "session-a",
+            "ts": 14.0,
+            "type": "tool_result"
+          },
+          {
+            "error": "[redacted: 17 chars]",
+            "record_type": "event",
+            "seq": 5,
+            "session": "session-a",
+            "ts": 15.0,
+            "type": "error"
+          },
+          {
+            "record_type": "event",
+            "seq": 6,
+            "session": "session-a",
+            "text": "[redacted: 13 chars]",
+            "ts": 16.0,
+            "type": "assistant_text"
+          }
+        ],
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input": "[redacted: 165 chars]",
+        "metadata": {
+          "build": "fixture-build",
+          "custom": {
+            "content": "[redacted: 14 chars]"
+          },
+          "model": "fixture-model",
+          "system": "[redacted: 14 chars]",
+          "workspace": "<workspace>"
+        },
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 2
+        },
+        "output": "[redacted: 13 chars]",
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "schema_version": "mini-loop.trajectory.v1",
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "completed",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "file_mode": 384,
+      "name": "redacted",
+      "raw": "{\"record_type\":\"trajectory_start\",\"schema_version\":\"mini-loop.trajectory.v1\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"run_index\":2,\"started_at\":1000.25,\"input\":\"[redacted: 165 chars]\",\"metadata\":{\"model\":\"fixture-model\",\"workspace\":\"<workspace>\",\"build\":\"fixture-build\",\"system\":\"[redacted: 14 chars]\",\"custom\":{\"content\":\"[redacted: 14 chars]\"}}}\n{\"type\":\"model_start\",\"model_input\":\"[redacted: dict, 2 item(s)]\",\"seq\":1,\"ts\":11.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_use\",\"name\":\"bash\",\"input\":\"[redacted: dict, 1 item(s)]\",\"seq\":2,\"ts\":12.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"[redacted: 14 chars]\",\"error\":\"[redacted: bool, 1 item(s)]\",\"denied\":false,\"seq\":3,\"ts\":13.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"tool_result\",\"output\":\"[redacted: 6 chars]\",\"error\":\"[redacted: bool, 1 item(s)]\",\"denied\":true,\"seq\":4,\"ts\":14.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"error\",\"error\":\"[redacted: 17 chars]\",\"seq\":5,\"ts\":15.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"type\":\"assistant_text\",\"text\":\"[redacted: 13 chars]\",\"seq\":6,\"ts\":16.0,\"session\":\"session-a\",\"record_type\":\"event\"}\n{\"record_type\":\"trajectory_end\",\"trajectory_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"trace_id\":\"traj_aaaaaaaaaaaaaaaaaaaaaaaa\",\"group_id\":\"session-a\",\"session\":\"session-a\",\"owner\":\"alice\",\"status\":\"completed\",\"ended_at\":1001.125,\"duration_ms\":25.124,\"output\":\"[redacted: 13 chars]\",\"error\":null,\"metrics\":{\"event_count\":6,\"model_calls\":1,\"tool_calls\":1,\"tool_errors\":2,\"errors\":1}}\n",
+      "root_mode": 448,
+      "summary": {
+        "build": "fixture-build",
+        "duration_ms": 25.124,
+        "ended_at": 1001.125,
+        "group_id": "session-a",
+        "id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "input_preview": "[redacted: 165 chars]",
+        "metrics": {
+          "errors": 1,
+          "event_count": 6,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "tool_errors": 2
+        },
+        "model": "fixture-model",
+        "owner": "alice",
+        "partial": false,
+        "run_index": 2,
+        "session": "session-a",
+        "started_at": 1000.25,
+        "status": "completed",
+        "trace_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "trajectory_id": "traj_aaaaaaaaaaaaaaaaaaaaaaaa",
+        "workspace": "<workspace>"
+      }
+    }
+  ]
+}

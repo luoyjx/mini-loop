@@ -38,14 +38,10 @@ type ApprovalRequest struct {
 	Remember bool             `json:"remember"`
 }
 
-// These fields describe the current disabled trajectory/workflow
-// paths. No synthetic durable transcript or optional service is exposed.
+// Workflow projection remains disabled; trajectory state comes from the manager.
 type SessionInfo struct {
 	agent.SessionInfo
-	ActiveTrajectoryID       *string     `json:"active_trajectory_id"`
-	TrajectoryCount          int         `json:"trajectory_count"`
-	TrajectoryRecordingError *string     `json:"trajectory_recording_error"`
-	Workflows                [0]struct{} `json:"workflows"`
+	Workflows [0]struct{} `json:"workflows"`
 }
 
 func info(v agent.SessionInfo) SessionInfo { return SessionInfo{SessionInfo: v} }

@@ -44,6 +44,8 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	Trajectories              TrajectoryStore
+	Build                     string
 	Spill                     spill.Store
 	Provider                  Provider
 	Recovery                  Recovery
@@ -104,7 +106,10 @@ type WorkspaceBindingError struct {
 func (err *WorkspaceBindingError) Error() string { return err.Detail }
 
 // PreserveWorkspace retains manager-owned scratch. Bound workspaces are always retained.
-type DeleteSessionOptions struct{ PreserveWorkspace bool }
+type DeleteSessionOptions struct {
+	PreserveWorkspace  bool
+	RemoveTrajectories bool
+}
 
 type CleanupError struct {
 	SessionID SessionID `json:"session_id"`

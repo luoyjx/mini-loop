@@ -52,23 +52,26 @@ func (event SessionEvent) Cancelled() (CancelledEvent, bool) {
 }
 
 type SessionInfo struct {
-	ID              SessionID           `json:"id"`
-	Status          SessionStatus       `json:"status"`
-	Activity        SessionActivity     `json:"activity"`
-	Busy            bool                `json:"busy"`
-	CancelReason    *string             `json:"cancel_reason"`
-	CreatedAt       float64             `json:"created_at"`
-	RunCount        int                 `json:"run_count"`
-	PermissionMode  PermissionMode      `json:"permission_mode"`
-	PendingSteering int                 `json:"pending_steering"`
-	ForkedFrom      *ForkLineage        `json:"forked_from"`
-	Workspace       string              `json:"workspace"`
-	WorkspaceBound  bool                `json:"workspace_bound"`
-	Model           string              `json:"model"`
-	MessageCount    int                 `json:"message_count"`
-	Todos           []protocol.TodoItem `json:"todos"`
-	Subscribers     int                 `json:"subscribers"`
-	SinkError       *string             `json:"sink_error"`
+	ActiveTrajectoryID       *TrajectoryID       `json:"active_trajectory_id"`
+	TrajectoryCount          int                 `json:"trajectory_count"`
+	TrajectoryRecordingError *string             `json:"trajectory_recording_error"`
+	ID                       SessionID           `json:"id"`
+	Status                   SessionStatus       `json:"status"`
+	Activity                 SessionActivity     `json:"activity"`
+	Busy                     bool                `json:"busy"`
+	CancelReason             *string             `json:"cancel_reason"`
+	CreatedAt                float64             `json:"created_at"`
+	RunCount                 int                 `json:"run_count"`
+	PermissionMode           PermissionMode      `json:"permission_mode"`
+	PendingSteering          int                 `json:"pending_steering"`
+	ForkedFrom               *ForkLineage        `json:"forked_from"`
+	Workspace                string              `json:"workspace"`
+	WorkspaceBound           bool                `json:"workspace_bound"`
+	Model                    string              `json:"model"`
+	MessageCount             int                 `json:"message_count"`
+	Todos                    []protocol.TodoItem `json:"todos"`
+	Subscribers              int                 `json:"subscribers"`
+	SinkError                *string             `json:"sink_error"`
 }
 type liveRuntime struct {
 	MessageCount int
@@ -111,6 +114,7 @@ type activeTurn struct {
 // Its underlying core is private: children use Session directly and do not
 // fabricate outer session status/done events.
 type ManagedSession struct {
+	build          string
 	core           *Session
 	mu             sync.Mutex
 	admission      chan struct{}
@@ -134,8 +138,15 @@ func NewManagedSession(config RuntimeConfig) (*ManagedSession, error) {
 	core.gate.modeSource = core.control
 	session := &ManagedSession{core: core, admission: make(chan struct{}, 1), accepting: true, status: StatusIdle, createdAt: float64(time.Now().UnixMicro()) / 1e6, approvals: config.Approvals, workspaceBound: config.Workspace != ""}
 	session.admission <- struct{}{}
+	run := &trajectoryRun{store: config.Trajectories, masker: config.Secrets}
+	if config.Trajectories != nil {
+		run.fail(trajectoryFault(func() error { var err error; run.count, err = config.Trajectories.Count(config.ID); return err }))
+	}
+	session.core.events.trajectory = run
+	session.build = config.Build
 	return session, nil
 }
+
 func (session *ManagedSession) ID() SessionID                { return session.core.ID() }
 func (session *ManagedSession) Owner() OwnerID               { return session.core.Owner() }
 func (session *ManagedSession) Messages() []protocol.Message { return session.core.Messages() }
@@ -273,12 +284,13 @@ func (session *ManagedSession) runActive(turnCtx context.Context, prompt string,
 		session.mu.Unlock()
 		if err != nil {
 			if status == StatusIdle {
-				session.emitFor(run, SessionEvent{kind: EventStatus, status: StatusEvent{StatusIdle, true}})
+				session.finishTrajectory(run, SessionEvent{kind: EventStatus, status: StatusEvent{StatusIdle, true}}, TrajectoryCancelled, nil, nil)
 			} else {
-				session.emitFor(run, SessionEvent{kind: EventError, runError: RunErrorEvent{kind: ErrorRuntime, detail: boundedError(err)}})
+				detail := boundedError(err)
+				session.finishTrajectory(run, SessionEvent{kind: EventError, runError: RunErrorEvent{kind: ErrorRuntime, detail: detail}}, TrajectoryError, nil, &detail)
 			}
 		} else {
-			session.emitFor(run, SessionEvent{kind: EventDone, done: DoneEvent{output, PhaseFinalAnswer}})
+			session.finishTrajectory(run, SessionEvent{kind: EventDone, done: DoneEvent{output, PhaseFinalAnswer}}, TrajectoryCompleted, &output, nil)
 		}
 		if reason != nil {
 			repaired := session.core.recordInterruption(*reason)
@@ -289,6 +301,7 @@ func (session *ManagedSession) runActive(turnCtx context.Context, prompt string,
 		close(active.done)
 		session.mu.Unlock()
 	}()
+	session.beginTrajectory(prompt)
 	session.emitFor(run, SessionEvent{kind: EventStatus, status: StatusEvent{StatusRunning, false}})
 	return session.core.RunWithContext(turnCtx, prompt, run)
 }
@@ -344,7 +357,8 @@ func (session *ManagedSession) Info() SessionInfo {
 		sink = &value
 	}
 	mode, queued := session.core.control.snapshot()
-	return SessionInfo{session.ID(), status, activity, busy, reason, session.createdAt, count, mode, queued, clonePointer(session.core.forkedFrom), session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
+	trajectoryID, trajectoryCount, trajectoryError := session.core.events.trajectory.snapshot()
+	return SessionInfo{trajectoryID, trajectoryCount, trajectoryError, session.ID(), status, activity, busy, reason, session.createdAt, count, mode, queued, clonePointer(session.core.forkedFrom), session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
 }
 func hasStuckSignal(detector StuckDetector, state StuckState) (stuck bool) {
 	defer func() {

@@ -28,6 +28,10 @@ func (s *Server) register(path string, handlers map[string]http.HandlerFunc) {
 	})
 }
 func (s *Server) routes() {
+	s.register("/sessions/{session_id}/trajectories", map[string]http.HandlerFunc{"GET": s.listTrajectories})
+	s.register("/trajectories", map[string]http.HandlerFunc{"GET": s.listTrajectories})
+	s.register("/trajectories/{trajectory_id}", map[string]http.HandlerFunc{"GET": s.getTrajectory})
+	s.register("/trajectories/{trajectory_id}/export", map[string]http.HandlerFunc{"GET": s.exportTrajectory})
 	s.register("/sessions/{session_id}/fork", map[string]http.HandlerFunc{"POST": s.fork})
 	s.register("/sessions/{session_id}/mode", map[string]http.HandlerFunc{"POST": s.mode})
 	s.register("/sessions/{session_id}/steer", map[string]http.HandlerFunc{"POST": s.steer})
@@ -66,7 +70,7 @@ func (s *Server) fork(w http.ResponseWriter, r *http.Request) {
 func (s *Server) health(w http.ResponseWriter, r *http.Request) {
 	v := s.manager.Summary()
 	uptime := s.now().Sub(s.started).Seconds()
-	writeJSON(s, w, 200, HealthResponse{Status: "ok", Model: v.Model, FakeLLM: s.fake, ModelConcurrency: v.ModelConcurrency, ToolConcurrency: v.ToolConcurrency, Authenticated: s.auth.Configured(), Build: s.build, PID: os.Getpid(), Started: float64(s.started.UnixMicro()) / 1e6, Uptime: uptime, WorkspaceBinding: v.WorkspaceBinding, Sessions: v.Sessions})
+	writeJSON(s, w, 200, HealthResponse{Trajectories: s.manager.Trajectories() != nil, Status: "ok", Model: v.Model, FakeLLM: s.fake, ModelConcurrency: v.ModelConcurrency, ToolConcurrency: v.ToolConcurrency, Authenticated: s.auth.Configured(), Build: s.build, PID: os.Getpid(), Started: float64(s.started.UnixMicro()) / 1e6, Uptime: uptime, WorkspaceBinding: v.WorkspaceBinding, Sessions: v.Sessions})
 }
 func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	req, ok := decodeBody[CreateRequest](s, w, r)

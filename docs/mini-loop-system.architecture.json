@@ -3,7 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "mini-loop Runtime Architecture",
-    "subtitle": "Python runtime in python/; independent Go startup, owned HTTP/SSE and guarded turns; persistence/optional port work remains",
+    "subtitle": "Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns and per-run JSONL; session persistence/optional port work remains",
     "output": "mini-loop-system.architecture.html",
     "animation": "none",
     "visual_preset": "blueprint",
@@ -70,7 +70,7 @@
           "goApprovals",
           "goSecrets"
         ],
-        "note": "Typed startup and private string-Bash spill exist; structured defaults bypass spill. Trajectory, UI and SQLite remain pending."
+        "note": "Typed startup, private spill and owned per-run JSONL exist. Structured Bash bypasses spill; HTML UI and SQLite restore remain pending."
       },
       {
         "id": "personal-skill",
@@ -476,7 +476,7 @@
       "id": "goManaged",
       "type": "backend",
       "label": "Go SessionManager",
-      "sublabel": "handles / fork / workspace cleanup",
+      "sublabel": "handles / private per-run JSONL / cleanup",
       "pos": [
         850,
         980
@@ -485,7 +485,7 @@
         280,
         76
       ],
-      "tag": "owners / shared services + pools"
+      "tag": "owners / file evidence / shared pools"
     },
     {
       "id": "goEntry",
@@ -500,7 +500,7 @@
         330,
         76
       ],
-      "tag": "process-local / explicit trajectory off"
+      "tag": "process-local sessions / default JSONL"
     }
   ],
   "boundaries": [
@@ -1192,7 +1192,7 @@
         "Todo reminder counters survive user turns; durable steering, restore and remaining context integrations remain open",
         "Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records",
         "Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending",
-        "Go HTTP handler admits one principal, fifteen typed route operations and masked JSON/SSE data; UI, full posture and optional routes remain open",
+        "Go HTTP handler admits one principal, nineteen typed route operations and masked JSON/SSE data; UI, full posture and optional routes remain open",
         "Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks",
         "HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls",
         "Fork copies completed paired history into fresh scratch; typed lineage and source events are process-local, first-turn persistence awaits SQLite",
@@ -1201,9 +1201,12 @@
         "Go fake clients own call IDs, signed thinking, typed responders and explicit direct/stream views; child and fork sessions retain captured progress thresholds",
         "The Go entry node includes cmd/miniloop and launcher: typed settings, activation checks, requested/actual bind guards, owned TCP listener and joined signal shutdown",
         "All 49 Python settings are typed; 64 source cases compare defaults, overrides and refusal. Embedded default skill matches Python and needs no checkout",
-        "Serving requires explicit trajectories off; a private spill.Store is best-effort configured by default. String Bash preserves masked captures; actual structured defaults bypass it in Python and Go. Compaction artifacts are separate",
+        "Default per-run trajectory JSONL is enabled; a private spill.Store is best-effort configured by default. String Bash preserves masked captures; actual structured defaults bypass it in Python and Go. Compaction artifacts are separate",
         "Dump-config reports credential-free settings/availability without files or model probes; full posture, dotenv discovery, UI, durable SQLite and optional services remain pending",
-        "Typed ManagerServices/RuntimeConfig spill binding retains credential scope and process tracking; hashed workspace namespaces are grouping, not ACLs. Exclusive private leaves do not confine parent races; no TTL/purge, and shutdown retains evidence"
+        "Typed ManagerServices/RuntimeConfig spill binding retains credential scope and process tracking; hashed workspace namespaces are grouping, not ACLs. Exclusive private leaves do not confine parent races; no TTL/purge, and shutdown retains evidence",
+        "Go SessionManager aggregates the per-run file service: ordered masked full fields stay outside the live backlog; terminal finish precedes live persistence receipts",
+        "Four owned trajectory list/inspect/export operations read retained files after deletion/restart; JSON caps eight MiB, JSONL streams without client-held append locks",
+        "Explicit library purge joins writers first; file evidence has no session restore, fsync guarantee, cross-process lease or host ACL. HTML viewer remains pending"
       ]
     }
   ]

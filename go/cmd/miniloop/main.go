@@ -71,7 +71,7 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 		app.Stop(stopCtx)
 		return fail(err)
 	}
-	fmt.Fprintf(stderr, "mini-loop Go listening on %s (process-local state; host shell; no trajectories)\n", listener.Addr())
+	fmt.Fprintf(stderr, "mini-loop Go listening on %s (process-local session state; host shell)\n", listener.Addr())
 	if err := app.Serve(ctx, listener); err != nil {
 		return fail(err)
 	}

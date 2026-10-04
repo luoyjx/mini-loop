@@ -283,7 +283,8 @@ Agent recovery with retries, escalation, continuation, reactive shrink and fallb
 plus captured stream-progress settings and stateful signed fake-model calls,
 plus typed environment settings, embedded default skills and a standalone HTTP launcher,
 plus a typed private spill store and masked string-Bash preservation,
-reviewed **2026-10-04** (Go baseline `5928c71` plus the spill slice).
+plus default per-run trajectory JSONL recording and owner-scoped list/inspect/export,
+reviewed **2026-10-04** (Go baseline `097ada3` plus the trajectory slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -339,6 +340,7 @@ flowchart LR
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
+        GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
@@ -355,6 +357,8 @@ flowchart LR
         GoSession --> GoContext --> GoProvider
         GoProvider --> GoSession
         GoContext --> GoArchives
+        GoManaged -->|start / ordered capture / finish| GoTraces
+        GoEntry -. owner-scoped list / inspect / export .-> GoTraces
         GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
         GoGate --> GoResources
@@ -529,7 +533,7 @@ shipped Go SQLite backend remains pending. No journal
 claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child
 state. Compaction files are durable local artifacts, not a session-restoration
-store. Future SQLite, trajectory and optional-feature sinks must use the
+store. Future SQLite and optional-feature sinks must use the
 same recording boundary as they are ported.
 `RuntimeConfig.Approvals` optionally binds one process-local broker to the
 permission and textual-question surfaces. It checks session, owner and workspace
@@ -630,9 +634,34 @@ and deletion/shutdown retains evidence. Go additionally rejects invalid UTF-8,
 honors cancellation and checks short writes. Failed-write cleanup checks the leaf
 identity before removing it; that check and unlink are not atomic against host tampering.
 
-`go/httpapi.New` returns a standard `http.Handler` over that manager. Fifteen method/path
+`go/trajectory.Store` records independent per-run JSONL files, enabled by default
+in the launcher at `MINILOOP_TRAJECTORY_ROOT` or `<workspace root>/.trajectories`.
+A configured root failure refuses startup. ManagedSession owns start, ordered
+non-ephemeral capture and finish; full masked model inputs/outputs and tool or child
+results reach the file without entering the 200-record live backlog. Terminal
+status/duration are captured before the final event write, and the live persistence
+receipt is published after file finish. Recording errors degrade to an explicit
+masked diagnostic without rewriting the run outcome. `MINILOOP_TRAJECTORIES=0`
+disables recording; `MINILOOP_TRAJECTORY_CAPTURE_CONTENT=0` recursively redacts source content
+fields. The library uses named writer/reader/store interfaces and typed metadata.
+
+Recorded owner checks precede full-document reading or streaming. Legacy null-owner
+records use the manager's bounded remembered owners; owned files remain readable
+after session deletion and server restart. Listing summaries retain one capped
+record at a time. JSON inspect/export refuse source files over eight MiB; JSONL
+exports stream 64 KiB byte chunks without holding append locks across client waits.
+Default deletion retains evidence; explicit library `RemoveTrajectories` joins the
+writer before purge. New roots use 0700 and files 0600; existing modes remain as in
+Python. The store uses 32 process-local striped locks and adds a 64 MiB single-record
+limit. Append close is not an fsync guarantee, locks do not coordinate processes,
+and filenames/owner fields are not a host filesystem sandbox or ACL. Files survive
+restart, but do not restore transcripts, leases or durable SSE cursors. The Python
+HTML trajectory viewer and event iterator remain unported.
+
+`go/httpapi.New` returns a standard `http.Handler` over that manager. Nineteen method/path
 combinations implement basic health, create/list/detail/delete, message/stream/cancel,
-approvals/resolution, mode/steer/fork, events and the Null-store transcript response. Token/anonymous
+approvals/resolution, mode/steer/fork, events, four trajectory read/export operations,
+and the Null-store transcript response. Token/anonymous
 authentication is resolved once; the ten-MiB ingress cap precedes it. An admitted HTTP
 turn remains untrusted, with only the personal-skill capture-source stamp. Completed
 message retries use detached owner/session/key snapshots before spending rate budget;
@@ -644,7 +673,7 @@ model history; encoder failures return no raw fallback. These are process-local 
 services: the embedding application owns listening/shutdown and must call
 `RefuseOpenBind` before listening. The standalone launcher supplies that ownership
 and additionally checks its actual listener. UI, full health posture, durable
-catch-up, trajectory or optional fleet services remain pending. Full
+catch-up, trajectory HTML view or optional fleet services remain pending. Full
 FastAPI validation detail/coercion parity remains open. Durable restoration is pending.
 Managed controls have a separate lock from model/transcript execution. Library
 `Steer` parks at most 100 inputs, each capped at 16,000 Unicode characters with a
@@ -670,7 +699,8 @@ event and reclaims its unused scratch directory. Empty histories and repaired
 cancellation boundaries can fork. Go forks remain process-local; Python with a real
 StateStore also flushes the fork before its first turn, which remains G5 work here.
 The interactive map folds ManagedSession into the Go SessionManager
-node, folds the launcher into Go HTTP / SSE, and folds controls into Go Session. Raw
+node together with its private trajectory file service, folds the launcher into
+Go HTTP / SSE, and folds controls into Go Session. Raw
 child sessions emit core spans and text without
 outer status/done events. Transcript replacement increments event epochs, including
 with no state store. Tool failures and denials retain their flags in telemetry;

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"path/filepath"
 	"runtime/debug"
 	"strings"
 	"sync"
@@ -19,6 +20,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/spill"
+	"github.com/luoyjx/mini-loop/go/trajectory"
 )
 
 type BuildIdentity struct {
@@ -172,20 +174,35 @@ func New(ctx context.Context, settings config.Settings, server config.ServerSett
 		}
 		return nil, err
 	}
-	manager, err := agent.NewSessionManager(agent.ManagerConfig{WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
-		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
-		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
-		Services: agent.ManagerServices{Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
-	if err != nil {
-		if transport != nil {
-			transport.CloseIdleConnections()
+	var trajectories agent.TrajectoryStore
+	if settings.TrajectoryEnabled {
+		root := filepath.Join(settings.WorkspaceRoot, ".trajectories")
+		if settings.TrajectoryRoot != nil {
+			root = *settings.TrajectoryRoot
 		}
-		return nil, err
+		local, err := trajectory.New(trajectory.Config{Root: root, CaptureContent: settings.TrajectoryCaptureContent})
+		if err != nil {
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
+			return nil, err
+		}
+		trajectories = local
 	}
 	build := CurrentBuild()
 	label := build.Revision
 	if build.Modified {
 		label += "-modified"
+	}
+	manager, err := agent.NewSessionManager(agent.ManagerConfig{WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
+		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
+		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
+		Services: agent.ManagerServices{Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
+	if err != nil {
+		if transport != nil {
+			transport.CloseIdleConnections()
+		}
+		return nil, err
 	}
 	handler, err := httpapi.New(httpapi.Config{Manager: manager, Auth: auth, RateLimitPerMinute: settings.RateLimitPerMinute, FakeLLM: settings.FakeLLM, Build: label})
 	if err != nil {

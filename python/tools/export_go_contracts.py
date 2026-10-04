@@ -2135,6 +2135,151 @@ def _progress_contracts() -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT/"python/mini_loop"/name).read_bytes()).hexdigest() for name in ("transport.py","fake_llm.py")}, **asyncio.run(collect())}
 
 
+def _trajectory_contracts(scratch: Path) -> dict:
+    """Execute the real source JSONL writer/reader and managed recording lifecycle."""
+    import asyncio
+    import hashlib
+    import json
+    from types import SimpleNamespace
+    from unittest.mock import patch
+    from mini_loop.trajectory import TrajectoryStore
+    from mini_loop import Settings, SessionManager
+    from mini_loop.fake_llm import FakeAsyncAnthropic, tool, text
+
+    scratch.mkdir(parents=True, exist_ok=True)
+    scratch = scratch.resolve()
+    cases = []
+    for name in ("open", "restarted", "completed", "cancelled", "error", "malformed-tail", "last-end-wins", "redacted"):
+        store = TrajectoryStore(scratch / name, capture_content=name != "redacted")
+        with patch("mini_loop.trajectory.uuid.uuid4", return_value=SimpleNamespace(hex="a" * 32)), patch("mini_loop.trajectory.time.time", return_value=1000.25):
+            trajectory_id = store.start(session_id="session-a", owner="alice", run_index=2, input_text="你好🙂" * 55, metadata={"model":"fixture-model", "workspace":"<workspace>", "build":"fixture-build", "system":"private system", "custom":{"content":"private nested"}})
+        events = [
+            {"type":"model_start", "model_input":{"messages":[{"role":"user", "content":"private prompt"}], "system":"private system"}},
+            {"type":"tool_use", "name":"bash", "input":{"command":"private command"}},
+            {"type":"tool_result", "output":"private output", "error":False, "denied":False},
+            {"type":"tool_result", "output":"denied", "error":False, "denied":True},
+            {"type":"error", "error":"private exception"},
+            {"type":"assistant_text", "text":"private final"},
+        ]
+        for index, event in enumerate(events, 1):
+            store.append(trajectory_id, {**event, "seq":index, "ts":10.0 + index, "session":"session-a"})
+        if name not in ("open", "restarted"):
+            with patch("mini_loop.trajectory.time.time", return_value=1001.125):
+                store.finish(trajectory_id, status=name if name in ("cancelled", "error") else "completed", output="private final", error="private error" if name == "error" else None, duration_ms=25.12355)
+        if name == "last-end-wins":
+            with patch("mini_loop.trajectory.time.time", return_value=1002.5):
+                store.finish(trajectory_id, status="cancelled", duration_ms=30.25)
+        if name == "malformed-tail":
+            with store._path(trajectory_id).open("a") as handle:
+                handle.write('{"truncated":\n')
+        reader = TrajectoryStore(store.root, capture_content=store.capture_content) if name == "restarted" else store
+        raw = store.raw(trajectory_id)
+        cases.append({"name":name, "capture_content":store.capture_content, "raw":raw, "summary":reader.summary(trajectory_id), "document":reader.get(trajectory_id), "count":reader.count("session-a"), "root_mode":store.root.stat().st_mode & 0o777, "file_mode":store._path(trajectory_id).stat().st_mode & 0o777})
+
+    class FailingStore(TrajectoryStore):
+        def __init__(self, root, stage):
+            super().__init__(root)
+            self.stage = stage
+        def start(self, **kwargs):
+            if self.stage == "start-failure":
+                raise OSError("fixture recording failure")
+            return super().start(**kwargs)
+        def append(self, trajectory_id, event):
+            if self.stage == "append-failure":
+                raise OSError("fixture recording failure")
+            return super().append(trajectory_id, event)
+        def finish(self, trajectory_id, **kwargs):
+            if self.stage == "finish-failure":
+                raise OSError("fixture recording failure")
+            return super().finish(trajectory_id, **kwargs)
+
+    async def managed(name):
+        long_command = "awk 'BEGIN {for(i=0;i<6000;i++)printf \"A\"}'"
+        def responder(request):
+            if name == "provider-error":
+                raise RuntimeError("fixture provider failure")
+            if request["messages"][-1]["role"] == "user" and isinstance(request["messages"][-1]["content"], str):
+                return [tool("bash", _id="trajectory-tool", command=long_command)], "tool_use"
+            return [text("done")], "end_turn"
+        settings = Settings(model="fixture-model", fake_llm=True, trajectory_enabled=name != "disabled", trajectory_root=scratch / ("runtime-" + name), workspace_root=scratch / ("workspaces-" + name))
+        injected = FailingStore(settings.trajectory_root, name) if name.endswith("failure") else None
+        client = FakeAsyncAnthropic(responder=responder, delay=3600 if name == "cancelled" else 0)
+        manager = SessionManager(settings, client, trajectory_store=injected)
+        session = manager.create(permission_mode="auto", owner="alice")
+        if name == "cancelled":
+            task = asyncio.create_task(session.run("record this"))
+            while not any(event.get("type") == "model_start" for event in session._backlog):
+                await asyncio.sleep(0)
+            await session.cancel("stop now")
+            try:
+                await task
+            except asyncio.CancelledError:
+                pass
+            final = None
+        else:
+            final = await session.run("record this")
+        rows = manager.trajectories.list(session_id=session.id) if manager.trajectories is not None else []
+        document = manager.trajectories.get(rows[0]["id"]) if rows else None
+        live = list(session._backlog)
+        terminal = next((event for event in reversed(live) if event.get("type") in ("done", "status", "error") and (event.get("type") != "status" or event.get("cancelled"))), {})
+        recorded_events = document["events"] if document else []
+        inputs = [event["model_input"] for event in recorded_events if "model_input" in event]
+        recorded_output = next((event["output"] for event in recorded_events if event.get("type") == "tool_result"), None)
+        live_output = next((event["output"] for event in live if event.get("type") == "tool_result"), None)
+        return {"name":name, "final":final, "status":document["status"] if document else None, "owner":document["owner"] if document else None, "count":session.info()["trajectory_count"], "active":session.info()["active_trajectory_id"] is not None, "recording_error":session.info()["trajectory_recording_error"] is not None, "terminal_status":terminal.get("trajectory_status"), "terminal_persisted":terminal.get("trajectory_persisted"), "stored_terminal_status":next((event.get("trajectory_status") for event in reversed(recorded_events) if event.get("type") in ("done", "status", "error")), None), "recorded_types":[event["type"] for event in recorded_events], "live_output_chars":len(live_output) if live_output is not None else None, "stored_output_chars":len(recorded_output) if recorded_output is not None else None, "request_count":len(inputs), "request_has_full_result":any(part.get("type") == "tool_result" and len(part.get("content", "")) == 6000 for model_input in inputs for message in model_input["messages"] if isinstance(message.get("content"), list) for part in message["content"]), "ephemeral_recorded":any(event.get("ephemeral") for event in recorded_events)}
+    async def collect():
+        return [await managed(name) for name in ("completed", "provider-error", "cancelled", "disabled", "start-failure", "append-failure", "finish-failure")]
+    from fastapi.testclient import TestClient
+    from mini_loop.server import create_app
+    cfg = Settings(fake_llm=True, trajectory_enabled=True, workspace_root=scratch / "http-workspaces", trajectory_root=scratch / "http-traces")
+    manager = SessionManager(cfg, FakeAsyncAnthropic())
+    session = manager.create(owner="alice")
+    with patch("mini_loop.trajectory.uuid.uuid4", return_value=SimpleNamespace(hex="c" * 32)), patch("mini_loop.trajectory.time.time", return_value=1000.25):
+        http_id = manager.trajectories.start(session_id=session.id, owner="alice", run_index=1, input_text="inspect", metadata={"model":"fixture-model", "workspace":"<workspace>", "build":"fixture-build"})
+    with patch("mini_loop.trajectory.time.time", return_value=1001.125):
+        manager.trajectories.finish(http_id, status="completed", output="done", duration_ms=25.5)
+    seed = manager.trajectories.raw(http_id)
+    def normalize(value):
+        if isinstance(value, dict):
+            return {key:normalize(item) for key,item in value.items()}
+        if isinstance(value, list):
+            return [normalize(item) for item in value]
+        if isinstance(value, str):
+            return value.replace(session.id, "<session>").replace(http_id, "<trajectory>")
+        return value
+    routes = []
+    with patch.dict(os.environ, {"MINILOOP_API_TOKENS":"alice:token-a,bob:token-b", "MINILOOP_API_TOKEN":""}):
+        with TestClient(create_app(settings=cfg, manager=manager)) as http:
+            def call(name, path, token="token-a"):
+                response = http.get(path, headers={"Authorization":"Bearer "+token})
+                if response.headers.get("content-type", "").startswith("application/x-ndjson"):
+                    body = [json.loads(line) for line in response.text.splitlines()]
+                else:
+                    body = response.json()
+                routes.append({"name":name, "path":normalize(path), "token":token, "status":response.status_code, "body":normalize(body), "content_type":response.headers.get("content-type"), "disposition":normalize(response.headers.get("content-disposition"))})
+            call("owner-list", "/trajectories")
+            call("foreign-list", "/trajectories", "token-b")
+            call("session-list", f"/sessions/{session.id}/trajectories")
+            call("foreign-session-list", f"/sessions/{session.id}/trajectories", "token-b")
+            call("session-filter", f"/trajectories?session_id={session.id}&limit=0")
+            call("inspect", f"/trajectories/{http_id}")
+            call("foreign-inspect", f"/trajectories/{http_id}", "token-b")
+            call("export-json", f"/trajectories/{http_id}/export")
+            call("export-jsonl", f"/trajectories/{http_id}/export?format=jsonl")
+            call("foreign-export", f"/trajectories/{http_id}/export?format=jsonl", "token-b")
+            call("invalid-format", f"/trajectories/{http_id}/export?format=csv")
+            call("invalid-id", "/trajectories/traj_bad")
+            http.delete(f"/sessions/{session.id}", headers={"Authorization":"Bearer token-a"})
+            call("retained-after-delete", f"/trajectories/{http_id}")
+            call("retained-list", "/trajectories")
+        restarted = SessionManager(cfg, FakeAsyncAnthropic())
+        with TestClient(create_app(settings=cfg, manager=restarted)) as http:
+            call("retained-after-restart", f"/trajectories/{http_id}")
+            call("foreign-after-restart", f"/trajectories/{http_id}", "token-b")
+
+    return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("trajectory.py", "session.py", "agent.py", "server.py")}, "stores":cases, "rounding":[{"input":value, "output":round(value, 3)} for value in (25.12355, -25.12355, 1.2345, -1.2345, 0.0005, -0.0005, 2.675, 1.0625, -1.0625, 0.00001)], "managed":asyncio.run(collect()), "http":{"seed":normalize(seed), "routes":routes}}
+
+
 def _spill_contracts(scratch: Path) -> dict:
     """Pin actual private-store behavior and both Bash projection entry points."""
     import asyncio
@@ -2421,6 +2566,7 @@ def _snapshot() -> dict[str, bytes]:
         progress_contracts = _progress_contracts()
         configuration_contracts = _configuration_contracts(Path(scratch) / "config")
         spill_contracts = _spill_contracts(Path(scratch) / "spill")
+        trajectory_contracts = _trajectory_contracts(Path(scratch) / "trajectory")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2465,6 +2611,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-progress.json": _json_bytes(progress_contracts),
         "python-configuration.json": _json_bytes(configuration_contracts),
         "python-spill.json": _json_bytes(spill_contracts),
+        "python-trajectory.json": _json_bytes(trajectory_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

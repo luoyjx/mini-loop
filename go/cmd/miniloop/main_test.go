@@ -26,7 +26,7 @@ func TestDumpConfigReportsDefaultsWithoutStartupOrSecrets(t *testing.T) {
 	if err := json.Unmarshal(out.Bytes(), &report); err != nil {
 		t.Fatal(err)
 	}
-	if report.Kind != "settings-and-availability" || !report.Authenticated || len(report.Unsupported) != 1 || report.StateStore != "process-local" {
+	if report.Kind != "settings-and-availability" || !report.Authenticated || len(report.Unsupported) != 0 || report.StateStore != "process-local" {
 		t.Fatal(report)
 	}
 	if _, err := os.Stat(env["MINILOOP_WORKSPACE_ROOT"]); !os.IsNotExist(err) {
@@ -41,7 +41,7 @@ func TestUnavailableConfigurationsAndArgumentsFailBeforeRuntimeEffects(t *testin
 		code   int
 		detail string
 	}{
-		{"defaults", nil, map[string]string{}, 1, "MINILOOP_TRAJECTORIES"},
+		{"unavailable-feature", nil, map[string]string{"MINILOOP_FEATURES": "1"}, 1, "MINILOOP_FEATURES"},
 		{"missing-key", nil, map[string]string{"MINILOOP_TRAJECTORIES": "0", "MINILOOP_SPILL_DIR": ""}, 1, "API key"},
 		{"open-bind", nil, map[string]string{"HOST": "0.0.0.0"}, 1, "refusing to bind"},
 		{"empty-host", nil, map[string]string{"HOST": ""}, 1, "HOST must not"},

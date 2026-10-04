@@ -76,6 +76,7 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
+	trajectory        TrajectoryLifecycle
 	sessionForked     SessionForkedEvent
 	steeringDelivered SteeringDeliveredEvent
 	postureUpdate     PostureUpdateEvent
@@ -173,6 +174,8 @@ func (event SessionEvent) clone() SessionEvent {
 type EventSequence uint64
 
 type SessionEventRecord struct {
+	Trajectory      *TrajectoryStamp
+	Terminal        *TrajectoryTerminal
 	Sequence        EventSequence
 	Event           SessionEvent
 	Scope           EventScope
@@ -189,6 +192,7 @@ type EventScope struct {
 func (scope EventScope) clone() EventScope { scope.RunContext = scope.RunContext.clone(); return scope }
 
 type sessionEvents struct {
+	trajectory  *trajectoryRun
 	mu          sync.Mutex
 	next        EventSequence
 	records     []SessionEventRecord
@@ -212,29 +216,54 @@ func (events *sessionEvents) setScope(scope EventScope) {
 }
 
 func (events *sessionEvents) append(event SessionEvent) {
-	events.emitMu.Lock()
-	defer events.emitMu.Unlock()
+	events.appendRecorded(event, trajectoryDetails{})
+}
+func (events *sessionEvents) appendRecorded(event SessionEvent, details trajectoryDetails) {
 	events.mu.Lock()
 	scope := events.scope.clone()
 	events.mu.Unlock()
 	event, scope = maskedEvent(events.secrets, event), maskedScope(events.secrets, scope)
-	events.mu.Lock()
-	record := events.appendLocked(event, scope)
-	events.mu.Unlock()
-	events.notifySink(record)
-	if events.parent != nil {
-		events.parent.appendScoped(event, scope)
-	}
+	events.appendScopedRecorded(event, scope, details, nil)
 }
 func (events *sessionEvents) appendScoped(event SessionEvent, scope EventScope) {
+	events.appendScopedRecorded(event, scope, trajectoryDetails{}, nil)
+}
+func (events *sessionEvents) appendScopedRecorded(event SessionEvent, scope EventScope, details trajectoryDetails, finish *TrajectoryFinish) {
 	events.emitMu.Lock()
 	defer events.emitMu.Unlock()
 	events.mu.Lock()
 	record := events.appendLocked(event, scope)
 	events.mu.Unlock()
+	if events.trajectory != nil {
+		if finish != nil {
+			id, _, _ := events.trajectory.snapshot()
+			if id != nil {
+				record.Terminal = &TrajectoryTerminal{Status: finish.Status, DurationMS: finish.DurationMS}
+			}
+		}
+		events.trajectory.capture(&record, details, events.secrets)
+		if finish != nil {
+			events.trajectory.finish(&record, *finish)
+		}
+	}
+	events.publish(record)
 	events.notifySink(record)
 	if events.parent != nil {
-		events.parent.appendScoped(event, scope)
+		events.parent.appendScopedRecorded(event, scope, details, nil)
+	}
+}
+func (events *sessionEvents) publish(record SessionEventRecord) {
+	events.mu.Lock()
+	defer events.mu.Unlock()
+	if !record.Event.Ephemeral() {
+		if len(events.records) == EventBacklog {
+			copy(events.records, events.records[1:])
+			events.records = events.records[:len(events.records)-1]
+		}
+		events.records = append(events.records, record)
+	}
+	for subscriber := range events.subscribers {
+		subscriber.offer(record.clone())
 	}
 }
 func (events *sessionEvents) appendLocked(event SessionEvent, scope EventScope) SessionEventRecord {
@@ -256,16 +285,6 @@ func (events *sessionEvents) appendLocked(event SessionEvent, scope EventScope) 
 	}
 	events.next++
 	record := SessionEventRecord{Sequence: events.next, Event: event.clone(), Scope: scope.clone(), Timestamp: float64(time.Now().UnixMicro()) / 1e6, SessionID: SessionID(maskedText(events.secrets, string(events.sessionID))), TranscriptEpoch: events.epoch}
-	if !event.Ephemeral() {
-		if len(events.records) == EventBacklog {
-			copy(events.records, events.records[1:])
-			events.records = events.records[:len(events.records)-1]
-		}
-		events.records = append(events.records, record)
-	}
-	for subscriber := range events.subscribers {
-		subscriber.offer(record.clone())
-	}
 	return record
 }
 func (events *sessionEvents) snapshot() []SessionEventRecord {

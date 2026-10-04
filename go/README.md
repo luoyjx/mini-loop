@@ -241,7 +241,8 @@ admission, gives current holders 250ms, joins pending construction and cleanup,
 and preserves surviving scratch. Cancelling a Stop caller only ends that wait;
 a later Stop joins the same shutdown. Custom providers/sinks must return so a
 joined shutdown can finish. Durable restore, optional fleet services,
-durable steering and trajectories remain pending.
+durable steering and session restoration remain pending; per-run trajectory files
+are implemented below.
 
 The twentieth Python snapshot compares initial status/defaults, shared services,
 creation order, ten workspace outcomes, bound retention, scratch deletion and
@@ -420,7 +421,7 @@ The binary embeds the same default `code_review` skill as `python/skills`, and
 can run from outside the checkout with no Python interpreter. From this directory:
 
 ```sh
-MINILOOP_FAKE_LLM=1 MINILOOP_TRAJECTORIES=0 go run ./cmd/miniloop
+MINILOOP_FAKE_LLM=1 go run ./cmd/miniloop
 # Or build, then run with the same explicit environment settings:
 go build -o /tmp/miniloop ./cmd/miniloop
 /tmp/miniloop --dump-config
@@ -443,8 +444,9 @@ services, and captures `MINILOOP_FAKE_DELAY`. `MINILOOP_SKILLS_DIR` selects a
 filesystem catalogue with the existing digest recheck; absent selects the compiled skill.
 Configuration errors fail instead of guessing, including invalid inactive feature bounds.
 
-Trajectory recording remains pending, so serving requires explicit
-`MINILOOP_TRAJECTORIES=0`. The launcher best-effort constructs the separate private
+Trajectory recording is enabled by default at `MINILOOP_TRAJECTORY_ROOT` or
+`<workspace root>/.trajectories`; `MINILOOP_TRAJECTORIES=0` disables it. A configured
+trajectory root failure refuses startup. The launcher best-effort constructs the separate private
 spill store at `MINILOOP_SPILL_DIR` (default `./var/spill`; empty disables it).
 A root construction failure disables preservation while startup continues, matching
 Python. The launcher also refuses enabled
@@ -466,8 +468,8 @@ SIGINT/SIGTERM cancel HTTP request contexts and manager-owned background turns;
 shutdown joins the HTTP server and manager under a ten-second independent timeout,
 then closes the owned provider transport. Header reads are limited to five seconds,
 idle connections to sixty seconds and headers to one MiB; no global write timeout
-cuts off model calls or SSE. This is process-local serving, with UI, trajectory,
-durable restart/SQLite and optional fleet routes still pending.
+cuts off model calls or SSE. This is process-local serving, with UI, trajectory HTML view,
+session restart/SQLite and optional fleet routes still pending.
 
 The 28th source snapshot compares 64 actual Python Settings outcomes and the default
 skill bytes/descriptions/load output. Real TCP tests cover authenticated tool execution,
@@ -511,6 +513,40 @@ pins fourteen local-store cases, collision/symlink refusal, eight real shell cas
 three projection cases and three best-effort manager construction cases. This
 source behavior is recorded as a gap, not advertised as default full-output storage.
 
+### Record and read per-run trajectories
+
+`trajectory.New(trajectory.Config{Root: path, CaptureContent: true})` creates a
+private file store. Pass it through `agent.ManagerServices.Trajectories`; for a
+standalone `ManagedSession`, use `agent.RuntimeConfig.Trajectories` (writer only).
+Raw child/core Session instances do not own separate outer runs. Named Start,
+Finish, Summary, Metrics and Query structures keep the runtime domain typed;
+unknown historical JSON fields survive only at the serialization boundary.
+
+Each run records masked input/metadata, full model requests/responses, full tool and
+child text, ordered non-ephemeral events, and terminal metrics. These full fields are
+private recording details, absent from the bounded live backlog. CaptureContent=false
+applies Python's recursive content-key redaction. Recording faults do not fail the
+model turn; Info and the terminal event report them. The persistence receipt is
+published only after file finish, with terminal status/duration already recorded.
+
+Authenticated GET routes are `/trajectories`, `/sessions/{id}/trajectories`,
+`/trajectories/{id}`, and `/trajectories/{id}/export?format=json|jsonl`. Recorded
+owners are checked before bulk reads. JSON inspection/export has an eight-MiB source
+limit; JSONL streams without a client-held append lock and aborts a failed response.
+Summary scans retain one capped line, not an event array. Files remain readable by
+the recorded owner after server restart and ordinary session deletion. An explicit
+library `DeleteSessionOptions{RemoveTrajectories:true}` drains the writer before purge.
+
+New roots use 0700 and files 0600; reused modes match Python. There are 32 process-local
+striped locks, a Go-specific 64 MiB record cap, and no file fsync or process lease.
+Evidence persistence does not provide session restore or durable event catch-up.
+The store retains at most 50 distinct diagnostic messages with occurrence/eviction
+counts. The HTML viewer and filtered event iterator remain pending. The thirtieth
+source snapshot covers eight source files, seven managed cases, sixteen HTTP outcomes
+and ten duration rounding boundaries. Tests add concurrent appends, masking, full
+versus live text bounds, terminal publication ordering, stream failure, active purge,
+JSON refusal, retained owner reads and default launcher activation. No dependency added.
+
 ### Serve the implemented HTTP slice
 
 Compose `httpapi.New` with a manager and `Authenticator`. Resolve token configuration
@@ -536,9 +572,9 @@ retains that responsibility.
 Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
 to development; Config.FakeLLM is explicit rather than inferred from a provider.
 The basic health response omits full effective posture and source build hashing.
-Fifteen method/path combinations cover create/list/detail/delete, completed message,
+Nineteen method/path combinations cover create/list/detail/delete, completed message,
 streamed message, cancel, approval list/resolve, event subscription and Null-store
-transcript, plus health, mode, steer and fork. Foreign and missing sessions both return 404; non-streaming
+transcript, plus health, mode, steer, fork and four trajectory read/export operations. Foreign and missing sessions both return 404; non-streaming
 messages reject busy turns atomically. Streamed messages queue; disconnect cancels
 that submitted turn or its wait. Observe disconnect only unsubscribes. The event
 wire is a named flat JSON union with sequence IDs and CRLF SSE framing.
@@ -553,10 +589,10 @@ raw fallback. The new twenty-first source snapshot compares actual finite HTTP/S
 responses, with separate Go concurrency and real disconnect tests. The Python live
 disconnect probe was checked separately from that fixture.
 
-This slice uses process-local manager/backlog/cache/rate state and disabled trajectory/
-workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
+This slice uses process-local manager/backlog/cache/rate state, file-backed trajectories
+and disabled workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
 Python; it does not expose a synthetic durable transcript. Full FastAPI validation
-error arrays/coercions, UI, trajectories,
+error arrays/coercions, UI, trajectory HTML view,
 optional fleet routes, durable SSE gap recovery, SQLite are
 pending. No dependencies were added.
 

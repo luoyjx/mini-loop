@@ -181,6 +181,10 @@ func projectLifecycle(record SessionEventRecord) lifecycleJSON {
 	}
 	delete(row, "ts")
 	delete(row, "duration_ms")
+	// Match the existing exporter projection; full trajectory receipts have their own fixture.
+	for _, key := range []string{"trajectory_id", "trajectory_status", "trajectory_recording_error", "state_persisted", "persist_error"} {
+		delete(row, key)
+	}
 	return row
 }
 func normalizeLifecycleIDs(row lifecycleJSON, ids map[string]string, counts map[string]int) {

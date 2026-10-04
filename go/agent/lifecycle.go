@@ -335,7 +335,7 @@ func (s *Session) completeModel(ctx context.Context, request protocol.ModelReque
 		return protocol.ModelReply{}, err
 	}
 	start := ModelStartEvent{span, request.Purpose, request.Model, len(request.Messages), len(estimated) / 4, len(request.Tools), request.MaxTokens, fingerprint, systemHash, capability}
-	s.events.append(SessionEvent{kind: EventModelStart, modelStart: start})
+	s.events.appendRecorded(SessionEvent{kind: EventModelStart, modelStart: start}, trajectoryDetails{kind: EventModelStart, request: request.Clone()})
 	started := time.Now()
 	input := RecoveryInput{Request: request, Streaming: false}
 	_, input.Streaming = s.provider.(StreamingProvider)
@@ -383,7 +383,7 @@ func (s *Session) completeModel(ctx context.Context, request protocol.ModelReque
 	}
 	meter := s.meter.Snapshot()
 	end.TokenMeter = &meter
-	s.events.append(SessionEvent{kind: EventModelEnd, modelEnd: end})
+	s.events.appendRecorded(SessionEvent{kind: EventModelEnd, modelEnd: end}, trajectoryDetails{kind: EventModelEnd, reply: reply.Clone().Content})
 	return reply, nil
 }
 func boundedError(err error) string { return truncateRunes(fmt.Sprintf("%T: %v", err, err), 500) }
@@ -439,6 +439,6 @@ func (s *Session) dispatchToolAnnounced(ctx context.Context, run RunContext, use
 	if hasMetadata {
 		command = &metadata
 	}
-	s.events.append(SessionEvent{kind: EventToolResult, toolResult: ToolResultEvent{use.Input.Name(), truncateRunes(outcome.Output, DisplayCap), use.ID, span, s.lastModelSpan, outcome.ActionID, outcome.Failed, outcome.Denied, outcome.Replayed, float64(time.Since(started).Microseconds()) / 1000, command}})
+	s.events.appendRecorded(SessionEvent{kind: EventToolResult, toolResult: ToolResultEvent{use.Input.Name(), truncateRunes(outcome.Output, DisplayCap), use.ID, span, s.lastModelSpan, outcome.ActionID, outcome.Failed, outcome.Denied, outcome.Replayed, float64(time.Since(started).Microseconds()) / 1000, command}}, trajectoryDetails{kind: EventToolResult, text: outcome.Output})
 	return outcome, nil
 }

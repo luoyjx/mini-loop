@@ -309,7 +309,7 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 	if system != nil {
 		builder = FixedSystem(*system)
 	}
-	session, err = NewManagedSession(RuntimeConfig{ID: id, Owner: request.Owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter})
+	session, err = NewManagedSession(RuntimeConfig{Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: request.Owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter})
 	if err != nil {
 		return nil, err
 	}
@@ -423,6 +423,11 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 	manager.config.Services.Approvals.CancelSession(id)
 	cleanup := func() {
 		manager.drainSession(session, "session deleted", manager.config.DeleteGrace)
+		if options.RemoveTrajectories && manager.config.Services.Trajectories != nil {
+			if err := trajectoryFault(func() error { _, err := manager.config.Services.Trajectories.DeleteForSession(id); return err }); err != nil {
+				manager.recordCleanupError(id, "trajectories", err)
+			}
+		}
 		manager.workspaceMu.Lock()
 		defer manager.workspaceMu.Unlock()
 		// Retire this reference before allowing another cleanup to check for
@@ -556,4 +561,8 @@ func (manager *SessionManager) shutdown(sessions []*ManagedSession, creating <-c
 	manager.state = ManagerStopped
 	close(manager.stopped)
 	manager.mu.Unlock()
+}
+
+func (manager *SessionManager) Trajectories() TrajectoryReader {
+	return manager.config.Services.Trajectories
 }

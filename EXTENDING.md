@@ -1142,6 +1142,27 @@ first-turn persistence still awaits a Go session store.
 
 ---
 
+### Go trajectory recording seam
+
+`agent.TrajectoryWriter` owns typed Start/Append/Finish/Count operations;
+`TrajectoryReader` owns List/Summary/JSON/ByteSize/Stream/DeleteForSession.
+`TrajectoryStore` combines them for `ManagerServices.Trajectories`.
+`RuntimeConfig.Trajectories` supplies only the writer to ManagedSession; bare core
+sessions and children do not open independent outer recordings. `Build` is explicit
+metadata. The launcher constructs the standard file store by default.
+
+Records are masked before the writer receives their encoded full fields. A private
+closed recording-detail variant carries model request/reply or full tool/child text
+synchronously; live records retain their existing display limits. Append precedes
+backlog/subscriber/sink publication. Finish records terminal status and duration
+before publishing the live persistence receipt. Start/append/finish/count faults and
+panics degrade to bounded masked Info/terminal diagnostics. Disabled recording keeps
+the source Null-state persistence fields. Custom writers must not recursively emit
+or call blocking Messages; inspection through Info and detached event snapshots is
+safe. Reader ownership enforcement belongs to the HTTP/manager caller; raw library
+store access is an operator capability. Default deletion retains files, and explicit
+purge runs after manager drain. File recording has no session-restoration authority.
+
 ## 9. Serving a customized fleet
 
 Build your `SessionManager` with all the seams above, then hand it to the app
@@ -1266,7 +1287,8 @@ and must synchronize mutable state. Explicit owner identities are required.
 The httpapi handler supplies admitted HTTP ownership; `config` resolves all 49
 source settings and `launcher` passes the supported subset into owned services,
 rejecting unavailable activations. Inspection is settings/availability only, with
-full effective posture, `.env` discovery and trajectory pending. Typed
+full effective posture and `.env` discovery pending. Default per-run trajectory
+recording and owned read/export routes are implemented. Typed
 `RuntimeConfig.Spill` / `ManagerServices.Spill` accept `spill.Store`; the launcher
 best-effort constructs `spill.LocalStore`. Runtime binds a real shell executor
 independently, retaining its credential scope and process tracker. A custom store

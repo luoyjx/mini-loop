@@ -243,7 +243,7 @@ func TestInspectIsSideEffectFreeAndReportsUnavailableDefaults(t *testing.T) {
 	}
 	report := Inspect(settings, config.ServerSettings{Host: "127.0.0.1", Port: 8000}, nil)
 	data, err := json.Marshal(report)
-	if err != nil || strings.Contains(string(data), "secret-") || report.Kind != "settings-and-availability" || len(report.Unsupported) != 1 || report.DotEnvDiscovery {
+	if err != nil || strings.Contains(string(data), "secret-") || report.Kind != "settings-and-availability" || len(report.Unsupported) != 0 || report.DotEnvDiscovery {
 		t.Fatal(err, string(data))
 	}
 	if _, err := os.Stat(filepath.Join(directory, "workspaces")); !os.IsNotExist(err) {

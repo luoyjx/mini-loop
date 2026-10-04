@@ -224,7 +224,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 		s.events.append(SessionEvent{kind: EventSubagentRefused, subagent: SubagentEvent{kind: EventSubagentRefused, role: role, childDepth: childDepth, limit: s.subagentMaxDepth}})
 		return fmt.Sprintf("(delegation refused: depth %d exceeds subagent_max_depth=%d; do the work directly)", childDepth, s.subagentMaxDepth), nil
 	}
-	s.events.append(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}})
+	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
 		authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
 		model: s.model, maxTokens: s.maxTokens, tokenThreshold: s.tokenThreshold, maxRounds: s.subagentMaxRounds, maxDepth: s.subagentMaxDepth,
@@ -236,7 +236,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	if err != nil {
 		return "", err
 	}
-	s.events.append(SessionEvent{kind: EventSubagentEnd, subagent: SubagentEvent{kind: EventSubagentEnd, role: role, summary: capSubagentDisplay(summary)}})
+	s.events.appendRecorded(SessionEvent{kind: EventSubagentEnd, subagent: SubagentEvent{kind: EventSubagentEnd, role: role, summary: capSubagentDisplay(summary)}}, trajectoryDetails{kind: EventSubagentEnd, text: summary})
 	if summary == "" {
 		return "(subagent produced no summary)", nil
 	}

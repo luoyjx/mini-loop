@@ -100,15 +100,16 @@ Record its parity evidence and remaining gaps before checking it off.
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
-      fifteen HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
+      nineteen HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
       typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
-      UI, full health posture, durable catch-up, trajectory,
+      per-run file recording and owner-scoped read/export implemented;
+      UI, full health posture, durable catch-up, trajectory HTML view,
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
-- [ ] G5 persistence
+- [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
 - [ ] G6 optional features
 - [ ] G7 differential and release audit
 
@@ -2014,3 +2015,85 @@ independent credential rebinding, fresh fork namespaces and retained stop eviden
 Next G3 work is the default trajectory service and its REST/UI evidence boundaries.
 SQLite persistence/restore/leases, UI, optional services and the full release audit
 remain open; G0–G7 are not marked complete by this slice.
+
+
+## 2026-10-04 per-run trajectory recording slice
+
+Reviewed base: `097ada3`. This advances G0/G1/G3/G5 without closing G0–G7.
+
+### Implementation and actual source boundary
+
+- Added `go/trajectory`: private append-only JSONL, source schema/ID format,
+  start/end headers, summary/count/list/full document/stream, corruption handling,
+  recursive content privacy, 32 process-local locks and bounded distinct diagnostics.
+- Added named agent writer/reader/store interfaces and typed start/finish/metadata,
+  metrics, summary, stamp and terminal receipts. Full model requests/replies and
+  tool/child text are synchronous private recording details; the 200-record live
+  backlog retains capped public fields. JSON trees remain local wire projections.
+- Managed runs start before status publication, record ordered non-ephemeral events,
+  and capture terminal status/duration before final append. File finish precedes the
+  live persistence receipt. Count/start/append/finish failures degrade to masked
+  recording diagnostics without rewriting turn outcomes. Disabled receipts retain
+  the current Null-state fields. Children contribute scoped details to their parent.
+- Manager composition binds the shared store; default deletion retains files.
+  Explicit library RemoveTrajectories drains active writers before purge and reports
+  backend cleanup faults. HTTP adds four owner-scoped list/inspect/export operations
+  (nineteen total). Recorded owners survive deletion/restart; legacy null owners use
+  bounded remembered owner state. Owner checks precede full JSON or streaming reads.
+- Launcher enables trajectories by default at the configured root or workspace-root
+  `.trajectories`; root failure refuses startup, while private spill remains best
+  effort. Dump-config is still side-effect free. No dependency was added.
+- Python source files persist full capture by default and do not fsync trajectory
+  writes. Go also does not claim crash durability, cross-process locking, host path
+  confinement or session restoration. New root/file modes are 0700/0600; existing
+  modes remain unchanged. Go adds a 64 MiB single-record cap and a byte-bounded JSON read that also
+  counts malformed/racing appended bytes, and streams 64 KiB
+  bytes instead of Python's character chunks. JSON inspection/export cap eight MiB.
+- Source snapshot 30 executes eight actual store cases (including redaction,
+  malformed tails and last-end wins), seven managed success/cancellation/failure
+  cases, sixteen actual HTTP results, and ten binary-float rounding boundaries.
+  The previous 29 snapshots remain unchanged. Named typed fixtures compare these
+  results; additional Go tests cover concurrent append, full-versus-live output,
+  registered masking, terminal finish ordering, active purge and stream failures.
+
+### Remaining work
+
+Trajectory HTML view and filtered event iteration remain pending, along with full
+posture/FastAPI validation, UI, SQLite session/approval/lease recovery, durable SSE
+catch-up and optional features. JSONL export observes the source file as it is read,
+not a frozen cross-process snapshot. The interactive map aggregates the trajectory
+file service inside Go SessionManager; the canonical Mermaid shows its separate
+file boundary. Implementation gates and delivery receipts are recorded below.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, `go test -race ./...`: all pass.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: 30 current files;
+  the previous 29 tracked fixtures have no changes.
+- `.venv/bin/python python/tools/verify_scans.py`: all 19 scanner guards anchored.
+- Seven targeted source mutations were caught: summary-reads-the-whole-body,
+  trajectory-export-readable-by-anyone, trajectory-json-export-unbounded,
+  trajectory-json-inspect-unbounded, trajectory-input-recorded-with-the-secret,
+  owner-not-written and deleted-session-recordings-immortal. These prove the current
+  Python guard witnesses; Go differential/concurrency tests cover the port separately.
+- A built binary ran outside the checkout with fake clients and default trajectories:
+  dump-config created no files; owned full model inputs and exact JSONL export were
+  retained with file mode 0600; ordinary delete retained recordings; a new process
+  read the same owned document and returned foreign 404 with no restored sessions.
+  SIGTERM during an hour-delayed model call wrote a cancelled terminal; all three
+  processes exited 0. No real model provider was contacted.
+- README outline reviewed; interactive specification regenerated with Archify
+  showcase acceptance: 9/9 checks, zero errors/warnings. Frozen specification
+  SHA-256 `83ff56cac24d0a73ecf5d960d2e98c1a838a5bb68731b261643f554b480bec89`
+  (27,523 bytes); HTML SHA-256
+  `5507c3cb699b4c3991c3d3c8718ad53742d5ccc6c1a12a0423cfd6e96b0af3c9`
+  (667,031 bytes). Visual browser inspection was not performed: prior local-HTML
+  access was rejected, and no alternate access was attempted.
+- Initial Python full suite: one existing timing guard failed (`test_double_cost`
+  forty-turn offline model took 1.57 s against a 0.5 s threshold); 2,150 passed,
+  28 skipped, 24 subtests and three warnings in 106.64 s. No Python package/test
+  modules changed. Isolated failing test rerun: one pass in 0.34 s. Complete
+  suite rerun passed: **2,151 passed, 28 skipped, 24 subtests passed, three warnings
+  in 99.45 s**. The failed first run remains recorded above.
+- `git diff --check`: pass. Python package modules were not changed, so
+  verify_invariants is not applicable to the exporter-only change.

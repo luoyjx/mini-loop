@@ -51,6 +51,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	Trajectories      TrajectoryWriter
+	Build             string
 	Spill             spill.Store
 	ID                SessionID
 	Owner             OwnerID

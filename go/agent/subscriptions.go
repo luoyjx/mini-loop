@@ -49,6 +49,25 @@ func (subscription *EventSubscription) offer(record SessionEventRecord) {
 }
 func (record SessionEventRecord) clone() SessionEventRecord {
 	record.Event, record.Scope = record.Event.clone(), record.Scope.clone()
+	if record.Trajectory != nil {
+		v := *record.Trajectory
+		v.ID = clonePointer(v.ID)
+		v.TraceID = clonePointer(v.TraceID)
+		v.GroupID = clonePointer(v.GroupID)
+		record.Trajectory = &v
+	}
+	if record.Terminal != nil {
+		v := *record.Terminal
+		v.DurationMS = clonePointer(v.DurationMS)
+		v.Persisted = clonePointer(v.Persisted)
+		v.RecordingError = clonePointer(v.RecordingError)
+		if v.TrajectoryDisabledState != nil {
+			state := *v.TrajectoryDisabledState
+			state.PersistError = clonePointer(state.PersistError)
+			v.TrajectoryDisabledState = &state
+		}
+		record.Terminal = &v
+	}
 	return record
 }
 func (events *sessionEvents) subscribe(replay bool) *EventSubscription {

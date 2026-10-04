@@ -4498,10 +4498,10 @@
         <div class="pulse-dot"></div>
         <h1>mini-loop Runtime Architecture</h1>
       </div>
-      <p class="subtitle">Python runtime in python/; independent Go startup, owned HTTP/SSE and guarded turns; persistence/optional port work remains</p>
+      <p class="subtitle">Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns and per-run JSONL; session persistence/optional port work remains</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed startup and private string-Bash spill exist; structured defaults bypass spill. Trajectory, UI and SQLite remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets"],"note":"Typed startup, private spill and owned per-run JSONL exist. Structured Bash bypasses spill; HTML UI and SQLite restore remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4546,7 +4546,7 @@
     <div class="diagram-container" data-detail-level="read">
       <svg viewBox="0 0 2500 1760" role="img" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="blueprint" data-quality-profile="showcase">
         <title id="archify-diagram-title">mini-loop Runtime Architecture</title>
-        <desc id="archify-diagram-description">Python runtime in python/; independent Go startup, owned HTTP/SSE and guarded turns; persistence/optional port work remains</desc>
+        <desc id="archify-diagram-description">Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns and per-run JSONL; session persistence/optional port work remains</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -4947,20 +4947,20 @@
         <text data-detail="fine" x="495" y="1608" class="t-database" font-size="7" text-anchor="middle">workspace files</text>
         </g>
 
-        <g id="node-goManaged" data-node-id="goManaged" data-node-label="Go SessionManager" tabindex="0" role="button" aria-label="Focus Go SessionManager, handles / fork / workspace cleanup, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="handles / fork / workspace cleanup" data-node-tag="owners / shared services + pools" data-node-context="Independent Go port - in progress">
-          <title>Go SessionManager · handles / fork / workspace cleanup · Independent Go port - in progress · owners / shared services + pools</title>
+        <g id="node-goManaged" data-node-id="goManaged" data-node-label="Go SessionManager" tabindex="0" role="button" aria-label="Focus Go SessionManager, handles / private per-run JSONL / cleanup, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="handles / private per-run JSONL / cleanup" data-node-tag="owners / file evidence / shared pools" data-node-context="Independent Go port - in progress">
+          <title>Go SessionManager · handles / private per-run JSONL / cleanup · Independent Go port - in progress · owners / file evidence / shared pools</title>
           <rect x="850" y="980" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="980" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 986) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="990" y="1016" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go SessionManager</text>
-        <text data-detail="context" x="990" y="1032" class="t-muted" font-size="9" text-anchor="middle">handles / fork / workspace cleanup</text>
-        <text data-detail="fine" x="990" y="1048" class="t-backend" font-size="7" text-anchor="middle">owners / shared services + pools</text>
+        <text data-detail="context" x="990" y="1032" class="t-muted" font-size="9" text-anchor="middle">handles / private per-run JSONL / cleanup</text>
+        <text data-detail="fine" x="990" y="1048" class="t-backend" font-size="7" text-anchor="middle">owners / file evidence / shared pools</text>
         </g>
 
-        <g id="node-goEntry" data-node-id="goEntry" data-node-label="Go Startup / HTTP / SSE" tabindex="0" role="button" aria-label="Focus Go Startup / HTTP / SSE, settings / auth / listener / shutdown, Go startup / HTTP admission" aria-pressed="false" data-node-kind="backend" data-node-sublabel="settings / auth / listener / shutdown" data-node-tag="process-local / explicit trajectory off" data-node-context="Go startup / HTTP admission">
-          <title>Go Startup / HTTP / SSE · settings / auth / listener / shutdown · Go startup / HTTP admission · process-local / explicit trajectory off</title>
+        <g id="node-goEntry" data-node-id="goEntry" data-node-label="Go Startup / HTTP / SSE" tabindex="0" role="button" aria-label="Focus Go Startup / HTTP / SSE, settings / auth / listener / shutdown, Go startup / HTTP admission" aria-pressed="false" data-node-kind="backend" data-node-sublabel="settings / auth / listener / shutdown" data-node-tag="process-local sessions / default JSONL" data-node-context="Go startup / HTTP admission">
+          <title>Go Startup / HTTP / SSE · settings / auth / listener / shutdown · Go startup / HTTP admission · process-local sessions / default JSONL</title>
           <rect x="330" y="800" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="330" y="800" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(336 806) scale(0.6875)">
@@ -4968,7 +4968,7 @@
           </g>
           <text data-detail-anchor x="495" y="836" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Startup / HTTP / SSE</text>
         <text data-detail="context" x="495" y="852" class="t-muted" font-size="9" text-anchor="middle">settings / auth / listener / shutdown</text>
-        <text data-detail="fine" x="495" y="868" class="t-backend" font-size="7" text-anchor="middle">process-local / explicit trajectory off</text>
+        <text data-detail="fine" x="495" y="868" class="t-backend" font-size="7" text-anchor="middle">process-local sessions / default JSONL</text>
         </g>
 
         <!-- Connection labels -->
@@ -5390,7 +5390,7 @@
           <li>&bull; Todo reminder counters survive user turns; durable steering, restore and remaining context integrations remain open</li>
           <li>&bull; Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records</li>
           <li>&bull; Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending</li>
-          <li>&bull; Go HTTP handler admits one principal, fifteen typed route operations and masked JSON/SSE data; UI, full posture and optional routes remain open</li>
+          <li>&bull; Go HTTP handler admits one principal, nineteen typed route operations and masked JSON/SSE data; UI, full posture and optional routes remain open</li>
           <li>&bull; Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks</li>
           <li>&bull; HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls</li>
           <li>&bull; Fork copies completed paired history into fresh scratch; typed lineage and source events are process-local, first-turn persistence awaits SQLite</li>
@@ -5399,9 +5399,12 @@
           <li>&bull; Go fake clients own call IDs, signed thinking, typed responders and explicit direct/stream views; child and fork sessions retain captured progress thresholds</li>
           <li>&bull; The Go entry node includes cmd/miniloop and launcher: typed settings, activation checks, requested/actual bind guards, owned TCP listener and joined signal shutdown</li>
           <li>&bull; All 49 Python settings are typed; 64 source cases compare defaults, overrides and refusal. Embedded default skill matches Python and needs no checkout</li>
-          <li>&bull; Serving requires explicit trajectories off; a private spill.Store is best-effort configured by default. String Bash preserves masked captures; actual structured defaults bypass it in Python and Go. Compaction artifacts are separate</li>
+          <li>&bull; Default per-run trajectory JSONL is enabled; a private spill.Store is best-effort configured by default. String Bash preserves masked captures; actual structured defaults bypass it in Python and Go. Compaction artifacts are separate</li>
           <li>&bull; Dump-config reports credential-free settings/availability without files or model probes; full posture, dotenv discovery, UI, durable SQLite and optional services remain pending</li>
           <li>&bull; Typed ManagerServices/RuntimeConfig spill binding retains credential scope and process tracking; hashed workspace namespaces are grouping, not ACLs. Exclusive private leaves do not confine parent races; no TTL/purge, and shutdown retains evidence</li>
+          <li>&bull; Go SessionManager aggregates the per-run file service: ordered masked full fields stay outside the live backlog; terminal finish precedes live persistence receipts</li>
+          <li>&bull; Four owned trajectory list/inspect/export operations read retained files after deletion/restart; JSON caps eight MiB, JSONL streams without client-held append locks</li>
+          <li>&bull; Explicit library purge joins writers first; file evidence has no session restore, fsync guarantee, cross-process lease or host ACL. HTML viewer remains pending</li>
         </ul>
       </div>
     </div>
