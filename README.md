@@ -285,7 +285,8 @@ plus typed environment settings, embedded default skills and a standalone HTTP l
 plus a typed private spill store and masked string-Bash preservation,
 plus default per-run trajectory JSONL recording and owner-scoped list/inspect/export,
 plus the typed HTML ledger, filtered record visitor and independent traceview CLI,
-reviewed **2026-10-04** (Go baseline `d79ac86` plus the trace-view slice).
+plus the embedded public development console and full browser shell,
+reviewed **2026-10-04** (Go baseline `2651690` plus the embedded-browser slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -333,7 +334,7 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · activation check · bind guard<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE handler<br/>bounded ingress · typed JSON / event projection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
@@ -341,6 +342,7 @@ flowchart LR
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
+        GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>append-only files · no session restore"]
@@ -354,6 +356,8 @@ flowchart LR
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
+        GoEntry -->|public static documents| GoBrowser
+        GoBrowser -->|authenticated API / SSE| GoTrust
         GoLaunch -. construct / stop .-> GoManager
         GoManager -->|create / fork / own| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
@@ -674,10 +678,10 @@ single-record limit. `VisitRecords` streams detached encoded values with a typed
 query and yielded-record limit; filters may scan the entire file. It holds no
 append lock across a visitor. Offline reads are an operator capability.
 
-`go/httpapi.New` returns a standard `http.Handler` over that manager. Twenty method/path
+`go/httpapi.New` returns a standard `http.Handler` over that manager. Twenty-two method/path
 combinations implement basic health, create/list/detail/delete, message/stream/cancel,
 approvals/resolution, mode/steer/fork, events, five trajectory read/view/export operations,
-and the Null-store transcript response. Token/anonymous
+the public `/` console and `/ui` shell, and the Null-store transcript response. Token/anonymous
 authentication is resolved once; the ten-MiB ingress cap precedes it. An admitted HTTP
 turn remains untrusted, with only the personal-skill capture-source stamp. Completed
 message retries use detached owner/session/key snapshots before spending rate budget;
@@ -688,9 +692,16 @@ JSON and HTTP responses use the optional recording projection without changing l
 model history; encoder failures return no raw fallback. These are process-local handler
 services: the embedding application owns listening/shutdown and must call
 `RefuseOpenBind` before listening. The standalone launcher supplies that ownership
-and additionally checks its actual listener. UI, full health posture, durable
+and additionally checks its actual listener. Full health posture, durable
 catch-up or optional fleet services remain pending. Full
 FastAPI validation detail/coercion parity remains open. Durable restoration is pending.
+Both browser documents use embedded copies of the Python source HTML/CSS/JS.
+`python/tools/export_go_webui.py --check` verifies the copies; no Python process,
+source checkout, external assets or static directory mount is needed at runtime.
+The UI's existing core session/turn/approval/control/trajectory flows consume the
+typed Go APIs. Optional Tasks/Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark and
+Self-audit APIs remain unimplemented, so those panes currently show source error
+states. Serving the complete source shell is not full UI feature parity.
 Managed controls have a separate lock from model/transcript execution. Library
 `Steer` parks at most 100 inputs, each capped at 16,000 Unicode characters with a
 truncation marker, dropping the oldest. The next round injects one ordered

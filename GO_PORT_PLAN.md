@@ -100,11 +100,11 @@ Record its parity evidence and remaining gaps before checking it off.
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
-      twenty HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
+      twenty-two HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
       typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
       per-run file recording and owner-scoped read/export implemented;
       typed HTML ledger, offline traceview CLI and filtered record visitor implemented;
-      main console UI, full health posture, durable catch-up,
+      embedded public console/UI shells implemented; optional UI data routes, full health posture, durable catch-up,
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
@@ -2173,3 +2173,68 @@ runtime decoding remains intentional and further wire-variant audit belongs to G
   passed in 81.97 s**, with three existing dependency deprecation warnings.
 - `git diff --check` passed and the README outline was verified.
   `verify_invariants.py` is not applicable: no Python package module changed.
+
+
+## 2026-10-04 embedded browser entry slice
+
+Reviewed base: `2651690`. Previous turn delivered authoritative code and receipts;
+this turn advances G3. All G0–G7 remain open.
+
+### Implementation and actual source boundary
+
+- Go embeds the original `/` development console and `/ui` full interface. The
+  HTML/CSS/JS preserve source language, fonts, layout, accessibility, command
+  palette, shortcut handling and client interactions. No dependency was added.
+- `python/tools/export_go_webui.py` extracts the console literal through the Python
+  AST and copies the three webui sources into `go/httpapi/uiassets`. `--check`
+  rejects stale copies. The independent binary assembles the source's first CSS/JS
+  markers from immutable embeds; it requires neither Python nor checkout assets.
+- Both GET shells remain public even with wrong credentials, matching source:
+  browser navigation cannot carry authorization. Session data still requires the
+  admitted principal; query-token fallback remains limited to event streams.
+  Ingress bounds and all existing security headers are preserved. No static mount
+  or asset/traversal handler exists. The total is twenty-two method/path operations.
+- Snapshot 32 captures sixteen actual Python HTTP outcomes: public/valid/invalid
+  shell access, wrong methods/HEAD, gated session reads, rejected query token,
+  nonexistent static child and favicon. Whole successful response hashes and the
+  four embed input hashes/byte counts are compared. Previous 31 snapshots remain
+  unchanged. The real source DOM harness runs against Go's embedded inputs and
+  passes all 37 interaction cases, not against the Python asset directory.
+- A built binary outside the checkout served the actual browser: first-message
+  session creation, fake model/tool/final rows and retained trajectory listing
+  worked; `/` exposed the cross-linked console. Actual layout was inspected.
+- The full source UI also calls optional Tasks/Team/Goal/Cron/Workflows/Skills/Memory/
+  Improvement/Benchmark/Self-audit APIs not yet implemented in Go. The browser
+  demonstrated the Tasks error state. Those gaps are retained explicitly rather
+  than claiming the shell proves feature coverage. No optional state is fabricated.
+
+### Remaining work
+
+Implement optional panel services with their typed domain contracts, full health
+posture, exact validation semantics, SQLite recovery and durable SSE catch-up.
+The default Null-store Transcript response remains source-equivalent, not durable.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, and `go test -race ./...` all passed.
+  `cmd/miniloop` built, ran outside the checkout and exited zero on SIGTERM.
+- `.venv/bin/python -m pytest -q`: **2151 passed, 28 skipped, 24 subtests
+  passed in 78.97 s**, with three existing dependency deprecation warnings.
+- Contract exporter `--check`: 32 snapshots current; browser exporter `--check`:
+  all four inputs current. The previous 31 snapshots remain unchanged.
+- `verify_scans.py`: all 19 guards anchored. The selected
+  `webui-ships-without-its-script` mutation was caught, then source was restored
+  before export/check and full regression. No Python package module changed;
+  `verify_invariants.py` is not applicable.
+- Sixteen actual-source HTTP cases pass over a real test listener, including
+  whole page hashes, HEAD/method handling and unchanged security headers. The
+  embedded script passes all 37 Node DOM regressions with zero failures/skips.
+- Built-binary browser inspection verified core create/send/tool/final/trajectory
+  flows and the development console. The test tab was closed and server stopped.
+- README outline and `git diff --check` pass. Archify delivered 9/9 showcase,
+  zero errors/warnings, correction_rounds: 0. Specification SHA-256:
+  `3da2b61f16ecc3411ae0e442826384827e3e1a83f69d616952097199393f5d6a`
+  (28,374 bytes); artifact SHA-256:
+  `e63543d514696941af899e0261fb4aedab07db5182a8b74a93ee5608440dca1d`
+  (667,925 bytes). Architecture visual review remains skipped due the previously
+  denied local HTML access; product-page browser inspection is separate evidence.

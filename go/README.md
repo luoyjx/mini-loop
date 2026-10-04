@@ -468,7 +468,7 @@ SIGINT/SIGTERM cancel HTTP request contexts and manager-owned background turns;
 shutdown joins the HTTP server and manager under a ten-second independent timeout,
 then closes the owned provider transport. Header reads are limited to five seconds,
 idle connections to sixty seconds and headers to one MiB; no global write timeout
-cuts off model calls or SSE. This is process-local serving, with the main console UI,
+cuts off model calls or SSE. This is process-local serving, with optional browser data routes,
 session restart/SQLite and optional fleet routes still pending.
 
 The 28th source snapshot compares 64 actual Python Settings outcomes and the default
@@ -585,6 +585,28 @@ errors propagate. No append lock spans the visitor. Snapshot 31 compares eleven
 actual Python complete HTML pages, exported-file assembly, nine iterator outcomes,
 four HTTP page/error responses and exact CSS/JS hashes. No dependency was added.
 
+### Open the browser console
+
+The standalone binary serves the original Python development console at `/` and
+full interface at `/ui`. Both static documents are public; session data remains
+authenticated. HTML/CSS/JS are embedded, self-contained source copies, preserving
+source typography and interactions. No runtime checkout, Python process, build
+step, external asset or filesystem static mount is needed.
+
+Refresh and verify the embedded inputs from the repository root:
+
+```sh
+.venv/bin/python python/tools/export_go_webui.py
+.venv/bin/python python/tools/export_go_webui.py --check
+```
+
+Core create/message/SSE/control/approval/trajectory flows have implemented APIs.
+Optional Tasks/Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark/Self-audit
+panels still need Go services and currently display the source error states.
+Serving the full interface is not complete UI feature parity. Snapshot 32 compares
+16 Python HTTP outcomes and exact source assets; 37 real JS interaction regressions
+run against the Go embed inputs. A built-binary browser pass verified core flows.
+
 ### Serve the implemented HTTP slice
 
 Compose `httpapi.New` with a manager and `Authenticator`. Resolve token configuration
@@ -610,9 +632,9 @@ retains that responsibility.
 Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
 to development; Config.FakeLLM is explicit rather than inferred from a provider.
 The basic health response omits full effective posture and source build hashing.
-Twenty method/path combinations cover create/list/detail/delete, completed message,
+Twenty-two method/path combinations cover create/list/detail/delete, completed message,
 streamed message, cancel, approval list/resolve, event subscription and Null-store
-transcript, plus health, mode, steer, fork and five trajectory read/view/export operations. Foreign and missing sessions both return 404; non-streaming
+transcript, public `/` and `/ui` shells, plus health, mode, steer, fork and five trajectory read/view/export operations. Foreign and missing sessions both return 404; non-streaming
 messages reject busy turns atomically. Streamed messages queue; disconnect cancels
 that submitted turn or its wait. Observe disconnect only unsubscribes. The event
 wire is a named flat JSON union with sequence IDs and CRLF SSE framing.
@@ -630,7 +652,7 @@ disconnect probe was checked separately from that fixture.
 This slice uses process-local manager/backlog/cache/rate state, file-backed trajectories
 and disabled workflow metadata. Mode and steer routes are active. Null-store transcript returns 404, current epoch zero, matching
 Python; it does not expose a synthetic durable transcript. Full FastAPI validation
-error arrays/coercions, main console UI,
+error arrays/coercions, optional browser data routes,
 optional fleet routes, durable SSE gap recovery, SQLite are
 pending. No dependencies were added.
 

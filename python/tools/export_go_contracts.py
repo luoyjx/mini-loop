@@ -2280,6 +2280,54 @@ def _trajectory_contracts(scratch: Path) -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("trajectory.py", "session.py", "agent.py", "server.py")}, "stores":cases, "rounding":[{"input":value, "output":round(value, 3)} for value in (25.12355, -25.12355, 1.2345, -1.2345, 0.0005, -0.0005, 2.675, 1.0625, -1.0625, 0.00001)], "managed":asyncio.run(collect()), "http":{"seed":normalize(seed), "routes":routes}}
 
 
+def _webui_contracts(scratch: Path) -> dict:
+    """Actual public browser shells, protected data and immutable asset identities."""
+    import hashlib
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app, CONSOLE_HTML, SECURITY_HEADERS
+    from mini_loop.webui import render_page
+
+    settings = Settings(fake_llm=True, trajectory_enabled=False, enable_features=False,
+                        workspace_root=scratch, skills_dir=scratch / "empty-skills",
+                        spill_dir=None)
+    manager = SessionManager(settings, FakeAsyncAnthropic())
+    app = create_app(settings=settings, manager=manager)
+    cases = []
+    with TestClient(app) as client:
+        app.state.auth = TokenAuth({"token-a": "alice", "token-b": "bob"})
+        for method, path, token in (
+            ("GET", "/", ""), ("GET", "/ui", ""),
+            ("GET", "/", "wrong"), ("GET", "/ui", "wrong"),
+            ("GET", "/", "token-a"), ("GET", "/ui", "token-b"),
+            ("POST", "/", ""), ("POST", "/ui", ""),
+            ("HEAD", "/", ""), ("HEAD", "/ui", ""),
+            ("GET", "/sessions", ""), ("GET", "/sessions", "wrong"),
+            ("GET", "/sessions?access_token=token-a", ""),
+            ("GET", "/ui/app.js", ""), ("GET", "/ui/app.js", "token-a"),
+            ("GET", "/favicon.ico", ""),
+        ):
+            response = client.request(method, path,
+                                      headers={"Authorization": "Bearer " + token} if token else {})
+            cases.append({"method": method, "path": path, "token": token,
+                          "status": response.status_code,
+                          "content_type": response.headers.get("content-type", ""),
+                          "body_sha256": hashlib.sha256(response.content).hexdigest(),
+                          "body": response.text if response.status_code != 200 else None,
+                          "allow": response.headers.get("allow", ""),
+                          "headers": {name: response.headers.get(name, "") for name in SECURITY_HEADERS}})
+    assets = {name: (PYTHON_ROOT / "mini_loop" / "webui" / name).read_bytes()
+              for name in ("index.html", "app.css", "app.js")}
+    assets["console.html"] = CONSOLE_HTML.encode()
+    return {"assets": {name: {"sha256": hashlib.sha256(body).hexdigest(), "bytes": len(body)}
+                       for name, body in assets.items()},
+            "ui_sha256": hashlib.sha256(render_page().encode()).hexdigest(),
+            "cases": cases}
+
+
 def _trace_view_contracts(scratch: Path) -> dict:
     """Execute the existing ledger fold, HTML renderer, file CLI reader and iterator."""
     import hashlib
@@ -2656,6 +2704,7 @@ def _snapshot() -> dict[str, bytes]:
         spill_contracts = _spill_contracts(Path(scratch) / "spill")
         trajectory_contracts = _trajectory_contracts(Path(scratch) / "trajectory")
         trace_view_contracts = _trace_view_contracts(Path(scratch) / "trace-view")
+        webui_contracts = _webui_contracts(Path(scratch) / "webui")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2702,6 +2751,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-spill.json": _json_bytes(spill_contracts),
         "python-trajectory.json": _json_bytes(trajectory_contracts),
         "python-trace-view.json": _json_bytes(trace_view_contracts),
+        "python-webui.json": _json_bytes(webui_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

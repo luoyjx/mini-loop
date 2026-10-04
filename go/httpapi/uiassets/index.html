@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>mini-loop</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 8a8 8 0 1 0 1 7M19 3v5h-5' fill='none' stroke='%234176e6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>/*CSS*/</style>
+</head>
+<body data-sidebar-open="true">
+<div class="app-shell">
+ <aside id="rail" aria-label="Session sidebar">
+  <div class="brand-row">
+   <span class="brand"><span data-icon="loop" class="brand-mark"></span>mini-loop</span>
+   <button id="rail-close" class="icon-button" type="button" aria-label="Collapse sidebar" title="Collapse sidebar"><span data-icon="panel-left"></span></button>
+  </div>
+  <button id="new-session" class="new-session" type="button"><span data-icon="plus"></span>New session</button>
+  <div class="session-search">
+   <span data-icon="search"></span>
+   <label class="sr-only" for="session-search">Search sessions</label>
+   <input id="session-search" type="search" placeholder="Search sessions" autocomplete="off">
+  </div>
+  <div class="rail-heading"><h2>Recent sessions</h2><span id="session-count" class="muted">0</span></div>
+  <ul id="session-list" aria-label="Sessions"></ul>
+  <div class="rail-footer">
+   <div class="footer-actions">
+    <button id="settings-btn" type="button" class="quiet-button"><span data-icon="settings"></span>Settings</button>
+    <button id="theme-toggle" type="button" class="icon-button" aria-label="Switch to dark theme" title="Switch to dark theme"><span id="theme-icon" data-icon="moon"></span></button>
+   </div>
+   <div class="connection"><span id="connection-dot" class="status-dot" data-a="connecting"></span><span id="health">Connecting…</span></div>
+  </div>
+ </aside>
+ <button id="sidebar-backdrop" class="backdrop" type="button" aria-label="Close session sidebar" hidden></button>
+ <main id="workspace">
+  <header id="topbar">
+   <button id="sidebar-toggle" class="icon-button" type="button" aria-label="Toggle session sidebar" aria-controls="rail" aria-expanded="true" title="Toggle sidebar"><span data-icon="panel-left"></span></button>
+   <nav class="session-history" aria-label="Visited sessions">
+    <button id="session-back" class="icon-button" type="button" aria-label="Previous session" title="Previous session" disabled><span data-icon="chevron-left"></span></button>
+    <button id="session-forward" class="icon-button" type="button" aria-label="Next session" title="Next session" disabled><span data-icon="chevron-right"></span></button>
+   </nav>
+   <div class="breadcrumb"><span class="muted breadcrumb-root">Workspace</span><span class="breadcrumb-sep" aria-hidden="true">/</span><span id="sess-id">New session</span></div>
+   <span id="sess-activity" class="badge" hidden></span>
+   <span class="spacer"></span>
+   <button id="commands-btn" class="quiet-button" type="button" aria-label="Commands" aria-haspopup="dialog" title="Commands"><span data-icon="command"></span><span class="command-label">Commands</span><kbd id="command-hint">Ctrl / ⌘ K</kbd></button>
+   <button id="tools-btn" type="button" class="quiet-button" aria-label="Session tools" aria-controls="inspector" aria-expanded="false" disabled><span data-icon="panel-right"></span><span class="tools-label">Session tools</span></button>
+   <details id="session-actions" class="action-menu" hidden>
+    <summary class="icon-button" aria-label="Session actions" title="Session actions"><span data-icon="more"></span></summary>
+    <div class="action-menu-body">
+     <button id="fork-btn" type="button" class="quiet-button"><span data-icon="branch"></span>Fork session</button>
+     <button id="cancel-btn" type="button" class="quiet-button danger"><span data-icon="stop"></span>Cancel turn</button>
+     <button id="delete-btn" type="button" class="quiet-button danger"><span data-icon="trash"></span>Delete session</button>
+    </div>
+   </details>
+  </header>
+  <div id="ui-notice" role="alert" hidden><span id="ui-notice-text"></span><button id="notice-dismiss" class="icon-button" type="button" aria-label="Dismiss notification"><span data-icon="close"></span></button></div>
+  <div id="workspace-body">
+   <section id="conversation" class="conversation is-empty" aria-label="Conversation">
+    <div id="placeholder" class="welcome">
+     <div class="welcome-heading"><span data-icon="loop" class="welcome-mark"></span><h1>What shall we build?</h1></div>
+     <p>Describe a task. Follow every step.</p>
+    </div>
+    <div id="session-view" hidden>
+     <div id="session-head">
+      <span id="sess-goal" class="badge" hidden></span>
+      <span id="sess-plan" class="badge" hidden>Plan mode</span>
+     </div>
+     <div id="approvals" hidden>
+      <h2><span data-icon="shield"></span>Waiting for your approval</h2>
+      <ul id="approval-list"></ul>
+     </div>
+     <div id="ledger" role="log" aria-live="polite" aria-label="Turn ledger"></div>
+    </div>
+    <div id="composer-shell">
+     <div id="composer">
+      <label for="msg" class="sr-only">Message the agent</label>
+      <textarea id="msg" rows="3" placeholder="Ask mini-loop to do something…" aria-describedby="composer-hint"></textarea>
+      <div class="composer-toolbar">
+       <div class="permission-control"><span data-icon="shield"></span><select id="mode-select" aria-label="Permission mode" title="Permission mode"><option value="interactive">Interactive</option><option value="auto">Auto</option><option value="readonly">Read-only</option></select></div>
+       <span class="spacer"></span>
+       <span id="composer-model" class="model-label" title="The server's configured model">Connecting…</span>
+       <button id="send-btn" class="send-button" type="button" aria-label="Send message" title="Send message (⌘ / Ctrl + Enter)" disabled><span data-icon="arrow-up"></span></button>
+      </div>
+     </div>
+     <div class="composer-footer"><span class="workspace-label"><span data-icon="folder"></span><span id="workspace-path">New isolated workspace</span></span><span id="composer-hint">⌘ / Ctrl + Enter to send</span></div>
+    </div>
+    <div id="suggestions" class="suggestions" aria-label="Suggested prompts">
+     <button type="button" class="suggestion" data-prompt="Build a small Python command-line tool and test it."><span data-icon="code"></span>Build a small tool</button>
+     <button type="button" class="suggestion" data-prompt="Explore the files in this workspace and explain how they fit together."><span data-icon="search"></span>Explore the workspace</button>
+     <button type="button" class="suggestion" data-prompt="Help me plan a feature. Ask about the requirements before making changes."><span data-icon="list"></span>Plan a feature</button>
+    </div>
+   </section>
+   <aside id="inspector" aria-label="Session tools" hidden>
+    <div class="inspector-heading"><div><span class="eyebrow">SESSION TOOLS</span><h2 id="pane-title">Tasks</h2></div><button id="inspector-close" class="icon-button" type="button" aria-label="Close session tools"><span data-icon="close"></span></button></div>
+    <nav id="tabs" aria-label="Session tool panels">
+     <button data-tab="tasks" class="tab" type="button" aria-controls="tasks">Tasks</button>
+     <button data-tab="team" class="tab" type="button" aria-controls="team">Team</button>
+     <button data-tab="trajectories" class="tab" type="button" aria-controls="trajectories">Trajectories</button>
+     <button data-tab="transcript" class="tab" type="button" aria-controls="transcript">Transcript</button>
+     <button data-tab="cron" class="tab" type="button" aria-controls="cron">Cron</button>
+<button data-tab="workflows" class="tab" type="button" aria-controls="workflows">Workflows</button>
+     <button data-tab="skills" class="tab" type="button" aria-controls="skills">Skills</button>
+     <button data-tab="memory" class="tab" type="button" aria-controls="memory">Memory</button>
+     <button data-tab="improve" class="tab" type="button" aria-controls="improve">Improve</button>
+     <button data-tab="benchmark" class="tab" type="button" aria-controls="benchmark">Benchmark</button>
+    </nav>
+    <div id="tasks" class="pane" hidden>
+     <div class="pane-tools"><button id="tasks-refresh" type="button" class="sec">Refresh</button></div>
+     <ul id="task-list" class="rows"></ul>
+    </div>
+    <div id="team" class="pane" hidden>
+     <p class="muted">A non-consuming view. Reading here never drains the agent's inbox; delivery stays the injector's job.</p>
+     <div class="pane-tools"><button id="team-refresh" type="button" class="sec">Refresh</button></div>
+     <ul id="team-inbox" class="rows"></ul>
+    </div>
+    <div id="trajectories" class="pane" hidden>
+     <div class="pane-tools"><button id="traj-refresh" type="button" class="sec">Refresh</button></div>
+     <ul id="traj-list" class="rows"></ul>
+    </div>
+    <div id="transcript" class="pane" hidden>
+     <p class="muted">Recorded transcript epochs require a configured durable state store.</p>
+     <div class="pane-tools"><label for="epoch-select">Epoch</label><select id="epoch-select"></select><button id="transcript-refresh" type="button" class="sec">Refresh</button></div>
+     <div id="transcript-body" class="prose"></div>
+    </div>
+    <div id="cron" class="pane" hidden>
+     <p class="muted">Schedule a prompt in this session.</p>
+     <div class="pane-tools">
+      <label class="sr-only" for="cron-expr">Cron expression</label><input id="cron-expr" placeholder="*/5 * * * *">
+      <label class="sr-only" for="cron-prompt">Scheduled prompt</label><input id="cron-prompt" placeholder="Prompt to fire">
+      <button id="cron-add" type="button">Schedule</button>
+     </div>
+     <ul id="cron-list" class="rows"></ul>
+    </div>
+    <div id="workflows" class="pane" hidden>
+     <p class="muted" id="wf-disabled" hidden>Workflows are not enabled on this
+      deployment; start the server with the workflow service to use them.</p>
+     <div class="pane-tools"><button id="wf-refresh" type="button" class="sec">Refresh</button></div>
+     <ul id="wf-list" class="rows"></ul>
+     <div id="wf-detail" class="prose"></div>
+     <details id="wf-launch">
+      <summary>Launch a workflow</summary>
+      <p class="muted">The definition and args are submitted exactly as written;
+       launch requires an authenticated deployment.</p>
+      <label for="wf-def">Definition (JSON)</label>
+      <textarea id="wf-def" rows="6" spellcheck="false"></textarea>
+      <label for="wf-args">Args (JSON)</label>
+      <textarea id="wf-args" rows="2" spellcheck="false">{}</textarea>
+      <div class="pane-tools"><button id="wf-launch-btn" type="button">Launch</button></div>
+     </details>
+    </div>
+    <div id="skills" class="pane" hidden>
+     <div class="pane-tools">
+      <label class="sr-only" for="ps-name">Skill name</label><input id="ps-name" placeholder="skill-name (kebab-case)">
+      <label class="sr-only" for="ps-focus">Skill focus</label><input id="ps-focus" placeholder="Focus (optional)">
+      <button id="ps-preview" type="button" class="sec">Capture draft</button>
+     </div>
+     <div id="ps-draft" class="prose"></div>
+     <div class="pane-tools"><button id="ps-commit" type="button" hidden>Commit this draft</button></div>
+     <div id="skills-catalogue" class="prose"></div>
+    </div>
+    <div id="memory" class="pane" hidden><ul id="memory-list" class="rows"></ul><div id="memory-body" class="prose"></div></div>
+    <div id="improve" class="pane" hidden>
+     <p class="muted">Runs the verified improvement loop in this session's workspace (must be a git checkout). The proposal lands on an isolated branch; merging stays yours.</p>
+     <div class="pane-tools"><button id="improve-suggest" type="button" class="sec">Suggest objectives</button></div>
+     <ul id="improve-suggestions" class="rows"></ul>
+     <label for="improve-objective">Objective</label><textarea id="improve-objective" rows="3"></textarea>
+     <label for="improve-accept">Acceptance command</label><input id="improve-accept" placeholder="pytest -q tests/">
+     <div class="pane-tools"><button id="improve-run" type="button">Propose</button></div>
+     <div id="improve-result" class="prose"></div>
+     <p class="muted">Proposal lineage: every attempt, verified or not, with its
+      parent — a population to build on, not a hill-climb to forget.</p>
+     <ul id="improve-lineage" class="rows"></ul>
+    </div>
+    <div id="benchmark" class="pane" hidden>
+     <p class="muted">Runs on the fake transport to test the instrument, not the model. Real runs stay in the terminal (tools/paired_benchmark.py), where spending model budget is explicit.</p>
+     <div class="pane-tools"><button id="bench-run" type="button">Run fake pairing</button></div><div id="bench-result" class="prose"></div>
+    </div>
+    <div id="audit-pane" class="pane prose" hidden></div>
+   </aside>
+  </div>
+ </main>
+</div>
+<dialog id="new-form" class="dialog" aria-labelledby="new-title">
+ <div class="dialog-heading"><h2 id="new-title">New session</h2><button id="create-cancel" type="button" class="icon-button" aria-label="Close new session"><span data-icon="close"></span></button></div>
+ <p class="muted">Start with an isolated workspace and a fresh conversation.</p>
+ <label for="new-mode">Permission mode</label><select id="new-mode"><option value="interactive">Interactive — ask for approval</option><option value="auto">Auto</option><option value="readonly">Read-only</option></select>
+ <label for="new-system">System prompt <span class="muted">(optional)</span></label><textarea id="new-system" rows="4" placeholder="Additional instructions for this session"></textarea>
+ <div id="new-workspace-field" hidden>
+  <label for="new-workspace">Workspace <span class="muted">(optional)</span></label><input id="new-workspace" type="text" placeholder="/path/to/checkout" autocomplete="off" spellcheck="false" aria-describedby="new-workspace-help">
+  <p id="new-workspace-help" class="muted">Bind the session to an existing directory instead of an isolated scratch workspace. The server accepts only paths under the directories its operator listed.</p>
+ </div>
+ <p id="create-error" class="error-text" role="alert" hidden></p>
+ <div class="dialog-actions"><button id="create-confirm" type="button">Create session<span data-icon="arrow-right"></span></button></div>
+</dialog>
+<dialog id="settings-dialog" class="dialog" aria-labelledby="settings-title">
+ <div class="dialog-heading"><h2 id="settings-title">Settings</h2><button id="settings-close" type="button" class="icon-button" aria-label="Close settings"><span data-icon="close"></span></button></div>
+ <label for="token">API token</label><input id="token" type="password" placeholder="Optional on an open local server" autocomplete="off" aria-describedby="token-help">
+ <p id="token-help" class="muted">Stored in this browser. Requests go only to this mini-loop server. Leave empty if authentication is disabled.</p>
+ <div class="settings-links"><button id="shortcuts-btn" type="button" class="sec"><span data-icon="command"></span>Keyboard shortcuts</button><button id="audit-btn" type="button" class="sec"><span data-icon="shield"></span>Self-audit</button><a href="/" id="console-link">Classic console<span data-icon="arrow-right"></span></a></div>
+</dialog>
+<dialog id="command-dialog" class="dialog command-dialog" aria-labelledby="command-title">
+ <div class="dialog-heading"><h2 id="command-title">Commands</h2><button id="command-close" class="icon-button" type="button" aria-label="Close commands"><span data-icon="close"></span></button></div>
+ <div class="command-search"><span data-icon="search"></span><label class="sr-only" for="command-search">Search commands and sessions</label><input id="command-search" type="search" role="combobox" placeholder="Search commands and sessions…" autocomplete="off" aria-autocomplete="list" aria-expanded="true" aria-controls="command-list" aria-describedby="command-status"></div>
+ <div id="command-list" role="listbox" aria-label="Commands and sessions"></div>
+ <p id="command-status" class="muted" role="status" aria-live="polite"></p>
+ <div class="command-footer"><span class="muted">↑ ↓ Choose · Enter Open · Esc Close</span><button id="command-shortcuts" class="quiet-button" type="button">Edit shortcuts</button></div>
+</dialog>
+<dialog id="shortcut-dialog" class="dialog shortcut-dialog" aria-labelledby="shortcut-title">
+ <div class="dialog-heading"><h2 id="shortcut-title">Keyboard shortcuts</h2><button id="shortcut-close" class="icon-button" type="button" aria-label="Close keyboard shortcuts"><span data-icon="close"></span></button></div>
+ <p class="muted">Saved only in this browser. Click a binding, then press a shortcut with Ctrl or ⌘. Escape cancels recording; Delete or Backspace disables it.</p>
+ <p class="muted">Common browser and editing shortcuts are reserved. Ctrl / ⌘ + Enter, including Shift or Alt variants, stays reserved for sending.</p>
+ <div id="shortcut-list"></div>
+ <p id="shortcut-feedback" role="status" aria-live="polite"></p>
+ <div class="dialog-actions"><button id="shortcut-reset" type="button" class="sec">Restore defaults</button></div>
+</dialog>
+<script>/*JS*/</script>
+</body>
+</html>

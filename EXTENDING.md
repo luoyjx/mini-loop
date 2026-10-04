@@ -1200,10 +1200,12 @@ and `manager.Stop`. Alternatively, `config.Load` and `launcher.New` compose the
 supported process-local services; `App.Serve(ctx, listener)` owns the listener and
 joins HTTP/manager shutdown on cancellation. The application still calls `App.Stop`
 when listener acquisition or a pre-serve guard fails. `cmd/miniloop` supplies this
-lifecycle and signal handling. Fifteen method/path operations, mode/steering and
-process-local SSE are present;
-UI, full health posture, optional fleet routes and durable event catch-up remain
-pending. `Config.Now` and shared auth/services must synchronize their state. The
+lifecycle and signal handling. Twenty-two method/path operations, mode/steering,
+process-local SSE and
+embedded public console/UI shells are present. The browser keeps authenticated
+data requests; no host static directory is mounted. Full health posture, optional
+fleet routes and their UI panels, and durable event catch-up remain pending.
+`Config.Now` and shared auth/services must synchronize their state. The
 manager's optional Secrets supply a typed output projection for HTTP JSON/SSE data;
 encoding faults fail closed and live model history remains unchanged. See
 [the Go README](go/README.md) for the explicit composition pattern.
