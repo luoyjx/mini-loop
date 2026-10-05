@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `f30cbfd` plus the goal slice).
+reviewed **2026-10-06** (Go baseline `f21541a` plus plan outcome fidelity).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -374,7 +374,7 @@ flowchart LR
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>injected backend; SQLite pending"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
-        GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
+        GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
@@ -483,6 +483,9 @@ planning guidance, while custom builders receive `SystemContext.PlanMode` and
 choose their own prompt. Sandbox/permission modes remain independent. Optional
 `PlanApprover` receives typed plan text and bound caller authority; rejection,
 fault or cancellation retains planning. Nil uses Python's headless auto-approval.
+Inactive/invalid/rejected plan results keep source error text with failed=false;
+callback/hook faults set failed=true. Journal settlement, observers, events and
+stuck steps preserve that distinction. Model result blocks omit is_error.
 `--plan-mode-tools` selects this individual service; no human approval UI is
 implied by that flag. Forks start inactive. Selected child handlers own fresh
 state; default role profiles omit these capability-free tools. Stored-event SSE
@@ -907,7 +910,7 @@ single-record limit. `VisitRecords` streams detached encoded values with a typed
 query and yielded-record limit; filters may scan the entire file. It holds no
 append lock across a visitor. Offline reads are an operator capability.
 
-`go/httpapi.New` returns a standard `http.Handler` over that manager. Twenty-three method/path
+`go/httpapi.New` returns a standard `http.Handler` over that manager. Twenty-eight method/path
 combinations implement basic health, create/list/detail/delete, message/stream/cancel,
 approvals/resolution, mode/steer/fork, events, the owned task-board view, five trajectory read/view/export operations,
 the public `/` console and `/ui` shell, and configured-store transcript epoch reads (Null storage retains 404). Token/anonymous
@@ -930,8 +933,8 @@ Both browser documents use embedded copies of the Python source HTML/CSS/JS.
 `python/tools/export_go_webui.py --check` verifies the copies; no Python process,
 source checkout, external assets or static directory mount is needed at runtime.
 The UI's existing core session/turn/approval/control/trajectory flows consume the
-typed Go APIs. Cron list/schedule/cancel/arm APIs are also implemented. Optional
-Team/Goal/Workflows/Skills/Memory/Improve/Benchmark and
+typed Go APIs. Cron list/schedule/cancel/arm APIs and the owned Goal read endpoint
+are also implemented. Optional Team/Workflows/Skills/Memory/Improve/Benchmark and
 Self-audit APIs remain unimplemented, so those panes currently show source error
 states. Serving the complete source shell is not full UI feature parity.
 `go/tasks` is a named file-backed task graph under each workspace's `.tasks`.

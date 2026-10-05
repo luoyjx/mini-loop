@@ -7,7 +7,9 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [],
+          "failed": false,
           "input": {
             "plan": "# Before"
           },
@@ -18,9 +20,11 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
@@ -29,10 +33,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Already in plan mode.",
@@ -41,10 +47,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": ""
           },
@@ -55,10 +63,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": "prose"
           },
@@ -69,11 +79,13 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true,
             false
           ],
+          "failed": false,
           "input": {
             "plan": "\u001c # é\n1. do it\u001f"
           },
@@ -84,11 +96,13 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true,
             false
           ],
+          "failed": false,
           "input": {
             "plan": "# Again"
           },
@@ -105,7 +119,9 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [],
+          "failed": false,
           "input": {
             "plan": "# Before"
           },
@@ -116,9 +132,11 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
@@ -127,10 +145,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Already in plan mode.",
@@ -139,10 +159,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": ""
           },
@@ -153,10 +175,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": "prose"
           },
@@ -167,11 +191,13 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true,
             false
           ],
+          "failed": false,
           "input": {
             "plan": "\u001c # é\n1. do it\u001f"
           },
@@ -182,11 +208,13 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true,
             false
           ],
+          "failed": false,
           "input": {
             "plan": "# Again"
           },
@@ -205,7 +233,9 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [],
+          "failed": false,
           "input": {
             "plan": "# Before"
           },
@@ -216,9 +246,11 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
@@ -227,10 +259,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Already in plan mode.",
@@ -239,10 +273,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": ""
           },
@@ -253,10 +289,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": "prose"
           },
@@ -267,11 +305,13 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true,
             false
           ],
+          "failed": false,
           "input": {
             "plan": "\u001c # é\n1. do it\u001f"
           },
@@ -282,11 +322,13 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true,
             false
           ],
+          "failed": false,
           "input": {
             "plan": "# Again"
           },
@@ -306,7 +348,9 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [],
+          "failed": false,
           "input": {
             "plan": "# Before"
           },
@@ -317,9 +361,11 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
@@ -328,10 +374,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Already in plan mode.",
@@ -340,10 +388,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": ""
           },
@@ -354,10 +404,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": "prose"
           },
@@ -368,10 +420,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": "\u001c # é\n1. do it\u001f"
           },
@@ -382,10 +436,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": "# Again"
           },
@@ -402,7 +458,9 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [],
+          "failed": false,
           "input": {
             "plan": "# Before"
           },
@@ -413,9 +471,11 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
@@ -424,10 +484,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {},
           "name": "enter_plan_mode",
           "output": "Already in plan mode.",
@@ -436,10 +498,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": ""
           },
@@ -450,10 +514,12 @@
         {
           "active": true,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true
           ],
+          "failed": false,
           "input": {
             "plan": "prose"
           },
@@ -464,11 +530,13 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true,
             false
           ],
+          "failed": false,
           "input": {
             "plan": "\u001c # é\n1. do it\u001f"
           },
@@ -479,11 +547,13 @@
         {
           "active": false,
           "catalog_stable": true,
+          "denied": false,
           "events": [
             true,
             true,
             false
           ],
+          "failed": false,
           "input": {
             "plan": "# Again"
           },

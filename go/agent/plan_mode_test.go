@@ -47,6 +47,7 @@ type planModeFixture struct {
 			Input           json.RawMessage
 			Output          string
 			Active, Section bool
+			Failed, Denied  bool
 			Events          []bool
 			CatalogStable   bool `json:"catalog_stable"`
 		}
@@ -140,7 +141,7 @@ func TestPlanModeMatchesActualSourceGatesAndPrompts(t *testing.T) {
 					}
 				}
 				after, _ := s.gate.catalog.Snapshot()
-				if out.Output != row.Output || s.PlanModeActive() != row.Active || strings.Contains(*request.System, PlanSection) != row.Section || !slices.Equal(events, row.Events) || (before.Fingerprint() == after.Fingerprint()) != row.CatalogStable || out.IsError() != strings.HasPrefix(row.Output, "Error") {
+				if out.Output != row.Output || s.PlanModeActive() != row.Active || strings.Contains(*request.System, PlanSection) != row.Section || !slices.Equal(events, row.Events) || (before.Fingerprint() == after.Fingerprint()) != row.CatalogStable || out.Failed != row.Failed || out.Denied != row.Denied {
 					t.Fatalf("step %d: %+v, active %v, section %v, events %v", i, out, s.PlanModeActive(), strings.Contains(*request.System, PlanSection), events)
 				}
 			}
@@ -179,7 +180,7 @@ func TestPlanModeSoftGuidanceAndMasking(t *testing.T) {
 				t.Fatal(out, err, statErr)
 			}
 			out, err = planDispatch(context.Background(), s, "reject", protocol.ExitPlanModeToolInput(protocol.ExitPlanModeInput{Plan: "# plan-private-secret"}))
-			if err != nil || !out.IsError() || strings.Contains(out.Output, "plan-private-secret") || !s.PlanModeActive() {
+			if err != nil || out.IsError() || !strings.HasPrefix(out.Output, "Error: plan not approved.") || strings.Contains(out.Output, "plan-private-secret") || !s.PlanModeActive() {
 				t.Fatal(out, err)
 			}
 			foreign := ToolAuthority{SessionID: s.id, OwnerID: "foreign", Workspace: s.executionRoot(), Mode: mode}

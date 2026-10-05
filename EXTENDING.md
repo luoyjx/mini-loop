@@ -1527,8 +1527,10 @@ Notes:
 `PlanApprover.ApprovePlan(context.Context, PlanReviewRequest)` returns concrete
 `PlanReview{Approved, Feedback}`. The request carries trimmed full Markdown and
 bound `ToolAuthority`; the gate has already applied rewrites, guards and current
-permissions. Rejection is a failed tool call carrying feedback. Errors/panics
-and cancelled reviews retain active state. Callback implementations must honor
+permissions. Rejection returns source error text carrying feedback with
+failed=false and completed journal status. Inactive/invalid plan refusals do the
+same. Callback/hook errors remain failed=true; review errors/panics and cancelled
+reviews retain active state. Callback implementations must honor
 cancellation, synchronize fleet-shared state and avoid reentering an active turn.
 Nil approval auto-approves, matching the source installation; the existing broker
 is not implicitly adapted to plan review.

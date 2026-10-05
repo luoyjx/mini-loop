@@ -1013,7 +1013,9 @@ Entry sets the active boolean and emits `plan_mode` even when already active.
 Exit requires active planning and full Markdown beginning with `#` after Python
 whitespace trimming. Optional `PlanApprover` reviews `PlanReviewRequest` with
 bound `ToolAuthority` and returns `PlanReview{Approved, Feedback}`. Rejection is
-a failed call with feedback; errors/panics/cancellation keep active state. Nil
+source error text with feedback and failed=false/completed journal status.
+Inactive/invalid-plan refusals use the same outcome. Callback/hook errors remain
+failed=true; review errors/panics/cancellation keep active state. Nil
 uses source headless auto-approval. The CLI uses this headless path; the normal
 approval broker is not implicitly a plan reviewer.
 
@@ -1039,6 +1041,17 @@ restores and their next requests. Go tests actual model-round prompt changes,
 event-before-request persistence, failure/cancellation, masked feedback, owner
 binding, fresh forks/children and local TCP launcher composition. Runtime storage
 tests use injected memory backings; native SQLite and SQL restart remain pending.
+
+Snapshot 50 also pins all 35 source failed/denied flags. Snapshot 52 runs five
+actual Python manager/Agent loops with real JSONL recording, custom result
+observers and memory journals: reject, approve, reviewer fault, before denial and
+after fault. Native Go matches journal settlement before observers, live/stored
+result flags, stuck ledger flags, model result blocks without is_error, aggregate
+tool-error metrics and same-action replay. Refused plans do not count as tool
+errors; callback faults and denials do. Replay of a stored failed call returns
+its text with fresh failed=false unless a current post hook itself faults;
+current permission/guard denials still win before replay. No new permission or
+reviewer authority is introduced by text outcomes.
 
 ### Goal tools and bounded continuation
 
@@ -1188,8 +1201,9 @@ Refresh and verify the embedded inputs from the repository root:
 ```
 
 Core create/message/SSE/control/approval/trajectory flows have implemented APIs.
-The Cron pane uses the implemented list/schedule/cancel/arm APIs.
-Optional Team/Goal/Workflows/Skills/Memory/Improve/Benchmark/Self-audit
+The Cron pane uses the implemented list/schedule/cancel/arm APIs; the Goal view
+uses the owned read endpoint without arming. Optional
+Team/Workflows/Skills/Memory/Improve/Benchmark/Self-audit
 panels still need Go services and currently display the source error states.
 Serving the full interface is not complete UI feature parity. Snapshot 32 compares
 16 Python HTTP outcomes and exact source assets; 37 real JS interaction regressions

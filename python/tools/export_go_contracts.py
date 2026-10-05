@@ -4448,12 +4448,13 @@ def _plan_mode_contracts(scratch: Path) -> dict:
     async def scenario(name):
         root = scratch / name
         root.mkdir()
-        calls, events = [], []
+        calls, events, results = [], [], []
         async def reviewer(ctx, plan):
             calls.append(plan)
             return name == "approve", "split step 2 into smaller pieces"
         async def emit(event):
             if event.get("type") == "plan_mode": events.append(bool(event["active"]))
+            if event.get("type") == "tool_result": results.append(event)
         tools = default_registry()
         install_plan_mode(tools, approval=reviewer if name in ("approve", "reject") else None)
         a = Agent(client=FakeAsyncAnthropic(), workspace=root, tools=tools, emit=emit,
@@ -4472,6 +4473,7 @@ def _plan_mode_contracts(scratch: Path) -> dict:
             output = str(await a._exec_tool(ToolCall(tool, value, f"plan-{i}")))
             steps.append({"name": tool, "input": value, "output": output,
                           "active": bool(a.state.get("plan_mode")), "section": PLAN_SECTION in a.system,
+                          "failed": results[-1]["error"], "denied": bool(results[-1].get("denied")),
                           "events": list(events), "catalog_stable": a.tools.snapshot().fingerprint == fingerprint})
         return {"name": name, "steps": steps, "reviews": calls}
     async def restore(active):
@@ -4676,6 +4678,81 @@ def _goal_contracts(scratch: Path) -> dict:
                           for n in ("goals.py", "permissions.py", "agent.py", "session.py", "server.py")}}
 
 
+def _plan_outcome_contracts(scratch: Path) -> dict:
+    """Audit actual gate/observer/journal/loop/recording outcomes together."""
+    import asyncio
+    import copy
+    from mini_loop import Settings, SessionManager
+    from mini_loop.builtins import default_registry
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+    from mini_loop.permissions import default_hooks
+    from mini_loop.plan_mode import install_plan_mode
+    from mini_loop.registry import Hook, ToolCall
+    from mini_loop.run_context import RunContext
+    scratch.mkdir(parents=True)
+    async def scenario(name):
+        root = scratch / name
+        root.mkdir()
+        reviews, observers, requests = [], [], []
+        async def reviewer(ctx, plan):
+            reviews.append(plan)
+            if name == "reviewer-fault": raise RuntimeError("reviewer unavailable")
+            return name == "approved", "revise step 2"
+        class OutcomeHook(Hook):
+            async def before_tool(self, ctx, call):
+                if name == "before-deny" and call.name == "exit_plan_mode": return "DENIED: plan policy"
+                return None
+            async def after_tool(self, ctx, call, output):
+                if name == "after-fault" and call.name == "exit_plan_mode": raise RuntimeError("post hook unavailable")
+                return None
+            async def on_result(self, ctx, call, output, *, denied=False, failed=False):
+                record = ctx.state["action_journal"].get(ctx.action_id)
+                observers.append({"name": call.name, "output": output, "failed": failed, "denied": denied,
+                    "status": record.status if record else None, "result": record.result if record else None})
+        hooks = default_hooks().add(OutcomeHook())
+        tools = default_registry()
+        install_plan_mode(tools, approval=reviewer)
+        recipes = [("enter_plan_mode", {}), ("exit_plan_mode", {"plan": "prose"}),
+                   ("exit_plan_mode", {"plan": "# Execute\n1. do it"})]
+        def responder(kwargs):
+            requests.append(copy.deepcopy(kwargs["messages"]))
+            if len(requests) <= len(recipes):
+                n, value = recipes[len(requests)-1]
+                return [tool(n, _id=f"plan-{len(requests)}", **value)], "tool_use"
+            return [text("done")], "end_turn"
+        manager = SessionManager(Settings(fake_llm=True, workspace_root=root / "workspaces",
+            trajectory_enabled=True, trajectory_root=root / "traces", skills_dir=root / "empty", spill_dir=None),
+            FakeAsyncAnthropic(responder=responder, thinking=False), tool_registry=tools, hooks=hooks)
+        session = manager.create(owner="alice", permission_mode="auto")
+        run = RunContext.default()
+        final = await session.run("plan", run_context=run)
+        def event_projection(event):
+            return {"name": event["name"], "output": event["output"], "failed": event["error"],
+                    "denied": bool(event.get("denied")), "replayed": bool(event.get("replayed"))}
+        live = [event_projection(e) for e in session._backlog if e["type"] == "tool_result"]
+        rows = manager.trajectories.list(session_id=session.id)
+        document = manager.trajectories.get(rows[0]["id"])
+        stored = [event_projection(e) for e in document["events"] if e["type"] == "tool_result"]
+        model_results = [copy.deepcopy(message["content"]) for message in requests[-1]
+                         if message["role"] == "user" and isinstance(message["content"], list)
+                         and any(p.get("type") == "tool_result" for p in message["content"])]
+        steps = [{"name": v.name, "failed": v.failed, "denied": v.denied} for v in session.agent.recent_steps]
+        before = bool(session.agent.state.get("plan_mode"))
+        await session.agent._exec_tool(ToolCall("exit_plan_mode", recipes[-1][1], "plan-3"), run_context=run)
+        replay = event_projection(next(e for e in reversed(session._backlog) if e["type"] == "tool_result"))
+        result = {"name": name, "final": final, "requests": len(requests), "active": before,
+            "live": live, "stored": stored, "observers": observers[:3], "replay_observer": observers[-1],
+            "replay": replay, "reviews": reviews, "steps": steps, "model_results": model_results,
+            "tool_errors": document["metrics"]["tool_errors"], "replay_active": bool(session.agent.state.get("plan_mode"))}
+        await manager.stop()
+        return result
+    async def run():
+        return [await scenario(n) for n in ("rejected", "approved", "reviewer-fault", "before-deny", "after-fault")]
+    return {"cases": asyncio.run(run()), "source_sha256": {
+        n: hashlib.sha256((PYTHON_ROOT / "mini_loop" / n).read_bytes()).hexdigest()
+        for n in ("plan_mode.py", "agent.py", "actions.py", "registry.py", "trajectory.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4782,6 +4859,7 @@ def _snapshot() -> dict[str, bytes]:
         event_catchup_contracts = _event_catchup_contracts(Path(scratch) / "event-catchup")
         plan_mode_contracts = _plan_mode_contracts(Path(scratch) / "plan-mode")
         goal_contracts = _goal_contracts(Path(scratch) / "goals")
+        plan_outcome_contracts = _plan_outcome_contracts(Path(scratch) / "plan-outcomes")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -4848,6 +4926,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-event-catchup.json": _json_bytes(event_catchup_contracts),
         "python-transcript.json": _json_bytes(transcript_contracts),
         "python-plan-mode.json": _json_bytes(plan_mode_contracts),
+        "python-plan-outcomes.json": _json_bytes(plan_outcome_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

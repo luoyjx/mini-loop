@@ -4243,3 +4243,83 @@ context/provider variants and release audit still require evidence.
   Atlas regeneration does not apply. SQLite driver approval is still pending;
   other port work can continue. Required gates are terminal before exact-path
   staging, commit and push.
+
+## Implementation checkpoint — 2026-10-06 plan outcome fidelity
+
+Baseline `f21541a`; P0/P1 remain complete, G0–G7 remain open. This closes the
+specific plan-refusal telemetry gap identified in the previous checkpoint.
+Native SQL/restart, remaining optional groups, provider/context variants and
+the full release audit still require implementation and evidence.
+
+### Actual source outcomes and bounded comparison
+
+- Python's inactive, invalid-Markdown and reviewer-rejected plan calls return
+  textual Error feedback rather than raising. Their settled journal status is
+  completed, and result observers, live/stored events and stuck steps retain
+  failed=false. Reviewer/hook exceptions retain failed=true. The source guard
+  prose calls a rejected plan a failed call; that wording does not describe
+  the actual telemetry bit. No error-prefix classification is introduced.
+- Go now returns those three business refusals as exact source text with nil
+  execution error. Permission/guard checks and genuine callback faults retain
+  the common gate ordering. Cancellation/panic handling and the retained
+  planning state remain unchanged. No new reviewer or caller authority exists.
+- Snapshot 50 now additionally captures all 35 actual source failed/denied
+  outcomes. Its updated 16,955-byte fixture has SHA-256
+  `5535d57a4250969a7a22c09fa4ce721008723cf3e0d2b41aadfd501437fd9cec`.
+  Historical checkpoint hashes describe their original fixture versions.
+- New snapshot 52 (`go/testdata/python-plan-outcomes.json`) executes five actual
+  Python SessionManager/Agent loops: rejection, approval, reviewer fault,
+  before-hook denial and after-hook fault. Each makes four model requests and
+  three gate calls with a memory action journal and real JSONL recording.
+  Each then directly replays the same action once. Fixture 20,537 bytes,
+  SHA-256 `c37eb20a7da3b6c01d8fd66982c5d7aa932d1a12efdc54e2a599f72b480cb64b`.
+  Source file hashes pin the executable plan/gate/journal/hook/trajectory code.
+- Native tests compare settled rows before result observation, failed/denied
+  flags in live and recorded events, stuck steps, model result content and
+  absence of is_error, review calls and aggregate tool-error counts
+  (0, 0, 1, 2, 2). Cache annotations have separate contracts; this projection
+  does not claim complete provider-wire parity. The existing model-result
+  omission already matched Python and required no production change.
+- The source replay uses a direct gate call; Go reuses the same RunContext
+  and action ID in a second two-request managed turn. The comparison covers
+  the replay outcome, observer row, review calls and planning state, not
+  whole-turn event equivalence. Stored failed text replays with fresh
+  failed=false unless a current after hook faults; current before denials
+  still win before replay. These memory backings do not prove native SQL.
+
+### Validation and delivery evidence
+
+- Focused go test ./agent ./trajectory -run '^TestPlan' -count=1: pass.
+  Full go test ./... -count=1 -timeout=180s -coverpkg=./... with profile: pass.
+  Deduplicated statement coverage **89.10%** (**11,187 / 12,555**); agent
+  **90.60%** (**5,213 / 5,754**), protocol **89.40%** (**1,020 / 1,141**),
+  HTTP **86.64%** (**707 / 816**), trajectory **78.84%** (**339 / 430**).
+  Coverage measures implemented statements, not migration completion.
+- Full go test -race ./... -count=1 -timeout=240s and go vet ./...: pass.
+  Exporter --check: 52 files current. verify_scans.py: 19 anchored scans.
+  Six selected source guards caught by verify_guards.py -k plan: rejected
+  planning, exit while inactive, restore fold, capability mode identity,
+  capability relogging and spill planted-symlink refusal. The last case
+  matches the selector substring; this is a focused Python mutation selection,
+  not the complete guard sweep or Go mutation coverage.
+- Full Python regression: 2,151 passed / 28 skipped / 24 subtests passed,
+  three warnings in 93.50 s. Python runtime/package/test modules are unchanged;
+  the package invariant checker does not apply to the exporter-only edit.
+- git diff --check and README outline pass. Canonical Mermaid, boundary prose,
+  Go guide, extension seam and parity row now describe source outcome semantics.
+  The README's stale route count and unimplemented Goal API description are
+  corrected to the existing 28 operations and owned goal read endpoint.
+- Archify regenerated HTML from frozen JSON: 9/9 showcase checks, zero errors
+  and warnings, correction_rounds=0; existing geometry/edges retained.
+  Specification 36,658 bytes, SHA-256
+  `a7c8d5b5fcc8c314d0fa554aa7bc991cd88cf1a7811e80601b79589f1eeb6c50`;
+  artifact 678,359 bytes, SHA-256
+  `a7c94adecec9bc0411aa37cad180b3c56f94ae5ba2624a74356decf735dfcd79`.
+  Saved bytes match both receipts. Output docs/mini-loop-system.architecture.html.
+  Visual review remains skipped following the prior local-file access denial;
+  no rendered inspection or bypass is claimed.
+- Go 1.23.3 darwin/arm64; Linux-host validation remains open. No dependencies
+  added. No top-level docs/*.md report was added/renamed/removed; Research Atlas
+  regeneration does not apply. SQLite driver approval remains pending, while
+  independent port work can continue. Required gates are terminal before
+  exact-path staging, commit and push.

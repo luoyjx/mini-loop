@@ -1,0 +1,714 @@
+{
+  "cases": [
+    {
+      "active": true,
+      "final": "done",
+      "live": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: plan not approved. Reviewer feedback: revise step 2",
+          "replayed": false
+        }
+      ],
+      "model_results": [
+        [
+          {
+            "content": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+            "tool_use_id": "plan-1",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "content": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+            "tool_use_id": "plan-2",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "cache_control": {
+              "type": "ephemeral"
+            },
+            "content": "Error: plan not approved. Reviewer feedback: revise step 2",
+            "tool_use_id": "plan-3",
+            "type": "tool_result"
+          }
+        ]
+      ],
+      "name": "rejected",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "result": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "status": "completed"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "result": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "status": "completed"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: plan not approved. Reviewer feedback: revise step 2",
+          "result": "Error: plan not approved. Reviewer feedback: revise step 2",
+          "status": "completed"
+        }
+      ],
+      "replay": {
+        "denied": false,
+        "failed": false,
+        "name": "exit_plan_mode",
+        "output": "Error: plan not approved. Reviewer feedback: revise step 2",
+        "replayed": true
+      },
+      "replay_active": true,
+      "replay_observer": {
+        "denied": false,
+        "failed": false,
+        "name": "exit_plan_mode",
+        "output": "Error: plan not approved. Reviewer feedback: revise step 2",
+        "result": "Error: plan not approved. Reviewer feedback: revise step 2",
+        "status": "completed"
+      },
+      "requests": 4,
+      "reviews": [
+        "# Execute\n1. do it"
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode"
+        }
+      ],
+      "stored": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: plan not approved. Reviewer feedback: revise step 2",
+          "replayed": false
+        }
+      ],
+      "tool_errors": 0
+    },
+    {
+      "active": false,
+      "final": "done",
+      "live": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Plan approved. Plan mode is off; proceed with the plan.",
+          "replayed": false
+        }
+      ],
+      "model_results": [
+        [
+          {
+            "content": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+            "tool_use_id": "plan-1",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "content": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+            "tool_use_id": "plan-2",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "cache_control": {
+              "type": "ephemeral"
+            },
+            "content": "Plan approved. Plan mode is off; proceed with the plan.",
+            "tool_use_id": "plan-3",
+            "type": "tool_result"
+          }
+        ]
+      ],
+      "name": "approved",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "result": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "status": "completed"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "result": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "status": "completed"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Plan approved. Plan mode is off; proceed with the plan.",
+          "result": "Plan approved. Plan mode is off; proceed with the plan.",
+          "status": "completed"
+        }
+      ],
+      "replay": {
+        "denied": false,
+        "failed": false,
+        "name": "exit_plan_mode",
+        "output": "Plan approved. Plan mode is off; proceed with the plan.",
+        "replayed": true
+      },
+      "replay_active": false,
+      "replay_observer": {
+        "denied": false,
+        "failed": false,
+        "name": "exit_plan_mode",
+        "output": "Plan approved. Plan mode is off; proceed with the plan.",
+        "result": "Plan approved. Plan mode is off; proceed with the plan.",
+        "status": "completed"
+      },
+      "requests": 4,
+      "reviews": [
+        "# Execute\n1. do it"
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode"
+        }
+      ],
+      "stored": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Plan approved. Plan mode is off; proceed with the plan.",
+          "replayed": false
+        }
+      ],
+      "tool_errors": 0
+    },
+    {
+      "active": true,
+      "final": "done",
+      "live": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode",
+          "output": "Error: reviewer unavailable",
+          "replayed": false
+        }
+      ],
+      "model_results": [
+        [
+          {
+            "content": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+            "tool_use_id": "plan-1",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "content": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+            "tool_use_id": "plan-2",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "cache_control": {
+              "type": "ephemeral"
+            },
+            "content": "Error: reviewer unavailable",
+            "tool_use_id": "plan-3",
+            "type": "tool_result"
+          }
+        ]
+      ],
+      "name": "reviewer-fault",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "result": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "status": "completed"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "result": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "status": "completed"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode",
+          "output": "Error: reviewer unavailable",
+          "result": "Error: reviewer unavailable",
+          "status": "failed"
+        }
+      ],
+      "replay": {
+        "denied": false,
+        "failed": false,
+        "name": "exit_plan_mode",
+        "output": "Error: reviewer unavailable",
+        "replayed": true
+      },
+      "replay_active": true,
+      "replay_observer": {
+        "denied": false,
+        "failed": false,
+        "name": "exit_plan_mode",
+        "output": "Error: reviewer unavailable",
+        "result": "Error: reviewer unavailable",
+        "status": "failed"
+      },
+      "requests": 4,
+      "reviews": [
+        "# Execute\n1. do it"
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode"
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode"
+        }
+      ],
+      "stored": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode",
+          "output": "Error: reviewer unavailable",
+          "replayed": false
+        }
+      ],
+      "tool_errors": 1
+    },
+    {
+      "active": true,
+      "final": "done",
+      "live": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "DENIED: plan policy",
+          "replayed": false
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "DENIED: plan policy",
+          "replayed": false
+        }
+      ],
+      "model_results": [
+        [
+          {
+            "content": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+            "tool_use_id": "plan-1",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "content": "DENIED: plan policy",
+            "tool_use_id": "plan-2",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "cache_control": {
+              "type": "ephemeral"
+            },
+            "content": "DENIED: plan policy",
+            "tool_use_id": "plan-3",
+            "type": "tool_result"
+          }
+        ]
+      ],
+      "name": "before-deny",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "result": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "status": "completed"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "DENIED: plan policy",
+          "result": null,
+          "status": null
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "DENIED: plan policy",
+          "result": null,
+          "status": null
+        }
+      ],
+      "replay": {
+        "denied": true,
+        "failed": false,
+        "name": "exit_plan_mode",
+        "output": "DENIED: plan policy",
+        "replayed": false
+      },
+      "replay_active": true,
+      "replay_observer": {
+        "denied": true,
+        "failed": false,
+        "name": "exit_plan_mode",
+        "output": "DENIED: plan policy",
+        "result": null,
+        "status": null
+      },
+      "requests": 4,
+      "reviews": [],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "name": "exit_plan_mode"
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "name": "exit_plan_mode"
+        }
+      ],
+      "stored": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "DENIED: plan policy",
+          "replayed": false
+        },
+        {
+          "denied": true,
+          "failed": false,
+          "name": "exit_plan_mode",
+          "output": "DENIED: plan policy",
+          "replayed": false
+        }
+      ],
+      "tool_errors": 2
+    },
+    {
+      "active": true,
+      "final": "done",
+      "live": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode",
+          "output": "Error: post hook unavailable",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode",
+          "output": "Error: post hook unavailable",
+          "replayed": false
+        }
+      ],
+      "model_results": [
+        [
+          {
+            "content": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+            "tool_use_id": "plan-1",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "content": "Error: post hook unavailable",
+            "tool_use_id": "plan-2",
+            "type": "tool_result"
+          }
+        ],
+        [
+          {
+            "cache_control": {
+              "type": "ephemeral"
+            },
+            "content": "Error: post hook unavailable",
+            "tool_use_id": "plan-3",
+            "type": "tool_result"
+          }
+        ]
+      ],
+      "name": "after-fault",
+      "observers": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "result": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "status": "completed"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode",
+          "output": "Error: post hook unavailable",
+          "result": "Error: post hook unavailable",
+          "status": "failed"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode",
+          "output": "Error: post hook unavailable",
+          "result": "Error: post hook unavailable",
+          "status": "failed"
+        }
+      ],
+      "replay": {
+        "denied": false,
+        "failed": true,
+        "name": "exit_plan_mode",
+        "output": "Error: post hook unavailable",
+        "replayed": true
+      },
+      "replay_active": true,
+      "replay_observer": {
+        "denied": false,
+        "failed": true,
+        "name": "exit_plan_mode",
+        "output": "Error: post hook unavailable",
+        "result": "Error: post hook unavailable",
+        "status": "failed"
+      },
+      "requests": 4,
+      "reviews": [
+        "# Execute\n1. do it"
+      ],
+      "steps": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode"
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode"
+        }
+      ],
+      "stored": [
+        {
+          "denied": false,
+          "failed": false,
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode",
+          "output": "Error: post hook unavailable",
+          "replayed": false
+        },
+        {
+          "denied": false,
+          "failed": true,
+          "name": "exit_plan_mode",
+          "output": "Error: post hook unavailable",
+          "replayed": false
+        }
+      ],
+      "tool_errors": 2
+    }
+  ],
+  "source_sha256": {
+    "actions.py": "88e79470f10061ed628966ea70417d67d28171ffefbd2c2e5d6bde0a35f746eb",
+    "agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "plan_mode.py": "c451a71c5763cdc9e8d230f446f2c7f3a97144f9dc4afafd9c55236040f1c826",
+    "registry.py": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+    "trajectory.py": "27bf501f8869f6bf6533a555c3697bc5a657bc5fee5e0922e98fcee032cdbaa2"
+  }
+}

@@ -70,13 +70,15 @@ func (h *runtimeHandler) executePlanMode(ctx context.Context, authority ToolAuth
 		}
 		return "Plan mode is now active: investigate and plan; present with exit_plan_mode.", nil
 	}
+	// Source business refusals are text, not execution faults. Their failed bit
+	// stays false through observers, journal settlement, events and loop detection.
 	if !s.PlanModeActive() {
-		return "", errors.New("not in plan mode; there is no plan to present.")
+		return "Error: not in plan mode; there is no plan to present.", nil
 	}
 	value, _ := input.ExitPlanMode()
 	text := strings.TrimFunc(value.Plan, pytext.Space)
 	if !strings.HasPrefix(text, "#") {
-		return "", errors.New("present the COMPLETE plan as markdown starting with a `#` heading.")
+		return "Error: present the COMPLETE plan as markdown starting with a `#` heading.", nil
 	}
 	if h.planApprover != nil {
 		review, err := reviewPlan(ctx, h.planApprover, PlanReviewRequest{Authority: authority, Plan: text})
@@ -87,7 +89,7 @@ func (h *runtimeHandler) executePlanMode(ctx context.Context, authority ToolAuth
 			return "", err
 		}
 		if !review.Approved {
-			return "", errors.New("plan not approved. Reviewer feedback: " + review.Feedback)
+			return "Error: plan not approved. Reviewer feedback: " + review.Feedback, nil
 		}
 	}
 	if err := ctx.Err(); err != nil {
