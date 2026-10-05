@@ -68,7 +68,8 @@
           "goChildren",
           "goActions",
           "goApprovals",
-          "goSecrets"
+          "goSecrets",
+          "goCron"
         ],
         "note": "Typed serving, browser shells, private spill, owned JSONL and HTML ledgers exist. Optional panel APIs and SQLite remain pending."
       },
@@ -501,6 +502,21 @@
         76
       ],
       "tag": "public browser / protected data"
+    },
+    {
+      "id": "goCron",
+      "type": "backend",
+      "label": "Go operator cron",
+      "sublabel": "typed jobs / masked store / claims",
+      "pos": [
+        850,
+        1540
+      ],
+      "size": [
+        330,
+        76
+      ],
+      "tag": "explicit resolver; runtime wiring pending"
     }
   ],
   "boundaries": [
@@ -551,7 +567,8 @@
         "goActions",
         "goApprovals",
         "goSecrets",
-        "goManaged"
+        "goManaged",
+        "goCron"
       ],
       "pad": 42
     },
@@ -1224,7 +1241,8 @@
         "Go shell node aggregates background.NewWithExecutor and the explicit RuntimeConfig.BackgroundTools library flag: fresh per-session lazy state shares native argv/credentials/sandbox, with distinct merged-byte capture. Two model tools use the same gate",
         "Background .background records mask commands, atomically record in-flight evidence and report orphan/PID liveness without replay or ownership. CancelAll returns joinable cancelled handles; Close joins them. Caller owns admission quiescence and later Run is allowed",
         "Background retains 100 full results, lists/projects newest 50 and preserves undrained notifications; metadata/undrained queue remain unbounded. Future rebind pins admitted executors and original ledger root. Go cleans pre-start cancellation where Python leaves Running/ledger",
-        "Background completion queues feed Go Session before model requests: optional background_run/check_background and conditional Bash dispatch/classification share the gate; bounded task_notification injection emits typed background_result events. Interruption markers name live survivors; prepared background scopes follow workspace entry. Manager delete/stop join lazy service ownership after turn drain, before scratch cleanup; forks get fresh state/root. Standalone --background-tools selects this individual service; the comprehensive feature bundle stays unsupported. Explicitly selected child scopes use independent qualified IDs/queues and remain owned through return; root cleanup cancels/joins descendants. Root adopts existing evidence before child admission; no child adopts live parent records. Qualified child orphans remain reportable after restart. Metadata/queues are unbounded and cross-process/shared-session ledger arbitration remains absent"
+        "Background completion queues feed Go Session before model requests: optional background_run/check_background and conditional Bash dispatch/classification share the gate; bounded task_notification injection emits typed background_result events. Interruption markers name live survivors; prepared background scopes follow workspace entry. Manager delete/stop join lazy service ownership after turn drain, before scratch cleanup; forks get fresh state/root. Standalone --background-tools selects this individual service; the comprehensive feature bundle stays unsupported. Explicitly selected child scopes use independent qualified IDs/queues and remain owned through return; root cleanup cancels/joins descendants. Root adopts existing evidence before child admission; no child adopts live parent records. Qualified child orphans remain reportable after restart. Metadata/queues are unbounded and cross-process/shared-session ledger arbitration remains absent",
+        "Explicit Go cron operator service preserves disarmed restoration, mark-before-dispatch, exclusive minute claims and untrusted invocations; tools, manager lifecycle and HTTP activation remain pending. Shared JSON writers are not a lease or an external exactly-once transaction."
       ]
     }
   ]

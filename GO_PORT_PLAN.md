@@ -111,8 +111,22 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; cron manager/tool/HTTP composition and other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
+
+### Next cron slices
+
+1. Port the explicit operator scheduler: five-field matching, typed jobs,
+   per-session controls, bounded problems, disarmed restoration, masked atomic
+   persistence, exclusive occurrence claims and cancellation/join. Compare actual
+   Python operations and disk state, including loss-before-dispatch boundaries.
+2. Compose the service with managed untrusted turns, session deletion and stop;
+   add closed tool variants and owned operator HTTP activation. Arm remains an
+   operator act, never a model tool. Keep comprehensive activation unavailable
+   until all feature groups are implemented.
+3. Audit restoration/lease interaction and differential failures in G5/G7;
+   an exclusive claim file does not provide an exactly-once transaction with
+   external effects or repair stale whole-file state across live writers.
 
 ## 2026-10-02 checkpoint
 
@@ -3032,3 +3046,115 @@ still require work. Do not mark the overall Go migration complete.
   claimed.
 - README/plan outline and `git diff --check`: pass. Native macOS, Go 1.23.3,
   Git 2.39.5 (Apple Git-154); Linux remains unvalidated.
+
+## 2026-10-05 operator cron scheduler slice
+
+Reviewed base: `aaa499b`. The explicit Go operator scheduler implements the first
+cron work package above. Python and Go remain independently runnable; cron
+manager/tool/HTTP composition and the remaining G0–G7 requirements stay open.
+
+### Implementation and source contract
+
+- `go/cron` uses concrete Job/ID/SessionID/Request/Expression/Invocation records
+  and named Resolver/Runner/Masker seams. Raw JSON is confined to transient store
+  decoding; no generic payload enters service state. Invocation's read-only
+  authority accessor always returns untrusted. The future managed adapter must
+  create a fresh untrusted RunContext; this library is not yet an actual Go
+  Agent firing path. Source `_fire` is exercised with its real default context.
+- Five-field matching preserves ranges/lists/steps, Sunday 0 and restricted
+  day-of-month/day-of-week OR. Arbitrary precision steps cannot overflow into
+  small values. Parsing includes signs, digit separators and Python's default
+  4,300-digit conversion bound. The pinned Unicode 14 decimal table moved from
+  background into internal/pytext; both callers use it, and the existing 74
+  background source cases remain unchanged. Python split whitespace includes
+  ASCII separators absent from Go's ordinary Fields.
+- Schedule refuses more than 8,000 Unicode characters or 200 live jobs. Both
+  optional booleans default true for new schedules; stored dataclass defaults are
+  recurring true/durable false. Random IDs regenerate on a collision, a Go
+  addition. Arm/cancel can scope by session and hide foreign IDs like unknown
+  ones. CancelForSession removes future jobs/last claims, without stopping an
+  already admitted run. No model arm tool is installed.
+- Atomic save stores only durable jobs and masks prompts in the disk copy,
+  retaining live raw input. Diagnostics describe changed post-restart prompts.
+  Restoration preserves valid records/ordering, replaces duplicate IDs in place
+  and disarms all jobs; activation is never written. Source non-array JSON yields
+  an empty store. Go additionally checks concrete scalar types and caps reads and
+  writes at eight MiB; Python's permissive dataclass may retain malformed scalar
+  or null fields. Unknown fields/bad cron rows are individually diagnosed.
+- Each occurrence first wins an O_EXCL minute claim, then advances its mark and
+  removes one-shot jobs, saves via same-directory private temporary file/fsync/
+  rename/directory sync, and only then resolves/dispatches. Claim/save failure
+  reports a lost occurrence with no dispatch. Memory and the current claim stay
+  consumed on save failure as in source; successful saves prune only the previous
+  claim. A loser quietly advances its local mark but does not remove its one-shot.
+- Explicit Start owns an immediate tick plus a 20-second ticker. Go has no
+  implicit running asyncio loop, so Schedule does not start it automatically.
+  Tick accepts the local civil minute; it adds no catch-up/timezone conversion.
+  Stop cancels/joins ticker and admitted runs and permits resumed joins after an
+  expired observer. A stopped generation cannot dispatch a delayed resolution.
+  Later Start remains legal. Caller owns final admission quiescence.
+- Resolver callbacks run outside the state lock and may inspect the scheduler;
+  Mask runs during persistence and must not reenter. Go reports resolver/save
+  callback panics and asynchronous runner errors/panics, beyond source's pending
+  task-error handling. Problems retain 50 distinct entries and detached counts
+  for all occurrences/evictions; runs and armed metadata are not globally bounded.
+- Source snapshot 41 executes 27 expression cases over six civil times, 14 actual
+  operator states, one-shot removal-before-dispatch, two stale live claimers,
+  three claim/save-loss boundaries, masked restoration, 8,001-character/201st-job
+  refusal and actual `_fire` untrusted invocation/missing-session diagnostics.
+  Only generated schedule IDs are normalized in Go comparisons. Source probes
+  patch UUID generation for deterministic IDs, not scheduler behavior, and pin
+  cron/durable/problems/run-context module SHA-256 values.
+- Go comparisons inspect actual disk state at resolution and live/state/queue
+  projections, plus two independent native test processes loading stale copies
+  before a common gate. Exactly one dispatches that minute. Additional tests
+  cover ticker idempotency, cancelled runs, resumed joins, delayed resolver
+  suppression, partial typed loads and fault reporting. These are bounded local
+  process/filesystem experiments, not a host-crash or external-effect proof.
+- README canonical Mermaid adds a separate operator cron/file/embedding path.
+  Interactive Go overview adds an independent cron component, deliberately without
+  a manager edge until composition exists. Existing background/workspace binding
+  documentation was corrected to describe the implemented native rebind.
+
+### Remaining boundaries
+
+Whole-file JSON state is stale between live writers: the claim prevents duplicate
+admission for a shared minute, but a later writer can overwrite other jobs/state.
+Claims do not transact with arbitrary external effects, prove exactly-once work,
+provide a host lease, reclaim stale claims or replace SQLite/session restoration.
+The Go operator resolver/runner is still an embedding seam. Managed untrusted
+turns, delete/stop composition, closed model tool variants, owned operator HTTP
+activation and individual launcher selection are next. Comprehensive feature
+activation, teams/workflows, optional context/provider/UI groups, approval/session/
+lease restore, durable SSE and the full differential/release audit remain open.
+
+### Validation
+
+- Narrow source/cron/background tests: pass. Full `go test ./... -coverpkg=./...`
+  with a coverage profile, `go test -race ./...` and `go vet ./...`: pass.
+  Aggregate statement coverage **88.12%** (**9,615 / 10,911**), deduplicating
+  shared blocks. Cron **91.91%** (432 / 470), background **90.49%** (238 / 263),
+  internal/pytext **88.46%** (92 / 104). Moving shared decimal code changes package
+  denominators; these are statement metrics, not feature parity.
+- Export `--check`: **41 files current**; all **40** prior tracked exports are
+  byte-identical to HEAD. The check emitted an asyncio child-watcher warning
+  (`Unknown child process pid ...`); its terminal status was zero and the complete
+  byte comparison matched. This is retained diagnostic context, not a claim that
+  the warning was repaired. Python runtime/test modules and mutation anchors are
+  unchanged; package invariants do not apply to this exporter-only Python change.
+- `verify_scans.py`: **19** guards anchored. `verify_guards.py -k cron`: all
+  **14** selected source mutations caught. No Go mutation coverage or unrelated
+  full mutation sweep is claimed.
+- Python full suite: **2,151 passed / 28 skipped / 24 subtests passed**,
+  three warnings, **82.06 seconds**, with the original performance gate intact.
+- Final Archify validate/deliver: **9/9 showcase**, zero errors/warnings,
+  correction_rounds: 0. Final specification SHA-256:
+  `f9a03479bb1cc8501a8aeab059a5ac7768f5b84860397bdfdf818552b21996d3`
+  (32,893 bytes); artifact SHA-256:
+  `e73db9e1fc5278d94aaf5cdffe76b2466036f3c86fad3606315ea93c288819bf`
+  (673,766 bytes). Exact bytes match the final receipt. An earlier serialization
+  changed JSON formatting unnecessarily; the final candidate preserves the prior
+  indent style and was revalidated/redelivered. Visual review stays skipped due
+  to the earlier local HTML access denial; rendered acceptance is not claimed.
+- README/plan outlines and `git diff --check`: pass. Native macOS / Go 1.23.3;
+  Linux remains unvalidated. No dependency or paid model endpoint was added.

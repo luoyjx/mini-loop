@@ -1226,6 +1226,27 @@ Actual source with harness-bound inherited injectors can adopt/unlink the live
 parent's record; Go intentionally avoids that gap rather than sharing queues.
 Default ten tools are unchanged.
 
+### Go operator cron service
+
+`cron.New(Config{Resolver, DurablePath, Secrets})` explicitly binds a typed
+operator scheduler. Resolver/Runner adapt session lookup/restoration and an
+always-untrusted Invocation into the embedding runtime; the adapter must create
+a fresh untrusted RunContext. Go manager/tool/HTTP composition is still pending.
+Schedule arms only current-process jobs. Restored jobs stay disarmed until the
+operator calls Arm/ArmAll, and no model arm tool is supplied. Start is explicit;
+Stop cancels/joins ticker and admitted runs, retaining armed in-memory jobs for
+later Start. Delayed lookup cannot admit a stopped generation. Callers quiesce
+admission before relying on Wait or reclaiming session resources.
+
+Atomic masked storage persists marks/one-shot removal before dispatch; O_EXCL
+minute claims suppress competing stale readers. Failure reports lost occurrences
+without dispatch. This does not arbitrate stale whole-file writers or transact
+with external effects. The eight-MiB store bound and strict scalar decoding are
+Go additions. Resolver callbacks run outside the state lock; Mask must not
+reenter scheduler methods. Loaded and live prompts differ when masking changes
+the stored copy, and that change is diagnosed. See the operator library contract
+in [go/README.md](go/README.md#operator-cron-scheduler).
+
 ### Go operator worktree service
 
 `worktrees.New(worktrees.Config{Repository: repo})` explicitly selects a repository.

@@ -752,6 +752,66 @@ endpoint is called. Snapshot 40 adds six actual source child/catalogue/readonly
 scenarios and native Go scope/queue/ledger/lifetime comparisons, including nested
 ownership and orphan evidence from qualified IDs.
 
+### Operator cron scheduler
+
+`cron.New(cron.Config{Resolver: resolver, DurablePath: path, Secrets: registry})`
+binds the operator library explicitly. Job, SessionID, ID, Request, Invocation,
+Problem and Expression are concrete types. The Resolver resolves/restores a
+session through `ResolveScheduled`; the Runner consumes `RunScheduled` with
+read-only prompt/session accessors and an always-untrusted authority accessor.
+The embedding adapter must create a fresh untrusted runtime context. The Go
+manager, model tools, HTTP arm/cancel routes and launcher selection are pending;
+this package alone does not connect a scheduled turn to an Agent or authorize
+restored sessions. No default feature activation changes.
+
+Parse matches Python's five-field ranges/lists/steps, Sunday 0 and restricted
+day-of-month/day-of-week OR rule. Numeric parsing pins Unicode 14 decimal digits,
+signs/underscores and Python's 4,300-digit limit; whitespace includes the ASCII
+record separators that Go Fields omits. The same decimal table now supplies
+background orphan counters, with their earlier 74 source cases unchanged.
+The supplied local civil minute is the deduplication key; no catch-up or timezone
+conversion is added, and repeated local minutes share the source marker.
+
+Schedule caps prompts at 8,000 Unicode characters and jobs at 200, preserves live
+raw prompts and masks only their stored copies. Per-session cancel/arm answers
+foreign IDs exactly like unknown IDs. ArmAll is an operator act and activation
+is never stored. Loaded valid jobs remain disarmed. CancelForSession removes
+future occurrences; it does not interrupt a run already dispatched.
+
+Durable occurrences create private O_EXCL claim files; losers consume the minute
+locally and stay quiet. Winners mark the occurrence and remove one-shot jobs
+before the atomic temp-file/fsync/rename/directory-sync save, then resolve/dispatch.
+An error never dispatches the occurrence; the claim/consumed memory state remains
+as source does. Only successful saves prune the preceding claim. Cancel removes
+the last claim. Source-compatible stale whole-file state remains between live
+writers: this is not a transactional job database, external exactly-once effect,
+host lease, stale-claim reclamation or replay protocol. Store reads/writes are
+additionally capped at eight MiB and files are private; no host symlink sandbox
+or multi-file commit is claimed. Typed decoding rejects malformed field types;
+Python's dataclass can retain some malformed scalar/null fields. Valid rows and
+dataclass defaults match, duplicate IDs replace in place, unknown fields and bad
+cron rows are diagnosed individually. Source non-array JSON yields an empty store.
+
+Go has no ambient asyncio loop: `Start()` explicitly owns the immediate tick and
+20-second ticker. Schedule alone does not start it. `Tick(time)` is the operator
+and deterministic test path. Stop revokes the current admission generation,
+cancels ticker/runs and joins them; expired observers can resume joining, and
+later explicit Start is supported. A delayed resolver cannot dispatch an old
+generation after Stop. Resolver callbacks may inspect scheduler state; masking
+callbacks run inside persistence and must not reenter the scheduler. Runner
+errors/panics and resolver/persistence panics are reported, a Go addition to
+source's asynchronous task failures. Problems retain 50 distinct entries with
+occurrence/eviction counts; state snapshots are detached. Active runs and source
+armed metadata are not globally bounded. Callers quiesce admission before Wait
+or final lifetime cleanup.
+
+Snapshot 41 compares 27 actual source expressions, 14 operator states, one-shot
+removal, two stale claimers, three claim/save loss cases, masked restoration,
+prompt/job limits and actual source untrusted dispatch/missing-session diagnostics.
+Go tests additionally run two independent processes sharing the store and cover
+native filesystem failures, ticker cancellation/resumed joins and delayed
+resolution. Operator evidence does not complete cron runtime composition or G7.
+
 ### Operator worktree lifecycle
 
 `worktrees.New(worktrees.Config{Repository: repo})` provides named worktree and
@@ -821,7 +881,9 @@ service/task board: even a selected worktree tool reports unconfigured. Child
 files and shell use the parent's current execution directory. Explicit fixed
 prompts, including the child role prompt, remain fixed; the default system
 builder regenerates its workspace from current SystemContext.
-There is no shipped OS sandbox backend or background service to re-confine yet.
+There is no shipped OS sandbox backend. The explicitly enabled background state
+receives the same prepared native executor during entry; its existing runs and
+ledger remain pinned to their admitted bindings.
 
 Git calls inherit the source process environment, take concrete argv, have a
 30-second context-owned deadline, bound each output channel to five MiB and bound

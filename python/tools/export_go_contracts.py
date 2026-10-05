@@ -2281,6 +2281,120 @@ def _trajectory_contracts(scratch: Path) -> dict:
 
 
 
+def _cron_contracts(scratch: Path) -> dict:
+    """Actual cron parsing, operator state, claims, loss and dispatch authority."""
+    import asyncio
+    import uuid
+    from dataclasses import asdict
+    from datetime import datetime
+    from unittest.mock import patch
+    from mini_loop.cron import CronJob, CronScheduler, cron_matches, validate_cron
+
+    scratch.mkdir(parents=True)
+    dates = [datetime(2026, 10, 5, 12, 30), datetime(2026, 11, 13),
+             datetime(2026, 11, 6), datetime(2026, 10, 4),
+             datetime(2026, 10, 5, 2, 10), datetime(2026, 10, 5, 9, 15)]
+    expressions = ["* * * * *", "*/15 9-17 * * 1-5", "0 0 13 * 5",
+                   "0 0 */1 * 0", "0 0 * * 0", "0 0 1,13 * *",
+                   "+0 0 * * *", "١_٠ ٢ * * *", "0\x1c0 * * *",
+                   "*/99999999999999999999999 * * * *", "1-10/3 * * * *",
+                   "* * * *", "*/0 * * * *", "0/2 * * * *", "1,,2 * * * *",
+                   "60 * * * *", "* 24 * * *", "* * 0 * *", "* * * 13 *", "* * * * 7",
+                   "10-1 * * * *", "-1 * * * *", "foo * * * *", "1.0 * * * *",
+                   "*/1/2 * * * *", "1__0 * * * *", "* * * * * *"]
+    parser = [{"expression":e, "error":validate_cron(e), "matches":[cron_matches(e,d) for d in dates]} for e in expressions]
+    fixed = uuid.UUID("aabbccdd-0000-0000-0000-000000000000")
+    now = dates[0]
+    later = now.replace(minute=31)
+    class Recording(CronScheduler):
+        def __init__(self, path, secrets=None):
+            self.fires=[]
+            super().__init__(None, durable_path=path, secrets=secrets)
+        def _fire(self, job):
+            self.fires.append({"job":asdict(job), "disk":json.loads(self.durable_path.read_text()) if self.durable_path else []})
+    path=scratch / "lifecycle.json"
+    s=Recording(path)
+    operations=[]
+    def record(name, text=""):
+        operations.append({"name":name,"text":text,"jobs":[asdict(j) for j in s.jobs.values()],
+                           "armed":[j for j in s.jobs if s.armed(j)],"problems":s.problems.summary(),
+                           "fires":s.fires.copy(),"claims":len(list(s._claims_dir.iterdir())) if s._claims_dir.exists() else 0})
+    with patch("mini_loop.cron.uuid.uuid4",return_value=fixed):
+        record("schedule", s.schedule("session-a", "* * * * *", "中文 run"))
+    record("list",s.list_for("session-a"))
+    s._tick_once(now);record("tick")
+    s._tick_once(now);record("same-minute")
+    s._tick_once(later);record("next-minute")
+    s=Recording(path);record("restore",s.list_for("session-a"))
+    s._tick_once(later);record("disarmed-tick")
+    record("foreign-arm",s.arm("aabbccdd","other"))
+    record("arm",s.arm("aabbccdd","session-a"))
+    s._tick_once(later);record("restored-same-minute")
+    s._tick_once(later.replace(minute=32));record("restored-next-minute")
+    record("foreign-cancel",s.cancel("aabbccdd","other"))
+    record("cancel",s.cancel("aabbccdd","session-a"))
+    record("empty",s.list_for("session-a"))
+
+    one_path=scratch / "one-shot.json"
+    one=Recording(one_path)
+    with patch("mini_loop.cron.uuid.uuid4",return_value=fixed):
+        one.schedule("session-a","* * * * *","once",recurring=False)
+    one._tick_once(now)
+    one_shot={"jobs":[asdict(j) for j in one.jobs.values()],"fires":one.fires,
+              "disk":json.loads(one_path.read_text())}
+    pair_path=scratch / "pair.json"
+    seed=CronJob("shared","* * * * *","claim","session-a",True,True)
+    pair_path.write_text(json.dumps([asdict(seed)]))
+    left,right=Recording(pair_path),Recording(pair_path)
+    left.arm_all();right.arm_all()
+    left._tick_once(now);right._tick_once(now)
+    right._tick_once(later);left._tick_once(later)
+    pair={"left_fires":len(left.fires),"right_fires":len(right.fires),
+          "left_marker":left.jobs['shared'].last_fired,"right_marker":right.jobs['shared'].last_fired,
+          "claims":len(list(left._claims_dir.iterdir())),"problems":left.problems.summary()+right.problems.summary()}
+    losses=[]
+    for kind in ("claim","save","one-shot-save"):
+        loss_path=scratch / (kind+".json")
+        loss_seed=CronJob("lost","* * * * *","lost","session-a",kind!="one-shot-save",True)
+        loss_path.write_text(json.dumps([asdict(loss_seed)]))
+        loss=Recording(loss_path);loss.arm_all()
+        if kind=="claim": loss._claims_dir.write_text("blocked")
+        else: loss_path.unlink();loss_path.mkdir()
+        loss._tick_once(now)
+        losses.append({"kind":kind,"job_count":len(loss.jobs),"marker":loss.jobs['lost'].last_fired if 'lost' in loss.jobs else None,
+                       "fire_count":len(loss.fires),"problem_total":loss.problems.total()})
+    class Mask:
+        def mask(self,value):return value.replace("secret","[MASK]")
+    mask_path=scratch / "mask.json"
+    masked=Recording(mask_path,Mask())
+    with patch("mini_loop.cron.uuid.uuid4",return_value=fixed):
+        masked.schedule("session-a","* * * * *","secret")
+    masking={"live":masked.jobs['aabbccdd'].prompt,"stored":json.loads(mask_path.read_text())[0]['prompt'],
+             "restored":Recording(mask_path).jobs['aabbccdd'].prompt,"problems":masked.problems.summary()}
+    bounded=Recording(None)
+    prompt_error=bounded.schedule("s","* * * * *","你"*8001,durable=False)
+    for _ in range(200): bounded.schedule("s","* * * * *","ok",durable=False)
+    job_error=bounded.schedule("s","* * * * *","ok",durable=False)
+    async def authority_probe():
+        seen=[]
+        class Runner:
+            async def run(self,prompt,*,run_context):
+                seen.append({"prompt":prompt,"authority":run_context.authority})
+        class Manager:
+            def get(self,sid):return Runner() if sid=="session-a" else None
+        actual=CronScheduler(Manager())
+        actual._fire(CronJob("invoke","* * * * *","go","session-a"))
+        await asyncio.gather(*actual._running)
+        actual._fire(CronJob("missing","* * * * *","go","absent"))
+        await actual.stop()
+        return {"runs":seen,"problems":actual.problems.summary()}
+    return {"dates":[d.isoformat() for d in dates],"parser":parser,"operations":operations,
+            "one_shot":one_shot,"pair":pair,"losses":losses,"masking":masking,
+            "bounds":{"prompt_error":prompt_error,"job_error":job_error},"authority":asyncio.run(authority_probe()),
+            "source_sha256":{name:hashlib.sha256((PYTHON_ROOT/'mini_loop'/name).read_bytes()).hexdigest()
+                             for name in ('cron.py','durable.py','problems.py','run_context.py')}}
+
+
 def _child_background_contracts(scratch: Path) -> dict:
     """Actual selected children and the shared-ledger live-parent source gap."""
     import asyncio
@@ -3547,6 +3661,7 @@ def _snapshot() -> dict[str, bytes]:
         background_tool_contracts = _background_tool_contracts(Path(scratch) / "background-tools")
         managed_background_contracts = _managed_background_contracts(Path(scratch) / "managed-background")
         child_background_contracts = _child_background_contracts(Path(scratch) / "child-background")
+        cron_contracts = _cron_contracts(Path(scratch) / "cron")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -3602,6 +3717,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-background-tools.json": _json_bytes(background_tool_contracts),
         "python-managed-background.json": _json_bytes(managed_background_contracts),
         "python-child-background.json": _json_bytes(child_background_contracts),
+        "python-cron.json": _json_bytes(cron_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

@@ -296,7 +296,9 @@ plus two explicitly enabled background tools, conditional Bash dispatch, bounded
 completion injection, interruption survivor markers and manager-owned close/join
 with independent startup selection, plus selected child scopes retained for
 lifetime cleanup with independent qualified IDs and completion queues,
-reviewed **2026-10-05** (Go baseline `cf6995b` plus the child-background slice).
+plus an explicitly bound typed cron operator scheduler with masked persistence,
+disarmed restoration, exclusive minute claims and cancellation/join,
+reviewed **2026-10-05** (Go baseline `aaa499b` plus the operator-cron slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -372,6 +374,11 @@ flowchart LR
         GoManager -. delete / stop after turn drain: cancel and join .-> GoBackground
         GoLaunch -. explicit background-tools flag .-> GoBackground
         GoChildren -. selected background tools: separate scopes / queues .-> GoBackground
+        GoCron["Explicit operator cron<br/>typed jobs · five fields · disarmed restore<br/>per-session controls · ticker / run cancellation"]
+        GoCronStore["Operator cron JSON / claim files<br/>masked prompts · mark before dispatch<br/>exclusive minute claim; no external transaction"]
+        GoCronRunner["Embedding resolver / scheduled runner<br/>untrusted invocation · optional restore adapter<br/>manager / tool / HTTP composition pending"]
+        GoCron -->|atomic persisted mark / O_EXCL claim| GoCronStore
+        GoCron -->|only after occurrence admission| GoCronRunner
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional persistent task tools · masked file graph<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -487,6 +494,17 @@ close. No host lease or cross-process/shared-session ledger arbitration is
 claimed. Bare library callers quiesce admission before CloseBackground; retained
 child metadata/queues are not globally bounded. Default tools remain ten.
 See [background library](go/README.md#operator-background-commands).
+`go/cron` is an explicit operator library: named job/session IDs, five-field
+matching, per-session cancel/arm, masked atomic files and exclusive minute claims.
+Restored jobs stay disarmed until an operator authorizes them in this process;
+activation is never persisted. Occurrence marks and one-shot removal are saved
+before dispatch, so save/claim failures report lost work and never dispatch it.
+The resolver receives an untrusted invocation; embedding code must translate it
+into a fresh untrusted runtime context. Start is explicit in Go; Stop cancels and
+joins the ticker and admitted runs. Go manager deletion, model tools and HTTP
+activation are not composed yet. Independent live writers still hold stale
+whole-file state; claim files do not transact with external effects or prove
+exactly-once execution. See [cron library](go/README.md#operator-cron-scheduler).
 `go/worktrees` is an explicitly selected library service: named records and
 task binding, Git status/ahead checks plus Git's independent refusal, and local
 JSONL audit events. Factory failures can return plain directories, matching Python;
