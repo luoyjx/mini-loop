@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"sync"
+	"time"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/shell"
@@ -53,6 +54,9 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	StateStore           StateStore
+	StateLeaseOwner      LeaseOwner
+	StateLeaseTTL        time.Duration
 	CronTools            bool
 	Cron                 CronControl
 	BackgroundTools      bool
@@ -226,6 +230,9 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 // questions plus deferred compaction to the implemented workspace tools.
 // Task delegates to a fresh child through the explicit subagent seam.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
+	if config.StateStore != nil || config.StateLeaseOwner != "" || config.StateLeaseTTL != 0 {
+		return nil, errors.New("state persistence requires NewManagedSession")
+	}
 	for _, hook := range config.UserPromptHooks {
 		if hook == nil {
 			return nil, errors.New("user prompt hook cannot be nil")

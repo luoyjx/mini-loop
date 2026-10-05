@@ -28,6 +28,7 @@ const (
 // scratch reclamation. Cron files and trajectory evidence do not restore sessions
 // or leases. Public lookups require an already established owner identity.
 type SessionManager struct {
+	leaseOwner                     LeaseOwner
 	mu                             sync.Mutex
 	cronMu                         sync.Mutex
 	cron                           *cron.Scheduler
@@ -52,6 +53,9 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 	if config.Services.Provider == nil {
 		return nil, errors.New("session manager requires a provider")
 	}
+	if config.Services.StateStore == nil && config.StateLeaseTTL != 0 {
+		return nil, errors.New("state lease TTL requires a state store")
+	}
 	defaults := &config.Defaults
 	if defaults.PermissionMode == "" {
 		defaults.PermissionMode = ModeInteractive
@@ -66,7 +70,7 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		defaults.MaxRounds = DefaultSessionMaxRounds
 	}
 	defaults.System = clonePointer(defaults.System)
-	if config.ModelConcurrency < 0 || config.ToolConcurrency < 0 || config.ApprovalTimeout < 0 || config.ShutdownGrace < 0 || config.DeleteGrace < 0 {
+	if config.ModelConcurrency < 0 || config.ToolConcurrency < 0 || config.ApprovalTimeout < 0 || config.ShutdownGrace < 0 || config.DeleteGrace < 0 || config.StateLeaseTTL < 0 {
 		return nil, errors.New("manager limits cannot be negative")
 	}
 	if config.ShutdownGrace == 0 {
@@ -105,10 +109,22 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		services.ToolLimiter, _ = NewConcurrencyLimiter(config.ToolConcurrency)
 	}
 	if services.Approvals == nil {
-		services.Approvals, _ = NewApprovalBroker(ApprovalBrokerConfig{Timeout: config.ApprovalTimeout, Redactor: services.Secrets})
+		services.Approvals, _ = NewApprovalBroker(ApprovalBrokerConfig{Timeout: config.ApprovalTimeout, Redactor: services.Secrets, Store: services.StateStore})
 	}
 	if services.ActionJournal == nil {
-		services.ActionJournal, _ = NewInMemoryActionJournal(DefaultResultsRetained)
+		if services.StateStore != nil {
+			journal, err := NewStoredActionJournal(services.StateStore)
+			if err != nil {
+				return nil, err
+			}
+			// Explicit manager recovery policy, never an implicit store-open effect.
+			if err := stateFault(func() error { _, err := journal.MarkInflightUnknown(context.Background(), nil); return err }); err != nil {
+				return nil, err
+			}
+			services.ActionJournal = journal
+		} else {
+			services.ActionJournal, _ = NewInMemoryActionJournal(DefaultResultsRetained)
+		}
 	}
 	if services.BashFactory == nil {
 		services.BashFactory = hostBashFactory{}
@@ -141,6 +157,13 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		return nil, err
 	}
 	manager := &SessionManager{config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
+	if services.StateStore != nil {
+		name, err := newSpan("process_", 16)
+		if err != nil {
+			return nil, err
+		}
+		manager.leaseOwner = LeaseOwner(fmt.Sprintf("%d_%s", os.Getpid(), name))
+	}
 	manager.cron, err = cron.New(cron.Config{Resolver: managerCronResolver{manager}, DurablePath: filepath.Join(root, ".cron.json"), Secrets: cronMasker{services.Secrets}})
 	if err != nil {
 		return nil, err
@@ -263,11 +286,15 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 	path := ""
 	scratch := request.Workspace == nil
 	published := false
+	var pending *ManagedSession
 	allocated := false
 	defer func() {
 		if fault := recover(); fault != nil {
 			err = fmt.Errorf("session construction panicked (%T)", fault)
 			session = nil
+		}
+		if !published && pending != nil {
+			manager.recordCleanupError(id, "state", pending.core.persistence.delete())
 		}
 		if !published && scratch && allocated && path != "" {
 			manager.reclaimUnusedWorkspace(id, path)
@@ -317,16 +344,20 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 	if system != nil {
 		builder = FixedSystem(*system)
 	}
-	session, err = NewManagedSession(RuntimeConfig{CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: request.Owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter})
+	session, err = newManagedSession(RuntimeConfig{StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: request.Owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}, true)
 	if err != nil {
 		return nil, err
 	}
 	session.workspaceBound = !scratch
+	pending = session
 	session.core.explicitSystem = clonePointer(system)
 	if seed != nil {
 		session.core.messages = seed.messages
 		session.core.forkedFrom = clonePointer(&seed.lineage)
 		session.core.publishLive()
+	}
+	if err = session.core.persistence.initialize(); err != nil {
+		return nil, err
 	}
 	manager.mu.Lock()
 	defer manager.mu.Unlock()
@@ -430,6 +461,7 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 	manager.retiring[id] = session
 	manager.beginCleanupLocked()
 	manager.mu.Unlock()
+	manager.recordCleanupError(id, "state", session.core.persistence.delete())
 	if _, err := manager.cron.CancelForSession(cron.SessionID(id)); err != nil {
 		manager.recordCleanupError(id, filepath.Join(manager.config.WorkspaceRoot, ".cron.json"), err)
 	}
@@ -482,6 +514,9 @@ func (manager *SessionManager) CleanupErrors() []CleanupError {
 	return append([]CleanupError(nil), manager.cleanupErrors...)
 }
 func (manager *SessionManager) recordCleanupError(id SessionID, path string, err error) {
+	if err == nil {
+		return
+	}
 	manager.mu.Lock()
 	defer manager.mu.Unlock()
 	manager.cleanupErrors = append(manager.cleanupErrors, CleanupError{id, path, truncateRunes(maskedText(manager.config.Services.Secrets, err.Error()), 500)})
@@ -576,6 +611,7 @@ func (manager *SessionManager) shutdown(sessions []*ManagedSession, creating <-c
 		go func() {
 			defer group.Done()
 			manager.drainSession(session, "session manager stopped", manager.config.ShutdownGrace)
+			manager.recordCleanupError(session.ID(), "state lease", session.core.persistence.release())
 		}()
 	}
 	group.Wait()

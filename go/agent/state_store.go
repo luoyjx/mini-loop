@@ -79,3 +79,17 @@ type EventStore interface {
 	LoadEvents(context.Context, SessionID, EventSequence, *int) ([]SessionEventRecord, error)
 	EventCursor(context.Context, SessionID) (EventSequence, error)
 }
+
+// StateStore is the explicitly configured fleet backend. Small interfaces above
+// remain the consumers' contracts; this composition supplies the SQLite feature
+// set without runtime probing or an untyped storage payload. The caller owns
+// backend close. Supplying an implementation does not prove SQLite durability.
+type StateStore interface {
+	SessionStore
+	TranscriptStore
+	EventStore
+	LeaseStore
+	ActionStore
+	ApprovalStore
+	ApprovalReader
+}

@@ -599,9 +599,34 @@ for current known event variants. It preserves informational message lineage
 while stamping it untrusted, with no actor or approved capabilities. Grant
 events are data and do not restore broker grants. Unknown event/compaction
 variants fail; additive unused fields are ignored. These explicit library
-contracts are not yet wired into Go manager/launcher/SSE persistence. Snapshot
-44 contains real Python SQL outcomes; Go projection compatibility is checked,
-but a Go SQLite backend and session/lease restoration remain pending.
+contracts are now composed by `RuntimeConfig.StateStore` and
+`ManagerServices.StateStore` for live managed sessions. The caller owns backend
+close. A manager generates a separate process lease identity; bare managed
+sessions may explicitly omit leases. Default journal/approval services use the
+store; caller-supplied services are preserved. The default stored journal is
+explicitly marked unknown during manager construction, matching Python policy;
+that global operation does not prove another process is dead.
+
+The guard flushes before provider admission, checks the current epoch count and
+uses immutable message content for prefix identity. Event capture writes first,
+then flushes; event epochs are stamped before a rewrite flush advances the epoch.
+Ephemeral events consume live sequence numbers without adding stored ordinals.
+Ordinary backend write faults/panics are reported and degrade; count-query or
+coverage failures stop the request. Confirmed renewal loss cancels the active
+turn and suppresses later publication/model/tool admission. Renewal and session
+metadata refresh happen on transcript growth, not a timer or every terminal
+event; stored status can therefore remain `running` after an idle completion.
+Queued steering gets its own metadata write before acknowledgment.
+
+Go claims after acquiring turn admission, closing the source queued-claim gap.
+Deletion disables future writes before removing rows and cancelling parked work,
+preventing late resurrection; backend cleanup faults are reported and remaining
+cleanup continues. Stop releases leases only after turns drain. Snapshot 45 runs
+actual Python AgentSession/SQLite guard, capture, masking, epoch and lease probes;
+Go compares that recipe and additionally tests its admission/teardown rules.
+The Go test backing is not a production backend or durability proof. SQLite,
+restore-time expiry/crash-tail repair, durable SSE and launcher selection remain
+pending.
 
 ---
 

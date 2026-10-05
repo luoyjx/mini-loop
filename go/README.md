@@ -112,7 +112,7 @@ persistence. The optional bound approval broker now supplies parked requests,
 timeout/cancellation, process-local session grants, reviewer abstention and typed
 approval rows; an injected store is still required for durable writes. Registry
 masking binds implemented results, recordings, approvals and compaction files.
-SQLite adapters, remaining HTTP surfaces, session persistence
+SQLite adapters, remaining HTTP surfaces, session restoration
 remain pending.
 Python
 contract snapshots and fake reply fixtures are generated into `testdata/` by
@@ -264,7 +264,8 @@ and `ApprovalReader` interfaces use concrete records and named IDs/epochs.
 operational session/messages/events must retain action and approval audit rows.
 An empty message append returns the requested epoch's count; message ordinals
 continue across rewritten epochs. A nil epoch selects the highest stored epoch.
-These interfaces are not yet attached to `ManagerConfig` or the standalone app.
+`StateStore` aggregates these with action/approval storage for explicit managed
+session composition. The standalone app still has no state-store activation.
 
 `agent.DecodeStoredEvent` reads the current flat writer projections into closed
 event variants, bounded to 16 MiB per row. It requires a positive sequence and
@@ -287,8 +288,38 @@ upsert preservation, explicit unknown transitions, audit-preserving deletion,
 concurrent append, v1 migration and future/corrupt-file refusal. Go checks those
 record/message shapes and all current writer variants, including a real tool
 loop and malformed/authority-bearing archival rows. SQL outcomes currently
-remain Python evidence. Go driver approval, backend execution, manager recovery,
-lease enforcement, parked-approval expiry and durable catch-up are still open.
+remain Python evidence. Live injection is now available through
+`RuntimeConfig.StateStore` and `ManagerServices.StateStore`; optional
+`StateLeaseOwner`/`StateLeaseTTL` and manager-generated process identity preserve
+the tenant/lease distinction. A manager defaults to a stored journal and approval
+rows, while preserving explicit overrides. The caller owns backend close.
+
+Transcript growth is flushed before provider calls, versioned after prefix
+replacement and projected through the registry without mutating live content.
+Session-row explicit system and Todo data follow the source projection; masking
+is applied to transcripts, events and queued steering rather than every metadata
+field. The current epoch count is checked before a request. Events write before the
+subsequent flush; a rewrite event retains its old epoch stamp, while the next
+event uses the new epoch. Ephemeral events consume live sequence IDs only.
+`PersistenceStatus()` reports configured state, masked sticky write faults and
+lease confirmation history; confirmation alone is not a current holder query.
+Ordinary write errors/panics degrade; invariant/query failures stop a request.
+Confirmed renewal loss cancels the turn before later model/tool admission.
+
+Claims occur after serialized turn admission. Queued steering is saved before
+acknowledgment. Delete disables later writes before deleting rows/cancelling work;
+stop releases leases after drain. Cleanup errors are reported without preventing
+remaining cleanup. Renewal and session row refresh require transcript growth,
+so stored status can remain `running` after final text has already been flushed.
+The default manager journal explicitly marks all started actions unknown, as in
+Python; this policy is not proof that a foreign process is dead or external fencing.
+
+Snapshot 45 runs actual Python AgentSession over SQLite to pin guard/capture,
+masking, epochs, metadata timing, ephemeral sequence/ordinal differences and
+confirmed/unconfirmed renewal loss. Go runs the same recipe and failure outcomes
+against a test-only backing. Driver approval, backend execution, manager restore,
+parked-approval expiry/crash-tail repair and durable SSE/launcher activation
+remain open; passing injection tests does not establish physical durability.
 
 ### Use the direct HTTP model adapter
 

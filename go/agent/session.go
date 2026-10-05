@@ -34,6 +34,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	persistence                                       *sessionPersistence
 	background                                        *backgroundState
 	repairedToolUses                                  []string
 	id                                                SessionID
@@ -284,7 +285,10 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 		reply, err := s.completeModel(ctx, request, &s.requestCatalog)
 		if err != nil {
 			if ctx.Err() != nil {
-				return "", ctx.Err()
+				return "", stateRunError(ctx)
+			}
+			if errors.Is(err, ErrStateTranscript) || errors.Is(err, ErrSessionLeaseLost) {
+				return "", err
 			}
 			detail := boundedError(err)
 			text := "[Error] " + detail

@@ -257,6 +257,12 @@ func (s *Session) appendText(text string, phase TextPhase) {
 	}
 }
 func (s *Session) completeModel(ctx context.Context, request protocol.ModelRequest, catalog *ToolCatalogSnapshot) (protocol.ModelReply, error) {
+	if err := stateRunError(ctx); err != nil {
+		return protocol.ModelReply{}, err
+	}
+	if err := s.persistence.guard(s.messages); err != nil {
+		return protocol.ModelReply{}, err
+	}
 	if s.recoveryModel != "" {
 		request.Model = s.recoveryModel
 	}
@@ -384,6 +390,9 @@ func (s *Session) completeModel(ctx context.Context, request protocol.ModelReque
 	meter := s.meter.Snapshot()
 	end.TokenMeter = &meter
 	s.events.appendRecorded(SessionEvent{kind: EventModelEnd, modelEnd: end}, trajectoryDetails{kind: EventModelEnd, reply: reply.Clone().Content})
+	if err := stateRunError(ctx); err != nil {
+		return protocol.ModelReply{}, err
+	}
 	return reply, nil
 }
 func boundedError(err error) string { return truncateRunes(fmt.Sprintf("%T: %v", err, err), 500) }
@@ -404,6 +413,12 @@ func (s *Session) limitedComplete(ctx context.Context, request protocol.ModelReq
 		return protocol.ModelReply{}, err
 	}
 	defer lease.Release()
+	if err := stateRunError(ctx); err != nil {
+		return protocol.ModelReply{}, err
+	}
+	if err := s.persistence.guard(s.messages); err != nil {
+		return protocol.ModelReply{}, err
+	}
 	if provider, ok := s.provider.(StreamingProvider); ok {
 		return s.streamingComplete(ctx, provider, request)
 	}
@@ -426,6 +441,9 @@ func (s *Session) dispatchToolAnnounced(ctx context.Context, run RunContext, use
 	s.events.append(SessionEvent{kind: EventToolUse, toolUse: ToolUseEvent{use.Name, use.Input, use.ID, span, s.lastModelSpan, action, s.activityID, ToolLabel(use.Input)}})
 	if announce != nil {
 		announce()
+	}
+	if err := stateRunError(ctx); err != nil {
+		return ToolOutcome{}, err
 	}
 	started := time.Now()
 	outcome, err := s.gate.dispatch(ctx, ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, call, func(v ActionReconciliation) {

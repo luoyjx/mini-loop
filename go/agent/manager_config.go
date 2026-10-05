@@ -45,6 +45,7 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	StateStore                StateStore
 	CronTools                 bool
 	BackgroundTools           bool
 	WorktreeTools             bool
@@ -76,6 +77,7 @@ type ManagerServices struct {
 }
 
 type ManagerConfig struct {
+	StateLeaseTTL                     time.Duration
 	WorkspaceRoot                     string
 	BindableRoots                     []string
 	WorkspaceFactory                  WorkspaceFactory

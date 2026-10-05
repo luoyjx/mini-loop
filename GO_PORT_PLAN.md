@@ -110,7 +110,7 @@ Record its parity evidence and remaining gaps before checking it off.
       and streamed-text cancellation repair implemented;
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
-- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite probe captured; Go SQLite backend, session/lease restore and durable catch-up remain)
+- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; Go SQLite backend, session/lease restore and durable catch-up remain)
 - [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
@@ -124,11 +124,12 @@ Record its parity evidence and remaining gaps before checking it off.
    migrations, one owned connection, WAL/NORMAL/foreign-key posture, transactional
    append/rollback, conditional leases and action/approval rows. Run the same
    probe recipes against real Go SQLite, including concurrent connections.
-3. Session integration: configured-only composition, persistence-before-request,
+3. Session integration: configured-only live composition, persistence-before-request,
    rewrite epochs, secret projections, owner/bound-workspace retention, explicit
-   unknown-action handling, parked-approval expiry and crash-tail repair. Restore
-   lease confirmation separately from recorded ownership; drain/release on delete
-   and stop. No new human authority or goal/cron activation is restored.
+   default unknown-action handling, post-admission claims and drain/release are
+   implemented. Remaining: real backend integration, session restoration, parked
+   approval expiry and crash-tail repair. Restore lease confirmation separately
+   from recorded ownership; no human authority or goal/cron activation is restored.
 4. Serving: durable event cursor/catch-up, restored cron resolution and explicit
    launcher selection. Compare real restart/crash windows and ownership paths
    before claiming G5 complete; a lease is not external-effect fencing.
@@ -3495,3 +3496,114 @@ offers a version-pinned choice; independent contracts/probes are delivered first
   (675,135 bytes). Receipts match the exact frozen files. Visual review remains
   skipped after the earlier local-file access denial; no new rendered/browser
   inspection is claimed. Go evidence is darwin/arm64; Linux remains unvalidated.
+
+## Implementation checkpoint — 2026-10-06 live state injection
+
+The full Go-port goal remains active. This slice connects the existing typed
+state contracts to live managed sessions without adding a driver or claiming a
+production SQLite backend. G0–G7 remain open for the outstanding inventory.
+
+### Source contract and configured runtime
+
+- `StateStore` composes the small session/transcript/event/lease and action/approval
+  contracts. `RuntimeConfig.StateStore` enables managed-session injection;
+  `ManagerServices.StateStore` selects it for new/forked fleet sessions. Bare
+  `NewRuntimeSession` rejects managed state configuration. No dependency, default
+  activation, launcher persistence option or production storage substitute is added.
+- Manager creation supplies a fresh process lease identity, separate from tenant
+  ownership, and initializes state only after binding metadata/system/fork history.
+  Default journals and approval rows use the injected store; explicit services keep
+  their own stores. Backend close remains caller-owned. Default stored-journal
+  construction explicitly marks started actions unknown, matching Python manager
+  policy; store/journal construction alone does not mark them. This global policy
+  does not prove that another process died or fence external effects.
+- Python `session.py::_transcript_guard`, `_capture_event`, `_flush_messages`,
+  `_persist_session_record`, `_require_lease` and `_renew_lease` define the live
+  timing. Go flushes before provider admission and checks the highest epoch count.
+  Immutable protocol content supplies prefix identity; replacement opens a new
+  epoch and retains old rows. A rewrite event is stamped before the ensuing flush
+  advances the epoch. Ephemeral events consume live sequence IDs without adding
+  persisted ordinals. Durable SSE must still address that separate cursor contract.
+- Transcript/event/steering projections mask detached copies. Session-row explicit
+  system and Todo projection follow the source record contract; this slice does not
+  claim blanket masking of every metadata field. Stored event decoding drops human
+  execution authority, actors/capabilities and live broker grants.
+- Ordinary write errors/panics degrade and remain reported through the concrete
+  `PersistenceStatus` snapshot. Count/query invariant failures stop the request.
+  A failed renewal stops a turn only after the process successfully acquired the
+  lease. Cancellation retains `ErrSessionLeaseLost` across provider-error and
+  managed terminal boundaries, suppressing later publication/model/tool admission.
+  Confirmation records a past successful claim, not a fresh holder query.
+- Renewal and session-row refresh require transcript growth; they are not a timed
+  heartbeat. A final assistant-text beat can flush while status is `running`, then
+  the no-growth terminal beat leaves that stored status unchanged. The real source
+  probe pins this behavior rather than forcing an idle row into the expectation.
+  Queued steering has its own metadata write before acknowledgment.
+
+### Go admission and teardown additions
+
+- Go claims after owning serialized turn admission and rechecks acceptance before
+  publishing an active turn, including idle HTTP steering. A queued caller cannot
+  reuse a claim taken while a previous turn still owned admission.
+- Delete disables operational writes/disowns the lease before row deletion and
+  cancellation. Late callbacks cannot upsert the deleted row; action/approval audit
+  storage remains available for terminal settlement. Failed deletion attempts
+  conditional release and reports both errors while remaining cleanup continues.
+- Stop releases leases after each owned turn drains. A blocked provider retains its
+  lease through the drain window; release failure is recorded and other cleanup
+  continues. No backend is closed by manager stop. Unpublished manager state is
+  cleaned on failed admission; bare constructor claim/release errors are returned.
+- These tests use a concrete, test-only backing with synchronized named records.
+  They establish runtime ordering/fault handling and never establish SQL transaction
+  atomicity, cross-process leasing, real restart safety or physical durability.
+
+### Actual source probe and remaining work
+
+- Snapshot 45 constructs the actual Python `AgentSession` and `Agent`, using a real
+  SQLite database and an offline fake client. It executes capture/guard directly:
+  pre-request coverage, Unicode/escaped-secret projections, SDK thinking/text blocks,
+  queue writes, old/current epochs, live sequence versus physical cursor, metadata
+  timing, disabled terminal fields and confirmed/unconfirmed renewal loss.
+- Store-method fault injection distinguishes ordinary append/event degradation from
+  guard-count query failure. The count probe first completes its append because the
+  real backend also calls `message_count` while appending; otherwise it would test
+  a write failure instead of the guard query. Outcomes are derived, not normalized.
+- Go executes the same source recipe through its typed injected backing and compares
+  counts, queues, raw/masked boundaries, status, terminal fields, epochs/sequences,
+  loss and fault outcomes. Additional native runtime tests exercise a real gated
+  tool loop, no-effect lease-loss boundaries, queued admission, fork-before-publish,
+  owner isolation, deletion with a draining provider and cleanup failure reporting.
+  Active terminal rows retain trace/group join IDs before trajectory finalization;
+  ordinary state events receive no later trajectory stamp, and stored terminal
+  rows do not claim a successful future trajectory finish.
+- SQLite driver approval remains unanswered. Native schema/migrations, transactional
+  append and conditional lease implementation, session restore/parked-approval expiry,
+  crash-tail repair, durable SSE catch-up and launcher selection remain required.
+  No goal-completion or G5-completion claim is made.
+
+### Validation and delivery evidence
+
+- Final focused `go test ./agent -run '^TestState' -count=1 -timeout=45s`: pass.
+  Final full `go test ./...` with shared-package coverage, `go test -race ./...`
+  and `go vet ./...`: pass. Deduplicated statement coverage is **88.69%**
+  (**10,311 / 11,626**); agent **90.15%** (**4,504 / 4,996**). These are code
+  coverage figures, not migration-completion percentages or SQL durability evidence.
+- Exporter `--check` after the selected mutations: **45 files current**; all 44
+  previous tracked exports remain unchanged. No paid endpoint is called.
+- `verify_scans.py`: **19 anchored scans**. Selected `verify_guards.py` runs catch
+  **7 mutations**: six matching `lease` (including the action-result-release
+  substring match), plus `injected-input-rides-unlogged`. This is source guard
+  evidence, not a full guard sweep or Go mutation coverage.
+- Python full suite: **2,151 passed / 28 skipped / 24 subtests passed**, three
+  warnings in **99.18 s**. Python package/runtime/test modules are unchanged;
+  package-module invariant verification is not applicable to this exporter change.
+- `git diff --check` and README outline: pass. README baseline, canonical Mermaid,
+  boundary explanation, parity inventory and interactive specification are updated.
+  Archify acceptance: **9/9**, zero composition errors/warnings, after **one**
+  focused route correction. Frozen specification SHA-256
+  `c1d585df0d7e251067d0b02da0e5890ca36aaab84b70e2b951ccb4430115c1ae`
+  (34,927 bytes); generated HTML SHA-256
+  `1464c33ad82f5ee3d89a1e9b48fb2f7fd97c826f6189f3b98e1f9b3ba682fc98`
+  (676,343 bytes). Both receipts match the exact files. Archify visual review
+  remains skipped after the earlier local-file access denial; no new browser or
+  rendered inspection is claimed. Go tests are darwin/arm64; Linux is unvalidated.

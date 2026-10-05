@@ -130,6 +130,20 @@ type ManagedSession struct {
 }
 
 func NewManagedSession(config RuntimeConfig) (*ManagedSession, error) {
+	return newManagedSession(config, false)
+}
+
+// Manager construction defers the first write until workspace and fork metadata
+// are installed. The caller owns the backend and its close lifecycle.
+func newManagedSession(config RuntimeConfig, deferState bool) (*ManagedSession, error) {
+	store, owner, ttl := config.StateStore, config.StateLeaseOwner, config.StateLeaseTTL
+	if ttl < 0 || (store == nil && (owner != "" || ttl != 0)) {
+		return nil, errors.New("state lease configuration requires a store and non-negative TTL")
+	}
+	if ttl == 0 {
+		ttl = DefaultStateLeaseTTL
+	}
+	config.StateStore, config.StateLeaseOwner, config.StateLeaseTTL = nil, "", 0
 	core, err := NewRuntimeSession(config)
 	if err != nil {
 		return nil, err
@@ -144,6 +158,15 @@ func NewManagedSession(config RuntimeConfig) (*ManagedSession, error) {
 	}
 	session.core.events.trajectory = run
 	session.build = config.Build
+	if store != nil {
+		p := &sessionPersistence{store: store, session: session, owner: owner, ttl: ttl, epoch: 1}
+		core.persistence, core.events.persistence = p, p
+		if !deferState {
+			if err := p.initialize(); err != nil {
+				return nil, errors.Join(err, p.release())
+			}
+		}
+	}
 	return session, nil
 }
 
@@ -238,6 +261,11 @@ func (session *ManagedSession) runWithContext(ctx context.Context, prompt string
 	if err = ctx.Err(); err != nil {
 		return "", err
 	}
+	// Claim after owning admission: a queued caller cannot carry a stale claim
+	// into a later turn. No manager/session mutex is held during backend calls.
+	if err = session.core.persistence.requireLease(ctx); err != nil {
+		return "", err
+	}
 	session.mu.Lock()
 	if err = session.admissionError(); err != nil {
 		session.mu.Unlock()
@@ -262,10 +290,16 @@ func (session *ManagedSession) beginTurnLocked(ctx context.Context) (context.Con
 	return turnCtx, active
 }
 func (session *ManagedSession) runActive(turnCtx context.Context, prompt string, run RunContext, active *activeTurn) (output string, err error) {
+	turnCtx, cancelCause := context.WithCancelCause(turnCtx)
+	unbind := session.core.persistence.bindTurn(cancelCause)
+	defer func() { unbind(); cancelCause(nil) }()
 	defer active.cancel()
 	defer func() {
 		if fault := recover(); fault != nil {
 			err = fmt.Errorf("runtime panicked: %T", fault)
+		}
+		if errors.Is(context.Cause(turnCtx), ErrSessionLeaseLost) {
+			output, err = "", ErrSessionLeaseLost
 		}
 		session.mu.Lock()
 		active.finishing = true
@@ -291,6 +325,13 @@ func (session *ManagedSession) runActive(turnCtx context.Context, prompt string,
 			}
 		} else {
 			session.finishTrajectory(run, SessionEvent{kind: EventDone, done: DoneEvent{output, PhaseFinalAnswer}}, TrajectoryCompleted, &output, nil)
+		}
+		// The terminal flush can itself detect a lost lease.
+		if errors.Is(context.Cause(turnCtx), ErrSessionLeaseLost) {
+			output, err = "", ErrSessionLeaseLost
+			session.mu.Lock()
+			session.status = StatusError
+			session.mu.Unlock()
 		}
 		if reason != nil {
 			repaired := session.core.recordInterruption(*reason)

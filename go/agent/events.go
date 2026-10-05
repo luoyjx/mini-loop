@@ -193,6 +193,7 @@ type EventScope struct {
 func (scope EventScope) clone() EventScope { scope.RunContext = scope.RunContext.clone(); return scope }
 
 type sessionEvents struct {
+	persistence *sessionPersistence
 	trajectory  *trajectoryRun
 	mu          sync.Mutex
 	next        EventSequence
@@ -232,9 +233,40 @@ func (events *sessionEvents) appendScoped(event SessionEvent, scope EventScope) 
 func (events *sessionEvents) appendScopedRecorded(event SessionEvent, scope EventScope, details trajectoryDetails, finish *TrajectoryFinish) {
 	events.emitMu.Lock()
 	defer events.emitMu.Unlock()
+	var epoch int
+	if events.persistence != nil {
+		epoch = events.persistence.currentEpoch()
+	}
 	events.mu.Lock()
+	if epoch != 0 {
+		events.epoch = epoch
+	}
 	record := events.appendLocked(event, scope)
 	events.mu.Unlock()
+	// The SQL projection precedes trajectory I/O, as in the source capture path.
+	if finish != nil && events.trajectory != nil {
+		id, _, fault := events.trajectory.snapshot()
+		record.Trajectory = &TrajectoryStamp{ID: id}
+		if id != nil {
+			sessionID := record.SessionID
+			record.Trajectory.TraceID, record.Trajectory.GroupID = clonePointer(id), &sessionID
+		}
+		record.Terminal = &TrajectoryTerminal{Status: finish.Status, DurationMS: clonePointer(finish.DurationMS)}
+		if id == nil {
+			state := events.persistence.snapshot()
+			record.Terminal = &TrajectoryTerminal{Status: TrajectoryDisabled, RecordingError: fault,
+				TrajectoryDisabledState: &TrajectoryDisabledState{StatePersisted: state.Error == nil, PersistError: state.Error}}
+		}
+	}
+	if events.persistence != nil {
+		if err := events.persistence.capture(&record); err != nil {
+			return
+		}
+		epoch := events.persistence.currentEpoch()
+		events.mu.Lock()
+		events.epoch = epoch
+		events.mu.Unlock()
+	}
 	if events.trajectory != nil {
 		if finish != nil {
 			id, _, _ := events.trajectory.snapshot()
@@ -245,6 +277,11 @@ func (events *sessionEvents) appendScopedRecorded(event SessionEvent, scope Even
 		events.trajectory.capture(&record, details, events.secrets)
 		if finish != nil {
 			events.trajectory.finish(&record, *finish)
+			if events.persistence != nil && record.Terminal != nil && record.Terminal.TrajectoryDisabledState != nil {
+				state := events.persistence.snapshot()
+				record.Terminal.StatePersisted = state.Error == nil
+				record.Terminal.PersistError = state.Error
+			}
 		}
 	}
 	events.publish(record)
@@ -268,7 +305,7 @@ func (events *sessionEvents) publish(record SessionEventRecord) {
 	}
 }
 func (events *sessionEvents) appendLocked(event SessionEvent, scope EventScope) SessionEventRecord {
-	if !event.Ephemeral() && events.history != nil {
+	if !event.Ephemeral() && events.history != nil && events.persistence == nil {
 		history := events.history()
 		rewritten := len(history) < len(events.historyRefs)
 		if !rewritten {

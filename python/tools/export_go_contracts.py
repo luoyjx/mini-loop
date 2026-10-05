@@ -3972,6 +3972,128 @@ def _state_store_contracts(scratch: Path) -> dict:
                               for name in ("storage.py", "session.py", "manager.py")}}
 
 
+def _state_session_contracts(scratch: Path) -> dict:
+    """Run actual AgentSession capture/guard against SQLite; no paid model calls."""
+    import asyncio
+    from unittest.mock import patch
+    from mini_loop.agent import Agent
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, TextBlock, ThinkingBlock
+    from mini_loop.secrets import SecretRegistry
+    from mini_loop.session import AgentSession, LeaseLost
+    from mini_loop.storage import SQLiteStateStore
+
+    canary = 'state-secret-"汉字"\\0123456789'
+    scratch.mkdir(parents=True)
+
+    def attach(name, *, masked=False):
+        root = scratch / name
+        root.mkdir()
+        store = SQLiteStateStore(root / "state.db")
+        session = AgentSession(name, root, state_store=store, system="system")
+        session.created_at = 10.0
+        session.owner, session.workspace_bound = "tenant", True
+        registry = SecretRegistry() if masked else None
+        if registry is not None:
+            registry.register("KEY", canary)
+        session.agent = Agent(client=FakeAsyncAnthropic(),
+                              settings=Settings(fake_llm=True, workspace_root=root),
+                              workspace=root, secrets=registry)
+        session._persist_session_record()
+        return session, store
+
+    async def collect():
+        session, store = attach("state", masked=True)
+        session.lease_owner = "process"
+        session._require_lease()
+        session.steer("queued " + canary)
+        queued = list(store.load_sessions()[0].pending_steering)
+        session.status, session.run_count = "running", 1
+        session.agent.messages = [{"role": "user", "content": canary}]
+        session._transcript_guard(session.agent.messages)
+        count_before_provider = store.message_count("state")
+        await session._capture_event({"type": "assistant_delta", "text": "piece", "_ephemeral": True})
+        cursor_after_ephemeral = store.event_cursor("state")
+        await session._capture_event({"type": "status", "status": "running"})
+        session.agent.messages.append({"role": "assistant", "content": [
+            ThinkingBlock("reason " + canary, "opaque-signature"), TextBlock(canary)]})
+        await session._capture_event({"type": "assistant_text", "text": canary, "phase": "final_answer"})
+        session.status = "idle"
+        await session._finish_trajectory("completed", terminal_event={"type": "done", "text": "done"})
+        terminal = store.load_events("state")[-1]
+        final_status_without_growth = store.load_sessions()[0].status
+        stored_raw = "0123456789" in json.dumps(store.load_messages("state"), ensure_ascii=False)
+        live_raw = session.agent.messages[0]["content"] == canary
+        session.agent.messages = [{"role": "user", "content": "summary"}]
+        session._steering.clear()
+        await session._capture_event({"type": "status", "status": "idle"})
+        await session._capture_event({"type": "status", "status": "idle"})
+        events = store.load_events("state")
+        rewrite = {"epoch": store.transcript_epoch("state"),
+                   "old_count": store.message_count("state", epoch=1),
+                   "current_count": store.message_count("state"),
+                   "event_epochs": [event["transcript_epoch"] for event in events],
+                   "event_seqs": [event["seq"] for event in events],
+                   "physical_cursor": store.event_cursor("state")}
+        store.close()
+
+        confirmed, confirmed_store = attach("confirmed")
+        confirmed.lease_owner = "process"
+        confirmed._require_lease()
+        confirmed.agent.messages = [{"role": "user", "content": "start"}]
+        lost = False
+        with patch.object(confirmed_store, "renew_lease", return_value=False):
+            try:
+                await confirmed._capture_event({"type": "status", "status": "running"})
+            except LeaseLost:
+                lost = True
+        confirmed_store.close()
+        unconfirmed, unconfirmed_store = attach("unconfirmed")
+        unconfirmed.lease_owner = "process"
+        unconfirmed.agent.messages = [{"role": "user", "content": "start"}]
+        unconfirmed_lost = False
+        with patch.object(unconfirmed_store, "renew_lease", return_value=False):
+            try:
+                await unconfirmed._capture_event({"type": "status", "status": "running"})
+            except LeaseLost:
+                unconfirmed_lost = True
+        unconfirmed_store.close()
+
+        failures = []
+        for name, operation in (("append", "append_messages"), ("event", "append_event"),
+                                ("count", "message_count")):
+            faulty, faulty_store = attach(name)
+            faulty.agent.messages = [{"role": "user", "content": "start"}]
+            if name == "count":
+                # append_messages also queries message_count; isolate the guard
+                # query after a successful append, rather than failing a write.
+                faulty._flush_messages()
+            stopped = False
+            with patch.object(faulty_store, operation, side_effect=OSError("fixture write fault")):
+                try:
+                    if name == "event":
+                        await faulty._capture_event({"type": "status", "status": "running"})
+                    else:
+                        faulty._transcript_guard(faulty.agent.messages)
+                except OSError:
+                    stopped = True
+            failures.append({"name": name, "stopped": stopped,
+                             "reported": faulty.persist_error is not None})
+            faulty_store.close()
+        return {"count_before_provider": count_before_provider,
+                "cursor_after_ephemeral": cursor_after_ephemeral,
+                "queued": queued, "live_raw": live_raw, "stored_raw": stored_raw,
+                "final_status_without_growth": final_status_without_growth,
+                "terminal_state_persisted": terminal["state_persisted"],
+                "rewrite": rewrite, "confirmed_loss_stopped": lost,
+                "unconfirmed_loss_stopped": unconfirmed_lost, "failures": failures}
+
+    result = asyncio.run(collect())
+    result["source_sha256"] = {name: hashlib.sha256((PYTHON_ROOT / "mini_loop" / name).read_bytes()).hexdigest()
+                               for name in ("session.py", "storage.py", "agent.py")}
+    return result
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4072,6 +4194,7 @@ def _snapshot() -> dict[str, bytes]:
         managed_cron_contracts = _managed_cron_contracts(Path(scratch) / "managed-cron")
         cron_surface_contracts = _cron_surface_contracts(Path(scratch) / "cron-surfaces")
         state_store_contracts = _state_store_contracts(Path(scratch) / "state-store")
+        state_session_contracts = _state_session_contracts(Path(scratch) / "state-session")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -4131,6 +4254,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-managed-cron.json": _json_bytes(managed_cron_contracts),
         "python-cron-surfaces.json": _json_bytes(cron_surface_contracts),
         "python-state-store.json": _json_bytes(state_store_contracts),
+        "python-state-session.json": _json_bytes(state_session_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

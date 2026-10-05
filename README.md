@@ -302,7 +302,8 @@ plus manager-owned cron with fresh untrusted turns, owner-scoped operations,
 delete/stop joins and standalone startup, plus three explicit cron model tools,
 four owned cron HTTP operations and individual launcher selection,
 plus concrete schema-v7 state contracts and archival event decoding,
-reviewed **2026-10-06** (Go baseline `81614ba` plus the state-contract slice).
+plus optional injected session state, request guards and confirmed lease-loss cancellation,
+reviewed **2026-10-06** (Go baseline `d2e76f1` plus the live-state integration slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -363,7 +364,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / state contracts<br/>typed replay · archival event decode<br/>memory implementation; SQLite pending"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · leases<br/>injected backend; SQLite pending"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
@@ -414,6 +415,7 @@ flowchart LR
         GoGate -. optional five model tools .-> GoWorktrees
         GoWorktrees -. serialized files / shell / sandbox scope .-> GoFiles
         GoWorktrees -. prepare before publishing execution scope .-> GoBash
+        GoSession -. injected transcript / events / leases .-> GoActions
         GoGate -. replay / reconcile / settle .-> GoActions
         GoGate -. permission ask .-> GoApprovals
         GoResources -. textual question .-> GoApprovals
@@ -677,10 +679,19 @@ shipped Go SQLite backend remains pending. `agent.SessionRecord` and separate
 session/transcript/event/lease/approval-read contracts model the v7 projections.
 `DecodeStoredEvent` reads current known event variants into detached typed rows;
 historical provenance has untrusted authority and cannot reinstall human grants.
-These are explicit library contracts, with no manager, launcher or SSE persistence
-activation. Snapshot 44 exercises actual Python SQLite transactions and leases;
-Go checks record/message compatibility and archival event round-trips, not SQL
-behavior. Driver approval and a real Go backend remain required. No journal
+`RuntimeConfig.StateStore` and `ManagerServices.StateStore` now opt into live
+session projection, pre-request transcript checks, epoch replacement, event-first
+capture and process lease admission/renewal. Default manager journals and approval
+rows use the supplied backend; explicit service overrides retain their own stores.
+Queued steering is saved before acknowledgment. Delete disables writes before
+cancellation and removes operational rows; stop releases leases after turn drain.
+Ordinary write faults are reported by `PersistenceStatus`; confirmed renewal loss
+cancels the turn before later model/tool admission. Renewal requires transcript
+growth, and session metadata can retain `running` after the last growth beat.
+Snapshots 44/45 execute actual Python SQL and session guard/capture probes; Go
+compares typed projections and runtime ordering through a test-only backend.
+Driver approval, a real Go backend, restored sessions and durable SSE/launcher
+selection remain required. No journal
 claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child
 state. Compaction files are durable local artifacts, not a session-restoration

@@ -144,11 +144,14 @@ func (s *Session) injectControls() {
 // Steer parks input for the next model round/turn, even when currently idle.
 func (s *ManagedSession) Steer(text string) (int, error) {
 	s.mu.Lock()
-	defer s.mu.Unlock()
 	if err := s.admissionError(); err != nil {
+		s.mu.Unlock()
 		return 0, err
 	}
-	return s.core.control.steer(text), nil
+	queued := s.core.control.steer(text)
+	s.mu.Unlock()
+	s.core.persistence.refreshRecord()
+	return queued, nil
 }
 func (s *ManagedSession) ChangePermissionMode(mode PermissionMode) (PermissionMode, error) {
 	if !mode.Valid() {
@@ -174,10 +177,19 @@ func (s *ManagedSession) SubmitSteering(text string) (SteeringReceipt, error) {
 	}
 	select {
 	case <-s.admission:
+		s.mu.Unlock()
 		run, err := DefaultRunContext()
+		if err == nil {
+			err = s.core.persistence.requireLease(context.Background())
+		}
 		if err != nil {
 			s.admission <- struct{}{}
+			return SteeringReceipt{}, err
+		}
+		s.mu.Lock()
+		if err := s.admissionError(); err != nil {
 			s.mu.Unlock()
+			s.admission <- struct{}{}
 			return SteeringReceipt{}, err
 		}
 		ctx, active := s.beginTurnLocked(context.Background())
@@ -187,6 +199,7 @@ func (s *ManagedSession) SubmitSteering(text string) (SteeringReceipt, error) {
 	default:
 		queued := s.core.control.steer(text)
 		s.mu.Unlock()
+		s.core.persistence.refreshRecord()
 		return SteeringReceipt{s.ID(), queued, true, DeliverySteering}, nil
 	}
 }

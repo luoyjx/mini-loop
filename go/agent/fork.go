@@ -32,7 +32,8 @@ type forkSnapshot struct {
 
 // Fork copies one completed boundary into a fresh scratch session. It inherits
 // owner, explicit system and current mode, but uses the manager's default model
-// and fresh tool/control state, just like Python. No state store is implied.
+// and fresh tool/control state, just like Python. When configured, the manager's
+// state store receives the seed before the fork is published.
 func (manager *SessionManager) Fork(ctx context.Context, owner OwnerID, id SessionID) (*ManagedSession, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
