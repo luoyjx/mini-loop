@@ -1170,6 +1170,29 @@ purge runs after manager drain. File recording has no session-restoration author
 file-size checks before Build. The standalone traceview CLI is an operator reader,
 with no synthetic HTTP principal. Original CSS and filter JS are embedded.
 
+### Go operator worktree service
+
+`worktrees.New(worktrees.Config{Repository: repo})` explicitly selects a repository.
+`Base` and `BranchPrefix` are optional string pointers: nil keeps `.worktrees`
+and `wt/`, while an explicit empty value retains the Python override contract.
+Names, task IDs, changes and audit events use named types. `TaskBoard` accepts
+typed `Load` and `BindWorktree` operations; `*tasks.Store` implements it directly.
+
+Create checks the task before invoking Git, then binds it and appends the audit.
+These are separate effects: later binding/audit failure preserves created work.
+Remove fails closed on unknown status or changed/unmerged work unless discard
+was explicit. Git receives `--force`/`-D` only in that case; its ordinary checks
+remain a second guard. Branch cleanup failure is ignored like Python, so a
+successful clean directory removal can leave an unmerged branch for review.
+
+`WorkspaceFor(ctx, sessionName)` ports Python sanitization/existing-directory and
+plain-directory fallback. Embeddings own retention and Git-aware cleanup; it is
+not a new `SessionManager.WorkspaceFactory` adapter. The safe current composition
+is to provision explicitly and use `CreateSessionRequest.Workspace` with the
+manager's configured bindable roots. Bound workspaces survive session cleanup.
+Model tools and live workspace rebinding still require the existing common gate
+and coordinated executor/files/context/approval boundaries; they are not installed.
+
 ### Go persistent task graph seam
 
 `RuntimeConfig.TaskTools` and `ManagerServices.TaskTools` explicitly install

@@ -2280,6 +2280,125 @@ def _trajectory_contracts(scratch: Path) -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("trajectory.py", "session.py", "agent.py", "server.py")}, "stores":cases, "rounding":[{"input":value, "output":round(value, 3)} for value in (25.12355, -25.12355, 1.2345, -1.2345, 0.0005, -0.0005, 2.675, 1.0625, -1.0625, 0.00001)], "managed":asyncio.run(collect()), "http":{"seed":normalize(seed), "routes":routes}}
 
 
+def _worktree_contracts(scratch: Path) -> dict:
+    """Actual Git lifecycle, task binding, audited effects and factory fallbacks."""
+    import re
+    import subprocess
+    from mini_loop.tasks import Task, TaskStore
+    from mini_loop.worktrees import WorktreeManager, worktree_workspace_factory
+
+    def git(repo, *args):
+        proc = subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True, timeout=30)
+        if proc.returncode:
+            raise RuntimeError(proc.stderr)
+        return proc.stdout.strip()
+
+    def normalize(text, repo):
+        text = text.replace(str(repo), "<REPO>")
+        return re.sub(r"(?m)(\s)[0-9a-f]{7,40}(\s)", r"\1<HEAD>\2", text)
+
+    specs = [
+        {"name": "names", "git": True, "steps": [
+            {"op": "create", "name": name} for name in ("", ".", "..", "../escape", "a/b", "é", "x" * 65)
+        ] + [{"op": "create", "name": "A._-9"}, {"op": "remove", "name": "A._-9"}]},
+        {"name": "not-repository", "git": False, "steps": [
+            {"op": "create", "name": "one"}, {"op": "list"}, {"op": "keep", "name": "missing"},
+            {"op": "remove", "name": "missing"}, {"op": "factory", "name": "../é/s1"},
+            {"op": "factory", "name": ".."}, {"op": "factory", "name": ""},
+        ]},
+        {"name": "lifecycle-binding", "git": True, "steps": [
+            {"op": "create", "name": "bad-link", "task_id": "task_missing"},
+            {"op": "create", "name": "alpha", "task_id": "task_link"},
+            {"op": "create", "name": "alpha"}, {"op": "changes", "name": "alpha"},
+            {"op": "keep", "name": "alpha"}, {"op": "list"},
+            {"op": "remove", "name": "alpha"}, {"op": "remove", "name": "alpha"},
+        ]},
+        {"name": "dirty-and-ahead", "git": True, "steps": [
+            {"op": "create", "name": "dirty"},
+            {"op": "write", "name": "dirty", "file": "new.txt", "text": "untracked\n"},
+            {"op": "remove", "name": "dirty"}, {"op": "keep", "name": "dirty"},
+            {"op": "commit", "name": "dirty"}, {"op": "changes", "name": "dirty"},
+            {"op": "remove", "name": "dirty"},
+            {"op": "write", "name": "dirty", "file": "tracked.txt", "text": "modified\n"},
+            {"op": "changes", "name": "dirty"}, {"op": "remove", "name": "dirty"},
+            {"op": "remove", "name": "dirty", "discard": True},
+        ]},
+        {"name": "unverified-status", "git": False, "steps": [
+            {"op": "mkdir", "name": "plain"}, {"op": "changes", "name": "plain"},
+            {"op": "remove", "name": "plain"}, {"op": "remove", "name": "plain", "discard": True},
+        ]},
+        {"name": "factory", "git": True, "steps": [
+            {"op": "factory", "name": "s1"}, {"op": "factory", "name": "s1"},
+            {"op": "factory", "name": ".."}, {"op": "factory", "name": "../é/s2"},
+            {"op": "factory", "name": "x" * 70}, {"op": "list"},
+            {"op": "branch", "name": "collision"}, {"op": "factory", "name": "collision"},
+            {"op": "remove", "name": "collision"},
+        ]},
+        {"name": "custom-location", "git": True, "base": "trees", "prefix": "review/", "steps": [
+            {"op": "create", "name": "custom", "task_id": "task_link"},
+            {"op": "keep", "name": "custom"}, {"op": "list"}, {"op": "remove", "name": "custom"},
+        ]},
+        {"name": "unborn", "git": True, "unborn": True, "steps": [
+            {"op": "factory", "name": "empty"}, {"op": "create", "name": "fresh"},
+        ]},
+        {"name": "empty-prefix-base", "git": True, "base": "", "prefix": "", "steps": [
+            {"op": "create", "name": "direct"}, {"op": "keep", "name": "direct"},
+            {"op": "list"}, {"op": "remove", "name": "direct"},
+        ]},
+    ]
+    cases = []
+    for spec in specs:
+        repo = scratch / spec["name"]
+        repo.mkdir(parents=True)
+        if spec["git"]:
+            git(repo, "init", "-b", "main")
+            for key, value in {"user.name": "Go parity", "user.email": "parity@example.invalid",
+                               "commit.gpgsign": "false", "core.hooksPath": "/dev/null",
+                               "core.autocrlf": "false"}.items():
+                git(repo, "config", key, value)
+            (repo / ".gitignore").write_text(".worktrees/\ntrees/\n.tasks/\n")
+            (repo / "tracked.txt").write_text("base\n")
+            if not spec.get("unborn"):
+                git(repo, "add", ".gitignore", "tracked.txt")
+                git(repo, "commit", "-m", "base")
+        manager = WorktreeManager(repo, base=spec.get("base", ".worktrees"), branch_prefix=spec.get("prefix", "wt/"))
+        board = TaskStore(repo)
+        board.save(Task("task_link", "linked task"))
+        factory = worktree_workspace_factory(repo, base=manager.base, branch_prefix=manager.branch_prefix)
+        steps = []
+        for step in spec["steps"]:
+            name, op = step.get("name", ""), step["op"]
+            path = manager.root / name
+            value = None
+            if op == "create": value = manager.create(name, task_id=step.get("task_id", ""), task_store=board)
+            elif op == "remove": value = manager.remove(name, discard_changes=step.get("discard", False))
+            elif op == "keep": value = manager.keep(name)
+            elif op == "list":
+                # Git list column alignment depends on the random root length.
+                value = [" ".join(normalize(line, repo).split()) for line in manager.list().splitlines()]
+            elif op == "changes": value = list(manager._changes(name))
+            elif op == "factory": value = str(factory(name))
+            elif op == "mkdir": path.mkdir(parents=True)
+            elif op == "write": (path / step["file"]).write_text(step["text"])
+            elif op == "commit": git(path, "add", "."); git(path, "commit", "-m", "work")
+            elif op == "branch": git(repo, "branch", manager.branch_prefix + name)
+            else: raise ValueError(op)
+            if isinstance(value, str): value = normalize(value, repo)
+            events = []
+            if manager.events_path.exists():
+                for line in manager.events_path.read_text().splitlines():
+                    event = json.loads(line)
+                    event.pop("ts")  # Nondeterministic clock, not lifecycle semantics.
+                    events.append(event)
+            linked = board.load("task_link")
+            branch = subprocess.run(["git", "rev-parse", "--verify", "refs/heads/" + manager.branch_prefix + name],
+                                    cwd=repo, capture_output=True, timeout=30).returncode == 0
+            steps.append({"input": step, "value": value, "events": events,
+                          "path_exists": path.exists(), "branch_exists": branch, "binding": linked.worktree})
+        cases.append({**{key: value for key, value in spec.items() if key != "steps"}, "steps": steps})
+    return {"cases": cases, "clock_normalized": True, "git_heads_normalized": True}
+
+
 def _task_contracts(scratch: Path) -> dict:
     """Actual persistent task transitions, privacy, bounded views and owned HTTP."""
     import asyncio
@@ -2830,6 +2949,7 @@ def _snapshot() -> dict[str, bytes]:
         trace_view_contracts = _trace_view_contracts(Path(scratch) / "trace-view")
         webui_contracts = _webui_contracts(Path(scratch) / "webui")
         task_contracts = _task_contracts(Path(scratch) / "tasks")
+        worktree_contracts = _worktree_contracts(Path(scratch) / "worktrees")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2878,6 +2998,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-trace-view.json": _json_bytes(trace_view_contracts),
         "python-webui.json": _json_bytes(webui_contracts),
         "python-tasks.json": _json_bytes(task_contracts),
+        "python-worktrees.json": _json_bytes(worktree_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

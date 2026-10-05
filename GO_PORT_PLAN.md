@@ -111,7 +111,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; other groups remain)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding/factory implemented; model worktree tools/live rebinding and other groups remain)
 - [ ] G7 differential and release audit
 
 ## 2026-10-02 checkpoint
@@ -2316,3 +2316,102 @@ Persistent task files do not restore a Go session, task runner or process lease.
   `5b1ee063dd948c6cf7041f91d12469ca26b297af126ad1f1590348334660c358`
   (668,366 bytes). Architecture visual review remains skipped due previously
   denied local HTML access; the actual product-page layout was inspected.
+
+## 2026-10-05 operator worktree lifecycle slice
+
+Reviewed base: `6e1a136`. The previous goal turn measured current statement
+coverage and verified the functional inventory; this turn advances G0/G6 with
+an executable worktree service. G0–G7 remain open.
+
+### Implementation and actual source boundary
+
+- `go/worktrees` ports the complete Python WorktreeManager service and workspace
+  factory: named Name/TaskBoard/Changes/Event values, explicit repository,
+  default versus explicit-empty path/branch overrides and source name validation.
+- Create verifies an existing task before Git, creates the branch/worktree, binds
+  the task and appends an audit event. Binding/audit failures after Git preserve
+  created work for inspection; these effects are not a transaction or rollback.
+- Remove rejects unknown status, dirty files or commits ahead of current repo HEAD
+  unless discard was explicit. Git receives ordinary remove and branch `-d` by
+  default; `--force`/`-D` require discard. Git's separate checks preserve work
+  arriving after preflight and unmerged branches after a stale ahead count.
+- Successful directory removal ignores branch deletion failure like Python; the
+  branch can remain for review. Keep/remove/create events append local JSONL with
+  named types. This is neither fsynced durable dispatch nor an ownership/lease ACL.
+- WorkspaceFor preserves source sanitization, existing paths and ordinary-directory
+  fallback after Git failure/non-repo/unborn HEAD. That fallback is not Git branch
+  isolation. Its embedding caller owns retention and Git-aware removal.
+- Real sessions can use explicitly provisioned paths through existing bindable-root
+  and owner admission. Bound paths survive session deletion/manager stop. The
+  service does not install a scratch factory/reclaimer, model tools or live rebind.
+- Git uses concrete argv, the source inherited environment, a context-owned
+  30-second deadline, five-MiB capture per output channel and bounded pipe cleanup.
+  Go requires an explicit repository and replaces malformed UTF-8 diagnostics.
+  Context cancellation cannot undo already landed Git/binding/audit effects.
+  No dependency was added and no host symlink sandbox is claimed.
+- Snapshot 34 runs nine real Python/Git scenarios and 58 steps: output, file/branch
+  effects, binding and audit fields, including custom/empty configuration, invalid
+  preconditions, dirty/ahead state, missing tasks, duplicate names and fallbacks.
+  Only nondeterministic audit times, commit hashes and Git list column padding are
+  normalized. Previous 33 source snapshots and Python package modules are unchanged.
+
+### Remaining work
+
+Model-facing create/remove/keep/list/enter tools, atomic live workspace/file/shell/
+sandbox/context/approval rebind, Git-aware manager reclamation and comprehensive
+feature activation remain. Background, cron, teams, workflows, user resources,
+decisions, SQLite restoration/leases, durable SSE and release audit remain open.
+A worktree service and retained task/audit files do not restore a session or runner.
+
+Next implementation order (source-grounded design, not shipped behavior):
+
+1. Add five closed worktree inputs/schema/null/identity/masking variants and an
+   explicit constructor opt-in; preserve source risks and the common gate.
+2. Separate manager-owned lifecycle workspace from mutable execution workspace.
+   Python AgentSession retains its original workspace, while Agent.enter_workspace
+   replaces the toolset/agent workspace. Go currently uses core.workspace for both
+   authority and reclamation; merely changing that field could delete entered work.
+3. Rebind files, foreground argv/sandbox, context facts, approval authority and fresh
+   child handlers together at the serialized tool barrier, preserving task-board
+   roots and original cleanup ownership. Port background re-confinement when that
+   service exists. Prove entered work survives deleting original scratch.
+
+### Validation
+
+- `go test ./...`, `go vet ./...`, `go test -race ./...`: pass, including all
+  real Git source comparisons and the owned bound-session integration.
+- Independent Git tests verify post-preflight dirt survives, unmerged branches
+  survive an obsolete preflight, partial binding/audit faults preserve created work,
+  duplicate creation serializes and cancelled calls create no workspace.
+- Real owned session: a common-gate Bash write lands in the selected worktree,
+  foreign owner lookup refuses, main checkout remains untouched, deletion/stop
+  preserve the work and Git registration, and ordinary removal refuses it.
+- Source guard mutations `worktree-removal-always-forces` and
+  `worktree-keeps-nothing-unverified`: both caught. Full source regression afterward.
+- Source exporter `--check`: 34 files current. `verify_scans.py`: all 19 scanning
+  guards anchored. Native Git: `2.39.5 (Apple Git-154)` on macOS; Linux behavior
+  has not been validated.
+- `.venv/bin/python -m pytest -q` ran twice after the source guard mutations.
+  First: **2150 passed, 1 failed, 28 skipped, 24 subtests passed, 3 warnings**
+  in 145.78 s. The 40-turn test took 0.605 s against its 0.5 s bound.
+  Its first isolated recheck passed. Full retry: **2149 passed, 2 failed,
+  28 skipped, 24 subtests passed, 4 warnings** in 195.53 s: concurrent sessions
+  took 0.575 s and 40 turns 0.669 s, both against 0.5 s bounds. The fourth
+  warning was an unraisable asyncio subprocess finalizer after loop closure.
+- A later joint timing recheck also failed (0.563 s concurrent sessions and
+  2.668 s forty turns). At that point host load averages were 30.76/22.16/15.12.
+  Python runtime/test files are byte-unchanged in this iteration. Host contention
+  is a plausible explanation, not a proved cause. Neither assertion was relaxed
+  or skipped; **the full Python regression gate is not green**. This remains a
+  release-validation limitation despite passing Go/contract/source-guard gates.
+- Archify architecture delivery: 9/9 showcase, zero errors/warnings,
+  correction_rounds: 0. Specification SHA-256:
+  `deba23eb5016a9814abd0dbefd4c523da496f5c9c19ad1dc05a63e614c2dd70b`
+  (29,272 bytes); artifact SHA-256:
+  `83b3a1005d21b382f2e2294693e710217ae70b1368d4d956c6aafc4b4973dd4a`
+  (668,900 bytes). Visual review remains skipped due previously denied local HTML
+  access; no rendered visual success is claimed. Canonical Mermaid carries the
+  distinct operator library path; interactive cards describe the same separation.
+- README outline and `git diff --check`: pass. `verify_invariants.py` is not
+  applicable: no Python package module changed. No source asset or scanner target
+  changed; verification is scoped to this worktree service/exporter iteration.

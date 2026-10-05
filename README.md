@@ -287,7 +287,8 @@ plus default per-run trajectory JSONL recording and owner-scoped list/inspect/ex
 plus the typed HTML ledger, filtered record visitor and independent traceview CLI,
 plus the embedded public development console and full browser shell,
 plus an optional typed persistent task graph and owned task-board HTTP view,
-reviewed **2026-10-04** (Go baseline `b5eb2f1` plus the persistent-task slice).
+plus the operator library worktree lifecycle and task binding,
+reviewed **2026-10-05** (Go baseline `6e1a136` plus the worktree-service slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -354,6 +355,7 @@ flowchart LR
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
+        GoWorktrees["Operator worktree library<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · factory fallback"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional persistent task tools · masked file graph<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
@@ -386,6 +388,8 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoEntry
+    Caller -. explicit library selection .-> GoWorktrees
+    GoWorktrees -. binds task files; no live rebind .-> GoResources
     Manager -->|bind owner · create / restore / route| Session
     Manager -. preview current session .-> Drafts
     Manager -. explicit digest commit .-> Resources
@@ -413,14 +417,21 @@ The main diagram describes the current Python runtime under `python/`. The
 separate Go subgraph is a process-local port in progress with an embeddable
 HTTP handler and a standalone `go/cmd/miniloop` launcher. It runs independently
 of Python, embeds the default code-review skill, and owns listening and shutdown.
-The launcher requires explicit `MINILOOP_TRAJECTORIES=0` and an empty
-`MINILOOP_SPILL_DIR` until those Python default services are ported; other
-configured but unavailable features also refuse activation. It reads an environment
+Default trajectory files are enabled and private spill storage is best-effort;
+configured but unavailable optional features refuse activation. It reads an environment
 snapshot without `.env` discovery, uses typed settings, and checks both the requested
 host and actual listener before admitting unauthenticated traffic. `--dump-config`
 reports redacted settings/availability without creating a runtime or probing a model;
 it is not the full Python effective-posture report. See
 [Go startup](go/README.md#run-the-standalone-http-server).
+`go/worktrees` is an explicitly selected operator library: named records and
+task binding, Git status/ahead checks plus Git's independent refusal, and local
+JSONL audit events. Factory failures can return plain directories, matching Python;
+that fallback is not a Git branch. A provisioned path can be admitted through the
+existing owned/bindable workspace policy and remains after session deletion.
+Model-facing worktree tools, live workspace/sandbox rebinding, managed worktree
+reclamation and comprehensive feature activation remain pending. Audit append is
+not a transaction with Git/task binding or a host ownership/lease boundary.
 The solid Python path is one ordinary turn; dotted paths are
 optional or asynchronous.
 The Python default agent skills now resolve from `python/skills/` regardless

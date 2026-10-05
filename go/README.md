@@ -624,6 +624,44 @@ five schemas/traits and five HTTP results. Go tests add real process contention,
 readonly refusal before directory creation, argument cloning/masking/null identity,
 manager/fork activation and fresh workspace isolation.
 
+### Operator worktree lifecycle
+
+`worktrees.New(worktrees.Config{Repository: repo})` provides named worktree and
+audit records, `Create`, `Changes`, `Keep`, `Remove`, `List`, `PathFor` and
+`WorkspaceFor`. A supplied `*tasks.Store` satisfies the typed TaskBoard seam:
+create checks an existing task before Git, then binds its worktree and logs the
+operation. Optional `*string` Base/BranchPrefix distinguish default values from
+explicit empty overrides. Default paths/branches are `.worktrees/<name>` and
+`wt/<name>`; names match `[A-Za-z0-9._-]{1,64}` excluding `.`/`..`.
+
+Remove checks dirty files and commits ahead of the repository's current HEAD.
+Unknown status refuses. Without explicit discard, Git receives ordinary worktree
+remove and branch `-d`, retaining its own refusal even if work arrives after the
+service check. Explicit discard selects `--force` and `-D`. Like Python, failed
+branch deletion does not undo successful directory removal or erase the branch.
+Audit events append after landed operations; they are not fsynced or an atomic
+Git/task transaction. Later binding/audit failure leaves created work for inspection.
+
+`WorkspaceFor` sanitizes session names, returns existing paths and falls back to
+a plain directory on non-repositories, unborn HEAD or Git creation failure.
+That source-compatible fallback provides no branch isolation. The embedding
+caller owns retention and Git-aware removal. To run a session now, provision
+explicitly, configure the manager's bindable roots and pass the resulting path
+as `CreateSessionRequest.Workspace`; ordinary bound-workspace cleanup preserves it.
+Do not attach this helper to raw scratch directory deletion. There is no shipped
+model-facing worktree tool, live executor/workspace/sandbox rebind or managed
+worktree cleanup adapter. Standalone feature activation remains unsupported.
+
+Git calls inherit the source process environment, take concrete argv, have a
+30-second context-owned deadline, bound each output channel to five MiB and bound
+pipe cleanup waits. Go replaces malformed UTF-8 diagnostics and requires an
+explicit repository; source open/coercion behavior is not a domain contract.
+This operator capability is not a host path/symlink sandbox, owner ACL or lease.
+Native Git must be available; no Go dependency was added. Snapshot 34 compares
+nine real Python/Git scenarios, outputs, file/branch effects, task bindings and
+audit events. Additional Go tests cover stale prechecks, partial failures,
+duplicate creation, cancellation and a real owned session's tool write/delete/stop.
+
 ### Open the browser console
 
 The standalone binary serves the original Python development console at `/` and
