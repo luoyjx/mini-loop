@@ -643,8 +643,8 @@ its next sequence above both ordinal and stored payload sequence. It also waits
 for a lease before repair. These are documented Go additions. Crash-tail calls
 get unknown results, while expired parked approvals get not-run results. Tests
 send the next model request, exercise retry/reload and join shutdown races.
-The Go backing is test-only. SQLite, scheduled-session resolution, plan/goal
-variant folding, durable SSE and launcher activation remain pending; a lease
+The Go backing is test-only. SQLite, plan/goal variant folding, durable SSE
+and launcher activation remain pending; a lease
 is neither an external-effect transaction nor fencing.
 
 ---
@@ -1301,7 +1301,18 @@ CronControl with schedule/list/cancel only. ManagerServices.CronTools supplies t
 manager binding, and --cron-tools / launcher.Options.CronTools selects it alone.
 Default tools remain ten and MINILOOP_FEATURES remains unsupported.
 Owned HTTP list/schedule/cancel/arm routes work independently of tool activation.
-Session/lease restoration remains pending.
+Missing cron handles now call `RestoreScheduledSession(ctx, id)` inside the
+scheduler-owned context. The privileged method returns live handles unchanged,
+uses the saved path for bound rows and the current workspace factory for saved
+scratch or missing rows. Saved owner/history/run/status/Todo/steering are restored
+before publication. Scheduled system is the current builder rather than saved
+explicit text, matching actual source. Missing rows are anonymous: without a
+backend they run ephemerally; an injected backend refusing its missing-row claim
+produces lease loss without an unconditional upsert. Snapshot 47 executes these
+seven actual Python/SQLite-or-Null recipes and the next offline request.
+Manager Stop cancels restore reads through a lifetime context and joins cleanup.
+The backend must cooperate with cancellation; ignored cancellation can still
+hold shutdown. Native SQLite restart evidence remains pending.
 Schedule arms only current-process jobs. Restored jobs stay disarmed until the
 operator calls Arm/ArmAll, and no model arm tool is supplied. Start is explicit;
 Stop cancels/joins ticker and admitted runs, retaining armed in-memory jobs for

@@ -317,7 +317,7 @@ Python; this policy is not proof that a foreign process is dead or external fenc
 Snapshot 45 runs actual Python AgentSession over SQLite to pin guard/capture,
 masking, epochs, metadata timing, ephemeral sequence/ordinal differences and
 confirmed/unconfirmed renewal loss. Go runs the same recipe and failure outcomes
-against a test-only backing. Driver approval, backend execution, scheduled restore
+against a test-only backing. Driver approval, backend execution
 and durable SSE/launcher activation remain open; passing injection tests does
 not establish physical durability.
 
@@ -347,7 +347,19 @@ physical sequence reset and repair-before-claim behavior; Go explicitly fixes
 those three boundaries. Tests make the first resumed model request and check
 pairing and persistence-before-request. The test backing does not prove SQL,
 restarts, concurrent connections or cross-process fencing. Plan/goal event
-variants remain unsupported, and scheduled-session resolution remains pending.
+variants remain unsupported. `RestoreScheduledSession(ctx, id)` is the privileged
+stable-ID resolver used by cron. It returns live handles unchanged. Saved bound
+rows retain the recorded workspace; saved scratch or missing rows use the current
+factory (the default is WorkspaceRoot/id). Scheduled construction uses the current
+system builder and does not reinstall saved explicit system, matching Python.
+Saved rows restore owner/history/run/status/Todo/steering. Missing rows produce
+an anonymous handle with no history; a missing-row claim refusal leaves it pending
+and prevents any turn/upsert. No-store fallback can run ephemerally.
+A successful growth upsert advances the expected stored projection, so retry after
+partial repair can accept its own selected workspace/system while refusing a
+foreign identity. Restore requests share a lifetime cancellation context; manager
+Stop cancels cooperative reads and joins before lease release/return. Snapshot 47
+executes actual Python manager/SQLite-or-Null restoration and the next model call.
 
 ### Use the direct HTTP model adapter
 
@@ -928,18 +940,19 @@ including a job retained in memory after a save failure. Invalid requests never
 start it. These managed rules are distinct from raw operator Schedule, whose
 Start is explicit. Arm remains an operator action.
 
-Resolution finds a live managed session and calls Run with a fresh default
+Resolution reuses a live session or lazily calls RestoreScheduledSession inside
+the scheduler-owned cancellation context, then calls Run with a fresh default
 untrusted context: no scheduling actor, approved capabilities or parent message
 identity is reused. The ordinary session queue, common gate, shared pools and
 trajectory capture remain in force. A fork shares the service but has no copied
-jobs. Missing or stopping sessions produce lost-occurrence diagnostics; there is
-no SQLite restore fallback yet.
+jobs. Missing-row lease refusal and stopped/faulted restoration produce bounded
+diagnostics; native Go SQLite backend/restart proof remains pending.
 
 Owner mutations and manager deletion/stop share an admission lock. Delete removes
 future jobs before drain and scratch reclamation; save failure is recorded in
 CleanupErrors and cleanup continues, a Go addition to Python's propagating error.
-Stop revokes admission and drains managed turns before cancelling/joining ticker
-and runs. Queued jobs cannot reenter, native foreground shells are reaped, and an
+Stop revokes admission, cancels pending restore reads and drains managed turns
+before cancelling/joining ticker and runs. Queued jobs cannot reenter, native foreground shells are reaped, and an
 expired Stop observer can resume the join. Preserved/bound workspaces and normal
 stop retain files. Cron masking callbacks must not reenter either scheduler or
 manager cron methods while persistence holds their locks.

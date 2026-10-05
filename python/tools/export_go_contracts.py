@@ -4177,6 +4177,83 @@ def _state_restore_contracts(scratch: Path) -> dict:
                               for name in ("session.py", "manager.py", "agent.py", "storage.py")}}
 
 
+def _scheduled_restore_contracts(scratch: Path) -> dict:
+    """Run real scheduled restoration and its next model request, offline."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text
+    from mini_loop.manager import SessionManager
+    from mini_loop.storage import SQLiteStateStore, NullStateStore, SessionRecord, _json_safe
+
+    scratch.mkdir(parents=True)
+    results = []
+    clean = [{"role": "user", "content": "remember prior"},
+             {"role": "assistant", "content": [{"type": "text", "text": "remembered"}]}]
+    crash = [{"role": "user", "content": "prior request"},
+             {"role": "assistant", "content": [{"type": "tool_use", "id": "effect",
+              "name": "bash", "input": {"command": "echo old-effect"}}]}]
+    recipes = [("bound-clean", True, clean), ("scratch-clean", False, clean),
+               ("bound-crash", True, crash), ("scratch-crash", False, crash),
+               ("missing-sql", False, None), ("missing-null", False, None),
+               ("foreign-bound", True, clean)]
+    async def scenario(name, bound, initial):
+        root = scratch / name
+        root.mkdir()
+        store = NullStateStore() if name == "missing-null" else SQLiteStateStore(root / "state.db")
+        recorded = root / "recorded"
+        fresh = root / "factory"
+        factory_calls = []
+        requests = []
+        def factory(session_id):
+            factory_calls.append(session_id)
+            return fresh
+        def responder(kwargs):
+            requests.append(kwargs)
+            return [text("scheduled complete")], "end_turn"
+        if initial is not None:
+            store.upsert_session(SessionRecord("stable", str(recorded), "saved custom system", 20.0, 3,
+                "running", 0, todos=({"content": "todo", "status": "pending", "activeForm": "doing"},),
+                owner="alice", pending_steering=("queued",), workspace_bound=bound))
+            store.append_messages("stable", initial, epoch=3)
+        if name == "foreign-bound":
+            store.acquire_lease("stable", "foreign", ttl=3600)
+        settings = Settings(fake_llm=True, workspace_root=root / "fleet", trajectory_root=root / "trajectories")
+        manager = SessionManager(settings, FakeAsyncAnthropic(responder=responder, thinking=False),
+                                 state_store=store, workspace_factory=factory)
+        session = manager.restore_scheduled_session("stable")
+        again = manager.restore_scheduled_session("stable")
+        before = store.load_sessions()
+        result = {"name": name, "initial": initial or [], "messages": _json_safe(session.agent.messages),
+                  "owner": session.owner, "bound": session.workspace_bound,
+                  "workspace_kind": "recorded" if session.workspace == recorded else "factory",
+                  "workspace_created": session.workspace.is_dir(), "factory_calls": list(factory_calls),
+                  "same_handle": session is again, "system": session.system, "mode": session.permission_mode,
+                  "run_count": session.run_count, "status": session.status, "busy": session.busy,
+                  "confirmed": session.lease_confirmed,
+                  "saved_before_count": len(before), "saved_before_system": before[0].system if before else None,
+                  "saved_before_workspace_kind": ("recorded" if Path(before[0].workspace) == recorded else "factory") if before else None,
+                  "repaired": list(session._unknown_tool_uses)}
+        try:
+            result["run_result"] = await session.run("[Scheduled cron fixture] continue")
+            result["run_error"] = None
+        except Exception as error:
+            result["run_result"] = None
+            result["run_error"] = type(error).__name__
+        result["model_calls"] = len(requests)
+        result["history_persisted"] = bool(requests) and store.message_count("stable") >= len(session.agent.messages)
+        if name == "missing-null":
+            result["history_persisted"] = False
+        await manager.stop()
+        store.close()
+        return result
+    async def run_all():
+        return [await scenario(*recipe) for recipe in recipes]
+    results = asyncio.run(run_all())
+    return {"cases": results,
+            "source_sha256": {name: hashlib.sha256((PYTHON_ROOT / "mini_loop" / name).read_bytes()).hexdigest()
+                              for name in ("session.py", "manager.py", "cron.py", "storage.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4279,6 +4356,7 @@ def _snapshot() -> dict[str, bytes]:
         state_store_contracts = _state_store_contracts(Path(scratch) / "state-store")
         state_session_contracts = _state_session_contracts(Path(scratch) / "state-session")
         state_restore_contracts = _state_restore_contracts(Path(scratch) / "state-restore")
+        scheduled_restore_contracts = _scheduled_restore_contracts(Path(scratch) / "scheduled-restore")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -4340,6 +4418,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-state-store.json": _json_bytes(state_store_contracts),
         "python-state-session.json": _json_bytes(state_session_contracts),
         "python-state-restore.json": _json_bytes(state_restore_contracts),
+        "python-scheduled-restore.json": _json_bytes(scheduled_restore_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

@@ -1,0 +1,373 @@
+{
+  "cases": [
+    {
+      "bound": true,
+      "busy": false,
+      "confirmed": true,
+      "factory_calls": [],
+      "history_persisted": true,
+      "initial": [
+        {
+          "content": "remember prior",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "remembered",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "messages": [
+        {
+          "content": "remember prior",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "remembered",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "mode": "interactive",
+      "model_calls": 1,
+      "name": "bound-clean",
+      "owner": "alice",
+      "repaired": [],
+      "run_count": 3,
+      "run_error": null,
+      "run_result": "scheduled complete",
+      "same_handle": true,
+      "saved_before_count": 1,
+      "saved_before_system": "saved custom system",
+      "saved_before_workspace_kind": "recorded",
+      "status": "running",
+      "system": null,
+      "workspace_created": true,
+      "workspace_kind": "recorded"
+    },
+    {
+      "bound": false,
+      "busy": false,
+      "confirmed": true,
+      "factory_calls": [
+        "stable"
+      ],
+      "history_persisted": true,
+      "initial": [
+        {
+          "content": "remember prior",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "remembered",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "messages": [
+        {
+          "content": "remember prior",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "remembered",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "mode": "interactive",
+      "model_calls": 1,
+      "name": "scratch-clean",
+      "owner": "alice",
+      "repaired": [],
+      "run_count": 3,
+      "run_error": null,
+      "run_result": "scheduled complete",
+      "same_handle": true,
+      "saved_before_count": 1,
+      "saved_before_system": "saved custom system",
+      "saved_before_workspace_kind": "recorded",
+      "status": "running",
+      "system": null,
+      "workspace_created": true,
+      "workspace_kind": "factory"
+    },
+    {
+      "bound": true,
+      "busy": false,
+      "confirmed": true,
+      "factory_calls": [],
+      "history_persisted": true,
+      "initial": [
+        {
+          "content": "prior request",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "effect",
+              "input": {
+                "command": "echo old-effect"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "messages": [
+        {
+          "content": "prior request",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "effect",
+              "input": {
+                "command": "echo old-effect"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first.",
+              "tool_use_id": "effect",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "mode": "interactive",
+      "model_calls": 1,
+      "name": "bound-crash",
+      "owner": "alice",
+      "repaired": [
+        "effect"
+      ],
+      "run_count": 3,
+      "run_error": null,
+      "run_result": "scheduled complete",
+      "same_handle": true,
+      "saved_before_count": 1,
+      "saved_before_system": null,
+      "saved_before_workspace_kind": "recorded",
+      "status": "running",
+      "system": null,
+      "workspace_created": true,
+      "workspace_kind": "recorded"
+    },
+    {
+      "bound": false,
+      "busy": false,
+      "confirmed": true,
+      "factory_calls": [
+        "stable"
+      ],
+      "history_persisted": true,
+      "initial": [
+        {
+          "content": "prior request",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "effect",
+              "input": {
+                "command": "echo old-effect"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "messages": [
+        {
+          "content": "prior request",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "id": "effect",
+              "input": {
+                "command": "echo old-effect"
+              },
+              "name": "bash",
+              "type": "tool_use"
+            }
+          ],
+          "role": "assistant"
+        },
+        {
+          "content": [
+            {
+              "content": "[unknown] This tool was dispatched but the process terminated before its result was recorded. Whether it completed is not known. Do not retry it; check whether it already took effect first.",
+              "tool_use_id": "effect",
+              "type": "tool_result"
+            }
+          ],
+          "role": "user"
+        }
+      ],
+      "mode": "interactive",
+      "model_calls": 1,
+      "name": "scratch-crash",
+      "owner": "alice",
+      "repaired": [
+        "effect"
+      ],
+      "run_count": 3,
+      "run_error": null,
+      "run_result": "scheduled complete",
+      "same_handle": true,
+      "saved_before_count": 1,
+      "saved_before_system": null,
+      "saved_before_workspace_kind": "factory",
+      "status": "running",
+      "system": null,
+      "workspace_created": true,
+      "workspace_kind": "factory"
+    },
+    {
+      "bound": false,
+      "busy": false,
+      "confirmed": false,
+      "factory_calls": [
+        "stable"
+      ],
+      "history_persisted": false,
+      "initial": [],
+      "messages": [],
+      "mode": "interactive",
+      "model_calls": 0,
+      "name": "missing-sql",
+      "owner": "anonymous",
+      "repaired": [],
+      "run_count": 0,
+      "run_error": "LeaseLost",
+      "run_result": null,
+      "same_handle": true,
+      "saved_before_count": 0,
+      "saved_before_system": null,
+      "saved_before_workspace_kind": null,
+      "status": "idle",
+      "system": null,
+      "workspace_created": true,
+      "workspace_kind": "factory"
+    },
+    {
+      "bound": false,
+      "busy": false,
+      "confirmed": false,
+      "factory_calls": [
+        "stable"
+      ],
+      "history_persisted": false,
+      "initial": [],
+      "messages": [],
+      "mode": "interactive",
+      "model_calls": 1,
+      "name": "missing-null",
+      "owner": "anonymous",
+      "repaired": [],
+      "run_count": 0,
+      "run_error": null,
+      "run_result": "scheduled complete",
+      "same_handle": true,
+      "saved_before_count": 0,
+      "saved_before_system": null,
+      "saved_before_workspace_kind": null,
+      "status": "idle",
+      "system": null,
+      "workspace_created": true,
+      "workspace_kind": "factory"
+    },
+    {
+      "bound": true,
+      "busy": false,
+      "confirmed": false,
+      "factory_calls": [],
+      "history_persisted": false,
+      "initial": [
+        {
+          "content": "remember prior",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "remembered",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "messages": [
+        {
+          "content": "remember prior",
+          "role": "user"
+        },
+        {
+          "content": [
+            {
+              "text": "remembered",
+              "type": "text"
+            }
+          ],
+          "role": "assistant"
+        }
+      ],
+      "mode": "interactive",
+      "model_calls": 0,
+      "name": "foreign-bound",
+      "owner": "alice",
+      "repaired": [],
+      "run_count": 3,
+      "run_error": "LeaseLost",
+      "run_result": null,
+      "same_handle": true,
+      "saved_before_count": 1,
+      "saved_before_system": "saved custom system",
+      "saved_before_workspace_kind": "recorded",
+      "status": "running",
+      "system": null,
+      "workspace_created": true,
+      "workspace_kind": "recorded"
+    }
+  ],
+  "source_sha256": {
+    "cron.py": "6a6e4edd21eb0608ca376dfa390074a87f6ee6ea6967d247dc8762ccd70bdb50",
+    "manager.py": "453824566a6ab1d77892b0abe4ef7dcd3b41cde92b4669fb5d53c12d4cef0584",
+    "session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+    "storage.py": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159"
+  }
+}

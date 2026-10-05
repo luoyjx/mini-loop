@@ -25,9 +25,12 @@ const (
 )
 
 // SessionManager owns process-local session handles, shared services, cron and
-// scratch reclamation. Cron files and trajectory evidence do not restore sessions
-// or leases. Public lookups require an already established owner identity.
+// scratch reclamation. Cron files and trajectory evidence do not contain session
+// transcripts or leases; state is restored through the injected store consumer.
+// Public lookups require an already established owner identity.
 type SessionManager struct {
+	restoreLifetime                context.Context
+	restoreCancel                  context.CancelFunc
 	restoreTurn                    chan struct{}
 	leaseOwner                     LeaseOwner
 	mu                             sync.Mutex
@@ -158,6 +161,7 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		return nil, err
 	}
 	manager := &SessionManager{restoreTurn: make(chan struct{}, 1), config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
+	manager.restoreLifetime, manager.restoreCancel = context.WithCancel(context.Background())
 	manager.restoreTurn <- struct{}{}
 	if services.StateStore != nil {
 		name, err := newSpan("process_", 16)
@@ -593,6 +597,7 @@ func (manager *SessionManager) Stop(ctx context.Context) error {
 	manager.mu.Lock()
 	if manager.state == ManagerActive {
 		manager.state = ManagerStopping
+		manager.restoreCancel()
 		sessions := make([]*ManagedSession, 0, len(manager.order))
 		for _, id := range manager.order {
 			session := manager.sessions[id]

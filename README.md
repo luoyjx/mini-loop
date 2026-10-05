@@ -304,7 +304,8 @@ four owned cron HTTP operations and individual launcher selection,
 plus concrete schema-v7 state contracts and archival event decoding,
 plus optional injected session state, request guards and confirmed lease-loss cancellation,
 plus explicit injected-store manager restoration, lease-gated approval expiry and crash-tail repair,
-reviewed **2026-10-06** (Go baseline `03bd832` plus the session-restoration slice).
+plus lazy stable-identity cron restoration with bound/factory workspace selection,
+reviewed **2026-10-06** (Go baseline `067f16e` plus the scheduled-restoration slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -382,7 +383,7 @@ flowchart LR
         GoChildren -. selected background tools: separate scopes / queues .-> GoBackground
         GoCron["Explicit operator cron<br/>typed jobs · five fields · disarmed restore<br/>per-session controls · ticker / run cancellation"]
         GoCronStore["Operator cron JSON / claim files<br/>masked prompts · mark before dispatch<br/>exclusive minute claim; no external transaction"]
-        GoCronRunner["Managed resolver / scheduled runner<br/>fresh untrusted ManagedSession.Run<br/>live session lookup; no durable restore"]
+        GoCronRunner["Managed resolver / scheduled runner<br/>fresh untrusted ManagedSession.Run<br/>live reuse / injected-store restore"]
         GoManager -->|default ownership / owner-scoped operations| GoCron
         GoLaunch -. Serve starts disarmed restored jobs .-> GoCron
         GoManager -. revoke turns then stop / join .-> GoCron
@@ -392,6 +393,7 @@ flowchart LR
         GoCron -->|atomic persisted mark / O_EXCL claim| GoCronStore
         GoCron -->|only after occurrence admission| GoCronRunner
         GoCronRunner -->|fresh untrusted serialized turn| GoManaged
+        GoCronRunner -. stable identity lookup / restore .-> GoManager
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional persistent task tools · masked file graph<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -699,8 +701,16 @@ Restore faults refuse publication and release owned leases without removing old
 rows/workspaces. Stop waits for restore and prevents late publication. Source
 snapshot 46 pins Python's repair-time metadata overwrite and physical sequence
 reset; Go preserves metadata and sequences, and delays repair until claimed.
-No stored human grants or activation are restored. Plan/goal variants and
-scheduled-session resolution remain pending. Driver approval, a real Go backend,
+No stored human grants or activation are restored. Cron now resolves missing
+handles through RestoreScheduledSession inside its owned cancellation context.
+Saved bound sessions use the recorded path; saved scratch calls the current
+factory. Scheduled construction uses the current system builder, matching the
+source omission of recorded explicit system. Missing rows become anonymous;
+an injected SQL-like store cannot grant a lease without a row, so that first
+turn is refused/reported without creating a row. With no backend it is an
+ordinary ephemeral turn. Stop cancels pending restore reads and waits for their
+cleanup. Source snapshot 47 makes the next real offline model request.
+Plan/goal variants and folding remain pending. Driver approval, a real Go backend,
 native restart validation and durable SSE/launcher selection remain required.
 No journal claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child

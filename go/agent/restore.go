@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
@@ -23,23 +24,16 @@ const restoreInterruptedText = "[Turn interrupted: process stopped mid-generatio
 // opens/closes a backend. Earlier published handles remain in the returned slice
 // if a later row fails. There is no whole-fleet transaction claim.
 func (manager *SessionManager) RestoreSessions(ctx context.Context) (restored []*ManagedSession, err error) {
-	select {
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	case <-manager.restoreTurn:
+	ctx, finish, err := manager.beginRestore(ctx)
+	if err != nil {
+		return nil, err
 	}
-	defer func() { manager.restoreTurn <- struct{}{} }()
-	manager.mu.Lock()
-	if manager.state != ManagerActive {
-		manager.mu.Unlock()
-		return nil, ErrManagerStopped
-	}
-	if manager.creating == 0 {
-		manager.createsDrained = make(chan struct{})
-	}
-	manager.creating++
-	manager.mu.Unlock()
-	defer manager.finishCreate("")
+	defer finish()
+	defer func() {
+		if err != nil && errors.Is(context.Cause(ctx), ErrManagerStopped) {
+			err = errors.Join(ErrManagerStopped, err)
+		}
+	}()
 	restored = []*ManagedSession{}
 	store := manager.config.Services.StateStore
 	if store == nil {
@@ -65,26 +59,123 @@ func (manager *SessionManager) RestoreSessions(ctx context.Context) (restored []
 	return restored, nil
 }
 
-func (manager *SessionManager) restoreSession(ctx context.Context, row SessionRecord) (session *ManagedSession, err error) {
-	if err = validateRestoreRecord(row); err != nil {
-		return nil, err
+// beginRestore owns the whole inventory/construction interval for shutdown.
+func (manager *SessionManager) beginRestore(ctx context.Context) (context.Context, func(), error) {
+	if err := ctx.Err(); err != nil {
+		return nil, nil, err
+	}
+	ctx, cancel := context.WithCancelCause(ctx)
+	stop := context.AfterFunc(manager.restoreLifetime, func() { cancel(ErrManagerStopped) })
+	select {
+	case <-ctx.Done():
+		cancel(context.Canceled)
+		stop()
+		return nil, nil, context.Cause(ctx)
+	case <-manager.restoreTurn:
+	}
+	manager.mu.Lock()
+	if manager.state != ManagerActive {
+		manager.mu.Unlock()
+		manager.restoreTurn <- struct{}{}
+		cancel(ErrManagerStopped)
+		stop()
+		return nil, nil, ErrManagerStopped
+	}
+	if manager.creating == 0 {
+		manager.createsDrained = make(chan struct{})
+	}
+	manager.creating++
+	manager.mu.Unlock()
+	return ctx, func() { stop(); cancel(context.Canceled); manager.finishCreate(""); manager.restoreTurn <- struct{}{} }, nil
+}
+
+type restorationKind uint8
+
+const (
+	recordedRestoration restorationKind = iota
+	scheduledRestoration
+)
+
+func (manager *SessionManager) restoreSession(ctx context.Context, row SessionRecord) (*ManagedSession, error) {
+	return manager.restoreSelected(ctx, row.SessionID, &row, recordedRestoration)
+}
+
+// RestoreScheduledSession is privileged operator resolution for a stable cron ID.
+// It returns a live handle unchanged; saved scratch uses the current factory,
+// saved bound state retains its recorded workspace, and no row means anonymous.
+// Like Python, scheduled construction uses the current system builder, rather
+// than a recorded explicit system. Human authority/activation is never restored.
+func (manager *SessionManager) RestoreScheduledSession(ctx context.Context, id SessionID) (session *ManagedSession, err error) {
+	if id == "" {
+		return nil, fmt.Errorf("%w: empty scheduled identity", ErrStateRestore)
 	}
 	manager.mu.Lock()
 	if manager.state != ManagerActive {
 		manager.mu.Unlock()
 		return nil, ErrManagerStopped
 	}
-	if manager.sessions[row.SessionID] != nil {
+	live := manager.sessions[id]
+	manager.mu.Unlock()
+	if live != nil {
+		return live, nil
+	}
+	ctx, finish, err := manager.beginRestore(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer finish()
+	defer func() {
+		if err != nil && errors.Is(context.Cause(ctx), ErrManagerStopped) {
+			err = errors.Join(ErrManagerStopped, err)
+		}
+	}()
+	manager.mu.Lock()
+	live = manager.sessions[id]
+	manager.mu.Unlock()
+	if live != nil {
+		return live, nil
+	}
+	var rows []SessionRecord
+	if store := manager.config.Services.StateStore; store != nil {
+		if err = stateFault(func() error { var e error; rows, e = store.LoadSessions(ctx); return e }); err != nil {
+			return nil, err
+		}
+	}
+	for _, input := range rows {
+		if input.SessionID == id {
+			row := input.Clone()
+			return manager.restoreSelected(ctx, id, &row, scheduledRestoration)
+		}
+	}
+	return manager.restoreSelected(ctx, id, nil, scheduledRestoration)
+}
+
+func (manager *SessionManager) restoreSelected(ctx context.Context, id SessionID, row *SessionRecord, kind restorationKind) (session *ManagedSession, err error) {
+	if row != nil {
+		if err = validateRestoreRecord(*row); err != nil {
+			return nil, err
+		}
+	}
+
+	manager.mu.Lock()
+	if manager.state != ManagerActive {
 		manager.mu.Unlock()
+		return nil, ErrManagerStopped
+	}
+	if live := manager.sessions[id]; live != nil {
+		manager.mu.Unlock()
+		if kind == scheduledRestoration {
+			return live, nil
+		}
 		return nil, nil
 	}
-	if manager.reservations[row.SessionID] || manager.retiring[row.SessionID] != nil || manager.owners[row.SessionID] != "" {
+	if manager.reservations[id] || manager.retiring[id] != nil || manager.owners[id] != "" {
 		manager.mu.Unlock()
 		return nil, ErrStateRestoreConflict
 	}
-	manager.reservations[row.SessionID] = true
+	manager.reservations[id] = true
 	manager.mu.Unlock()
-	defer func() { manager.mu.Lock(); delete(manager.reservations, row.SessionID); manager.mu.Unlock() }()
+	defer func() { manager.mu.Lock(); delete(manager.reservations, id); manager.mu.Unlock() }()
 	manager.workspaceMu.Lock()
 	defer manager.workspaceMu.Unlock()
 	published := false
@@ -98,28 +189,58 @@ func (manager *SessionManager) restoreSession(ctx context.Context, row SessionRe
 			err = errors.Join(err, pending.core.persistence.release())
 		}
 	}()
-	path, err := workspace.ResolvePath(row.Workspace)
+	bound := row != nil && row.WorkspaceBound
+	owner := OwnerID("anonymous")
+	var system *string
+	if row != nil {
+		owner = row.Owner
+		if kind == recordedRestoration {
+			system = row.System
+		}
+	}
+	var path string
+	if kind == recordedRestoration || bound {
+		path = row.Workspace
+	} else {
+		path = filepath.Join(manager.config.WorkspaceRoot, string(id))
+		if factory := manager.config.WorkspaceFactory; factory != nil {
+			path, err = factory.WorkspaceFor(ctx, id)
+		}
+	}
 	if err != nil {
 		return nil, err
 	}
-	// Recreate a missing saved workspace; do not invoke the new-session factory or
-	// reinterpret a persisted bound path using today's bindable-root list.
+	if path == "" {
+		return nil, errors.New("workspace factory returned an empty path")
+	}
+	path, err = workspace.ResolvePath(path)
+	if err != nil {
+		return nil, err
+	}
 	if err = os.MkdirAll(path, 0700); err != nil {
 		return nil, err
 	}
+	if err = ctx.Err(); err != nil {
+		return nil, err
+	}
 	services := manager.config.Services
-	bash, err := services.BashFactory.BashFor(ctx, SessionBinding{row.SessionID, row.Owner, path, ModeInteractive})
+	bash, err := services.BashFactory.BashFor(ctx, SessionBinding{id, owner, path, ModeInteractive})
 	if err != nil {
 		return nil, err
 	}
-	session, err = newManagedSession(manager.managedRuntimeConfig(row.SessionID, row.Owner, path, ModeInteractive, manager.config.Defaults.Model, row.System, bash), true)
+	session, err = newManagedSession(manager.managedRuntimeConfig(id, owner, path, ModeInteractive, manager.config.Defaults.Model, system, bash), true)
 	if err != nil {
 		return nil, err
 	}
 	pending = session
-	session.workspaceBound = row.WorkspaceBound
-	session.core.explicitSystem = clonePointer(row.System)
-	if err = session.core.persistence.restore(ctx, row); err != nil {
+	session.workspaceBound = bound
+	session.core.explicitSystem = clonePointer(system)
+	if row != nil {
+		err = session.core.persistence.restore(ctx, *row)
+	} else {
+		err = session.core.persistence.restoreMissing(ctx)
+	}
+	if err != nil {
 		return nil, err
 	}
 	manager.mu.Lock()
@@ -131,8 +252,8 @@ func (manager *SessionManager) restoreSession(ctx context.Context, row SessionRe
 	if err = ctx.Err(); err != nil {
 		return nil, err
 	}
-	manager.sessions[row.SessionID] = session
-	manager.order = append(manager.order, row.SessionID)
+	manager.sessions[id] = session
+	manager.order = append(manager.order, id)
 	published = true
 	return session, nil
 }
@@ -165,7 +286,11 @@ func (p *sessionPersistence) loadRestoreLocked(ctx context.Context, row SessionR
 	if err != nil {
 		return snapshot, err
 	}
-	if row.SessionID != p.session.ID() || row.Owner != p.session.Owner() || path != p.session.core.workspace || row.WorkspaceBound != p.session.workspaceBound || !sameSystem(row.System, p.session.core.explicitSystem) {
+	identity := p.restoreIdentity
+	if identity == nil {
+		identity = &stateRestoreIdentity{p.session.Owner(), p.session.core.workspace, p.session.workspaceBound, p.session.core.explicitSystem}
+	}
+	if row.SessionID != p.session.ID() || row.Owner != identity.owner || path != identity.workspace || row.WorkspaceBound != identity.bound || !sameSystem(row.System, identity.system) {
 		return snapshot, fmt.Errorf("%w: session identity or binding changed", ErrStateRestore)
 	}
 	snapshot.record = row.Clone()
@@ -246,8 +371,13 @@ func (p *sessionPersistence) applyRestoreLocked(snapshot restoredState) {
 func (p *sessionPersistence) restore(ctx context.Context, row SessionRecord) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
+	path, err := workspace.ResolvePath(row.Workspace)
+	if err != nil {
+		return err
+	}
+	p.restoreIdentity = &stateRestoreIdentity{row.Owner, path, row.WorkspaceBound, clonePointer(row.System)}
 	var acquired bool
-	err := stateFault(func() error {
+	err = stateFault(func() error {
 		var e error
 		acquired, e = p.store.AcquireLease(ctx, p.session.ID(), p.owner, p.ttl)
 		return e
@@ -272,6 +402,9 @@ func (p *sessionPersistence) restore(ctx context.Context, row SessionRecord) err
 }
 
 func (p *sessionPersistence) finishRestoreLocked(ctx context.Context) error {
+	if err := context.Cause(ctx); err != nil {
+		return err
+	}
 	pending := ApprovalPending
 	var approvals []ApprovalRecord
 	if err := stateFault(func() error {
@@ -279,6 +412,9 @@ func (p *sessionPersistence) finishRestoreLocked(ctx context.Context) error {
 		approvals, e = p.store.ReadApprovals(ctx, p.session.ID(), &pending)
 		return e
 	}); err != nil {
+		return err
+	}
+	if err := context.Cause(ctx); err != nil {
 		return err
 	}
 	overrides := map[string]string{}
@@ -382,4 +518,43 @@ func (p *sessionPersistence) steeringReady() error {
 		return ErrSessionLeaseLost
 	}
 	return nil
+}
+
+// A missing SQL row cannot be acquired. Publish an unconfirmed anonymous handle,
+// matching source resolution; no unconditional upsert may overwrite a racing row.
+// A later claim must re-read/validate before admitting a turn.
+func (p *sessionPersistence) restoreMissing(ctx context.Context) error {
+	if p == nil {
+		return nil
+	}
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	var acquired bool
+	err := stateFault(func() error {
+		var e error
+		acquired, e = p.store.AcquireLease(ctx, p.session.ID(), p.owner, p.ttl)
+		return e
+	})
+	if err != nil {
+		return err
+	}
+	p.confirmed = acquired
+	p.pendingRestore = true
+	if acquired {
+		return p.reloadPendingLocked(ctx)
+	}
+	return nil
+}
+
+type stateRestoreIdentity struct {
+	owner     OwnerID
+	workspace string
+	bound     bool
+	system    *string
+}
+
+func (p *sessionPersistence) rememberRestoreProjectionLocked(row SessionRecord) {
+	if p.restoreIdentity != nil {
+		p.restoreIdentity = &stateRestoreIdentity{row.Owner, row.Workspace, row.WorkspaceBound, clonePointer(row.System)}
+	}
 }

@@ -370,7 +370,7 @@ func (session *ManagedSession) Cancel(ctx context.Context, reason string) (bool,
 }
 func (session *ManagedSession) Info() SessionInfo {
 	session.mu.Lock()
-	status, busy, count, reason := session.status, session.active != nil, session.runCount, clonePointer(session.cancelReason)
+	status, busy, count, createdAt, reason := session.status, session.active != nil, session.runCount, session.createdAt, clonePointer(session.cancelReason)
 	session.mu.Unlock()
 	activity := SessionActivity(status)
 	view := session.core.live.Load()
@@ -399,7 +399,7 @@ func (session *ManagedSession) Info() SessionInfo {
 	}
 	mode, queued := session.core.control.snapshot()
 	trajectoryID, trajectoryCount, trajectoryError := session.core.events.trajectory.snapshot()
-	return SessionInfo{trajectoryID, trajectoryCount, trajectoryError, session.ID(), status, activity, busy, reason, session.createdAt, count, mode, queued, clonePointer(session.core.forkedFrom), session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
+	return SessionInfo{trajectoryID, trajectoryCount, trajectoryError, session.ID(), status, activity, busy, reason, createdAt, count, mode, queued, clonePointer(session.core.forkedFrom), session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
 }
 func hasStuckSignal(detector StuckDetector, state StuckState) (stuck bool) {
 	defer func() {

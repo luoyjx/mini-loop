@@ -466,8 +466,8 @@ func TestRestoreStoppedAfterClaimReleasesUnpublishedLease(t *testing.T) {
 		t.Fatal("historical workspace removed", err)
 	}
 	messages, _ := backing.LoadMessages(context.Background(), row.SessionID, nil)
-	if len(messages) != 2 {
-		t.Fatal("repair not retained", messages)
+	if len(messages) != 1 {
+		t.Fatal("stopped restore changed historical transcript", messages)
 	}
 }
 func TestRestoreReservationsTombstonesAndCancellation(t *testing.T) {

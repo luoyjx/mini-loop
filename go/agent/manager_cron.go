@@ -26,9 +26,26 @@ func (r managerCronResolver) ResolveScheduled(id cron.SessionID) (cron.Runner, e
 	}
 	session := r.manager.sessions[SessionID(id)]
 	if session == nil {
-		return nil, nil
+		return scheduledRestoreRunner{r.manager, SessionID(id)}, nil
 	}
 	return managedCronRunner{session}, nil
+}
+
+// Resolve inside the scheduler-owned context so Stop can cancel pending lookup.
+type scheduledRestoreRunner struct {
+	manager *SessionManager
+	id      SessionID
+}
+
+func (r scheduledRestoreRunner) RunScheduled(ctx context.Context, invocation cron.Invocation) error {
+	if invocation.Authority() != cron.Untrusted || SessionID(invocation.Session()) != r.id {
+		return errors.New("cron invocation does not match its scheduled identity")
+	}
+	session, err := r.manager.RestoreScheduledSession(ctx, r.id)
+	if err != nil {
+		return err
+	}
+	return (managedCronRunner{session}).RunScheduled(ctx, invocation)
 }
 
 type managedCronRunner struct{ session *ManagedSession }

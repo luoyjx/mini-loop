@@ -110,7 +110,7 @@ Record its parity evidence and remaining gaps before checking it off.
       and streamed-text cancellation repair implemented;
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
-- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; Go SQLite backend, scheduled restore and durable catch-up remain)
+- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore and cron resolution implemented; Go SQLite backend and durable catch-up remain)
 - [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
@@ -129,10 +129,10 @@ Record its parity evidence and remaining gaps before checking it off.
    default unknown-action handling, post-admission claims and drain/release are
    implemented. Explicit manager restoration, parked approval expiry and crash-tail
    repair are now implemented over the injected backend. Remaining: real backend
-   integration and scheduled restoration. Restore lease confirmation separately
+   integration; scheduled restoration is now implemented over the injected seam. Restore lease confirmation separately
    from recorded ownership; no human authority or goal/cron activation is restored.
-4. Serving: durable event cursor/catch-up, restored cron resolution and explicit
-   launcher selection. Compare real restart/crash windows and ownership paths
+4. Serving: restored cron resolution is implemented with a fresh untrusted turn;
+   durable event cursor/catch-up and explicit state-backend launcher selection remain. Compare real restart/crash windows and ownership paths
    before claiming G5 complete; a lease is not external-effect fencing.
 
 ### Next cron slices
@@ -146,7 +146,9 @@ Record its parity evidence and remaining gaps before checking it off.
    and explicit launcher selection. Arm remains an
    operator act, never a model tool. Keep comprehensive activation unavailable
    until all feature groups are implemented.
-3. Audit restoration/lease interaction and differential failures in G5/G7;
+3. Lazy stable-ID session restoration and its lease/owner/workspace paths are now
+   implemented and compared to actual source. Audit real SQL restart and
+   differential failures in G5/G7;
    an exclusive claim file does not provide an exactly-once transaction with
    external effects or repair stale whole-file state across live writers.
 
@@ -3706,3 +3708,114 @@ The existing manager-wide unknown-action policy does not prove foreign death.
   (676,849 bytes). Receipt hashes match the exact files. Visual review remains
   skipped after the earlier local-file access denial; no rendered inspection is
   claimed. Go tests run on darwin/arm64; Linux remains unvalidated.
+
+## Implementation checkpoint — 2026-10-06 lazy scheduled session restoration
+
+Baseline: `067f16e` on `feat/go-port`. This iteration connects the source cron
+stable-ID resolver to typed Go state restoration. No dependencies are added;
+native Go SQLite and real database reopen evidence still await driver approval.
+P0/P1 remain complete; the full G0–G7 port/release objective remains active.
+
+### Actual Python scheduled path and next-request evidence
+
+Snapshot 47 (`python-scheduled-restore.json`) invokes real SessionManager
+restore_scheduled_session with real SQLiteStateStore or NullStateStore, then makes
+the next AgentSession.run request through FakeAsyncAnthropic. Seven cases cover
+bound/scratch clean history, bound/scratch crash tails, missing SQLite and Null
+rows, and a foreign-held bound row. It records actual factory calls, selected
+workspace, saved/live system, duplicate handle identity, owner/mode/run/status,
+repair IDs, lease confirmation, next-request result/count and persistence. Source
+hashes pin manager.py/session.py/cron.py/storage.py. No paid endpoint is called.
+
+- Existing live handles return unchanged, including their mode/system/owner.
+- Saved bound sessions retain the recorded workspace; scratch restoration invokes
+  today's factory using the stable ID. The default factory uses WorkspaceRoot/id.
+- The source scheduled constructor omits recorded explicit system, while fleet
+  restoration passes it. Go reproduces this scheduled path using the current
+  system builder and nil explicit system, independently of new-session defaults.
+  A clean stored row retains its old path/system until growth; repair/growth
+  publishes the scheduled projection. Owner and recorded run/status/history persist.
+- A missing row creates an anonymous, idle, interactive handle. With Null storage,
+  its next request runs ephemerally. With real source SQLite, conditional UPDATE
+  cannot claim a nonexistent session row: lease remains unconfirmed and the next
+  run raises LeaseLost before any model call. Go reproduces that refusal and
+  reports the lost occurrence; it performs no unconditional upsert that could
+  overwrite a concurrent creator. This is a measured source gap, not proof that
+  a fresh durable identity can run without a stored record.
+- Known crash-tail repair preserves pairing and the shared unknown marker. Go
+  retains its prior metadata-preservation and claim-before-repair additions.
+  Foreign-held state remains pending; later turn admission re-reads under claim.
+
+### Delivered composition, authority and shutdown
+
+`SessionManager.RestoreScheduledSession(ctx, id)` is a privileged embedding
+operation, not a new HTTP owner-bypass route. Live identity lookup precedes store
+inventory. Missing handles share fleet restoration serialization, creating/drain
+ownership and exact-ID reservations. Retiring/remembered deleted identities are
+refused. Bound and scratch provisioning are explicit variants of one constructor;
+saved facts are installed before publication. Errors release owned leases and
+preserve historical state/workspaces.
+
+The stored expected identity is distinct from the current scheduled execution
+projection. Tenant, recorded workspace/binding/system changes still refuse pending
+reload. A successful upsert advances the expected projection so a retry after
+partial repair accepts its own newly selected path/system. This is not lease
+fencing or a transaction with external effects.
+
+The manager cron resolver reuses a live runner or returns a typed lazy restore
+runner. Restoration runs inside the scheduler-owned cancellation context; Run
+then creates a fresh default untrusted context, with no scheduling actor,
+capabilities or old message identity. Mark/save/minute claim still precede
+resolution, and restored jobs stay disarmed until a new operator Arm. No model
+arm operation or activation restoration is introduced.
+
+Manager Stop now cancels a restore lifetime context before waiting for creating
+operations. This cancels cooperative inventory/factory/backend reads, closes late
+publication and joins cleanup; callbacks ignoring cancellation can still hold
+shutdown. Restore checks cancellation before repair. The previously blocked
+approval-read stop test now proves original history is retained without repair.
+Info snapshots creation time under its existing metadata lock, covering concurrent
+pending reload. Active turn drain, saved ownership, lease release, one-shot
+removal and bounded scheduler diagnostics retain their existing rules.
+
+Remaining: native Go SQLite/WAL/migrations/transactions/reopen/concurrent connections,
+plan/goal event variants/folding, durable SSE/catch-up, state-backend launcher
+selection and the rest of G0–G7. Independent claim files do not transact with
+external effects, and global unknown-action marking does not prove foreign death.
+The test backing is synchronized memory, not a shipped backend or restart proof.
+
+### Validation and delivery evidence
+
+- Focused agent tests for Scheduled/ManagedCron/Restore/State/ManagerCron: pass.
+  Seven actual source recipes compare projections and next model requests.
+  Go integration tests restore an armed disk-loaded job lazily with fresh
+  untrusted provenance, validate crash-tail pairing/persistence-before-request,
+  compare factory/system/owner selection, handle foreign/missing row refusal,
+  retry after partial selected-projection repair, bypass storage for live handles,
+  refuse stopped resolution and cancel pending inventory during manager Stop.
+- Full `go test ./... -count=1` with shared-package coverage,
+  `go test -race ./... -count=1` and `go vet ./...`: pass.
+  Deduplicated statement coverage **88.70%** (**10,663 / 12,021**);
+  agent **90.15%** (**4,860 / 5,391**). New branches expand the denominator;
+  these are code coverage, not migration completion or SQL durability.
+- Final exporter `--check`: **47 files current**. `verify_scans.py`:
+  **19 anchored scans**. All 46 previous tracked exports remain unchanged.
+  Python full regression: **2,151 passed / 28 skipped / 24 subtests passed**,
+  three warnings in **84.93 s**. No paid endpoint was called.
+- `git diff --check` and README outline: pass. All implementation gates are
+  terminal before exact-path staging, commit and push.
+- Three selected source mutations caught: cron owner-before-build, restored job
+  requiring a new arm, and delete cancelling jobs before resurrection. This is
+  targeted source evidence, not a full mutation sweep or Go mutation coverage.
+  Python runtime/package/test modules are unchanged; package-module invariant
+  verification does not apply to this exporter-only Python edit.
+- README baseline/canonical Mermaid/authority and persistence explanation plus
+  interactive specification are updated. A new lazy cron-to-manager restore
+  connection uses automatic routing. Archify acceptance **9/9**, zero errors and
+  warnings, **zero correction rounds**. Specification SHA-256
+  `416eccffb064764597a0b20b039ce74f3cf046d79b50627a5b8ec157b4de32bd`
+  (36,028 bytes); generated HTML SHA-256
+  `5286c4a5f5abee52fc4ad66ab7cdd2730990f24ef64b6ae9f8617f9b435b0f7a`
+  (677,651 bytes). Both receipts match the exact files. Visual review remains
+  skipped after the earlier local-file access denial; no rendered inspection is
+  claimed. Go test platform is darwin/arm64; Linux remains unvalidated.

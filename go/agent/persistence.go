@@ -36,22 +36,23 @@ type StatePersistenceStatus struct {
 // State callbacks are serialized and must not reenter a persistence method.
 // History comes from immutable live snapshots, never from the core turn mutex.
 type sessionPersistence struct {
-	mu             sync.Mutex
-	store          StateStore
-	session        *ManagedSession
-	owner          LeaseOwner
-	ttl            time.Duration
-	confirmed      bool
-	restored       bool
-	pendingRestore bool
-	repaired       []string
-	disabled       bool
-	epoch          TranscriptEpoch
-	refs           []protocol.Message
-	fault          *string
-	lost           bool
-	cancel         context.CancelCauseFunc
-	turn           uint64
+	mu              sync.Mutex
+	store           StateStore
+	session         *ManagedSession
+	owner           LeaseOwner
+	ttl             time.Duration
+	confirmed       bool
+	restored        bool
+	restoreIdentity *stateRestoreIdentity
+	pendingRestore  bool
+	repaired        []string
+	disabled        bool
+	epoch           TranscriptEpoch
+	refs            []protocol.Message
+	fault           *string
+	lost            bool
+	cancel          context.CancelCauseFunc
+	turn            uint64
 }
 
 func stateFault(action func() error) (err error) {
@@ -198,10 +199,12 @@ func (p *sessionPersistence) flushLocked(history []protocol.Message) error {
 		return nil
 	}
 	p.refs = append([]protocol.Message(nil), history...)
-	if err = stateFault(func() error { return p.store.UpsertSession(context.Background(), p.session.stateRecord().Clone()) }); err != nil {
+	row := p.session.stateRecord().Clone()
+	if err = stateFault(func() error { return p.store.UpsertSession(context.Background(), row) }); err != nil {
 		p.failLocked(err)
 		return nil
 	}
+	p.rememberRestoreProjectionLocked(row)
 	if p.owner != "" {
 		var renewed bool
 		err = stateFault(func() error {
