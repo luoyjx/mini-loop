@@ -28,7 +28,7 @@ type MessageInjector interface {
 }
 
 func (s *Session) turnContext() TurnContext {
-	view := TurnContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.permissionMode(), RunContext: s.currentRun.clone()}, Label: s.label, Depth: s.depth, Messages: append([]protocol.Message(nil), s.messages...)}
+	view := TurnContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: s.currentRun.clone()}, Label: s.label, Depth: s.depth, Messages: append([]protocol.Message(nil), s.messages...)}
 	if s.todos != nil {
 		view.Todos = s.todos.Snapshot()
 	}

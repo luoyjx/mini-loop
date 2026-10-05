@@ -13,6 +13,20 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return "", err
 	}
 	switch input.Name() {
+	case ToolCreateWorktree:
+		v := input.createWorktree
+		return PythonJSON(struct {
+			Name   string                `json:"name"`
+			TaskID *wireOptional[string] `json:"task_id,omitempty"`
+		}{v.Name, optionalWire(v.TaskID, input.nulls.WorktreeTaskID)}, false, compact)
+	case ToolRemoveWorktree:
+		v := input.removeWorktree
+		return PythonJSON(struct {
+			Discard *wireOptional[bool] `json:"discard_changes,omitempty"`
+			Name    string              `json:"name"`
+		}{optionalWire(v.DiscardChanges, input.nulls.WorktreeDiscard), v.Name}, false, compact)
+	case ToolKeepWorktree, ToolEnterWorktree, ToolListWorktrees:
+		return PythonJSON(input, false, compact)
 	case ToolBash:
 		v, _ := input.Bash()
 		return PythonJSON(struct {

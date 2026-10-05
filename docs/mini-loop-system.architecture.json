@@ -371,7 +371,7 @@
       "id": "goResources",
       "type": "backend",
       "label": "Session Resources",
-      "sublabel": "core resources / optional task graph",
+      "sublabel": "core / task graph / worktrees",
       "pos": [
         1920,
         1540
@@ -380,7 +380,7 @@
         280,
         76
       ],
-      "tag": "bound session / graph tools opt-in"
+      "tag": "bound session / explicit opt-in"
     },
     {
       "id": "goContext",
@@ -1214,8 +1214,10 @@
         "Go Resources aggregates explicit TaskTools: five typed graph tools, masked atomic workspace records, dependency gates and exclusive owner markers; comprehensive feature activation remains unsupported",
         "Owned Tasks HTTP reads admit session ownership before fresh store access and do not consume claims. Orphan markers report for operator repair; no leases or host ACLs",
         "Browser core create/send/tool/final/trajectory flows are verified; optional Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark/Audit pane APIs remain pending",
-        "Operator-only go/worktrees creates/binds/keeps/removes Git worktrees and appends audit events; ordinary Git guards retain dirty files/unmerged branches. Factory failure falls back to a plain directory; model worktree tools, live rebind and manager reclamation remain pending",
-        "Explicitly provisioned worktrees run through the existing owned/bindable workspace policy and survive session cleanup; operator library selection does not pass through or activate a model tool"
+        "Explicit go/worktrees service creates/binds/keeps/removes Git worktrees and appends audit events; Go Resources also installs five model tools only with WorktreeTools=true, through the common risk/permission gate",
+        "enter_worktree is an exclusive barrier: prepare files, shell/sandbox, model context, approval/question surfaces and future children before publishing execution scope; manager Info, task HTTP roots, trajectory attribution and scratch cleanup retain the original lifecycle workspace",
+        "An initialized task board stays pinned; first lazy task admission after entry uses the new execution workspace. Fresh children use current files/shell but do not borrow the manager worktree service; selected worktree tools report unconfigured. Forks retain manager activation with fresh scratch",
+        "Shell rebind retains deadline, capture, secrets, spill and foreground interrupt ownership; custom factories must return WorkspaceBashExecutor reporting the target root. Manager worktree reclamation, OS sandbox backend and full feature activation remain pending"
       ]
     }
   ]

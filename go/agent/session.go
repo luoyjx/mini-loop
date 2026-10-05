@@ -42,6 +42,7 @@ type Session struct {
 	mode                                              PermissionMode
 	control                                           *sessionControl
 	workspace                                         string
+	executionWorkspace                                string
 	maxRounds                                         int
 	mu                                                sync.Mutex
 	messages                                          []protocol.Message
@@ -139,6 +140,7 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 		}
 		session.workspace, session.files, session.compactor = files.Root(), files, NewDefaultCompactor()
 	}
+	session.executionWorkspace = session.workspace
 	return session, nil
 }
 
@@ -355,7 +357,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			s.publishLive()
 			var continuation *string
 			for _, hook := range s.stopHooks {
-				continuation, err = hook.Stop(ctx, StopContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.permissionMode(), RunContext: run.clone()}, Messages: append([]protocol.Message(nil), s.messages...), LastText: lastText})
+				continuation, err = hook.Stop(ctx, StopContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, Messages: append([]protocol.Message(nil), s.messages...), LastText: lastText})
 				if err != nil {
 					return "", err
 				}

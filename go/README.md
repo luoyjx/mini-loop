@@ -648,9 +648,41 @@ That source-compatible fallback provides no branch isolation. The embedding
 caller owns retention and Git-aware removal. To run a session now, provision
 explicitly, configure the manager's bindable roots and pass the resulting path
 as `CreateSessionRequest.Workspace`; ordinary bound-workspace cleanup preserves it.
-Do not attach this helper to raw scratch directory deletion. There is no shipped
-model-facing worktree tool, live executor/workspace/sandbox rebind or managed
-worktree cleanup adapter. Standalone feature activation remains unsupported.
+Do not attach this helper to raw scratch directory deletion. Git-aware manager
+worktree cleanup and standalone feature activation remain unsupported.
+
+For model tools, explicitly set `RuntimeConfig.WorktreeTools` or
+`ManagerServices.WorktreeTools` and supply `Worktrees: service`. This installs
+`create_worktree`, `remove_worktree`, `keep_worktree`, `list_worktrees` and
+`enter_worktree` through the common gate; without a service their source response
+is `Error: worktree repository is not configured`. Defaults remain ten tools.
+Named create/remove/name input variants preserve omitted versus explicit-null
+task/discard fields. Only explicit true authorizes discard.
+
+`enter_worktree` is an exclusive tool barrier, including when a custom classifier
+requests parallel execution. It prepares replacement files, shell/sandbox,
+catalogue and broker approval/question surfaces before publishing execution
+scope. Later tools in the same batch, model context and fresh children see the
+new directory. Preparation failure keeps the prior execution bindings. Manager
+Info, task HTTP reads, trajectory attribution and scratch reclamation keep the
+original lifecycle workspace; deletion does not erase entered worktrees. An
+initialized task store stays pinned; first lazy creation after entry uses the
+new root. Forks keep manager tool activation but start in fresh scratch.
+
+Built-in `shell.Executor.WithWorkspace` retains deadline, capture, credentials,
+spill and process interrupt ownership while re-binding cwd and sandbox together.
+Custom Bash executors require an explicit `RuntimeConfig.WorkspaceBashFactory`;
+managed construction reuses `Services.BashFactory`. The embedding factory owns
+policy preservation and must return a `WorkspaceBashExecutor` reporting the
+requested workspace. Failed/nil/unbound/wrong-root
+results refuse entry. Source capability sets are empty, so the default child role
+policy omits these optional tools; trusted custom policies can select them.
+Default in-process children still have fresh state without the parent's worktree
+service/task board: even a selected worktree tool reports unconfigured. Child
+files and shell use the parent's current execution directory. Explicit fixed
+prompts, including the child role prompt, remain fixed; the default system
+builder regenerates its workspace from current SystemContext.
+There is no shipped OS sandbox backend or background service to re-confine yet.
 
 Git calls inherit the source process environment, take concrete argv, have a
 30-second context-owned deadline, bound each output channel to five MiB and bound
@@ -661,6 +693,13 @@ Native Git must be available; no Go dependency was added. Snapshot 34 compares
 nine real Python/Git scenarios, outputs, file/branch effects, task bindings and
 audit events. Additional Go tests cover stale prechecks, partial failures,
 duplicate creation, cancellation and a real owned session's tool write/delete/stop.
+Snapshot 35 compares three actual source tool flows, 25 steps, all five schemas
+and risk/capability traits, plus eight canonical input identities. Go tests also
+compare a real Python child loop's three results: worktree service unavailability,
+a write in the inherited directory and Bash cwd. They also prove
+atomic preparation refusal, parallel barriers, journal-before-observer
+settlement, broker rebinding, fresh child state, fresh forks, retained task
+roots and scratch deletion that preserves entered work.
 
 ### Open the browser console
 

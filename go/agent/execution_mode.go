@@ -1,5 +1,7 @@
 package agent
 
+import "github.com/luoyjx/mini-loop/go/protocol"
+
 type ExecutionMode string
 
 const (
@@ -19,6 +21,11 @@ func (definition ToolDefinition) WithExecutionClassifier(classifier ExecutionCla
 // Scheduling precedes gate hooks. A failing, panicking or invalid classifier
 // always creates an ordered barrier, even for a statically parallel-safe tool.
 func (definition ToolDefinition) ExecutionMode(call ToolCall) (mode ExecutionMode) {
+	// Workspace publication must wait for all earlier workers and precede all
+	// later workers, even when a custom classifier proposes parallel execution.
+	if call.Name() == protocol.ToolEnterWorktree {
+		return ExecutionExclusive
+	}
 	mode = ExecutionExclusive
 	defer func() {
 		if recover() != nil {

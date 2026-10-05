@@ -1,0 +1,490 @@
+{
+  "cases": [
+    {
+      "child": {
+        "execution": "<REPO>/.worktrees/two",
+        "output": "parent done",
+        "proof": "child",
+        "results": [
+          "Error: worktree repository is not configured",
+          "Wrote 5 bytes to child.txt",
+          "<REPO>/.worktrees/two"
+        ],
+        "summary": "child done"
+      },
+      "configured": true,
+      "proof": {
+        "one": "entered\n",
+        "two": "second 雪\n"
+      },
+      "steps": [
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<WORKSPACE>",
+          "input": {
+            "name": "one",
+            "task_id": "task_link"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "create_worktree",
+          "output": "Worktree 'one' created at <REPO>/.worktrees/one"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<WORKSPACE>",
+          "input": {
+            "name": "one"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "keep_worktree",
+          "output": "Worktree 'one' kept for review (branch: wt/one)"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<WORKSPACE>",
+          "input": {},
+          "lifecycle": "<WORKSPACE>",
+          "name": "list_worktrees",
+          "output": "<REPO> <HEAD> [main]\n<REPO>/.worktrees/one <HEAD> [wt/one]"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<WORKSPACE>",
+          "input": {
+            "name": "missing"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "enter_worktree",
+          "output": "Error: no worktree missing"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "name": "one"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "enter_worktree",
+          "output": "Entered worktree 'one' at <REPO>/.worktrees/one"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "content": "entered\n",
+            "path": "proof.txt"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "write_file",
+          "output": "Wrote 8 bytes to proof.txt"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "path": "proof.txt"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "read_file",
+          "output": "entered"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "command": "pwd"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "bash",
+          "output": "<REPO>/.worktrees/one"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "task_id": "task_link"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "get_task",
+          "output": "{\n  \"id\": \"task_link\",\n  \"subject\": \"linked task\",\n  \"description\": \"\",\n  \"status\": \"pending\",\n  \"owner\": null,\n  \"blockedBy\": [],\n  \"worktree\": \"one\"\n}"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "name": "one"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "remove_worktree",
+          "output": "Refusing: worktree one has 1 changed file(s) and 0 commit(s); keep it or pass discard_changes=True"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "name": "two",
+            "task_id": null
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "create_worktree",
+          "output": "Worktree 'two' created at <REPO>/.worktrees/two"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/two",
+          "input": {
+            "name": "two"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "enter_worktree",
+          "output": "Entered worktree 'two' at <REPO>/.worktrees/two"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/two",
+          "input": {
+            "content": "second 雪\n",
+            "path": "proof.txt"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "write_file",
+          "output": "Wrote 9 bytes to proof.txt"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/two",
+          "input": {
+            "task_id": "task_link"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "get_task",
+          "output": "{\n  \"id\": \"task_link\",\n  \"subject\": \"linked task\",\n  \"description\": \"\",\n  \"status\": \"pending\",\n  \"owner\": null,\n  \"blockedBy\": [],\n  \"worktree\": \"one\"\n}"
+        },
+        {
+          "binding": "one",
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/two",
+          "input": {
+            "name": "two"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "keep_worktree",
+          "output": "Worktree 'two' kept for review (branch: wt/two)"
+        }
+      ]
+    },
+    {
+      "child": null,
+      "configured": false,
+      "proof": {},
+      "steps": [
+        {
+          "binding": null,
+          "board_initialized": false,
+          "execution": "<WORKSPACE>",
+          "input": {
+            "name": "one"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "create_worktree",
+          "output": "Error: worktree repository is not configured"
+        },
+        {
+          "binding": null,
+          "board_initialized": false,
+          "execution": "<WORKSPACE>",
+          "input": {
+            "name": "one"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "remove_worktree",
+          "output": "Error: worktree repository is not configured"
+        },
+        {
+          "binding": null,
+          "board_initialized": false,
+          "execution": "<WORKSPACE>",
+          "input": {
+            "name": "one"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "keep_worktree",
+          "output": "Error: worktree repository is not configured"
+        },
+        {
+          "binding": null,
+          "board_initialized": false,
+          "execution": "<WORKSPACE>",
+          "input": {},
+          "lifecycle": "<WORKSPACE>",
+          "name": "list_worktrees",
+          "output": "Error: worktree repository is not configured"
+        },
+        {
+          "binding": null,
+          "board_initialized": false,
+          "execution": "<WORKSPACE>",
+          "input": {
+            "name": "one"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "enter_worktree",
+          "output": "Error: worktree repository is not configured"
+        }
+      ]
+    },
+    {
+      "child": null,
+      "configured": true,
+      "proof": {
+        "one": "late board\n"
+      },
+      "steps": [
+        {
+          "binding": null,
+          "board_initialized": false,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "name": "one"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "enter_worktree",
+          "output": "Entered worktree 'one' at <REPO>/.worktrees/one"
+        },
+        {
+          "binding": null,
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "name": "two"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "create_worktree",
+          "output": "Worktree 'two' created at <REPO>/.worktrees/two"
+        },
+        {
+          "binding": null,
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "task_id": "task_link"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "get_task",
+          "output": "Error: task task_link not found"
+        },
+        {
+          "binding": null,
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "content": "late board\n",
+            "path": "proof.txt"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "write_file",
+          "output": "Wrote 11 bytes to proof.txt"
+        },
+        {
+          "binding": null,
+          "board_initialized": true,
+          "execution": "<REPO>/.worktrees/one",
+          "input": {
+            "name": "two"
+          },
+          "lifecycle": "<WORKSPACE>",
+          "name": "keep_worktree",
+          "output": "Worktree 'two' kept for review (branch: wt/two)"
+        }
+      ]
+    }
+  ],
+  "metadata": [
+    {
+      "capabilities": [],
+      "name": "create_worktree",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec"
+    },
+    {
+      "capabilities": [],
+      "name": "remove_worktree",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec"
+    },
+    {
+      "capabilities": [],
+      "name": "keep_worktree",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    },
+    {
+      "capabilities": [],
+      "name": "list_worktrees",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read"
+    },
+    {
+      "capabilities": [],
+      "name": "enter_worktree",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    }
+  ],
+  "schemas": [
+    {
+      "description": "Create an isolated git worktree and optionally bind a task.",
+      "input_schema": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "name": "create_worktree"
+    },
+    {
+      "description": "Remove a clean worktree, or explicitly discard its changes.",
+      "input_schema": {
+        "properties": {
+          "discard_changes": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "name": "remove_worktree"
+    },
+    {
+      "description": "Keep a worktree and record it for review.",
+      "input_schema": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "name": "keep_worktree"
+    },
+    {
+      "description": "List git worktrees.",
+      "input_schema": {
+        "properties": {},
+        "type": "object"
+      },
+      "name": "list_worktrees"
+    },
+    {
+      "description": "Switch this agent's file tools into a worktree.",
+      "input_schema": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "name": "enter_worktree"
+    }
+  ],
+  "variants": [
+    {
+      "canonical": "{\"name\":\"one\",\"task_id\":\"task_link\"}",
+      "input": {
+        "name": "one",
+        "task_id": "task_link"
+      },
+      "name": "create_worktree"
+    },
+    {
+      "canonical": "{\"name\":\"one\",\"task_id\":null}",
+      "input": {
+        "name": "one",
+        "task_id": null
+      },
+      "name": "create_worktree"
+    },
+    {
+      "canonical": "{\"discard_changes\":null,\"name\":\"one\"}",
+      "input": {
+        "discard_changes": null,
+        "name": "one"
+      },
+      "name": "remove_worktree"
+    },
+    {
+      "canonical": "{\"discard_changes\":false,\"name\":\"one\"}",
+      "input": {
+        "discard_changes": false,
+        "name": "one"
+      },
+      "name": "remove_worktree"
+    },
+    {
+      "canonical": "{\"discard_changes\":true,\"name\":\"é\"}",
+      "input": {
+        "discard_changes": true,
+        "name": "é"
+      },
+      "name": "remove_worktree"
+    },
+    {
+      "canonical": "{\"name\":\"one\"}",
+      "input": {
+        "name": "one"
+      },
+      "name": "keep_worktree"
+    },
+    {
+      "canonical": "{\"name\":\"one\"}",
+      "input": {
+        "name": "one"
+      },
+      "name": "enter_worktree"
+    },
+    {
+      "canonical": "{}",
+      "input": {},
+      "name": "list_worktrees"
+    }
+  ]
+}

@@ -17,6 +17,8 @@ func (field *nullField) UnmarshalJSON(data []byte) error {
 }
 
 type inputNullFields struct {
+	WorktreeTaskID   nullField `json:"task_id"`
+	WorktreeDiscard  nullField `json:"discard_changes"`
 	TaskDescription  nullField `json:"description"`
 	TaskDependencies nullField `json:"blockedBy"`
 	TaskWorktree     nullField `json:"worktree"`
@@ -44,6 +46,18 @@ func (input ToolInput) marshalOptionalJSON() ([]byte, error) {
 		return nil, err
 	}
 	switch input.name {
+	case ToolCreateWorktree:
+		v := input.createWorktree
+		return json.Marshal(struct {
+			Name   string                `json:"name"`
+			TaskID *wireOptional[string] `json:"task_id,omitempty"`
+		}{v.Name, optionalWire(v.TaskID, input.nulls.WorktreeTaskID)})
+	case ToolRemoveWorktree:
+		v := input.removeWorktree
+		return json.Marshal(struct {
+			Name    string              `json:"name"`
+			Discard *wireOptional[bool] `json:"discard_changes,omitempty"`
+		}{v.Name, optionalWire(v.DiscardChanges, input.nulls.WorktreeDiscard)})
 	case ToolBash:
 		v := input.bash
 		return json.Marshal(struct {

@@ -288,7 +288,9 @@ plus the typed HTML ledger, filtered record visitor and independent traceview CL
 plus the embedded public development console and full browser shell,
 plus an optional typed persistent task graph and owned task-board HTTP view,
 plus the operator library worktree lifecycle and task binding,
-reviewed **2026-10-05** (Go baseline `6e1a136` plus the worktree-service slice).
+plus five explicitly installed worktree tools and serialized execution workspace
+switching with retained lifecycle cleanup ownership,
+reviewed **2026-10-05** (Go baseline `108fb01` plus the worktree-tools slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -355,7 +357,7 @@ flowchart LR
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
-        GoWorktrees["Operator worktree library<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · factory fallback"]
+        GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional persistent task tools · masked file graph<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
@@ -375,6 +377,9 @@ flowchart LR
         GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
         GoGate --> GoResources
+        GoGate -. optional five model tools .-> GoWorktrees
+        GoWorktrees -. serialized files / shell / sandbox scope .-> GoFiles
+        GoWorktrees -. prepare before publishing execution scope .-> GoBash
         GoGate -. replay / reconcile / settle .-> GoActions
         GoGate -. permission ask .-> GoApprovals
         GoResources -. textual question .-> GoApprovals
@@ -389,7 +394,7 @@ flowchart LR
     Caller --> Entry
     Caller --> GoEntry
     Caller -. explicit library selection .-> GoWorktrees
-    GoWorktrees -. binds task files; no live rebind .-> GoResources
+    GoWorktrees -. pinned task files; execution scope switch .-> GoResources
     Manager -->|bind owner · create / restore / route| Session
     Manager -. preview current session .-> Drafts
     Manager -. explicit digest commit .-> Resources
@@ -424,13 +429,26 @@ host and actual listener before admitting unauthenticated traffic. `--dump-confi
 reports redacted settings/availability without creating a runtime or probing a model;
 it is not the full Python effective-posture report. See
 [Go startup](go/README.md#run-the-standalone-http-server).
-`go/worktrees` is an explicitly selected operator library: named records and
+`go/worktrees` is an explicitly selected library service: named records and
 task binding, Git status/ahead checks plus Git's independent refusal, and local
 JSONL audit events. Factory failures can return plain directories, matching Python;
 that fallback is not a Git branch. A provisioned path can be admitted through the
 existing owned/bindable workspace policy and remains after session deletion.
-Model-facing worktree tools, live workspace/sandbox rebinding, managed worktree
-reclamation and comprehensive feature activation remain pending. Audit append is
+`RuntimeConfig.WorktreeTools` / `ManagerServices.WorktreeTools` installs five typed
+model tools through the common risk/permission gate. `enter_worktree` is an
+exclusive barrier even with a custom execution classifier: it prepares files,
+shell/sandbox, approval/question surfaces and the replacement catalogue before
+publishing execution scope. Later model context, hooks, tools and fresh children
+use that scope. Manager Info, task HTTP roots, trajectory attribution and scratch
+cleanup retain the original lifecycle workspace, so deletion preserves entered
+work. Initialized task boards remain pinned; lazy first admission after entry
+uses the new root. Fresh in-process children bind current files/shell but start
+without the parent worktree service/task board; selected worktree tools report
+unconfigured. The default system builder follows SystemContext; supplied fixed
+prompts retain their source contract. Built-in shell rebinding retains secrets, spill, deadlines,
+capture and interrupt ownership; custom executors require an explicit workspace
+factory. Managed worktree reclamation and comprehensive feature activation remain
+pending. Audit append is
 not a transaction with Git/task binding or a host ownership/lease boundary.
 The solid Python path is one ordinary turn; dotted paths are
 optional or asynchronous.

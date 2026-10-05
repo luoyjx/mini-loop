@@ -2280,6 +2280,131 @@ def _trajectory_contracts(scratch: Path) -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("trajectory.py", "session.py", "agent.py", "server.py")}, "stores":cases, "rounding":[{"input":value, "output":round(value, 3)} for value in (25.12355, -25.12355, 1.2345, -1.2345, 0.0005, -0.0005, 2.675, 1.0625, -1.0625, 0.00001)], "managed":asyncio.run(collect()), "http":{"seed":normalize(seed), "routes":routes}}
 
 
+def _worktree_tool_contracts(scratch: Path) -> dict:
+    """Installed source tools over an actual Agent, including execution rebind."""
+    import asyncio
+    import re
+    import subprocess
+    from mini_loop import SessionManager, Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.builtins import default_registry
+    from mini_loop.registry import ToolContext, ToolRegistry
+    from mini_loop.tasks import Task, TaskStore, install_tasks
+    from mini_loop.worktrees import install_worktrees
+
+    def git(repo, *args):
+        proc = subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True, timeout=30)
+        if proc.returncode: raise RuntimeError(proc.stderr)
+
+    schema_registry = install_worktrees(ToolRegistry())
+    schemas = schema_registry.schemas()
+    metadata = [{"name": t.name, "risk": t.risk, "readonly": t.readonly,
+                 "parallel_safe": t.parallel_safe, "capabilities": sorted(t.capabilities)}
+                for name in schema_registry.names() if (t := schema_registry.get(name)) is not None]
+    variants = [
+        {"name": "create_worktree", "input": {"name": "one", "task_id": "task_link"}},
+        {"name": "create_worktree", "input": {"name": "one", "task_id": None}},
+        {"name": "remove_worktree", "input": {"name": "one", "discard_changes": None}},
+        {"name": "remove_worktree", "input": {"name": "one", "discard_changes": False}},
+        {"name": "remove_worktree", "input": {"name": "é", "discard_changes": True}},
+        {"name": "keep_worktree", "input": {"name": "one"}},
+        {"name": "enter_worktree", "input": {"name": "one"}},
+        {"name": "list_worktrees", "input": {}},
+    ]
+    for variant in variants:
+        variant["canonical"] = json.dumps(variant["input"], sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    available = [
+        {"name": "create_worktree", "input": {"name": "one", "task_id": "task_link"}},
+        {"name": "keep_worktree", "input": {"name": "one"}},
+        {"name": "list_worktrees", "input": {}},
+        {"name": "enter_worktree", "input": {"name": "missing"}},
+        {"name": "enter_worktree", "input": {"name": "one"}},
+        {"name": "write_file", "input": {"path": "proof.txt", "content": "entered\n"}},
+        {"name": "read_file", "input": {"path": "proof.txt"}},
+        {"name": "bash", "input": {"command": "pwd"}},
+        {"name": "get_task", "input": {"task_id": "task_link"}},
+        {"name": "remove_worktree", "input": {"name": "one"}},
+        {"name": "create_worktree", "input": {"name": "two", "task_id": None}},
+        {"name": "enter_worktree", "input": {"name": "two"}},
+        {"name": "write_file", "input": {"path": "proof.txt", "content": "second 雪\n"}},
+        {"name": "get_task", "input": {"task_id": "task_link"}},
+        {"name": "keep_worktree", "input": {"name": "two"}},
+    ]
+    async def scenario(configured, late_board=False):
+        root = scratch / ("late-board" if late_board else ("configured" if configured else "unconfigured"))
+        repo = root / "repo"
+        repo.mkdir(parents=True)
+        git(repo, "init", "-b", "main")
+        for key, value in {"user.name": "Go parity", "user.email": "parity@example.invalid",
+                           "commit.gpgsign": "false", "core.hooksPath": "/dev/null", "core.autocrlf": "false"}.items():
+            git(repo, "config", key, value)
+        (repo / ".gitignore").write_text(".worktrees/\n.tasks/\n")
+        git(repo, "add", ".gitignore"); git(repo, "commit", "-m", "base")
+        registry = install_worktrees(install_tasks(default_registry()))
+        from mini_loop.fake_llm import text as fake_text, tool, system_text
+        child_results = []
+        def responder(kwargs):
+            child = system_text(kwargs).startswith("You are a worker subagent")
+            last = kwargs["messages"][-1]["content"]
+            if child and isinstance(last, str):
+                return [tool("enter_worktree", _id="enter-child", name="one"),
+                        tool("write_file", _id="write-child", path="child.txt", content="child"),
+                        tool("bash", _id="pwd-child", command="pwd")], "tool_use"
+            if child:
+                child_results.extend(part["content"] for part in last if isinstance(part, dict) and part.get("type") == "tool_result")
+                return [fake_text("child done")], "end_turn"
+            if isinstance(last, str):
+                return [tool("task", _id="delegate", prompt="child", agent_type="worker")], "tool_use"
+            return [fake_text("parent done")], "end_turn"
+        manager = SessionManager(Settings(fake_llm=True, workspace_root=root / "ws", repo_root=repo if configured else None),
+                                 FakeAsyncAnthropic(responder=responder, thinking=False), tool_registry=registry)
+        session = manager.create()
+        board = TaskStore(session.workspace)
+        board.save(Task("task_link", "linked task"))
+        # Leave state["tasks"] absent: create_worktree must perform lazy admission.
+        def norm(text):
+            text = text.replace(str(session.workspace), "<WORKSPACE>").replace(str(repo.resolve()), "<REPO>").replace(str(repo), "<REPO>")
+            return re.sub(r"(?m)(\s)[0-9a-f]{7,40}(\s)", r"\1<HEAD>\2", text)
+        steps = available if configured else [{"name": name, "input": {} if name == "list_worktrees" else {"name": "one"}}
+                                                for name in schema_registry.names()]
+        if late_board:
+            session.agent.state["worktrees"].create("one")
+            steps = [
+                {"name": "enter_worktree", "input": {"name": "one"}},
+                {"name": "create_worktree", "input": {"name": "two"}},
+                {"name": "get_task", "input": {"task_id": "task_link"}},
+                {"name": "write_file", "input": {"path": "proof.txt", "content": "late board\n"}},
+                {"name": "keep_worktree", "input": {"name": "two"}},
+            ]
+        outputs = []
+        for step in steps:
+            ctx = ToolContext(session.agent, session.agent.workspace, session.agent.state)
+            text = await registry.get(step["name"]).run(ctx, **step["input"])
+            text = str(text)  # Structured Bash results use the actual source rendering.
+            if step["name"] == "list_worktrees": text = "\n".join(" ".join(line.split()) for line in norm(text).splitlines())
+            outputs.append({**step, "output": norm(text), "execution": norm(str(session.agent.workspace)),
+                            "lifecycle": norm(str(session.workspace)), "binding": board.load("task_link").worktree,
+                            "board_initialized": "tasks" in session.agent.state})
+        proof = {name: (repo / ".worktrees" / name / "proof.txt").read_text()
+                 for name in ("one", "two") if (repo / ".worktrees" / name / "proof.txt").exists()}
+        child = None
+        if configured and not late_board:
+            class AllTools:
+                def select(self, role, registry): return registry
+            session.agent.role_tool_policy = AllTools()
+            output = await session.agent.run("delegate child")
+            child = {"output": output, "results": [norm(str(value)) for value in child_results],
+                     "execution": norm(str(session.agent.workspace)),
+                     "summary": next(part["content"] for message in session.agent.messages
+                                     if isinstance(message["content"], list) for part in message["content"]
+                                     if isinstance(part, dict) and part.get("type") == "tool_result" and part.get("tool_use_id") == "delegate"),
+                     "proof": (session.agent.workspace / "child.txt").read_text()}
+        await manager.stop()
+        return {"configured": configured, "steps": outputs, "proof": proof, "child": child}
+    async def run(): return [await scenario(True), await scenario(False), await scenario(True, late_board=True)]
+    return {"schemas": schemas, "metadata": metadata, "variants": variants, "cases": asyncio.run(run())}
+
+
 def _worktree_contracts(scratch: Path) -> dict:
     """Actual Git lifecycle, task binding, audited effects and factory fallbacks."""
     import re
@@ -2950,6 +3075,7 @@ def _snapshot() -> dict[str, bytes]:
         webui_contracts = _webui_contracts(Path(scratch) / "webui")
         task_contracts = _task_contracts(Path(scratch) / "tasks")
         worktree_contracts = _worktree_contracts(Path(scratch) / "worktrees")
+        worktree_tool_contracts = _worktree_tool_contracts(Path(scratch) / "worktree-tools")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -2999,6 +3125,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-webui.json": _json_bytes(webui_contracts),
         "python-tasks.json": _json_bytes(task_contracts),
         "python-worktrees.json": _json_bytes(worktree_contracts),
+        "python-worktree-tools.json": _json_bytes(worktree_tool_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

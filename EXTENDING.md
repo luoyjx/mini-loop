@@ -1190,8 +1190,33 @@ plain-directory fallback. Embeddings own retention and Git-aware cleanup; it is
 not a new `SessionManager.WorkspaceFactory` adapter. The safe current composition
 is to provision explicitly and use `CreateSessionRequest.Workspace` with the
 manager's configured bindable roots. Bound workspaces survive session cleanup.
-Model tools and live workspace rebinding still require the existing common gate
-and coordinated executor/files/context/approval boundaries; they are not installed.
+Set `RuntimeConfig.WorktreeTools` or `ManagerServices.WorktreeTools` to install
+create/remove/keep/list/enter through the same common gate. Supply `Worktrees` to
+bind the explicit repository; a nil service retains the source unconfigured
+error. The default catalogue remains ten tools. These five tools retain source
+risk/readonly metadata and empty capability sets, so default child roles exclude
+them; a trusted RoleToolPolicy may explicitly select them.
+The default in-process child starts without the parent worktree service/task
+board, matching Python's fresh state. Selected child worktree tools therefore
+report unconfigured; ordinary child files/shell use the parent's current execution
+directory. Manager forks retain service activation with fresh scratch.
+
+Entry always creates an exclusive barrier, prepares files, executor/sandbox,
+catalogue and broker surfaces, then publishes execution scope. Existing catalogue
+snapshots and child bindings remain pinned. Initialized task stores do not move;
+first lazy admission after entry uses the new root. Managed Info, task HTTP reads,
+trajectory attribution and cleanup retain the original lifecycle workspace.
+Built-in `shell.Executor.WithWorkspace` preserves secrets, spill, capture/deadline
+settings and foreground interrupt ownership. A custom Bash executor requires
+`RuntimeConfig.WorkspaceBashFactory`; managed sessions reuse `Services.BashFactory`.
+That factory must return a `WorkspaceBashExecutor` for the supplied SessionBinding, preserve
+its policy and prepare without destroying the old binding. A nil, failed or
+unbound or wrong-root result refuses entry before publication. Custom hooks/handlers,
+approvers and system builders retain their explicit contracts; authority/context
+arguments carry the new execution root. Do not retain an obsolete root in them.
+Explicit fixed prompts, including the source-compatible child role prompt, remain
+fixed; the default system builder consumes the current SystemContext workspace.
+No full feature flag or Git-aware manager reclamation is implied.
 
 ### Go persistent task graph seam
 

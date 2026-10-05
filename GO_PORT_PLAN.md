@@ -111,7 +111,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding/factory implemented; model worktree tools/live rebinding and other groups remain)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding/factory and five gated model tools with serialized workspace rebinding implemented; Git-aware reclamation, full activation and other groups remain)
 - [ ] G7 differential and release audit
 
 ## 2026-10-02 checkpoint
@@ -2415,3 +2415,111 @@ Next implementation order (source-grounded design, not shipped behavior):
 - README outline and `git diff --check`: pass. `verify_invariants.py` is not
   applicable: no Python package module changed. No source asset or scanner target
   changed; verification is scoped to this worktree service/exporter iteration.
+
+## 2026-10-05 gated worktree tools and execution workspace slice
+
+Reviewed base: `108fb01`. The previous goal turn measured committed Go statement
+coverage at 87.6% and identified the ungenerated in-progress worktree-tool fixture.
+This implementation advances G0/G6; it does not close the complete Go port.
+
+### Implementation and actual source boundary
+
+- Five concrete worktree input variants/schemas install only through explicit
+  RuntimeConfig/ManagerServices.WorktreeTools. Worktrees selects the repository
+  service; a nil service retains the source unconfigured error. The default ten
+  tools and standalone unavailable-feature refusal stay unchanged.
+- Closed typed input decoding, clone/masking and Python canonical identities
+  preserve optional null/omission and explicit discard. The exact source schema,
+  risk, readonly and empty capability metadata is retained. Default child roles
+  therefore omit these optional tools; a trusted role policy may select them.
+- enter_worktree always creates an exclusive scheduling barrier, including when
+  an injected classifier proposes parallel execution. The scheduler joins prior
+  workers before preparing files, executor/sandbox, immutable catalogue copies,
+  write verifier and broker approval/question surfaces. A cancelled, failed, nil
+  unbound or wrong-root preparation refuses publication; later tools use the new scope.
+- Session now keeps separate lifecycle and execution workspace values. Model
+  context, tool/turn/stop authority and subsequent child environments follow the
+  execution root. Managed Info, task HTTP reads, trajectory attribution and
+  scratch cleanup retain the original lifecycle root, matching Python's
+  AgentSession/Agent split. Deletion of original scratch preserves entered work.
+- Existing task stores stay pinned. create_worktree lazily admits a task store
+  even without a task ID; a first lazy admission after entry uses that execution
+  root. No team workspace, runner recovery or durable activation is implied.
+- Built-in shell.Executor.WithWorkspace binds cwd/sandbox together while retaining
+  secrets, spill, deadline/capture policy and foreground interrupt ownership.
+  Existing executor/catalogue copies and children retain their previous scope.
+  Custom executors require an explicit WorkspaceBashFactory; managed sessions
+  reuse Services.BashFactory and require a WorkspaceBashExecutor reporting the
+  requested root. The embedding factory owns policy preservation.
+- The gate retains hooks, journal, observers, live mode, secrets and diagnostics.
+  Entry settles/observes with the authority under which it was admitted; subsequent
+  calls see the new root. Broker session/owner identity, grant scope, redaction
+  and event sink stay bound. Fresh child handlers inherit current files/shell,
+  but start without the parent worktree service or task board, matching actual
+  Python child state. Even an explicitly selected worktree tool therefore reports
+  unconfigured. Forks retain manager activation and fresh scratch.
+- Snapshot 35 executes actual Python tools on real managed Agents: three flows,
+  25 steps, five schemas/trait sets and eight canonical inputs. It covers linked
+  tasks, missing entry, dirty refusal, two switches, unconfigured service and late
+  task-board initialization. Structured Bash output uses CommandResult.__str__;
+  only temp roots, Git hashes/list padding are normalized. The previous 34 source
+  fixtures and all Python package/test files remain unchanged.
+  A real child loop with explicitly selected tools records three additional tool
+  results, proving the service is absent while inherited files/shell use the
+  entered directory. This check corrected an initial Go service inheritance
+  assumption before delivery. Source child role prompts stay fixed, matching Go;
+  the default runtime system builder consumes the current SystemContext root.
+- Canonical Mermaid shows the explicit service plus common-gate model path and
+  scope preparation. The interactive map aggregates this service under Go
+  Resources and documents the execution/lifecycle split in its boundary cards.
+  No dependency was added.
+
+### Remaining work
+
+Git-aware SessionManager worktree provisioning/reclamation and full feature
+activation remain. Background, cron, teams, workflows, owner resources/memory,
+decisions, SQLite session/approval/lease restoration, durable SSE, remaining
+provider variants and the full G7 differential/release audit remain open.
+No OS sandbox backend, host ACL, cross-process lease or exactly-once activation
+claim follows from this process-local workspace switch. Custom handlers, hooks,
+approvers and system builders receive current authority/context and retain their
+explicit contracts; supplied fixed prompts stay fixed. Background sandbox rebinding must be ported
+with that service, as pinned by the existing source mutation.
+
+### Validation
+
+- Final `go test ./... -coverpkg=./... -coverprofile=...`, `go vet ./...` and
+  `go test -race ./...`: pass across all packages, including the added custom
+  factory success/cancellation cases. Aggregate statement coverage is **87.7%**;
+  that measures implemented Go statements, not feature parity.
+- Scoped real tests prove failed/nil/unbound/wrong-root/unavailable/cancelled preparation
+  keeps old bindings; custom factory success retains the old executor; parallel
+  writes finish before entry despite an attempted parallel classifier; immutable
+  catalogue copies/write verifiers remain correctly scoped; journal settlement
+  precedes observers; broker permission/question joins retain owner identity;
+  fresh children retain the entered files/shell without borrowing the manager
+  worktree service and forks start in fresh scratch; deleting
+  original scratch preserves entered files. Shell behavior verifies sandbox cwd,
+  credential injection/masking, capture/deadline policy, private spill and shared
+  foreground interruption after rebinding.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: **35 files
+  current**, with the previous 34 byte-identical. `verify_scans.py`: all **19**
+  scanner guards anchored. Selected source mutation
+  `worktree-switch-leaves-background-misconfined`: caught. The full source mutation
+  sweep was not rerun; no Python runtime, source scanner target or guard anchor
+  changed. `verify_invariants.py` is not applicable to this exporter-only change.
+- `.venv/bin/python -m pytest -q`: **2151 passed, 28 skipped, 24 subtests passed,
+  4 warnings**, 80.65 s. This iteration's full Python gate passes, including the
+  previously failing 0.5 s timing assertions; those assertions were not changed.
+  A subprocess-transport finalizer warning after event-loop closure still occurs,
+  alongside existing deprecation warnings. The skipped operator/live-provider
+  cases remain unvalidated; no production endpoint or paid model call was made.
+- Archify validate/deliver: **9/9 showcase**, zero composition errors/warnings,
+  correction_rounds: 1 (child state fidelity). Specification SHA-256:
+  `8680d34feaf6010f0cd19986e0fe1d1ed4296a5a727ac92eff1c4edcb132d3c9`
+  (29,865 bytes); artifact SHA-256:
+  `b0e28baabad82a385b574095a1609533ba88c7ce10b456c59d2d7929e3670ba0`
+  (669,496 bytes). Visual review remains skipped because local HTML access was
+  previously denied; no rendered visual acceptance is claimed.
+- README/plan outlines and `git diff --check`: pass. Validation ran on macOS with
+  Go 1.23.3 and native Git 2.39.5 (Apple Git-154); Linux remains unvalidated.

@@ -226,7 +226,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
-		authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.workspace, Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
+		authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
 		model: s.model, maxTokens: s.maxTokens, tokenThreshold: s.tokenThreshold, maxRounds: s.subagentMaxRounds, maxDepth: s.subagentMaxDepth,
 		provider: s.provider, recovery: s.recovery, streamProgress: s.streamProgress, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
 		promptHooks: append([]UserPromptHook(nil), s.promptHooks...), injectors: append([]MessageInjector(nil), s.injectors...), modelLimiter: s.modelLimiter, toolLimiter: s.toolLimiter,

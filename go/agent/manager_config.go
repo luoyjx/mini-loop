@@ -7,6 +7,7 @@ import (
 
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/spill"
+	"github.com/luoyjx/mini-loop/go/worktrees"
 )
 
 const (
@@ -44,6 +45,8 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	WorktreeTools             bool
+	Worktrees                 *worktrees.Manager
 	TaskTools                 bool
 	Trajectories              TrajectoryStore
 	Build                     string

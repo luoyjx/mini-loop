@@ -104,6 +104,17 @@ func (executor *Executor) WithSecrets(source SecretSource) (*Executor, error) {
 	return clone, err
 }
 
+// WithWorkspace rebinds cwd and sandbox together while retaining credentials,
+// capture/deadline policy, spill and interrupt ownership. Existing copies stay
+// bound to their old workspace; a child can safely keep its pinned executor.
+func (executor *Executor) WithWorkspace(root string) (*Executor, error) {
+	clone, err := New(Config{Workspace: root, Timeout: executor.timeout, CaptureLimit: executor.captureLimit, Secrets: executor.secrets, Sandbox: executor.sandbox, Spill: executor.spill})
+	if err == nil {
+		clone.processes = executor.processes
+	}
+	return clone, err
+}
+
 // WithSpill returns an independent executor bound to the same workspace,
 // credentials and process tracker. Nil explicitly disables its string spill policy.
 func (executor *Executor) WithSpill(store spill.Store) (*Executor, error) {

@@ -15,6 +15,16 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolCreateWorktree:
+		input.createWorktree.Name = mask(input.createWorktree.Name)
+		if input.createWorktree.TaskID != nil {
+			v := mask(*input.createWorktree.TaskID)
+			input.createWorktree.TaskID = &v
+		}
+	case ToolRemoveWorktree:
+		input.removeWorktree.Name = mask(input.removeWorktree.Name)
+	case ToolKeepWorktree, ToolEnterWorktree:
+		input.worktreeName.Name = mask(input.worktreeName.Name)
 	case ToolBash:
 		input.bash.Command = mask(input.bash.Command)
 		if input.bash.ApprovalPrefix != nil {

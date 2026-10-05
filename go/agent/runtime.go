@@ -11,6 +11,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/spill"
 	"github.com/luoyjx/mini-loop/go/tasks"
 	"github.com/luoyjx/mini-loop/go/workspace"
+	"github.com/luoyjx/mini-loop/go/worktrees"
 )
 
 type SkillSource interface {
@@ -52,41 +53,44 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	TaskTools         bool
-	Trajectories      TrajectoryWriter
-	Build             string
-	Spill             spill.Store
-	ID                SessionID
-	Owner             OwnerID
-	Provider          Provider
-	Recovery          Recovery
-	StreamProgress    StreamProgressConfig
-	Bash              BashExecutor
-	Workspace         string
-	Mode              PermissionMode
-	MaxRounds         int
-	Skills            SkillSource
-	Questions         Questioner
-	Approver          Approver
-	Hooks             GateHooks
-	Model             string
-	MaxTokens         int
-	TokenThreshold    int
-	SystemBuilder     SystemBuilder
-	Compactor         Compactor
-	Label             string
-	Depth             int
-	SubagentMaxDepth  int
-	SubagentMaxRounds int
-	Subagents         SubagentProvider
-	RoleToolPolicy    RoleToolPolicy
-	ActionJournal     ActionJournal
-	Approvals         *ApprovalBroker
-	Secrets           ApprovalRedactor
-	CachePolicy       CachePolicy
-	StuckDetector     StuckDetector
-	StopHooks         []StopHook
-	EventSink         EventSink
+	WorktreeTools        bool
+	Worktrees            *worktrees.Manager
+	WorkspaceBashFactory BashFactory
+	TaskTools            bool
+	Trajectories         TrajectoryWriter
+	Build                string
+	Spill                spill.Store
+	ID                   SessionID
+	Owner                OwnerID
+	Provider             Provider
+	Recovery             Recovery
+	StreamProgress       StreamProgressConfig
+	Bash                 BashExecutor
+	Workspace            string
+	Mode                 PermissionMode
+	MaxRounds            int
+	Skills               SkillSource
+	Questions            Questioner
+	Approver             Approver
+	Hooks                GateHooks
+	Model                string
+	MaxTokens            int
+	TokenThreshold       int
+	SystemBuilder        SystemBuilder
+	Compactor            Compactor
+	Label                string
+	Depth                int
+	SubagentMaxDepth     int
+	SubagentMaxRounds    int
+	Subagents            SubagentProvider
+	RoleToolPolicy       RoleToolPolicy
+	ActionJournal        ActionJournal
+	Approvals            *ApprovalBroker
+	Secrets              ApprovalRedactor
+	CachePolicy          CachePolicy
+	StuckDetector        StuckDetector
+	StopHooks            []StopHook
+	EventSink            EventSink
 
 	UserPromptHooks []UserPromptHook
 	Injectors       []MessageInjector
@@ -95,15 +99,17 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
-	taskStore   *tasks.Store
-	mu          sync.Mutex
-	binding     ToolAuthority
-	todos       *TodoManager
-	events      *sessionEvents
-	skills      SkillSource
-	questions   Questioner
-	compression *compressionSignal
-	session     *Session
+	worktrees            *worktrees.Manager
+	workspaceBashFactory BashFactory
+	taskStore            *tasks.Store
+	mu                   sync.Mutex
+	binding              ToolAuthority
+	todos                *TodoManager
+	events               *sessionEvents
+	skills               SkillSource
+	questions            Questioner
+	compression          *compressionSignal
+	session              *Session
 }
 
 type compressionSignal struct {
@@ -125,6 +131,8 @@ func (signal *compressionSignal) take() bool {
 }
 
 func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, error) {
+	handler.mu.Lock()
+	defer handler.mu.Unlock()
 	if authority.SessionID != handler.binding.SessionID || authority.OwnerID != handler.binding.OwnerID {
 		return "", errors.New("runtime handler identity does not match bound session")
 	}
@@ -132,12 +140,12 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 	if err != nil || root != handler.binding.Workspace {
 		return "", errors.New("runtime handler workspace does not match bound session")
 	}
-	handler.mu.Lock()
-	defer handler.mu.Unlock()
 	if err := ctx.Err(); err != nil {
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolCreateWorktree, protocol.ToolRemoveWorktree, protocol.ToolKeepWorktree, protocol.ToolListWorktrees, protocol.ToolEnterWorktree:
+		return handler.executeWorktree(ctx, input)
 	case protocol.ToolCreateTask, protocol.ToolListTasks, protocol.ToolGetTask, protocol.ToolClaimTask, protocol.ToolCompleteTask:
 		if handler.taskStore == nil {
 			var err error
@@ -278,6 +286,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		handler.questions = surface
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
+	handler.worktrees, handler.workspaceBashFactory = config.Worktrees, config.WorkspaceBashFactory
 	for _, name := range []protocol.ToolName{protocol.ToolTodoWrite, protocol.ToolTask, protocol.ToolLoadSkill, protocol.ToolCompress, protocol.ToolAskUser} {
 		traits := ToolTraits{Risk: RiskRead, Readonly: true}
 		if name == protocol.ToolTodoWrite || name == protocol.ToolCompress {
@@ -296,6 +305,22 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		for _, schema := range protocol.TaskBoardSchemas() {
 			traits := ToolTraits{Risk: RiskWrite}
 			if schema.Name == protocol.ToolListTasks || schema.Name == protocol.ToolGetTask {
+				traits = ToolTraits{Risk: RiskRead, Readonly: true}
+			}
+			definition, err := NewToolDefinitionWithSchema(schema, traits, handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
+		}
+	}
+	if config.WorktreeTools {
+		for _, schema := range protocol.WorktreeSchemas() {
+			traits := ToolTraits{Risk: RiskWrite}
+			if schema.Name == protocol.ToolCreateWorktree || schema.Name == protocol.ToolRemoveWorktree {
+				traits.Risk = RiskExec
+			}
+			if schema.Name == protocol.ToolListWorktrees {
 				traits = ToolTraits{Risk: RiskRead, Readonly: true}
 			}
 			definition, err := NewToolDefinitionWithSchema(schema, traits, handler)

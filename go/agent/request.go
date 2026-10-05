@@ -150,7 +150,7 @@ func (s *Session) buildRequest() (protocol.ModelRequest, string, error) {
 	if s.skills != nil {
 		descriptions = s.skills.Descriptions()
 	}
-	system, err := s.systemBuilder.BuildSystem(SystemContext{s.workspace, snapshot, descriptions})
+	system, err := s.systemBuilder.BuildSystem(SystemContext{s.executionRoot(), snapshot, descriptions})
 	if err != nil {
 		return protocol.ModelRequest{}, "", err
 	}

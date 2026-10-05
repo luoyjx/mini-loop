@@ -8,20 +8,25 @@ import (
 )
 
 const (
-	ToolReadFile     ToolName = "read_file"
-	ToolWriteFile    ToolName = "write_file"
-	ToolEditFile     ToolName = "edit_file"
-	ToolGlob         ToolName = "glob"
-	ToolTodoWrite    ToolName = "TodoWrite"
-	ToolTask         ToolName = "task"
-	ToolLoadSkill    ToolName = "load_skill"
-	ToolCompress     ToolName = "compress"
-	ToolAskUser      ToolName = "ask_user"
-	ToolCreateTask   ToolName = "create_task"
-	ToolListTasks    ToolName = "list_tasks"
-	ToolGetTask      ToolName = "get_task"
-	ToolClaimTask    ToolName = "claim_task"
-	ToolCompleteTask ToolName = "complete_task"
+	ToolReadFile       ToolName = "read_file"
+	ToolWriteFile      ToolName = "write_file"
+	ToolEditFile       ToolName = "edit_file"
+	ToolGlob           ToolName = "glob"
+	ToolTodoWrite      ToolName = "TodoWrite"
+	ToolTask           ToolName = "task"
+	ToolLoadSkill      ToolName = "load_skill"
+	ToolCompress       ToolName = "compress"
+	ToolAskUser        ToolName = "ask_user"
+	ToolCreateTask     ToolName = "create_task"
+	ToolListTasks      ToolName = "list_tasks"
+	ToolGetTask        ToolName = "get_task"
+	ToolClaimTask      ToolName = "claim_task"
+	ToolCompleteTask   ToolName = "complete_task"
+	ToolCreateWorktree ToolName = "create_worktree"
+	ToolRemoveWorktree ToolName = "remove_worktree"
+	ToolKeepWorktree   ToolName = "keep_worktree"
+	ToolListWorktrees  ToolName = "list_worktrees"
+	ToolEnterWorktree  ToolName = "enter_worktree"
 )
 
 // DefaultToolNames is the complete Python default_registry inventory at the
@@ -114,20 +119,23 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
-	name       ToolName
-	nulls      inputNullFields
-	bash       BashInput
-	readFile   ReadFileInput
-	writeFile  WriteFileInput
-	editFile   EditFileInput
-	glob       GlobInput
-	todoWrite  TodoWriteInput
-	task       TaskInput
-	loadSkill  LoadSkillInput
-	compress   CompressInput
-	askUser    AskUserInput
-	createTask CreateTaskInput
-	taskRef    TaskReferenceInput
+	name           ToolName
+	nulls          inputNullFields
+	bash           BashInput
+	readFile       ReadFileInput
+	writeFile      WriteFileInput
+	editFile       EditFileInput
+	glob           GlobInput
+	todoWrite      TodoWriteInput
+	task           TaskInput
+	loadSkill      LoadSkillInput
+	compress       CompressInput
+	askUser        AskUserInput
+	createTask     CreateTaskInput
+	taskRef        TaskReferenceInput
+	createWorktree CreateWorktreeInput
+	removeWorktree RemoveWorktreeInput
+	worktreeName   WorktreeNameInput
 }
 
 func BashToolInput(value BashInput) ToolInput {
@@ -304,6 +312,10 @@ func (input ToolInput) clone() (result ToolInput) {
 		return TaskToolInput(value)
 	case ToolCreateTask:
 		return CreateTaskToolInput(input.createTask)
+	case ToolCreateWorktree:
+		return CreateWorktreeToolInput(input.createWorktree)
+	case ToolRemoveWorktree:
+		return RemoveWorktreeToolInput(input.removeWorktree)
 	case ToolLoadSkill:
 		value, _ := input.LoadSkill()
 		return LoadSkillToolInput(value)
@@ -315,7 +327,8 @@ func (input ToolInput) clone() (result ToolInput) {
 func (input ToolInput) Validate() error {
 	switch input.name {
 	case ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
-		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask:
+		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
+		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
 		return nil
 	case ToolTodoWrite:
 		for i, item := range input.todoWrite.Items {
@@ -341,7 +354,7 @@ func (input ToolInput) Validate() error {
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
 	switch input.name {
-	case ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask:
+	case ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask, ToolCreateWorktree, ToolRemoveWorktree:
 		return input.marshalOptionalJSON()
 	}
 	if err := input.Validate(); err != nil {
@@ -366,8 +379,10 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 		return json.Marshal(input.loadSkill)
 	case ToolCompress:
 		return json.Marshal(input.compress)
-	case ToolListTasks:
+	case ToolListTasks, ToolListWorktrees:
 		return []byte("{}"), nil
+	case ToolKeepWorktree, ToolEnterWorktree:
+		return json.Marshal(input.worktreeName)
 	case ToolGetTask, ToolClaimTask, ToolCompleteTask:
 		return json.Marshal(input.taskRef)
 	case ToolAskUser:
@@ -395,6 +410,47 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolCreateWorktree:
+		var wire struct {
+			Name   *string `json:"name"`
+			TaskID *string `json:"task_id"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Name == nil {
+			return result, errors.New("worktree tool requires name")
+		}
+		result = CreateWorktreeToolInput(CreateWorktreeInput{*wire.Name, wire.TaskID})
+	case ToolRemoveWorktree:
+		var wire struct {
+			Name           *string `json:"name"`
+			DiscardChanges *bool   `json:"discard_changes"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Name == nil {
+			return result, errors.New("worktree tool requires name")
+		}
+		result = RemoveWorktreeToolInput(RemoveWorktreeInput{*wire.Name, wire.DiscardChanges})
+	case ToolKeepWorktree, ToolEnterWorktree:
+		var wire struct {
+			Name *string `json:"name"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Name == nil {
+			return result, errors.New("worktree tool requires name")
+		}
+		result = ToolInput{name: name, worktreeName: WorktreeNameInput{*wire.Name}}
+	case ToolListWorktrees:
+		var wire struct{}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		result = ListWorktreesToolInput()
 	case ToolBash:
 		var wire struct {
 			Command         *string   `json:"command"`
