@@ -317,9 +317,37 @@ Python; this policy is not proof that a foreign process is dead or external fenc
 Snapshot 45 runs actual Python AgentSession over SQLite to pin guard/capture,
 masking, epochs, metadata timing, ephemeral sequence/ordinal differences and
 confirmed/unconfirmed renewal loss. Go runs the same recipe and failure outcomes
-against a test-only backing. Driver approval, backend execution, manager restore,
-parked-approval expiry/crash-tail repair and durable SSE/launcher activation
-remain open; passing injection tests does not establish physical durability.
+against a test-only backing. Driver approval, backend execution, scheduled restore
+and durable SSE/launcher activation remain open; passing injection tests does
+not establish physical durability.
+
+`manager.RestoreSessions(ctx)` is an explicit library operation over the supplied
+backend. It restores recorded tenant/workspace/system/run/status, the highest
+transcript epoch and immutable prefix references, Todo and steering. Missing saved
+workspaces are recreated; the new-session workspace factory is not invoked.
+Handles start interactive with no active turn, including recorded `running`
+status. Restore neither installs grants nor activates historical work. The next
+sequence exceeds both physical cursor and stored payload sequences.
+
+Claims precede expiry of pending approvals and crash-tail repair. Expired parked
+calls receive the canonical not-run result; other unanswered calls receive unknown
+results. Bare user tails receive the interruption marker. Repairs append in the
+same epoch; Todo/steering are installed first so the write preserves metadata.
+A foreign-held handle reports `RestorePending` and refuses parked steering; turn
+admission can claim, reload the latest facts, then finish repair. Failed reloads
+release the acquired lease and remain pending. `PersistenceStatus` also reports
+`Restored` and a detached list of `RepairedToolUses`.
+
+Restore read/repair errors prevent publication. Existing historical rows and
+workspaces are retained, including any partial writes; no fleet transaction or
+repair rollback is claimed. Stop waits for restore and refuses late publication.
+Already live IDs are skipped, while reserved/retired IDs fail. Source snapshot 46
+captures seven actual Python/SQLite cases and its repair-time Todo/queue overwrite,
+physical sequence reset and repair-before-claim behavior; Go explicitly fixes
+those three boundaries. Tests make the first resumed model request and check
+pairing and persistence-before-request. The test backing does not prove SQL,
+restarts, concurrent connections or cross-process fencing. Plan/goal event
+variants remain unsupported, and scheduled-session resolution remains pending.
 
 ### Use the direct HTTP model adapter
 

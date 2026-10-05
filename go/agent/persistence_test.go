@@ -53,6 +53,9 @@ func (s *runtimeStateStore) UpsertSession(_ context.Context, row SessionRecord) 
 func (s *runtimeStateStore) LoadSessions(context.Context) ([]SessionRecord, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if err := s.faults["sessions"]; err != nil {
+		return nil, err
+	}
 	rows := []SessionRecord{}
 	for _, row := range s.rows {
 		rows = append(rows, row.Clone())
@@ -100,6 +103,9 @@ func (s *runtimeStateStore) AppendMessages(_ context.Context, id SessionID, mess
 func (s *runtimeStateStore) LoadMessages(_ context.Context, id SessionID, epoch *TranscriptEpoch) ([]protocol.Message, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if err := s.faults["messages"]; err != nil {
+		return nil, err
+	}
 	value := s.epochLocked(id)
 	if epoch != nil {
 		value = *epoch
@@ -129,6 +135,9 @@ func (s *runtimeStateStore) MessageCount(_ context.Context, id SessionID, epoch 
 func (s *runtimeStateStore) TranscriptEpoch(_ context.Context, id SessionID) (TranscriptEpoch, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if err := s.faults["epoch"]; err != nil {
+		return 0, err
+	}
 	return s.epochLocked(id), nil
 }
 func (s *runtimeStateStore) AppendEvent(_ context.Context, id SessionID, record SessionEventRecord) (EventSequence, error) {
@@ -149,6 +158,9 @@ func (s *runtimeStateStore) AppendEvent(_ context.Context, id SessionID, record 
 func (s *runtimeStateStore) LoadEvents(_ context.Context, id SessionID, after EventSequence, limit *int) ([]SessionEventRecord, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if err := s.faults["events"]; err != nil {
+		return nil, err
+	}
 	out := []SessionEventRecord{}
 	for i, row := range s.events[id] {
 		if EventSequence(i+1) > after && (limit == nil || len(out) < *limit) {
@@ -160,6 +172,9 @@ func (s *runtimeStateStore) LoadEvents(_ context.Context, id SessionID, after Ev
 func (s *runtimeStateStore) EventCursor(_ context.Context, id SessionID) (EventSequence, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if err := s.faults["cursor"]; err != nil {
+		return 0, err
+	}
 	return EventSequence(len(s.events[id])), nil
 }
 func (s *runtimeStateStore) AcquireLease(_ context.Context, id SessionID, owner LeaseOwner, _ time.Duration) (bool, error) {
@@ -206,6 +221,12 @@ func (s *runtimeStateStore) LeaseHolder(_ context.Context, id SessionID) (LeaseO
 	return owner, owner != "", nil
 }
 func (s *runtimeStateStore) ReadApprovals(_ context.Context, id SessionID, status *ApprovalStatus) ([]ApprovalRecord, error) {
+	s.mu.Lock()
+	err := s.faults["approvals"]
+	s.mu.Unlock()
+	if err != nil {
+		return nil, err
+	}
 	rows := s.approvalStoreSpy.snapshot()
 	latest := map[ApprovalID]ApprovalRecord{}
 	for _, row := range rows {

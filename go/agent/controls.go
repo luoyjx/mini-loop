@@ -143,6 +143,9 @@ func (s *Session) injectControls() {
 
 // Steer parks input for the next model round/turn, even when currently idle.
 func (s *ManagedSession) Steer(text string) (int, error) {
+	if err := s.core.persistence.steeringReady(); err != nil {
+		return 0, err
+	}
 	s.mu.Lock()
 	if err := s.admissionError(); err != nil {
 		s.mu.Unlock()

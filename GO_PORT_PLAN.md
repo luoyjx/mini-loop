@@ -96,7 +96,7 @@ Record its parity evidence and remaining gaps before checking it off.
       compress defers a real summary after the batch and task delegates through
       a bound provider; optional action replay, journal transitions and bound approval
       broker/session grants, optional registry masking and real shell execution are implemented;
-      SQLite approvals, restore-time expiry
+      injected-store restore-time expiry implemented; SQLite approval backend
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
@@ -110,7 +110,7 @@ Record its parity evidence and remaining gaps before checking it off.
       and streamed-text cancellation repair implemented;
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
-- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; Go SQLite backend, session/lease restore and durable catch-up remain)
+- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; Go SQLite backend, scheduled restore and durable catch-up remain)
 - [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
@@ -127,8 +127,9 @@ Record its parity evidence and remaining gaps before checking it off.
 3. Session integration: configured-only live composition, persistence-before-request,
    rewrite epochs, secret projections, owner/bound-workspace retention, explicit
    default unknown-action handling, post-admission claims and drain/release are
-   implemented. Remaining: real backend integration, session restoration, parked
-   approval expiry and crash-tail repair. Restore lease confirmation separately
+   implemented. Explicit manager restoration, parked approval expiry and crash-tail
+   repair are now implemented over the injected backend. Remaining: real backend
+   integration and scheduled restoration. Restore lease confirmation separately
    from recorded ownership; no human authority or goal/cron activation is restored.
 4. Serving: durable event cursor/catch-up, restored cron resolution and explicit
    launcher selection. Compare real restart/crash windows and ownership paths
@@ -3607,3 +3608,101 @@ production SQLite backend. G0–G7 remain open for the outstanding inventory.
   (676,343 bytes). Both receipts match the exact files. Archify visual review
   remains skipped after the earlier local-file access denial; no new browser or
   rendered inspection is claimed. Go tests are darwin/arm64; Linux is unvalidated.
+
+## Implementation checkpoint — 2026-10-06 injected-store session restoration
+
+Baseline: `03bd832` on `feat/go-port`. This iteration implements an explicit
+operator restore operation on the typed backend seam. It does not add a driver,
+a native SQL backend, launcher activation or physical restart evidence.
+The full Python-to-Go objective and G0–G7 remain open.
+
+### Actual source evidence and deliberate Go differences
+
+Snapshot 46 (`python-state-restore.json`) executes the real Python SessionManager,
+AgentSession and SQLiteStateStore for seven histories: clean, bare user string,
+bare user blocks, two unanswered tools with one parked approval, paired tools,
+empty transcript and a foreign active lease. It captures repeat restoration,
+actual database projections and a second real manager restore. Source hashes pin
+session.py, manager.py, agent.py and storage.py; no paid endpoint is used.
+
+- Python recreates missing saved workspace directories, preserves recorded
+  owner/bound/system/run/status and restores with interactive mode/no active turn.
+  Recorded `running` is a status fact, not resumed work.
+- Source repair flushes before Todo/steering are installed. The live handle keeps
+  them, but its stored row and second restore lose both in the repair cases.
+  Go installs those facts first, preserving the write and second restoration.
+- Source resets live sequence to the physical event ordinal even when a stored
+  payload sequence is higher. Go starts above both, avoiding identifier reuse;
+  this does not install a durable SSE backlog or interpret an SSE cursor.
+- Source repairs before claiming, including a foreign-held session. Go claims
+  first, reloads after acquisition and delays repair when the claim is refused.
+  A pending handle displays recorded facts but does not expire approvals, append
+  a repair, acknowledge parked steering or admit a turn without a later claim.
+- Pending approvals expire before repair; their unanswered calls get the shared
+  not-run marker. Other unanswered calls get the shared unknown marker, with
+  non-error tool results. Bare user tails get the source interruption text.
+  No historical grants, actor/capabilities or goal/cron activation are installed.
+
+### Delivered lifecycle and remaining boundaries
+
+`SessionManager.RestoreSessions(ctx)` serializes fleet restores, skips live IDs,
+refuses reserved/retiring/deleted identities and reserves each saved identity
+before construction. It uses the saved workspace without invoking the new-session
+factory. A shared concrete composition helper keeps new and restored services
+aligned. The highest epoch and immutable prefix references are seeded before any
+append; crash repairs extend the same epoch. Known event rows are validated for
+session scope and supported variants, then used to seed sequence numbering.
+
+Pending turn admission claims only after owning admission, re-reads current
+metadata/history/events, refuses changed tenant/workspace/binding/system or a
+missing row, and repairs before beginning the turn. Failed reloads conditionally
+release the acquired lease and remain retryable. Status diagnostics expose
+Restored/RestorePending and detached repaired IDs, without changing HTTP Info.
+
+Restore read/repair faults prevent publication. A failed unpublished handle
+releases its process lease; its historical rows/workspace and partial database
+writes are retained. Earlier handles can remain published when a later fleet row
+fails: no fleet transaction or repair rollback is claimed. Stop waits for the
+whole inventory/restore operation, prevents late publication and releases an
+unpublished acquired lease. Failed deletion cannot revive a remembered identity
+within the current manager.
+
+The Go synchronized backing is test-only. Native Go SQLite migrations/WAL,
+transaction/rollback, real reopen and concurrent-connection outcomes still need
+an explicitly approved driver. Leases are not external-effect transactions,
+fencing or a periodic heartbeat. Scheduled-session restore resolution, plan/goal
+event variants and folding, durable SSE/catch-up and launcher selection remain.
+The existing manager-wide unknown-action policy does not prove foreign death.
+
+### Validation and delivery evidence
+
+- Focused `go test ./agent -run '^(TestRestore|TestState|TestManager)' -count=1
+  -timeout=60s`: pass. Seven actual-source recipes compare repaired projections;
+  tests make the first resumed model request and validate pairing and prior
+  transcript coverage. Pending reload, changed identities, scoped event refusal,
+  backend faults, repair failure, reservations/deletion and stop races are tested.
+- Full `go test ./...` with shared-package coverage, `go test -race ./...`
+  and `go vet ./...`: pass. Deduplicated statement coverage **88.74%**
+  (**10,563 / 11,903**); agent **90.27%** (**4,760 / 5,273**);
+  restore.go **92.42%** (**244 / 264**). These measure implemented code,
+  not migration completion, native SQL or Linux behavior.
+- Exporter final `--check`: **46 files current**; all 45 previous tracked
+  exports remain unchanged. `verify_scans.py`: **19 anchored scans**.
+  Python full suite: **2,151 passed / 28 skipped / 24 subtests passed**, three
+  warnings in **86.59 s**. No paid endpoint was called.
+- `git diff --check` and README outline: pass. Exact task-owned paths are staged;
+  all implementation gates are terminal before commit/push.
+- Five selected source mutations caught: owner-before-build, restored digest
+  seeding, queued-steer restoration, crash interruption and unknown/not-run
+  distinction. This is a focused source guard run, not a full sweep or Go mutation
+  coverage. Python runtime/package/test modules are unchanged; package-module
+  invariant verification is not applicable to this exporter-only Python change.
+- Architecture README baseline/Mermaid/boundary explanation and specification
+  updated. Archify accepts **9/9**, zero composition errors/warnings, with
+  **zero geometry correction rounds**. Specification SHA-256
+  `427eacc01d81d6b82fddf1a344a602ff98138821719637036980fcff49ad2946`
+  (35,433 bytes); generated HTML SHA-256
+  `343671253320fdecaa5678c66822a8aa8fbc13cae6b8a0b89aabdd1f50999c5e`
+  (676,849 bytes). Receipt hashes match the exact files. Visual review remains
+  skipped after the earlier local-file access denial; no rendered inspection is
+  claimed. Go tests run on darwin/arm64; Linux remains unvalidated.

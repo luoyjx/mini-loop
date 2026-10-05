@@ -624,9 +624,28 @@ preventing late resurrection; backend cleanup faults are reported and remaining
 cleanup continues. Stop releases leases only after turns drain. Snapshot 45 runs
 actual Python AgentSession/SQLite guard, capture, masking, epoch and lease probes;
 Go compares that recipe and additionally tests its admission/teardown rules.
-The Go test backing is not a production backend or durability proof. SQLite,
-restore-time expiry/crash-tail repair, durable SSE and launcher selection remain
-pending.
+`SessionManager.RestoreSessions(ctx)` now restores recorded owner, binding,
+explicit system, run/status, immutable transcript references, Todo and steering.
+Missing saved workspaces are recreated without the new-session factory. The
+handle starts interactive and idle even with recorded `running` status; restored
+facts install no human grants, activation or trusted actor. A conditional claim
+precedes approval expiry and repair. A foreign-held row is exposed with
+`PersistenceStatus().RestorePending`; steering acknowledgment and turn admission
+fail until a claim succeeds and the latest rows are reloaded. Read/repair faults
+prevent publication, release owned leases and preserve history; earlier fleet
+handles can remain published when a later row fails. Stop joins the restoration
+operation and prevents late publication. There is no fleet transaction claim.
+
+Snapshot 46 uses actual Python manager/SQLite restoration. It records source
+metadata loss when repair flushes before Todo/steering installation, and source
+sequence reset to physical ordinal. Go installs metadata before repair and starts
+its next sequence above both ordinal and stored payload sequence. It also waits
+for a lease before repair. These are documented Go additions. Crash-tail calls
+get unknown results, while expired parked approvals get not-run results. Tests
+send the next model request, exercise retry/reload and join shutdown races.
+The Go backing is test-only. SQLite, scheduled-session resolution, plan/goal
+variant folding, durable SSE and launcher activation remain pending; a lease
+is neither an external-effect transaction nor fencing.
 
 ---
 

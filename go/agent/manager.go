@@ -28,6 +28,7 @@ const (
 // scratch reclamation. Cron files and trajectory evidence do not restore sessions
 // or leases. Public lookups require an already established owner identity.
 type SessionManager struct {
+	restoreTurn                    chan struct{}
 	leaseOwner                     LeaseOwner
 	mu                             sync.Mutex
 	cronMu                         sync.Mutex
@@ -156,7 +157,8 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 	if err = os.MkdirAll(root, 0700); err != nil {
 		return nil, err
 	}
-	manager := &SessionManager{config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
+	manager := &SessionManager{restoreTurn: make(chan struct{}, 1), config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
+	manager.restoreTurn <- struct{}{}
 	if services.StateStore != nil {
 		name, err := newSpan("process_", 16)
 		if err != nil {
@@ -336,15 +338,11 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 			return nil, errors.New("model cannot be empty")
 		}
 	}
-	builder := services.SystemBuilder
 	system := defaults.System
 	if request.System != nil {
 		system = request.System
 	}
-	if system != nil {
-		builder = FixedSystem(*system)
-	}
-	session, err = newManagedSession(RuntimeConfig{StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: request.Owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}, true)
+	session, err = newManagedSession(manager.managedRuntimeConfig(id, request.Owner, path, mode, model, system, bash), true)
 	if err != nil {
 		return nil, err
 	}
@@ -372,6 +370,18 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 	manager.order = append(manager.order, id)
 	published = true
 	return session, nil
+}
+
+// One composition map serves both new and restored handles. Metadata and history
+// are installed before initialization/publication by the respective consumer.
+func (manager *SessionManager) managedRuntimeConfig(id SessionID, owner OwnerID, path string, mode PermissionMode, model string, system *string, bash BashExecutor) RuntimeConfig {
+	services := manager.config.Services
+	defaults := manager.config.Defaults
+	builder := services.SystemBuilder
+	if system != nil {
+		builder = FixedSystem(*system)
+	}
+	return RuntimeConfig{StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
 }
 
 func (manager *SessionManager) Get(owner OwnerID, id SessionID) (*ManagedSession, error) {

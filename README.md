@@ -303,7 +303,8 @@ delete/stop joins and standalone startup, plus three explicit cron model tools,
 four owned cron HTTP operations and individual launcher selection,
 plus concrete schema-v7 state contracts and archival event decoding,
 plus optional injected session state, request guards and confirmed lease-loss cancellation,
-reviewed **2026-10-06** (Go baseline `d2e76f1` plus the live-state integration slice).
+plus explicit injected-store manager restoration, lease-gated approval expiry and crash-tail repair,
+reviewed **2026-10-06** (Go baseline `03bd832` plus the session-restoration slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -364,7 +365,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · leases<br/>injected backend; SQLite pending"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>injected backend; SQLite pending"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
@@ -415,7 +416,7 @@ flowchart LR
         GoGate -. optional five model tools .-> GoWorktrees
         GoWorktrees -. serialized files / shell / sandbox scope .-> GoFiles
         GoWorktrees -. prepare before publishing execution scope .-> GoBash
-        GoSession -. injected transcript / events / leases .-> GoActions
+        GoSession -. injected state / leases / restore .-> GoActions
         GoGate -. replay / reconcile / settle .-> GoActions
         GoGate -. permission ask .-> GoApprovals
         GoResources -. textual question .-> GoApprovals
@@ -690,9 +691,18 @@ cancels the turn before later model/tool admission. Renewal requires transcript
 growth, and session metadata can retain `running` after the last growth beat.
 Snapshots 44/45 execute actual Python SQL and session guard/capture probes; Go
 compares typed projections and runtime ordering through a test-only backend.
-Driver approval, a real Go backend, restored sessions and durable SSE/launcher
-selection remain required. No journal
-claims cross-process dispatch ownership or restart-safe exactly-once effects.
+`SessionManager.RestoreSessions(ctx)` now rebuilds recorded owner, binding,
+system/run/status, highest epoch references, Todo and steering over the injected
+store. It recreates missing saved workspaces, starts interactive with no turn,
+claims before expiry/repair and reloads pending foreign-held snapshots on admission.
+Restore faults refuse publication and release owned leases without removing old
+rows/workspaces. Stop waits for restore and prevents late publication. Source
+snapshot 46 pins Python's repair-time metadata overwrite and physical sequence
+reset; Go preserves metadata and sequences, and delays repair until claimed.
+No stored human grants or activation are restored. Plan/goal variants and
+scheduled-session resolution remain pending. Driver approval, a real Go backend,
+native restart validation and durable SSE/launcher selection remain required.
+No journal claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child
 state. Compaction files are durable local artifacts, not a session-restoration
 store. Future SQLite and optional-feature sinks must use the
@@ -711,8 +721,8 @@ decision. The optional redactor masks previews before JSON escaping and answers
 before storage; `RuntimeConfig.Secrets` supplies the registry for the bound
 session without changing a shared broker configuration. Fresh children
 do not inherit the parent broker surface. Authenticated approval routes bind the
-admitted owner and requested session. SQLite rows and restore-time expiry remain
-pending.
+admitted owner and requested session. Injected-store restore-time expiry is
+implemented; the Go SQLite backend remains pending.
 `task` is the tenth runtime tool and crosses the execution-risk gate before
 delegation. The default in-process provider creates a fresh child history,
 todo state and token meter, with a capability-selected subset of the parent
@@ -880,9 +890,9 @@ at permission evaluation after before/guard hooks; prior decisions are not revok
 After the first run starts, a real mode change queues a separate harness-authored
 `posture_update` with its meaning for the model. Pre-first changes and no-ops stay
 silent. Fresh children retain their selected mode and never drain parent controls.
-Steering and posture state are process-local; SQLite queue persistence/restoration
-remains pending. Manager `Fork` and the owner-scoped HTTP fork route copy only an
-idle, paired transcript while holding source admission. The child inherits explicit
+Steering is stored/restored when an explicit StateStore is supplied; posture
+remains process-local and native Go SQLite persistence remains pending.
+Manager `Fork` and the owner-scoped HTTP fork route copy only an idle, paired transcript while holding source admission. The child inherits explicit
 system and current mode, uses the manager default model, and has fresh tool/control
 state and a newly provisioned scratch workspace. Typed `forked_from` lineage and
 cloned history are installed before publication; `session_forked` appears in the

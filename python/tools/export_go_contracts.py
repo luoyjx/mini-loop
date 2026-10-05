@@ -4094,6 +4094,89 @@ def _state_session_contracts(scratch: Path) -> dict:
     return result
 
 
+def _state_restore_contracts(scratch: Path) -> dict:
+    """Execute real manager rehydration and SQLite crash-tail repair."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.storage import SQLiteStateStore, SessionRecord
+    from mini_loop.actions import UNKNOWN_RESULT, NOT_RUN_RESULT
+
+    scratch.mkdir(parents=True)
+    results = []
+    recipes = [
+        ("clean", [{"role": "user", "content": "start"},
+                   {"role": "assistant", "content": [{"type": "text", "text": "done"}]}]),
+        ("bare-user", [{"role": "user", "content": "interrupted"}]),
+        ("bare-blocks", [{"role": "user", "content": [{"type": "text", "text": "interrupted"}]}]),
+        ("tools", [{"role": "user", "content": "start"}, {"role": "assistant", "content": [
+            {"type": "tool_use", "id": "unknown", "name": "bash", "input": {"command": "echo effect"}},
+            {"type": "tool_use", "id": "parked", "name": "bash", "input": {"command": "echo pending"}}]}]),
+        ("paired", [{"role": "user", "content": "start"}, {"role": "assistant", "content": [
+            {"type": "tool_use", "id": "done", "name": "bash", "input": {"command": "echo paired"}}]},
+            {"role": "user", "content": [{"type": "tool_result", "tool_use_id": "done", "content": "paired"}]}]),
+        ("empty", []),
+        ("foreign", [{"role": "user", "content": "other writer prompt"}]),
+    ]
+    for name, messages in recipes:
+        root = scratch / name
+        root.mkdir()
+        store = SQLiteStateStore(root / "state.db")
+        workspace = root / "missing-workspace"
+        todo = ({"content": "remember", "status": "pending", "activeForm": "remembering"},)
+        record = SessionRecord("saved", str(workspace), "recorded system", 10.0, 4,
+                               "running", 800, todos=todo, owner="tenant",
+                               pending_steering=("queued request",), workspace_bound=True)
+        store.upsert_session(record)
+        store.append_messages("saved", messages, epoch=2)
+        # A payload sequence ahead of the physical ordinal, as after ephemeral
+        # progress. Capture source reset behavior without normalizing it away.
+        store.append_event("saved", {"type": "status", "status": "running", "seq": 9,
+                                     "session": "saved", "transcript_epoch": 2, "ts": 10.0})
+        if name == "tools":
+            store.write_approval({"approval_id": "pending", "session_id": "saved", "tool_use_id": "parked",
+                                  "tool_name": "bash", "rule": "risk", "message": "pending", "input_preview": "{}",
+                                  "status": "pending", "created_at": 11.0, "resolved_at": None,
+                                  "kind": "permission", "answer": None})
+        if name == "foreign":
+            store.acquire_lease("saved", "foreign", ttl=3600)
+        settings = Settings(fake_llm=True, workspace_root=root / "fleet", trajectory_root=root / "trajectories")
+        manager = SessionManager(settings, FakeAsyncAnthropic(), state_store=store)
+        handles = manager.restore_sessions()
+        session = handles[0]
+        saved = store.load_sessions()[0]
+        approvals = store.read_approvals("saved")
+        results.append({"name": name, "initial": messages,
+                        "restored": store.load_messages("saved"),
+                        "message_count": len(session.agent.messages), "epoch": store.transcript_epoch("saved"),
+                        "seq_after_restore": session._seq, "physical_cursor": store.event_cursor("saved"),
+                        "status": session.status, "busy": session.busy, "mode": session.permission_mode,
+                        "owner": session.owner, "created_at": session.created_at, "run_count": session.run_count,
+                        "bound": session.workspace_bound, "workspace_recreated": workspace.is_dir(),
+                        "live_todos": session.agent.todo.snapshot(), "saved_todos": list(saved.todos),
+                        "live_steering": list(session._steering), "saved_steering": list(saved.pending_steering),
+                        "repaired": list(session._unknown_tool_uses), "omitted": session.agent.state["personal_skill_turns_omitted"],
+                        "confirmed": session.lease_confirmed, "goal_armed": session.agent.state["goal_armed"],
+                        "approvals": [{"id": a["approval_id"], "status": a["status"],
+                                       "resolved": a["resolved_at"] is not None} for a in approvals],
+                        "duplicate_restore_count": len(manager.restore_sessions())})
+        # Capture the durable second-restore state before a model turn can save
+        # the live metadata. This is a second real manager, not a reset mock.
+        store.release_lease("saved", manager.instance_id)
+        second = SessionManager(settings, FakeAsyncAnthropic(), state_store=store)
+        again = second.restore_sessions()[0]
+        results[-1]["second_steering"] = list(again._steering)
+        results[-1]["second_todos"] = again.agent.todo.snapshot()
+        results[-1]["second_messages"] = len(again.agent.messages)
+        asyncio.run(second.stop())
+        asyncio.run(manager.stop())
+        store.close()
+    return {"cases": results, "unknown_result": UNKNOWN_RESULT, "not_run_result": NOT_RUN_RESULT,
+            "source_sha256": {name: hashlib.sha256((PYTHON_ROOT / "mini_loop" / name).read_bytes()).hexdigest()
+                              for name in ("session.py", "manager.py", "agent.py", "storage.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4195,6 +4278,7 @@ def _snapshot() -> dict[str, bytes]:
         cron_surface_contracts = _cron_surface_contracts(Path(scratch) / "cron-surfaces")
         state_store_contracts = _state_store_contracts(Path(scratch) / "state-store")
         state_session_contracts = _state_session_contracts(Path(scratch) / "state-session")
+        state_restore_contracts = _state_restore_contracts(Path(scratch) / "state-restore")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -4255,6 +4339,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-cron-surfaces.json": _json_bytes(cron_surface_contracts),
         "python-state-store.json": _json_bytes(state_store_contracts),
         "python-state-session.json": _json_bytes(state_session_contracts),
+        "python-state-restore.json": _json_bytes(state_restore_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

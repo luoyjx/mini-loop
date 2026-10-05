@@ -27,25 +27,31 @@ type StatePersistenceStatus struct {
 	Error      *string
 	// Confirmation records that this process acquired the lease. Renewal loss
 	// terminates a turn; this field alone is not a fresh holder query.
-	LeaseConfirmed bool
+	LeaseConfirmed   bool
+	Restored         bool
+	RestorePending   bool
+	RepairedToolUses []string
 }
 
 // State callbacks are serialized and must not reenter a persistence method.
 // History comes from immutable live snapshots, never from the core turn mutex.
 type sessionPersistence struct {
-	mu        sync.Mutex
-	store     StateStore
-	session   *ManagedSession
-	owner     LeaseOwner
-	ttl       time.Duration
-	confirmed bool
-	disabled  bool
-	epoch     TranscriptEpoch
-	refs      []protocol.Message
-	fault     *string
-	lost      bool
-	cancel    context.CancelCauseFunc
-	turn      uint64
+	mu             sync.Mutex
+	store          StateStore
+	session        *ManagedSession
+	owner          LeaseOwner
+	ttl            time.Duration
+	confirmed      bool
+	restored       bool
+	pendingRestore bool
+	repaired       []string
+	disabled       bool
+	epoch          TranscriptEpoch
+	refs           []protocol.Message
+	fault          *string
+	lost           bool
+	cancel         context.CancelCauseFunc
+	turn           uint64
 }
 
 func stateFault(action func() error) (err error) {
@@ -71,7 +77,7 @@ func (p *sessionPersistence) snapshot() StatePersistenceStatus {
 	}
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	return StatePersistenceStatus{Configured: true, Error: clonePointer(p.fault), LeaseConfirmed: p.confirmed}
+	return StatePersistenceStatus{Configured: true, Error: clonePointer(p.fault), LeaseConfirmed: p.confirmed, Restored: p.restored, RestorePending: p.pendingRestore, RepairedToolUses: append([]string{}, p.repaired...)}
 }
 
 func (session *ManagedSession) PersistenceStatus() StatePersistenceStatus {
@@ -223,7 +229,7 @@ func (p *sessionPersistence) capture(record *SessionEventRecord) error {
 	if p.disabled {
 		return nil
 	}
-	if p.lost {
+	if p.lost || p.pendingRestore {
 		return ErrSessionLeaseLost
 	}
 	// The source stamps the event before its subsequent flush can open an epoch.
@@ -261,7 +267,7 @@ func (p *sessionPersistence) guard(history []protocol.Message) error {
 	if p.disabled {
 		return nil
 	}
-	if p.lost {
+	if p.lost || p.pendingRestore {
 		return ErrSessionLeaseLost
 	}
 	if p.fault != nil {
@@ -313,6 +319,14 @@ func (p *sessionPersistence) requireLease(ctx context.Context) error {
 		return ErrSessionLeaseLost
 	}
 	p.confirmed, p.lost = true, false
+	if p.pendingRestore {
+		p.fault = nil
+		if err := p.reloadPendingLocked(ctx); err != nil {
+			p.confirmed = false
+			p.pendingRestore = true
+			return errors.Join(err, stateFault(func() error { return p.store.ReleaseLease(context.Background(), p.session.ID(), p.owner) }))
+		}
+	}
 	return nil
 }
 
@@ -340,7 +354,7 @@ func (p *sessionPersistence) refreshRecord() {
 	}
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	if p.disabled || p.lost {
+	if p.disabled || p.lost || p.pendingRestore {
 		return
 	}
 	p.failLocked(stateFault(func() error { return p.store.UpsertSession(context.Background(), p.session.stateRecord().Clone()) }))
