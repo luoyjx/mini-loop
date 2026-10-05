@@ -306,7 +306,8 @@ plus optional injected session state, request guards and confirmed lease-loss ca
 plus explicit injected-store manager restoration, lease-gated approval expiry and crash-tail repair,
 plus lazy stable-identity cron restoration with bound/factory workspace selection,
 plus owner-scoped bounded event-store SSE catch-up with distinct ordinal/sequence types,
-reviewed **2026-10-06** (Go baseline `647ebd7` plus the event-catch-up slice).
+plus configured-store transcript epoch reads with concrete historical snapshots,
+reviewed **2026-10-06** (Go baseline `7d0cf39` plus the transcript-read slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -358,7 +359,7 @@ flowchart LR
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
-        GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage"]
+        GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
@@ -419,7 +420,7 @@ flowchart LR
         GoGate -. optional five model tools .-> GoWorktrees
         GoWorktrees -. serialized files / shell / sandbox scope .-> GoFiles
         GoWorktrees -. prepare before publishing execution scope .-> GoBash
-        GoSession -. injected state / leases / restore / catch-up .-> GoActions
+        GoSession -. injected state / leases / restore / catch-up / epochs .-> GoActions
         GoGate -. replay / reconcile / settle .-> GoActions
         GoGate -. permission ask .-> GoApprovals
         GoResources -. textual question .-> GoApprovals
@@ -728,6 +729,15 @@ The parser retains Python 3.11 default integer syntax and its 4,300-digit bound.
 Queue shedding and the 2,000-row window can still leave visible gaps; this is
 a bounded resume, not complete history or cross-process live tailing. The injected
 store seam is implemented; native Go SQL persistence/reopen remains pending.
+`ManagedSession.ReadTranscript(ctx, selection)` returns a detached persisted epoch,
+including old compaction inputs and unfinished crash tails. Current selection is
+the zero value; explicit integer selections retain out-of-range identities for
+not-found errors. No live-memory substitution, flush, repair, model turn or lease
+claim occurs. Empty storage has current epoch zero; a missing intermediate epoch
+inside the highest bound returns an empty message array. The owned HTTP route
+validates its last repeated epoch query after authentication and before owner
+lookup, matching the source. Snapshot 49 compares 56 real FastAPI/SQLite/Null
+responses; backend read failures return opaque 503 and do not change writer status.
 No journal claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child
 state. Compaction files are durable local artifacts, not a session-restoration
@@ -869,7 +879,7 @@ append lock across a visitor. Offline reads are an operator capability.
 `go/httpapi.New` returns a standard `http.Handler` over that manager. Twenty-three method/path
 combinations implement basic health, create/list/detail/delete, message/stream/cancel,
 approvals/resolution, mode/steer/fork, events, the owned task-board view, five trajectory read/view/export operations,
-the public `/` console and `/ui` shell, and the Null-store transcript response. Token/anonymous
+the public `/` console and `/ui` shell, and configured-store transcript epoch reads (Null storage retains 404). Token/anonymous
 authentication is resolved once; the ten-MiB ingress cap precedes it. An admitted HTTP
 turn remains untrusted, with only the personal-skill capture-source stamp. Completed
 message retries use detached owner/session/key snapshots before spending rate budget;

@@ -46,6 +46,7 @@ type TranscriptEpoch int
 
 // TranscriptStore uses nil to select the highest stored epoch. An empty append
 // returns the count of the requested epoch, not the latest global ordinal.
+// TranscriptEpoch returns zero when no messages have been stored.
 type TranscriptStore interface {
 	AppendMessages(context.Context, SessionID, []protocol.Message, TranscriptEpoch) (int, error)
 	LoadMessages(context.Context, SessionID, *TranscriptEpoch) ([]protocol.Message, error)

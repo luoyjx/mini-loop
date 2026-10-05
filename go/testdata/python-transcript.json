@@ -1,0 +1,3386 @@
+{
+  "cases": [
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-empty",
+      "null": false,
+      "query": [],
+      "response": {
+        "detail": "no epoch 0 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-original",
+      "null": false,
+      "query": [],
+      "response": {
+        "epoch": 1,
+        "epochs": 1,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-latest",
+      "null": false,
+      "query": [],
+      "response": {
+        "epoch": 2,
+        "epochs": 2,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-old",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "1"
+        ]
+      ],
+      "response": {
+        "epoch": 1,
+        "epochs": 2,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-current",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "2"
+        ]
+      ],
+      "response": {
+        "epoch": 2,
+        "epochs": 2,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-zero",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "0"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 0 (current: 2)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-future",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "9"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 9 (current: 2)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-negative",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "-1"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch -1 (current: 2)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-empty-query",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          ""
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-bad",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "no"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "no",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-whole-float",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "1.0"
+        ]
+      ],
+      "response": {
+        "epoch": 1,
+        "epochs": 2,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-fraction",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "1.1"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "1.1",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-plus",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "+1"
+        ]
+      ],
+      "response": {
+        "epoch": 1,
+        "epochs": 2,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-strip",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          " 1 "
+        ]
+      ],
+      "response": {
+        "epoch": 1,
+        "epochs": 2,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-underscore",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "0_1"
+        ]
+      ],
+      "response": {
+        "epoch": 1,
+        "epochs": 2,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-unicode",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "١"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "١",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-huge",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "999999999999999999999999999999999999"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 999999999999999999999999999999999999 (current: 2)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-leading-zeroes",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"
+        ]
+      ],
+      "response": {
+        "epoch": 1,
+        "epochs": 2,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-too-large",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Unable to parse input string as an integer, exceeded maximum size",
+            "type": "int_parsing_size"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-repeated",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "1"
+        ],
+        [
+          "epoch",
+          "2"
+        ]
+      ],
+      "response": {
+        "epoch": 2,
+        "epochs": 2,
+        "messages": [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-foreign",
+      "null": false,
+      "query": [],
+      "response": {
+        "detail": "No session 'fixture'"
+      },
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-foreign-invalid",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "bad"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "bad",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-b"
+    },
+    {
+      "challenge": null,
+      "missing": true,
+      "name": "sql-missing",
+      "null": false,
+      "query": [],
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": true,
+      "name": "sql-missing-invalid",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "bad"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "bad",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": "Bearer",
+      "missing": false,
+      "name": "sql-unauth",
+      "null": false,
+      "query": [],
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401,
+      "token": null
+    },
+    {
+      "challenge": "Bearer",
+      "missing": false,
+      "name": "sql-unauth-invalid",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "bad"
+        ]
+      ],
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401,
+      "token": null
+    },
+    {
+      "challenge": "Bearer",
+      "missing": false,
+      "name": "sql-query-token",
+      "null": false,
+      "query": [
+        [
+          "access_token",
+          "token-a"
+        ]
+      ],
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401,
+      "token": null
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-crash-tail",
+      "null": false,
+      "query": [],
+      "response": {
+        "epoch": 4,
+        "epochs": 4,
+        "messages": [
+          {
+            "content": [
+              {
+                "id": "crash",
+                "input": {
+                  "command": "echo partial"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          }
+        ],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "sql-gap-epoch",
+      "null": false,
+      "query": [
+        [
+          "epoch",
+          "3"
+        ]
+      ],
+      "response": {
+        "epoch": 3,
+        "epochs": 4,
+        "messages": [],
+        "session": "fixture"
+      },
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-empty",
+      "null": true,
+      "query": [],
+      "response": {
+        "detail": "no epoch 0 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-original",
+      "null": true,
+      "query": [],
+      "response": {
+        "detail": "no epoch 0 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-latest",
+      "null": true,
+      "query": [],
+      "response": {
+        "detail": "no epoch 0 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-old",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "1"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 1 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-current",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "2"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 2 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-zero",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "0"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 0 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-future",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "9"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 9 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-negative",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "-1"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch -1 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-empty-query",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          ""
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-bad",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "no"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "no",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-whole-float",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "1.0"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 1 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-fraction",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "1.1"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "1.1",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-plus",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "+1"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 1 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-strip",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          " 1 "
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 1 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-underscore",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "0_1"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 1 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-unicode",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "١"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "١",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-huge",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "999999999999999999999999999999999999"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 999999999999999999999999999999999999 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-leading-zeroes",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 1 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-too-large",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Unable to parse input string as an integer, exceeded maximum size",
+            "type": "int_parsing_size"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-repeated",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "1"
+        ],
+        [
+          "epoch",
+          "2"
+        ]
+      ],
+      "response": {
+        "detail": "no epoch 2 (current: 0)"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-foreign",
+      "null": true,
+      "query": [],
+      "response": {
+        "detail": "No session 'fixture'"
+      },
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "challenge": null,
+      "missing": false,
+      "name": "null-foreign-invalid",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "bad"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "bad",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-b"
+    },
+    {
+      "challenge": null,
+      "missing": true,
+      "name": "null-missing",
+      "null": true,
+      "query": [],
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "challenge": null,
+      "missing": true,
+      "name": "null-missing-invalid",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "bad"
+        ]
+      ],
+      "response": {
+        "detail": [
+          {
+            "input": "bad",
+            "loc": [
+              "query",
+              "epoch"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "challenge": "Bearer",
+      "missing": false,
+      "name": "null-unauth",
+      "null": true,
+      "query": [],
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401,
+      "token": null
+    },
+    {
+      "challenge": "Bearer",
+      "missing": false,
+      "name": "null-unauth-invalid",
+      "null": true,
+      "query": [
+        [
+          "epoch",
+          "bad"
+        ]
+      ],
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401,
+      "token": null
+    },
+    {
+      "challenge": "Bearer",
+      "missing": false,
+      "name": "null-query-token",
+      "null": true,
+      "query": [
+        [
+          "access_token",
+          "token-a"
+        ]
+      ],
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401,
+      "token": null
+    }
+  ],
+  "seeds": [
+    {
+      "cleared": 4,
+      "epochs": [
+        [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ],
+        [
+          {
+            "content": "<secret-hidden>",
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t0",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t0",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t1",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t1",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t2",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t2",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t3",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "[cleared: bash, 540 chars]",
+                "tool_use_id": "t3",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t4",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t4",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t5",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t5",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t6",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t6",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "content": [
+              {
+                "id": "t7",
+                "input": {
+                  "command": "echo hi"
+                },
+                "name": "bash",
+                "type": "tool_use"
+              }
+            ],
+            "role": "assistant"
+          },
+          {
+            "content": [
+              {
+                "content": "ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-ORIGINAL-",
+                "tool_use_id": "t7",
+                "type": "tool_result"
+              }
+            ],
+            "role": "user"
+          }
+        ]
+      ],
+      "name": "sql"
+    },
+    {
+      "cleared": 4,
+      "epochs": [
+        [],
+        []
+      ],
+      "name": "null"
+    }
+  ],
+  "source_sha256": {
+    "compaction.py": "07d1aa41f0c19bb1e2792e9fa791a8fd87d03a3f194ba79c8d181f21d5698cc2",
+    "server.py": "d24e4a5371b48b0ab95c9f0b6cdf39f121f5684507e40c9426f066d5034cc479",
+    "session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944",
+    "storage.py": "271010d955eeb00a1ae56050b37f990ad3a477e6e87ea777e1178d2c8c325159"
+  },
+  "validation_versions": {
+    "fastapi": "0.136.3",
+    "pydantic": "2.13.4",
+    "pydantic_core": "2.46.4"
+  }
+}

@@ -188,7 +188,8 @@ func TestRestoreActualPythonRecipeAndFirstRequest(t *testing.T) {
 					}
 				}
 				epoch, _ := store.TranscriptEpoch(context.Background(), row.SessionID)
-				if epoch != max(1, recipe.Epoch) {
+				// Empty storage has epoch zero; the runtime starts its next write at one.
+				if epoch != recipe.Epoch {
 					t.Fatal("repair opened epoch", epoch)
 				}
 				if err := manager.Stop(context.Background()); err != nil {

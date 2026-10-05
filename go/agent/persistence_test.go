@@ -75,9 +75,9 @@ func (s *runtimeStateStore) DeleteSession(_ context.Context, id SessionID) error
 	return nil
 }
 func (s *runtimeStateStore) epochLocked(id SessionID) TranscriptEpoch {
-	epoch := TranscriptEpoch(1)
+	epoch := TranscriptEpoch(0)
 	for value := range s.messages[id] {
-		if value > epoch {
+		if len(s.messages[id][value]) > 0 && value > epoch {
 			epoch = value
 		}
 	}

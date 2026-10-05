@@ -100,7 +100,7 @@ evidence. The current Go handler implements these twenty-seven method/path opera
 | GET | /sessions/{session_id}/approvals | Scoped pending approvals |
 | POST | /sessions/{session_id}/approvals/{approval_id} | Bound allow/deny/answer/remember |
 | GET | /sessions/{session_id}/events | Bounded replay/live SSE; configured event-store catch-up (2,000 stored rows), owner admission before read and sequence deduplication; native SQL pending |
-| GET | /sessions/{session_id}/transcript | Actual Null-store 404 response |
+| GET | /sessions/{session_id}/transcript | Owned configured-store epoch reads; concrete persisted messages, historical/gap/crash-tail views and pinned query validation; Null-store 404 remains |
 | GET, POST | /sessions/{session_id}/cron | Owned structured jobs and schedule; fresh process authorization |
 | DELETE | /sessions/{session_id}/cron/{job_id} | Owned cancel; foreign job reads like missing |
 | POST | /sessions/{session_id}/cron/{job_id}/arm | Operator-only process authorization for restored jobs |

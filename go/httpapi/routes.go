@@ -2,7 +2,6 @@ package httpapi
 
 import (
 	"errors"
-	"fmt"
 	"github.com/luoyjx/mini-loop/go/agent"
 	"net/http"
 	"os"
@@ -253,23 +252,6 @@ func (s *Server) resolve(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(s, w, 200, ApprovalResponse{id, req.Decision})
-}
-func (s *Server) transcript(w http.ResponseWriter, r *http.Request) {
-	if _, ok := s.require(w, r); !ok {
-		return
-	}
-	target := 0
-	if value := r.URL.Query().Get("epoch"); value != "" {
-		v, err := strconv.Atoi(value)
-		if err != nil {
-			writeJSON(s, w, 422, ErrorResponse{"invalid epoch"})
-			return
-		}
-		target = v
-	}
-	// NullStateStore has transcript_epoch but returns zero. No live-memory
-	// transcript is substituted for this durable HTTP surface.
-	writeJSON(s, w, 404, ErrorResponse{fmt.Sprintf("no epoch %d (current: 0)", target)})
 }
 
 func (s *Server) mode(w http.ResponseWriter, r *http.Request) {

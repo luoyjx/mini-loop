@@ -4334,6 +4334,96 @@ def _event_catchup_contracts(scratch: Path) -> dict:
                               for name in ("server.py", "session.py", "storage.py")}}
 
 
+def _transcript_contracts(scratch: Path) -> dict:
+    """Actual owned HTTP transcript reads over SQLite, rewrites and Null storage."""
+    from fastapi.testclient import TestClient
+    from importlib.metadata import version
+    from mini_loop.auth import TokenAuth
+    from mini_loop.compaction import microcompact
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.secrets import SecretRegistry
+    from mini_loop.server import create_app
+    from mini_loop.storage import SQLiteStateStore, NullStateStore
+    from urllib.parse import urlencode
+
+    scratch.mkdir(parents=True)
+    secrets = SecretRegistry()
+    secrets.register("KEY", "transcript-secret-0123456789")
+    initial = [{"role": "user", "content": "transcript-secret-0123456789"}]
+    for i in range(8):
+        initial += [{"role": "assistant", "content": [{"type": "tool_use", "id": "t" + str(i),
+                    "name": "bash", "input": {"command": "echo hi"}}]},
+                    {"role": "user", "content": [{"type": "tool_result", "tool_use_id": "t" + str(i),
+                    "content": "ORIGINAL-" * 60}]}]
+    cases = []
+    def scenario(name, null):
+        root = scratch / name
+        root.mkdir()
+        store = NullStateStore() if null else SQLiteStateStore(root / "state.db")
+        settings = Settings(fake_llm=True, trajectory_enabled=False, workspace_root=root / "fleet")
+        manager = SessionManager(settings, FakeAsyncAnthropic(thinking=False), state_store=store, secrets=secrets)
+        app = create_app(manager=manager, settings=settings)
+        with TestClient(app) as client:
+            app.state.auth = TokenAuth({"token-a": "alice", "token-b": "bob"})
+            owner = {"Authorization": "Bearer token-a"}
+            session = manager.create(owner="alice")
+            sid = session.id
+            def call(label, query=None, token="token-a", missing=False):
+                suffix = "" if query is None else "?" + urlencode(query)
+                path = "/sessions/" + ("missing" if missing else sid) + "/transcript" + suffix
+                headers = {} if token is None else {"Authorization": "Bearer " + token}
+                response = client.get(path, headers=headers)
+                value = response.json()
+                if isinstance(value, dict) and value.get("session") == sid:
+                    value["session"] = "fixture"
+                if isinstance(value, dict) and isinstance(value.get("detail"), str):
+                    value["detail"] = value["detail"].replace(sid, "fixture")
+                cases.append({"name": name + "-" + label, "null": null, "query": query or [],
+                              "token": token, "missing": missing, "status": response.status_code,
+                              "response": value, "challenge": response.headers.get("www-authenticate")})
+            call("empty")
+            session.agent.messages.extend(initial)
+            session._flush_messages()
+            call("original")
+            cleared = microcompact(session.agent.messages)
+            assert cleared > 0
+            session._flush_messages()
+            # The same immutable pointer list is not a snapshot: microcompact
+            # changed the source messages; capture the stored epochs explicitly.
+            snapshots = [store.load_messages(sid, epoch=epoch) for epoch in (1, 2)]
+            call("latest")
+            for label, value in (("old", "1"), ("current", "2"), ("zero", "0"), ("future", "9"),
+                                 ("negative", "-1"), ("empty-query", ""), ("bad", "no"),
+                                 ("whole-float", "1.0"), ("fraction", "1.1"), ("plus", "+1"),
+                                 ("strip", " 1 "), ("underscore", "0_1"), ("unicode", "١"),
+                                 ("huge", "999999999999999999999999999999999999"),
+                                 ("leading-zeroes", "0" * 4500 + "1"), ("too-large", "1" * 4500)):
+                call(label, [("epoch", value)])
+            call("repeated", [("epoch", "1"), ("epoch", "2")])
+            call("foreign", token="token-b")
+            call("foreign-invalid", [("epoch", "bad")], token="token-b")
+            call("missing", missing=True)
+            call("missing-invalid", [("epoch", "bad")], missing=True)
+            call("unauth", token=None)
+            call("unauth-invalid", [("epoch", "bad")], token=None)
+            call("query-token", [("access_token", "token-a")], token=None)
+            # A missing intermediate epoch is allowed inside the highest bound.
+            if not null:
+                store.append_messages(sid, [{"role": "assistant", "content": [{"type": "tool_use",
+                    "id": "crash", "name": "bash", "input": {"command": "echo partial"}}]}], epoch=4)
+                call("crash-tail")
+                call("gap-epoch", [("epoch", "3")])
+        store.close()
+        return {"name": name, "epochs": snapshots, "cleared": cleared}
+    seeds = [scenario("sql", False), scenario("null", True)]
+    return {"cases": cases, "seeds": seeds,
+            "validation_versions": {name: version(name) for name in ("fastapi", "pydantic", "pydantic_core")},
+            "source_sha256": {name: hashlib.sha256((PYTHON_ROOT / "mini_loop" / name).read_bytes()).hexdigest()
+                              for name in ("server.py", "session.py", "storage.py", "compaction.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4438,6 +4528,7 @@ def _snapshot() -> dict[str, bytes]:
         state_restore_contracts = _state_restore_contracts(Path(scratch) / "state-restore")
         scheduled_restore_contracts = _scheduled_restore_contracts(Path(scratch) / "scheduled-restore")
         event_catchup_contracts = _event_catchup_contracts(Path(scratch) / "event-catchup")
+        transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -4501,6 +4592,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-state-restore.json": _json_bytes(state_restore_contracts),
         "python-scheduled-restore.json": _json_bytes(scheduled_restore_contracts),
         "python-event-catchup.json": _json_bytes(event_catchup_contracts),
+        "python-transcript.json": _json_bytes(transcript_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

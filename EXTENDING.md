@@ -621,6 +621,14 @@ the backend. The owned HTTP events route composes this handoff; read faults
 return an opaque 503 before SSE headers and leave writer status unchanged.
 This bounded window/queue does not guarantee complete historical delivery or
 cross-process live tailing, and an injected implementation is not SQL proof.
+`ManagedSession.ReadTranscript(ctx, TranscriptSelection)` reads the stored
+current or selected epoch into a detached TranscriptSnapshot. Exact epoch
+constructors accept a concrete TranscriptEpoch or owned big.Int, preserving
+out-of-range request identity. Empty storage reports epoch zero; historical
+reads do not flush live messages, acquire leases, repair crash tails or install
+authority. Unanswered tool calls are valid archival data. Embedding callers
+own authorization; the HTTP route authenticates, validates epoch, admits the
+owner and then reads. Concurrent read/write safety belongs to the backend.
 Ordinary backend write faults/panics are reported and degrade; count-query or
 coverage failures stop the request. Confirmed renewal loss cancels the active
 turn and suppresses later publication/model/tool admission. Renewal and session
@@ -653,8 +661,8 @@ its next sequence above both ordinal and stored payload sequence. It also waits
 for a lease before repair. These are documented Go additions. Crash-tail calls
 get unknown results, while expired parked approvals get not-run results. Tests
 send the next model request, exercise retry/reload and join shutdown races.
-The Go backing is test-only. SQLite, plan/goal variant folding, durable SSE
-and launcher activation remain pending; a lease
+The Go backing is test-only. Native SQLite/reopen, plan/goal variant folding
+and backend launcher activation remain pending; a lease
 is neither an external-effect transaction nor fencing.
 
 ---

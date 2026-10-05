@@ -71,7 +71,7 @@
           "goSecrets",
           "goCron"
         ],
-        "note": "Owned HTTP/SSE, JSONL/ledgers and injected-store bounded catch-up exist. Native SQL/reopen and optional panel APIs remain pending."
+        "note": "Owned HTTP/SSE, stored epoch reads and JSONL/ledgers exist. Native SQL/reopen and optional panel APIs remain pending."
       },
       {
         "id": "personal-skill",
@@ -402,7 +402,7 @@
       "id": "goActions",
       "type": "database",
       "label": "Go Replay / State",
-      "sublabel": "typed state / restore / SSE window",
+      "sublabel": "typed state / restore / epoch reads",
       "pos": [
         1370,
         1360
@@ -1160,7 +1160,7 @@
       "id": "goLiveState",
       "from": "goSession",
       "to": "goActions",
-      "label": "state / catch-up",
+      "label": "state / epochs",
       "variant": "dashed",
       "fromSide": "right",
       "toSide": "left",

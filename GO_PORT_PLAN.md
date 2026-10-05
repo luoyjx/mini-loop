@@ -104,14 +104,14 @@ Record its parity evidence and remaining gaps before checking it off.
       typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
       per-run file recording and owner-scoped read/export implemented;
       typed HTML ledger, offline traceview CLI and filtered record visitor implemented;
-      owner-scoped injected-store bounded SSE catch-up implemented;
+      owner-scoped injected-store bounded SSE catch-up and transcript epoch reads implemented;
       embedded public console/UI shells implemented; optional UI data routes, full health posture, native SQL restart evidence,
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
-- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution and injected-store bounded SSE catch-up implemented; Go SQLite backend/restart evidence remain)
+- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up and transcript epoch reads implemented; Go SQLite backend/restart evidence remain)
 - [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
@@ -133,7 +133,8 @@ Record its parity evidence and remaining gaps before checking it off.
    integration; scheduled restoration is now implemented over the injected seam. Restore lease confirmation separately
    from recorded ownership; no human authority or goal/cron activation is restored.
 4. Serving: restored cron resolution is implemented with a fresh untrusted turn;
-   bounded owner-scoped SSE event catch-up is implemented over the injected store;
+   bounded owner-scoped SSE event catch-up and persisted transcript epoch reads
+   are implemented over the injected store;
    native SQL reopen and explicit state-backend launcher selection remain. Compare real restart/crash windows and ownership paths
    before claiming G5 complete; a lease is not external-effect fencing.
 
@@ -3932,3 +3933,111 @@ backend or physical durability evidence. No paid endpoint was called.
   rendered image for inspection; no bypass or visual-pass claim is made.
 - Environment: darwin/arm64, Go 1.23.3. Linux execution is unvalidated.
   All implementation gates are terminal before exact-path staging/commit/push.
+
+## Implementation checkpoint — 2026-10-06 owned transcript epoch reads
+
+Baseline: `7d0cf39` on `feat/go-port`. This iteration completes the configured
+TranscriptStore read path behind the already registered owned HTTP endpoint.
+No dependency is added. P0/P1 stay complete; G0–G7 remain open, including native
+Go SQLite and real database reopen/concurrent-process verification.
+
+### Actual Python endpoint and canonical-history evidence
+
+Snapshot 49 (`python-transcript.json`) executes real FastAPI requests with real
+SQLiteStateStore/NullStateStore, real SessionManager and real microcompact. It
+captures 56 responses and both stored compaction epochs. Source SHA-256 pins
+server.py/session.py/storage.py/compaction.py; the installed validation stack is
+FastAPI 0.136.3, Pydantic 2.13.4 and pydantic_core 2.46.4. No paid model is called.
+
+- Empty storage reports current epoch zero, so default/explicit reads outside
+  `1..current` return the source's exact 404 detail. Live messages are not a
+  substitute for the durable endpoint, including after a Null-store turn.
+- The source flushes original history, performs actual microcompact and flushes
+  the rewritten projection. Both source and Go still expose original tool-result
+  bodies through epoch 1 and cleared bodies through epoch 2. Stored secrets are
+  masked; history returned by the API is the persisted projection.
+- Default selects highest stored epoch; explicit epochs within that bound can
+  be empty when there is a gap. A higher stored epoch containing an unanswered
+  tool use is readable archival data; the reader does not synthesize a result.
+- Authentication middleware precedes validation. Invalid epoch requests return
+  422 before owner/missing-ID lookup; valid foreign/missing requests return 404.
+  Missing credentials remain 401 with Bearer challenge. Query-token auth is not
+  accepted for this route. Repeated epoch parameters select the last value.
+- Pydantic accepts ASCII integers, sign/whitespace, underscores and an integral
+  `.0` suffix; Unicode decimal digits, fractional values and invalid text fail.
+  Large valid integers retain their numeric identity in out-of-range 404 details.
+  Excess significant digits return typed `int_parsing_size` validation details;
+  long leading-zero strings can still select epoch 1. This differs from the
+  Python int syntax used by the SSE Last-Event-ID route and is tested separately.
+
+### Delivered concrete reader and boundaries
+
+`agent.TranscriptSelection` has a zero/current variant and an owned exact
+`big.Int` value. `SelectTranscriptEpoch` supports concrete backend epoch values;
+`SelectTranscriptEpochNumber` copies arbitrary exact query integers. No generic
+payload or raw JSON is retained in service/domain state. Concrete
+`TranscriptSnapshot` names session/epoch/highest-epoch/messages, and
+`TranscriptEpochNotFound` names the requested decimal identity and current epoch.
+
+`ManagedSession.ReadTranscript(ctx, selection)` reads the configured backend,
+validates supported message roles/closed content and returns detached copies.
+It briefly snapshots persistence configuration, releases that mutex before
+backend I/O, passes cancellation into metadata/message reads and checks it before
+publication and during copying. Reads do not flush live history, acquire a lease,
+start a model turn, repair tool calls, mutate writer error state or install human
+permissions. A foreign-held pending-restoration handle can read its unrepaired
+stored history without changing the holder or claim count. Library callers own
+authorization; the HTTP adapter performs owner admission before backend access.
+
+The HTTP adapter uses concrete query-issue variants and a two-element location,
+matching the captured 422 shapes. Opaque 503 handles backend read errors/panics
+before writing any transcript body; unlike source uncaught backend faults, this
+is an explicit Go addition. There is no live/raw fallback. Metadata selection
+and message loading are separate backend reads, matching the source; no database
+snapshot transaction is claimed. An epoch returns its full stored message array,
+not a newly introduced pagination/truncation policy.
+
+The synchronized test backing now reports epoch zero for no stored messages,
+including empty append bookkeeping. The former empty-restore test expected a
+phantom stored epoch 1; it now compares the actual source's zero while runtime
+restoration still starts its next write at at least one. Python runtime/package
+code is unchanged. Native Go SQL, backend launcher selection, unsupported
+state/provider variants, optional feature groups and release audit remain open.
+
+### Validation and delivery evidence
+
+- Focused agent/HTTP tests: pass. Native tests drive actual Go flush/microcompact
+  and compare both epochs with source; cover no-live fallback, detached masked
+  rows, selected/gap/crash-tail reads, exact large-integer ownership, deleted state,
+  metadata/load faults and panics, malformed rows, cancellation, concurrent event
+  capture and foreign-held pending restoration without repair/claim mutation.
+  HTTP tests compare all 56 actual source responses, exercise a real TCP epoch
+  response without a model turn, and cancel a blocked TCP read while another
+  provider turn persists successfully. The backing is test memory, not SQL proof.
+- Full `go test ./... -count=1 -timeout=180s -coverpkg=./...` with coverage profile,
+  `go test -race ./... -count=1 -timeout=240s`, and `go vet ./...`: pass.
+  Deduplicated statement coverage **88.87%** (**10,849 / 12,208**); agent
+  **90.30%** (**4,953 / 5,485**); HTTP **86.42%** (**700 / 810**).
+- Exporter final `--check`: **49 files current**; the 48 earlier tracked exports
+  are unchanged. `verify_scans.py`: **19 anchored scans**. Selected source
+  `foreign-caller-reads-the-transcript` and
+  `compaction-splices-into-the-canonical-epoch` mutations: both caught. This is
+  targeted source evidence, not full mutation or Go mutation coverage.
+- Python full regression: **2,151 passed / 28 skipped / 24 subtests passed**,
+  three warnings in **89.28 s**. Package-module invariant checks do not apply
+  because only the Python exporter changes; no package/runtime/test module does.
+- `git diff --check` and README outline: pass. README review baseline/canonical
+  Mermaid/boundary prose, EXTENDING and parity/current-plan status are updated.
+- Interactive map regenerated from JSON with Archify deliver:
+  **9/9 showcase, zero errors/warnings**, `diagram_type: architecture`,
+  `correction_rounds: 0`. Existing state relationship now names epoch reads;
+  no geometry or generated HTML is manually edited.
+  Specification **36,040 bytes**, SHA-256
+  `fff91e86ffa4bff93c07fcfa0748f202fe996771de0de381654daf740b15eb2d`;
+  artifact **677,732 bytes**, SHA-256
+  `92e80b35a58cf06ebcd5d22605a4d291aef067db229d5dfb50befa2f81a9d359`.
+  Saved bytes match both receipts. Output: `docs/mini-loop-system.architecture.html`.
+  `visual_review: skipped` — prior local-file access denial leaves no accessible
+  rendered image; no workaround or visual-pass claim is made.
+- Environment: Go 1.23.3, darwin/arm64; Linux execution remains unvalidated.
+  Required implementation gates are terminal before exact-path staging/commit/push.

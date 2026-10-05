@@ -4501,7 +4501,7 @@
       <p class="subtitle">Python runtime in python/; independent Go startup, owned HTTP/SSE, guarded turns and per-run JSONL; session persistence/optional port work remains</p>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron"],"note":"Owned HTTP/SSE, JSONL/ledgers and injected-store bounded catch-up exist. Native SQL/reopen and optional panel APIs remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"turn-path","label":"One agent turn","focus":["clients","entry","authority","manager","session","agent","context","provider"],"note":"Follow an authenticated request through owner binding into one serialized session and out to the model provider."},{"id":"tool-path","label":"Guarded tool execution","focus":["agent","toolPolicy","toolBackends","state","decisions"],"note":"Tools cross the permission gate. Optional decisions return typed judgments from Jev or an explicitly selected LLM, without acting."},{"id":"async-path","label":"Optional orchestration","focus":["manager","coordination","session","state"],"note":"Background, cron, teams, subagents, and the default-off workflow runtime feed later session turns."},{"id":"go-path","label":"Go port in progress","focus":["goEntry","goManaged","goFake","goSession","goGate","goBash","goFiles","goResources","goContext","goArchives","goChildren","goActions","goApprovals","goSecrets","goCron"],"note":"Owned HTTP/SSE, stored epoch reads and JSONL/ledgers exist. Native SQL/reopen and optional panel APIs remain pending."},{"id":"personal-skill","label":"Capture a personal skill","focus":["clients","entry","authority","manager","session","skillDrafts","state","context"],"note":"Follow the authenticated-turn ledger, explicit user commit, durable owner file, and next-session activation without live rebinding."}]</script>
 
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -4624,7 +4624,7 @@
         <path data-edge-from="goManaged" data-edge-to="goSession" data-edge-label="turn / fork" data-edge-key="35" data-edge-id="goManagedRun" data-composition-points="990,1056;990,1120;1015,1120;1015,1180" d="M 990 1056 L 990 1112 Q 990 1120 998 1120 L 1007 1120 Q 1015 1120 1015 1128 L 1015 1180" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="goEntry" data-edge-to="goManaged" data-edge-key="36" data-edge-id="goHTTPAdmission" data-composition-points="660,838;990,838;990,980" d="M 660 838 L 982 838 Q 990 838 990 846 L 990 980" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="goManaged" data-edge-to="goCron" data-edge-key="37" data-edge-id="goManagedCron" data-composition-points="1130,1025;1220,1025;1220,931;1310,931" d="M 1130 1025 L 1212 1025 Q 1220 1025 1220 1017 L 1220 939 Q 1220 931 1228 931 L 1310 931" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="goSession" data-edge-to="goActions" data-edge-label="state / catch-up" data-edge-key="38" data-edge-id="goLiveState" data-composition-points="1180,1218;1240,1218;1240,1398;1370,1398" d="M 1180 1218 L 1232 1218 Q 1240 1218 1240 1226 L 1240 1390 Q 1240 1398 1248 1398 L 1370 1398" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goSession" data-edge-to="goActions" data-edge-label="state / epochs" data-edge-key="38" data-edge-id="goLiveState" data-composition-points="1180,1218;1240,1218;1240,1398;1370,1398" d="M 1180 1218 L 1232 1218 Q 1240 1218 1240 1226 L 1240 1390 Q 1240 1398 1248 1398 L 1370 1398" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goCron" data-edge-to="goManaged" data-edge-key="39" data-edge-id="goCronRestore" data-composition-points="1310,917;1220,917;1220,1011;1130,1011" d="M 1310 917 L 1228 917 Q 1220 917 1220 925 L 1220 1003 Q 1220 1011 1212 1011 L 1130 1011" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
@@ -4886,8 +4886,8 @@
         <text data-detail="fine" x="1015" y="1428" class="t-backend" font-size="7" text-anchor="middle">four compaction layers</text>
         </g>
 
-        <g id="node-goActions" data-node-id="goActions" data-node-label="Go Replay / State" tabindex="0" role="button" aria-label="Focus Go Replay / State, typed state / restore / SSE window, Independent Go port - in progress" aria-pressed="false" data-node-kind="database" data-node-sublabel="typed state / restore / SSE window" data-node-tag="injected / SQLite pending" data-node-context="Independent Go port - in progress">
-          <title>Go Replay / State · typed state / restore / SSE window · Independent Go port - in progress · injected / SQLite pending</title>
+        <g id="node-goActions" data-node-id="goActions" data-node-label="Go Replay / State" tabindex="0" role="button" aria-label="Focus Go Replay / State, typed state / restore / epoch reads, Independent Go port - in progress" aria-pressed="false" data-node-kind="database" data-node-sublabel="typed state / restore / epoch reads" data-node-tag="injected / SQLite pending" data-node-context="Independent Go port - in progress">
+          <title>Go Replay / State · typed state / restore / epoch reads · Independent Go port - in progress · injected / SQLite pending</title>
           <rect x="1370" y="1360" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1370" y="1360" width="280" height="76" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1376 1366) scale(0.6875)">
@@ -4895,7 +4895,7 @@
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-detail-anchor x="1510" y="1396" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Replay / State</text>
-        <text data-detail="context" x="1510" y="1412" class="t-muted" font-size="9" text-anchor="middle">typed state / restore / SSE window</text>
+        <text data-detail="context" x="1510" y="1412" class="t-muted" font-size="9" text-anchor="middle">typed state / restore / epoch reads</text>
         <text data-detail="fine" x="1510" y="1428" class="t-database" font-size="7" text-anchor="middle">injected / SQLite pending</text>
         </g>
 
@@ -5121,9 +5121,9 @@
         </g>
 
 
-        <g data-detail="context" data-edge-from="goSession" data-edge-to="goActions" data-edge-label="state / catch-up" data-edge-key="38" data-edge-id="goLiveState">
-          <rect x="1196.6" y="1328" width="86.8" height="14" rx="3" class="c-mask"/>
-          <text x="1240" y="1338" class="t-messagebus" font-size="8" text-anchor="middle">state / catch-up</text>
+        <g data-detail="context" data-edge-from="goSession" data-edge-to="goActions" data-edge-label="state / epochs" data-edge-key="38" data-edge-id="goLiveState">
+          <rect x="1201.4" y="1328" width="77.2" height="14" rx="3" class="c-mask"/>
+          <text x="1240" y="1338" class="t-messagebus" font-size="8" text-anchor="middle">state / epochs</text>
         </g>
 
 
