@@ -644,12 +644,23 @@ Git/task transaction. Later binding/audit failure leaves created work for inspec
 
 `WorkspaceFor` sanitizes session names, returns existing paths and falls back to
 a plain directory on non-repositories, unborn HEAD or Git creation failure.
-That source-compatible fallback provides no branch isolation. The embedding
-caller owns retention and Git-aware removal. To run a session now, provision
-explicitly, configure the manager's bindable roots and pass the resulting path
-as `CreateSessionRequest.Workspace`; ordinary bound-workspace cleanup preserves it.
-Do not attach this helper to raw scratch directory deletion. Git-aware manager
-worktree cleanup and standalone feature activation remain unsupported.
+That source-compatible fallback provides no branch isolation. To use the source
+managed factory, construct `agent.NewWorktreeWorkspaceFactory(service)` and set
+`ManagerConfig.WorkspaceFactory` to that concrete adapter. Provisioning is explicit
+and does not install model tools or activate standalone feature flags.
+
+Factory paths are managed scratch (`WorkspaceBound=false`). Matching actual
+Python, delete drains current work and waits for shared scratch holders, then
+removes the directory even if dirty. Git registration and the branch remain;
+manager cleanup does not call the guarded worktree Remove API or append its audit.
+`DeleteSessionOptions.PreserveWorkspace` and manager Stop retain the directory.
+For operator-owned retention, provision explicitly, configure bindable roots and
+pass `CreateSessionRequest.Workspace`; bound cleanup preserves it. Source has no
+Git-aware manager cleanup, so that behavior is a recorded gap rather than a
+missing port. The existing Go manager additionally reclaims unpublished scratch
+on construction failure; Python create leaves it allocated. This Go failure
+cleanup also leaves Git registration and branch. Standalone feature activation
+remains unsupported.
 
 For model tools, explicitly set `RuntimeConfig.WorktreeTools` or
 `ManagerServices.WorktreeTools` and supply `Worktrees: service`. This installs

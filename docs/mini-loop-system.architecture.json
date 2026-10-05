@@ -476,7 +476,7 @@
       "id": "goManaged",
       "type": "backend",
       "label": "Go SessionManager",
-      "sublabel": "handles / private per-run JSONL / cleanup",
+      "sublabel": "handles / factory / private JSONL / cleanup",
       "pos": [
         850,
         980
@@ -1217,7 +1217,10 @@
         "Explicit go/worktrees service creates/binds/keeps/removes Git worktrees and appends audit events; Go Resources also installs five model tools only with WorktreeTools=true, through the common risk/permission gate",
         "enter_worktree is an exclusive barrier: prepare files, shell/sandbox, model context, approval/question surfaces and future children before publishing execution scope; manager Info, task HTTP roots, trajectory attribution and scratch cleanup retain the original lifecycle workspace",
         "An initialized task board stays pinned; first lazy task admission after entry uses the new execution workspace. Fresh children use current files/shell but do not borrow the manager worktree service; selected worktree tools report unconfigured. Forks retain manager activation with fresh scratch",
-        "Shell rebind retains deadline, capture, secrets, spill and foreground interrupt ownership; custom factories must return WorkspaceBashExecutor reporting the target root. Manager worktree reclamation, OS sandbox backend and full feature activation remain pending"
+        "Shell rebind retains deadline, capture, secrets, spill and foreground interrupt ownership; custom factories must report the target root. OS sandbox backend and full feature activation remain pending",
+        "Go SessionManager aggregates an explicit WorktreeWorkspaceFactory adapter to go/worktrees: factory provisioning is independent of model-tool activation and paths are scratch, including plain-directory fallback",
+        "Actual Python and Go delete drain shared holders then remove even dirty factory directories, leaving Git registration and branch; stop, PreserveWorkspace and explicit bound admission retain work. Guarded worktree Remove is separate",
+        "The existing Go failed-admission cleanup removes unpublished scratch without Git metadata cleanup; Python create instead leaves the allocation. Source has no Git-aware manager reclaimer"
       ]
     }
   ]

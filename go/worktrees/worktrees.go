@@ -285,8 +285,10 @@ func (m *Manager) List(ctx context.Context) string {
 
 // WorkspaceFor provisions source-compatible workspaces for an embedding caller.
 // Git failures degrade to a plain directory, which is NOT an isolated branch.
-// Callers own retention/removal; do not pair this with raw recursive deletion of
-// Git worktrees. This does not rebind a running agent or install a manager hook.
+// Callers select retention/removal. SessionManager's source-compatible factory
+// adapter treats this path as scratch; its directory cleanup does not perform
+// Git's dirty checks, registration cleanup or branch deletion. This helper alone
+// does not rebind a running agent or install a manager hook.
 func (m *Manager) WorkspaceFor(ctx context.Context, session string) (string, error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()

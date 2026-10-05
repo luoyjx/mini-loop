@@ -2280,6 +2280,81 @@ def _trajectory_contracts(scratch: Path) -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("trajectory.py", "session.py", "agent.py", "server.py")}, "stores":cases, "rounding":[{"input":value, "output":round(value, 3)} for value in (25.12355, -25.12355, 1.2345, -1.2345, 0.0005, -0.0005, 2.675, 1.0625, -1.0625, 0.00001)], "managed":asyncio.run(collect()), "http":{"seed":normalize(seed), "routes":routes}}
 
 
+def _managed_worktree_contracts(scratch: Path) -> dict:
+    """Actual managed factory allocation, ordinary delete and stop semantics."""
+    import asyncio
+    import subprocess
+    from mini_loop import SessionManager, Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+    from mini_loop.worktrees import worktree_workspace_factory
+
+    def git(repo, *args, required=True):
+        result = subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True, timeout=30)
+        if required and result.returncode:
+            raise RuntimeError(result.stderr)
+        return result.returncode == 0, result.stdout
+
+    cases = [
+        ("clean-delete", "repo", "delete", False),
+        ("dirty-delete", "repo", "delete", True),
+        ("dirty-preserve", "repo", "preserve", True),
+        ("dirty-stop", "repo", "stop", True),
+        ("nonrepo-fallback", "nonrepo", "delete", False),
+        ("unborn-fallback", "unborn", "delete", False),
+        ("branch-conflict-fallback", "conflict", "delete", False),
+    ]
+    async def scenario(name, kind, action, dirty):
+        root = (scratch / name).resolve()
+        repo = root / "repo"
+        repo.mkdir(parents=True)
+        if kind != "nonrepo":
+            git(repo, "init", "-b", "main")
+            for key, value in {"user.name": "Go parity", "user.email": "parity@example.invalid",
+                               "commit.gpgsign": "false", "core.hooksPath": "/dev/null", "core.autocrlf": "false"}.items():
+                git(repo, "config", key, value)
+            if kind != "unborn":
+                (repo / ".gitignore").write_text(".worktrees/\n")
+                git(repo, "add", ".gitignore"); git(repo, "commit", "-m", "base")
+        source_factory = worktree_workspace_factory(repo)
+        def factory(session_id):
+            if kind == "conflict":
+                git(repo, "branch", "wt/" + session_id)
+            return source_factory(session_id)
+        def responder(kwargs):
+            if isinstance(kwargs["messages"][-1]["content"], str):
+                return [tool("bash", _id="write", command="printf proof > proof.txt")], "tool_use"
+            return [text("done")], "end_turn"
+        manager = SessionManager(Settings(fake_llm=True, workspace_root=root / "ws"),
+                                 FakeAsyncAnthropic(responder=responder, thinking=False), workspace_factory=factory)
+        session = manager.create(owner="alice", permission_mode="auto")
+        def state():
+            ok, listing = git(repo, "worktree", "list", "--porcelain", required=False)
+            branch, _ = git(repo, "show-ref", "--verify", "--quiet", "refs/heads/wt/" + session.id, required=False)
+            marker = session.workspace / "proof.txt"
+            return {"directory": session.workspace.is_dir(), "linked": (session.workspace / ".git").is_file(),
+                    "registered": ok and "worktree " + str(session.workspace) + "\n" in listing,
+                    "branch": branch, "proof": marker.read_text() if marker.exists() else None}
+        initial = state()
+        output = await session.run("write") if dirty else None
+        before = state()
+        if action == "stop":
+            await manager.stop()
+            removed = None
+        else:
+            removed = manager.delete(session.id, remove_workspace=action != "preserve")
+            if manager._cleanup_tasks:
+                await asyncio.gather(*tuple(manager._cleanup_tasks))
+        after = state()
+        await manager.stop()
+        return {"name": name, "kind": kind, "action": action, "dirty": dirty,
+                "workspace": str(session.workspace).replace(str(repo), "<REPO>").replace(session.id, "<SESSION>"),
+                "bound": session.workspace_bound, "owner": session.owner,
+                "initial": initial, "before": before, "after": after,
+                "output": output, "removed": removed, "cleanup_errors": list(manager.cleanup_errors)}
+    async def run(): return [await scenario(*case) for case in cases]
+    return {"cases": asyncio.run(run())}
+
+
 def _worktree_tool_contracts(scratch: Path) -> dict:
     """Installed source tools over an actual Agent, including execution rebind."""
     import asyncio
@@ -3076,6 +3151,7 @@ def _snapshot() -> dict[str, bytes]:
         task_contracts = _task_contracts(Path(scratch) / "tasks")
         worktree_contracts = _worktree_contracts(Path(scratch) / "worktrees")
         worktree_tool_contracts = _worktree_tool_contracts(Path(scratch) / "worktree-tools")
+        managed_worktree_contracts = _managed_worktree_contracts(Path(scratch) / "managed-worktrees")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -3126,6 +3202,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-tasks.json": _json_bytes(task_contracts),
         "python-worktrees.json": _json_bytes(worktree_contracts),
         "python-worktree-tools.json": _json_bytes(worktree_tool_contracts),
+        "python-managed-worktrees.json": _json_bytes(managed_worktree_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

@@ -289,8 +289,9 @@ plus the embedded public development console and full browser shell,
 plus an optional typed persistent task graph and owned task-board HTTP view,
 plus the operator library worktree lifecycle and task binding,
 plus five explicitly installed worktree tools and serialized execution workspace
-switching with retained lifecycle cleanup ownership,
-reviewed **2026-10-05** (Go baseline `108fb01` plus the worktree-tools slice).
+switching with retained lifecycle cleanup ownership, plus an explicit typed
+managed-worktree factory with source directory-cleanup semantics,
+reviewed **2026-10-05** (Go baseline `a3ae8b9` plus the managed-worktree-factory slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -364,6 +365,7 @@ flowchart LR
         GoEntry -->|public static documents| GoBrowser
         GoBrowser -->|authenticated API / SSE| GoTrust
         GoLaunch -. construct / stop .-> GoManager
+        GoManager -. explicit typed workspace factory .-> GoWorktrees
         GoManager -->|create / fork / own| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
         GoSession --> GoContext --> GoProvider
@@ -432,8 +434,16 @@ it is not the full Python effective-posture report. See
 `go/worktrees` is an explicitly selected library service: named records and
 task binding, Git status/ahead checks plus Git's independent refusal, and local
 JSONL audit events. Factory failures can return plain directories, matching Python;
-that fallback is not a Git branch. A provisioned path can be admitted through the
-existing owned/bindable workspace policy and remains after session deletion.
+that fallback is not a Git branch. `agent.NewWorktreeWorkspaceFactory(service)`
+explicitly adapts this service to `ManagerConfig.WorkspaceFactory`, without
+installing model tools. Factory paths are scratch, matching Python: ordinary
+delete removes even dirty directories after draining/shared-reference checks,
+but leaves Git registration and branches. Stop and `PreserveWorkspace` retain
+them. An explicitly supplied `CreateSessionRequest.Workspace` instead passes
+owned/bindable admission and remains after deletion. The model/operator service
+Remove API has independent dirty/ahead and native Git guards; manager directory
+cleanup does not call it. This is an actual Python cleanup gap, not a pending
+source Git-aware reclaimer.
 `RuntimeConfig.WorktreeTools` / `ManagerServices.WorktreeTools` installs five typed
 model tools through the common risk/permission gate. `enter_worktree` is an
 exclusive barrier even with a custom execution classifier: it prepares files,
@@ -447,9 +457,11 @@ without the parent worktree service/task board; selected worktree tools report
 unconfigured. The default system builder follows SystemContext; supplied fixed
 prompts retain their source contract. Built-in shell rebinding retains secrets, spill, deadlines,
 capture and interrupt ownership; custom executors require an explicit workspace
-factory. Managed worktree reclamation and comprehensive feature activation remain
-pending. Audit append is
-not a transaction with Git/task binding or a host ownership/lease boundary.
+factory. Comprehensive feature activation remains pending. Go additionally
+reclaims unpublished scratch on construction failure; with a Git factory this
+removes the directory while leaving registration and branch, unlike Python
+create, which leaves the allocation. Audit append is not a transaction with
+Git/task binding or a host ownership/lease boundary.
 The solid Python path is one ordinary turn; dotted paths are
 optional or asynchronous.
 The Python default agent skills now resolve from `python/skills/` regardless

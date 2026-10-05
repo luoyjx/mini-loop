@@ -1186,10 +1186,16 @@ remain a second guard. Branch cleanup failure is ignored like Python, so a
 successful clean directory removal can leave an unmerged branch for review.
 
 `WorkspaceFor(ctx, sessionName)` ports Python sanitization/existing-directory and
-plain-directory fallback. Embeddings own retention and Git-aware cleanup; it is
-not a new `SessionManager.WorkspaceFactory` adapter. The safe current composition
-is to provision explicitly and use `CreateSessionRequest.Workspace` with the
+plain-directory fallback. `agent.NewWorktreeWorkspaceFactory(service)` provides
+an explicit concrete `ManagerConfig.WorkspaceFactory` adapter. Factory admission
+marks the path as scratch; it does not install model tools. Actual Python/Go
+manager delete removes even dirty scratch after draining/shared-holder checks,
+without Git registration/branch cleanup or a worktree removal audit.
+`PreserveWorkspace` and Stop retain it. To retain an operator checkout across
+delete, provision explicitly and use `CreateSessionRequest.Workspace` with the
 manager's configured bindable roots. Bound workspaces survive session cleanup.
+Source create leaves allocated work after construction failure; Go's existing
+unpublished-scratch cleanup removes only the directory, retaining Git metadata.
 Set `RuntimeConfig.WorktreeTools` or `ManagerServices.WorktreeTools` to install
 create/remove/keep/list/enter through the same common gate. Supply `Worktrees` to
 bind the explicit repository; a nil service retains the source unconfigured
@@ -1216,7 +1222,8 @@ approvers and system builders retain their explicit contracts; authority/context
 arguments carry the new execution root. Do not retain an obsolete root in them.
 Explicit fixed prompts, including the source-compatible child role prompt, remain
 fixed; the default system builder consumes the current SystemContext workspace.
-No full feature flag or Git-aware manager reclamation is implied.
+No full feature flag is implied. Source manager cleanup has no Git-aware
+reclaimer; the guarded worktree Remove API is a separate explicit boundary.
 
 ### Go persistent task graph seam
 

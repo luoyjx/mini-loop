@@ -111,7 +111,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding/factory and five gated model tools with serialized workspace rebinding implemented; Git-aware reclamation, full activation and other groups remain)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; full activation and other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ## 2026-10-02 checkpoint
@@ -2523,3 +2523,105 @@ with that service, as pinned by the existing source mutation.
   previously denied; no rendered visual acceptance is claimed.
 - README/plan outlines and `git diff --check`: pass. Validation ran on macOS with
   Go 1.23.3 and native Git 2.39.5 (Apple Git-154); Linux remains unvalidated.
+
+## 2026-10-05 managed worktree factory slice
+
+Reviewed base: `a3ae8b9`. The previous status turn refreshed Go statement coverage
+at 87.7% and confirmed the four in-progress factory files. This iteration
+completes the explicit library factory composition in G6; G0–G7 remain open.
+
+### Implementation and actual source boundary
+
+- `agent.WorktreeWorkspaceFactory` has a concrete private `*worktrees.Manager`
+  field and implements the typed WorkspaceFactory seam. Its constructor refuses
+  a nil service; an uninitialized receiver refuses allocation. Context
+  cancellation reaches the service before any directory or Git work. No
+  dependency, default activation, model-tool installation or manager lifecycle
+  mutation was added.
+- Reviewed actual Python SessionManager.create/delete/stop and
+  worktree_workspace_factory, plus the workspace extension seam and the
+  worktree removal/shared-Git sandbox hardening notes. Source create treats all
+  factory paths as scratch, including nonrepo/unborn/branch-conflict fallbacks.
+  Stop retains the directory. Ordinary delete removes even dirty directories
+  after draining/references, leaving Git registration and branches. Explicit
+  bound admission and preserve retain the work. The guarded WorktreeManager
+  Remove API is a separate explicit operator/model boundary.
+- This source finding corrects the earlier checkpoints' unsupported expectation
+  of a pending Git-aware manager reclaimer. Python has no such path. The Go
+  adapter keeps source scratch semantics and records that cleanup gap. The
+  existing Go manager additionally reclaims unpublished scratch on construction
+  failure; Python create leaves the allocation. This Go cleanup also leaves Git
+  registration/branch and is documented as a difference, not source parity.
+- Snapshot 36 executes seven actual Python/Git managed cases, with directory,
+  linked `.git`, Git registry, branch and real common-gate Bash marker probes
+  before/after cleanup. It covers clean/dirty delete, dirty preserve, dirty stop,
+  nonrepo/unborn/conflicting-branch fallback, owner, scratch flag and output. Only
+  temporary root/session identities are normalized; Git objects are queried
+  directly. The previous 35 snapshots stay unchanged.
+- Go integration tests compare all seven source states and verify explicit
+  service admission does not activate optional tools or bypass owner lookup.
+  Additional native Git tests prove a shared surviving holder keeps dirty work
+  until the final delete and executor construction failure reclaims only the
+  unpublished directory. Existing shared/retiring/cancel/stop/symlink manager
+  guards stay in force.
+- README Mermaid adds the explicit manager-to-worktree factory edge. The
+  interactive map aggregates factory provisioning under SessionManager and
+  records the source cleanup gap, retention and failed-admission difference.
+
+### Remaining work
+
+Standalone feature activation, background, cron, teams, workflows, owner
+resources/memory/decisions, MCP, SQLite session/approval/lease restore, durable
+SSE, remaining provider variants and the full G7 differential/release audit
+remain open. Worktree provisioning and Git registration do not supply a host
+ACL, OS sandbox backend, cross-process lease or session recovery.
+
+Next G6 sequence, grounded in the actual BackgroundManager source:
+
+1. Port concrete background IDs/status/task/result records and the operator
+   service: independent process groups, command/environment guards, deadlines,
+   bounded capture, retained results/listing, durable in-flight ledger and
+   orphan reporting. Cancellation requests join handles before service close.
+2. Add exact source schemas/inputs/results and the common-gate model handlers,
+   source-derived fixtures and bounded next-turn completion injection. A turn
+   cancellation leaves background work alive and reports its live count.
+3. Compose explicit manager activation, drain it before delete/stop, and update
+   future background cwd/sandbox when entering a worktree. Preserve source ledger
+   and fresh-child/fork ownership rules before standalone feature activation.
+
+### Validation
+
+- Narrow factory/source-state tests: pass. Final `go test ./...` with
+  `-coverpkg=./... -coverprofile=...`, `go vet ./...` and `go test -race ./...`:
+  pass across all packages. Aggregate statement coverage is **87.7%**
+  (**8,642 / 9,856** statements); this is not feature-parity coverage.
+- `.venv/bin/python python/tools/export_go_contracts.py --check`: **36 files
+  current**. All **35** previously tracked source fixtures were byte-compared
+  against HEAD and are unchanged. `verify_scans.py`: all **19** scanner guards
+  anchored. The full source mutation sweep was not rerun; no Python runtime,
+  source scanner target or guard anchor changed. Package invariants are not
+  applicable to this exporter-only Python change.
+- First `.venv/bin/python -m pytest -q`: **1 failed, 2150 passed, 28 skipped,
+  24 subtests passed, 3 warnings**, 214.81 s. The sole failure was the existing
+  `test_a_forty_turn_session_stays_fast` 0.5 s threshold: measured 0.782 s.
+  Isolated `python/tests/test_double_cost.py`: **11 passed, 1 failed**, with the
+  same 40-turn test at 0.824 s. Python runtime and test files are identical to
+  HEAD. Host load averages were 16.65/26.04/18.11 during inspection; this
+  observation does not prove the performance failure's cause. Threshold and
+  unrelated source were not changed. Full-suite rerun: **1 failed, 2150 passed,
+  28 skipped, 24 subtests passed, 3 warnings**, 163.68 s, again only this test,
+  at 0.584 s. Runtime import paths resolve to the current `python/mini_loop`.
+  The full Python performance gate remains **failed**, despite the Go gates
+  and source contracts passing. This feature-branch delivery does not claim
+  a green repository-wide Python gate or a resolved performance cause.
+- Archify architecture validate/deliver: **9/9 showcase**, zero composition
+  errors/warnings, correction_rounds: 0. Specification SHA-256:
+  `1503f7558859ca062f92646b2f4581821231990cf9a4e4884f5814fd7abbecdf`
+  (30,466 bytes); artifact SHA-256:
+  `a2712406e4e5471c3ed021dac3acc26b7c4368c4a0ddb115e4f4813f76a0bcb8`
+  (670,148 bytes). Exact current specification/artifact bytes match the final
+  receipt. Visual review remains skipped because local HTML access was
+  previously denied; rendered visual acceptance is not claimed.
+- README/plan outline review and `git diff --check`: pass. Host validation uses
+  macOS, Go 1.23.3 and native Git 2.39.5 (Apple Git-154); Linux remains
+  unvalidated. No production endpoint or paid model was called.

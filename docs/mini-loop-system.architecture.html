@@ -4947,15 +4947,15 @@
         <text data-detail="fine" x="495" y="1608" class="t-database" font-size="7" text-anchor="middle">workspace files</text>
         </g>
 
-        <g id="node-goManaged" data-node-id="goManaged" data-node-label="Go SessionManager" tabindex="0" role="button" aria-label="Focus Go SessionManager, handles / private per-run JSONL / cleanup, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="handles / private per-run JSONL / cleanup" data-node-tag="owners / file evidence / shared pools" data-node-context="Independent Go port - in progress">
-          <title>Go SessionManager · handles / private per-run JSONL / cleanup · Independent Go port - in progress · owners / file evidence / shared pools</title>
+        <g id="node-goManaged" data-node-id="goManaged" data-node-label="Go SessionManager" tabindex="0" role="button" aria-label="Focus Go SessionManager, handles / factory / private JSONL / cleanup, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="handles / factory / private JSONL / cleanup" data-node-tag="owners / file evidence / shared pools" data-node-context="Independent Go port - in progress">
+          <title>Go SessionManager · handles / factory / private JSONL / cleanup · Independent Go port - in progress · owners / file evidence / shared pools</title>
           <rect x="850" y="980" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="980" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 986) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="990" y="1016" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go SessionManager</text>
-        <text data-detail="context" x="990" y="1032" class="t-muted" font-size="9" text-anchor="middle">handles / private per-run JSONL / cleanup</text>
+        <text data-detail="context" x="990" y="1032" class="t-muted" font-size="9" text-anchor="middle">handles / factory / private JSONL / cleanup</text>
         <text data-detail="fine" x="990" y="1048" class="t-backend" font-size="7" text-anchor="middle">owners / file evidence / shared pools</text>
         </g>
 
@@ -5415,7 +5415,10 @@
           <li>&bull; Explicit go/worktrees service creates/binds/keeps/removes Git worktrees and appends audit events; Go Resources also installs five model tools only with WorktreeTools=true, through the common risk/permission gate</li>
           <li>&bull; enter_worktree is an exclusive barrier: prepare files, shell/sandbox, model context, approval/question surfaces and future children before publishing execution scope; manager Info, task HTTP roots, trajectory attribution and scratch cleanup retain the original lifecycle workspace</li>
           <li>&bull; An initialized task board stays pinned; first lazy task admission after entry uses the new execution workspace. Fresh children use current files/shell but do not borrow the manager worktree service; selected worktree tools report unconfigured. Forks retain manager activation with fresh scratch</li>
-          <li>&bull; Shell rebind retains deadline, capture, secrets, spill and foreground interrupt ownership; custom factories must return WorkspaceBashExecutor reporting the target root. Manager worktree reclamation, OS sandbox backend and full feature activation remain pending</li>
+          <li>&bull; Shell rebind retains deadline, capture, secrets, spill and foreground interrupt ownership; custom factories must report the target root. OS sandbox backend and full feature activation remain pending</li>
+          <li>&bull; Go SessionManager aggregates an explicit WorktreeWorkspaceFactory adapter to go/worktrees: factory provisioning is independent of model-tool activation and paths are scratch, including plain-directory fallback</li>
+          <li>&bull; Actual Python and Go delete drain shared holders then remove even dirty factory directories, leaving Git registration and branch; stop, PreserveWorkspace and explicit bound admission retain work. Guarded worktree Remove is separate</li>
+          <li>&bull; The existing Go failed-admission cleanup removes unpublished scratch without Git metadata cleanup; Python create instead leaves the allocation. Source has no Git-aware manager reclaimer</li>
         </ul>
       </div>
     </div>
