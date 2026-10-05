@@ -82,7 +82,7 @@ Record its parity evidence and remaining gaps before checking it off.
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
       usage, core lifecycle/status/cancel/stop/error/stuck/subagent/approval events,
       run provenance, action/approval/session records and current archival event decoding implemented;
-      plan-mode inputs/events are implemented; other event and state variants remain)
+      goal/plan-mode inputs/events are implemented; other event and state variants remain)
 - [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
       fake-provider slice, cache annotation, stuck detection, scoped child execution,
       exhaustion markers and cancellation repair implemented;
@@ -90,7 +90,7 @@ Record its parity evidence and remaining gaps before checking it off.
       prompt hooks/injectors, Todo nagging, shared limiters and ordered parallel batches
       implemented; bounded steering and live posture updates implemented;
       direct HTTP provider/SDK retries, typed SSE and provisional progress implemented;
-      default Agent recovery implemented; remaining context integrations remain)
+      default Agent recovery implemented; default goal continuation is implemented; remaining context integrations remain)
 - [ ] G2 execution gate (typed catalogue, ordered gate, basic modes and
       workspace read/write/edit/glob plus todo/skill/question handlers implemented;
       compress defers a real summary after the batch and task delegates through
@@ -100,7 +100,7 @@ Record its parity evidence and remaining gaps before checking it off.
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
-      twenty-seven HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
+      twenty-eight HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
       typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
       per-run file recording and owner-scoped read/export implemented;
       typed HTML ledger, offline traceview CLI and filtered record visitor implemented;
@@ -111,8 +111,8 @@ Record its parity evidence and remaining gaps before checking it off.
       and streamed-text cancellation repair implemented;
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
-- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up and transcript epoch reads implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; other groups remain; source Git-aware cleanup is absent)
+- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next persistence slices
@@ -4134,3 +4134,112 @@ release audit still require implementation and evidence.
   inspection or bypass is claimed. JSON geometry and existing edges are retained.
 - Environment: Go 1.23.3, darwin/arm64; Linux remains unvalidated. All required
   implementation gates are terminal before exact-path staging/commit/push.
+
+## Implementation checkpoint — 2026-10-06 typed goal domain
+
+Baseline `f30cbfd`; P0/P1 remain complete, G0–G7 remain open. The five shipped
+Python goal tools, their default continuation consumer and owned read endpoint
+are now implemented in Go. Native SQLite/restart, the remaining optional groups,
+context/provider variants and release audit still require evidence.
+
+### Actual source contract and differential evidence
+
+- Snapshot 51 (`go/testdata/python-goals.json`) executes 46 actual source gate
+  calls plus six direct stop calls across Auto/Readonly. It captures schemas,
+  empty capabilities, risk/readonly/exclusive traits, canonical/grant identity,
+  every result's failed/denied flags, detached whole snapshots and cumulative
+  events with normalized random IDs. Existing 50 snapshots remain unchanged.
+- Actual Agent default/custom-hook loops make three/one model requests. Actual
+  Python SQLite restore retains an active revision-five goal but always disarms;
+  an untrusted next turn makes one request. One further actual trusted resume
+  gate call re-arms; two model requests consume the remaining budget and block.
+  Four real owner/auth HTTP views pin the source goal response. No paid model
+  endpoint is called. Fixture source SHA-256 pins goals/permissions/agent/session/server;
+  fixture 70,069 bytes, SHA-256
+  `a37572caf70c5190c9412d18e140365c9c4303af051e8e9609deaa20c1ef456a`.
+- Create/resume check explicit human provenance before domain CAS; authenticated
+  HTTP alone does not grant it. Other mutations do not arm. Block may change an
+  already complete goal, matching source. Omitted/null/zero caps use ten. The
+  actual regex accepts repeated/trailing hyphens and one final newline; Python
+  whitespace trimming is preserved. No edit/clear/pause tool ships, although
+  source cap-exhaustion prose mentions nonexistent `goal_edit`.
+- Domain refusals are source textual tool outputs with `failed=false`; permission
+  denials stay denied. Go rejects JSON coercions and signed-64 overflow where
+  Python accepts coerced/unbounded integers. Go archival decoding validates
+  supported operations, phase/reason consistency and bounded positive records;
+  Python generic fold tolerates partial dicts/unknown operations. Both fold all
+  logged scopes and clear tombstones; neither restores activation.
+
+### Delivered composition and boundaries
+
+- Closed Create/Status/Complete/Block/Resume inputs, named GoalID/GoalRevision/
+  GoalPhase/GoalBlockReason/GoalRecord and GoalChangeEvent. Cap pointers, snapshot
+  blocked pointers and event payloads are detached. CAS runs under per-session
+  synchronization through the existing exclusive execution gate. Revisions do
+  not wrap. Live goal text remains raw; configured sinks and HTTP project masks.
+- Explicit RuntimeConfig/ManagerServices/launcher GoalTools and --goal-tools
+  install five additional tools. Default ten remain unchanged. `GoalContinuation`
+  is a stateless default stop hook, inert without an armed active goal. Nil
+  StopHooks uses it; every explicit list replaces it, including empty lists.
+  Manager copying preserves the nil/empty distinction; children inherit the
+  selected hook chain with independent session goals and peer provenance.
+- Only requested stop continuations consume goal budget; model tool rounds do
+  not. Counter mutation/emission precedes stuck/global-round checks, so it counts
+  requested continuations even if the next provider request cannot start. Source
+  RunContext persists through that turn's continuation. There is no goal-specific
+  prompt section, permission expansion or new authority stamp.
+- Owned GET /sessions/{session_id}/goal exposes concrete detached goal,
+  goal_armed and plan_mode fields; total Go HTTP method/path operations are now
+  28. Owner admission precedes reads. It never arms or starts a turn. Existing
+  capture/trajectory/stored-event SSE encode typed snapshots. Injected-store
+  restore and pending claim reload install the folded goal with armed=false;
+  fresh forks/children do not inherit it. Test backings do not prove Go SQL.
+- A separate release-audit gap was exposed while tracing source telemetry:
+  current Go plan validation/review refusals return errors and set failed=true,
+  while Python returns textual Error strings with failed=false. Snapshot 50
+  pins output/state but not these flags. The current parity row records this
+  difference; G7 remains open rather than claiming complete telemetry parity.
+
+### Validation and delivery evidence
+
+- Focused agent/protocol/HTTP/launcher/CLI goal tests pass. Meaningful cases
+  include 12 concurrent CAS writers (one mutation), detached/blocked-pointer
+  reads, signed-revision overflow, cancellation, malformed archival records,
+  clear/pending reload, disarmed SQL recipe reconstruction, trusted re-arm,
+  fresh fork/child state, child arming refusal and detached reader snapshots. A native
+  four-request model turn proves create/round capture before the next request
+  and retained source provenance; a one-request global budget pins attempt-count
+  ordering. Real TCP launcher calls prove explicit 15-tool selection and normal
+  HTTP's inability to arm. HTTP secrets stay masked without changing live state.
+- Full go test ./... -count=1 -timeout=180s -coverpkg=./... with profile: pass.
+  Deduplicated statement coverage **89.09%** (**11,185 / 12,555**); agent
+  **90.56%** (**5,211 / 5,754**), protocol **89.40%** (**1,020 / 1,141**),
+  HTTP **86.64%** (**707 / 816**), launcher **76.67%** (**115 / 150**).
+  This measures implemented statements, not migration completion.
+- Full go test -race ./... -count=1 -timeout=240s and go vet ./...: pass.
+  Additional focused goal race tests pass after adding archive/blocked-mask cases.
+  Full ordinary coverage tests were rerun after those test-only additions.
+- Exporter --check: 51 files current. verify_scans.py: 19 anchored scans.
+  Four selected goal source mutations caught: stale CAS, budget overflow,
+  untrusted arming and armed restoration. This is a focused Python guard
+  selection, not Go mutation coverage or the complete guard sweep.
+- Python full regression: 2,151 passed / 28 skipped / 24 subtests passed,
+  three warnings in 93.16 s. Python package/runtime/test modules are unchanged;
+  invariant checker does not apply to the exporter-only Python edit.
+- git diff --check and README outline pass. README baseline/canonical Mermaid,
+  ownership/default prose, extension seam, Go guide, current plan and parity row
+  are updated. Existing historical checkpoints retain their original status.
+- Archify regenerated HTML from frozen JSON: architecture, 9/9 showcase, zero
+  composition errors/warnings. correction_rounds: 2 (bounded metadata-length
+  repair only; existing geometry/edges retained). Specification 36,448 bytes,
+  SHA-256 `4a20f85a77bac73f78b65f49360a95c036554a88af5510dc51fd6c267060738f`;
+  artifact 678,149 bytes, SHA-256
+  `fb6d7926aa96e65db8fae72dd5778d07a3c98d27cc2a1e81ac2aa4b865d02d63`.
+  Saved-byte identity matches both receipts. Output
+  docs/mini-loop-system.architecture.html. visual_review: skipped — prior
+  local-file access denial remains; no rendered inspection or bypass is claimed.
+- Go 1.23.3 darwin/arm64; Linux-host validation remains open. No dependencies
+  added. No top-level docs/*.md report was added/renamed/removed, so Research
+  Atlas regeneration does not apply. SQLite driver approval is still pending;
+  other port work can continue. Required gates are terminal before exact-path
+  staging, commit and push.

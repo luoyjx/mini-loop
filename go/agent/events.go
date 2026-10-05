@@ -76,6 +76,7 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
+	goalChange        GoalChangeEvent
 	planMode          PlanModeEvent
 	backgroundResult  BackgroundResultEvent
 	trajectory        TrajectoryLifecycle
@@ -157,6 +158,7 @@ func (event SessionEvent) Todos() ([]protocol.TodoItem, bool) {
 	return append([]protocol.TodoItem{}, event.todos...), true
 }
 func (event SessionEvent) clone() SessionEvent {
+	event.goalChange = event.goalChange.Clone()
 	event.recovery = event.recovery.clone()
 	event.todos = append([]protocol.TodoItem(nil), event.todos...)
 	event.approval = event.approval.clone()

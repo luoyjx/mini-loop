@@ -4512,6 +4512,170 @@ def _plan_mode_contracts(scratch: Path) -> dict:
                           for n in ("plan_mode.py", "prompts.py", "session.py", "registry.py")}}
 
 
+def _goal_contracts(scratch: Path) -> dict:
+    """Actual five source tools, stop consumer, SQLite restore and owned view."""
+    import asyncio
+    import copy
+    from mini_loop.agent import Agent
+    from mini_loop.builtins import default_registry
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text
+    from mini_loop.goals import install_goals, GoalContinuation, fold_goal
+    from mini_loop.registry import ToolRegistry, ToolCall, Hooks
+    from mini_loop.run_context import RunContext
+    from mini_loop.manager import SessionManager
+    from mini_loop.storage import SQLiteStateStore, SessionRecord
+    from mini_loop.server import create_app
+    from mini_loop.auth import TokenAuth
+    from mini_loop.approvals import grant_candidate, proposed_candidate
+    from fastapi.testclient import TestClient
+    scratch.mkdir(parents=True)
+    registry = ToolRegistry()
+    install_goals(registry)
+    variants = [{"name": "goal_create", "input": {"objective": "é"}},
+        {"name": "goal_create", "input": {"objective": "", "max_rounds": None}},
+        {"name": "goal_create", "input": {"objective": "é", "max_rounds": 0}},
+        {"name": "goal_status", "input": {}},
+        {"name": "goal_complete", "input": {"revision": -1}},
+        {"name": "goal_resume", "input": {"revision": 3}},
+        {"name": "goal_block", "input": {"revision": 2, "code": "needs--input-", "message": "é"}}]
+    for row in variants:
+        row["canonical"] = json.dumps(row["input"], sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+        row["candidate"] = list(grant_candidate(row["name"], row["input"]) or [])
+        row["proposed"] = list(proposed_candidate(row["name"], row["input"]) or [])
+    contexts = {"human": RunContext.explicit_human(actor_id="alice"),
+        "untrusted": RunContext.default(), "peer": RunContext.peer_agent(delegated_by="parent")}
+    def settings(root):
+        return Settings(fake_llm=True, workspace_root=root, skills_dir=root / "empty",
+                        trajectory_enabled=False, spill_dir=None)
+    async def scenario(mode):
+        root = scratch / mode
+        root.mkdir()
+        events, results, aliases = [], [], {}
+        def normalize(value):
+            if isinstance(value, dict): return {k: normalize(v) for k, v in value.items()}
+            if isinstance(value, list): return [normalize(v) for v in value]
+            if isinstance(value, str):
+                for ident, alias in aliases.items(): value = value.replace(ident, alias)
+            return value
+        async def emit(event):
+            if event["type"] == "goal_change": events.append(copy.deepcopy({k: event[k] for k in ("operation", "goal")}))
+            if event["type"] == "tool_result": results.append(event)
+        tools = default_registry()
+        install_goals(tools)
+        a = Agent(client=FakeAsyncAnthropic(), tools=tools, workspace=root, settings=settings(root),
+                  state={"permission_mode": mode}, emit=emit)
+        recipes = [("untrusted", "goal_status", {}),
+            ("untrusted", "goal_create", {"objective": "é"}),
+            ("peer", "goal_create", {"objective": "é"}),
+            ("human", "goal_complete", {"revision": 1}),
+            ("human", "goal_create", {"objective": "bad", "max_rounds": -1}),
+            ("human", "goal_create", {"objective": "bad", "max_rounds": 101}),
+            ("human", "goal_create", {"objective": "finish é", "max_rounds": 2}),
+            ("human", "goal_create", {"objective": "second"}),
+            ("human", "goal_complete", {"revision": -1}),
+            ("human", "goal_block", {"revision": 1, "code": "Bad", "message": "reason"}),
+            ("human", "goal_block", {"revision": 1, "code": "needs-input", "message": "\u001c\u00a0"}),
+            ("human", "goal_block", {"revision": 1, "code": "needs--input-\n", "message": "\u001c need é \u001f"}),
+            ("untrusted", "goal_resume", {"revision": 2}),
+            ("human", "goal_resume", {"revision": 1}),
+            ("human", "goal_resume", {"revision": 2}),
+            ("human", "stop", {}), ("human", "stop", {}), ("human", "stop", {}),
+            ("human", "goal_resume", {"revision": 6}),
+            ("untrusted", "goal_complete", {"revision": 6}),
+            ("human", "goal_complete", {"revision": 7}),
+            ("human", "goal_resume", {"revision": 7}),
+            ("human", "goal_block", {"revision": 7, "code": "needs-input", "message": "complete can be blocked"}),
+            ("human", "goal_complete", {"revision": 8}),
+            ("human", "goal_create", {"objective": "", "max_rounds": 0}),
+            ("human", "goal_status", {})]
+        fingerprint = a.tools.snapshot().fingerprint
+        steps = []
+        for i, (authority, tool, value) in enumerate(recipes):
+            if tool == "stop":
+                output = await GoalContinuation().on_stop(a, a.messages, "done")
+                failed = denied = False
+            else:
+                output = str(await a._exec_tool(ToolCall(tool, value, f"goal-{i}"), run_context=contexts[authority]))
+                failed, denied = results[-1]["error"], bool(results[-1].get("denied"))
+            goal = a.state.get("goal")
+            if goal is not None and goal["id"] not in aliases: aliases[goal["id"]] = f"<goal{len(aliases)+1}>"
+            steps.append(normalize({"authority": authority, "name": tool, "input": value, "output": output,
+                "failed": failed, "denied": denied, "goal": copy.deepcopy(goal),
+                "armed": bool(a.state.get("goal_armed")), "events": copy.deepcopy(events),
+                "catalog_stable": a.tools.snapshot().fingerprint == fingerprint}))
+        return {"mode": mode, "steps": steps}
+    async def loop(custom):
+        root = scratch / ("custom" if custom else "default")
+        root.mkdir()
+        requests = []
+        def responder(kwargs):
+            requests.append(copy.deepcopy(kwargs["messages"]))
+            return [text("done")], "end_turn"
+        a = Agent(client=FakeAsyncAnthropic(responder=responder, thinking=False), workspace=root,
+            settings=settings(root), hooks=Hooks([]) if custom else None,
+            state={"goal": {"id": "goal_saved", "revision": 1, "objective": "finish", "phase": "active",
+                    "rounds_started": 0, "max_rounds": 2, "blocked": None}, "goal_armed": True})
+        await a.run("begin", run_context=contexts["human"])
+        return {"custom": custom, "requests": len(requests), "goal": copy.deepcopy(a.state["goal"]),
+                "armed": bool(a.state["goal_armed"])}
+    async def restore():
+        root = scratch / "restore"
+        root.mkdir()
+        store = SQLiteStateStore(root / "state.db")
+        store.upsert_session(SessionRecord("saved", str(root / "workspace"), None, 1.0, 2, "idle", 0, owner="alice"))
+        goal = {"id": "goal_saved", "revision": 5, "objective": "finish", "phase": "active",
+                "rounds_started": 1, "max_rounds": 2, "blocked": None}
+        store.append_event("saved", {"type": "goal_change", "operation": "resume", "goal": goal,
+            "seq": 1, "ts": 1.0, "session": "saved", "transcript_epoch": 0, "agent": "main", "depth": 0})
+        count = 0
+        def responder(kwargs):
+            nonlocal count
+            count += 1
+            return [text("done")], "end_turn"
+        tools = default_registry()
+        install_goals(tools)
+        m = SessionManager(settings(root / "fleet"), FakeAsyncAnthropic(responder=responder, thinking=False),
+            state_store=store, tool_registry=tools)
+        session = next(x for x in m.restore_sessions() if x.id == "saved")
+        before = {"goal": copy.deepcopy(session.agent.state["goal"]), "armed": bool(session.agent.state["goal_armed"])}
+        await session.run("continue")
+        first = count
+        await session.agent._exec_tool(ToolCall("goal_resume", {"revision": 5}, "resume"), run_context=contexts["human"])
+        await session.run("continue", run_context=contexts["human"])
+        after = {"goal": copy.deepcopy(session.agent.state["goal"]), "armed": bool(session.agent.state["goal_armed"])}
+        await m.stop()
+        store.close()
+        return {"before": before, "after": after, "untrusted_requests": first, "human_requests": count-first}
+    async def run():
+        return [await scenario(mode) for mode in ("auto", "readonly")], [await loop(v) for v in (False, True)], await restore()
+    cases, loops, restored = asyncio.run(run())
+    root = scratch / "http"
+    root.mkdir()
+    m = SessionManager(settings(root), FakeAsyncAnthropic())
+    session = m.create(owner="alice")
+    app = create_app(settings=settings(root), manager=m)
+    http = []
+    with TestClient(app) as client:
+        app.state.auth = TokenAuth({"token-a": "alice", "token-b": "bob"})
+        for name, token, sid in [("owned", "token-a", session.id), ("foreign", "token-b", session.id),
+                                 ("missing", "token-a", "missing"), ("unauthenticated", "", session.id)]:
+            response = client.get(f"/sessions/{sid}/goal", headers={"Authorization": f"Bearer {token}"} if token else {})
+            body = response.json()
+            if "session" in body: body["session"] = "session-fixture"
+            if isinstance(body.get("detail"), str): body["detail"] = body["detail"].replace(session.id, "session-fixture")
+            http.append({"name": name, "token": token, "session": "missing" if sid == "missing" else "session-fixture",
+                         "status": response.status_code, "body": body})
+    return {"schemas": registry.schemas(),
+        "metadata": [{"name": t.name, "risk": t.risk, "readonly": t.readonly, "parallel_safe": t.parallel_safe,
+                      "capabilities": sorted(t.capabilities)} for t in registry._tools.values()],
+        "variants": variants, "cases": cases, "loops": loops, "restored": restored, "http": http,
+        "clear_fold": fold_goal([{"type": "goal_change", "operation": "create", "goal": restored["before"]["goal"]},
+                                 {"type": "goal_change", "operation": "clear"}]),
+        "source_sha256": {n: hashlib.sha256((PYTHON_ROOT / "mini_loop" / n).read_bytes()).hexdigest()
+                          for n in ("goals.py", "permissions.py", "agent.py", "session.py", "server.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4617,6 +4781,7 @@ def _snapshot() -> dict[str, bytes]:
         scheduled_restore_contracts = _scheduled_restore_contracts(Path(scratch) / "scheduled-restore")
         event_catchup_contracts = _event_catchup_contracts(Path(scratch) / "event-catchup")
         plan_mode_contracts = _plan_mode_contracts(Path(scratch) / "plan-mode")
+        goal_contracts = _goal_contracts(Path(scratch) / "goals")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -4683,6 +4848,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-event-catchup.json": _json_bytes(event_catchup_contracts),
         "python-transcript.json": _json_bytes(transcript_contracts),
         "python-plan-mode.json": _json_bytes(plan_mode_contracts),
+        "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

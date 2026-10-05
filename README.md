@@ -308,7 +308,9 @@ plus lazy stable-identity cron restoration with bound/factory workspace selectio
 plus owner-scoped bounded event-store SSE catch-up with distinct ordinal/sequence types,
 plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
-reviewed **2026-10-06** (Go baseline `31cbc44` plus the plan-mode slice).
+plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
+and disarmed log restoration,
+reviewed **2026-10-06** (Go baseline `f30cbfd` plus the goal slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -362,7 +364,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback"]
+        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback<br/>default goal stop · bounded continuation"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
@@ -398,7 +400,7 @@ flowchart LR
         GoCronRunner -->|fresh untrusted serialized turn| GoManaged
         GoCronRunner -. stable identity lookup / restore .-> GoManager
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
-        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional persistent task tools · masked file graph<br/>snapshot · digest check · deferred summary"]
+        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
         GoEntry -->|public static documents| GoBrowser
@@ -485,9 +487,20 @@ fault or cancellation retains planning. Nil uses Python's headless auto-approval
 implied by that flag. Forks start inactive. Selected child handlers own fresh
 state; default role profiles omit these capability-free tools. Stored-event SSE
 and trajectories carry the boolean event, and injected-store restore reloads it
-without starting a turn or recovering reviewer authority. Native SQL restart,
-goals and the combined feature bundle remain open.
+without starting a turn or recovering reviewer authority. Native SQL restart and
+the combined feature bundle remain open.
 See [Go plan mode](go/README.md#plan-mode-tools-and-logged-guidance).
+
+The five Go goal tools are individually selected by `GoalTools` or `--goal-tools`.
+Create/resume require caller-stamped explicit human provenance; authenticated
+HTTP, cron and peer turns do not provide it. Complete/block use revision CAS.
+The default stateless `GoalContinuation` stop hook requests bounded continuation
+and blocks at the cap. An explicit StopHooks list replaces it; an empty list
+turns the consumer off. Goal records are per-session facts, with detached owned
+`GET /sessions/{id}/goal` projection. Concrete `goal_change` snapshots reach
+capture/trajectory/SSE; restore folds them but always disarms. Forks and selected
+children start fresh. No native SQLite durability is implied by injected-store
+restoration. See [Go goals](go/README.md#goal-tools-and-bounded-continuation).
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,

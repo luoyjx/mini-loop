@@ -13,6 +13,22 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return "", err
 	}
 	switch input.Name() {
+	case ToolGoalCreate:
+		v := input.createGoal
+		return PythonJSON(struct {
+			MaxRounds *wireOptional[int] `json:"max_rounds,omitempty"`
+			Objective string             `json:"objective"`
+		}{optionalWire(v.MaxRounds, input.nulls.GoalMaxRounds), v.Objective}, false, compact)
+	case ToolGoalBlock:
+		v := input.blockGoal
+		return PythonJSON(struct {
+			Code     string       `json:"code"`
+			Message  string       `json:"message"`
+			Revision GoalRevision `json:"revision"`
+		}{v.Code, v.Message, v.Revision}, false, compact)
+	case ToolGoalStatus, ToolGoalComplete, ToolGoalResume:
+		return PythonJSON(input, false, compact)
+
 	case ToolScheduleCron:
 		v := input.scheduleCron
 		return PythonJSON(struct {

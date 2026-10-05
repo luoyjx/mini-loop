@@ -199,6 +199,7 @@ func (detector DefaultStuckDetector) Inspect(state StuckState) (*StuckSignal, er
 // StopHook can request another tool-less round. An empty continuation is valid.
 // It receives a snapshot and cannot enter the locked session recursively.
 type StopContext struct {
+	session   *Session
 	Authority ToolAuthority
 	Messages  []protocol.Message
 	LastText  string

@@ -15,6 +15,11 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolGoalCreate:
+		input.createGoal.Objective = mask(input.createGoal.Objective)
+	case ToolGoalBlock:
+		input.blockGoal.Code = mask(input.blockGoal.Code)
+		input.blockGoal.Message = mask(input.blockGoal.Message)
 	case ToolExitPlanMode:
 		input.exitPlanMode.Plan = mask(input.exitPlanMode.Plan)
 	case ToolScheduleCron:

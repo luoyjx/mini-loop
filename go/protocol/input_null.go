@@ -17,6 +17,7 @@ func (field *nullField) UnmarshalJSON(data []byte) error {
 }
 
 type inputNullFields struct {
+	GoalMaxRounds     nullField `json:"max_rounds"`
 	CronRecurring     nullField `json:"recurring"`
 	CronDurable       nullField `json:"durable"`
 	BackgroundTimeout nullField `json:"timeout"`
@@ -50,6 +51,12 @@ func (input ToolInput) marshalOptionalJSON() ([]byte, error) {
 		return nil, err
 	}
 	switch input.name {
+	case ToolGoalCreate:
+		v := input.createGoal
+		return json.Marshal(struct {
+			Objective string             `json:"objective"`
+			MaxRounds *wireOptional[int] `json:"max_rounds,omitempty"`
+		}{v.Objective, optionalWire(v.MaxRounds, input.nulls.GoalMaxRounds)})
 	case ToolBackgroundRun:
 		v := input.backgroundRun
 		return json.Marshal(struct {

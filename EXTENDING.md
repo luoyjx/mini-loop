@@ -319,11 +319,13 @@ the first `on_stop` continuation keeps the loop alive. Hooks apply to
 subagents too. Keep hooks stateless (or guard their state) since one `Hooks`
 instance is shared across concurrent sessions.
 
-The default chain contains `PermissionHook`: an immutable command deny-list,
+The default chain contains `GoalContinuation` (inert without an armed goal) and
+`PermissionHook`: an immutable command deny-list,
 ordered `PermissionRule`s, and an optional async approval callback. With no UI
 callback, an `ask` decision fails closed. Passing an explicit `Hooks(...)`
 chain replaces the default, so include `PermissionHook` when a custom fleet
-still needs the standard policy.
+still needs the standard policy and `GoalContinuation` when it needs goal
+continuation.
 
 ---
 
@@ -1542,6 +1544,27 @@ explicitly selected children bind independent state and the supplied callback.
 The default role policy excludes these tools, whose source capabilities are empty.
 Like source, the restore fold consumes all logged plan events, including child
 scopes; this guidance state does not change effect permissions.
+
+### Go goal seam
+
+Select `RuntimeConfig.GoalTools`, `ManagerServices.GoalTools`,
+`launcher.Options.GoalTools` or `--goal-tools` to add the five named goal inputs.
+All mutations cross the existing gate and use session-bound typed state;
+`goal_status` is readonly. Create/resume require `ExplicitHumanRunContext` from a
+trusted embedding caller. HTTP authentication alone does not stamp this authority;
+model input never supplies it. A goal continuation keeps the source turn's
+provenance; a child derives peer provenance and cannot arm itself.
+
+Nil `StopHooks` selects the default stateless `GoalContinuation`; a nonnil list
+replaces it, including an empty list. Put `GoalContinuation{}` in a custom list
+when continuation is wanted. Shared hooks receive a detached public StopContext;
+the built-in consumer uses a private live session binding. Hook order is meaningful:
+the first continuation wins. The goal counter counts requested continuation before
+stuck/global round-limit decisions, as source does. Read `GoalSnapshot` during
+callbacks without reentering a turn. Returned blocked pointers are detached.
+`goal_change` whole snapshots fold on restore, including clear tombstones and
+pending lease reload; activation is always false. There is no edit/clear tool or
+HTTP arming route. Source cap text mentions `goal_edit`, which is not installed.
 
 ## Concurrency & safety
 

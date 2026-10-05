@@ -34,6 +34,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	goals                                             goalState
 	planMode                                          atomic.Bool
 	planApprover                                      PlanApprover
 	persistence                                       *sessionPersistence
@@ -123,6 +124,7 @@ func NewSessionWithGate(id SessionID, owner OwnerID, provider Provider, gate *To
 		return nil, errors.New("session requires id, owner, provider, tool gate, valid mode, and positive maxRounds")
 	}
 	session := &Session{id: id, owner: owner, provider: provider, gate: gate, mode: mode, workspace: workspace, maxRounds: maxRounds, events: &sessionEvents{}, model: DefaultModel, maxTokens: DefaultMaxTokens, tokenThreshold: DefaultTokenThreshold, systemBuilder: DefaultSystemBuilder{}, compactor: InMemoryCompactor{DefaultTokenThreshold, 50}}
+	session.stopHooks = []StopHook{GoalContinuation{}}
 	session.recovery, _ = NewDefaultRecovery(RecoveryConfig{})
 	session.streamProgress = streamProgress(StreamProgressConfig{})
 	session.cachePolicy, session.stuckDetector = NewDefaultCachePolicy(), NewDefaultStuckDetector()
@@ -364,7 +366,7 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			s.publishLive()
 			var continuation *string
 			for _, hook := range s.stopHooks {
-				continuation, err = hook.Stop(ctx, StopContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, Messages: append([]protocol.Message(nil), s.messages...), LastText: lastText})
+				continuation, err = hook.Stop(ctx, StopContext{session: s, Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, Messages: append([]protocol.Message(nil), s.messages...), LastText: lastText})
 				if err != nil {
 					return "", err
 				}

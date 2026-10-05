@@ -8,6 +8,11 @@ import (
 )
 
 const (
+	ToolGoalCreate      ToolName = "goal_create"
+	ToolGoalStatus      ToolName = "goal_status"
+	ToolGoalComplete    ToolName = "goal_complete"
+	ToolGoalBlock       ToolName = "goal_block"
+	ToolGoalResume      ToolName = "goal_resume"
 	ToolEnterPlanMode   ToolName = "enter_plan_mode"
 	ToolExitPlanMode    ToolName = "exit_plan_mode"
 	ToolScheduleCron    ToolName = "schedule_cron"
@@ -126,6 +131,9 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
+	createGoal      CreateGoalInput
+	goalRef         GoalReferenceInput
+	blockGoal       BlockGoalInput
 	exitPlanMode    ExitPlanModeInput
 	name            ToolName
 	nulls           inputNullFields
@@ -310,6 +318,8 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() { result.nulls = input.nulls }()
 	switch input.name {
+	case ToolGoalCreate:
+		return CreateGoalToolInput(input.createGoal)
 	case ToolScheduleCron:
 		return ScheduleCronToolInput(input.scheduleCron)
 	case ToolBackgroundRun:
@@ -344,7 +354,7 @@ func (input ToolInput) clone() (result ToolInput) {
 
 func (input ToolInput) Validate() error {
 	switch input.name {
-	case ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
+	case ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
 		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
 		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
 		return nil
@@ -372,7 +382,7 @@ func (input ToolInput) Validate() error {
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
 	switch input.name {
-	case ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask, ToolCreateWorktree, ToolRemoveWorktree:
+	case ToolGoalCreate, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask, ToolCreateWorktree, ToolRemoveWorktree:
 		return input.marshalOptionalJSON()
 	}
 	if err := input.Validate(); err != nil {
@@ -399,11 +409,15 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 		return json.Marshal(input.compress)
 	case ToolScheduleCron:
 		return json.Marshal(input.scheduleCron)
+	case ToolGoalComplete, ToolGoalResume:
+		return json.Marshal(input.goalRef)
+	case ToolGoalBlock:
+		return json.Marshal(input.blockGoal)
 	case ToolExitPlanMode:
 		return json.Marshal(input.exitPlanMode)
 	case ToolCancelCron:
 		return json.Marshal(input.cancelCron)
-	case ToolEnterPlanMode, ToolListCrons, ToolListTasks, ToolListWorktrees:
+	case ToolGoalStatus, ToolEnterPlanMode, ToolListCrons, ToolListTasks, ToolListWorktrees:
 		return []byte("{}"), nil
 	case ToolKeepWorktree, ToolEnterWorktree:
 		return json.Marshal(input.worktreeName)
@@ -434,6 +448,49 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolGoalCreate:
+		var wire struct {
+			Objective *string `json:"objective"`
+			MaxRounds *int    `json:"max_rounds"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Objective == nil {
+			return result, errors.New("goal_create requires objective")
+		}
+		result = CreateGoalToolInput(CreateGoalInput{Objective: *wire.Objective, MaxRounds: wire.MaxRounds})
+	case ToolGoalStatus:
+		var wire struct{}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		result = GoalStatusToolInput()
+	case ToolGoalComplete, ToolGoalResume:
+		var wire struct {
+			Revision *GoalRevision `json:"revision"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Revision == nil {
+			return result, errors.New("goal reference requires revision")
+		}
+		result = ToolInput{name: name, goalRef: GoalReferenceInput{Revision: *wire.Revision}}
+	case ToolGoalBlock:
+		var wire struct {
+			Revision *GoalRevision `json:"revision"`
+			Code     *string       `json:"code"`
+			Message  *string       `json:"message"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Revision == nil || wire.Code == nil || wire.Message == nil {
+			return result, errors.New("goal_block requires revision, code and message")
+		}
+		result = BlockGoalToolInput(BlockGoalInput{Revision: *wire.Revision, Code: *wire.Code, Message: *wire.Message})
+
 	case ToolEnterPlanMode:
 		var wire struct{}
 		if err := decodeToolObject(data, &wire); err != nil {

@@ -21,6 +21,16 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	if g := event.goalChange.Goal; g != nil {
+		g.ID = GoalID(mask(string(g.ID)))
+		g.Objective = mask(g.Objective)
+		g.Phase = GoalPhase(mask(string(g.Phase)))
+		if g.Blocked != nil {
+			g.Blocked.Code = GoalBlockCode(mask(string(g.Blocked.Code)))
+			g.Blocked.Message = mask(g.Blocked.Message)
+		}
+	}
+
 	event.sessionForked.Child = SessionID(mask(string(event.sessionForked.Child)))
 	event.runError.detail = mask(event.runError.detail)
 	event.recovery.Error = mask(event.recovery.Error)

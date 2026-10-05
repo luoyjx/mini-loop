@@ -271,6 +271,7 @@ func validateRestoreRecord(row SessionRecord) error {
 }
 
 type restoredState struct {
+	goal     *GoalRecord
 	planMode bool
 	record   SessionRecord
 	messages []protocol.Message
@@ -339,6 +340,13 @@ func (p *sessionPersistence) loadRestoreLocked(ctx context.Context, row SessionR
 		if v, ok := event.Event.PlanMode(); ok {
 			snapshot.planMode = v.Active
 		}
+		if v, ok := event.Event.GoalChange(); ok {
+			if v.Operation == GoalClearOperation {
+				snapshot.goal = nil
+			} else {
+				snapshot.goal = v.Goal
+			}
+		}
 		snapshot.next = max(snapshot.next, event.Sequence)
 	}
 	return snapshot, nil
@@ -357,6 +365,10 @@ func (p *sessionPersistence) applyRestoreLocked(snapshot restoredState) {
 	s.runCount = snapshot.record.RunCount
 	s.status = snapshot.record.Status
 	s.mu.Unlock()
+	s.core.goals.mu.Lock()
+	s.core.goals.current = snapshot.goal
+	s.core.goals.armed = false
+	s.core.goals.mu.Unlock()
 	s.core.planMode.Store(snapshot.planMode)
 	s.core.messages = snapshot.messages
 	s.core.publishLive()

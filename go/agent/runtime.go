@@ -54,6 +54,7 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	GoalTools            bool
 	PlanModeTools        bool
 	PlanApprover         PlanApprover
 	StateStore           StateStore
@@ -161,6 +162,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolGoalCreate, protocol.ToolGoalStatus, protocol.ToolGoalComplete, protocol.ToolGoalBlock, protocol.ToolGoalResume:
+		return handler.executeGoal(ctx, authority, input)
 	case protocol.ToolEnterPlanMode, protocol.ToolExitPlanMode:
 		return handler.executePlanMode(ctx, authority, input)
 	case protocol.ToolScheduleCron, protocol.ToolListCrons, protocol.ToolCancelCron:
@@ -340,6 +343,19 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 			}
 		}
 	}
+	if config.GoalTools {
+		for _, schema := range protocol.GoalSchemas() {
+			traits := ToolTraits{Risk: RiskWrite}
+			if schema.Name == protocol.ToolGoalStatus {
+				traits = ToolTraits{Risk: RiskRead, Readonly: true}
+			}
+			definition, err := NewToolDefinitionWithSchema(schema, traits, handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
+		}
+	}
 	if config.PlanModeTools {
 		for _, schema := range protocol.PlanModeSchemas() {
 			definition, err := NewToolDefinitionWithSchema(schema, ToolTraits{Risk: RiskRead, Readonly: true}, handler)
@@ -428,7 +444,9 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if config.StuckDetector != nil {
 		session.stuckDetector = config.StuckDetector
 	}
-	session.stopHooks = append([]StopHook(nil), config.StopHooks...)
+	if config.StopHooks != nil {
+		session.stopHooks = append([]StopHook(nil), config.StopHooks...)
+	}
 	session.promptHooks = append([]UserPromptHook(nil), config.UserPromptHooks...)
 	session.injectors = append([]MessageInjector(nil), config.Injectors...)
 	session.modelLimiter = config.ModelLimiter

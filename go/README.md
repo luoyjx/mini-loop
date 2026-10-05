@@ -1040,6 +1040,48 @@ event-before-request persistence, failure/cancellation, masked feedback, owner
 binding, fresh forks/children and local TCP launcher composition. Runtime storage
 tests use injected memory backings; native SQLite and SQL restart remain pending.
 
+### Goal tools and bounded continuation
+
+Select `RuntimeConfig.GoalTools`, `ManagerServices.GoalTools`,
+`launcher.Options.GoalTools` or `--goal-tools`. The five tools are `goal_create`,
+`goal_status`, `goal_complete`, `goal_block` and `goal_resume`; the default catalog
+remains ten. Inputs, revisions, phases, reasons and logged snapshots are concrete
+types. Signed 64-bit revisions fail on overflow; provider JSON is strict, unlike
+Python's coercions and unbounded integers. Omitted/null/zero max_rounds use ten;
+valid caps are 1–100. Goal codes preserve actual Python acceptance of repeated
+or trailing hyphens and one trailing newline, despite the lower-kebab-case label.
+
+Create/resume require explicit human authority stamped by a trusted caller via
+`ExplicitHumanRunContext`. Normal HTTP authentication, cron and child delegation
+remain untrusted/peer. Other mutations use revision CAS without arming. Refusals
+are textual results with source `failed=false`; permission denials remain denied.
+A completed goal can be blocked again, matching the shipped source behavior.
+The source ships no edit/clear/pause tools; clear remains a restore tombstone.
+Cap exhaustion text still refers to the source's nonexistent `goal_edit` tool.
+
+Nil StopHooks installs the stateless default `GoalContinuation`, inert until
+an active goal is armed. Any nonnil list replaces it, including an empty list.
+Custom lists may include `GoalContinuation{}`. Only stop-sourced continuation
+consumes budget; tool rounds do not. Counts increment before stuck/global-loop
+limit decisions, so they count requested continuations rather than guaranteed
+model requests. Continuations retain the current source turn's RunContext.
+
+`Session.GoalSnapshot` and `ManagedSession.GoalSnapshot` detach state for readers.
+Owned GET `/sessions/{session_id}/goal` returns goal, goal_armed and plan_mode;
+it never arms or starts a turn. Registered secrets mask the HTTP/event projections
+while live state retains original text. Whole `goal_change` snapshots reach
+trajectories and configured capture/SSE. Restore folds all logged scopes and
+clear tombstones; it always disarms, including pending claim reload. Forks and
+selected children own fresh goals; default role policy excludes capability-free
+goal tools. An explicitly selected child still has peer authority.
+
+Snapshot 51 compares 46 actual gate calls and six direct stop calls across Auto
+and Readonly, the default/custom actual Agent loop, real Python SQLite restore
+and resumed requests, and four owner/auth HTTP views. Go tests CAS concurrency,
+stop replacement, bounded model requests, event-before-request capture, disarmed
+restore/reload, detached masking, fresh child/fork state and real TCP launcher
+selection/refusal. Memory test backings do not prove Go SQLite durability.
+
 ### Operator worktree lifecycle
 
 `worktrees.New(worktrees.Config{Repository: repo})` provides named worktree and
@@ -1178,7 +1220,7 @@ retains that responsibility.
 Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
 to development; Config.FakeLLM is explicit rather than inferred from a provider.
 The basic health response omits full effective posture and source build hashing.
-Twenty-seven method/path combinations cover create/list/detail/delete, completed message,
+Twenty-eight method/path combinations cover create/list/detail/delete, completed message,
 streamed message, cancel, approval list/resolve, event subscription and Null-store
 transcript, public `/` and `/ui` shells, owned Tasks view, plus health, mode, steer, fork and five trajectory read/view/export operations. Foreign and missing sessions both return 404; non-streaming
 messages reject busy turns atomically. Streamed messages queue; disconnect cancels

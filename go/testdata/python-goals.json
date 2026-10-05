@@ -1,0 +1,2459 @@
+{
+  "cases": [
+    {
+      "mode": "auto",
+      "steps": [
+        {
+          "armed": false,
+          "authority": "untrusted",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {},
+          "name": "goal_status",
+          "output": "No current goal."
+        },
+        {
+          "armed": false,
+          "authority": "untrusted",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "objective": "é"
+          },
+          "name": "goal_create",
+          "output": "Error: goal_create and goal_resume require explicit human authority; this run is not carrying it"
+        },
+        {
+          "armed": false,
+          "authority": "peer",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "objective": "é"
+          },
+          "name": "goal_create",
+          "output": "Error: goal_create and goal_resume require explicit human authority; this run is not carrying it"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 1
+          },
+          "name": "goal_complete",
+          "output": "Error: no current goal"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "max_rounds": -1,
+            "objective": "bad"
+          },
+          "name": "goal_create",
+          "output": "Error: max_rounds must be 1..100"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "max_rounds": 101,
+            "objective": "bad"
+          },
+          "name": "goal_create",
+          "output": "Error: max_rounds must be 1..100"
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "active",
+            "revision": 1,
+            "rounds_started": 0
+          },
+          "input": {
+            "max_rounds": 2,
+            "objective": "finish é"
+          },
+          "name": "goal_create",
+          "output": "goal <goal1> rev 1: active (armed)\nobjective: finish é\nrounds: 0/2"
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "active",
+            "revision": 1,
+            "rounds_started": 0
+          },
+          "input": {
+            "objective": "second"
+          },
+          "name": "goal_create",
+          "output": "Error: a goal already exists in phase 'active' (rev 1); complete, block, or clear it first"
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "active",
+            "revision": 1,
+            "rounds_started": 0
+          },
+          "input": {
+            "revision": -1
+          },
+          "name": "goal_complete",
+          "output": "Error: stale revision -1; the goal is at revision 1. Read goal_status and retry with the current revision."
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "active",
+            "revision": 1,
+            "rounds_started": 0
+          },
+          "input": {
+            "code": "Bad",
+            "message": "reason",
+            "revision": 1
+          },
+          "name": "goal_block",
+          "output": "Error: code must be stable lower-kebab-case (e.g. needs-credentials)"
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "active",
+            "revision": 1,
+            "rounds_started": 0
+          },
+          "input": {
+            "code": "needs-input",
+            "message": "\u001c ",
+            "revision": 1
+          },
+          "name": "goal_block",
+          "output": "Error: a blocked goal needs a human-readable message"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": {
+              "code": "needs--input-\n",
+              "message": "need é"
+            },
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "blocked",
+            "revision": 2,
+            "rounds_started": 0
+          },
+          "input": {
+            "code": "needs--input-\n",
+            "message": "\u001c need é \u001f",
+            "revision": 1
+          },
+          "name": "goal_block",
+          "output": "goal <goal1> rev 2: blocked (disarmed)\nobjective: finish é\nrounds: 0/2\nblocked [needs--input-\n]: need é"
+        },
+        {
+          "armed": false,
+          "authority": "untrusted",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": {
+              "code": "needs--input-\n",
+              "message": "need é"
+            },
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "blocked",
+            "revision": 2,
+            "rounds_started": 0
+          },
+          "input": {
+            "revision": 2
+          },
+          "name": "goal_resume",
+          "output": "Error: goal_create and goal_resume require explicit human authority; this run is not carrying it"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": {
+              "code": "needs--input-\n",
+              "message": "need é"
+            },
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "blocked",
+            "revision": 2,
+            "rounds_started": 0
+          },
+          "input": {
+            "revision": 1
+          },
+          "name": "goal_resume",
+          "output": "Error: stale revision 1; the goal is at revision 2. Read goal_status and retry with the current revision."
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "active",
+            "revision": 3,
+            "rounds_started": 0
+          },
+          "input": {
+            "revision": 2
+          },
+          "name": "goal_resume",
+          "output": "goal <goal1> rev 3: active (armed)\nobjective: finish é\nrounds: 0/2"
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "active",
+            "revision": 4,
+            "rounds_started": 1
+          },
+          "input": {},
+          "name": "stop",
+          "output": "[Goal round 1/2] Objective: finish é\nContinue working toward it. Call goal_complete (with the current revision) when it is finished, or goal_block if you cannot proceed."
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "active",
+            "revision": 5,
+            "rounds_started": 2
+          },
+          "input": {},
+          "name": "stop",
+          "output": "[Goal round 2/2] Objective: finish é\nContinue working toward it. Call goal_complete (with the current revision) when it is finished, or goal_block if you cannot proceed."
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "round-cap-exhausted",
+                  "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 6,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": {
+              "code": "round-cap-exhausted",
+              "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+            },
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "blocked",
+            "revision": 6,
+            "rounds_started": 2
+          },
+          "input": {},
+          "name": "stop",
+          "output": null
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "round-cap-exhausted",
+                  "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 6,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": {
+              "code": "round-cap-exhausted",
+              "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+            },
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "blocked",
+            "revision": 6,
+            "rounds_started": 2
+          },
+          "input": {
+            "revision": 6
+          },
+          "name": "goal_resume",
+          "output": "Error: the round budget is exhausted; raise max_rounds via a new goal"
+        },
+        {
+          "armed": false,
+          "authority": "untrusted",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "round-cap-exhausted",
+                  "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 6,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 7,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "complete",
+            "revision": 7,
+            "rounds_started": 2
+          },
+          "input": {
+            "revision": 6
+          },
+          "name": "goal_complete",
+          "output": "goal <goal1> rev 7: complete (disarmed)\nobjective: finish é\nrounds: 2/2"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "round-cap-exhausted",
+                  "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 6,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 7,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "complete",
+            "revision": 7,
+            "rounds_started": 2
+          },
+          "input": {
+            "revision": 7
+          },
+          "name": "goal_complete",
+          "output": "Error: the goal is already complete"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "round-cap-exhausted",
+                  "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 6,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 7,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "complete",
+            "revision": 7,
+            "rounds_started": 2
+          },
+          "input": {
+            "revision": 7
+          },
+          "name": "goal_resume",
+          "output": "Error: a completed goal is finished; create a new one"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "round-cap-exhausted",
+                  "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 6,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 7,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs-input",
+                  "message": "complete can be blocked"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 8,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": {
+              "code": "needs-input",
+              "message": "complete can be blocked"
+            },
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "blocked",
+            "revision": 8,
+            "rounds_started": 2
+          },
+          "input": {
+            "code": "needs-input",
+            "message": "complete can be blocked",
+            "revision": 7
+          },
+          "name": "goal_block",
+          "output": "goal <goal1> rev 8: blocked (disarmed)\nobjective: finish é\nrounds: 2/2\nblocked [needs-input]: complete can be blocked"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "round-cap-exhausted",
+                  "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 6,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 7,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs-input",
+                  "message": "complete can be blocked"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 8,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 9,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal1>",
+            "max_rounds": 2,
+            "objective": "finish é",
+            "phase": "complete",
+            "revision": 9,
+            "rounds_started": 2
+          },
+          "input": {
+            "revision": 8
+          },
+          "name": "goal_complete",
+          "output": "goal <goal1> rev 9: complete (disarmed)\nobjective: finish é\nrounds: 2/2"
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "round-cap-exhausted",
+                  "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 6,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 7,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs-input",
+                  "message": "complete can be blocked"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 8,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 9,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal2>",
+                "max_rounds": 10,
+                "objective": "",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal2>",
+            "max_rounds": 10,
+            "objective": "",
+            "phase": "active",
+            "revision": 1,
+            "rounds_started": 0
+          },
+          "input": {
+            "max_rounds": 0,
+            "objective": ""
+          },
+          "name": "goal_create",
+          "output": "goal <goal2> rev 1: active (armed)\nobjective: \nrounds: 0/10"
+        },
+        {
+          "armed": true,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs--input-\n",
+                  "message": "need é"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 2,
+                "rounds_started": 0
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 3,
+                "rounds_started": 0
+              },
+              "operation": "resume"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 4,
+                "rounds_started": 1
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "active",
+                "revision": 5,
+                "rounds_started": 2
+              },
+              "operation": "round"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "round-cap-exhausted",
+                  "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 6,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 7,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            },
+            {
+              "goal": {
+                "blocked": {
+                  "code": "needs-input",
+                  "message": "complete can be blocked"
+                },
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "blocked",
+                "revision": 8,
+                "rounds_started": 2
+              },
+              "operation": "block"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal1>",
+                "max_rounds": 2,
+                "objective": "finish é",
+                "phase": "complete",
+                "revision": 9,
+                "rounds_started": 2
+              },
+              "operation": "complete"
+            },
+            {
+              "goal": {
+                "blocked": null,
+                "id": "<goal2>",
+                "max_rounds": 10,
+                "objective": "",
+                "phase": "active",
+                "revision": 1,
+                "rounds_started": 0
+              },
+              "operation": "create"
+            }
+          ],
+          "failed": false,
+          "goal": {
+            "blocked": null,
+            "id": "<goal2>",
+            "max_rounds": 10,
+            "objective": "",
+            "phase": "active",
+            "revision": 1,
+            "rounds_started": 0
+          },
+          "input": {},
+          "name": "goal_status",
+          "output": "goal <goal2> rev 1: active (armed)\nobjective: \nrounds: 0/10"
+        }
+      ]
+    },
+    {
+      "mode": "readonly",
+      "steps": [
+        {
+          "armed": false,
+          "authority": "untrusted",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {},
+          "name": "goal_status",
+          "output": "No current goal."
+        },
+        {
+          "armed": false,
+          "authority": "untrusted",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "objective": "é"
+          },
+          "name": "goal_create",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "peer",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "objective": "é"
+          },
+          "name": "goal_create",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 1
+          },
+          "name": "goal_complete",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "max_rounds": -1,
+            "objective": "bad"
+          },
+          "name": "goal_create",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "max_rounds": 101,
+            "objective": "bad"
+          },
+          "name": "goal_create",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "max_rounds": 2,
+            "objective": "finish é"
+          },
+          "name": "goal_create",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "objective": "second"
+          },
+          "name": "goal_create",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": -1
+          },
+          "name": "goal_complete",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "code": "Bad",
+            "message": "reason",
+            "revision": 1
+          },
+          "name": "goal_block",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "code": "needs-input",
+            "message": "\u001c ",
+            "revision": 1
+          },
+          "name": "goal_block",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "code": "needs--input-\n",
+            "message": "\u001c need é \u001f",
+            "revision": 1
+          },
+          "name": "goal_block",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "untrusted",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 2
+          },
+          "name": "goal_resume",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 1
+          },
+          "name": "goal_resume",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 2
+          },
+          "name": "goal_resume",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {},
+          "name": "stop",
+          "output": null
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {},
+          "name": "stop",
+          "output": null
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {},
+          "name": "stop",
+          "output": null
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 6
+          },
+          "name": "goal_resume",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "untrusted",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 6
+          },
+          "name": "goal_complete",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 7
+          },
+          "name": "goal_complete",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 7
+          },
+          "name": "goal_resume",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "code": "needs-input",
+            "message": "complete can be blocked",
+            "revision": 7
+          },
+          "name": "goal_block",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "revision": 8
+          },
+          "name": "goal_complete",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": true,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {
+            "max_rounds": 0,
+            "objective": ""
+          },
+          "name": "goal_create",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "armed": false,
+          "authority": "human",
+          "catalog_stable": true,
+          "denied": false,
+          "events": [],
+          "failed": false,
+          "goal": null,
+          "input": {},
+          "name": "goal_status",
+          "output": "No current goal."
+        }
+      ]
+    }
+  ],
+  "clear_fold": null,
+  "http": [
+    {
+      "body": {
+        "goal": null,
+        "goal_armed": false,
+        "plan_mode": false,
+        "session": "session-fixture"
+      },
+      "name": "owned",
+      "session": "session-fixture",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": "No session 'session-fixture'"
+      },
+      "name": "foreign",
+      "session": "session-fixture",
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "body": {
+        "detail": "No session 'missing'"
+      },
+      "name": "missing",
+      "session": "missing",
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": "a bearer token is required"
+      },
+      "name": "unauthenticated",
+      "session": "session-fixture",
+      "status": 401,
+      "token": ""
+    }
+  ],
+  "loops": [
+    {
+      "armed": false,
+      "custom": false,
+      "goal": {
+        "blocked": {
+          "code": "round-cap-exhausted",
+          "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+        },
+        "id": "goal_saved",
+        "max_rounds": 2,
+        "objective": "finish",
+        "phase": "blocked",
+        "revision": 4,
+        "rounds_started": 2
+      },
+      "requests": 3
+    },
+    {
+      "armed": true,
+      "custom": true,
+      "goal": {
+        "blocked": null,
+        "id": "goal_saved",
+        "max_rounds": 2,
+        "objective": "finish",
+        "phase": "active",
+        "revision": 1,
+        "rounds_started": 0
+      },
+      "requests": 1
+    }
+  ],
+  "metadata": [
+    {
+      "capabilities": [],
+      "name": "goal_create",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    },
+    {
+      "capabilities": [],
+      "name": "goal_status",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read"
+    },
+    {
+      "capabilities": [],
+      "name": "goal_complete",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    },
+    {
+      "capabilities": [],
+      "name": "goal_block",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    },
+    {
+      "capabilities": [],
+      "name": "goal_resume",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    }
+  ],
+  "restored": {
+    "after": {
+      "armed": false,
+      "goal": {
+        "blocked": {
+          "code": "round-cap-exhausted",
+          "message": "the goal used all 2 continuation rounds without completing; a human can raise the cap with goal_edit and resume"
+        },
+        "id": "goal_saved",
+        "max_rounds": 2,
+        "objective": "finish",
+        "phase": "blocked",
+        "revision": 8,
+        "rounds_started": 2
+      }
+    },
+    "before": {
+      "armed": false,
+      "goal": {
+        "blocked": null,
+        "id": "goal_saved",
+        "max_rounds": 2,
+        "objective": "finish",
+        "phase": "active",
+        "revision": 5,
+        "rounds_started": 1
+      }
+    },
+    "human_requests": 2,
+    "untrusted_requests": 1
+  },
+  "schemas": [
+    {
+      "description": "Create and arm this session's completion goal.",
+      "input_schema": {
+        "properties": {
+          "max_rounds": {
+            "description": "Continuation round cap.",
+            "type": "integer"
+          },
+          "objective": {
+            "description": "The completion objective.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "objective"
+        ],
+        "type": "object"
+      },
+      "name": "goal_create"
+    },
+    {
+      "description": "Read the current goal, its phase, revision and round budget.",
+      "input_schema": {
+        "properties": {},
+        "type": "object"
+      },
+      "name": "goal_status"
+    },
+    {
+      "description": "Mark the current goal complete (CAS by revision).",
+      "input_schema": {
+        "properties": {
+          "revision": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "revision"
+        ],
+        "type": "object"
+      },
+      "name": "goal_complete"
+    },
+    {
+      "description": "Mark the goal blocked with a stable kebab-case code and an explanation.",
+      "input_schema": {
+        "properties": {
+          "code": {
+            "description": "stable lower-kebab-case classification",
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "revision",
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "name": "goal_block"
+    },
+    {
+      "description": "Resume a paused/blocked goal and re-arm continuation.",
+      "input_schema": {
+        "properties": {
+          "revision": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "revision"
+        ],
+        "type": "object"
+      },
+      "name": "goal_resume"
+    }
+  ],
+  "source_sha256": {
+    "agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "goals.py": "e3307017489576d6dfa168d0215c6463b4da9d73e42f2fd25a95fd533e7dc758",
+    "permissions.py": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+    "server.py": "d24e4a5371b48b0ab95c9f0b6cdf39f121f5684507e40c9426f066d5034cc479",
+    "session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944"
+  },
+  "variants": [
+    {
+      "candidate": [
+        "goal_create"
+      ],
+      "canonical": "{\"objective\":\"é\"}",
+      "input": {
+        "objective": "é"
+      },
+      "name": "goal_create",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "goal_create"
+      ],
+      "canonical": "{\"max_rounds\":null,\"objective\":\"\"}",
+      "input": {
+        "max_rounds": null,
+        "objective": ""
+      },
+      "name": "goal_create",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "goal_create"
+      ],
+      "canonical": "{\"max_rounds\":0,\"objective\":\"é\"}",
+      "input": {
+        "max_rounds": 0,
+        "objective": "é"
+      },
+      "name": "goal_create",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "goal_status"
+      ],
+      "canonical": "{}",
+      "input": {},
+      "name": "goal_status",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "goal_complete"
+      ],
+      "canonical": "{\"revision\":-1}",
+      "input": {
+        "revision": -1
+      },
+      "name": "goal_complete",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "goal_resume"
+      ],
+      "canonical": "{\"revision\":3}",
+      "input": {
+        "revision": 3
+      },
+      "name": "goal_resume",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "goal_block"
+      ],
+      "canonical": "{\"code\":\"needs--input-\",\"message\":\"é\",\"revision\":2}",
+      "input": {
+        "code": "needs--input-",
+        "message": "é",
+        "revision": 2
+      },
+      "name": "goal_block",
+      "proposed": []
+    }
+  ]
+}

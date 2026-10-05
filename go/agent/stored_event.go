@@ -84,6 +84,16 @@ func storedGrant(tokens []string) GrantCandidate {
 func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent, error) {
 	event := SessionEvent{kind: kind}
 	switch kind {
+	case EventGoalChange:
+		v, err := storedPayload[GoalChangeEvent](data)
+		if err != nil {
+			return event, err
+		}
+		if err = v.Validate(); err != nil {
+			return event, err
+		}
+		event.goalChange = v.Clone()
+		return event, nil
 	case EventPlanMode:
 		v, err := storedPayload[struct {
 			Active *bool `json:"active"`
