@@ -111,7 +111,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected-child activation and other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ## 2026-10-02 checkpoint
@@ -2917,5 +2917,118 @@ session/approval/lease restore, durable SSE, provider variants and the G7 audit.
   (671,657 bytes). Exact bytes match the receipt. Visual review remains skipped
   because local HTML access was previously denied; rendered acceptance is not
   claimed. Generated HTML was not hand-edited.
+- README/plan outline and `git diff --check`: pass. Native macOS, Go 1.23.3,
+  Git 2.39.5 (Apple Git-154); Linux remains unvalidated.
+
+
+## 2026-10-05 selected child background ownership slice
+
+Reviewed base: `cf6995b`. Selected child background tools now execute in fresh
+native state and remain reachable by parent lifetime cleanup after child return.
+This completes the planned child ownership part of the background composition;
+G0–G7 remain open and the comprehensive feature bundle remains unavailable.
+
+### Implementation and actual source boundary
+
+- A selected built-in background_run/check_background definition binds a fresh
+  concrete child backgroundState. Check-only catalogues work without exposing
+  foreground Bash; custom handlers retain their own contract. Default capability
+  roles continue to omit these tools and retain native foreground Bash. Explore
+  readonly permission denies execution before constructing its child service.
+- Each child obtains a qualified `bg_<scope>_<counter>` identity. Scope is the
+  full SHA-256 of its freshly derived peer message identity; a named background
+  Scope accepts only 64 lowercase hexadecimal characters. Root IDs/counters stay
+  source-compatible. This is an intentional child-format difference that keeps
+  simultaneous parent, child and sibling records from overwriting one another.
+- The parent initializes its root evidence before admitting selected children.
+  Scoped constructors never adopt the shared root's records, so a child cannot
+  report its live parent's task as an orphan. Queues, checks, counters and model
+  notifications remain local to each scope. Child native execution retains the
+  exact admitted executor's credentials, sandbox/capture and workspace binding.
+- Admitted child tasks keep running after summary return until completion,
+  deadline or owner cleanup. Parents retain the private child scope tree rather
+  than borrowing its manager/queue. CloseBackground requests cancellation for
+  every initialized scope before awaiting any handle; an expired observer can
+  resume joining. Manager delete/stop use this recursive close after turn drain
+  and before scratch reclamation, even when the parent has no tasks of its own.
+- Qualified records use the admitted workspace's existing .background ledger.
+  A fresh root constructor reports them through ordinary orphan adoption, removes
+  adopted evidence and leaves the root numeric counter unchanged. It never
+  controls/replays the PID. Native tests seed exact captured child ledger bytes
+  after a graceful close to model retained crash evidence; this is a disk-record
+  adoption test, not an actual killed-host/restart or fsync proof.
+- Snapshot 40 runs six actual Python children using harness-bound injectors:
+  selected direct/Bash backgrounding, Explore denial, check-only selection,
+  live-parent selected child and live-parent default child. Child IDs alone are
+  normalized to <child-id> for comparisons. Real native markers confirm source
+  parent/child task execution; source module hashes pin the evidence.
+- **Measured source gap:** both live-parent cases adopt bg_0001 as an orphan and
+  unlink its ledger while the parent remains running. Even the default child,
+  whose catalogue has no background tools, inherits that injector via Harness.
+  Selected child work remains live after return with no source child close.
+  Go intentionally keeps parent evidence intact and a reachable lifetime owner;
+  it does not reproduce false orphan adoption or share parent completion queues.
+- Go tests compare schema visibility/output/status/readonly behavior and add
+  scoped ID/ledger/queue isolation, completion injection into child requests,
+  returned child cleanup with an idle parent, nested scope ownership and resumed
+  close. Source background output text remains the same apart from qualified
+  child IDs. No dependency or paid model endpoint was added.
+- README canonical Mermaid adds selected-child-to-background flow. The interactive
+  map aggregates the service under existing components and describes scope/lifetime
+  relationships in its semantic card; generated HTML is never hand-edited.
+
+### Remaining boundaries
+
+Checks, notifications and interruption live counts remain local to the executing
+scope; the parent model does not automatically consume a returned child's queue.
+Retained child state and undrained metadata/queues are not globally bounded. This
+is process-local lifetime ownership, not host ACLs, a lease, replay or arbitration
+between separately bound root sessions/processes sharing one ledger. The Go
+scope-format/ownership additions and measured source gaps remain explicit for G7.
+Cron, teams, workflows, remaining optional context/provider/UI groups, SQLite
+session/approval/lease restore, durable SSE and the full differential/release audit
+still require work. Do not mark the overall Go migration complete.
+
+### Validation
+
+- Source-derived child/native scope tests: pass. Full
+  `go test ./... -coverpkg=./... -coverprofile=...`, `go vet ./...` and
+  `go test -race ./...`: pass. Aggregate statement coverage is **87.95%**
+  (**9,182 / 10,440**), deduplicating shared blocks. Agent **89.1%**
+  (3,928 / 4,410); background **90.9%** (251 / 276). Coverage is execution
+  evidence, not feature parity. Initial test-only mistakes used an unsupported
+  task role and a completion-wait helper for deliberately live commands;
+  corrected tests and the final full profile are the acceptance evidence.
+- Export `--check`: **40 files current**. All **39** prior tracked exports
+  were byte-compared against HEAD and remain unchanged. Initial source probe
+  passed injectors outside Harness and failed to capture children; the corrected
+  probe binds them through Harness and all six cases finish with explicit native
+  cleanup. Python runtime/package modules and mutation anchors are unchanged;
+  package invariants do not apply to this exporter-only change.
+- `verify_scans.py`: **19** scanner guards anchored.
+  `verify_guards.py -k background`: all **12** selected mutations caught;
+  `verify_guards.py -k subagent`: all **6** selected mutations caught.
+  No Go mutation coverage or full unrelated sweep is claimed.
+- Python full suite: **2,151 passed / 28 skipped / 24 subtests passed**, three
+  warnings, **125.13 seconds**. The first full run had 2,150 passes and one
+  failure: the unchanged forty-turn timing guard measured 0.72 seconds against
+  its 0.5-second limit. A focused repeat measured 0.75 seconds. Profiling showed
+  request projection/protocol checks and event processing as the major costs,
+  not the old character-by-character fake-token count. Other high-load host
+  processes were observed, but that observation alone does not prove causation.
+  Python runtime/tests were byte-compared with the committed baseline; no timing
+  threshold, runtime or test behavior was changed. The final full rerun passed
+  the original gate; the earlier failures remain recorded as timing variability.
+  A separately extracted `cf6995b` Python tree reproduced the same guard failure
+  at 0.59 seconds (11 other cost tests passed), confirming it exists without this
+  slice. This control is diagnostic evidence, not a second passing gate.
+- Archify final validate/deliver: **9/9 showcase**, zero errors/warnings,
+  correction_rounds: 0. Specification SHA-256:
+  `3aae85573dd95f157317fb82a8ee4e6770139dd1019c87a48caad1d0f1d154f2`
+  (32,260 bytes); generated artifact SHA-256:
+  `998a87d8098f039c7641b7632a674e170914731a0d444c46c60338b5e0fbcf5e`
+  (672,004 bytes). Exact bytes match the receipt. Visual review remains skipped
+  because local HTML access was previously denied; rendered acceptance is not
+  claimed.
 - README/plan outline and `git diff --check`: pass. Native macOS, Go 1.23.3,
   Git 2.39.5 (Apple Git-154); Linux remains unvalidated.

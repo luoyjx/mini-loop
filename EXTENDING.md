@@ -1212,8 +1212,19 @@ use tracked asynchronous cleanup; Stop also awaits retiring sessions.
 launcher.NewWithOptions and InspectWithOptions accept Options.BackgroundTools;
 the Go executable exposes --background-tools and reports its explicit selection
 under --dump-config. MINILOOP_FEATURES still refuses the incomplete comprehensive
-bundle. Selected-child background ownership remains pending, with default ten
-tools unchanged.
+bundle. Explicitly selected child background tools bind a fresh scoped state to
+the admitted native executor; default capability roles omit these tools. The
+parent initializes existing root evidence before registering children and keeps
+their states reachable for recursive lifetime cleanup. Qualified IDs come from
+the child's peer message identity, while records stay in the admitted workspace's
+ledger; root startup adoption can report them after a crash. Queues and checks
+stay local to each child. Returned child tasks keep running until their own
+completion/deadline or owner cleanup; CloseBackground cancels the entire owned
+tree before waiting, so an expired observer can resume joining. Metadata/queues
+remain unbounded and no cross-session/process ledger authority is implied.
+Actual source with harness-bound inherited injectors can adopt/unlink the live
+parent's record; Go intentionally avoids that gap rather than sharing queues.
+Default ten tools are unchanged.
 
 ### Go operator worktree service
 

@@ -99,6 +99,7 @@ type slot struct {
 }
 type Manager struct {
 	mu             sync.Mutex
+	idPrefix       string
 	executor       *shell.Executor
 	secrets        shell.TextMasker
 	defaultTimeout time.Duration
@@ -129,7 +130,7 @@ func New(config Config) (*Manager, error) {
 	if err != nil {
 		return nil, err
 	}
-	m := &Manager{executor: executor, secrets: executor, defaultTimeout: config.DefaultTimeout, retention: retention, ledgerDir: filepath.Join(executor.Workspace(), ".background"), tasks: make(map[ID]*slot)}
+	m := &Manager{idPrefix: "bg_", executor: executor, secrets: executor, defaultTimeout: config.DefaultTimeout, retention: retention, ledgerDir: filepath.Join(executor.Workspace(), ".background"), tasks: make(map[ID]*slot)}
 	m.adoptOrphans()
 	return m, nil
 }
@@ -140,7 +141,7 @@ func NewWithExecutor(executor *shell.Executor) (*Manager, error) {
 	if executor == nil || executor.Workspace() == "" {
 		return nil, errors.New("background requires a bound native shell executor")
 	}
-	m := &Manager{executor: executor, secrets: executor, defaultTimeout: 300 * time.Second, retention: DefaultResultsRetained, ledgerDir: filepath.Join(executor.Workspace(), ".background"), tasks: make(map[ID]*slot)}
+	m := &Manager{idPrefix: "bg_", executor: executor, secrets: executor, defaultTimeout: 300 * time.Second, retention: DefaultResultsRetained, ledgerDir: filepath.Join(executor.Workspace(), ".background"), tasks: make(map[ID]*slot)}
 	m.adoptOrphans()
 	return m, nil
 }
@@ -201,7 +202,7 @@ func (manager *Manager) Run(ctx context.Context, request Request) (Started, erro
 	if len(number) < 4 {
 		number = strings.Repeat("0", 4-len(number)) + number
 	}
-	id := ID("bg_" + number)
+	id := ID(manager.idPrefix + number)
 	ctxTask, cancel := context.WithCancel(context.Background())
 	done := make(chan struct{})
 	handle := &Handle{id, cancel, done}

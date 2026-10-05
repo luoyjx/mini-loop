@@ -23,6 +23,7 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	background                                     *backgroundState
 	bash                                           BashExecutor
 	authority                                      ToolAuthority
 	label                                          string
@@ -190,6 +191,16 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	child.systemBuilder = FixedSystem(fmt.Sprintf("You are a %s subagent in %s. Use tools to %s, then give a concise final summary. No preamble.", request.Role, parent.authority.Workspace, verb))
 	child.lineage = &lineage
 	handler.session = child
+	for _, definition := range definitions {
+		if definition.handler == handler && (definition.name == protocol.ToolBackgroundRun || definition.name == protocol.ToolCheckBackground) {
+			child.background, err = parent.background.child(ctx, string(childContext.MessageID()))
+			if err != nil {
+				return "", err
+			}
+			handler.background = child.background
+			break
+		}
+	}
 	provider.mu.Lock()
 	provider.lastLineage = &lineage
 	provider.mu.Unlock()
@@ -230,8 +241,9 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
-		bash:      s.bash,
-		authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
+		background: s.background,
+		bash:       s.bash,
+		authority:  ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
 		model: s.model, maxTokens: s.maxTokens, tokenThreshold: s.tokenThreshold, maxRounds: s.subagentMaxRounds, maxDepth: s.subagentMaxDepth,
 		provider: s.provider, recovery: s.recovery, streamProgress: s.streamProgress, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
 		promptHooks: append([]UserPromptHook(nil), s.promptHooks...), injectors: append([]MessageInjector(nil), s.injectors...), modelLimiter: s.modelLimiter, toolLimiter: s.toolLimiter,

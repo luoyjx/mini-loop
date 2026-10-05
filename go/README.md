@@ -698,8 +698,35 @@ must remain last. Turn cancellation never closes background task ownership.
 Workspace entry prepares the native shell once and publishes it to the background
 state alongside the other execution bindings; in-flight work and original ledger
 stay pinned. Default child roles omit the two capability-empty tools and retain
-native foreground Bash with fresh state. Custom child selection of background
-tools is still unconfigured; full fresh-child ownership is a remaining step.
+native foreground Bash with fresh state. Explicit role selection of background
+tools now binds independent child state, including a check-only catalogue without
+foreground Bash. Source readonly rules still deny Explore execution.
+
+Each selected child uses a `bg_<scope>_<counter>` identity: scope is the 64-character
+SHA-256 of its newly derived peer message identity. Root IDs remain bg_0001 etc.
+The parent adopts preexisting root ledger evidence before child admission;
+`background.NewScopedWithExecutor` accepts only a bound executor and a validated
+lowercase hexadecimal Scope, and never adopts the shared root. This preserves
+both live parent and child records and independent queues/counters. The source
+counter format differs deliberately for children to avoid same-root collisions.
+Root startup adoption reports qualified records as ordinary orphans without PID
+control; source root numeric counters are unchanged.
+
+Child tasks can outlive the returned summary, as in Python. Parent ownership
+retains their scopes and descendants for CloseBackground / manager cleanup;
+cancellation is requested for the entire tree before any handle is awaited.
+Checks, completion queues and interruption live counts remain local to each
+scope; the parent model does not automatically receive a returned child's queue.
+Retained child states/queues are not globally bounded. This is process-local
+lifetime ownership, not host ACLs, a lease or arbitration between separately
+bound sessions/processes in one checkout.
+
+Snapshot 40 proves an actual source gap with inherited harness injectors: a
+child, including a default role without background tools, adopts the live parent
+as an orphan and unlinks its ledger while that parent keeps running. Selected
+child work also survives return without an automatic source close. Go preserves
+continuing child work while retaining a reachable cleanup owner and avoiding
+live-parent adoption. Default children never construct background state.
 
 Bare library callers quiesce admission then call Session.CloseBackground or
 ManagedSession.CloseBackground to cancel/join ownership. ManagerServices can
@@ -721,7 +748,9 @@ Snapshot 38 captures codecs and 15 real gated source calls; snapshot 39 adds fiv
 actual source manager deletion/stop/fork ownership scenarios. Native Go checks
 cover a still-draining turn, lazy creation after admission closes and shutdown
 through real HTTP serving with a local scripted provider. No production model
-endpoint is called. Selected-child background ownership remains pending.
+endpoint is called. Snapshot 40 adds six actual source child/catalogue/readonly
+scenarios and native Go scope/queue/ledger/lifetime comparisons, including nested
+ownership and orphan evidence from qualified IDs.
 
 ### Operator worktree lifecycle
 

@@ -2281,6 +2281,105 @@ def _trajectory_contracts(scratch: Path) -> dict:
 
 
 
+def _child_background_contracts(scratch: Path) -> dict:
+    """Actual selected children and the shared-ledger live-parent source gap."""
+    import asyncio
+    from mini_loop import Settings
+    from mini_loop.agent import Agent
+    from mini_loop.background import background_injector
+    from mini_loop.builtins import full_registry
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+    from mini_loop.harness import Harness
+    from mini_loop.registry import ToolCall
+    from mini_loop.run_context import RunContext
+    from mini_loop.tool_policy import DEFAULT_ROLE_TOOL_POLICY
+
+    class Selected:
+        def __init__(self, check_only): self.check_only = check_only
+        def select(self, role, parent):
+            return parent.subset(["check_background"] if self.check_only else parent.names())
+
+    async def scenario(name, action, role, live_parent, default=False):
+        root = (scratch / name).resolve()
+        root.mkdir(parents=True)
+        children, requests = [], []
+        async def capture(agent):
+            if agent.depth and agent not in children: children.append(agent)
+            mgr = agent.state.get("background")
+            if agent.depth and mgr is not None:
+                own = [v["handle"] for v in mgr._tasks.values() if v.get("handle")]
+                if own and not live_parent:
+                    await asyncio.gather(*own, return_exceptions=True)
+                elif own:
+                    for _ in range(1000):
+                        if (root / "child-started").exists(): break
+                        await asyncio.sleep(.005)
+                    else: raise AssertionError("source child task never started")
+            return []
+        def responder(kwargs):
+            requests.append(kwargs)
+            if len(requests) == 1:
+                if action == "check": call = tool("check_background", _id="child")
+                elif action == "bash": call = tool("bash", _id="child", command="printf child", run_in_background=True)
+                else: call = tool("background_run", _id="child", command="touch child-started; sleep 30" if live_parent else "printf child")
+                return [call], "tool_use"
+            return [text("child done")], "end_turn"
+        registry = full_registry(background=True, tasks=False, memory=False, cron=False,
+                                 plan=False, goals=False, diagnostics=False,
+                                 session_query=False, teams=False, worktrees=False,
+                                 mcp=False, self_audit=False)
+        parent = Agent(client=FakeAsyncAnthropic(responder=responder, thinking=False),
+                       settings=Settings(fake_llm=True, workspace_root=root, subagent_max_rounds=4),
+                       workspace=root, label="main", tools=registry,
+                       role_tool_policy=DEFAULT_ROLE_TOOL_POLICY if default else Selected(action == "check"),
+                       harness=Harness(injectors=(capture, background_injector)),
+                       state={"permission_mode":"auto"})
+        parent_service = None
+        try:
+            if live_parent:
+                await parent._exec_tool(ToolCall("background_run", {"command":"touch parent-started; sleep 30"}, "parent"))
+                parent_service = parent.state["background"]
+                for _ in range(1000):
+                    if (root / "parent-started").exists(): break
+                    await asyncio.sleep(.005)
+                else: raise AssertionError("source parent task never started")
+            summary = await parent.subagents.run(parent, prompt="child", agent_type=role, run_context=RunContext.default())
+            child = children[0]
+            child_service = child.state.get("background")
+            task_result = next(block["content"] for message in child.messages
+                               if isinstance(message["content"], list) for block in message["content"]
+                               if block.get("type") == "tool_result" and block.get("tool_use_id") == "child")
+            own_ids = [] if child_service is None else [key for key, value in child_service._tasks.items() if value.get("handle")]
+            own_id = own_ids[0] if own_ids else None
+            normalized = task_result.replace(own_id, "<child-id>") if own_id else task_result
+            result = {"name":name, "action":action, "role":role, "live_parent":live_parent,
+                      "default_role":default, "summary":summary, "tools":child.tools.names(),
+                      "output":normalized, "child_has_service":child_service is not None,
+                      "child_distinct_service":child_service is None or child_service is not parent_service,
+                      "child_live_after_return":0 if child_service is None else child_service.live_count(),
+                      "own_status":None if own_id is None else child_service._tasks[own_id]["status"],
+                      "parent_still_running":parent_service is not None and parent_service.live_count() == 1,
+                      "parent_ledger_exists":(root / ".background/bg_0001.json").exists() if live_parent else None,
+                      "parent_reported_orphan":child_service is not None and child_service._tasks.get("bg_0001",{}).get("status") == "orphaned"}
+            return result
+        finally:
+            for agent in [parent, *children]:
+                if (mgr := agent.state.get("background")) is not None: await mgr.close()
+
+    async def collect():
+        return [await scenario(*case) for case in (
+            ("selected-run", "run", "worker", False),
+            ("selected-bash", "bash", "worker", False),
+            ("explore-denied", "run", "Explore", False),
+            ("check-only", "check", "worker", False),
+            ("live-parent-selected", "run", "worker", True),
+            ("live-parent-default", "bash", "worker", True, True),
+        )]
+    return {"cases":asyncio.run(collect()), "source_sha256":{
+        name:hashlib.sha256((PYTHON_ROOT / "mini_loop" / name).read_bytes()).hexdigest()
+        for name in ("subagents.py", "background.py", "builtins.py", "harness.py", "tool_policy.py")}}
+
+
 def _managed_background_contracts(scratch: Path) -> dict:
     """Actual source manager deletion, stop and fresh-fork ownership."""
     import asyncio
@@ -3447,6 +3546,7 @@ def _snapshot() -> dict[str, bytes]:
         background_contracts = _background_contracts(Path(scratch) / "background")
         background_tool_contracts = _background_tool_contracts(Path(scratch) / "background-tools")
         managed_background_contracts = _managed_background_contracts(Path(scratch) / "managed-background")
+        child_background_contracts = _child_background_contracts(Path(scratch) / "child-background")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -3501,6 +3601,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-background.json": _json_bytes(background_contracts),
         "python-background-tools.json": _json_bytes(background_tool_contracts),
         "python-managed-background.json": _json_bytes(managed_background_contracts),
+        "python-child-background.json": _json_bytes(child_background_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

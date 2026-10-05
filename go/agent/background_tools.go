@@ -2,6 +2,8 @@ package agent
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"github.com/luoyjx/mini-loop/go/background"
 	"github.com/luoyjx/mini-loop/go/protocol"
@@ -18,6 +20,8 @@ type backgroundState struct {
 	mu       sync.Mutex
 	executor *shell.Executor
 	manager  *background.Manager
+	scope    background.Scope
+	children []*backgroundState
 }
 
 func (state *backgroundState) get(ctx context.Context, orphanOnly bool) (*background.Manager, error) {
@@ -38,12 +42,53 @@ func (state *backgroundState) get(ctx context.Context, orphanOnly bool) (*backgr
 			return nil, nil
 		}
 	}
-	manager, err := background.NewWithExecutor(state.executor)
+	var manager *background.Manager
+	var err error
+	if state.scope != "" {
+		manager, err = background.NewScopedWithExecutor(state.executor, state.scope)
+	} else {
+		manager, err = background.NewWithExecutor(state.executor)
+	}
 	if err != nil {
 		return nil, err
 	}
 	state.manager = manager
 	return manager, nil
+}
+
+func (state *backgroundState) child(ctx context.Context, identity string) (*backgroundState, error) {
+	// Initializing the parent first keeps lazy root adoption from mistaking a
+	// subsequently admitted child task for an orphan in the same ledger.
+	if _, err := state.get(ctx, false); err != nil {
+		return nil, err
+	}
+	state.mu.Lock()
+	defer state.mu.Unlock()
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	digest := sha256.Sum256([]byte(identity))
+	child := &backgroundState{executor: state.executor, scope: background.Scope(hex.EncodeToString(digest[:]))}
+	state.children = append(state.children, child)
+	return child, nil
+}
+
+func (state *backgroundState) cancelOwned() []background.Handle {
+	if state == nil {
+		return nil
+	}
+	state.mu.Lock()
+	manager := state.manager
+	children := append([]*backgroundState(nil), state.children...)
+	state.mu.Unlock()
+	var handles []background.Handle
+	if manager != nil {
+		handles = manager.CancelAll()
+	}
+	for _, child := range children {
+		handles = append(handles, child.cancelOwned()...)
+	}
+	return handles
 }
 func (state *backgroundState) rebind(ctx context.Context, executor *shell.Executor) error {
 	state.mu.Lock()
@@ -84,16 +129,14 @@ func (s *Session) backgroundInitialized() bool {
 // CloseBackground joins already-created task ownership. The embedding caller
 // must first quiesce turn admission; this method does not close the session.
 func (s *Session) CloseBackground(ctx context.Context) error {
-	if s.background == nil {
-		return nil
+	// Request cancellation across the entire owned tree before awaiting any one
+	// handle, so an expired observer never leaves another scope uncancelled.
+	for _, handle := range s.background.cancelOwned() {
+		if err := handle.Wait(ctx); err != nil {
+			return err
+		}
 	}
-	s.background.mu.Lock()
-	manager := s.background.manager
-	s.background.mu.Unlock()
-	if manager == nil {
-		return nil
-	}
-	return manager.Close(ctx)
+	return nil
 }
 func (s *ManagedSession) CloseBackground(ctx context.Context) error {
 	return s.core.CloseBackground(ctx)
