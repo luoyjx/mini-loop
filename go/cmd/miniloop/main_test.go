@@ -33,6 +33,21 @@ func TestDumpConfigReportsDefaultsWithoutStartupOrSecrets(t *testing.T) {
 		t.Fatal("dump-config created workspace", err)
 	}
 }
+
+func TestBackgroundFlagReportsExplicitSelectionWithoutStartup(t *testing.T) {
+	env := map[string]string{"MINILOOP_WORKSPACE_ROOT": filepath.Join(t.TempDir(), "ws"), "MINILOOP_FEATURES": "1"}
+	var out, errout bytes.Buffer
+	if code := execute(context.Background(), []string{"--background-tools", "--dump-config"}, env, &out, &errout); code != 0 {
+		t.Fatal(code, errout.String())
+	}
+	var report launcher.Report
+	if err := json.Unmarshal(out.Bytes(), &report); err != nil || !report.BackgroundTools || len(report.Unsupported) != 1 {
+		t.Fatal(report, err)
+	}
+	if _, err := os.Stat(env["MINILOOP_WORKSPACE_ROOT"]); !os.IsNotExist(err) {
+		t.Fatal("inspection started runtime")
+	}
+}
 func TestUnavailableConfigurationsAndArgumentsFailBeforeRuntimeEffects(t *testing.T) {
 	for _, row := range []struct {
 		name   string

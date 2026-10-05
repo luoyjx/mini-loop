@@ -1204,8 +1204,16 @@ Source-compatible shell prefix approvals and immutable denial cover both names.
 Workspace entry publishes one prepared shell to foreground/background bindings.
 Library callers quiesce admission before CloseBackground; cancelling a turn leaves
 background work running and names live survivors in its interruption marker.
-Manager lifecycle/standalone and selected-child background ownership remain
-pending, with the default ten tools unchanged.
+ManagerServices.BackgroundTools enables fresh per-session/fork ownership.
+Manager delete/stop revoke admission, drain the active turn and then close/join
+background work before reclaiming scratch. Checking ownership after the drain
+covers a service lazily created during that grace window. Idle background owners
+use tracked asynchronous cleanup; Stop also awaits retiring sessions.
+launcher.NewWithOptions and InspectWithOptions accept Options.BackgroundTools;
+the Go executable exposes --background-tools and reports its explicit selection
+under --dump-config. MINILOOP_FEATURES still refuses the incomplete comprehensive
+bundle. Selected-child background ownership remains pending, with default ten
+tools unchanged.
 
 ### Go operator worktree service
 

@@ -701,11 +701,27 @@ stay pinned. Default child roles omit the two capability-empty tools and retain
 native foreground Bash with fresh state. Custom child selection of background
 tools is still unconfigured; full fresh-child ownership is a remaining step.
 
-Library callers must quiesce admission then call Session.CloseBackground or
-ManagedSession.CloseBackground to cancel/join ownership. SessionManager delete/stop
-composition and standalone feature activation remain pending. ManagerServices
-currently cannot request this flag. Source codecs and 15 real gated source calls
-are captured in snapshot 38; no production model call is part of validation.
+Bare library callers quiesce admission then call Session.CloseBackground or
+ManagedSession.CloseBackground to cancel/join ownership. ManagerServices can
+select BackgroundTools for the fleet; every session and completed-boundary fork
+gets independent lazy state and a fresh executor/root. Delete/stop first revoke
+admission and drain the active turn, then close/join any created background
+service before reclaiming workspace/recordings. This includes a service first
+created during the grace window. Idle background owners use asynchronous tracked
+cleanup, and Stop also waits for retiring sessions. Bound and preserved roots
+remain intact; stopping retains scratch as source does.
+
+The standalone executable accepts `--background-tools`; embedding callers use
+`launcher.NewWithOptions(..., launcher.Options{BackgroundTools: true})`.
+`--dump-config` / InspectWithOptions report that explicit choice without starting
+services. This is an individual Go service option: MINILOOP_FEATURES continues to
+refuse the unimplemented comprehensive bundle. Defaults remain ten tools.
+
+Snapshot 38 captures codecs and 15 real gated source calls; snapshot 39 adds five
+actual source manager deletion/stop/fork ownership scenarios. Native Go checks
+cover a still-draining turn, lazy creation after admission closes and shutdown
+through real HTTP serving with a local scripted provider. No production model
+endpoint is called. Selected-child background ownership remains pending.
 
 ### Operator worktree lifecycle
 

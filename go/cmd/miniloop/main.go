@@ -21,6 +21,7 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 	flags := flag.NewFlagSet("miniloop", flag.ContinueOnError)
 	flags.SetOutput(stderr)
 	dump := flags.Bool("dump-config", false, "print redacted settings and availability without starting a listener")
+	background := flags.Bool("background-tools", false, "enable the implemented Go background shell tools and session cleanup")
 	if err := flags.Parse(args); err != nil {
 		if err == flag.ErrHelp {
 			return 0
@@ -28,7 +29,7 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 		return 2
 	}
 	if flags.NArg() != 0 {
-		fmt.Fprintln(stderr, "miniloop accepts --dump-config or no arguments")
+		fmt.Fprintln(stderr, "miniloop accepts --dump-config and --background-tools flags")
 		return 2
 	}
 	fail := func(err error) int { fmt.Fprintln(stderr, err); return 1 }
@@ -47,7 +48,7 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 	if *dump {
 		encoder := json.NewEncoder(stdout)
 		encoder.SetIndent("", "  ")
-		if err := encoder.Encode(launcher.Inspect(settings, server, auth)); err != nil {
+		if err := encoder.Encode(launcher.InspectWithOptions(settings, server, auth, launcher.Options{BackgroundTools: *background})); err != nil {
 			return fail(err)
 		}
 		return 0
@@ -55,7 +56,7 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 	if err := httpapi.RefuseOpenBind(server.Host, auth); err != nil {
 		return fail(err)
 	}
-	app, err := launcher.New(ctx, settings, server, auth)
+	app, err := launcher.NewWithOptions(ctx, settings, server, auth, launcher.Options{BackgroundTools: *background})
 	if err != nil {
 		return fail(err)
 	}

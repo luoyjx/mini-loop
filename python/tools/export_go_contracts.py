@@ -2281,6 +2281,83 @@ def _trajectory_contracts(scratch: Path) -> dict:
 
 
 
+def _managed_background_contracts(scratch: Path) -> dict:
+    """Actual source manager deletion, stop and fresh-fork ownership."""
+    import asyncio
+    from mini_loop import SessionManager, Settings
+    from mini_loop.builtins import full_registry, default_injectors
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+
+    def registry():
+        return full_registry(background=True, tasks=False, memory=False, cron=False,
+                             plan=False, goals=False, diagnostics=False,
+                             session_query=False, teams=False, worktrees=False,
+                             mcp=False, self_audit=False)
+
+    async def wait_started(session):
+        for _ in range(1000):
+            if (session.workspace / "started").exists():
+                return
+            await asyncio.sleep(.005)
+        raise AssertionError("managed source background did not start")
+
+    async def scenario(name, action, bound):
+        root = (scratch / name).resolve()
+        root.mkdir(parents=True)
+        checkout = root / "checkout"
+        checkout.mkdir()
+        def responder(kwargs):
+            if isinstance(kwargs["messages"][-1]["content"], str):
+                return [tool("background_run", _id="managed-bg",
+                             command="touch started; sleep 30 & wait")], "tool_use"
+            return [text("started")], "end_turn"
+        manager = SessionManager(
+            Settings(fake_llm=True, workspace_root=root / "ws",
+                     bindable_roots=(checkout,)),
+            FakeAsyncAnthropic(responder=responder, thinking=False),
+            tool_registry=registry(),
+            injectors=default_injectors(background=True, teams=False),
+        )
+        session = manager.create(owner="alice", permission_mode="auto",
+                                 workspace=checkout if bound else None)
+        try:
+            output = await session.run("start")
+            await wait_started(session)
+            service = session.agent.state["background"]
+            child = await manager.fork_session(session.id) if action == "fork" else None
+            fresh = child is None or "background" not in child.agent.state
+            different_root = child is None or child.workspace != session.workspace
+            if action == "stop":
+                removed = None
+                await manager.stop()
+            else:
+                removed = manager.delete(session.id, remove_workspace=action != "preserve")
+                if manager._cleanup_tasks:
+                    await asyncio.gather(*tuple(manager._cleanup_tasks))
+            return {"name": name, "action": action, "bound": session.workspace_bound,
+                    "output": output, "removed": removed,
+                    "workspace_exists": session.workspace.is_dir(),
+                    "status": service._tasks["bg_0001"]["status"],
+                    "ledger_exists": (session.workspace / ".background/bg_0001.json").exists(),
+                    "fresh_fork": fresh, "different_fork_root": different_root,
+                    "tools": session.agent.tools.names(),
+                    "cleanup_errors": list(manager.cleanup_errors)}
+        finally:
+            await manager.stop()
+
+    async def collect():
+        return [await scenario(*case) for case in (
+            ("scratch-delete", "delete", False),
+            ("scratch-preserve", "preserve", False),
+            ("bound-delete", "delete", True),
+            ("scratch-stop", "stop", False),
+            ("fresh-fork", "fork", False),
+        )]
+    return {"cases": asyncio.run(collect()), "source_sha256": {
+        name: hashlib.sha256((PYTHON_ROOT / "mini_loop" / name).read_bytes()).hexdigest()
+        for name in ("manager.py", "background.py", "session.py", "builtins.py")}}
+
+
 def _background_tool_contracts(scratch: Path) -> dict:
     """Actual optional schemas, gate calls, classifier and interruption marker."""
     import asyncio
@@ -3369,6 +3446,7 @@ def _snapshot() -> dict[str, bytes]:
         managed_worktree_contracts = _managed_worktree_contracts(Path(scratch) / "managed-worktrees")
         background_contracts = _background_contracts(Path(scratch) / "background")
         background_tool_contracts = _background_tool_contracts(Path(scratch) / "background-tools")
+        managed_background_contracts = _managed_background_contracts(Path(scratch) / "managed-background")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -3422,6 +3500,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-managed-worktrees.json": _json_bytes(managed_worktree_contracts),
         "python-background.json": _json_bytes(background_contracts),
         "python-background-tools.json": _json_bytes(background_tool_contracts),
+        "python-managed-background.json": _json_bytes(managed_background_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

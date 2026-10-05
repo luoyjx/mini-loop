@@ -309,7 +309,7 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 	if system != nil {
 		builder = FixedSystem(*system)
 	}
-	session, err = NewManagedSession(RuntimeConfig{WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: request.Owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter})
+	session, err = NewManagedSession(RuntimeConfig{BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: request.Owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter})
 	if err != nil {
 		return nil, err
 	}
@@ -437,7 +437,7 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 			manager.reclaimUnusedWorkspace(id, session.core.workspace)
 		}
 	}
-	if session.Info().Busy {
+	if session.Info().Busy || session.core.backgroundInitialized() {
 		go cleanup()
 	} else {
 		cleanup()
@@ -502,6 +502,13 @@ func (manager *SessionManager) reclaimUnusedWorkspace(id SessionID, path string)
 	}
 }
 func (manager *SessionManager) drainSession(session *ManagedSession, reason string, grace time.Duration) {
+	// Admission was revoked by Delete/Stop. A turn can still create its lazy
+	// service during the grace window, so inspect ownership only after it drains.
+	defer func() {
+		if err := session.CloseBackground(context.Background()); err != nil {
+			manager.recordCleanupError(session.ID(), filepath.Join(session.core.workspace, ".background"), err)
+		}
+	}()
 	session.mu.Lock()
 	active := session.active
 	session.mu.Unlock()

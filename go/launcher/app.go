@@ -51,6 +51,7 @@ type ProviderStatus struct {
 	Credential string `json:"credential"`
 }
 type Report struct {
+	BackgroundTools bool                        `json:"background_tools"`
 	Kind            string                      `json:"kind"`
 	Settings        config.Snapshot             `json:"settings"`
 	Server          config.ServerSettings       `json:"server"`
@@ -64,6 +65,16 @@ type Report struct {
 }
 
 func Inspect(settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator) Report {
+	return InspectWithOptions(settings, server, auth, Options{})
+}
+
+// Options selects individual implemented Go services. The comprehensive Python
+// MINILOOP_FEATURES setting remains unsupported until its complete bundle exists.
+type Options struct {
+	BackgroundTools bool
+}
+
+func InspectWithOptions(settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) Report {
 	endpoint := provider.DefaultEndpoint
 	if settings.BaseURL != nil {
 		endpoint = *settings.BaseURL
@@ -77,7 +88,7 @@ func Inspect(settings config.Settings, server config.ServerSettings, auth httpap
 		name, endpoint = "fake", ""
 	}
 	snapshot := settings.Snapshot()
-	return Report{Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
+	return Report{BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
 }
 
 type boundBashFactory struct{ timeout time.Duration }
@@ -101,6 +112,10 @@ type App struct {
 }
 
 func New(ctx context.Context, settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator) (*App, error) {
+	return NewWithOptions(ctx, settings, server, auth, Options{})
+}
+
+func NewWithOptions(ctx context.Context, settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) (*App, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -197,7 +212,7 @@ func New(ctx context.Context, settings config.Settings, server config.ServerSett
 	manager, err := agent.NewSessionManager(agent.ManagerConfig{WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
-		Services: agent.ManagerServices{Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
+		Services: agent.ManagerServices{BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
 	if err != nil {
 		if transport != nil {
 			transport.CloseIdleConnections()

@@ -72,6 +72,15 @@ func (s *Session) backgroundLive() int {
 	return manager.LiveCount()
 }
 
+func (s *Session) backgroundInitialized() bool {
+	if s.background == nil {
+		return false
+	}
+	s.background.mu.Lock()
+	defer s.background.mu.Unlock()
+	return s.background.manager != nil
+}
+
 // CloseBackground joins already-created task ownership. The embedding caller
 // must first quiesce turn admission; this method does not close the session.
 func (s *Session) CloseBackground(ctx context.Context) error {

@@ -111,7 +111,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager lifecycle, selected-child/standalone activation and other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected-child activation and other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ## 2026-10-02 checkpoint
@@ -2826,3 +2826,96 @@ unimplemented paths.
   acceptance is not claimed.
 - README/plan outline review and `git diff --check`: pass. Native macOS,
   Go 1.23.3 and Git 2.39.5 (Apple Git-154); Linux remains unvalidated.
+
+
+## 2026-10-05 managed background lifecycle and startup slice
+
+Reviewed base: `0812a21`. Manager ownership and standalone selection now reach
+real native background tasks. This continues the third background step; selected
+subagent ownership still requires source investigation and implementation. G0–G7
+remain open.
+
+### Implementation and actual source boundary
+
+- `ManagerServices.BackgroundTools` passes explicit activation into every fresh
+  managed runtime. Existing default services and ten-tool catalogues are unchanged.
+  Host/native binding is still required; a custom string-only shell cannot opt
+  into the native background service. No dependency or ambiguous payload is added.
+- Delete/Stop revoke admission before draining the active turn. The manager then
+  closes and joins initialized background ownership before workspace or recording
+  reclamation. Ownership is inspected after the drain, so a turn may create its
+  lazy service during the grace window without escaping cleanup. Close errors go
+  through existing bounded, masked cleanup diagnostics.
+  Source delete captures its background object before awaiting the turn; Go's
+  post-drain ownership lookup is an additional guard, not a claim that source's
+  late-creation behavior was exercised by the five exported scenarios.
+- Idle initialized background owners use the tracked asynchronous cleanup path,
+  as actual source does. Shutdown also awaits retiring sessions; an expired Stop
+  observer can resume waiting on the same authoritative shutdown. Unused enabled
+  sessions are stopped without constructing a service or adopting ledger records.
+  Bound/preserved roots stay intact, and Stop retains scratch as source does.
+- Completed-boundary forks use ordinary managed construction and fresh roots,
+  executors and lazy background state. They copy paired history without borrowing
+  parent IDs/tasks/queues. Tests initialize the fork service and verify it cannot
+  see the parent's still-running native task.
+- `launcher.Options.BackgroundTools`, NewWithOptions and InspectWithOptions expose
+  individual Go service selection while existing New/Inspect default to false.
+  The executable accepts `--background-tools`; `--dump-config` reports selection
+  without starting a listener or workspace. This is a Go-specific individual
+  option, not Python's comprehensive MINILOOP_FEATURES contract: that complete
+  bundle remains refused until all its services exist. Settings snapshots and
+  Python environment codec exports are unchanged.
+- Snapshot 39 uses actual source SessionManager, optional tool registry/injectors,
+  fake provider and native processes. Five scenarios cover scratch delete,
+  scratch preserve, bound delete, stop and completed-boundary fork, including
+  cancelled status, ledger removal, catalogue and workspace retention. Go tests
+  compare these outputs and add a still-draining turn/retiring shutdown, lazy
+  service creation after Delete has closed admission and native-only activation.
+- A real loopback HTTP launcher with a local scripted model endpoint publishes
+  twelve schemas, executes background_run via the model/tool gate and records a
+  live native PID. Serve cancellation joins manager shutdown, reaps that PID,
+  removes its in-flight ledger and retains scratch. No paid model endpoint is
+  called. CLI inspection preserves comprehensive-feature refusal and zero effects.
+- Canonical README Mermaid adds manager drain/close and explicit startup selection
+  relationships. The interactive map aggregates them under its existing shell,
+  startup and managed components and explains the ownership sequence in its card.
+
+### Remaining work
+
+Selected subagents still have native foreground Bash and no configured background
+service. Actual Python builds fresh child state in the same workspace, inherits
+injectors and returns child.run without an explicit child-service close. Investigate
+shared-root ledger/ID collisions and reachable ownership before completing that
+path; do not describe a borrowed parent queue or a detached unreachable service as
+fresh ownership. Then continue remaining optional groups, SQLite
+session/approval/lease restore, durable SSE, provider variants and the G7 audit.
+
+### Validation
+
+- Narrow managed/background/launcher/CLI tests: pass. Full
+  `go test ./... -coverpkg=./... -coverprofile=...`, `go vet ./...` and
+  `go test -race ./...`: pass. Aggregate statement coverage is **87.9%**
+  (**9,142 / 10,403**), deduplicating shared profile blocks. Agent is **89.1%**
+  (3,902 / 4,381), background **90.3%** (242 / 268), launcher **77.0%**
+  (114 / 148), cmd/miniloop **54.4%** (31 / 57). This is execution coverage,
+  not feature parity or release completion.
+- Export `--check`: **39 files current**; all **38** previous tracked exports
+  were byte-compared against HEAD and remain unchanged. `verify_scans.py`:
+  **19** anchored scanner guards. Python package runtime and guard anchors are
+  unchanged; package invariants do not apply to this exporter-only change.
+- `verify_guards.py -k background`: all **12** selected source mutations caught.
+  Unrelated guard groups were not rerun; source mutation checks do not constitute
+  Go mutation coverage.
+- `.venv/bin/python -m pytest -q`: **2151 passed, 28 skipped, 24 subtests
+  passed, 3 warnings**, 81.42 s. Python runtime/test files and existing
+  performance thresholds are unchanged.
+- Archify validate/deliver: **9/9 showcase**, zero errors/warnings,
+  correction_rounds: 0. Specification SHA-256:
+  `2b11bd8cdf973f95430188ea2fad0b769a5cd840d85fc759a59a7df82a927863`
+  (31,913 bytes); generated artifact SHA-256:
+  `a3fb0fbc0f1a0e047e042944b63e9f7940a900e44df68980c410d879a77cdf9c`
+  (671,657 bytes). Exact bytes match the receipt. Visual review remains skipped
+  because local HTML access was previously denied; rendered acceptance is not
+  claimed. Generated HTML was not hand-edited.
+- README/plan outline and `git diff --check`: pass. Native macOS, Go 1.23.3,
+  Git 2.39.5 (Apple Git-154); Linux remains unvalidated.

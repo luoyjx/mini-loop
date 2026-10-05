@@ -293,8 +293,9 @@ switching with retained lifecycle cleanup ownership, plus an explicit typed
 managed-worktree factory with source directory-cleanup semantics, plus a typed
 operator background-command service with merged byte capture and orphan records,
 plus two explicitly enabled background tools, conditional Bash dispatch, bounded
-completion injection and interruption survivor markers,
-reviewed **2026-10-05** (Go baseline `16d88fc` plus the background-tool slice).
+completion injection, interruption survivor markers and manager-owned close/join
+with independent startup selection,
+reviewed **2026-10-05** (Go baseline `0812a21` plus the managed-background slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -367,6 +368,8 @@ flowchart LR
         GoBackground -->|atomic best-effort in-flight files| GoBgLedger
         GoGate -. optional background tools / Bash dispatch .-> GoBackground
         GoBackground -. bounded completion / live interruption count .-> GoSession
+        GoManager -. delete / stop after turn drain: cancel and join .-> GoBackground
+        GoLaunch -. explicit background-tools flag .-> GoBackground
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional persistent task tools · masked file graph<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -464,10 +467,14 @@ identity and shell approval prefixes. Enabled Bash can enqueue explicit/heuristi
 background work; foreground Bash keeps structured results. Per-session lazy state
 delivers the newest 50 completion messages and a typed background_result event
 before model requests; interruption markers name live survivors. Workspace entry
-publishes a prepared background executor with the other bindings. Manager lifecycle,
-standalone activation and selected-child background ownership remain pending;
-bare/managed library callers quiesce admission before CloseBackground. Default
-tools remain ten. See [background library](go/README.md#operator-background-commands).
+publishes a prepared background executor with the other bindings. ManagerServices
+can explicitly enable the feature for fresh sessions and forks. Delete/stop close
+and join created task ownership after the active turn drains, before workspace
+reclamation; an idle background owner is cleaned asynchronously. The startup
+`--background-tools` flag selects this service independently of the still
+unsupported comprehensive MINILOOP_FEATURES bundle. Selected-child background
+ownership remains pending; bare library callers quiesce admission before
+CloseBackground. Default tools remain ten. See [background library](go/README.md#operator-background-commands).
 `go/worktrees` is an explicitly selected library service: named records and
 task binding, Git status/ahead checks plus Git's independent refusal, and local
 JSONL audit events. Factory failures can return plain directories, matching Python;
