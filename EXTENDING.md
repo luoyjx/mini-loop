@@ -611,6 +611,16 @@ The guard flushes before provider admission, checks the current epoch count and
 uses immutable message content for prefix identity. Event capture writes first,
 then flushes; event epochs are stamped before a rewrite flush advances the epoch.
 Ephemeral events consume live sequence numbers without adding stored ordinals.
+Go names these separately as EventSequence and EventOrdinal. Embedding backends
+must allow context-owned reads concurrently with live writes.
+ManagedSession.CatchUpEvents(ctx, sequence) selects up to 2,000 recent physical
+rows, validates their scope/order/closed variants and returns detached historical
+records without live authority. Subscribe before calling, then de-duplicate
+queued records against the greatest sequence delivered. Fresh cursor zero skips
+the backend. The owned HTTP events route composes this handoff; read faults
+return an opaque 503 before SSE headers and leave writer status unchanged.
+This bounded window/queue does not guarantee complete historical delivery or
+cross-process live tailing, and an injected implementation is not SQL proof.
 Ordinary backend write faults/panics are reported and degrade; count-query or
 coverage failures stop the request. Confirmed renewal loss cancels the active
 turn and suppresses later publication/model/tool admission. Renewal and session

@@ -4,8 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/agent"
+	"github.com/luoyjx/mini-loop/go/internal/pytext"
+	"math"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -40,6 +43,55 @@ func ping(w http.ResponseWriter) error {
 	}
 	return http.NewResponseController(w).Flush()
 }
+
+// eventCursor follows Python int's whitespace/sign/decimal/underscore syntax.
+// Negative/invalid IDs select the fresh backlog. Huge positive IDs saturate,
+// preserving the source behavior of suppressing all representable sequences.
+func eventCursor(value string) agent.EventSequence {
+	value = strings.TrimFunc(value, func(r rune) bool { return pytext.Space(r) && (r < 0x1c || r > 0x1f) })
+	if strings.HasPrefix(value, "+") {
+		value = value[1:]
+	} else if strings.HasPrefix(value, "-") {
+		return 0
+	}
+	if value == "" {
+		return 0
+	}
+	// Python 3.11 default integer conversion bound, pinned by the source probe.
+	const maxCursorDigits = 4300
+	digits := 0
+	var result uint64
+	digitBefore := false
+	for _, r := range value {
+		if r == '_' {
+			if !digitBefore {
+				return 0
+			}
+			digitBefore = false
+			continue
+		}
+		digit, ok := pytext.DecimalDigit(r)
+		if !ok {
+			return 0
+		}
+		digits++
+		if digits > maxCursorDigits {
+			return 0
+		}
+		digitBefore = true
+		n := uint64(digit - '0')
+		if result > (math.MaxUint64-n)/10 {
+			result = math.MaxUint64
+		} else {
+			result = result*10 + n
+		}
+	}
+	if !digitBefore {
+		return 0
+	}
+	return agent.EventSequence(result)
+}
+
 func (s *Server) observe(w http.ResponseWriter, r *http.Request) {
 	session, ok := s.require(w, r)
 	if !ok {
@@ -54,11 +106,24 @@ func (s *Server) observe(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	cursor, _ := strconv.ParseInt(r.Header.Get("Last-Event-ID"), 10, 64)
+	cursor := eventCursor(r.Header.Get("Last-Event-ID"))
 	subscription := session.Subscribe(true)
 	defer subscription.Close()
+	caught, err := session.CatchUpEvents(r.Context(), cursor)
+	if err != nil {
+		if r.Context().Err() == nil {
+			writeJSON(s, w, http.StatusServiceUnavailable, ErrorResponse{"event catch-up failed"})
+		}
+		return
+	}
 	if err := startSSE(w); err != nil {
 		return
+	}
+	for _, record := range caught {
+		if r.Context().Err() != nil || writeEvent(s, w, record, envelope) != nil {
+			return
+		}
+		cursor = record.Sequence
 	}
 	ticker := time.NewTicker(s.ping)
 	defer ticker.Stop()
@@ -74,13 +139,13 @@ func (s *Server) observe(w http.ResponseWriter, r *http.Request) {
 			if !open {
 				return
 			}
-			if int64(record.Sequence) <= cursor {
+			if record.Sequence <= cursor {
 				continue
 			}
 			if writeEvent(s, w, record, envelope) != nil {
 				return
 			}
-			cursor = int64(record.Sequence)
+			cursor = record.Sequence
 		}
 	}
 }

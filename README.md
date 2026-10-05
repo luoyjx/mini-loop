@@ -305,7 +305,8 @@ plus concrete schema-v7 state contracts and archival event decoding,
 plus optional injected session state, request guards and confirmed lease-loss cancellation,
 plus explicit injected-store manager restoration, lease-gated approval expiry and crash-tail repair,
 plus lazy stable-identity cron restoration with bound/factory workspace selection,
-reviewed **2026-10-06** (Go baseline `067f16e` plus the scheduled-restoration slice).
+plus owner-scoped bounded event-store SSE catch-up with distinct ordinal/sequence types,
+reviewed **2026-10-06** (Go baseline `647ebd7` plus the event-catch-up slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -418,7 +419,7 @@ flowchart LR
         GoGate -. optional five model tools .-> GoWorktrees
         GoWorktrees -. serialized files / shell / sandbox scope .-> GoFiles
         GoWorktrees -. prepare before publishing execution scope .-> GoBash
-        GoSession -. injected state / leases / restore .-> GoActions
+        GoSession -. injected state / leases / restore / catch-up .-> GoActions
         GoGate -. replay / reconcile / settle .-> GoActions
         GoGate -. permission ask .-> GoApprovals
         GoResources -. textual question .-> GoApprovals
@@ -711,7 +712,22 @@ turn is refused/reported without creating a row. With no backend it is an
 ordinary ephemeral turn. Stop cancels pending restore reads and waits for their
 cleanup. Source snapshot 47 makes the next real offline model request.
 Plan/goal variants and folding remain pending. Driver approval, a real Go backend,
-native restart validation and durable SSE/launcher selection remain required.
+native restart validation and state-backend launcher selection remain required.
+ManagedSession.CatchUpEvents reads at most the newest 2,000 stored rows, using
+EventOrdinal for physical positions and EventSequence for SSE IDs. Observers
+subscribe before reading, then de-duplicate both historical and queued records.
+Fresh/invalid/negative cursors keep the recent backlog; no store keeps memory-only
+replay. Historical reads are context-owned, do not hold the live persistence lock,
+validate scope/order/known variants and reinstall no authority or grants. Read
+faults fail the HTTP request with an opaque 503 before SSE headers; they do not
+change writer degradation/lease status. Source snapshot 48 invokes the actual
+endpoint iterator with SQLite/Null. It measures a 50-event hole when ephemeral
+sequences are incorrectly used as stored ordinals, and huge-ID SQL overflow; Go
+uses a physical window plus sequence filtering and saturates valid huge IDs.
+The parser retains Python 3.11 default integer syntax and its 4,300-digit bound.
+Queue shedding and the 2,000-row window can still leave visible gaps; this is
+a bounded resume, not complete history or cross-process live tailing. The injected
+store seam is implemented; native Go SQL persistence/reopen remains pending.
 No journal claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child
 state. Compaction files are durable local artifacts, not a session-restoration
@@ -859,14 +875,16 @@ turn remains untrusted, with only the personal-skill capture-source stamp. Compl
 message retries use detached owner/session/key snapshots before spending rate budget;
 non-streaming admission rejects busy turns atomically. Stream submissions queue, and
 a disconnect cancels their own active turn or admission wait. Event observers replay
-the bounded backlog with cursor deduplication and optional envelopes. Typed flat event
+the bounded backlog with cursor deduplication and optional envelopes; a positive
+resume cursor also reads the configured event store before queued live delivery. Typed flat event
 JSON and HTTP responses use the optional recording projection without changing live
 model history; encoder failures return no raw fallback. These are process-local handler
 services: the embedding application owns listening/shutdown and must call
 `RefuseOpenBind` before listening. The standalone launcher supplies that ownership
-and additionally checks its actual listener. Full health posture, durable
-catch-up or optional fleet services remain pending. Full
-FastAPI validation detail/coercion parity remains open. Durable restoration is pending.
+and additionally checks its actual listener. Full health posture, native SQL
+restart evidence and optional fleet services remain pending. Full
+FastAPI validation detail/coercion parity remains open. Injected-store restoration
+and bounded catch-up exist; the native Go backend remains pending.
 Both browser documents use embedded copies of the Python source HTML/CSS/JS.
 `python/tools/export_go_webui.py --check` verifies the copies; no Python process,
 source checkout, external assets or static directory mount is needed at runtime.

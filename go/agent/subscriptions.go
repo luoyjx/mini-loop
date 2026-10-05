@@ -118,8 +118,8 @@ func (s *Session) Subscribe(replay bool) *EventSubscription { return s.events.su
 func (s *Session) SubscriberCount() int                     { return s.events.subscriberCount() }
 func (s *Session) SinkError() string                        { return s.events.sinkProblem() }
 
-// EventsAfter returns the available in-memory suffix. Durable cursor recovery
-// belongs to the future state store; sequence gaps remain visible.
+// EventsAfter returns the available in-memory suffix. ManagedSession.CatchUpEvents
+// reads the configured store with a context; sequence gaps remain visible.
 func (s *Session) EventsAfter(cursor EventSequence) []SessionEventRecord {
 	all := s.Events()
 	result := make([]SessionEventRecord, 0, len(all))

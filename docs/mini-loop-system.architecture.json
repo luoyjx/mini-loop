@@ -71,7 +71,7 @@
           "goSecrets",
           "goCron"
         ],
-        "note": "Typed serving, browser shells, private spill, owned JSONL and HTML ledgers exist. Optional panel APIs and SQLite remain pending."
+        "note": "Owned HTTP/SSE, JSONL/ledgers and injected-store bounded catch-up exist. Native SQL/reopen and optional panel APIs remain pending."
       },
       {
         "id": "personal-skill",
@@ -311,7 +311,7 @@
     {
       "id": "goSession",
       "type": "backend",
-      "label": "Go Session",
+      "label": "Go Session / managed handle",
       "sublabel": "steering / posture / ordered groups",
       "pos": [
         850,
@@ -402,7 +402,7 @@
       "id": "goActions",
       "type": "database",
       "label": "Go Replay / State",
-      "sublabel": "typed journal / state restore",
+      "sublabel": "typed state / restore / SSE window",
       "pos": [
         1370,
         1360
@@ -1160,7 +1160,7 @@
       "id": "goLiveState",
       "from": "goSession",
       "to": "goActions",
-      "label": "injected state",
+      "label": "state / catch-up",
       "variant": "dashed",
       "fromSide": "right",
       "toSide": "left",

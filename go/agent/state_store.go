@@ -17,7 +17,7 @@ type SessionRecord struct {
 	CreatedAt       float64             `json:"created_at"`
 	RunCount        int                 `json:"run_count"`
 	Status          SessionStatus       `json:"status"`
-	EventCursor     EventSequence       `json:"event_cursor"`
+	EventCursor     EventOrdinal        `json:"event_cursor"`
 	Todos           []protocol.TodoItem `json:"todos"`
 	Owner           OwnerID             `json:"owner"`
 	PendingSteering []string            `json:"pending_steering"`
@@ -71,13 +71,18 @@ type ApprovalReader interface {
 	ReadApprovals(context.Context, SessionID, *ApprovalStatus) ([]ApprovalRecord, error)
 }
 
+// EventOrdinal is a physical stored row position, separate from the live
+// EventSequence carried by SSE. Ephemeral events consume sequences, not ordinals.
+type EventOrdinal uint64
+
 // EventStore persists known typed variants. after is an exclusive ordinal;
 // nil limit reads the complete tail. Reading historical events grants no live
 // execution authority and must never reinstall remembered approval grants.
+// Implementations must allow concurrent context-owned reads and live writes.
 type EventStore interface {
-	AppendEvent(context.Context, SessionID, SessionEventRecord) (EventSequence, error)
-	LoadEvents(context.Context, SessionID, EventSequence, *int) ([]SessionEventRecord, error)
-	EventCursor(context.Context, SessionID) (EventSequence, error)
+	AppendEvent(context.Context, SessionID, SessionEventRecord) (EventOrdinal, error)
+	LoadEvents(context.Context, SessionID, EventOrdinal, *int) ([]SessionEventRecord, error)
+	EventCursor(context.Context, SessionID) (EventOrdinal, error)
 }
 
 // StateStore is the explicitly configured fleet backend. Small interfaces above

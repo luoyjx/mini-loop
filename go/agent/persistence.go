@@ -33,7 +33,8 @@ type StatePersistenceStatus struct {
 	RepairedToolUses []string
 }
 
-// State callbacks are serialized and must not reenter a persistence method.
+// State writes are serialized and must not reenter a persistence write method.
+// Catch-up reads run without this lock; the backend owns concurrent read/write safety.
 // History comes from immutable live snapshots, never from the core turn mutex.
 type sessionPersistence struct {
 	mu              sync.Mutex

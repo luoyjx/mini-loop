@@ -314,9 +314,11 @@ func (p *sessionPersistence) loadRestoreLocked(ctx context.Context, row SessionR
 		return snapshot, err
 	}
 	snapshot.epoch = max(1, snapshot.epoch)
-	if err = stateFault(func() error { var e error; snapshot.next, e = p.store.EventCursor(ctx, p.session.ID()); return e }); err != nil {
+	var ordinal EventOrdinal
+	if err = stateFault(func() error { var e error; ordinal, e = p.store.EventCursor(ctx, p.session.ID()); return e }); err != nil {
 		return snapshot, err
 	}
+	snapshot.next = EventSequence(ordinal)
 	var events []SessionEventRecord
 	if err = stateFault(func() error { var e error; events, e = p.store.LoadEvents(ctx, p.session.ID(), 0, nil); return e }); err != nil {
 		return snapshot, err

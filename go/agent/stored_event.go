@@ -28,7 +28,7 @@ func (record *SessionEventRecord) UnmarshalJSON(data []byte) error {
 // It is an archival adapter, not a RunContext decoder. Historical provenance
 // stays informational: no actor, capabilities, approval grant or live authority
 // can be acquired by reading a row. Unsupported event types fail explicitly.
-// This does not enable a state backend or durable SSE catch-up by itself.
+// Managed catch-up uses this adapter; decoding alone enables no state backend.
 func DecodeStoredEvent(data []byte) (SessionEventRecord, error) {
 	if len(data) > MaxStoredEventBytes {
 		return SessionEventRecord{}, fmt.Errorf("stored event exceeds %d bytes", MaxStoredEventBytes)

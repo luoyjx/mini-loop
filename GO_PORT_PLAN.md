@@ -104,13 +104,14 @@ Record its parity evidence and remaining gaps before checking it off.
       typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
       per-run file recording and owner-scoped read/export implemented;
       typed HTML ledger, offline traceview CLI and filtered record visitor implemented;
-      embedded public console/UI shells implemented; optional UI data routes, full health posture, durable catch-up,
+      owner-scoped injected-store bounded SSE catch-up implemented;
+      embedded public console/UI shells implemented; optional UI data routes, full health posture, native SQL restart evidence,
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
-- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore and cron resolution implemented; Go SQLite backend and durable catch-up remain)
+- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution and injected-store bounded SSE catch-up implemented; Go SQLite backend/restart evidence remain)
 - [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
@@ -132,7 +133,8 @@ Record its parity evidence and remaining gaps before checking it off.
    integration; scheduled restoration is now implemented over the injected seam. Restore lease confirmation separately
    from recorded ownership; no human authority or goal/cron activation is restored.
 4. Serving: restored cron resolution is implemented with a fresh untrusted turn;
-   durable event cursor/catch-up and explicit state-backend launcher selection remain. Compare real restart/crash windows and ownership paths
+   bounded owner-scoped SSE event catch-up is implemented over the injected store;
+   native SQL reopen and explicit state-backend launcher selection remain. Compare real restart/crash windows and ownership paths
    before claiming G5 complete; a lease is not external-effect fencing.
 
 ### Next cron slices
@@ -3819,3 +3821,114 @@ The test backing is synchronized memory, not a shipped backend or restart proof.
   (677,651 bytes). Both receipts match the exact files. Visual review remains
   skipped after the earlier local-file access denial; no rendered inspection is
   claimed. Go test platform is darwin/arm64; Linux remains unvalidated.
+
+## Implementation checkpoint — 2026-10-06 bounded stored-event SSE catch-up
+
+Baseline: `647ebd7` on `feat/go-port`. This iteration composes the injected
+EventStore with owned SSE resume. P0/P1 remain complete; G0–G7 remain open.
+No dependencies are added; native Go SQLite still awaits explicit driver approval.
+
+### Actual source endpoint evidence and measured differences
+
+Snapshot 48 (`python-event-catchup.json`) invokes the actual registered events
+endpoint and consumes its actual EventSourceResponse body iterator against real
+SQLiteStateStore/NullStateStore. Seventeen cases pin normal/bounded windows,
+ephemeral sequence gaps, a real event emitted during the threaded read, Null
+fallback and twelve header inputs. Source SHA-256 pins server.py/session.py/storage.py.
+The direct iterator probe is not a live HTTP transport test; Python's existing
+live-uvicorn tests and Go's new TCP tests supply separate wire evidence.
+
+- Resume 5 on 250 stored status events returns 6–250; a 2,210-event session
+  returns the newest 2,000. Fresh/zero/negative/invalid IDs return the last 200
+  backlog entries. Null storage also falls back to backlog.
+- Subscribe precedes the read. A source event emitted in the load callback is
+  present in both storage and the queue but sent once. Iterator cancellation
+  leaves zero subscribers in all captured cases.
+- With ten actual `_ephemeral` deltas before each status, live sequence reaches
+  2,750 while storage has 250 rows. Python queries physical `after=750`, returning
+  no rows, then only 200 backlog statuses: fifty stored statuses are lost.
+  Go reads by physical ordinal and filters by event sequence, returning all 250
+  statuses within its storage window. This is a measured Go correction.
+- The source accepts decimal sign/whitespace/underscore syntax. Its default
+  Python 3.11 conversion refuses over 4,300 digits and ASCII U+001C/U+001F
+  whitespace, falling back to backlog. Go retains that pinned default, including
+  Python Unicode decimal digits and integer whitespace distinctions.
+- A huge positive valid decimal ID exceeds SQLite's signed integer adapter and
+  raises OverflowError in the actual source iterator. Go saturates the sequence
+  filter without using it as a SQL ordinal, so no rows pass and no integer
+  overflow is required. Other backend read faults return an opaque HTTP 503
+  before SSE headers, differing from the source generator's post-header failure.
+
+### Delivered typed composition and boundaries
+
+`EventOrdinal` now names physical row positions in SessionRecord/EventStore;
+`EventSequence` continues to name live/SSE IDs. JSON numeric representation is
+unchanged. Embedding implementations must update the exported method signatures.
+Restoration explicitly takes the physical cursor as a minimum and still uses the
+maximum stored payload sequence, preserving its no-reuse rule.
+
+`ManagedSession.CatchUpEvents(ctx, sequence)` skips storage for cursor zero,
+missing persistence or deleted state. Otherwise it reads the physical head and
+at most 2,000 newest rows with a concrete limit. Stored records must have the
+session's identity, positive/increasing sequence, known closed variants and
+non-ephemeral payloads. It re-decodes detached archival projections, preserving
+informational lineage but stripping live actor/capability authority. No historical
+approval grants or activation are installed. Bad scope/order/variant, overlarge
+windows and callback errors/panics fail closed without changing writer fault or
+lease status. Historical reads require no lease acquisition.
+
+The reader briefly snapshots configuration under the persistence lock and releases
+it before backend I/O; the backend owns concurrency safety. The HTTP owner and
+envelope checks precede subscription/read. Subscribe-first, caught-window-first
+and max-sequence queue de-duplication preserve the handoff. Disconnect cancellation
+reaches cooperative backend reads and deferred subscription cleanup; independent
+live capture/provider work can proceed while the read is blocked. Fresh replay,
+no-store behavior and submitted-turn stream ownership retain their existing rules.
+
+Remaining: native Go SQLite/WAL/migrations/transactions/reopen/concurrent-process
+proof, backend launcher selection, plan/goal variants/folding, other optional
+feature groups and G7 release audit. The window and 2,000-entry live queue can
+shed older data; complete-history resume and cross-process live tailing are not
+claimed. The Go backing used here is synchronized test memory, not a shipped
+backend or physical durability evidence. No paid endpoint was called.
+
+### Validation and delivery evidence
+
+- Focused agent/HTTP catch-up tests: pass. Cases cover actual source recipes,
+  restored empty-backlog reads, immutable masked/untrusted projections, callback
+  errors/panics, foreign rows, duplicate order, unsupported/ephemeral payloads,
+  overlarge windows, fresh/deleted paths and cancellation. Real TCP cases cover
+  owner-before-read, more than 200 old events, emission during catch-up,
+  de-duplication/live continuation, fresh 200-event replay, blocked-read concurrent
+  writer/provider work, opaque 503 and disconnect reclamation.
+- Full `go test ./... -count=1 -timeout=180s -coverpkg=./...` with a coverage
+  profile, `go test -race ./... -count=1 -timeout=240s`, and `go vet ./...`: pass.
+  Deduplicated statement coverage **88.83%** (**10,756 / 12,108**); agent
+  **90.29%** (**4,909 / 5,437**); HTTP **85.36%** (**647 / 758**).
+  These measure implemented statements, not migration completion/durability.
+- Exporter final `--check`: **48 files current**. Previous tracked exports remain
+  unchanged. `verify_scans.py`: **19 anchored scans**. Selected source guards
+  `sse-resume-gaps-beyond-the-backlog`, `subscriber-queue-unbounded` and
+  `ownership-leaks-existence`: all three caught. This is targeted source mutation
+  evidence, not a full mutation sweep or Go mutation coverage.
+- Python full regression: **2,151 passed / 28 skipped / 24 subtests passed**,
+  three warnings in **90.95 s**. Python runtime/package/test modules are unchanged;
+  package-module invariant checks do not apply to this exporter-only Python edit.
+- `git diff --check` and README outline: pass. README review baseline, canonical
+  Mermaid, boundary prose, extension seam and parity matrix are updated.
+- Interactive map regenerated from its JSON via Archify deliver:
+  **9/9 showcase, zero errors/warnings**. The map groups the core and managed
+  handle; the existing session-state relationship now includes bounded catch-up.
+  Two focused candidate repairs corrected a note length and removed a redundant
+  direct HTTP-state edge that crossed core nodes/corridors. No HTML is hand-edited.
+  `correction_rounds: 2`; `diagram_type: architecture`.
+  Specification **36,054 bytes**, SHA-256
+  `2c5885d5b2172ff8a3ac3f935369dd1bb9f94965db20274af69dae77f4b079da`;
+  artifact **677,747 bytes**, SHA-256
+  `2e11ed913425cd6db7f6cdd6e2bb5b16ad6d5ce1fe7766afd2d1862548658399`.
+  Exact saved bytes match both receipt hashes. Output:
+  `docs/mini-loop-system.architecture.html`.
+  `visual_review: skipped` — previous local-file access denial leaves no accessible
+  rendered image for inspection; no bypass or visual-pass claim is made.
+- Environment: darwin/arm64, Go 1.23.3. Linux execution is unvalidated.
+  All implementation gates are terminal before exact-path staging/commit/push.

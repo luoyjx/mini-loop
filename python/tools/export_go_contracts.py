@@ -4254,6 +4254,86 @@ def _scheduled_restore_contracts(scratch: Path) -> dict:
                               for name in ("session.py", "manager.py", "cron.py", "storage.py")}}
 
 
+def _event_catchup_contracts(scratch: Path) -> dict:
+    """Exercise the actual SSE endpoint iterator over real SQLite and Null stores."""
+    import asyncio
+    from starlette.requests import Request
+    from mini_loop.auth import NullAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+    from mini_loop.storage import SQLiteStateStore, NullStateStore
+
+    scratch.mkdir(parents=True)
+    recipes = [("past-backlog", 250, "5", 0, False, False),
+               ("bounded-tail", 2210, "5", 0, False, False),
+               ("ephemeral-gap", 250, "5", 10, False, False),
+               ("boundary", 250, "5", 0, False, True),
+               ("null", 250, "5", 0, True, False)]
+    recipes += [("header-" + str(i), 250, header, 0, False, False)
+                for i, header in enumerate(("", "0", "-5", "bad", "+5", " 5 ", "1_0", "1__0",
+                                           "999999999999999999999999999999999999", "\x1c5", "\x1f5", "0" * 4301))]
+    async def scenario(name, count, header, ephemeral, null, boundary):
+        root = scratch / name
+        root.mkdir()
+        store = NullStateStore() if null else SQLiteStateStore(root / "state.db")
+        settings = Settings(fake_llm=True, workspace_root=root / "fleet", trajectory_root=root / "trace")
+        manager = SessionManager(settings, FakeAsyncAnthropic(thinking=False), state_store=store)
+        session = manager.create()
+        for _ in range(count):
+            for _ in range(ephemeral):
+                await session.emit({"type": "assistant_delta", "text": "progress", "_ephemeral": True})
+            await session.emit({"type": "status", "status": "idle"})
+        head = store.event_cursor(session.id)
+        reads = []
+        loop = asyncio.get_running_loop()
+        original = store.load_events
+        def load(session_id, *, after=0, limit=None):
+            reads.append({"after": str(after), "limit": limit})
+            if boundary:
+                asyncio.run_coroutine_threadsafe(session.emit({"type": "status", "status": "idle"}), loop).result()
+            return original(session_id, after=after, limit=limit)
+        store.load_events = load
+        app = create_app(manager=manager, settings=settings)
+        app.state.manager = manager
+        app.state.auth = NullAuth()
+        endpoint = next(route.endpoint for route in app.routes
+                        if getattr(route, "path", "") == "/sessions/{session_id}/events")
+        request = Request({"type": "http", "app": app, "headers": [(b"last-event-id", header.encode("latin1"))],
+                           "method": "GET", "path": "/sessions/" + session.id + "/events",
+                           "query_string": b""})
+        response = await endpoint(request, session.id, True)
+        ids, names = [], []
+        stream_error = None
+        try:
+            while True:
+                try:
+                    frame = await asyncio.wait_for(response.body_iterator.__anext__(), 0.1)
+                except asyncio.TimeoutError:
+                    break
+                except Exception as error:
+                    stream_error = type(error).__name__
+                    break
+                ids.append(int(frame["id"]))
+                names.append(frame["event"])
+        finally:
+            await response.body_iterator.aclose()
+        subscribers = len(session._subscribers)
+        seq = session._seq
+        await manager.stop()
+        store.close()
+        return {"name": name, "count": count, "header": header, "ephemeral": ephemeral,
+                "null": null, "boundary": boundary, "physical_head": head, "live_sequence": seq,
+                "ids": ids, "envelope_names": sorted(set(names)), "reads": reads,
+                "subscribers_after": subscribers, "stream_error": stream_error}
+    async def run_all():
+        return [await scenario(*recipe) for recipe in recipes]
+    return {"cases": asyncio.run(run_all()),
+            "source_sha256": {name: hashlib.sha256((PYTHON_ROOT / "mini_loop" / name).read_bytes()).hexdigest()
+                              for name in ("server.py", "session.py", "storage.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4357,6 +4437,7 @@ def _snapshot() -> dict[str, bytes]:
         state_session_contracts = _state_session_contracts(Path(scratch) / "state-session")
         state_restore_contracts = _state_restore_contracts(Path(scratch) / "state-restore")
         scheduled_restore_contracts = _scheduled_restore_contracts(Path(scratch) / "scheduled-restore")
+        event_catchup_contracts = _event_catchup_contracts(Path(scratch) / "event-catchup")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -4419,6 +4500,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-state-session.json": _json_bytes(state_session_contracts),
         "python-state-restore.json": _json_bytes(state_restore_contracts),
         "python-scheduled-restore.json": _json_bytes(scheduled_restore_contracts),
+        "python-event-catchup.json": _json_bytes(event_catchup_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

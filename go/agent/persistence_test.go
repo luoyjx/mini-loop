@@ -140,14 +140,14 @@ func (s *runtimeStateStore) TranscriptEpoch(_ context.Context, id SessionID) (Tr
 	}
 	return s.epochLocked(id), nil
 }
-func (s *runtimeStateStore) AppendEvent(_ context.Context, id SessionID, record SessionEventRecord) (EventSequence, error) {
+func (s *runtimeStateStore) AppendEvent(_ context.Context, id SessionID, record SessionEventRecord) (EventOrdinal, error) {
 	s.mu.Lock()
 	if err := s.faults["event"]; err != nil {
 		s.mu.Unlock()
 		return 0, err
 	}
 	s.events[id] = append(s.events[id], record.clone())
-	ordinal := EventSequence(len(s.events[id]))
+	ordinal := EventOrdinal(len(s.events[id]))
 	hook := s.onEvent
 	s.mu.Unlock()
 	if hook != nil {
@@ -155,7 +155,7 @@ func (s *runtimeStateStore) AppendEvent(_ context.Context, id SessionID, record 
 	}
 	return ordinal, nil
 }
-func (s *runtimeStateStore) LoadEvents(_ context.Context, id SessionID, after EventSequence, limit *int) ([]SessionEventRecord, error) {
+func (s *runtimeStateStore) LoadEvents(_ context.Context, id SessionID, after EventOrdinal, limit *int) ([]SessionEventRecord, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if err := s.faults["events"]; err != nil {
@@ -163,19 +163,19 @@ func (s *runtimeStateStore) LoadEvents(_ context.Context, id SessionID, after Ev
 	}
 	out := []SessionEventRecord{}
 	for i, row := range s.events[id] {
-		if EventSequence(i+1) > after && (limit == nil || len(out) < *limit) {
+		if EventOrdinal(i+1) > after && (limit == nil || len(out) < *limit) {
 			out = append(out, row.clone())
 		}
 	}
 	return out, nil
 }
-func (s *runtimeStateStore) EventCursor(_ context.Context, id SessionID) (EventSequence, error) {
+func (s *runtimeStateStore) EventCursor(_ context.Context, id SessionID) (EventOrdinal, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if err := s.faults["cursor"]; err != nil {
 		return 0, err
 	}
-	return EventSequence(len(s.events[id])), nil
+	return EventOrdinal(len(s.events[id])), nil
 }
 func (s *runtimeStateStore) AcquireLease(_ context.Context, id SessionID, owner LeaseOwner, _ time.Duration) (bool, error) {
 	s.mu.Lock()
@@ -317,7 +317,7 @@ func TestStateRewriteEpochStampAndEphemeralOrdinal(t *testing.T) {
 	if epoch, _ := store.TranscriptEpoch(context.Background(), session.ID()); epoch != 2 {
 		t.Fatal(epoch)
 	}
-	if tail[0].Sequence <= before+1 {
+	if tail[0].Sequence <= EventSequence(before)+1 {
 		t.Fatal("ephemeral did not consume event sequence")
 	}
 	session.core.events.append(SessionEvent{kind: EventStatus, status: StatusEvent{Status: StatusIdle}})
@@ -703,7 +703,7 @@ func TestStateDeleteFailureStillDisownsAndDoesNotResurrect(t *testing.T) {
 
 type stateSessionContract struct {
 	CountBeforeProvider  int           `json:"count_before_provider"`
-	CursorAfterEphemeral EventSequence `json:"cursor_after_ephemeral"`
+	CursorAfterEphemeral EventOrdinal  `json:"cursor_after_ephemeral"`
 	Queued               []string      `json:"queued"`
 	LiveRaw              bool          `json:"live_raw"`
 	StoredRaw            bool          `json:"stored_raw"`
@@ -715,7 +715,7 @@ type stateSessionContract struct {
 		CurrentCount int             `json:"current_count"`
 		Epochs       []int           `json:"event_epochs"`
 		Seqs         []EventSequence `json:"event_seqs"`
-		Cursor       EventSequence   `json:"physical_cursor"`
+		Cursor       EventOrdinal    `json:"physical_cursor"`
 	} `json:"rewrite"`
 	ConfirmedStopped   bool `json:"confirmed_loss_stopped"`
 	UnconfirmedStopped bool `json:"unconfirmed_loss_stopped"`

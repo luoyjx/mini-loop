@@ -61,6 +61,18 @@ Unicode casing tables are generated separately by
 | Configuration and standalone startup | `config.py`, `__main__.py`, `server.py`, `skills.py`; configuration/startup tests | Named settings, loud validation, explicit service wiring, bind guard, shutdown and redacted diagnostics | `go/config` has all 49 source fields; 64 real Python outcomes compare accepted values and rejected configurations. Go has explicit int/duration bounds, no `.env` discovery or reload, and pure loading without Python Settings workspace mkdir. `launcher.New` wires supported services, `App.Serve` owns TCP listener/shutdown, and cmd/miniloop handles SIGINT/SIGTERM. Default trajectory recording is active; its configured root failure refuses startup. Enabled unavailable services still refuse activation. The private spill root is now best-effort constructed by default; an empty path disables it, and root failure retains startup. Builtin skill bytes/descriptions/load match Python. `--dump-config` reports settings-and-availability without runtime/probe, redacts credential fields and URL secrets, and includes Go VCS build info; it is not full effective posture. Local HTTP provider and real shell timeout tests prove option wiring. Positive subnanosecond durations and nonfinite values refuse; fake-delay validation also runs for a real provider. Public console/UI shells are implemented; missing optional services and full posture remain G3/G5/G6. |
 | Audit and extension seams | `config.py`, `harness.py`, `identity.py`, `audit.py`, `EXTENDING.md`; `tests/test_extension_contracts.py`, `test_effective_posture.py` | Explicit constructor dependencies, truthful default posture and credential-free reporting | Typed UserPromptHook and named MessageInjector seams receive detached history/todo/authority views; full injector batches validate before append, before runtime facts and compaction. Optional typed ApprovalReviewer and ApprovalRedactor seams, default CachePolicy/StuckDetector, typed StopHook continuation and optional ordered EventSink are implemented. Sink faults/panics are contained; callbacks may inspect Info/events but cannot recursively emit or block on live Messages. Go constructors reject invalid cache strides and detector thresholds; valid configured cases match Python. Reviewer faults/invalid verdicts abstain; remembered human grants precede review, and readonly/final denial stays authoritative. Guardian implementation, full effective-posture reporting and future provider/SQLite/optional-feature sink masking remain pending. The typed go/secrets Registry preserves named injection APIs, lazy cached values, retry/reporting, ANSI matching, Unicode casing and the default Null posture; 15 mask recipes, four environments and ten typed previews match actual Python. Runtime integration tests cover journal-before-observer order, raw execution arguments, masked model results, scoped shared-broker registries, compaction artifacts and child event isolation. The real shell consumes the selected environment and masks full/split streams before projection. Runtime registries bind independent credential configurations without mutating a shared executor. |
 
+Snapshot 48 invokes the actual Python events endpoint iterator over SQLite/Null
+for 17 window/header cases, including subscription-before-read and a concurrent
+boundary emission. Go separates physical EventOrdinal from SSE EventSequence,
+reads the newest 2,000 stored rows and filters by sequence. The source drops 50
+stored status events when ephemeral sequences move its ordinal query past the
+physical head, and raises SQL OverflowError on a huge positive header; Go closes
+these measured gaps. Fresh/invalid/negative IDs use the 200-event backlog; the
+pinned Python 3.11 default 4,300-digit conversion bound is retained. Owned TCP
+tests prove de-duplication, live writes during catch-up, fresh replay, disconnect
+cancellation and opaque pre-SSE 503 read failures. No native SQL/reopen proof is
+claimed; the Go runtime tests use synchronized injected memory backings.
+
 ## HTTP inventory
 
 `python/mini_loop/server.py` currently declares 44 routes. The default Go slice should
@@ -87,7 +99,7 @@ evidence. The current Go handler implements these twenty-seven method/path opera
 | POST | /sessions/{session_id}/fork | Completed transcript copy, fresh scratch, typed lineage and source event |
 | GET | /sessions/{session_id}/approvals | Scoped pending approvals |
 | POST | /sessions/{session_id}/approvals/{approval_id} | Bound allow/deny/answer/remember |
-| GET | /sessions/{session_id}/events | Bounded replay/live SSE; no durable catch-up |
+| GET | /sessions/{session_id}/events | Bounded replay/live SSE; configured event-store catch-up (2,000 stored rows), owner admission before read and sequence deduplication; native SQL pending |
 | GET | /sessions/{session_id}/transcript | Actual Null-store 404 response |
 | GET, POST | /sessions/{session_id}/cron | Owned structured jobs and schedule; fresh process authorization |
 | DELETE | /sessions/{session_id}/cron/{job_id} | Owned cancel; foreign job reads like missing |
