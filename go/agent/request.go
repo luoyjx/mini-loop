@@ -104,6 +104,7 @@ func (catalog *ToolCatalog) Snapshot() (ToolCatalogSnapshot, error) {
 }
 
 type SystemContext struct {
+	PlanMode  bool
 	Workspace string
 	Catalog   ToolCatalogSnapshot
 	Skills    string
@@ -132,6 +133,9 @@ func (DefaultSystemBuilder) BuildSystem(value SystemContext) (string, error) {
 		}
 		core += fmt.Sprintf("\n\n%d registered tool(s) are NOT included in this request because the combined tool definitions exceed the per-request budget: %s%s. Their definitions were not sent, so they cannot be called reliably; if one is needed, it is unavailable.", len(omitted), strings.Join(names, ", "), tail)
 	}
+	if value.PlanMode {
+		core += "\n\n" + PlanSection
+	}
 	return core, nil
 }
 
@@ -150,7 +154,7 @@ func (s *Session) buildRequest() (protocol.ModelRequest, string, error) {
 	if s.skills != nil {
 		descriptions = s.skills.Descriptions()
 	}
-	system, err := s.systemBuilder.BuildSystem(SystemContext{s.executionRoot(), snapshot, descriptions})
+	system, err := s.systemBuilder.BuildSystem(SystemContext{Workspace: s.executionRoot(), Catalog: snapshot, Skills: descriptions, PlanMode: s.PlanModeActive()})
 	if err != nil {
 		return protocol.ModelRequest{}, "", err
 	}

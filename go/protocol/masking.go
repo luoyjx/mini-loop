@@ -15,6 +15,8 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolExitPlanMode:
+		input.exitPlanMode.Plan = mask(input.exitPlanMode.Plan)
 	case ToolScheduleCron:
 		input.scheduleCron.Cron = mask(input.scheduleCron.Cron)
 		input.scheduleCron.Prompt = mask(input.scheduleCron.Prompt)

@@ -1,0 +1,588 @@
+{
+  "cases": [
+    {
+      "name": "headless",
+      "reviews": [],
+      "steps": [
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [],
+          "input": {
+            "plan": "# Before"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: not in plan mode; there is no plan to present.",
+          "section": false
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Already in plan mode.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": ""
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": "prose"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": true
+        },
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true,
+            false
+          ],
+          "input": {
+            "plan": "\u001c # é\n1. do it\u001f"
+          },
+          "name": "exit_plan_mode",
+          "output": "Plan approved. Plan mode is off; proceed with the plan.",
+          "section": false
+        },
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true,
+            false
+          ],
+          "input": {
+            "plan": "# Again"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: not in plan mode; there is no plan to present.",
+          "section": false
+        }
+      ]
+    },
+    {
+      "name": "readonly",
+      "reviews": [],
+      "steps": [
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [],
+          "input": {
+            "plan": "# Before"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: not in plan mode; there is no plan to present.",
+          "section": false
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Already in plan mode.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": ""
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": "prose"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": true
+        },
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true,
+            false
+          ],
+          "input": {
+            "plan": "\u001c # é\n1. do it\u001f"
+          },
+          "name": "exit_plan_mode",
+          "output": "Plan approved. Plan mode is off; proceed with the plan.",
+          "section": false
+        },
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true,
+            false
+          ],
+          "input": {
+            "plan": "# Again"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: not in plan mode; there is no plan to present.",
+          "section": false
+        }
+      ]
+    },
+    {
+      "name": "approve",
+      "reviews": [
+        "# é\n1. do it"
+      ],
+      "steps": [
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [],
+          "input": {
+            "plan": "# Before"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: not in plan mode; there is no plan to present.",
+          "section": false
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Already in plan mode.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": ""
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": "prose"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": true
+        },
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true,
+            false
+          ],
+          "input": {
+            "plan": "\u001c # é\n1. do it\u001f"
+          },
+          "name": "exit_plan_mode",
+          "output": "Plan approved. Plan mode is off; proceed with the plan.",
+          "section": false
+        },
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true,
+            false
+          ],
+          "input": {
+            "plan": "# Again"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: not in plan mode; there is no plan to present.",
+          "section": false
+        }
+      ]
+    },
+    {
+      "name": "reject",
+      "reviews": [
+        "# é\n1. do it",
+        "# Again"
+      ],
+      "steps": [
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [],
+          "input": {
+            "plan": "# Before"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: not in plan mode; there is no plan to present.",
+          "section": false
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Already in plan mode.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": ""
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": "prose"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": "\u001c # é\n1. do it\u001f"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: plan not approved. Reviewer feedback: split step 2 into smaller pieces",
+          "section": true
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": "# Again"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: plan not approved. Reviewer feedback: split step 2 into smaller pieces",
+          "section": true
+        }
+      ]
+    },
+    {
+      "name": "fixed",
+      "reviews": [],
+      "steps": [
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [],
+          "input": {
+            "plan": "# Before"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: not in plan mode; there is no plan to present.",
+          "section": false
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Plan mode is now active: investigate and plan; present with exit_plan_mode.",
+          "section": false
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {},
+          "name": "enter_plan_mode",
+          "output": "Already in plan mode.",
+          "section": false
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": ""
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": false
+        },
+        {
+          "active": true,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true
+          ],
+          "input": {
+            "plan": "prose"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: present the COMPLETE plan as markdown starting with a `#` heading.",
+          "section": false
+        },
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true,
+            false
+          ],
+          "input": {
+            "plan": "\u001c # é\n1. do it\u001f"
+          },
+          "name": "exit_plan_mode",
+          "output": "Plan approved. Plan mode is off; proceed with the plan.",
+          "section": false
+        },
+        {
+          "active": false,
+          "catalog_stable": true,
+          "events": [
+            true,
+            true,
+            false
+          ],
+          "input": {
+            "plan": "# Again"
+          },
+          "name": "exit_plan_mode",
+          "output": "Error: not in plan mode; there is no plan to present.",
+          "section": false
+        }
+      ]
+    }
+  ],
+  "folds": [
+    false,
+    true
+  ],
+  "metadata": [
+    {
+      "capabilities": [],
+      "name": "enter_plan_mode",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read"
+    },
+    {
+      "capabilities": [],
+      "name": "exit_plan_mode",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read"
+    }
+  ],
+  "restored": [
+    {
+      "active": true,
+      "folded": true,
+      "request_sections": [
+        true
+      ]
+    },
+    {
+      "active": false,
+      "folded": false,
+      "request_sections": [
+        false
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "description": "Switch to plan mode: investigate and design before mutating anything.",
+      "input_schema": {
+        "properties": {},
+        "type": "object"
+      },
+      "name": "enter_plan_mode"
+    },
+    {
+      "description": "Present the finished plan for approval and leave plan mode. Only meaningful while plan mode is active.",
+      "input_schema": {
+        "properties": {
+          "plan": {
+            "description": "The complete plan, markdown, starting with a # heading.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan"
+        ],
+        "type": "object"
+      },
+      "name": "exit_plan_mode"
+    }
+  ],
+  "section": "Plan mode is ACTIVE. Investigate and design, but do not mutate the workspace or run commands with side effects yet. When your plan is ready, present it with the `exit_plan_mode` tool -- a markdown plan starting with a `#` heading -- and wait for approval. If the reviewer asks for changes, revise the plan and present it again.",
+  "source_sha256": {
+    "plan_mode.py": "c451a71c5763cdc9e8d230f446f2c7f3a97144f9dc4afafd9c55236040f1c826",
+    "prompts.py": "4c7f4aaa9907d4e763df058117283b78c0d35738085697f3683cf88af62df74e",
+    "registry.py": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+    "session.py": "99685f8645cee17e0bfe1c274f2ef34a91f1b8bce9980b5753a1635a4409f944"
+  },
+  "variants": [
+    {
+      "candidate": [
+        "enter_plan_mode"
+      ],
+      "canonical": "{}",
+      "input": {},
+      "name": "enter_plan_mode",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "exit_plan_mode"
+      ],
+      "canonical": "{\"plan\":\"# é\\n1. do it\"}",
+      "input": {
+        "plan": "# é\n1. do it"
+      },
+      "name": "exit_plan_mode",
+      "proposed": []
+    }
+  ]
+}

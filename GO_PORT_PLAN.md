@@ -82,7 +82,7 @@ Record its parity evidence and remaining gaps before checking it off.
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
       usage, core lifecycle/status/cancel/stop/error/stuck/subagent/approval events,
       run provenance, action/approval/session records and current archival event decoding implemented;
-      other event and state variants remain)
+      plan-mode inputs/events are implemented; other event and state variants remain)
 - [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
       fake-provider slice, cache annotation, stuck detection, scoped child execution,
       exhaustion markers and cancellation repair implemented;
@@ -112,7 +112,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up and transcript epoch reads implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next persistence slices
@@ -4041,3 +4041,96 @@ state/provider variants, optional feature groups and release audit remain open.
   rendered image; no workaround or visual-pass claim is made.
 - Environment: Go 1.23.3, darwin/arm64; Linux execution remains unvalidated.
   Required implementation gates are terminal before exact-path staging/commit/push.
+
+
+## Implementation checkpoint — 2026-10-06 typed plan mode
+
+Baseline `31cbc44`; P0/P1 remain complete and G0–G7 remain open. This slice
+ports the actual optional Python plan tools and log-folded prompt guidance.
+Native SQLite/backend/restart, goals, other optional modules and the final
+release audit still require implementation and evidence.
+
+### Actual source contract and differential evidence
+
+- Snapshot 50 (`go/testdata/python-plan-mode.json`) invokes 35 actual
+  `Agent._exec_tool` calls in five installations: headless, readonly, accepted
+  review, rejected review and fixed system. It compares schemas, empty source
+  capabilities, read/readonly/exclusive traits, canonical inputs, grant proposals,
+  tool outputs, active state, system section and stable catalog fingerprint.
+  Repeated entry emits another whole boolean event; inactive exit, invalid
+  Markdown and rejected review produce readable failure without leaving planning.
+- Two actual Python SQLite managers restore opposite final logged values and
+  make the next offline model request; the request's planning section matches the
+  restored value. The fixture records SHA-256 for plan_mode/prompts/session/registry.
+  No paid model endpoint is called. All 49 previous exports remain unchanged.
+- Nil reviewer uses source headless approval. The source installation does not
+  implicitly adapt the session approval broker into a plan reviewer; Go preserves
+  that choice. Strict Go provider input rejects missing/null/nonstring plan and
+  model-supplied identity/approval fields. Actual tools emit boolean `active`;
+  Go archival decoding requires that boolean, while Python's general fold accepts
+  truthy values. This boundary difference is explicit.
+
+### Delivered types and runtime integration
+
+- Closed EnterPlanMode / ExitPlanMode ToolInput variants with named
+  ExitPlanModeInput, typed schemas, canonical identity and string masking.
+  Explicit RuntimeConfig/ManagerServices/launcher PlanModeTools and
+  --plan-mode-tools activate the individual pair; default tools stay ten.
+- Concrete PlanReviewRequest / PlanReview and PlanApprover interface. Reviews
+  receive the final trimmed plan and bound ToolAuthority after common gate checks.
+  Rejection is failed telemetry with feedback; callback faults/panics and cancelled
+  approval retain active planning. Callback implementations own cancellation,
+  fleet concurrency and non-reentry. Nil/CLI approval is headless, not a human UI.
+- Atomic Session.PlanModeActive; concrete PlanModeEvent and archival encoder/
+  decoder; last-value restore fold, including pending reload after a claim.
+  The default SystemBuilder appends the exact source PlanSection; custom builders
+  receive SystemContext.PlanMode and fixed systems stay fixed. Envelope changes
+  reflect prompt changes, while fitted tool schemas stay unchanged.
+- Plan mode does not change sandbox or effect permissions. Native tests show
+  Auto still writes and Readonly denies. Fresh forks start inactive. Explicitly
+  selected children bind independent state/reviewer authority; default role
+  profiles omit the source capability-free pair. Like source, restoration folds
+  all logged plan events, including child scopes; this fact grants no authority.
+- Existing event-first capture, trajectories and stored-event SSE carry the
+  boolean event. A native three-round model turn proves persisted entry before
+  the next provider request and prompt states off/on/off with stable schemas.
+  Ordinary store faults retain existing degraded-persistence semantics; no
+  durable backend or atomic state-plus-external-effect transaction is claimed.
+
+### Validation and delivery evidence
+
+- Focused plan-mode agent/protocol/launcher/CLI tests: pass. Cases cover 35 source
+  calls and both restore recipes, exact source whitespace/feedback, stable schemas,
+  no-op event logging, invalid archival rows, callback errors/panics/cancellation,
+  masked review feedback, raw review input, foreign authority, fork/child state,
+  pending claim reload and bounded event catch-up. Local TCP launcher tests drive
+  real HTTP provider calls and three planning/model rounds; no paid endpoint.
+- Full `go test ./... -count=1 -timeout=180s -coverpkg=./...` with coverage profile,
+  `go test -race ./... -count=1 -timeout=240s`, and `go vet ./...`: pass.
+  Deduplicated statement coverage **88.93%** (**10,928 / 12,289**); agent
+  **90.37%** (**5,013 / 5,547**); protocol **88.98%** (**969 / 1,089**);
+  HTTP **86.42%** (**700 / 810**). Coverage measures implemented statements,
+  not overall migration completion or native SQL durability.
+- Exporter final `--check`: **50 files current**. `verify_scans.py`: **19 anchored
+  scans**. Three selected source guards caught: rejected-plan-still-exits,
+  exit-outside-plan-mode-flips-state and restore-forgets-plan-mode. These are
+  focused Python mutation checks, not Go mutation coverage or a full guard sweep.
+- Python full regression: **2,151 passed / 28 skipped / 24 subtests passed**,
+  three warnings in **78.07 s**. Python runtime/package/test modules are unchanged;
+  package-module invariant checks do not apply to the exporter-only Python edit.
+- `git diff --check` and README outline: pass. README review baseline/canonical
+  Mermaid/boundary prose, extension seam, current plan and parity matrix updated.
+  Historical checkpoints retain their contemporaneous pending labels; current
+  storage/HTTP summaries now name implemented catch-up/epoch/plan behavior.
+- Interactive architecture HTML regenerated from frozen JSON via Archify:
+  **9/9 showcase**, **zero composition errors/warnings**,
+  `diagram_type: architecture`, `correction_rounds: 0`.
+  Specification **36,197 bytes**, SHA-256
+  `c179125b466e3721e70daca861977ddde174c5ac9a0f5b6f89a85af824f7474e`;
+  artifact **677,886 bytes**, SHA-256
+  `e941ad8b2f4247766d4907b4574b7825d858127c8de42dcb6fb35d483b263a16`.
+  Exact saved files match receipts. Output docs/mini-loop-system.architecture.html.
+  `visual_review: skipped` — prior local-file access denial remains; no rendered
+  inspection or bypass is claimed. JSON geometry and existing edges are retained.
+- Environment: Go 1.23.3, darwin/arm64; Linux remains unvalidated. All required
+  implementation gates are terminal before exact-path staging/commit/push.

@@ -21,7 +21,7 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 			Prompt    string `json:"prompt"`
 			Recurring *bool  `json:"recurring,omitempty"`
 		}{v.Cron, v.Durable, v.Prompt, v.Recurring}, false, compact)
-	case ToolListCrons, ToolCancelCron:
+	case ToolEnterPlanMode, ToolExitPlanMode, ToolListCrons, ToolCancelCron:
 		return PythonJSON(input, false, compact)
 	case ToolBackgroundRun:
 		v := input.backgroundRun

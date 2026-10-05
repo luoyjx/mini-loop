@@ -45,6 +45,8 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	PlanModeTools             bool
+	PlanApprover              PlanApprover
 	StateStore                StateStore
 	CronTools                 bool
 	BackgroundTools           bool

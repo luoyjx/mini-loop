@@ -307,7 +307,8 @@ plus explicit injected-store manager restoration, lease-gated approval expiry an
 plus lazy stable-identity cron restoration with bound/factory workspace selection,
 plus owner-scoped bounded event-store SSE catch-up with distinct ordinal/sequence types,
 plus configured-store transcript epoch reads with concrete historical snapshots,
-reviewed **2026-10-06** (Go baseline `7d0cf39` plus the transcript-read slice).
+plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
+reviewed **2026-10-06** (Go baseline `31cbc44` plus the plan-mode slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -362,7 +363,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
@@ -471,6 +472,23 @@ host and actual listener before admitting unauthenticated traffic. `--dump-confi
 reports redacted settings/availability without creating a runtime or probing a model;
 it is not the full Python effective-posture report. See
 [Go startup](go/README.md#run-the-standalone-http-server).
+Explicit `RuntimeConfig.PlanModeTools` / `ManagerServices.PlanModeTools` add
+`enter_plan_mode` and `exit_plan_mode` through the same execution gate. Both
+stay registered while inactive and remain exclusive read-risk tools. A whole
+boolean `plan_mode` event records every successful call, including repeated
+entry; restore folds the log's last value. The default system builder adds soft
+planning guidance, while custom builders receive `SystemContext.PlanMode` and
+choose their own prompt. Sandbox/permission modes remain independent. Optional
+`PlanApprover` receives typed plan text and bound caller authority; rejection,
+fault or cancellation retains planning. Nil uses Python's headless auto-approval.
+`--plan-mode-tools` selects this individual service; no human approval UI is
+implied by that flag. Forks start inactive. Selected child handlers own fresh
+state; default role profiles omit these capability-free tools. Stored-event SSE
+and trajectories carry the boolean event, and injected-store restore reloads it
+without starting a turn or recovering reviewer authority. Native SQL restart,
+goals and the combined feature bundle remain open.
+See [Go plan mode](go/README.md#plan-mode-tools-and-logged-guidance).
+
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,
 independent contexts and native process groups let admitted commands outlive the

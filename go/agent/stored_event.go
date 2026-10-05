@@ -2,6 +2,7 @@ package agent
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
@@ -83,6 +84,19 @@ func storedGrant(tokens []string) GrantCandidate {
 func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent, error) {
 	event := SessionEvent{kind: kind}
 	switch kind {
+	case EventPlanMode:
+		v, err := storedPayload[struct {
+			Active *bool `json:"active"`
+		}](data)
+		if err != nil {
+			return event, err
+		}
+		if v.Active == nil {
+			return event, errors.New("stored plan_mode requires active boolean")
+		}
+		event.planMode = PlanModeEvent{Active: *v.Active}
+		return event, nil
+
 	case EventTurnQueued:
 		return event, nil
 	case EventBackgroundResult:

@@ -8,6 +8,8 @@ import (
 )
 
 const (
+	ToolEnterPlanMode   ToolName = "enter_plan_mode"
+	ToolExitPlanMode    ToolName = "exit_plan_mode"
 	ToolScheduleCron    ToolName = "schedule_cron"
 	ToolListCrons       ToolName = "list_crons"
 	ToolCancelCron      ToolName = "cancel_cron"
@@ -124,6 +126,7 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
+	exitPlanMode    ExitPlanModeInput
 	name            ToolName
 	nulls           inputNullFields
 	bash            BashInput
@@ -341,7 +344,7 @@ func (input ToolInput) clone() (result ToolInput) {
 
 func (input ToolInput) Validate() error {
 	switch input.name {
-	case ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
+	case ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
 		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
 		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
 		return nil
@@ -396,9 +399,11 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 		return json.Marshal(input.compress)
 	case ToolScheduleCron:
 		return json.Marshal(input.scheduleCron)
+	case ToolExitPlanMode:
+		return json.Marshal(input.exitPlanMode)
 	case ToolCancelCron:
 		return json.Marshal(input.cancelCron)
-	case ToolListCrons, ToolListTasks, ToolListWorktrees:
+	case ToolEnterPlanMode, ToolListCrons, ToolListTasks, ToolListWorktrees:
 		return []byte("{}"), nil
 	case ToolKeepWorktree, ToolEnterWorktree:
 		return json.Marshal(input.worktreeName)
@@ -429,6 +434,23 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolEnterPlanMode:
+		var wire struct{}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		result = EnterPlanModeToolInput()
+	case ToolExitPlanMode:
+		var wire struct {
+			Plan *string `json:"plan"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Plan == nil {
+			return result, errors.New("exit_plan_mode requires plan")
+		}
+		result = ExitPlanModeToolInput(ExitPlanModeInput{Plan: *wire.Plan})
 	case ToolScheduleCron:
 		var wire struct {
 			Cron      *string `json:"cron"`

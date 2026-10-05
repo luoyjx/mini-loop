@@ -1001,6 +1001,45 @@ second schedule, foreign authority, a real model tool round, fresh fork/child
 scope, restored HTTP authorization with no stored activation and local TCP
 launcher-to-provider-to-HTTP composition. No paid provider is contacted.
 
+### Plan mode tools and logged guidance
+
+Select `RuntimeConfig.PlanModeTools`, `ManagerServices.PlanModeTools`,
+`launcher.Options.PlanModeTools` or `cmd/miniloop --plan-mode-tools`. This adds
+`enter_plan_mode` and `exit_plan_mode` with named `ExitPlanModeInput{Plan}`.
+Both stay in the fitted catalog while off; both are exclusive read-risk tools.
+The default tool set stays ten. Full feature activation remains unsupported.
+
+Entry sets the active boolean and emits `plan_mode` even when already active.
+Exit requires active planning and full Markdown beginning with `#` after Python
+whitespace trimming. Optional `PlanApprover` reviews `PlanReviewRequest` with
+bound `ToolAuthority` and returns `PlanReview{Approved, Feedback}`. Rejection is
+a failed call with feedback; errors/panics/cancellation keep active state. Nil
+uses source headless auto-approval. The CLI uses this headless path; the normal
+approval broker is not implicitly a plan reviewer.
+
+`DefaultSystemBuilder` appends the exact source `PlanSection` during planning.
+Custom builders receive `SystemContext.PlanMode`; a fixed system remains fixed.
+Plan state never changes the permission/sandbox policy. Auto can still mutate;
+Readonly still denies writes. The envelope changes with the default prompt,
+while schemas stay stable. `Session.PlanModeActive()` is safe during callbacks;
+shared reviewers must synchronize state, honor cancellation and avoid reentry.
+
+A concrete boolean event survives archival decoding, masked capture, trajectory
+recording and stored-event SSE. Restore folds the last logged value, including
+pending claim reload; a new fork starts inactive. Selected child handlers have
+fresh state and bound child authority; default role profiles omit these tools.
+Like Python, restoration folds all logged plan events including child scopes;
+that restored value is guidance, with no recovered reviewer or human authority.
+Go rejects absent/null/nonboolean archival `active` values; Python's general fold
+uses truthiness, while the actual source tools always emit booleans.
+
+Snapshot 50 compares 35 actual source gate calls across headless, readonly,
+approved, rejected and fixed-prompt installations, plus two actual Python SQLite
+restores and their next requests. Go tests actual model-round prompt changes,
+event-before-request persistence, failure/cancellation, masked feedback, owner
+binding, fresh forks/children and local TCP launcher composition. Runtime storage
+tests use injected memory backings; native SQLite and SQL restart remain pending.
+
 ### Operator worktree lifecycle
 
 `worktrees.New(worktrees.Config{Repository: repo})` provides named worktree and

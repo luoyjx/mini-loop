@@ -4424,6 +4424,94 @@ def _transcript_contracts(scratch: Path) -> dict:
                               for name in ("server.py", "session.py", "storage.py", "compaction.py")}}
 
 
+def _plan_mode_contracts(scratch: Path) -> dict:
+    """Actual source gate, prompt transitions and SQL restoration, offline."""
+    import asyncio
+    from mini_loop.agent import Agent
+    from mini_loop.builtins import default_registry
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text
+    from mini_loop.manager import SessionManager
+    from mini_loop.plan_mode import install_plan_mode, PLAN_SECTION, fold_plan_mode
+    from mini_loop.registry import ToolCall, ToolRegistry
+    from mini_loop.storage import SQLiteStateStore, SessionRecord
+    from mini_loop.approvals import grant_candidate, proposed_candidate
+    scratch.mkdir(parents=True)
+    registry = ToolRegistry()
+    install_plan_mode(registry)
+    variants = [{"name": "enter_plan_mode", "input": {}},
+                {"name": "exit_plan_mode", "input": {"plan": "# é\n1. do it"}}]
+    for row in variants:
+        row["canonical"] = json.dumps(row["input"], sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+        row["candidate"] = list(grant_candidate(row["name"], row["input"]) or [])
+        row["proposed"] = list(proposed_candidate(row["name"], row["input"]) or [])
+    async def scenario(name):
+        root = scratch / name
+        root.mkdir()
+        calls, events = [], []
+        async def reviewer(ctx, plan):
+            calls.append(plan)
+            return name == "approve", "split step 2 into smaller pieces"
+        async def emit(event):
+            if event.get("type") == "plan_mode": events.append(bool(event["active"]))
+        tools = default_registry()
+        install_plan_mode(tools, approval=reviewer if name in ("approve", "reject") else None)
+        a = Agent(client=FakeAsyncAnthropic(), workspace=root, tools=tools, emit=emit,
+                  system="fixed" if name == "fixed" else None,
+                  state={"permission_mode": "readonly" if name == "readonly" else "auto"},
+                  settings=Settings(fake_llm=True,
+                                    workspace_root=root, skills_dir=root / "empty", spill_dir=None))
+        fingerprint = a.tools.snapshot().fingerprint
+        steps = []
+        for i, (tool, value) in enumerate([
+            ("exit_plan_mode", {"plan": "# Before"}), ("enter_plan_mode", {}),
+            ("enter_plan_mode", {}), ("exit_plan_mode", {"plan": ""}),
+            ("exit_plan_mode", {"plan": "prose"}),
+            ("exit_plan_mode", {"plan": "\u001c\u00a0# é\n1. do it\u001f"}),
+            ("exit_plan_mode", {"plan": "# Again"})]):
+            output = str(await a._exec_tool(ToolCall(tool, value, f"plan-{i}")))
+            steps.append({"name": tool, "input": value, "output": output,
+                          "active": bool(a.state.get("plan_mode")), "section": PLAN_SECTION in a.system,
+                          "events": list(events), "catalog_stable": a.tools.snapshot().fingerprint == fingerprint})
+        return {"name": name, "steps": steps, "reviews": calls}
+    async def restore(active):
+        root = scratch / ("restore-on" if active else "restore-off")
+        root.mkdir()
+        store = SQLiteStateStore(root / "state.db")
+        store.upsert_session(SessionRecord("saved", str(root / "workspace"), None, 1.0, 2, "idle", 0, owner="alice"))
+        store.append_messages("saved", [{"role": "user", "content": "prior"},
+            {"role": "assistant", "content": [{"type": "text", "text": "remembered"}]}], epoch=1)
+        for i, value in enumerate((False, True, active)):
+            store.append_event("saved", {"type": "plan_mode", "active": value, "seq": i+1,
+                "ts": 1.0, "session": "saved", "transcript_epoch": 1, "agent": "main", "depth": 0})
+        requests = []
+        def responder(kwargs):
+            system = kwargs.get("system", "")
+            if not isinstance(system, str): system = "\n".join(x.get("text", "") for x in system)
+            requests.append(PLAN_SECTION in system)
+            return [text("restored")], "end_turn"
+        tools = default_registry()
+        install_plan_mode(tools)
+        manager = SessionManager(Settings(fake_llm=True, workspace_root=root / "fleet", trajectory_enabled=False),
+            FakeAsyncAnthropic(responder=responder, thinking=False), state_store=store, tool_registry=tools)
+        session = next(x for x in manager.restore_sessions() if x.id == "saved")
+        folded = bool(session.agent.state.get("plan_mode"))
+        await session.run("continue")
+        await manager.stop()
+        store.close()
+        return {"active": active, "folded": folded, "request_sections": requests}
+    async def run():
+        return [await scenario(n) for n in ("headless", "readonly", "approve", "reject", "fixed")], [await restore(v) for v in (True, False)]
+    cases, restored = asyncio.run(run())
+    return {"section": PLAN_SECTION, "schemas": registry.schemas(),
+        "metadata": [{"name": t.name, "risk": t.risk, "readonly": t.readonly, "parallel_safe": t.parallel_safe,
+                      "capabilities": sorted(t.capabilities)} for t in registry._tools.values()],
+        "variants": variants, "cases": cases, "restored": restored,
+        "folds": [fold_plan_mode([]), fold_plan_mode([{"type": "plan_mode", "active": True}, {"type": "other"}])],
+        "source_sha256": {n: hashlib.sha256((PYTHON_ROOT / "mini_loop" / n).read_bytes()).hexdigest()
+                          for n in ("plan_mode.py", "prompts.py", "session.py", "registry.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4528,6 +4616,7 @@ def _snapshot() -> dict[str, bytes]:
         state_restore_contracts = _state_restore_contracts(Path(scratch) / "state-restore")
         scheduled_restore_contracts = _scheduled_restore_contracts(Path(scratch) / "scheduled-restore")
         event_catchup_contracts = _event_catchup_contracts(Path(scratch) / "event-catchup")
+        plan_mode_contracts = _plan_mode_contracts(Path(scratch) / "plan-mode")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -4593,6 +4682,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-scheduled-restore.json": _json_bytes(scheduled_restore_contracts),
         "python-event-catchup.json": _json_bytes(event_catchup_contracts),
         "python-transcript.json": _json_bytes(transcript_contracts),
+        "python-plan-mode.json": _json_bytes(plan_mode_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

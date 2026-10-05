@@ -23,6 +23,7 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	planApprover                                   PlanApprover
 	background                                     *backgroundState
 	bash                                           BashExecutor
 	authority                                      ToolAuthority
@@ -135,8 +136,9 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 		questions = nil
 	}
 	handler := &runtimeHandler{
-		binding: ToolAuthority{SessionID: id, OwnerID: parent.authority.OwnerID, Workspace: parent.authority.Workspace, Mode: mode},
-		todos:   &TodoManager{}, events: &sessionEvents{parent: parent.events, secrets: parent.secrets, sessionID: parent.events.sessionID}, skills: parent.skills, questions: questions, compression: &compressionSignal{},
+		planApprover: parent.planApprover,
+		binding:      ToolAuthority{SessionID: id, OwnerID: parent.authority.OwnerID, Workspace: parent.authority.Workspace, Mode: mode},
+		todos:        &TodoManager{}, events: &sessionEvents{parent: parent.events, secrets: parent.secrets, sessionID: parent.events.sessionID}, skills: parent.skills, questions: questions, compression: &compressionSignal{},
 	}
 	definitions := append([]ToolDefinition(nil), catalog.ordered...)
 	// Built-in stateful handlers must bind the fresh child. Custom handlers
@@ -170,6 +172,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 			child.bash = handler.executor
 		}
 	}
+	child.planApprover = parent.planApprover
 	child.recovery = parent.recovery
 	child.streamProgress = parent.streamProgress
 	child.model, child.maxTokens, child.tokenThreshold = parent.model, parent.maxTokens, parent.tokenThreshold
@@ -241,9 +244,10 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
-		background: s.background,
-		bash:       s.bash,
-		authority:  ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
+		planApprover: s.planApprover,
+		background:   s.background,
+		bash:         s.bash,
+		authority:    ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
 		model: s.model, maxTokens: s.maxTokens, tokenThreshold: s.tokenThreshold, maxRounds: s.subagentMaxRounds, maxDepth: s.subagentMaxDepth,
 		provider: s.provider, recovery: s.recovery, streamProgress: s.streamProgress, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
 		promptHooks: append([]UserPromptHook(nil), s.promptHooks...), injectors: append([]MessageInjector(nil), s.injectors...), modelLimiter: s.modelLimiter, toolLimiter: s.toolLimiter,

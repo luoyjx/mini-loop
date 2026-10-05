@@ -34,6 +34,8 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	planMode                                          atomic.Bool
+	planApprover                                      PlanApprover
 	persistence                                       *sessionPersistence
 	background                                        *backgroundState
 	repairedToolUses                                  []string

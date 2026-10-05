@@ -59,6 +59,8 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 		h.ParentMessageID = record.Scope.RunContext.Snapshot().ParentMessageID
 	}
 	switch e.kind {
+	case EventPlanMode:
+		return marshalEvent(h, e.planMode)
 	case EventBackgroundResult:
 		return marshalEvent(h, e.backgroundResult)
 	case EventTrajectoryStart:

@@ -54,6 +54,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	PlanModeTools        bool
+	PlanApprover         PlanApprover
 	StateStore           StateStore
 	StateLeaseOwner      LeaseOwner
 	StateLeaseTTL        time.Duration
@@ -106,6 +108,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	planApprover         PlanApprover
 	cron                 CronControl
 	background           *backgroundState
 	worktrees            *worktrees.Manager
@@ -158,6 +161,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolEnterPlanMode, protocol.ToolExitPlanMode:
+		return handler.executePlanMode(ctx, authority, input)
 	case protocol.ToolScheduleCron, protocol.ToolListCrons, protocol.ToolCancelCron:
 		return handler.executeCron(input)
 	case protocol.ToolBackgroundRun, protocol.ToolCheckBackground:
@@ -290,7 +295,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if source == nil {
 		source = skills.EmptyCatalog()
 	}
-	handler := &runtimeHandler{cron: config.Cron,
+	handler := &runtimeHandler{planApprover: config.PlanApprover, cron: config.Cron,
 		binding: ToolAuthority{SessionID: config.ID, OwnerID: config.Owner, Workspace: files.Root(), Mode: config.Mode},
 		todos:   &TodoManager{}, events: &sessionEvents{}, skills: source, questions: config.Questions, compression: &compressionSignal{},
 	}
@@ -333,6 +338,15 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 				definitions[i].handler = handler
 				definitions[i].classifier = backgroundBashClassifier{}
 			}
+		}
+	}
+	if config.PlanModeTools {
+		for _, schema := range protocol.PlanModeSchemas() {
+			definition, err := NewToolDefinitionWithSchema(schema, ToolTraits{Risk: RiskRead, Readonly: true}, handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
 		}
 	}
 	if config.CronTools {
@@ -406,6 +420,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if config.Recovery != nil {
 		session.recovery = config.Recovery
 	}
+	session.planApprover = config.PlanApprover
 	session.streamProgress = streamProgress(config.StreamProgress)
 	if config.CachePolicy != nil {
 		session.cachePolicy = config.CachePolicy

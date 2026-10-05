@@ -124,7 +124,7 @@ func TestRequestCatalogAndSystemMatchPython(t *testing.T) {
 		if snapshot.TrimmedTo() != trimmed || snapshot.InventoryCount() != len(fixture.Input) {
 			t.Fatalf("case %d fitting metadata drift", i)
 		}
-		system, err := (DefaultSystemBuilder{}).BuildSystem(SystemContext{"/contract", snapshot, "paint: 绘图"})
+		system, err := (DefaultSystemBuilder{}).BuildSystem(SystemContext{Workspace: "/contract", Catalog: snapshot, Skills: "paint: 绘图"})
 		if err != nil || system != fixture.System {
 			t.Fatalf("case %d system drift: %v", i, err)
 		}

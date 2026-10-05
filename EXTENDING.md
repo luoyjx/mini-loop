@@ -661,7 +661,7 @@ its next sequence above both ordinal and stored payload sequence. It also waits
 for a lease before repair. These are documented Go additions. Crash-tail calls
 get unknown results, while expired parked approvals get not-run results. Tests
 send the next model request, exercise retry/reload and join shutdown races.
-The Go backing is test-only. Native SQLite/reopen, plan/goal variant folding
+The Go backing is test-only. Native SQLite/reopen and goal variant folding
 and backend launcher activation remain pending; a lease
 is neither an external-effect transaction nor fencing.
 
@@ -1516,6 +1516,32 @@ Notes:
   built. Read any of them as a template.
 
 ---
+
+### Go plan mode seam
+
+`agent.RuntimeConfig.PlanModeTools`, `ManagerServices.PlanModeTools` and
+`launcher.Options.PlanModeTools` explicitly install both closed tool variants.
+`--plan-mode-tools` uses headless approval. The ten default tools stay unchanged.
+`PlanApprover.ApprovePlan(context.Context, PlanReviewRequest)` returns concrete
+`PlanReview{Approved, Feedback}`. The request carries trimmed full Markdown and
+bound `ToolAuthority`; the gate has already applied rewrites, guards and current
+permissions. Rejection is a failed tool call carrying feedback. Errors/panics
+and cancelled reviews retain active state. Callback implementations must honor
+cancellation, synchronize fleet-shared state and avoid reentering an active turn.
+Nil approval auto-approves, matching the source installation; the existing broker
+is not implicitly adapted to plan review.
+
+`SystemContext.PlanMode` is a detached boolean. `DefaultSystemBuilder` adds the
+source planning section; fixed/custom builders can omit or adapt it. This is
+soft guidance with an unchanged catalog and independent permission policy.
+`Session.PlanModeActive` is safe during callbacks. The typed `plan_mode` event
+carries only `active`; successful entry (including no-op) and approved exit emit
+it through existing persistence/trajectory/SSE sinks. Restore folds the last
+logged value; no reviewer/authority/activation is deserialized. Forks start off;
+explicitly selected children bind independent state and the supplied callback.
+The default role policy excludes these tools, whose source capabilities are empty.
+Like source, the restore fold consumes all logged plan events, including child
+scopes; this guidance state does not change effect permissions.
 
 ## Concurrency & safety
 
