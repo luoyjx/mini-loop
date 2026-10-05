@@ -386,6 +386,59 @@ supplied client's redirect policy is preserved. Description/debug identity never
 prints the key. Advanced request/auth options and
 production endpoint/cache conformance remain pending. No dependencies were added.
 
+### Typed decision operator library
+
+`go/decisions` evaluates explicit state into `choice`, `score` and `noul`
+judgments. `Request`, `Question`, `Answer`, `Result`, `TokenUsage` and `Provider`
+are named types. The JSON Value domain contains only null, string, number,
+boolean, array and object variants; it stores no `any` or raw JSON. Containers,
+questions, answers and optional usage are detached on construction and access.
+JSON is decoded at a strict boundary with duplicate-key, UTF-8, nesting and byte
+checks. Empty state is allowed; instructions must be nonempty. Question IDs and
+answers must match, probabilities must cover the requested criteria and sum to
+one, choice must select a maximum, and score/legend must match the exact rubric.
+Jev confidence is retained; noul gets no synthesized confidence.
+
+```go
+q, err := decisions.NewNoul(decisions.StringValue("Is a workaround explicit?"))
+if err != nil { return err }
+request, err := decisions.NewRequest(
+    decisions.StringValue("CSV export failed; JSON export still works."),
+    map[string]decisions.Question{"workaround": q},
+)
+if err != nil { return err }
+backend, err := decisions.NewJev(decisions.DefaultJevConfig(apiKey))
+if err != nil { return err }
+result, err := backend.Evaluate(ctx, request)
+```
+
+Jev is an explicit operator library; the calling application selects the data
+and authorization. Construction is offline. Evaluation uses the source fixed
+`https://api.typesafe.ai/v1/systemone`, never follows redirects, and never falls
+back to another backend. Defaults are model `jev-latest`, total timeout 20 seconds
+and two retries; explicit configuration allows (0,120] seconds and 0..3 retries.
+Only HTTP 429/529 retry; numeric Retry-After values cap at two seconds and invalid
+values use bounded exponential fallback. Response bodies cap at 512 KiB while
+reading. Transport/status/malformed-JSON feedback omits response/credential data.
+The actual returned model, provider `typesafe`, probability source `jev` and
+complete token usage remain explicit. Owned clients ignore environment proxies
+and close idle connections. Borrowed clients/transports remain caller-owned;
+redirect policy is applied on a private client copy.
+
+Snapshot 53 compares 28 actual Python request cases, 22 result cases, four UTF-8
+budget boundaries and 21 isolated HTTP recipes. Native tests add detached
+constructor/accessor snapshots, surrogate/duplicate/nonfinite refusal, exact
+integer/float legend equality, total deadline/cancellation, early read bounds,
+real local HTTPS redirects and concurrent independent calls. No paid Jev request
+is made. Go usage uses signed-64 counts; Python accepts unbounded integers. Go
+refuses duplicate local request keys, nonstandard nonfinite JSON and excessive
+raw/ignored response nesting before domain decoding. Map ordering is canonical,
+so byte-for-byte object key order is not a compatibility promise.
+
+Go gate/LLM/configuration, masking/events, shared limiter and decision-specific
+journal replay integration remain pending. No decision tool or launcher option
+is installed by this library; `MINILOOP_DECISIONS` activation still refuses.
+
 ### Use streaming model calls
 
 `provider.NewStreaming(provider.Config{BaseURL: endpoint, APIKey: key})` selects

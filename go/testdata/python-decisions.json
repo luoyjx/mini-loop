@@ -1,0 +1,5787 @@
+{
+  "bounds": [
+    {
+      "bytes": 131072,
+      "char": "x",
+      "count": 131003
+    },
+    {
+      "char": "x",
+      "count": 131004,
+      "error": "Decision JSON exceeds the byte limit."
+    },
+    {
+      "bytes": 131070,
+      "char": "界",
+      "count": 43667
+    },
+    {
+      "char": "界",
+      "count": 43668,
+      "error": "Decision JSON exceeds the byte limit."
+    }
+  ],
+  "http": [
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "exception": null,
+      "header": "0",
+      "name": "200",
+      "result": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe decision request failed (HTTP 401).",
+      "exception": null,
+      "header": "0",
+      "name": "401",
+      "statuses": [
+        401
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe decision request failed (HTTP 422).",
+      "exception": null,
+      "header": "0",
+      "name": "422",
+      "statuses": [
+        422
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe decision request failed (HTTP 302).",
+      "exception": null,
+      "header": "0",
+      "name": "302",
+      "statuses": [
+        302
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe decision request failed (HTTP 500).",
+      "exception": null,
+      "header": "0",
+      "name": "500",
+      "statuses": [
+        500
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [
+        0.0,
+        0.0
+      ],
+      "exception": null,
+      "header": "0",
+      "name": "retry-0",
+      "result": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "statuses": [
+        429,
+        529,
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [
+        2.0,
+        2.0
+      ],
+      "exception": null,
+      "header": "999",
+      "name": "retry-999",
+      "result": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "statuses": [
+        429,
+        529,
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [
+        0.25,
+        0.5
+      ],
+      "exception": null,
+      "header": "nan",
+      "name": "retry-nan",
+      "result": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "statuses": [
+        429,
+        529,
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [
+        0.25,
+        0.5
+      ],
+      "exception": null,
+      "header": "inf",
+      "name": "retry-inf",
+      "result": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "statuses": [
+        429,
+        529,
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [
+        0.25,
+        0.5
+      ],
+      "exception": null,
+      "header": "-1",
+      "name": "retry--1",
+      "result": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "statuses": [
+        429,
+        529,
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [
+        0.25,
+        0.5
+      ],
+      "exception": null,
+      "header": "invalid",
+      "name": "retry-invalid",
+      "result": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "statuses": [
+        429,
+        529,
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [
+        0.0,
+        0.0
+      ],
+      "exception": null,
+      "header": "0_0",
+      "name": "retry-0_0",
+      "result": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "statuses": [
+        429,
+        529,
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [
+        0.25,
+        0.5
+      ],
+      "exception": null,
+      "header": "0x1p1",
+      "name": "retry-0x1p1",
+      "result": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "statuses": [
+        429,
+        529,
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        },
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [
+        0.0,
+        0.0
+      ],
+      "error": "TypeSafe decision request failed (HTTP 429).",
+      "exception": null,
+      "header": "0",
+      "name": "exhausted",
+      "statuses": [
+        429
+      ]
+    },
+    {
+      "body": "private-response-secret",
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe returned an invalid decision response.",
+      "exception": null,
+      "header": "0",
+      "name": "invalid-json",
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "body": "{\"model\":\"first\",\"model\":\"second\"}",
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe returned an invalid decision response.",
+      "exception": null,
+      "header": "0",
+      "name": "duplicate",
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "body": "[]",
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe returned an invalid decision response.",
+      "exception": null,
+      "header": "0",
+      "name": "array",
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "body": "{\"model\": \"jev-1.13.0\", \"answers\": {\"department\": {\"type\": \"choice\", \"choice\": \"billing\", \"confidence\": 0.7, \"probabilities\": {\"billing\": 0.85, \"technical\": 0.15}}, \"urgency\": {\"type\": \"score\", \"score\": 1.1, \"confidence\": 0.4, \"probabilities\": {\"0\": 0.1, \"1\": 0.7, \"2\": 0.2}, \"legend\": {\"0\": \"Can wait\", \"1\": {\"description\": \"Needs attention\"}, \"2\": [\"Urgent\"]}}, \"refund\": {\"type\": \"noul\", \"noul\": 0.65}}, \"usage\": {}}",
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe response requires token usage.",
+      "exception": null,
+      "header": "0",
+      "name": "usage-missing",
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "body": "{\"model\": \"jev-1.13.0\", \"answers\": {}, \"usage\": {\"input_tokens\": 125, \"output_tokens\": 17}}",
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "Decision answer IDs must exactly match the questions.",
+      "exception": null,
+      "header": "0",
+      "name": "answer-invalid",
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe decision request timed out.",
+      "exception": "ReadTimeout",
+      "header": "0",
+      "name": "ReadTimeout",
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "body": null,
+      "borrowed_open": true,
+      "calls": [
+        {
+          "authorization": "Bearer test-private-key",
+          "body": {
+            "model": "jev-latest",
+            "questions": {
+              "department": {
+                "criteria": {
+                  "billing": {
+                    "about": "Charges"
+                  },
+                  "technical": null
+                },
+                "instructions": "Which department?",
+                "type": "choice"
+              },
+              "refund": {
+                "instructions": "Is a refund requested?",
+                "type": "noul"
+              },
+              "urgency": {
+                "criteria": [
+                  "Can wait",
+                  {
+                    "description": "Needs attention"
+                  },
+                  [
+                    "Urgent"
+                  ]
+                ],
+                "instructions": {
+                  "question": "How urgent?"
+                },
+                "type": "score"
+              }
+            },
+            "state": {
+              "charges": [
+                12,
+                12
+              ],
+              "ticket": "I was billed twice"
+            }
+          },
+          "content_type": "application/json",
+          "method": "POST",
+          "url": "https://api.typesafe.ai/v1/systemone"
+        }
+      ],
+      "delays": [],
+      "error": "TypeSafe decision transport failed.",
+      "exception": "ConnectError",
+      "header": "0",
+      "name": "ConnectError",
+      "statuses": [
+        200
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "accepted": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": {
+          "charges": [
+            12,
+            12
+          ],
+          "ticket": "I was billed twice"
+        }
+      },
+      "input": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": {
+          "charges": [
+            12,
+            12
+          ],
+          "ticket": "I was billed twice"
+        }
+      },
+      "name": "mixed"
+    },
+    {
+      "accepted": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": ""
+      },
+      "input": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": ""
+      },
+      "name": "empty-string"
+    },
+    {
+      "accepted": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": {}
+      },
+      "input": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": {}
+      },
+      "name": "empty-object"
+    },
+    {
+      "accepted": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": []
+      },
+      "input": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": []
+      },
+      "name": "empty-array"
+    },
+    {
+      "accepted": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": {
+          "float": 1.0,
+          "int": 100000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          "small": 1e-07,
+          "zero": -0.0
+        }
+      },
+      "input": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": {
+          "float": 1.0,
+          "int": 100000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          "small": 1e-07,
+          "zero": -0.0
+        }
+      },
+      "name": "numbers"
+    },
+    {
+      "error": "Decision state must be a string, object, or array.",
+      "input": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": null
+      },
+      "name": "null-state"
+    },
+    {
+      "error": "Decision state must be a string, object, or array.",
+      "input": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": true
+      },
+      "name": "bool-state"
+    },
+    {
+      "error": "Decision state must be a string, object, or array.",
+      "input": {
+        "questions": {
+          "department": {
+            "criteria": {
+              "billing": {
+                "about": "Charges"
+              },
+              "technical": null
+            },
+            "instructions": "Which department?",
+            "type": "choice"
+          },
+          "refund": {
+            "instructions": "Is a refund requested?",
+            "type": "noul"
+          },
+          "urgency": {
+            "criteria": [
+              "Can wait",
+              {
+                "description": "Needs attention"
+              },
+              [
+                "Urgent"
+              ]
+            ],
+            "instructions": {
+              "question": "How urgent?"
+            },
+            "type": "score"
+          }
+        },
+        "state": 0
+      },
+      "name": "number-state"
+    },
+    {
+      "error": "Decision type must be choice, score, or noul.",
+      "input": {
+        "questions": {
+          "q": {
+            "instructions": "What next?",
+            "type": "text"
+          }
+        },
+        "state": ""
+      },
+      "name": "unknown-type"
+    },
+    {
+      "error": "Decision questions require nonempty instructions.",
+      "input": {
+        "questions": {
+          "q": {
+            "instructions": " \u001c",
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "name": "empty-instructions"
+    },
+    {
+      "error": "Decision question contains unsupported fields.",
+      "input": {
+        "questions": {
+          "q": {
+            "execute": "anything",
+            "instructions": "Yes?",
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "name": "extra-field"
+    },
+    {
+      "error": "Choice requires 1 to 255 named criteria.",
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": {},
+            "instructions": "Which?",
+            "type": "choice"
+          }
+        },
+        "state": ""
+      },
+      "name": "choice-empty"
+    },
+    {
+      "error": "Choice criteria require names and JSON descriptions.",
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": {
+              "": null
+            },
+            "instructions": "Which?",
+            "type": "choice"
+          }
+        },
+        "state": ""
+      },
+      "name": "choice-empty-name"
+    },
+    {
+      "error": "Choice criteria require names and JSON descriptions.",
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": {
+              "x": true
+            },
+            "instructions": "Which?",
+            "type": "choice"
+          }
+        },
+        "state": ""
+      },
+      "name": "choice-boolean"
+    },
+    {
+      "error": "Score requires 2 to 10 ordered JSON descriptions.",
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": [
+              "one"
+            ],
+            "instructions": "How?",
+            "type": "score"
+          }
+        },
+        "state": ""
+      },
+      "name": "score-one"
+    },
+    {
+      "error": "Score requires 2 to 10 ordered JSON descriptions.",
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": [
+              null,
+              "one"
+            ],
+            "instructions": "How?",
+            "type": "score"
+          }
+        },
+        "state": ""
+      },
+      "name": "score-null"
+    },
+    {
+      "error": "Noul criteria may describe true and false only.",
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": {
+              "yes": "true"
+            },
+            "instructions": "Yes?",
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "name": "noul-key"
+    },
+    {
+      "accepted": {
+        "questions": {
+          "q": {
+            "criteria": null,
+            "instructions": "Yes?",
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": null,
+            "instructions": "Yes?",
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "name": "noul-null"
+    },
+    {
+      "accepted": {
+        "questions": {
+          "q": {
+            "criteria": {
+              "false": null,
+              "true": {}
+            },
+            "instructions": [
+              "Yes?"
+            ],
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": {
+              "false": null,
+              "true": {}
+            },
+            "instructions": [
+              "Yes?"
+            ],
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "name": "noul-criteria"
+    },
+    {
+      "accepted": {
+        "questions": {
+          "q": {
+            "instructions": {
+              "nested": [
+                true,
+                null,
+                1.0
+              ]
+            },
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "input": {
+        "questions": {
+          "q": {
+            "instructions": {
+              "nested": [
+                true,
+                null,
+                1.0
+              ]
+            },
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "name": "structured-instructions"
+    },
+    {
+      "error": "Decision requests require 1 to 32 questions.",
+      "input": {
+        "questions": {},
+        "state": ""
+      },
+      "name": "empty-questions"
+    },
+    {
+      "error": "Decision questions require nonempty string IDs and objects.",
+      "input": {
+        "questions": {
+          "": {
+            "instructions": "Yes?",
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "name": "empty-id"
+    },
+    {
+      "error": "Decision questions require nonempty string IDs and objects.",
+      "input": {
+        "questions": {
+          "q": []
+        },
+        "state": ""
+      },
+      "name": "object-question"
+    },
+    {
+      "accepted": {
+        "questions": {
+          "0": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "1": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "10": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "11": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "12": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "13": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "14": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "15": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "16": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "17": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "18": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "19": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "2": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "20": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "21": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "22": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "23": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "24": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "25": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "26": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "27": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "28": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "29": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "3": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "30": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "31": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "4": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "5": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "6": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "7": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "8": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "9": {
+            "instructions": "True?",
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "input": {
+        "questions": {
+          "0": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "1": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "10": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "11": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "12": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "13": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "14": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "15": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "16": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "17": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "18": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "19": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "2": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "20": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "21": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "22": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "23": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "24": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "25": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "26": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "27": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "28": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "29": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "3": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "30": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "31": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "4": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "5": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "6": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "7": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "8": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "9": {
+            "instructions": "True?",
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "name": "questions-32"
+    },
+    {
+      "error": "Decision requests require 1 to 32 questions.",
+      "input": {
+        "questions": {
+          "0": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "1": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "10": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "11": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "12": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "13": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "14": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "15": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "16": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "17": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "18": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "19": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "2": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "20": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "21": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "22": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "23": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "24": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "25": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "26": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "27": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "28": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "29": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "3": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "30": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "31": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "32": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "4": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "5": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "6": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "7": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "8": {
+            "instructions": "True?",
+            "type": "noul"
+          },
+          "9": {
+            "instructions": "True?",
+            "type": "noul"
+          }
+        },
+        "state": ""
+      },
+      "name": "questions-33"
+    },
+    {
+      "accepted": {
+        "questions": {
+          "q": {
+            "criteria": {
+              "0": null,
+              "1": null,
+              "10": null,
+              "100": null,
+              "101": null,
+              "102": null,
+              "103": null,
+              "104": null,
+              "105": null,
+              "106": null,
+              "107": null,
+              "108": null,
+              "109": null,
+              "11": null,
+              "110": null,
+              "111": null,
+              "112": null,
+              "113": null,
+              "114": null,
+              "115": null,
+              "116": null,
+              "117": null,
+              "118": null,
+              "119": null,
+              "12": null,
+              "120": null,
+              "121": null,
+              "122": null,
+              "123": null,
+              "124": null,
+              "125": null,
+              "126": null,
+              "127": null,
+              "128": null,
+              "129": null,
+              "13": null,
+              "130": null,
+              "131": null,
+              "132": null,
+              "133": null,
+              "134": null,
+              "135": null,
+              "136": null,
+              "137": null,
+              "138": null,
+              "139": null,
+              "14": null,
+              "140": null,
+              "141": null,
+              "142": null,
+              "143": null,
+              "144": null,
+              "145": null,
+              "146": null,
+              "147": null,
+              "148": null,
+              "149": null,
+              "15": null,
+              "150": null,
+              "151": null,
+              "152": null,
+              "153": null,
+              "154": null,
+              "155": null,
+              "156": null,
+              "157": null,
+              "158": null,
+              "159": null,
+              "16": null,
+              "160": null,
+              "161": null,
+              "162": null,
+              "163": null,
+              "164": null,
+              "165": null,
+              "166": null,
+              "167": null,
+              "168": null,
+              "169": null,
+              "17": null,
+              "170": null,
+              "171": null,
+              "172": null,
+              "173": null,
+              "174": null,
+              "175": null,
+              "176": null,
+              "177": null,
+              "178": null,
+              "179": null,
+              "18": null,
+              "180": null,
+              "181": null,
+              "182": null,
+              "183": null,
+              "184": null,
+              "185": null,
+              "186": null,
+              "187": null,
+              "188": null,
+              "189": null,
+              "19": null,
+              "190": null,
+              "191": null,
+              "192": null,
+              "193": null,
+              "194": null,
+              "195": null,
+              "196": null,
+              "197": null,
+              "198": null,
+              "199": null,
+              "2": null,
+              "20": null,
+              "200": null,
+              "201": null,
+              "202": null,
+              "203": null,
+              "204": null,
+              "205": null,
+              "206": null,
+              "207": null,
+              "208": null,
+              "209": null,
+              "21": null,
+              "210": null,
+              "211": null,
+              "212": null,
+              "213": null,
+              "214": null,
+              "215": null,
+              "216": null,
+              "217": null,
+              "218": null,
+              "219": null,
+              "22": null,
+              "220": null,
+              "221": null,
+              "222": null,
+              "223": null,
+              "224": null,
+              "225": null,
+              "226": null,
+              "227": null,
+              "228": null,
+              "229": null,
+              "23": null,
+              "230": null,
+              "231": null,
+              "232": null,
+              "233": null,
+              "234": null,
+              "235": null,
+              "236": null,
+              "237": null,
+              "238": null,
+              "239": null,
+              "24": null,
+              "240": null,
+              "241": null,
+              "242": null,
+              "243": null,
+              "244": null,
+              "245": null,
+              "246": null,
+              "247": null,
+              "248": null,
+              "249": null,
+              "25": null,
+              "250": null,
+              "251": null,
+              "252": null,
+              "253": null,
+              "254": null,
+              "26": null,
+              "27": null,
+              "28": null,
+              "29": null,
+              "3": null,
+              "30": null,
+              "31": null,
+              "32": null,
+              "33": null,
+              "34": null,
+              "35": null,
+              "36": null,
+              "37": null,
+              "38": null,
+              "39": null,
+              "4": null,
+              "40": null,
+              "41": null,
+              "42": null,
+              "43": null,
+              "44": null,
+              "45": null,
+              "46": null,
+              "47": null,
+              "48": null,
+              "49": null,
+              "5": null,
+              "50": null,
+              "51": null,
+              "52": null,
+              "53": null,
+              "54": null,
+              "55": null,
+              "56": null,
+              "57": null,
+              "58": null,
+              "59": null,
+              "6": null,
+              "60": null,
+              "61": null,
+              "62": null,
+              "63": null,
+              "64": null,
+              "65": null,
+              "66": null,
+              "67": null,
+              "68": null,
+              "69": null,
+              "7": null,
+              "70": null,
+              "71": null,
+              "72": null,
+              "73": null,
+              "74": null,
+              "75": null,
+              "76": null,
+              "77": null,
+              "78": null,
+              "79": null,
+              "8": null,
+              "80": null,
+              "81": null,
+              "82": null,
+              "83": null,
+              "84": null,
+              "85": null,
+              "86": null,
+              "87": null,
+              "88": null,
+              "89": null,
+              "9": null,
+              "90": null,
+              "91": null,
+              "92": null,
+              "93": null,
+              "94": null,
+              "95": null,
+              "96": null,
+              "97": null,
+              "98": null,
+              "99": null
+            },
+            "instructions": "Which?",
+            "type": "choice"
+          }
+        },
+        "state": ""
+      },
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": {
+              "0": null,
+              "1": null,
+              "10": null,
+              "100": null,
+              "101": null,
+              "102": null,
+              "103": null,
+              "104": null,
+              "105": null,
+              "106": null,
+              "107": null,
+              "108": null,
+              "109": null,
+              "11": null,
+              "110": null,
+              "111": null,
+              "112": null,
+              "113": null,
+              "114": null,
+              "115": null,
+              "116": null,
+              "117": null,
+              "118": null,
+              "119": null,
+              "12": null,
+              "120": null,
+              "121": null,
+              "122": null,
+              "123": null,
+              "124": null,
+              "125": null,
+              "126": null,
+              "127": null,
+              "128": null,
+              "129": null,
+              "13": null,
+              "130": null,
+              "131": null,
+              "132": null,
+              "133": null,
+              "134": null,
+              "135": null,
+              "136": null,
+              "137": null,
+              "138": null,
+              "139": null,
+              "14": null,
+              "140": null,
+              "141": null,
+              "142": null,
+              "143": null,
+              "144": null,
+              "145": null,
+              "146": null,
+              "147": null,
+              "148": null,
+              "149": null,
+              "15": null,
+              "150": null,
+              "151": null,
+              "152": null,
+              "153": null,
+              "154": null,
+              "155": null,
+              "156": null,
+              "157": null,
+              "158": null,
+              "159": null,
+              "16": null,
+              "160": null,
+              "161": null,
+              "162": null,
+              "163": null,
+              "164": null,
+              "165": null,
+              "166": null,
+              "167": null,
+              "168": null,
+              "169": null,
+              "17": null,
+              "170": null,
+              "171": null,
+              "172": null,
+              "173": null,
+              "174": null,
+              "175": null,
+              "176": null,
+              "177": null,
+              "178": null,
+              "179": null,
+              "18": null,
+              "180": null,
+              "181": null,
+              "182": null,
+              "183": null,
+              "184": null,
+              "185": null,
+              "186": null,
+              "187": null,
+              "188": null,
+              "189": null,
+              "19": null,
+              "190": null,
+              "191": null,
+              "192": null,
+              "193": null,
+              "194": null,
+              "195": null,
+              "196": null,
+              "197": null,
+              "198": null,
+              "199": null,
+              "2": null,
+              "20": null,
+              "200": null,
+              "201": null,
+              "202": null,
+              "203": null,
+              "204": null,
+              "205": null,
+              "206": null,
+              "207": null,
+              "208": null,
+              "209": null,
+              "21": null,
+              "210": null,
+              "211": null,
+              "212": null,
+              "213": null,
+              "214": null,
+              "215": null,
+              "216": null,
+              "217": null,
+              "218": null,
+              "219": null,
+              "22": null,
+              "220": null,
+              "221": null,
+              "222": null,
+              "223": null,
+              "224": null,
+              "225": null,
+              "226": null,
+              "227": null,
+              "228": null,
+              "229": null,
+              "23": null,
+              "230": null,
+              "231": null,
+              "232": null,
+              "233": null,
+              "234": null,
+              "235": null,
+              "236": null,
+              "237": null,
+              "238": null,
+              "239": null,
+              "24": null,
+              "240": null,
+              "241": null,
+              "242": null,
+              "243": null,
+              "244": null,
+              "245": null,
+              "246": null,
+              "247": null,
+              "248": null,
+              "249": null,
+              "25": null,
+              "250": null,
+              "251": null,
+              "252": null,
+              "253": null,
+              "254": null,
+              "26": null,
+              "27": null,
+              "28": null,
+              "29": null,
+              "3": null,
+              "30": null,
+              "31": null,
+              "32": null,
+              "33": null,
+              "34": null,
+              "35": null,
+              "36": null,
+              "37": null,
+              "38": null,
+              "39": null,
+              "4": null,
+              "40": null,
+              "41": null,
+              "42": null,
+              "43": null,
+              "44": null,
+              "45": null,
+              "46": null,
+              "47": null,
+              "48": null,
+              "49": null,
+              "5": null,
+              "50": null,
+              "51": null,
+              "52": null,
+              "53": null,
+              "54": null,
+              "55": null,
+              "56": null,
+              "57": null,
+              "58": null,
+              "59": null,
+              "6": null,
+              "60": null,
+              "61": null,
+              "62": null,
+              "63": null,
+              "64": null,
+              "65": null,
+              "66": null,
+              "67": null,
+              "68": null,
+              "69": null,
+              "7": null,
+              "70": null,
+              "71": null,
+              "72": null,
+              "73": null,
+              "74": null,
+              "75": null,
+              "76": null,
+              "77": null,
+              "78": null,
+              "79": null,
+              "8": null,
+              "80": null,
+              "81": null,
+              "82": null,
+              "83": null,
+              "84": null,
+              "85": null,
+              "86": null,
+              "87": null,
+              "88": null,
+              "89": null,
+              "9": null,
+              "90": null,
+              "91": null,
+              "92": null,
+              "93": null,
+              "94": null,
+              "95": null,
+              "96": null,
+              "97": null,
+              "98": null,
+              "99": null
+            },
+            "instructions": "Which?",
+            "type": "choice"
+          }
+        },
+        "state": ""
+      },
+      "name": "choices-255"
+    },
+    {
+      "error": "Choice requires 1 to 255 named criteria.",
+      "input": {
+        "questions": {
+          "q": {
+            "criteria": {
+              "0": null,
+              "1": null,
+              "10": null,
+              "100": null,
+              "101": null,
+              "102": null,
+              "103": null,
+              "104": null,
+              "105": null,
+              "106": null,
+              "107": null,
+              "108": null,
+              "109": null,
+              "11": null,
+              "110": null,
+              "111": null,
+              "112": null,
+              "113": null,
+              "114": null,
+              "115": null,
+              "116": null,
+              "117": null,
+              "118": null,
+              "119": null,
+              "12": null,
+              "120": null,
+              "121": null,
+              "122": null,
+              "123": null,
+              "124": null,
+              "125": null,
+              "126": null,
+              "127": null,
+              "128": null,
+              "129": null,
+              "13": null,
+              "130": null,
+              "131": null,
+              "132": null,
+              "133": null,
+              "134": null,
+              "135": null,
+              "136": null,
+              "137": null,
+              "138": null,
+              "139": null,
+              "14": null,
+              "140": null,
+              "141": null,
+              "142": null,
+              "143": null,
+              "144": null,
+              "145": null,
+              "146": null,
+              "147": null,
+              "148": null,
+              "149": null,
+              "15": null,
+              "150": null,
+              "151": null,
+              "152": null,
+              "153": null,
+              "154": null,
+              "155": null,
+              "156": null,
+              "157": null,
+              "158": null,
+              "159": null,
+              "16": null,
+              "160": null,
+              "161": null,
+              "162": null,
+              "163": null,
+              "164": null,
+              "165": null,
+              "166": null,
+              "167": null,
+              "168": null,
+              "169": null,
+              "17": null,
+              "170": null,
+              "171": null,
+              "172": null,
+              "173": null,
+              "174": null,
+              "175": null,
+              "176": null,
+              "177": null,
+              "178": null,
+              "179": null,
+              "18": null,
+              "180": null,
+              "181": null,
+              "182": null,
+              "183": null,
+              "184": null,
+              "185": null,
+              "186": null,
+              "187": null,
+              "188": null,
+              "189": null,
+              "19": null,
+              "190": null,
+              "191": null,
+              "192": null,
+              "193": null,
+              "194": null,
+              "195": null,
+              "196": null,
+              "197": null,
+              "198": null,
+              "199": null,
+              "2": null,
+              "20": null,
+              "200": null,
+              "201": null,
+              "202": null,
+              "203": null,
+              "204": null,
+              "205": null,
+              "206": null,
+              "207": null,
+              "208": null,
+              "209": null,
+              "21": null,
+              "210": null,
+              "211": null,
+              "212": null,
+              "213": null,
+              "214": null,
+              "215": null,
+              "216": null,
+              "217": null,
+              "218": null,
+              "219": null,
+              "22": null,
+              "220": null,
+              "221": null,
+              "222": null,
+              "223": null,
+              "224": null,
+              "225": null,
+              "226": null,
+              "227": null,
+              "228": null,
+              "229": null,
+              "23": null,
+              "230": null,
+              "231": null,
+              "232": null,
+              "233": null,
+              "234": null,
+              "235": null,
+              "236": null,
+              "237": null,
+              "238": null,
+              "239": null,
+              "24": null,
+              "240": null,
+              "241": null,
+              "242": null,
+              "243": null,
+              "244": null,
+              "245": null,
+              "246": null,
+              "247": null,
+              "248": null,
+              "249": null,
+              "25": null,
+              "250": null,
+              "251": null,
+              "252": null,
+              "253": null,
+              "254": null,
+              "255": null,
+              "26": null,
+              "27": null,
+              "28": null,
+              "29": null,
+              "3": null,
+              "30": null,
+              "31": null,
+              "32": null,
+              "33": null,
+              "34": null,
+              "35": null,
+              "36": null,
+              "37": null,
+              "38": null,
+              "39": null,
+              "4": null,
+              "40": null,
+              "41": null,
+              "42": null,
+              "43": null,
+              "44": null,
+              "45": null,
+              "46": null,
+              "47": null,
+              "48": null,
+              "49": null,
+              "5": null,
+              "50": null,
+              "51": null,
+              "52": null,
+              "53": null,
+              "54": null,
+              "55": null,
+              "56": null,
+              "57": null,
+              "58": null,
+              "59": null,
+              "6": null,
+              "60": null,
+              "61": null,
+              "62": null,
+              "63": null,
+              "64": null,
+              "65": null,
+              "66": null,
+              "67": null,
+              "68": null,
+              "69": null,
+              "7": null,
+              "70": null,
+              "71": null,
+              "72": null,
+              "73": null,
+              "74": null,
+              "75": null,
+              "76": null,
+              "77": null,
+              "78": null,
+              "79": null,
+              "8": null,
+              "80": null,
+              "81": null,
+              "82": null,
+              "83": null,
+              "84": null,
+              "85": null,
+              "86": null,
+              "87": null,
+              "88": null,
+              "89": null,
+              "9": null,
+              "90": null,
+              "91": null,
+              "92": null,
+              "93": null,
+              "94": null,
+              "95": null,
+              "96": null,
+              "97": null,
+              "98": null,
+              "99": null
+            },
+            "instructions": "Which?",
+            "type": "choice"
+          }
+        },
+        "state": ""
+      },
+      "name": "choices-256"
+    },
+    {
+      "error": "Decision JSON exceeds the nesting limit.",
+      "input": {
+        "questions": {
+          "q": {
+            "instructions": "True?",
+            "type": "noul"
+          }
+        },
+        "state": [
+          [
+            [
+              [
+                [
+                  [
+                    [
+                      [
+                        [
+                          [
+                            [
+                              [
+                                [
+                                  [
+                                    [
+                                      [
+                                        [
+                                          [
+                                            [
+                                              [
+                                                [
+                                                  [
+                                                    [
+                                                      [
+                                                        [
+                                                          [
+                                                            [
+                                                              [
+                                                                [
+                                                                  [
+                                                                    [
+                                                                      [
+                                                                        [
+                                                                          [
+                                                                            [
+                                                                              [
+                                                                                [
+                                                                                  [
+                                                                                    [
+                                                                                      [
+                                                                                        "value"
+                                                                                      ]
+                                                                                    ]
+                                                                                  ]
+                                                                                ]
+                                                                              ]
+                                                                            ]
+                                                                          ]
+                                                                        ]
+                                                                      ]
+                                                                    ]
+                                                                  ]
+                                                                ]
+                                                              ]
+                                                            ]
+                                                          ]
+                                                        ]
+                                                      ]
+                                                    ]
+                                                  ]
+                                                ]
+                                              ]
+                                            ]
+                                          ]
+                                        ]
+                                      ]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      },
+      "name": "deep"
+    }
+  ],
+  "results": [
+    {
+      "accepted": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "mixed"
+    },
+    {
+      "error": "Decision answer IDs must exactly match the questions.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "answer-missing"
+    },
+    {
+      "error": "Decision answer IDs must exactly match the questions.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "extra": {
+            "noul": 0.5,
+            "type": "noul"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "answer-extra"
+    },
+    {
+      "error": "Decision answer type must match its question.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "choice"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "type-mismatch"
+    },
+    {
+      "error": "Noul answers require only a finite yes probability.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": true,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "noul-bool"
+    },
+    {
+      "error": "Noul answers require only a finite yes probability.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "confidence": 0.3,
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "noul-extra"
+    },
+    {
+      "error": "Choice must name a highest-probability criterion.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "technical",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "choice-not-max"
+    },
+    {
+      "error": "Choice must name a highest-probability criterion.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "unknown",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "choice-unknown"
+    },
+    {
+      "error": "Decision answer fields or confidence are invalid.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": true,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "confidence-bool"
+    },
+    {
+      "error": "Decision probabilities must cover the criteria and sum to one.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": true,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "probability-bool"
+    },
+    {
+      "error": "Decision probabilities must cover the criteria and sum to one.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.8,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "probability-sum"
+    },
+    {
+      "error": "Decision probabilities must cover the criteria and sum to one.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "probability-missing"
+    },
+    {
+      "error": "Score and legend must match the requested rubric and probabilities.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "wrong-score"
+    },
+    {
+      "error": "Score and legend must match the requested rubric and probabilities.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": true,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "score-bool"
+    },
+    {
+      "error": "Score and legend must match the requested rubric and probabilities.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": "changed",
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "wrong-legend"
+    },
+    {
+      "error": "Decision result requires provider and model provenance.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": " \u001c",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "empty-model"
+    },
+    {
+      "error": "Decision result requires provider and model provenance.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "unknown",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "bad-source"
+    },
+    {
+      "accepted": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {}
+      },
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {}
+      },
+      "name": "empty-usage"
+    },
+    {
+      "error": "Decision usage requires nonnegative integer token counts.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 2
+        }
+      },
+      "name": "partial-usage"
+    },
+    {
+      "error": "Decision usage requires nonnegative integer token counts.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": true,
+          "output_tokens": 2
+        }
+      },
+      "name": "bool-usage"
+    },
+    {
+      "error": "Decision usage requires nonnegative integer token counts.",
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 0.7,
+            "probabilities": {
+              "billing": 0.85,
+              "technical": 0.15
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 0.65,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0.4,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.7,
+              "2": 0.2
+            },
+            "score": 1.1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": -1,
+          "output_tokens": 2
+        }
+      },
+      "name": "negative-usage"
+    },
+    {
+      "accepted": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 1,
+            "probabilities": {
+              "billing": 1,
+              "technical": 0
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 1,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 1,
+              "2": 0
+            },
+            "score": 1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "input": {
+        "answers": {
+          "department": {
+            "choice": "billing",
+            "confidence": 1,
+            "probabilities": {
+              "billing": 1,
+              "technical": 0
+            },
+            "type": "choice"
+          },
+          "refund": {
+            "noul": 1,
+            "type": "noul"
+          },
+          "urgency": {
+            "confidence": 0,
+            "legend": {
+              "0": "Can wait",
+              "1": {
+                "description": "Needs attention"
+              },
+              "2": [
+                "Urgent"
+              ]
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 1,
+              "2": 0
+            },
+            "score": 1,
+            "type": "score"
+          }
+        },
+        "model": "jev-1.13.0",
+        "probability_source": "jev",
+        "provider": "typesafe",
+        "usage": {
+          "input_tokens": 125,
+          "output_tokens": 17
+        }
+      },
+      "name": "integer-probabilities"
+    }
+  ],
+  "source_sha256": {
+    "decisions.py": "fb7ed0e3888914149877334e39dbdc9e4af32c97e94400b37c466e811c718e91"
+  }
+}

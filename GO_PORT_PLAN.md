@@ -82,7 +82,7 @@ Record its parity evidence and remaining gaps before checking it off.
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
       usage, core lifecycle/status/cancel/stop/error/stuck/subagent/approval events,
       run provenance, action/approval/session records and current archival event decoding implemented;
-      goal/plan-mode inputs/events are implemented; other event and state variants remain)
+      goal/plan-mode inputs/events and closed decision request/result variants are implemented; other event and state variants remain)
 - [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
       fake-provider slice, cache annotation, stuck detection, scoped child execution,
       exhaustion markers and cancellation repair implemented;
@@ -109,11 +109,24 @@ Record its parity evidence and remaining gaps before checking it off.
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
-      default Agent recovery, configurable coalescing and stateful signed fake clients
+      default Agent recovery, explicit operator Jev HTTP library, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
 - [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
+
+### Next decision slices
+
+1. Closed JSON values, choice/score/noul contracts and an explicit operator Jev
+   provider are implemented and compared with actual Python contracts and HTTP
+   mocks. They add no runtime tool, route or activation flag.
+2. Add the closed decision tool variant through the common external-risk gate;
+   mask explicit state before either backend, preserve model/decision events and
+   shared model limiter, and port the explicitly selected current-LLM backend
+   with complete-response checks and estimated-probability provenance.
+3. Wire individual configuration/launcher selection; preserve default-off and
+   explicit-provider precedence. Compare exact large result replay/retention,
+   cancellation and sink masking before claiming complete decision parity.
 
 ### Next persistence slices
 
@@ -4323,3 +4336,112 @@ the full release audit still require implementation and evidence.
   regeneration does not apply. SQLite driver approval remains pending, while
   independent port work can continue. Required gates are terminal before
   exact-path staging, commit and push.
+
+## Implementation checkpoint — 2026-10-06 typed decisions and Jev operator library
+
+Baseline `6f4a4b0`; P0/P1 remain complete, G0–G7 remain open. The previously
+unported decision contracts and Jev backend now have a native typed operator
+library. This is the first prerequisite of the explicit decision migration
+sequence above; it does not substitute for the required gate/LLM/configuration,
+masking/event/limiter and large-result replay integration.
+
+### Actual source contract and native implementation
+
+- `go/decisions` adds closed ValueKind (null/string/number/boolean/array/object),
+  Question/Answer variants, Request/Result/TokenUsage and Provider. State and
+  descriptions carry only the closed Value union; domain/service structs retain
+  no any, interface{}, map[string]any or json.RawMessage. Open decoder tokens
+  are lowered at the boundary. Test fixtures alone use raw JSON to express
+  malformed inputs. Constructor/accessor copies detach nested state, rubric,
+  probability, answer and usage containers.
+- Source request limits are retained: 1..32 questions, choice 1..255 criteria,
+  score 2..10 levels, nonempty instructions, 128 KiB compact UTF-8 JSON and
+  nesting depth 32. Empty state remains valid. Result IDs/types must match;
+  distributions cover the complete requested set and sum to one within 1e-5;
+  choice names a maximum, and score/legend match the weighted ordered rubric.
+  Noul is a finite yes probability without invented confidence. Whole usage
+  can be unavailable for custom adapters; Jev requires both token counts.
+- Integer versus float spelling survives wire decoding, including probabilities,
+  score and confidence, without retaining raw JSON. Source float exponent/decimal
+  projection and signed zero are retained in closed Values. Exact integer/binary
+  float legend equality avoids rounding different large integers together and
+  preserves Python's nested numeric/boolean description equality.
+- Jev defaults come from the current Python source: fixed systemone endpoint,
+  model alias jev-latest, total 20 s timeout and two retries. Explicit bounds are
+  (0,120] s and 0..3 retries. Construction performs no network request. Only
+  429/529 retry; Retry-After clamps at two seconds, with bounded invalid-header
+  fallback. One context deadline covers attempts, reads and sleeps. Bodies close
+  before retry and on terminal paths; reads stop after 512 KiB plus one sentinel
+  byte. Redirects are disabled on private clients, actual served provenance is
+  retained and transport/raw-response feedback is sanitized.
+- Owned clients use a fresh transport without environment proxies and close idle
+  connections after each evaluation. Injected clients are shallow-copied only to
+  install redirect policy; transports remain caller-owned. Provider evaluation
+  revalidates/snapshots its request and supports concurrent independent calls.
+  The library does not implicitly mask, collect context or grant execution
+  authority: the explicit operator caller owns those choices. Runtime gate and
+  LLM composition remain pending; default tools, HTTP operations and launcher
+  decision refusal are unchanged.
+
+### Differential evidence and deliberate boundaries
+
+- New snapshot 53 (`go/testdata/python-decisions.json`) executes 28 actual Python
+  request cases, 22 result cases (including integer probability encoding), four
+  UTF-8 size boundary recipes and 21 httpx isolated-transport cases. It captures
+  full outbound method/URL/auth/content-type/body, served result, attempt counts,
+  retry delays, safe errors and borrowed-client lifetime. Existing 52 snapshots
+  remain unchanged. Fixture 148,542 bytes, SHA-256
+  `152db2aae352936e762146819dd3a81fafc59e6eed9c960da55a9cdb6b1ae233`;
+  source decisions.py hash is captured in the fixture.
+- Native tests compare canonical full JSON shapes and scalar numeric spelling,
+  not merely accepted/rejected status. They additionally exercise mutable-copy
+  isolation, duplicate/invalid UTF-8/surrogate/nonfinite boundaries, unbounded
+  source integer descriptions, exact numeric legend equality, deadline/cancel,
+  early response read bounds, real local TLS redirect refusal and 12 concurrent
+  calls through one borrowed provider. Local TLS uses the test certificate name
+  only in the injected transport; production URL remains fixed. No paid endpoint
+  or model is contacted.
+- Go token counts use nonnegative signed-64 integers; Python accepts arbitrary
+  integers. Go rejects duplicate local request keys, nonstandard NaN/Infinity JSON
+  and excessive raw/ignored response nesting before domain decoding. Raw JSON
+  boundary size caps at 512 KiB independently of compact request 128 KiB. Keys
+  are emitted canonically; source insertion order is not promised. These stronger
+  boundary checks remain explicit rather than being labeled complete wire parity.
+- No native SQL or decision journal proof is claimed. Gate failures/permissions,
+  masking and model/decision telemetry, shared limits, the complete current-LLM
+  response contract, explicit configuration and replay retention are subsequent
+  required slices. Complete feature activation remains unavailable.
+
+### Validation and delivery evidence
+
+- Focused go test ./decisions -count=1 -timeout=60s passes; the final full suite
+  reruns after the integer/float projection correction and its source fixture.
+  Full go test ./... -count=1 -timeout=180s -coverpkg=./... with profile: pass.
+  Deduplicated statement coverage **88.95%** (**11,829 / 13,299**), decisions
+  **86.02%** (**640 / 744**), agent **90.62%** (**5,214 / 5,754**), protocol
+  **89.40%** (**1,020 / 1,141**) and HTTP **86.64%** (**707 / 816**).
+  The new module expands the denominator; coverage is not port completion.
+- Final full go test -race ./... -count=1 -timeout=240s and go vet ./...: pass.
+  Exporter --check after the final fixture change: 53 files current.
+  verify_scans.py: 19 anchored scanning guards. Python full regression:
+  2,151 passed / 28 skipped / 24 subtests passed, three warnings in 79.45 s.
+  Python package/runtime/test modules remain unchanged; the package invariant
+  checker and source mutation rerun do not apply to this exporter/new Go-library
+  slice. No Python guarded behavior or mutation anchor changed.
+- README runtime baseline/canonical Mermaid and boundary prose, extension seam,
+  Go guide, current plan and parity rows are updated. Source user resources
+  remain pending; their matrix row is now separate from partial decision delivery.
+  git diff --check and README outline pass. No dependencies were added.
+- Archify regenerated the exact frozen JSON: architecture, 9/9 showcase checks,
+  zero errors/warnings, correction_rounds=0, existing geometry/edges retained.
+  Specification 36,675 bytes, SHA-256
+  `5598c62f6d76ec76491a9411de6806e5621fd28cce8daec35c44b5d552a00b7c`;
+  artifact 678,367 bytes, SHA-256
+  `942ecb1d355c9c5f05834d91c653d5a58fb5ee5b273c30b631cdb177e0fd1607`.
+  Output docs/mini-loop-system.architecture.html; saved bytes match the receipt.
+  Visual review remains skipped following the previous local-file access denial;
+  no rendered review or bypass is claimed. No top-level docs/*.md report was
+  added/renamed/removed, so Research Atlas regeneration does not apply.
+- Go 1.23.3 darwin/arm64; Linux-host and paid-provider audits remain open. SQLite
+  driver approval remains pending; independent port work continues. Required
+  gates are terminal before exact-path staging, commit and push.

@@ -279,6 +279,17 @@ is no new HTTP endpoint or decision store.
 See [Typed decisions](docs/DECISIONS.md) for a complete batch example,
 source-pinned upstream semantics, and validation boundaries.
 
+The Go `decisions.Provider` seam evaluates a detached `decisions.Request` and
+returns a validated `decisions.Result`. Question/Answer expose closed choice,
+score and noul variants; state/criteria use the six supported JSON Value kinds.
+`NewJev(DefaultJevConfig(apiKey))` selects the fixed source endpoint without
+performing I/O during construction. An optional HTTP client is borrowed through
+a private shallow copy that disables redirects; its transport must support
+concurrent evaluations. Owned transports ignore environment proxies and close
+idle connections after each call. This operator library adds no gate, permission,
+model tool, implicit context, fallback or HTTP route. Native decision tool/LLM
+composition is a subsequent port slice; deployment activation remains refused.
+
 ---
 
 ## 2. Hooks — permissions, lifecycle, audit, rewriting

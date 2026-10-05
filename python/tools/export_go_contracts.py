@@ -4753,6 +4753,127 @@ def _plan_outcome_contracts(scratch: Path) -> dict:
         for n in ("plan_mode.py", "agent.py", "actions.py", "registry.py", "trajectory.py")}}
 
 
+def _decision_contracts(scratch: Path) -> dict:
+    """Run typed decision contracts and isolated HTTP mocks against actual source."""
+    import asyncio
+    import copy
+    import httpx
+    import mini_loop.decisions as domain
+    from mini_loop.decisions import DecisionRequest, DecisionResult, JevDecisionProvider, validate_result
+    base = {"state": {"ticket": "I was billed twice", "charges": [12, 12]}, "questions": {
+        "department": {"type": "choice", "instructions": "Which department?", "criteria": {"billing": {"about": "Charges"}, "technical": None}},
+        "urgency": {"type": "score", "instructions": {"question": "How urgent?"}, "criteria": ["Can wait", {"description": "Needs attention"}, ["Urgent"]]},
+        "refund": {"type": "noul", "instructions": "Is a refund requested?"}}}
+    result = {"provider": "typesafe", "model": "jev-1.13.0", "probability_source": "jev", "usage": {"input_tokens": 125, "output_tokens": 17}, "answers": {
+        "department": {"type": "choice", "choice": "billing", "confidence": .7, "probabilities": {"billing": .85, "technical": .15}},
+        "urgency": {"type": "score", "score": 1.1, "confidence": .4, "probabilities": {"0": .1, "1": .7, "2": .2}, "legend": {"0": "Can wait", "1": {"description": "Needs attention"}, "2": ["Urgent"]}},
+        "refund": {"type": "noul", "noul": .65}}}
+    requests, results, bounds = [], [], []
+    def capture(name, value, rows, evaluate):
+        row = {"name": name, "input": copy.deepcopy(value)}
+        try: row["accepted"] = evaluate(value)
+        except Exception as error: row["error"] = str(error)
+        rows.append(row)
+    capture("mixed", base, requests, lambda v: DecisionRequest(**v).to_dict())
+    for n, state in (("empty-string", ""), ("empty-object", {}), ("empty-array", []), ("numbers", {"int": 10**80, "float": 1.0, "small": 1e-7, "zero": -0.0}), ("null-state", None), ("bool-state", True), ("number-state", 0)):
+        v = copy.deepcopy(base); v["state"] = state
+        capture(n, v, requests, lambda v: DecisionRequest(**v).to_dict())
+    for name, question in (
+        ("unknown-type", {"type": "text", "instructions": "What next?"}),
+        ("empty-instructions", {"type": "noul", "instructions": " \u001c"}),
+        ("extra-field", {"type": "noul", "instructions": "Yes?", "execute": "anything"}),
+        ("choice-empty", {"type": "choice", "instructions": "Which?", "criteria": {}}),
+        ("choice-empty-name", {"type": "choice", "instructions": "Which?", "criteria": {"": None}}),
+        ("choice-boolean", {"type": "choice", "instructions": "Which?", "criteria": {"x": True}}),
+        ("score-one", {"type": "score", "instructions": "How?", "criteria": ["one"]}),
+        ("score-null", {"type": "score", "instructions": "How?", "criteria": [None, "one"]}),
+        ("noul-key", {"type": "noul", "instructions": "Yes?", "criteria": {"yes": "true"}}),
+        ("noul-null", {"type": "noul", "instructions": "Yes?", "criteria": None}),
+        ("noul-criteria", {"type": "noul", "instructions": ["Yes?"], "criteria": {"true": {}, "false": None}}),
+        ("structured-instructions", {"type": "noul", "instructions": {"nested": [True, None, 1.0]}})):
+        capture(name, {"state": "", "questions": {"q": question}}, requests, lambda v: DecisionRequest(**v).to_dict())
+    for name, value in (("empty-questions", {}), ("empty-id", {"": {"type": "noul", "instructions": "Yes?"}}), ("object-question", {"q": []})):
+        capture(name, {"state": "", "questions": value}, requests, lambda v: DecisionRequest(**v).to_dict())
+    q = {"type": "noul", "instructions": "True?"}
+    for n in (32, 33):
+        capture(f"questions-{n}", {"state": "", "questions": {str(i): q for i in range(n)}}, requests, lambda v: DecisionRequest(**v).to_dict())
+    for n in (255, 256):
+        capture(f"choices-{n}", {"state": "", "questions": {"q": {"type": "choice", "instructions": "Which?", "criteria": {str(i): None for i in range(n)}}}}, requests, lambda v: DecisionRequest(**v).to_dict())
+    request = DecisionRequest(**base)
+    capture("mixed", result, results, lambda v: validate_result(request, DecisionResult(**v)).to_dict())
+    mutations = {
+        "answer-missing": lambda v: v["answers"].pop("refund"),
+        "answer-extra": lambda v: v["answers"].update(extra={"type": "noul", "noul": .5}),
+        "type-mismatch": lambda v: v["answers"]["refund"].update(type="choice"),
+        "noul-bool": lambda v: v["answers"]["refund"].update(noul=True),
+        "noul-extra": lambda v: v["answers"]["refund"].update(confidence=.3),
+        "choice-not-max": lambda v: v["answers"]["department"].update(choice="technical"),
+        "choice-unknown": lambda v: v["answers"]["department"].update(choice="unknown"),
+        "confidence-bool": lambda v: v["answers"]["department"].update(confidence=True),
+        "probability-bool": lambda v: v["answers"]["department"]["probabilities"].update(billing=True),
+        "probability-sum": lambda v: v["answers"]["department"]["probabilities"].update(billing=.8),
+        "probability-missing": lambda v: v["answers"]["department"]["probabilities"].pop("technical"),
+        "wrong-score": lambda v: v["answers"]["urgency"].update(score=1),
+        "score-bool": lambda v: v["answers"]["urgency"].update(score=True),
+        "wrong-legend": lambda v: v["answers"]["urgency"]["legend"].update({"1": "changed"}),
+        "empty-model": lambda v: v.update(model=" \u001c"),
+        "bad-source": lambda v: v.update(probability_source="unknown"),
+        "empty-usage": lambda v: v.update(usage={}),
+        "partial-usage": lambda v: v.update(usage={"input_tokens": 2}),
+        "bool-usage": lambda v: v.update(usage={"input_tokens": True, "output_tokens": 2}),
+        "negative-usage": lambda v: v.update(usage={"input_tokens": -1, "output_tokens": 2})}
+    for name, mutate in mutations.items():
+        v = copy.deepcopy(result); mutate(v)
+        capture(name, v, results, lambda v: validate_result(request, DecisionResult(**v)).to_dict())
+    integer_result = copy.deepcopy(result)
+    integer_result["answers"]["department"].update(confidence=1, probabilities={"billing": 1, "technical": 0})
+    integer_result["answers"]["urgency"].update(score=1, confidence=0, probabilities={"0": 0, "1": 1, "2": 0})
+    integer_result["answers"]["refund"]["noul"] = 1
+    capture("integer-probabilities", integer_result, results, lambda v: validate_result(request, DecisionResult(**v)).to_dict())
+    empty_size = len(domain._encoded({"state": "", "questions": {"q": q}}, domain.MAX_DECISION_BYTES))
+    for char in ("x", "界"):
+        count = (domain.MAX_DECISION_BYTES - empty_size) // len(char.encode())
+        for n in (count, count + 1):
+            v = {"state": char*n, "questions": {"q": q}}
+            row = {"char": char, "count": n}
+            try: row["bytes"] = len(domain._encoded(DecisionRequest(**v).to_dict(), domain.MAX_DECISION_BYTES))
+            except Exception as error: row["error"] = str(error)
+            bounds.append(row)
+    deep = "value"
+    for _ in range(40): deep = [deep]
+    capture("deep", {"state": deep, "questions": {"q": q}}, requests, lambda v: DecisionRequest(**v).to_dict())
+    payload = {k: result[k] for k in ("model", "answers", "usage")}
+    async def http_case(name, statuses, headers=None, body=None, exception=None):
+        calls, delays = [], []
+        async def respond(r):
+            calls.append({"method": r.method, "url": str(r.url), "authorization": r.headers["authorization"], "content_type": r.headers["content-type"], "body": json.loads(r.content)})
+            if exception: raise exception("private-response-secret")
+            status = statuses[min(len(calls)-1, len(statuses)-1)]
+            return httpx.Response(status, headers={"retry-after": headers or "0"}, content=body if body is not None else json.dumps(payload).encode())
+        async def sleep(delay): delays.append(delay)
+        previous = domain.asyncio.sleep
+        domain.asyncio.sleep = sleep
+        try:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(respond)) as client:
+                row = {"name": name, "statuses": statuses, "header": headers or "0", "body": (body.decode() if body is not None else None), "exception": exception.__name__ if exception else None}
+                try: row["result"] = (await JevDecisionProvider("test-private-key", client=client).evaluate(request)).to_dict()
+                except Exception as error: row["error"] = str(error)
+                row.update(calls=calls, delays=delays, borrowed_open=not client.is_closed)
+                return row
+        finally: domain.asyncio.sleep = previous
+    async def run():
+        rows=[]
+        for status in (200, 401, 422, 302, 500): rows.append(await http_case(str(status), [status]))
+        for header in ("0", "999", "nan", "inf", "-1", "invalid", "0_0", "0x1p1"):
+            rows.append(await http_case("retry-"+header, [429,529,200],header))
+        rows.append(await http_case("exhausted", [429]))
+        for name, body in (("invalid-json", b"private-response-secret"), ("duplicate", b'{"model":"first","model":"second"}'), ("array", b"[]"), ("usage-missing", json.dumps({**payload,"usage":{}}).encode()), ("answer-invalid", json.dumps({**payload,"answers":{}}).encode())):
+            rows.append(await http_case(name,[200],body=body))
+        for exception in (httpx.ReadTimeout,httpx.ConnectError): rows.append(await http_case(exception.__name__,[200],exception=exception))
+        return rows
+    return {"requests": requests, "results": results, "bounds": bounds, "http": asyncio.run(run()), "source_sha256": {"decisions.py": hashlib.sha256((PYTHON_ROOT / "mini_loop" / "decisions.py").read_bytes()).hexdigest()}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4860,6 +4981,7 @@ def _snapshot() -> dict[str, bytes]:
         plan_mode_contracts = _plan_mode_contracts(Path(scratch) / "plan-mode")
         goal_contracts = _goal_contracts(Path(scratch) / "goals")
         plan_outcome_contracts = _plan_outcome_contracts(Path(scratch) / "plan-outcomes")
+        decision_contracts = _decision_contracts(Path(scratch) / "decisions")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -4927,6 +5049,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-transcript.json": _json_bytes(transcript_contracts),
         "python-plan-mode.json": _json_bytes(plan_mode_contracts),
         "python-plan-outcomes.json": _json_bytes(plan_outcome_contracts),
+        "python-decisions.json": _json_bytes(decision_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

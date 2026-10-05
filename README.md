@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `f21541a` plus plan outcome fidelity).
+reviewed **2026-10-06** (Go baseline `6f4a4b0` plus typed decision contracts and Jev library).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -361,6 +361,7 @@ flowchart LR
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
+        GoDecisionLibrary["Operator decision library<br/>closed choice / score / noul judgments<br/>fixed Jev HTTP · bounded retries / response<br/>tool gate / LLM wiring pending"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
@@ -437,6 +438,7 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoEntry
+    Caller -. explicit operator evaluation .-> GoDecisionLibrary
     Caller -. explicit library selection .-> GoWorktrees
     Caller -. operator-owned background commands .-> GoBackground
     GoWorktrees -. pinned task files; execution scope switch .-> GoResources
@@ -504,6 +506,18 @@ turns the consumer off. Goal records are per-session facts, with detached owned
 capture/trajectory/SSE; restore folds them but always disarms. Forks and selected
 children start fresh. No native SQLite durability is implied by injected-store
 restoration. See [Go goals](go/README.md#goal-tools-and-bounded-continuation).
+
+`go/decisions` now provides named Request/Result/Question/Answer/TokenUsage and
+an explicit Provider seam. State and descriptions use six closed JSON variants;
+choice distributions, probability-weighted score rubrics and noul probabilities
+are validated without changing the provider's answer. Jev uses the source fixed
+URL, disables redirects, bounds the full call including retry waits, and retains
+the actual served model and usage. Construction performs no network request.
+This is an operator library: the caller supplies explicit state and authorization.
+Go tool-gate/LLM/configuration and replay integration are still pending; the ten
+default tools and launcher decision refusal remain unchanged. The interactive
+map folds this independent library into the Go providers node, with no gate
+binding implied. See [Go decisions](go/README.md#typed-decision-operator-library).
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,

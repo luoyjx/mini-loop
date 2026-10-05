@@ -71,7 +71,7 @@
           "goSecrets",
           "goCron"
         ],
-        "note": "Goals: human arming, bounded continuation, disarmed restore. Owned HTTP/SSE exists; native SQL is pending."
+        "note": "Typed Jev operator library; tool/LLM wiring pending. Goal arming stays explicit; restore disarms. Owned HTTP/SSE; SQL pending."
       },
       {
         "id": "personal-skill",
@@ -298,7 +298,7 @@
       "id": "goFake",
       "type": "external",
       "label": "Go model providers",
-      "sublabel": "Stateful fake / HTTP / SSE",
+      "sublabel": "Fake / HTTP / SSE / Jev",
       "pos": [
         330,
         1180
