@@ -8,6 +8,9 @@ import (
 )
 
 const (
+	ToolScheduleCron    ToolName = "schedule_cron"
+	ToolListCrons       ToolName = "list_crons"
+	ToolCancelCron      ToolName = "cancel_cron"
 	ToolReadFile        ToolName = "read_file"
 	ToolWriteFile       ToolName = "write_file"
 	ToolEditFile        ToolName = "edit_file"
@@ -140,6 +143,8 @@ type ToolInput struct {
 	backgroundRun   BackgroundRunInput
 	checkBackground CheckBackgroundInput
 	worktreeName    WorktreeNameInput
+	scheduleCron    ScheduleCronInput
+	cancelCron      CancelCronInput
 }
 
 func BashToolInput(value BashInput) ToolInput {
@@ -302,6 +307,8 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() { result.nulls = input.nulls }()
 	switch input.name {
+	case ToolScheduleCron:
+		return ScheduleCronToolInput(input.scheduleCron)
 	case ToolBackgroundRun:
 		return BackgroundRunToolInput(input.backgroundRun)
 	case ToolCheckBackground:
@@ -334,7 +341,7 @@ func (input ToolInput) clone() (result ToolInput) {
 
 func (input ToolInput) Validate() error {
 	switch input.name {
-	case ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
+	case ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
 		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
 		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
 		return nil
@@ -387,7 +394,11 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 		return json.Marshal(input.loadSkill)
 	case ToolCompress:
 		return json.Marshal(input.compress)
-	case ToolListTasks, ToolListWorktrees:
+	case ToolScheduleCron:
+		return json.Marshal(input.scheduleCron)
+	case ToolCancelCron:
+		return json.Marshal(input.cancelCron)
+	case ToolListCrons, ToolListTasks, ToolListWorktrees:
 		return []byte("{}"), nil
 	case ToolKeepWorktree, ToolEnterWorktree:
 		return json.Marshal(input.worktreeName)
@@ -418,6 +429,37 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolScheduleCron:
+		var wire struct {
+			Cron      *string `json:"cron"`
+			Prompt    *string `json:"prompt"`
+			Recurring *bool   `json:"recurring"`
+			Durable   *bool   `json:"durable"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Cron == nil || wire.Prompt == nil {
+			return result, errors.New("schedule_cron requires cron and prompt")
+		}
+		result = ScheduleCronToolInput(ScheduleCronInput{*wire.Cron, *wire.Prompt, wire.Recurring, wire.Durable})
+	case ToolCancelCron:
+		var wire struct {
+			JobID *string `json:"job_id"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.JobID == nil {
+			return result, errors.New("cancel_cron requires job_id")
+		}
+		result = CancelCronToolInput(CancelCronInput{*wire.JobID})
+	case ToolListCrons:
+		var wire struct{}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		result = ListCronsToolInput()
 	case ToolBackgroundRun:
 		var wire struct {
 			Command        *string   `json:"command"`
@@ -644,6 +686,9 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	}
 	if err := json.Unmarshal(data, &result.nulls); err != nil {
 		return ToolInput{}, err
+	}
+	if result.name == ToolScheduleCron && (result.nulls.CronRecurring || result.nulls.CronDurable) {
+		return ToolInput{}, errors.New("cron recurring and durable must be booleans")
 	}
 	if result.name == ToolCreateTask && result.nulls.TaskDescription {
 		return ToolInput{}, errors.New("task description must be a string")

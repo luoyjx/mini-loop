@@ -1234,8 +1234,13 @@ always-untrusted Invocation into the embedding runtime; the adapter must create
 a fresh untrusted RunContext. SessionManager supplies this adapter for live
 managed sessions and owns a scheduler by default. Its ScheduleCron/CronJobs/
 CancelCron/ArmCron APIs require owner identity; CronScheduler exposes privileged
-operator access without owner checks. Model tool and HTTP composition remain
-pending, as does session/lease restoration.
+operator access without owner checks. RuntimeConfig.CronTools installs three
+closed model variants through the common gate; RuntimeConfig.Cron binds a typed
+CronControl with schedule/list/cancel only. ManagerServices.CronTools supplies the
+manager binding, and --cron-tools / launcher.Options.CronTools selects it alone.
+Default tools remain ten and MINILOOP_FEATURES remains unsupported.
+Owned HTTP list/schedule/cancel/arm routes work independently of tool activation.
+Session/lease restoration remains pending.
 Schedule arms only current-process jobs. Restored jobs stay disarmed until the
 operator calls Arm/ArmAll, and no model arm tool is supplied. Start is explicit;
 Stop cancels/joins ticker and admitted runs, retaining armed in-memory jobs for
@@ -1252,6 +1257,9 @@ with deletion/stop; deletion removes future jobs and records save failures while
 continuing cleanup. Stop revokes turn admission, drains sessions and then joins
 cron. Standalone Serve calls manager.Start without arming restored jobs. A fresh
 untrusted ManagedSession.Run retains the normal gate/pools/recording boundaries.
+Forks keep activation with fresh job scope; selected children have no cron
+service. Model booleans are strict against the schema, while HTTP booleans retain
+source coercions. Calls retain permission, replay, masking and observer boundaries.
 Loaded and live prompts differ when masking changes
 the stored copy, and that change is diagnosed. See the operator library contract
 in [go/README.md](go/README.md#operator-cron-scheduler).

@@ -100,7 +100,7 @@ Record its parity evidence and remaining gaps before checking it off.
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
-      twenty-three HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
+      twenty-seven HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
       typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
       per-run file recording and owner-scoped read/export implemented;
       typed HTML ledger, offline traceview CLI and filtered record visitor implemented;
@@ -111,7 +111,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; cron tools/HTTP composition and other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next cron slices
@@ -121,7 +121,8 @@ Record its parity evidence and remaining gaps before checking it off.
    persistence, exclusive occurrence claims and cancellation/join. Compare actual
    Python operations and disk state, including loss-before-dispatch boundaries.
 2. Managed untrusted turns, session deletion/stop and standalone startup are
-   implemented. Next add closed tool variants and owned operator HTTP activation. Arm remains an
+   implemented, together with closed tool variants, owned operator HTTP activation
+   and explicit launcher selection. Arm remains an
    operator act, never a model tool. Keep comprehensive activation unavailable
    until all feature groups are implemented.
 3. Audit restoration/lease interaction and differential failures in G5/G7;
@@ -3256,3 +3257,116 @@ privileged operator surface does not confer HTTP ownership checks.
   access denial; no rendered visual acceptance is claimed.
 - README/plan/source outlines and `git diff --check`: pass. Native macOS /
   Go 1.23.3; Linux remains unvalidated.
+
+## 2026-10-06 cron tool and owned HTTP slice
+
+Reviewed base: `20a4b79`. The previous goal iteration delivered managed cron and
+verified its pushed state. This iteration completes the model-tool, operator HTTP
+and individual launcher portions of work package 2. G0–G7 remain open; restoration/
+lease interaction and final differential/release audit remain work package 3.
+
+### Implementation and source contract
+
+- Three closed protocol variants represent schedule_cron, list_crons and
+  cancel_cron. Required fields are typed strings; optional booleans retain absent
+  versus false and detach in constructors/accessors/cloning. Canonical replay/hash
+  inputs and recording masks cover all new strings. Session/owner input is refused;
+  no arm_cron model variant exists. DefaultToolNames remains the ten source tools.
+- A consumer-owned CronControl names schedule/list/cancel methods with established
+  OwnerID/SessionID bindings. RuntimeConfig.CronTools installs source schemas and
+  write/read-readonly/write traits, all exclusive and with no default child
+  capabilities. RuntimeConfig.Cron supplies the service; bare/unconfigured sessions
+  return source notices. ManagerServices.CronTools binds the manager itself.
+- Effects retain the existing before-rewrite, monotonic-guard, permission,
+  journal/settlement, masking and observer path. Semantic schedule refusals retain
+  source text. Go tests verify before-hook rewrites, live raw prompt/masked result
+  and disk copies, same-action replay without duplicate schedules and refusal of
+  a foreign runtime authority. These are process-local action guarantees.
+- A real model turn schedules through the same gate; forks retain tool activation
+  with fresh job scope. Explicitly selected child tools bind fresh handlers without
+  CronControl and report source unavailability, even when a role policy selects
+  every tool. Default roles omit the empty-capability optional tools.
+- Four operator method/path operations are registered independently of model tools:
+  GET/POST /sessions/{session_id}/cron, DELETE /sessions/{session_id}/cron/{job_id},
+  POST /sessions/{session_id}/cron/{job_id}/arm. They admit the established principal
+  and session owner, then call owner-scoped manager methods. Foreign jobs read like
+  missing ones; Arm is an explicit operator authorization edge, never a model tool.
+- HTTP schedule validates required nonempty strings and the 100-character cron
+  limit before owner lookup, matching actual FastAPI ordering. Concrete boundary
+  decoding preserves source boolean strings and numeric 0/1, rejects null/other
+  values and ignores extra HTTP fields like Pydantic. Raw field bytes exist only
+  during decoding; no generic payload enters request/service state. Structured
+  list/result/arm replies pass through the common masked JSON projection.
+- Invalid expressions/size/count refusals are 400; hidden session/job lookup is
+  404; stopped admission is 503 and persistence errors return a scrubbed 500.
+  Full Pydantic 422 detail remains an existing open HTTP boundary: tests compare
+  refusal status for validation cases and complete typed bodies for other cases.
+- The model decoder enforces the advertised boolean schema and rejects explicit
+  null/nonboolean values. Python's kwargs handler is more permissive for these
+  schema-invalid model values. This difference is documented, not claimed as full
+  malformed-input conformance; G7 still requires invalid-input differential audit.
+- --cron-tools / launcher.Options.CronTools selects just the implemented cron
+  tools; dump-config reports the captured flag without constructing files/listeners.
+  MINILOOP_FEATURES remains unavailable until every group is implemented. Cron
+  service ownership/startup/stop remain independent of model-tool activation.
+- Snapshot 43 executes actual Python code for three tool contexts (unconfigured,
+  enabled, readonly; **24 gate calls**), **six** canonical/grant variants, three
+  schemas/traits and **29** authenticated HTTP requests. Generated session/job IDs
+  are normalized, not outcomes. Future schedules cannot tick during export. Source
+  SHA-256 values pin cron, registry, permission and HTTP code.
+- Go HTTP tests additionally load an actual durable disarmed job, create an owned
+  local session with six controlled random identity bytes, refuse a foreign arm,
+  authorize its owner and prove no activation is stored—even after another save
+  and reload. This is a test identity seam, not durable session restoration.
+- A local TCP upstream returns actual typed model tool use to the standalone HTTP
+  launcher. With CronTools enabled it sends thirteen schemas, schedules through
+  the normal session gate, exposes the job through owned HTTP, cancels it and joins
+  shutdown. No paid model endpoint or dependency is added.
+- README canonical Mermaid, explanation, interactive specification, extension seam,
+  Go README and parity inventory are updated together. The HTTP inventory now has
+  **27** method/path operations. The interactive common resource node aggregates
+  the cron handlers; its manager-owned cron component explains operator activation.
+  Source browser assets remain unchanged and the Cron pane now has its data APIs;
+  a new rendered browser interaction pass is not claimed.
+
+### Remaining boundaries
+
+SQLite session/approval/lease restoration, cron restoration/lease interaction,
+teams/workflows and remaining context/provider/UI groups remain open. Full 422
+validation detail and malformed model-input conformance need G7 evidence. Source
+whole-file cron writes remain stale across live writers; minute claims do not
+transact with arbitrary external effects or prove exactly-once execution. Default
+feature-bundle activation is still unavailable. A valid restored job can only be
+armed through an owned live session or explicit privileged library operator until
+session restoration is implemented.
+
+### Validation
+
+- Narrow protocol/agent/HTTP/CLI comparisons and local TCP launcher test: pass.
+  Final full `go test ./... -coverpkg=./... -coverprofile=...`: pass. Aggregate,
+  deduplicated statement coverage **88.17%** (**9,829 / 11,148**). The earlier
+  profile reported 9,833 covered statements (88.20%); the final profile is the
+  recorded gate. Coverage is execution evidence, not feature-parity percentage.
+- Final `go test -race ./...` and `go vet ./...`: pass. Vet initially found an
+  unkeyed external ScheduleCronRequest literal; it was corrected to named fields,
+  and full coverage/race gates were rerun against that final source.
+- Exporter --check: **43 files current**; all **42** previous tracked exports are
+  byte-identical to HEAD. Existing model-deprecation warnings remain; terminal
+  status is zero. Python runtime/test modules and mutation anchors are unchanged;
+  package invariants do not apply to the exporter-only change.
+- verify_scans.py: **19** scanning guards anchored; verify_guards.py -k cron:
+  **14** selected source mutations caught. No Go mutation or unrelated full source
+  mutation sweep is claimed.
+- Python full `.venv/bin/python -m pytest -q`: **2,151 passed / 28 skipped /
+  24 subtests passed**, three warnings, **86.14 seconds**. The original performance
+  guard is unchanged.
+- Final Archify validate/deliver: **9/9 showcase**, zero errors/warnings, no layout
+  repairs. Specification SHA-256
+  `dea94e6f234b47c72d3efe7b265a539d8274217ad2102302545b9ed2c412c301`
+  (**33,527 bytes**); artifact SHA-256
+  `2748c6112c2431f5bffedb53d5cc73d523fa177c686ee9ba4347ef4a938e5097`
+  (**674,569 bytes**). Exact bytes match the frozen delivery receipt. Visual review
+  stays skipped because of the earlier local HTML access denial; no rendered
+  visual acceptance is claimed.
+- README/plan/source outlines and git diff --check: pass. Native macOS / Go 1.23.3;
+  Linux remains unvalidated.

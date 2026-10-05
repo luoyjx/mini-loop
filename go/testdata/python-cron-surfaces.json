@@ -1,0 +1,889 @@
+{
+  "http": [
+    {
+      "body": {
+        "jobs": [],
+        "session": "session-fixture"
+      },
+      "input": null,
+      "method": "GET",
+      "name": "empty",
+      "path": "/sessions/session-fixture/cron",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "result": "Scheduled cron <job1>: '0 0 31 2 *' -> é",
+        "session": "session-fixture"
+      },
+      "input": {
+        "cron": "0 0 31 2 *",
+        "prompt": "é"
+      },
+      "method": "POST",
+      "name": "schedule",
+      "path": "/sessions/session-fixture/cron",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "jobs": [
+          {
+            "armed": true,
+            "cron": "0 0 31 2 *",
+            "durable": true,
+            "id": "<job1>",
+            "last_fired": "",
+            "prompt": "é",
+            "recurring": true
+          }
+        ],
+        "session": "session-fixture"
+      },
+      "input": null,
+      "method": "GET",
+      "name": "owned",
+      "path": "/sessions/session-fixture/cron",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": "No session 'session-fixture'"
+      },
+      "input": null,
+      "method": "GET",
+      "name": "foreign-session",
+      "path": "/sessions/session-fixture/cron",
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "body": {
+        "detail": "No session 'missing'"
+      },
+      "input": null,
+      "method": "GET",
+      "name": "missing-session",
+      "path": "/sessions/missing/cron",
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": "a bearer token is required"
+      },
+      "input": null,
+      "method": "GET",
+      "name": "unauthenticated",
+      "path": "/sessions/session-fixture/cron",
+      "status": 401,
+      "token": ""
+    },
+    {
+      "body": {
+        "detail": "a bearer token is required"
+      },
+      "input": null,
+      "method": "GET",
+      "name": "bad-token",
+      "path": "/sessions/session-fixture/cron",
+      "status": 401,
+      "token": "wrong"
+    },
+    {
+      "body": {
+        "detail": "No cron <job1>"
+      },
+      "input": null,
+      "method": "DELETE",
+      "name": "foreign-cancel",
+      "path": "/sessions/other-session/cron/<job1>",
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "body": {
+        "detail": "Error: no such job <job1>"
+      },
+      "input": null,
+      "method": "POST",
+      "name": "foreign-arm",
+      "path": "/sessions/other-session/cron/<job1>/arm",
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "body": {
+        "detail": "No session 'session-fixture'"
+      },
+      "input": null,
+      "method": "DELETE",
+      "name": "foreign-session-cancel",
+      "path": "/sessions/session-fixture/cron/<job1>",
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "body": {
+        "detail": "No session 'session-fixture'"
+      },
+      "input": null,
+      "method": "POST",
+      "name": "foreign-session-arm",
+      "path": "/sessions/session-fixture/cron/<job1>/arm",
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "body": {
+        "armed": true,
+        "job": "<job1>",
+        "session": "session-fixture"
+      },
+      "input": null,
+      "method": "POST",
+      "name": "arm",
+      "path": "/sessions/session-fixture/cron/<job1>/arm",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": "Error: no such job missing"
+      },
+      "input": null,
+      "method": "POST",
+      "name": "unknown-arm",
+      "path": "/sessions/session-fixture/cron/missing/arm",
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": "Error: cron must have 5 fields: minute hour day-of-month month day-of-week"
+      },
+      "input": {
+        "cron": "bad",
+        "prompt": "x"
+      },
+      "method": "POST",
+      "name": "invalid-expression",
+      "path": "/sessions/session-fixture/cron",
+      "status": 400,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": [
+          {
+            "input": {
+              "cron": "0 0 31 2 *"
+            },
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "input": {
+        "cron": "0 0 31 2 *"
+      },
+      "method": "POST",
+      "name": "missing-field",
+      "path": "/sessions/session-fixture/cron",
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "input": {
+        "cron": "0 0 31 2 *",
+        "prompt": ""
+      },
+      "method": "POST",
+      "name": "empty-prompt",
+      "path": "/sessions/session-fixture/cron",
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "cron"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "input": {
+        "cron": "",
+        "prompt": "x"
+      },
+      "method": "POST",
+      "name": "empty-cron",
+      "path": "/sessions/session-fixture/cron",
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": [
+          {
+            "ctx": {
+              "max_length": 100
+            },
+            "input": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "loc": [
+              "body",
+              "cron"
+            ],
+            "msg": "String should have at most 100 characters",
+            "type": "string_too_long"
+          }
+        ]
+      },
+      "input": {
+        "cron": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "prompt": "x"
+      },
+      "method": "POST",
+      "name": "long-cron",
+      "path": "/sessions/session-fixture/cron",
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body",
+              "recurring"
+            ],
+            "msg": "Input should be a valid boolean",
+            "type": "bool_type"
+          }
+        ]
+      },
+      "input": {
+        "cron": "0 0 31 2 *",
+        "prompt": "x",
+        "recurring": null
+      },
+      "method": "POST",
+      "name": "null-bool",
+      "path": "/sessions/session-fixture/cron",
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": [
+          {
+            "input": "maybe",
+            "loc": [
+              "body",
+              "durable"
+            ],
+            "msg": "Input should be a valid boolean, unable to interpret input",
+            "type": "bool_parsing"
+          }
+        ]
+      },
+      "input": {
+        "cron": "0 0 31 2 *",
+        "durable": "maybe",
+        "prompt": "x"
+      },
+      "method": "POST",
+      "name": "invalid-bool",
+      "path": "/sessions/session-fixture/cron",
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "result": "Scheduled cron <job2>: '0 0 31 2 *' -> coerced",
+        "session": "session-fixture"
+      },
+      "input": {
+        "cron": "0 0 31 2 *",
+        "durable": "yes",
+        "prompt": "coerced",
+        "recurring": "no"
+      },
+      "method": "POST",
+      "name": "coerce-bools",
+      "path": "/sessions/session-fixture/cron",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "result": "Scheduled cron <job3>: '0 0 31 2 *' -> numbers",
+        "session": "session-fixture"
+      },
+      "input": {
+        "cron": "0 0 31 2 *",
+        "durable": 1,
+        "prompt": "numbers",
+        "recurring": 0.0
+      },
+      "method": "POST",
+      "name": "numeric-bools",
+      "path": "/sessions/session-fixture/cron",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": [
+          {
+            "input": 2,
+            "loc": [
+              "body",
+              "recurring"
+            ],
+            "msg": "Input should be a valid boolean, unable to interpret input",
+            "type": "bool_parsing"
+          }
+        ]
+      },
+      "input": {
+        "cron": "0 0 31 2 *",
+        "prompt": "x",
+        "recurring": 2
+      },
+      "method": "POST",
+      "name": "bad-numeric-bool",
+      "path": "/sessions/session-fixture/cron",
+      "status": 422,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": "No session 'session-fixture'"
+      },
+      "input": {
+        "cron": "0 0 31 2 *",
+        "prompt": "foreign"
+      },
+      "method": "POST",
+      "name": "foreign-schedule",
+      "path": "/sessions/session-fixture/cron",
+      "status": 404,
+      "token": "token-b"
+    },
+    {
+      "body": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "prompt"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "input": {
+        "cron": "0 0 31 2 *",
+        "prompt": ""
+      },
+      "method": "POST",
+      "name": "validation-before-owner",
+      "path": "/sessions/session-fixture/cron",
+      "status": 422,
+      "token": "token-b"
+    },
+    {
+      "body": {
+        "jobs": [
+          {
+            "armed": true,
+            "cron": "0 0 31 2 *",
+            "durable": true,
+            "id": "<job1>",
+            "last_fired": "",
+            "prompt": "é",
+            "recurring": true
+          },
+          {
+            "armed": true,
+            "cron": "0 0 31 2 *",
+            "durable": true,
+            "id": "<job2>",
+            "last_fired": "",
+            "prompt": "coerced",
+            "recurring": false
+          },
+          {
+            "armed": true,
+            "cron": "0 0 31 2 *",
+            "durable": true,
+            "id": "<job3>",
+            "last_fired": "",
+            "prompt": "numbers",
+            "recurring": false
+          }
+        ],
+        "session": "session-fixture"
+      },
+      "input": null,
+      "method": "GET",
+      "name": "list-coerced",
+      "path": "/sessions/session-fixture/cron",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "result": "Cancelled cron <job1>",
+        "session": "session-fixture"
+      },
+      "input": null,
+      "method": "DELETE",
+      "name": "cancel",
+      "path": "/sessions/session-fixture/cron/<job1>",
+      "status": 200,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "detail": "No cron <job1>"
+      },
+      "input": null,
+      "method": "DELETE",
+      "name": "cancel-again",
+      "path": "/sessions/session-fixture/cron/<job1>",
+      "status": 404,
+      "token": "token-a"
+    },
+    {
+      "body": {
+        "jobs": [
+          {
+            "armed": true,
+            "cron": "0 0 31 2 *",
+            "durable": true,
+            "id": "<job2>",
+            "last_fired": "",
+            "prompt": "coerced",
+            "recurring": false
+          },
+          {
+            "armed": true,
+            "cron": "0 0 31 2 *",
+            "durable": true,
+            "id": "<job3>",
+            "last_fired": "",
+            "prompt": "numbers",
+            "recurring": false
+          }
+        ],
+        "session": "session-fixture"
+      },
+      "input": null,
+      "method": "GET",
+      "name": "remaining",
+      "path": "/sessions/session-fixture/cron",
+      "status": 200,
+      "token": "token-a"
+    }
+  ],
+  "metadata": [
+    {
+      "capabilities": [],
+      "name": "schedule_cron",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    },
+    {
+      "capabilities": [],
+      "name": "list_crons",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read"
+    },
+    {
+      "capabilities": [],
+      "name": "cancel_cron",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    }
+  ],
+  "schemas": [
+    {
+      "description": "Schedule a prompt to run on a cron schedule (wakes this session).",
+      "input_schema": {
+        "properties": {
+          "cron": {
+            "description": "5-field cron: minute hour day-of-month month day-of-week",
+            "type": "string"
+          },
+          "durable": {
+            "type": "boolean"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "recurring": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "cron",
+          "prompt"
+        ],
+        "type": "object"
+      },
+      "name": "schedule_cron"
+    },
+    {
+      "description": "List this session's scheduled cron jobs.",
+      "input_schema": {
+        "properties": {},
+        "type": "object"
+      },
+      "name": "list_crons"
+    },
+    {
+      "description": "Cancel a scheduled cron job by id.",
+      "input_schema": {
+        "properties": {
+          "job_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "type": "object"
+      },
+      "name": "cancel_cron"
+    }
+  ],
+  "source_sha256": {
+    "cron.py": "6a6e4edd21eb0608ca376dfa390074a87f6ee6ea6967d247dc8762ccd70bdb50",
+    "permissions.py": "c3d04838c50fb100b7f9f1c6d0042d28b36ef3be60e469a10b82d455ba854a6f",
+    "registry.py": "b1982e49250d08888e987a8bbed433e49b67a6a662976b32f079260c89f3f027",
+    "server.py": "d24e4a5371b48b0ab95c9f0b6cdf39f121f5684507e40c9426f066d5034cc479"
+  },
+  "tools": [
+    {
+      "name": "unconfigured",
+      "steps": [
+        {
+          "input": {},
+          "jobs": 0,
+          "name": "list_crons",
+          "output": "Error: cron not available"
+        },
+        {
+          "input": {
+            "cron": "0 0 31 2 *",
+            "prompt": "ééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+          },
+          "jobs": 0,
+          "name": "schedule_cron",
+          "output": "Error: cron scheduler not available"
+        },
+        {
+          "input": {},
+          "jobs": 0,
+          "name": "list_crons",
+          "output": "Error: cron not available"
+        },
+        {
+          "input": {
+            "cron": "0 0 31 2 *",
+            "durable": false,
+            "prompt": "once",
+            "recurring": false
+          },
+          "jobs": 0,
+          "name": "schedule_cron",
+          "output": "Error: cron scheduler not available"
+        },
+        {
+          "input": {
+            "cron": "bad",
+            "prompt": "invalid"
+          },
+          "jobs": 0,
+          "name": "schedule_cron",
+          "output": "Error: cron scheduler not available"
+        },
+        {
+          "input": {
+            "job_id": "missing"
+          },
+          "jobs": 0,
+          "name": "cancel_cron",
+          "output": "Error: cron not available"
+        },
+        {
+          "input": {
+            "job_id": "<job1>"
+          },
+          "jobs": 0,
+          "name": "cancel_cron",
+          "output": "Error: cron not available"
+        },
+        {
+          "input": {},
+          "jobs": 0,
+          "name": "list_crons",
+          "output": "Error: cron not available"
+        }
+      ]
+    },
+    {
+      "name": "enabled",
+      "steps": [
+        {
+          "input": {},
+          "jobs": 0,
+          "name": "list_crons",
+          "output": "No scheduled jobs."
+        },
+        {
+          "input": {
+            "cron": "0 0 31 2 *",
+            "prompt": "ééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+          },
+          "jobs": 1,
+          "name": "schedule_cron",
+          "output": "Scheduled cron <job1>: '0 0 31 2 *' -> éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+        },
+        {
+          "input": {},
+          "jobs": 1,
+          "name": "list_crons",
+          "output": "<job1>: '0 0 31 2 *' [recurring, durable] -> éééééééééééééééééééééééééééééééééééééééééééééééééé"
+        },
+        {
+          "input": {
+            "cron": "0 0 31 2 *",
+            "durable": false,
+            "prompt": "once",
+            "recurring": false
+          },
+          "jobs": 2,
+          "name": "schedule_cron",
+          "output": "Scheduled cron <job2>: '0 0 31 2 *' -> once"
+        },
+        {
+          "input": {
+            "cron": "bad",
+            "prompt": "invalid"
+          },
+          "jobs": 2,
+          "name": "schedule_cron",
+          "output": "Error: cron must have 5 fields: minute hour day-of-month month day-of-week"
+        },
+        {
+          "input": {
+            "job_id": "missing"
+          },
+          "jobs": 2,
+          "name": "cancel_cron",
+          "output": "No cron missing"
+        },
+        {
+          "input": {
+            "job_id": "<job1>"
+          },
+          "jobs": 1,
+          "name": "cancel_cron",
+          "output": "Cancelled cron <job1>"
+        },
+        {
+          "input": {},
+          "jobs": 1,
+          "name": "list_crons",
+          "output": "<job2>: '0 0 31 2 *' [one-shot] -> once"
+        }
+      ]
+    },
+    {
+      "name": "readonly",
+      "steps": [
+        {
+          "input": {},
+          "jobs": 0,
+          "name": "list_crons",
+          "output": "No scheduled jobs."
+        },
+        {
+          "input": {
+            "cron": "0 0 31 2 *",
+            "prompt": "ééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+          },
+          "jobs": 0,
+          "name": "schedule_cron",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "input": {},
+          "jobs": 0,
+          "name": "list_crons",
+          "output": "No scheduled jobs."
+        },
+        {
+          "input": {
+            "cron": "0 0 31 2 *",
+            "durable": false,
+            "prompt": "once",
+            "recurring": false
+          },
+          "jobs": 0,
+          "name": "schedule_cron",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "input": {
+            "cron": "bad",
+            "prompt": "invalid"
+          },
+          "jobs": 0,
+          "name": "schedule_cron",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "input": {
+            "job_id": "missing"
+          },
+          "jobs": 0,
+          "name": "cancel_cron",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "input": {
+            "job_id": "<job1>"
+          },
+          "jobs": 0,
+          "name": "cancel_cron",
+          "output": "Permission denied: this session is read-only (tool risk: write)"
+        },
+        {
+          "input": {},
+          "jobs": 0,
+          "name": "list_crons",
+          "output": "No scheduled jobs."
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "candidate": [
+        "schedule_cron"
+      ],
+      "canonical": "{\"cron\":\"0 0 31 2 *\",\"prompt\":\"é\"}",
+      "input": {
+        "cron": "0 0 31 2 *",
+        "prompt": "é"
+      },
+      "name": "schedule_cron",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "schedule_cron"
+      ],
+      "canonical": "{\"cron\":\"0 0 31 2 *\",\"durable\":false,\"prompt\":\"é\",\"recurring\":false}",
+      "input": {
+        "cron": "0 0 31 2 *",
+        "durable": false,
+        "prompt": "é",
+        "recurring": false
+      },
+      "name": "schedule_cron",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "schedule_cron"
+      ],
+      "canonical": "{\"cron\":\"0 0 31 2 *\",\"prompt\":\"é\",\"recurring\":true}",
+      "input": {
+        "cron": "0 0 31 2 *",
+        "prompt": "é",
+        "recurring": true
+      },
+      "name": "schedule_cron",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "schedule_cron"
+      ],
+      "canonical": "{\"cron\":\"0 0 31 2 *\",\"durable\":false,\"prompt\":\"é\"}",
+      "input": {
+        "cron": "0 0 31 2 *",
+        "durable": false,
+        "prompt": "é"
+      },
+      "name": "schedule_cron",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "list_crons"
+      ],
+      "canonical": "{}",
+      "input": {},
+      "name": "list_crons",
+      "proposed": []
+    },
+    {
+      "candidate": [
+        "cancel_cron"
+      ],
+      "canonical": "{\"job_id\":\"missing\"}",
+      "input": {
+        "job_id": "missing"
+      },
+      "name": "cancel_cron",
+      "proposed": []
+    }
+  ]
+}

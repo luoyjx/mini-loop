@@ -2281,6 +2281,131 @@ def _trajectory_contracts(scratch: Path) -> dict:
 
 
 
+def _cron_surface_contracts(scratch: Path) -> dict:
+    """Actual model gates and authenticated operator HTTP, with fixed future jobs."""
+    import asyncio
+    from mini_loop import Settings, SessionManager
+    from mini_loop.agent import Agent
+    from mini_loop.builtins import default_registry
+    from mini_loop.cron import install_cron
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.registry import ToolRegistry, ToolCall
+    from mini_loop.approvals import grant_candidate, proposed_candidate
+    from mini_loop.server import create_app
+    from mini_loop.auth import TokenAuth
+    from fastapi.testclient import TestClient
+    registry = install_cron(ToolRegistry())
+    future = '0 0 31 2 *'
+    variants = [
+        {'name':'schedule_cron','input':{'cron':future,'prompt':'é'}},
+        {'name':'schedule_cron','input':{'cron':future,'prompt':'é','recurring':False,'durable':False}},
+        {'name':'schedule_cron','input':{'cron':future,'prompt':'é','recurring':True}},
+        {'name':'schedule_cron','input':{'cron':future,'prompt':'é','durable':False}},
+        {'name':'list_crons','input':{}},
+        {'name':'cancel_cron','input':{'job_id':'missing'}},
+    ]
+    for row in variants:
+        row['canonical'] = json.dumps(row['input'], sort_keys=True, ensure_ascii=False, separators=(',',':'))
+        row['candidate'] = list(grant_candidate(row['name'],row['input']) or [])
+        row['proposed'] = list(proposed_candidate(row['name'],row['input']) or [])
+    def settings(root):
+        return Settings(fake_llm=True,enable_features=False,trajectory_enabled=False,
+                        workspace_root=root,skills_dir=root/'empty',spill_dir=None)
+    async def tools():
+        cases=[]
+        for name in ('unconfigured','enabled','readonly'):
+            root=scratch/name; root.mkdir(parents=True)
+            m=SessionManager(settings(root),FakeAsyncAnthropic()) if name!='unconfigured' else None
+            a=m.create(owner='alice',permission_mode='readonly' if name=='readonly' else 'auto').agent if m else Agent(
+                client=FakeAsyncAnthropic(),settings=settings(root),workspace=root,tools=default_registry())
+            install_cron(a.tools)
+            aliases={}
+            def normalize(value):
+                for actual,alias in aliases.items():value=value.replace(actual,alias)
+                return value
+            specs=[('list_crons',{}),('schedule_cron',{'cron':future,'prompt':'é'*65}),
+                   ('list_crons',{}),('schedule_cron',{'cron':future,'prompt':'once','recurring':False,'durable':False}),
+                   ('schedule_cron',{'cron':'bad','prompt':'invalid'}),
+                   ('cancel_cron',{'job_id':'missing'}),('cancel_cron',{'job_id':'<job1>'}),('list_crons',{})]
+            steps=[]
+            try:
+                for index,(tool,value) in enumerate(specs):
+                    original=dict(value)
+                    for actual,alias in aliases.items():
+                        if value.get('job_id')==alias:value={**value,'job_id':actual}
+                    output=str(await a._exec_tool(ToolCall(tool,value,f'cron-tool-{index}')))
+                    if m:
+                        for jid in m.cron.jobs:
+                            if jid not in aliases:aliases[jid]=f'<job{len(aliases)+1}>'
+                    steps.append({'name':tool,'input':original,'output':normalize(output),
+                                  'jobs':len(m.cron.jobs) if m else 0})
+                cases.append({'name':name,'steps':steps})
+            finally:
+                if m:await m.stop()
+        return cases
+    tool_cases=asyncio.run(tools())
+    root=scratch/'http';root.mkdir(parents=True)
+    m=SessionManager(settings(root),FakeAsyncAnthropic())
+    app=create_app(settings=settings(root),manager=m)
+    rows=[];aliases={}
+    with TestClient(app) as client:
+        app.state.auth=TokenAuth({'token-a':'alice','token-b':'bob'})
+        ids={}
+        for token,label in [('token-a','session-fixture'),('token-b','other-session')]:
+            sid=client.post('/sessions',json={},headers={'Authorization':'Bearer '+token}).json()['id']
+            ids[label]=sid
+        def normalize(value):
+            if isinstance(value,str):
+                for alias,actual in ids.items():value=value.replace(actual,alias)
+                for actual,alias in aliases.items():value=value.replace(actual,alias)
+                return value
+            if isinstance(value,list):return [normalize(v) for v in value]
+            if isinstance(value,dict):return {k:normalize(v) for k,v in value.items()}
+            return value
+        base='/sessions/session-fixture/cron'
+        specs=[('empty','GET',base,'token-a',None),
+               ('schedule','POST',base,'token-a',{'cron':future,'prompt':'é'}),
+               ('owned','GET',base,'token-a',None),('foreign-session','GET',base,'token-b',None),
+               ('missing-session','GET','/sessions/missing/cron','token-a',None),
+               ('unauthenticated','GET',base,'',None),('bad-token','GET',base,'wrong',None),
+               ('foreign-cancel','DELETE','/sessions/other-session/cron/<job1>','token-b',None),
+               ('foreign-arm','POST','/sessions/other-session/cron/<job1>/arm','token-b',None),
+               ('foreign-session-cancel','DELETE',base+'/<job1>','token-b',None),
+               ('foreign-session-arm','POST',base+'/<job1>/arm','token-b',None),
+               ('arm','POST',base+'/<job1>/arm','token-a',None),
+               ('unknown-arm','POST',base+'/missing/arm','token-a',None),
+               ('invalid-expression','POST',base,'token-a',{'cron':'bad','prompt':'x'}),
+               ('missing-field','POST',base,'token-a',{'cron':future}),
+               ('empty-prompt','POST',base,'token-a',{'cron':future,'prompt':''}),
+               ('empty-cron','POST',base,'token-a',{'cron':'','prompt':'x'}),
+               ('long-cron','POST',base,'token-a',{'cron':'x'*101,'prompt':'x'}),
+               ('null-bool','POST',base,'token-a',{'cron':future,'prompt':'x','recurring':None}),
+               ('invalid-bool','POST',base,'token-a',{'cron':future,'prompt':'x','durable':'maybe'}),
+               ('coerce-bools','POST',base,'token-a',{'cron':future,'prompt':'coerced','recurring':'no','durable':'yes'}),
+               ('numeric-bools','POST',base,'token-a',{'cron':future,'prompt':'numbers','recurring':0.0,'durable':1}),
+               ('bad-numeric-bool','POST',base,'token-a',{'cron':future,'prompt':'x','recurring':2}),
+               ('foreign-schedule','POST',base,'token-b',{'cron':future,'prompt':'foreign'}),
+               ('validation-before-owner','POST',base,'token-b',{'cron':future,'prompt':''}),
+               ('list-coerced','GET',base,'token-a',None),
+               ('cancel','DELETE',base+'/<job1>','token-a',None),
+               ('cancel-again','DELETE',base+'/<job1>','token-a',None),
+               ('remaining','GET',base,'token-a',None)]
+        for name,method,path,token,value in specs:
+            actual=path
+            for alias,sid in ids.items():actual=actual.replace(alias,sid)
+            for jid,alias in aliases.items():actual=actual.replace(alias,jid)
+            response=client.request(method,actual,json=value,headers={'Authorization':'Bearer '+token} if token else {})
+            for jid in m.cron.jobs:
+                if jid not in aliases:aliases[jid]=f'<job{len(aliases)+1}>'
+            rows.append({'name':name,'method':method,'path':path,'token':token,'input':value,
+                         'status':response.status_code,'body':normalize(response.json())})
+    return {'schemas':registry.schemas(),'metadata':[{'name':t.name,'risk':t.risk,'readonly':t.readonly,
+            'parallel_safe':t.parallel_safe,'capabilities':sorted(t.capabilities)} for n in registry.names() if (t:=registry.get(n))],
+            'variants':variants,'tools':tool_cases,'http':rows,
+            'source_sha256':{n:hashlib.sha256((PYTHON_ROOT/'mini_loop'/n).read_bytes()).hexdigest()
+                             for n in ('cron.py','registry.py','permissions.py','server.py')}}
+
+
 def _managed_cron_contracts(scratch: Path) -> dict:
     """Actual default manager ownership, managed authority and shutdown."""
     import asyncio
@@ -3753,6 +3878,7 @@ def _snapshot() -> dict[str, bytes]:
         child_background_contracts = _child_background_contracts(Path(scratch) / "child-background")
         cron_contracts = _cron_contracts(Path(scratch) / "cron")
         managed_cron_contracts = _managed_cron_contracts(Path(scratch) / "managed-cron")
+        cron_surface_contracts = _cron_surface_contracts(Path(scratch) / "cron-surfaces")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -3810,6 +3936,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-child-background.json": _json_bytes(child_background_contracts),
         "python-cron.json": _json_bytes(cron_contracts),
         "python-managed-cron.json": _json_bytes(managed_cron_contracts),
+        "python-cron-surfaces.json": _json_bytes(cron_surface_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

@@ -53,6 +53,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	CronTools            bool
+	Cron                 CronControl
 	BackgroundTools      bool
 	WorktreeTools        bool
 	Worktrees            *worktrees.Manager
@@ -100,6 +102,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	cron                 CronControl
 	background           *backgroundState
 	worktrees            *worktrees.Manager
 	workspaceBashFactory BashFactory
@@ -151,6 +154,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolScheduleCron, protocol.ToolListCrons, protocol.ToolCancelCron:
+		return handler.executeCron(input)
 	case protocol.ToolBackgroundRun, protocol.ToolCheckBackground:
 		return handler.executeBackground(ctx, input)
 	case protocol.ToolCreateWorktree, protocol.ToolRemoveWorktree, protocol.ToolKeepWorktree, protocol.ToolListWorktrees, protocol.ToolEnterWorktree:
@@ -278,7 +283,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if source == nil {
 		source = skills.EmptyCatalog()
 	}
-	handler := &runtimeHandler{
+	handler := &runtimeHandler{cron: config.Cron,
 		binding: ToolAuthority{SessionID: config.ID, OwnerID: config.Owner, Workspace: files.Root(), Mode: config.Mode},
 		todos:   &TodoManager{}, events: &sessionEvents{}, skills: source, questions: config.Questions, compression: &compressionSignal{},
 	}
@@ -321,6 +326,19 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 				definitions[i].handler = handler
 				definitions[i].classifier = backgroundBashClassifier{}
 			}
+		}
+	}
+	if config.CronTools {
+		for _, schema := range protocol.CronSchemas() {
+			traits := ToolTraits{Risk: RiskWrite}
+			if schema.Name == protocol.ToolListCrons {
+				traits = ToolTraits{Risk: RiskRead, Readonly: true}
+			}
+			definition, err := NewToolDefinitionWithSchema(schema, traits, handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
 		}
 	}
 	if config.TaskTools {

@@ -15,6 +15,11 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolScheduleCron:
+		input.scheduleCron.Cron = mask(input.scheduleCron.Cron)
+		input.scheduleCron.Prompt = mask(input.scheduleCron.Prompt)
+	case ToolCancelCron:
+		input.cancelCron.JobID = mask(input.cancelCron.JobID)
 	case ToolBackgroundRun:
 		input.backgroundRun.Command = mask(input.backgroundRun.Command)
 		if input.backgroundRun.ApprovalPrefix != nil {

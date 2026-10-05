@@ -761,9 +761,8 @@ session through `ResolveScheduled`; the Runner consumes `RunScheduled` with
 read-only prompt/session accessors and an always-untrusted authority accessor.
 The embedding adapter must create a fresh untrusted runtime context. The manager
 now supplies that adapter and owns the service by default, matching Python even
-with the comprehensive feature bundle disabled. Model tools, HTTP routes and
-durable session/lease restoration remain pending; the default tool catalogue
-still contains ten tools.
+with the comprehensive feature bundle disabled. Durable session/lease restoration
+remains pending; the default tool catalogue still contains ten tools.
 
 Parse matches Python's five-field ranges/lists/steps, Sunday 0 and restricted
 day-of-month/day-of-week OR rule. Numeric parsing pins Unicode 14 decimal digits,
@@ -811,8 +810,8 @@ removal, two stale claimers, three claim/save loss cases, masked restoration,
 prompt/job limits and actual source untrusted dispatch/missing-session diagnostics.
 Go tests additionally run two independent processes sharing the store and cover
 native filesystem failures, ticker cancellation/resumed joins and delayed
-resolution. Operator evidence alone does not complete the remaining cron tools,
-HTTP, restoration or G7.
+resolution. Operator evidence alone does not complete managed runtime validation,
+restoration or G7.
 
 ### Managed cron lifecycle
 
@@ -850,6 +849,45 @@ Snapshot 42 compares actual source authority, delete/preserve/bound/fork/stop
 states and a live cancelled scheduled turn. Additional Go tests exercise foreign
 owner refusal, detached lists, closed admission, a queued scheduled turn, delete
 save failure, real native-shell cleanup and restored-disarmed launcher startup.
+
+### Cron tools and operator HTTP
+
+`RuntimeConfig.CronTools` installs three concrete protocol inputs and source
+schemas: schedule_cron (write), list_crons (read/readonly), cancel_cron (write).
+All are exclusive, without default child capabilities. A typed CronControl seam
+binds established owner/session identities; model arguments cannot select either
+identity and Arm is absent. ManagerServices.CronTools binds the manager service.
+Standalone `--cron-tools` / launcher.Options.CronTools selects these tools alone;
+MINILOOP_FEATURES remains unsupported. Construction/inspection never starts a
+listener or activates restored jobs. The default tool catalogue remains ten.
+
+Calls cross the existing rewrite/guard/permission/journal/masking path. Optional
+booleans distinguish absent defaults from explicit false and detach on copy.
+The model decoder rejects null/nonboolean values against the advertised boolean
+schema; Python's kwargs handler is more permissive for schema-invalid values.
+Forks preserve activation with new job scope. Selected child handlers have no
+CronControl and report source unavailability instead of borrowing parent state.
+Raw library callers can bind their own typed implementation; they own admission.
+
+Four operator method/path operations are always registered, independently of
+CronTools: GET/POST `/sessions/{session_id}/cron`, DELETE
+`/sessions/{session_id}/cron/{job_id}`, and POST
+`/sessions/{session_id}/cron/{job_id}/arm`. Authentication precedes route work;
+all manager reads/mutations admit session ownership and hide foreign jobs. HTTP
+schedule validates its required nonempty fields and 100-character cron limit
+before owner lookup like FastAPI. It preserves Pydantic boolean strings/0/1 and
+rejects null/other values. Error status parity is tested; full structured 422
+validation detail remains an existing open HTTP boundary. Domain refusals are
+400, hidden jobs 404, closed manager 503 and persistence faults a masked 500.
+
+Operator Arm changes process-local authorization only. Save/reload cannot retain
+activation, and future runs still use the fresh untrusted managed context.
+Snapshot 43 compares three actual tool contexts (24 gate calls), six canonical/
+grant variants, three schemas/traits and 29 real Python HTTP requests. Go tests
+also cover before rewrites, retained raw prompts/masked stores, replay without a
+second schedule, foreign authority, a real model tool round, fresh fork/child
+scope, restored HTTP authorization with no stored activation and local TCP
+launcher-to-provider-to-HTTP composition. No paid provider is contacted.
 
 ### Operator worktree lifecycle
 
@@ -957,7 +995,8 @@ Refresh and verify the embedded inputs from the repository root:
 ```
 
 Core create/message/SSE/control/approval/trajectory flows have implemented APIs.
-Optional Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark/Self-audit
+The Cron pane uses the implemented list/schedule/cancel/arm APIs.
+Optional Team/Goal/Workflows/Skills/Memory/Improve/Benchmark/Self-audit
 panels still need Go services and currently display the source error states.
 Serving the full interface is not complete UI feature parity. Snapshot 32 compares
 16 Python HTTP outcomes and exact source assets; 37 real JS interaction regressions
@@ -988,7 +1027,7 @@ retains that responsibility.
 Custom Authenticators and Config.Now must be concurrency-safe. Config.Build defaults
 to development; Config.FakeLLM is explicit rather than inferred from a provider.
 The basic health response omits full effective posture and source build hashing.
-Twenty-three method/path combinations cover create/list/detail/delete, completed message,
+Twenty-seven method/path combinations cover create/list/detail/delete, completed message,
 streamed message, cancel, approval list/resolve, event subscription and Null-store
 transcript, public `/` and `/ui` shells, owned Tasks view, plus health, mode, steer, fork and five trajectory read/view/export operations. Foreign and missing sessions both return 404; non-streaming
 messages reject busy turns atomically. Streamed messages queue; disconnect cancels

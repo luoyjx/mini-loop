@@ -17,6 +17,8 @@ func (field *nullField) UnmarshalJSON(data []byte) error {
 }
 
 type inputNullFields struct {
+	CronRecurring     nullField `json:"recurring"`
+	CronDurable       nullField `json:"durable"`
 	BackgroundTimeout nullField `json:"timeout"`
 	BackgroundID      nullField `json:"bg_id"`
 	WorktreeTaskID    nullField `json:"task_id"`

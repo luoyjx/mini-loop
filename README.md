@@ -299,8 +299,9 @@ lifetime cleanup with independent qualified IDs and completion queues,
 plus an explicitly bound typed cron operator scheduler with masked persistence,
 disarmed restoration, exclusive minute claims and cancellation/join,
 plus manager-owned cron with fresh untrusted turns, owner-scoped operations,
-delete/stop joins and standalone startup,
-reviewed **2026-10-06** (Go baseline `d62aa98` plus the managed-cron slice).
+delete/stop joins and standalone startup, plus three explicit cron model tools,
+four owned cron HTTP operations and individual launcher selection,
+reviewed **2026-10-06** (Go baseline `20a4b79` plus the cron-surface slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -378,10 +379,13 @@ flowchart LR
         GoChildren -. selected background tools: separate scopes / queues .-> GoBackground
         GoCron["Explicit operator cron<br/>typed jobs · five fields · disarmed restore<br/>per-session controls · ticker / run cancellation"]
         GoCronStore["Operator cron JSON / claim files<br/>masked prompts · mark before dispatch<br/>exclusive minute claim; no external transaction"]
-        GoCronRunner["Managed resolver / scheduled runner<br/>fresh untrusted ManagedSession.Run<br/>no session restore; tools / HTTP pending"]
+        GoCronRunner["Managed resolver / scheduled runner<br/>fresh untrusted ManagedSession.Run<br/>live session lookup; no durable restore"]
         GoManager -->|default ownership / owner-scoped operations| GoCron
         GoLaunch -. Serve starts disarmed restored jobs .-> GoCron
         GoManager -. revoke turns then stop / join .-> GoCron
+        GoGate -. optional three cron tools; no model arm .-> GoCron
+        GoEntry -->|owner-scoped list / schedule / cancel / arm| GoCron
+        GoLaunch -. explicit cron-tools selection .-> GoGate
         GoCron -->|atomic persisted mark / O_EXCL claim| GoCronStore
         GoCron -->|only after occurrence admission| GoCronRunner
         GoCronRunner -->|fresh untrusted serialized turn| GoManaged
@@ -510,8 +514,12 @@ sessions into fresh untrusted ManagedSession.Run turns without retaining the
 scheduling caller's actor or grants. Owner-scoped library operations hide foreign
 sessions/jobs. Delete removes future jobs before scratch cleanup; stop revokes
 turn admission, drains sessions, then cancels/joins cron. Standalone Serve starts
-loaded jobs without arming them. Model tools, HTTP activation and durable session
-restore remain pending. Raw operator Start remains explicit. Independent live
+loaded jobs without arming them. Explicit CronTools / --cron-tools installs
+schedule_cron, list_crons and cancel_cron through the common gate. Arm is confined
+to the owned operator HTTP/library surface. Four HTTP operations work independently
+of model-tool activation; fork retains activation with fresh jobs, while selected
+children report unconfigured. Durable session restore remains pending.
+Raw operator Start remains explicit. Independent live
 writers still hold stale whole-file state; claim files do not transact with external effects or prove
 exactly-once execution. See [cron library](go/README.md#operator-cron-scheduler).
 `go/worktrees` is an explicitly selected library service: named records and
@@ -824,7 +832,8 @@ Both browser documents use embedded copies of the Python source HTML/CSS/JS.
 `python/tools/export_go_webui.py --check` verifies the copies; no Python process,
 source checkout, external assets or static directory mount is needed at runtime.
 The UI's existing core session/turn/approval/control/trajectory flows consume the
-typed Go APIs. Optional Team/Goal/Cron/Workflows/Skills/Memory/Improve/Benchmark and
+typed Go APIs. Cron list/schedule/cancel/arm APIs are also implemented. Optional
+Team/Goal/Workflows/Skills/Memory/Improve/Benchmark and
 Self-audit APIs remain unimplemented, so those panes currently show source error
 states. Serving the complete source shell is not full UI feature parity.
 `go/tasks` is a named file-backed task graph under each workspace's `.tasks`.

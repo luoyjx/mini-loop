@@ -28,6 +28,9 @@ func (s *Server) register(path string, handlers map[string]http.HandlerFunc) {
 	})
 }
 func (s *Server) routes() {
+	s.register("/sessions/{session_id}/cron", map[string]http.HandlerFunc{"GET": s.listCron, "POST": s.scheduleCron})
+	s.register("/sessions/{session_id}/cron/{job_id}", map[string]http.HandlerFunc{"DELETE": s.cancelCron})
+	s.register("/sessions/{session_id}/cron/{job_id}/arm", map[string]http.HandlerFunc{"POST": s.armCron})
 	s.register("/sessions/{session_id}/tasks", map[string]http.HandlerFunc{"GET": s.tasks})
 	s.register("/{$}", map[string]http.HandlerFunc{"GET": s.console})
 	s.register("/ui", map[string]http.HandlerFunc{"GET": s.webUI})

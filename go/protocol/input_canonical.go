@@ -13,6 +13,16 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return "", err
 	}
 	switch input.Name() {
+	case ToolScheduleCron:
+		v := input.scheduleCron
+		return PythonJSON(struct {
+			Cron      string `json:"cron"`
+			Durable   *bool  `json:"durable,omitempty"`
+			Prompt    string `json:"prompt"`
+			Recurring *bool  `json:"recurring,omitempty"`
+		}{v.Cron, v.Durable, v.Prompt, v.Recurring}, false, compact)
+	case ToolListCrons, ToolCancelCron:
+		return PythonJSON(input, false, compact)
 	case ToolBackgroundRun:
 		v := input.backgroundRun
 		return PythonJSON(struct {
