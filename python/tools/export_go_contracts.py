@@ -2,8 +2,8 @@
 
 From the repository root, run ``.venv/bin/python python/tools/export_go_contracts.py``
 or add ``--check`` to reject drift without writing. The export uses the real
-default registry, FastAPI OpenAPI builder, and SQLite schema constant. It does
-not open a database, call a model, or include credentials.
+default registry, FastAPI OpenAPI builder, temporary SQLite databases and
+offline model probes. It does not call a paid endpoint or include credentials.
 """
 
 from __future__ import annotations
@@ -3780,6 +3780,198 @@ def _configuration_contracts(scratch: Path) -> dict:
             "cases":rows,"builtin":{"descriptions":loader.descriptions(),"loaded":loader.load("code_review"),"source_sha256":hashlib.sha256((REPO_ROOT/"python/skills/code_review/SKILL.md").read_bytes()).hexdigest()}}
 
 
+def _state_store_contracts(scratch: Path) -> dict:
+    """Actual schema-v7 transactions, leases, audit retention and epoch storage."""
+    from concurrent.futures import ThreadPoolExecutor
+    from dataclasses import asdict, replace
+    from unittest.mock import patch
+    import sqlite3
+    from mini_loop.storage import SQLiteStateStore, SessionRecord, StorageSchemaError
+    from mini_loop.fake_llm import TextBlock, ThinkingBlock, ToolUseBlock
+
+    scratch.mkdir(parents=True)
+    path = scratch / "state.db"
+    store = SQLiteStateStore(path)
+    second = SQLiteStateStore(path)
+    initial = SessionRecord("s", "$WORKSPACE", None, 10.0, 0, "idle", 900,
+                            owner="tenant-a", workspace_bound=True)
+    sibling = SessionRecord("other", "$OTHER", "system", 20.0, 1, "error", 0,
+                            owner="tenant-b")
+    store.upsert_session(initial)
+    store.upsert_session(sibling)
+    sessions = [{"name": "initial", "records": [asdict(r) for r in store.load_sessions()]}]
+    updated = replace(initial, created_at=999.0, run_count=3, status="running",
+                      todos=({"content": "check", "status": "pending", "activeForm": "checking"},),
+                      pending_steering=("汉字😀 queued",))
+    store.upsert_session(updated)
+    store.append_event("s", {"type": "status", "status": "running", "seq": 1})
+    store.append_event("s", {"type": "done", "text": "done", "seq": 2})
+    sessions.append({"name": "updated", "records": [asdict(r) for r in second.load_sessions()]})
+
+    provider_rows = [
+        {"role": "user", "content": "begin 汉字😀"},
+        {"role": "assistant", "content": [ThinkingBlock("reason", "opaque-signature"),
+            TextBlock("working"), ToolUseBlock("bash", {"command": "echo safe"}, "u")]},
+        {"role": "user", "content": [{"type": "tool_result", "tool_use_id": "u", "content": "safe"}]},
+        {"role": "assistant", "content": "done"},
+    ]
+    counts = [store.append_messages("s", provider_rows[:2]),
+              second.append_messages("s", provider_rows[2:])]
+    original = store.load_messages("s")
+    rewritten = [{"role": "user", "content": "summary"}]
+    counts.append(store.append_messages("s", rewritten, epoch=2))
+    counts.append(store.append_messages("s", [], epoch=1))
+    counts.append(store.append_messages("s", [], epoch=3))
+    messages = {"append_counts": counts, "original": original,
+                "current": second.load_messages("s"),
+                "old": second.load_messages("s", epoch=1),
+                "absent": second.load_messages("s", epoch=3),
+                "epoch": second.transcript_epoch("s"),
+                "ordinals": [list(r) for r in store._db.execute(
+                    "SELECT ordinal,epoch FROM messages WHERE session_id='s' ORDER BY ordinal")]}
+    # A second insert aborts the complete batch, including its first row.
+    store._db.execute("CREATE TRIGGER reject_row BEFORE INSERT ON messages "
+                      "WHEN instr(NEW.payload, 'reject') > 0 "
+                      "BEGIN SELECT RAISE(ABORT, 'rejected probe row'); END")
+    failed = False
+    try:
+        store.append_messages("s", [{"role": "user", "content": "first"},
+                                    {"role": "assistant", "content": "reject"}], epoch=2)
+    except sqlite3.IntegrityError:
+        failed = True
+    messages["rollback"] = {"failed": failed, "count": second.message_count("s"),
+                            "current": second.load_messages("s")}
+    store._db.execute("DROP TRIGGER reject_row")
+    events = {"all": store.load_events("s"), "tail": store.load_events("s", after=1, limit=1),
+              "zero_limit": store.load_events("s", limit=0), "cursor": store.event_cursor("s"),
+              "missing_cursor": store.event_cursor("missing")}
+    # Query times are supplied explicitly; no wall-clock outcomes are normalized.
+    lease_steps = []
+    with patch("mini_loop.storage.time.time", return_value=100.0) as clock:
+        def lease(name, method, owner, now, ttl=10.0):
+            clock.return_value = now
+            target = second if owner == "process-b" else store
+            if method == "release":
+                target.release_lease("s", owner)
+                result = None
+            else:
+                result = getattr(target, method + "_lease")("s", owner, ttl=ttl)
+            lease_steps.append({"name": name, "operation": method, "owner": owner,
+                                "now": now, "ttl": ttl, "result": result,
+                                "holder": store.lease_holder("s")})
+        lease("free", "acquire", "process-a", 100.0)
+        lease("foreign-active", "acquire", "process-b", 100.0)
+        lease("foreign-release", "release", "process-b", 100.0)
+        lease("renew", "renew", "process-a", 105.0)
+        lease("foreign-at-equality", "acquire", "process-b", 115.0)
+        lease("own-renew-at-equality", "renew", "process-a", 115.0)
+        lease("expired-cannot-renew", "renew", "process-a", 125.25)
+        lease("foreign-after-expiry", "acquire", "process-b", 125.25)
+        lease("stale-renew", "renew", "process-a", 126.0)
+        lease("stale-release", "release", "process-a", 126.0)
+        # Upsert cannot release or transfer the independently held lease.
+        store.upsert_session(updated)
+        holder_after_upsert = second.lease_holder("s")
+        lease("holder-release", "release", "process-b", 126.0)
+        lease("same-owner-reacquire", "acquire", "process-a", 130.0)
+        lease("same-owner-expired-reacquire", "acquire", "process-a", 141.0)
+        missing_claim = store.acquire_lease("missing", "process-a", ttl=10)
+
+    action = {"action_id": "a", "session_id": "s", "message_id": "m", "tool_use_id": "u",
+              "tool_name": "bash", "input_hash": "hash", "status": "started", "result": None,
+              "workflow_run_id": None, "created_at": 10.0, "completed_at": None}
+    store.write_action(action)
+    store.write_action({**action, "action_id": "other-action", "session_id": "other"})
+    approval = {"approval_id": "approval", "session_id": "s", "tool_use_id": "u",
+                "tool_name": "bash", "rule": "exec", "message": "allow?", "input_preview": "echo safe",
+                "status": "pending", "created_at": 10.0, "resolved_at": None}
+    store.write_approval(approval)
+    store.write_approval({**approval, "status": "cancelled", "resolved_at": 15.0,
+                          "message": "identity must stay", "kind": "question", "answer": "no"})
+    approvals = store.read_approvals("s")
+    store.close()
+    store = SQLiteStateStore(path)
+    actions = {"after_open": store.read_action("a"),
+               "scoped_unknown": sorted(store.mark_inflight_unknown("s")),
+               "after_scoped": [store.read_action("a"), store.read_action("other-action")],
+               "global_unknown": sorted(store.mark_inflight_unknown()),
+               "repeated_unknown": store.mark_inflight_unknown()}
+    store.write_action({**action, "status": "completed", "result": "done", "completed_at": 16.0,
+                        "session_id": "cannot-transfer", "input_hash": "cannot-change", "created_at": 999.0})
+    actions["updated"] = store.read_action("a")
+    store.delete_session("s")
+    deletion = {"sessions": [asdict(r) for r in second.load_sessions()],
+                "messages": second.load_messages("s"), "event_cursor": second.event_cursor("s"),
+                "events": second.load_events("s"), "holder": second.lease_holder("s"),
+                "action": second.read_action("a"), "approvals": second.read_approvals("s")}
+    store.close()
+    second.close()
+
+    # Two real connections allocate from MAX(ordinal) inside writing transactions.
+    concurrent_path = scratch / "concurrent.db"
+    left, right = SQLiteStateStore(concurrent_path), SQLiteStateStore(concurrent_path)
+    def append_rows(args):
+        backing, label = args
+        for i in range(12):
+            backing.append_messages("concurrent", [{"role": "user", "content": f"{label}-{i}"}])
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        list(executor.map(append_rows, [(left, "left"), (right, "right")]))
+    concurrent = {"ordinals": [r[0] for r in left._db.execute(
+                    "SELECT ordinal FROM messages ORDER BY ordinal")],
+                  "contents": sorted(r["content"] for r in left.load_messages("concurrent"))}
+    left.close()
+    right.close()
+
+    # Original v1 shape, including rows, is upgraded in place by the source.
+    legacy_path = scratch / "legacy.db"
+    raw = sqlite3.connect(legacy_path)
+    raw.executescript("""
+      CREATE TABLE schema_version (version INTEGER NOT NULL);
+      INSERT INTO schema_version VALUES (1);
+      CREATE TABLE sessions (session_id TEXT PRIMARY KEY, workspace TEXT NOT NULL,
+        system TEXT, created_at REAL NOT NULL, run_count INTEGER NOT NULL DEFAULT 0,
+        status TEXT NOT NULL DEFAULT 'idle');
+      CREATE TABLE messages (session_id TEXT NOT NULL, ordinal INTEGER NOT NULL,
+        payload TEXT NOT NULL, PRIMARY KEY(session_id,ordinal));
+      CREATE TABLE events (session_id TEXT NOT NULL, ordinal INTEGER NOT NULL,
+        payload TEXT NOT NULL, PRIMARY KEY(session_id,ordinal));
+      INSERT INTO sessions VALUES ('legacy', '$LEGACY', NULL, 1.0, 0, 'idle');
+      INSERT INTO messages VALUES ('legacy', 1, '{"role":"user","content":"legacy"}');
+    """)
+    raw.close()
+    legacy_store = SQLiteStateStore(legacy_path)
+    legacy = {"version": legacy_store._db.execute("SELECT version FROM schema_version").fetchone()[0],
+              "sessions": [asdict(r) for r in legacy_store.load_sessions()],
+              "messages": legacy_store.load_messages("legacy"),
+              "columns": {table: [r["name"] for r in legacy_store._db.execute(f"PRAGMA table_info({table})")]
+                          for table in ("sessions", "messages", "actions", "approvals")}}
+    legacy_store._db.execute("UPDATE schema_version SET version=8")
+    legacy_store.close()
+    refused_future = False
+    try:
+        rejected = SQLiteStateStore(legacy_path)
+    except StorageSchemaError:
+        refused_future = True
+    else:
+        rejected.close()
+    corrupt_path = scratch / "corrupt.db"
+    corrupt_path.write_bytes(b"not a database")
+    refused_corrupt = False
+    try:
+        rejected = SQLiteStateStore(corrupt_path)
+    except StorageSchemaError:
+        refused_corrupt = True
+    else:
+        rejected.close()
+    return {"schema_version": 7, "sessions": sessions, "messages": messages, "events": events,
+            "leases": {"steps": lease_steps, "holder_after_upsert": holder_after_upsert,
+                       "missing_claim": missing_claim}, "actions": actions, "approvals": approvals,
+            "deletion": deletion, "concurrent": concurrent, "legacy": legacy,
+            "refused_future": refused_future, "refused_corrupt": refused_corrupt,
+            "source_sha256": {name: hashlib.sha256((PYTHON_ROOT / "mini_loop" / name).read_bytes()).hexdigest()
+                              for name in ("storage.py", "session.py", "manager.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -3879,6 +4071,7 @@ def _snapshot() -> dict[str, bytes]:
         cron_contracts = _cron_contracts(Path(scratch) / "cron")
         managed_cron_contracts = _managed_cron_contracts(Path(scratch) / "managed-cron")
         cron_surface_contracts = _cron_surface_contracts(Path(scratch) / "cron-surfaces")
+        state_store_contracts = _state_store_contracts(Path(scratch) / "state-store")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -3937,6 +4130,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-cron.json": _json_bytes(cron_contracts),
         "python-managed-cron.json": _json_bytes(managed_cron_contracts),
         "python-cron-surfaces.json": _json_bytes(cron_surface_contracts),
+        "python-state-store.json": _json_bytes(state_store_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

@@ -250,6 +250,46 @@ stop. Go synchronization/race tests cover queued turns, deletion/shutdown joins,
 construction faults, shared retiring paths, symlink reclamation and bounded
 owner/diagnostic copies.
 
+### Durable state contracts and archival decoding
+
+`agent.SessionRecord` models the Python schema-v7 session projection: immutable
+creation time, mutable run/status/todo state, tenant owner, pending steering and
+bound-workspace flag. The event cursor is derived from event rows. Model, mode,
+lineage and human execution authority are not fields in the Python session row.
+`Clone` detaches pointer/slice data before a persistence consumer takes ownership.
+
+The consumer-owned `SessionStore`, `TranscriptStore`, `EventStore`, `LeaseStore`
+and `ApprovalReader` interfaces use concrete records and named IDs/epochs.
+`LeaseOwner` is a process identity, separate from tenant `OwnerID`. Deleting
+operational session/messages/events must retain action and approval audit rows.
+An empty message append returns the requested epoch's count; message ordinals
+continue across rewritten epochs. A nil epoch selects the highest stored epoch.
+These interfaces are not yet attached to `ManagerConfig` or the standalone app.
+
+`agent.DecodeStoredEvent` reads the current flat writer projections into closed
+event variants, bounded to 16 MiB per row. It requires a positive sequence and
+epoch, a session ID and nonnegative depth. Tool inputs are decoded through the
+existing closed protocol boundary, including its smaller input limits. Unknown
+event/compaction variants fail explicitly; extra unused properties are ignored.
+The rendered error string is retained; its original in-memory cause category is
+not available in the flat row. System-prompt strings and the current single
+cached text-block shape are supported. The existing writer determines ephemeral
+progress markers and canonical approval-refusal reasons on re-encoding.
+
+Stored message lineage remains informational: the decoder assigns untrusted
+authority, no actor and no approved capabilities. Reading approval-grant events
+does not install grants into a broker. This decoder does not execute a turn,
+restore a session, enable durable SSE or implement a SQLite backend.
+
+Snapshot 44 executes Python SQLite directly: two connections, epoch history,
+provider-object serialization, transaction rollback, leases at exact expiry,
+upsert preservation, explicit unknown transitions, audit-preserving deletion,
+concurrent append, v1 migration and future/corrupt-file refusal. Go checks those
+record/message shapes and all current writer variants, including a real tool
+loop and malformed/authority-bearing archival rows. SQL outcomes currently
+remain Python evidence. Go driver approval, backend execution, manager recovery,
+lease enforcement, parked-approval expiry and durable catch-up are still open.
+
 ### Use the direct HTTP model adapter
 
 `provider.New(provider.Config{BaseURL: endpoint, APIKey: key})` returns a concrete

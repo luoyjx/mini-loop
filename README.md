@@ -301,7 +301,8 @@ disarmed restoration, exclusive minute claims and cancellation/join,
 plus manager-owned cron with fresh untrusted turns, owner-scoped operations,
 delete/stop joins and standalone startup, plus three explicit cron model tools,
 four owned cron HTTP operations and individual launcher selection,
-reviewed **2026-10-06** (Go baseline `20a4b79` plus the cron-surface slice).
+plus concrete schema-v7 state contracts and archival event decoding,
+reviewed **2026-10-06** (Go baseline `81614ba` plus the state-contract slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -362,7 +363,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional action journal<br/>typed states · stable identity · bounded results<br/>memory implementation · store interface"]
+        GoActions["Optional journal / state contracts<br/>typed replay · archival event decode<br/>memory implementation; SQLite pending"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
@@ -672,7 +673,14 @@ non-landing. `write_file` has a workspace-bound verifier; Bash has none. Typed
 settlement precedes result observers; cancellation settles as cancelled. The
 memory journal keeps every action identity while bounding retained result text.
 `StoredActionJournal` supplies transitions over an explicit `ActionStore`; the
-shipped Go SQLite backend remains pending. No journal
+shipped Go SQLite backend remains pending. `agent.SessionRecord` and separate
+session/transcript/event/lease/approval-read contracts model the v7 projections.
+`DecodeStoredEvent` reads current known event variants into detached typed rows;
+historical provenance has untrusted authority and cannot reinstall human grants.
+These are explicit library contracts, with no manager, launcher or SSE persistence
+activation. Snapshot 44 exercises actual Python SQLite transactions and leases;
+Go checks record/message compatibility and archival event round-trips, not SQL
+behavior. Driver approval and a real Go backend remain required. No journal
 claims cross-process dispatch ownership or restart-safe exactly-once effects.
 Default subagents do not inherit the parent journal, matching Python fresh child
 state. Compaction files are durable local artifacts, not a session-restoration

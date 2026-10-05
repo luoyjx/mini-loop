@@ -401,8 +401,8 @@
     {
       "id": "goActions",
       "type": "database",
-      "label": "Go Action Journals",
-      "sublabel": "typed states / replay / retention",
+      "label": "Go Replay / State Contracts",
+      "sublabel": "journal / archival event decode",
       "pos": [
         1370,
         1360
@@ -411,7 +411,7 @@
         280,
         76
       ],
-      "tag": "memory + store interface"
+      "tag": "memory / SQLite pending"
     },
     {
       "id": "goChildren",
@@ -1250,7 +1250,8 @@
         "Background .background records mask commands, atomically record in-flight evidence and report orphan/PID liveness without replay or ownership. CancelAll returns joinable cancelled handles; Close joins them. Caller owns admission quiescence and later Run is allowed",
         "Background retains 100 full results, lists/projects newest 50 and preserves undrained notifications; metadata/undrained queue remain unbounded. Future rebind pins admitted executors and original ledger root. Go cleans pre-start cancellation where Python leaves Running/ledger",
         "Background completion queues feed Go Session before model requests: optional background_run/check_background and conditional Bash dispatch/classification share the gate; bounded task_notification injection emits typed background_result events. Interruption markers name live survivors; prepared background scopes follow workspace entry. Manager delete/stop join lazy service ownership after turn drain, before scratch cleanup; forks get fresh state/root. Standalone --background-tools selects this individual service; the comprehensive feature bundle stays unsupported. Explicitly selected child scopes use independent qualified IDs/queues and remain owned through return; root cleanup cancels/joins descendants. Root adopts existing evidence before child admission; no child adopts live parent records. Qualified child orphans remain reportable after restart. Metadata/queues are unbounded and cross-process/shared-session ledger arbitration remains absent",
-        "Go SessionManager owns cron by default: owner-scoped schedule/list/cancel/arm, fresh untrusted scheduled turns and deletion/stop joins. Three explicit CronTools model variants cross the common gate via a typed CronControl; Arm is operator-only. Go Resources aggregates the bound handlers. Four owned HTTP operations work without tool activation; --cron-tools selects model tools alone. Forks retain activation with fresh jobs; selected children remain unconfigured. Standalone startup retains restored disarmed state, mark-before-dispatch and minute claims. Session/lease restoration, strict 422 detail parity and comprehensive feature activation remain pending; stale JSON writers and external exactly-once effects remain outside the claim protocol."
+        "Go SessionManager owns cron by default: owner-scoped schedule/list/cancel/arm, fresh untrusted scheduled turns and deletion/stop joins. Three explicit CronTools model variants cross the common gate via a typed CronControl; Arm is operator-only. Go Resources aggregates the bound handlers. Four owned HTTP operations work without tool activation; --cron-tools selects model tools alone. Forks retain activation with fresh jobs; selected children remain unconfigured. Standalone startup retains restored disarmed state, mark-before-dispatch and minute claims. Session/lease restoration, strict 422 detail parity and comprehensive feature activation remain pending; stale JSON writers and external exactly-once effects remain outside the claim protocol.",
+        "Go schema-v7 SessionRecord and small session/transcript/event/lease/approval-read contracts are explicit library seams. Current archival event decoding preserves informational lineage with untrusted authority, no actor/capabilities and no restored broker grants. Snapshot 44 executes Python SQL; Go projection and writer round-trips do not prove a Go SQLite backend. Driver approval, manager/launcher wiring, session/lease restoration and durable catch-up remain pending. No runtime persistence activation changes."
       ]
     }
   ]

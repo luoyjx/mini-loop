@@ -81,7 +81,7 @@ Record its parity evidence and remaining gaps before checking it off.
       repository verifiers pass from the documented layout)
 - [ ] G0 typed Go contracts (messages, all default inputs, completed replies,
       usage, core lifecycle/status/cancel/stop/error/stuck/subagent/approval events,
-      run provenance, action and approval records implemented;
+      run provenance, action/approval/session records and current archival event decoding implemented;
       other event and state variants remain)
 - [ ] G1 session loop (typed requests, four-layer context compaction, in-memory
       fake-provider slice, cache annotation, stuck detection, scoped child execution,
@@ -110,9 +110,28 @@ Record its parity evidence and remaining gaps before checking it off.
       and streamed-text cancellation repair implemented;
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
-- [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
+- [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite probe captured; Go SQLite backend, session/lease restore and durable catch-up remain)
 - [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
+
+### Next persistence slices
+
+1. Contracts: concrete session projection, separate tenant/process identities,
+   transcript epochs, audit-preserving deletion, typed archival event decoding
+   and actual Python SQLite probes are implemented. SQL outcomes remain Python
+   evidence until compared against a Go backend.
+2. Backend: after explicit dependency approval, implement schema v7 and additive
+   migrations, one owned connection, WAL/NORMAL/foreign-key posture, transactional
+   append/rollback, conditional leases and action/approval rows. Run the same
+   probe recipes against real Go SQLite, including concurrent connections.
+3. Session integration: configured-only composition, persistence-before-request,
+   rewrite epochs, secret projections, owner/bound-workspace retention, explicit
+   unknown-action handling, parked-approval expiry and crash-tail repair. Restore
+   lease confirmation separately from recorded ownership; drain/release on delete
+   and stop. No new human authority or goal/cron activation is restored.
+4. Serving: durable event cursor/catch-up, restored cron resolution and explicit
+   launcher selection. Compare real restart/crash windows and ownership paths
+   before claiming G5 complete; a lease is not external-effect fencing.
 
 ### Next cron slices
 
@@ -3370,3 +3389,109 @@ session restoration is implemented.
   visual acceptance is claimed.
 - README/plan/source outlines and git diff --check: pass. Native macOS / Go 1.23.3;
   Linux remains unvalidated.
+
+
+## Implementation checkpoint — 2026-10-06 state contracts and archival decoding
+
+Reviewed base: `81614ba`. The preceding coverage/status turn did not change
+implementation state. This iteration advances G0/G5 with concrete persistence
+consumer contracts, a complete decoder for current Go event writer variants,
+and an actual Python SQLite probe. It does not mark G5 complete.
+
+### Source evidence and authority boundary
+
+- Python `SessionRecord` carries schema-v7 owner, workspace binding, pending
+  steering, todos and mutable run/status fields. The cursor is derived from
+  event rows; upsert preserves original creation time and independently held
+  lease columns. Model/mode/lineage/human authority are not session-row fields.
+- SQLite append allocates ordinals in `BEGIN IMMEDIATE`; message ordinals are
+  global per session across epochs, while an empty append returns the selected
+  epoch's count. A trigger-induced second-row failure rolls back the first row.
+- Lease acquire is one conditional UPDATE, including the same-owner case;
+  foreign takeover uses strict expiry, and renewal accepts exact equality.
+  Renewal never reclaims an expired/stolen lease. These are session admission
+  controls, not a fencing token for an external tool effect or a heartbeat.
+- Opening `SQLiteStateStore` or constructing `DurableActionJournal` does not
+  mark actions. Python manager composition explicitly calls the journal's
+  `mark_inflight_unknown`; the backend operation supports scoped/all selection
+  and changes started to unknown. A later process opening the same database is
+  not itself proof that the earlier holder is dead. Delete removes operational
+  session/message/event rows and the lease, retaining action/approval audit rows.
+- These observations correct stale statements in EXTENDING: store-open unknown
+  transitions, missing reconciliation and missing leases were not current facts.
+
+### Delivered contracts and decoder
+
+- `agent.SessionRecord` uses existing concrete IDs/statuses/todos, with detached
+  copies of nullable system and slice data. Separate `SessionStore`,
+  `TranscriptStore`, `EventStore`, `LeaseStore` and `ApprovalReader` interfaces
+  remain consumer-owned; tenant `OwnerID` and process `LeaseOwner` are distinct.
+- `DecodeStoredEvent` and `SessionEventRecord.UnmarshalJSON` decode flat current
+  writer projections into closed variants. Ordinary JSON cannot silently leave
+  the private event discriminator empty, and a failed decode cannot replace an
+  existing record. Known tool inputs enter through the closed protocol decoder.
+- Each archival row is bounded to 16 MiB; positive sequence/epoch, session and
+  nonnegative depth are required. Unknown event/compaction variants fail. Extra
+  unused fields are ignored. Tool input decoding retains existing smaller caps;
+  system text supports strings or the current single cached text-block shape.
+  The rendered error survives, but its original cause category is not in the
+  flat projection. Current writer canonicalization determines ephemeral flags
+  and approval-refusal text; arbitrary historical extension fields are not kept.
+- Historical message lineage is informational. The decoded scope has untrusted
+  authority, no actor and no approved capabilities. Approval grant rows do not
+  mutate a broker. No manager, launcher or SSE path binds a StateStore yet.
+- Snapshot 44 executes real Python SQLite for sessions/upsert, provider-object
+  serialization, epochs/empty appends, rollback, bounded event reads, 13 lease
+  steps, scoped/global unknown transitions, immutable audit identity, deletion,
+  two-connection concurrent append, v1 migration and v8/corrupt-file refusal.
+  Go tests establish projection compatibility, all current writer variants,
+  real tool-loop round trips, malformed rows and authority-bearing extensions.
+  They do not establish Go SQL execution or session restoration.
+
+### Driver decision requiring user input
+
+Repository AGENTS requires explicit approval before adding dependencies. No
+module dependency or toolchain change has been made. A pending user question
+offers a version-pinned choice; independent contracts/probes are delivered first.
+
+- Recommendation: [mattn/go-sqlite3 v1.14.52](https://github.com/mattn/go-sqlite3/tree/v1.14.52),
+  source revision `b0be46fa28d17ee0b65c79774ac0dad84b6db068`. Its go.mod declares
+  Go 1.21 and the bundled header declares SQLite 3.53.4. The driver uses CGO and
+  needs a C compiler for the build. Validate with this checkout's Go 1.23.3 after
+  approval; no driver build or runtime claim is made from module metadata.
+- Alternative: [modernc/sqlite v1.60.1 go.mod](https://gitlab.com/cznic/sqlite/-/blob/v1.60.1/go.mod),
+  revision `b122d0417c01508beb55158faedeb64a0c5bfd8a`. This avoids CGO but declares
+  Go 1.26.0 and brings a wider module graph; selecting it also requires the
+  explicitly offered toolchain upgrade. Module/version metadata were refreshed
+  from the Go module proxy on 2026-10-06, with official source docs cross-checked.
+- Next work remains the actual SQLite backend, native SQL differential checks,
+  configured-only manager persistence, restore/lease/approval expiry, durable
+  catch-up and cron restoration. Optional feature and release work remain open.
+
+### Validation and delivery evidence
+
+- Final narrow archival/state projection tests: pass. Final `go test ./...`
+  with a shared-package profile, `go test -race ./...`, and `go vet ./...`: pass.
+  Deduplicated statement coverage: **88.58%** (**10,009 / 11,300**); agent
+  **90.06%** (**4,206 / 4,670**). This measures implemented statements, not parity.
+  Final source includes the ordinary-JSON decoder guard and atomic failure test.
+- Exporter `--check`: **44 files current**; all 43 previous tracked exports
+  remain unchanged. Updated exporter description acknowledges temporary SQL and
+  offline model probes; no paid endpoint or credential was used.
+- `verify_scans.py`: **19** anchored scans. Selected `verify_guards.py` runs:
+  **8** mutations caught (six matching `lease`, including action-result release,
+  plus schema downgrade and missing migration column). This is Python guard
+  evidence, not Go mutation coverage or the complete unrelated sweep.
+- Python full suite: **2,151 passed / 28 skipped / 24 subtests passed**,
+  three warnings in **86.02 s**. Python package/runtime/test modules are unchanged;
+  package-module invariants are not applicable to this exporter-only change.
+- `git diff --check` and README outline: pass. README baseline, canonical Mermaid,
+  boundary explanation and interactive semantic specification are updated;
+  map geometry and live runtime topology are retained. Archify final acceptance
+  is **9/9**, zero composition errors/warnings. Specification SHA-256
+  `4aab6a77aef455425b37e0dfcc69eef74eee641489b9906f3207d02cea56b726`
+  (34,059 bytes); HTML SHA-256
+  `4925b0d1e587338ae5cfcc793f36da45b9013f2600b92a23f02b604c8b535b40`
+  (675,135 bytes). Receipts match the exact frozen files. Visual review remains
+  skipped after the earlier local-file access denial; no new rendered/browser
+  inspection is claimed. Go evidence is darwin/arm64; Linux remains unvalidated.

@@ -497,7 +497,8 @@ None of this substitutes for not giving an agent credentials it does not need.
 asked. `StateStore` is the other half: the state a *different process* needs to
 resume a session — the model-facing transcript and the event cursor an SSE
 client reconnects against. Off by default; persistence is a deployment choice,
-and the database holds unredacted transcripts.
+and the database stores the configured secret projection of transcripts; the
+Null-secrets path stores them as supplied.
 
 ```python
 from mini_loop import SessionManager, SQLiteStateStore
@@ -559,8 +560,10 @@ It now decides:
 * an **unknown** record means a dead process dispatched it, so the unknown
   marker is returned rather than a retry.
 
-`DurableActionJournal` stores this in the same SQLite database, and opening the
-store marks every still-`started` action `unknown` — never `failed`, which would
+`DurableActionJournal` stores this in the same SQLite database. The Python
+manager explicitly calls `mark_inflight_unknown()` when composing that journal;
+opening a store or constructing a journal alone does not mark actions.
+Recovery marks still-`started` actions `unknown` — never `failed`, which would
 invite exactly the retry the rule forbids. A replayed tool result carries
 `replayed: True` on its event so an operator can see a resumed turn reused a
 recorded outcome.
@@ -569,8 +572,10 @@ This shape comes from durable-execution engines (Temporal, Restate, Azure
 Durable Task) rather than from any agent harness: harnesses commonly journal
 actions for audit and re-run them regardless.
 
-Still missing: reconciliation. Nothing yet asks an external system whether an
-`unknown` action landed — the harness only refuses to guess.
+An optional tool verifier can reconcile an unknown action: proven landing
+returns a recorded marker, proven non-landing permits execution, and an
+unavailable or inconclusive verifier preserves unknown. This is not a
+transaction with an external side effect.
 
 **Agent-side state.** The transcript mentions the plan but does not rebuild it,
 so the store also carries the TodoWrite board; without it a restored session has
@@ -579,12 +584,24 @@ s05 nag and the runtime-state reminder. The session row is refreshed on every
 flush rather than only at creation — otherwise `run_count` and `status` stay
 frozen at their initial values for the life of the session.
 
-**What this does not do yet.** No action journal, no outbox, no run state
-machine, no cross-process claim or lease, no fork/snapshot. Two processes on one
-database read consistently, but nothing stops both from advancing the same
-session. A process killed mid-run is restored with its recorded status
-(`running`) and no run attached — surfacing the truth rather than inventing a
-resume that the missing run state machine cannot honour.
+**Lease boundary.** A conditional SQLite UPDATE claims an existing session row;
+renewal cannot reclaim a lease that expired or was stolen. A confirmed lease
+lost during persistence stops the turn. This is separate from a transaction
+with external tool effects, and per-event renewal is not a periodic heartbeat.
+A process killed mid-run is restored with its recorded status (`running`) and
+no run attached; restoring state does not automatically resume that work.
+
+**Go contracts.** `agent.SessionRecord` carries the v7 fields with separate
+tenant and process-lease identities. Small consumer-owned session, transcript,
+event, lease and approval-read interfaces complement the existing action and
+approval-write seams. `agent.DecodeStoredEvent` is a bounded archival decoder
+for current known event variants. It preserves informational message lineage
+while stamping it untrusted, with no actor or approved capabilities. Grant
+events are data and do not restore broker grants. Unknown event/compaction
+variants fail; additive unused fields are ignored. These explicit library
+contracts are not yet wired into Go manager/launcher/SSE persistence. Snapshot
+44 contains real Python SQL outcomes; Go projection compatibility is checked,
+but a Go SQLite backend and session/lease restoration remain pending.
 
 ---
 
