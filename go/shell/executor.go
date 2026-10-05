@@ -162,7 +162,11 @@ func (executor *Executor) Interrupt() int {
 	}
 	return len(executor.processes.live)
 }
-func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.BashInput) (result Result, returnedErr error) {
+func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.BashInput) (Result, error) {
+	return executor.execute(ctx, input.Command, executionPolicy{timeout: executor.timeout})
+}
+
+func (executor *Executor) execute(ctx context.Context, command string, policy executionPolicy) (result Result, returnedErr error) {
 	started := time.Now()
 	result.CaptureLimit = executor.captureLimit
 	defer func() { result.DurationMS = time.Since(started).Milliseconds() }()
@@ -174,13 +178,13 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 	if err := ctx.Err(); err != nil {
 		return result, err
 	}
-	if LooksDangerous(input.Command) {
+	if LooksDangerous(command) {
 		return failure(errors.New("Dangerous command blocked"))
 	}
-	argv := []string{"/bin/sh", "-c", input.Command}
+	argv := []string{"/bin/sh", "-c", command}
 	if executor.sandbox != nil {
 		var err error
-		argv, err = executor.sandbox.Argv(input.Command)
+		argv, err = executor.sandbox.Argv(command)
 		if err != nil {
 			return failure(err)
 		}
@@ -193,7 +197,7 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 	for key, value := range scrubbed {
 		env[key] = value
 	}
-	for key, value := range executor.secrets.EnvForCommand(input.Command) {
+	for key, value := range executor.secrets.EnvForCommand(command) {
 		env[key] = value
 	}
 	keys := make([]string, 0, len(env))
@@ -222,27 +226,43 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 	defer stderr.Close()
 	defer stderrWrite.Close()
 	cmd.Stdout, cmd.Stderr = stdoutWrite, stderrWrite
+	if policy.background {
+		cmd.Stderr = stdoutWrite
+	}
 	if err := cmd.Start(); err != nil {
 		return failure(err)
 	}
 	_ = stdoutWrite.Close()
 	_ = stderrWrite.Close()
 	interrupted := make(chan struct{}, 1)
-	executor.processes.mu.Lock()
-	executor.processes.live[cmd.Process] = interrupted
-	executor.processes.mu.Unlock()
-	defer func() {
+	if !policy.background {
 		executor.processes.mu.Lock()
-		delete(executor.processes.live, cmd.Process)
+		executor.processes.live[cmd.Process] = interrupted
 		executor.processes.mu.Unlock()
-	}()
+		defer func() {
+			executor.processes.mu.Lock()
+			delete(executor.processes.live, cmd.Process)
+			executor.processes.mu.Unlock()
+		}()
+	}
+	var startFault error
+	if policy.started != nil {
+		startFault = notifyStarted(policy.started, ProcessID(cmd.Process.Pid))
+	}
 	capture := &boundedCapture{limit: executor.captureLimit, overflow: make(chan struct{}, 1)}
 	drained := make(chan error, 2)
-	go func() { drained <- capture.drain(stdout, false) }()
-	go func() { drained <- capture.drain(stderr, true) }()
+	var bytes *byteCapture
+	if policy.background {
+		bytes = &byteCapture{limit: executor.captureLimit, overflow: capture.overflow}
+		go func() { drained <- bytes.drain(stdout) }()
+		go func() { drained <- nil }()
+	} else {
+		go func() { drained <- capture.drain(stdout, false) }()
+		go func() { drained <- capture.drain(stderr, true) }()
+	}
 	waited := make(chan error, 1)
 	go func() { waited <- cmd.Wait() }()
-	timer := time.NewTimer(executor.timeout)
+	timer := time.NewTimer(policy.timeout)
 	defer timer.Stop()
 	deadline := timer.C
 	cancelled := ctx.Done()
@@ -276,6 +296,9 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 		// broadcast. Retry while pipes remain open, within the cleanup deadline.
 		killRetry = time.NewTicker(20 * time.Millisecond)
 		retryKill = killRetry.C
+	}
+	if startFault != nil {
+		endGroup()
 	}
 	for drains < 2 || !reaped && !abandonedWait {
 		select {
@@ -325,7 +348,11 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 			}
 		}
 	}
-	result.Stdout, result.Stderr, result.Overflowed = capture.finish()
+	if bytes != nil {
+		result.Stdout, result.Overflowed = bytes.finish()
+	} else {
+		result.Stdout, result.Stderr, result.Overflowed = capture.finish()
+	}
 	// Drainers and the parent can all finish before select consumes overflow.
 	// The already-exited parent can still have a live producer in its group.
 	if result.Overflowed && !killed {
@@ -342,8 +369,11 @@ func (executor *Executor) ExecuteBashResult(ctx context.Context, input protocol.
 		code := processExitCode(cmd.ProcessState)
 		result.ExitCode = &code
 	}
-	if result.TimedOut {
-		text := fmt.Sprintf("Error: Timeout (%gs)", executor.timeout.Seconds())
+	if startFault != nil {
+		text := executor.secrets.MaskText("Error: " + startFault.Error())
+		result.Error = &text
+	} else if result.TimedOut {
+		text := fmt.Sprintf("Error: Timeout (%gs)", policy.timeout.Seconds())
 		result.Error = &text
 	} else if drainError != nil {
 		text := executor.secrets.MaskText("Error: " + drainError.Error())

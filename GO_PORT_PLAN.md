@@ -111,7 +111,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; full activation and other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; background runtime composition, full activation and other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ## 2026-10-02 checkpoint
@@ -2625,3 +2625,115 @@ Next G6 sequence, grounded in the actual BackgroundManager source:
 - README/plan outline review and `git diff --check`: pass. Host validation uses
   macOS, Go 1.23.3 and native Git 2.39.5 (Apple Git-154); Linux remains
   unvalidated. No production endpoint or paid model was called.
+
+## 2026-10-05 operator background command slice
+
+Reviewed base: `d007ae8`. The coverage status turn verified the uncommitted
+service and its earlier 87.9% report. This iteration finishes the first of the
+three planned background steps: concrete operator service and shared native
+shell primitive. Background runtime composition remains open, as do G0–G7.
+
+### Implementation and actual source boundary
+
+- `go/background` provides named ID, Status, Request, Started, Record,
+  Notification, Handle, Batch and Config types over a concrete shell executor.
+  No dependency or ambiguous service payload was added. Run checks admission
+  context and the existing dangerous-command blocklist; each admitted command
+  receives an independent cancellation context and native process group.
+  Caller-turn cancellation and foreground Interrupt leave it running.
+- Foreground and background execution now share argv/sandbox, scrubbed and
+  selected environment, masking, deadline, group cancellation, pipe draining and
+  shell reaping. Public BackgroundCommand/BackgroundResult have distinct types:
+  background uses one native merged pipe and a raw-byte budget; foreground keeps
+  decoded-character/universal-newline capture. Invalid/truncated UTF-8 uses the
+  pinned Python maximal-subpart replacement decoder. Overflow ends the group.
+  Rendering matches the 50,000-character tail, nonzero exit and timeout recipes;
+  the default background deadline is 300s and capture budget is 5,000,000 bytes.
+- Status/Check/LiveCount/Wait/Drain, last-100 full-result retention, last-50
+  listing and last-50 notification projection match source. Nonzero process exit
+  still yields Completed with exit text. Undrained notifications retain their
+  independent full text after task-result shedding. Metadata and undrained
+  queues are not globally bounded; default-off labels remain explicit.
+- CancelAll requests cancellation and returns joinable handles. Close cancels
+  and joins current handles, requires caller-owned admission quiescence, and
+  permits later Run as source does. Native tests verify group descendants cannot
+  leave delayed effects and an interrupted wait can resume joining.
+- Best-effort atomic private `.background` files record a masked 200-character
+  command, PID and timestamp before/during execution; failure adds the exact
+  unrecorded warning. Completion/cancellation removes the file. Construction
+  reports each orphan's unknown outcome and PID liveness, reserves its numeric
+  identity, delivers a terminal result and removes its record. Adopted PIDs are
+  never rerun, controlled or signalled. This evidence supplies no fsync, host
+  ACL, ownership lease, PID-reuse proof, session restoration or live-process
+  recovery.
+- Orphan enumeration treats the workspace as a literal directory, including
+  brackets in real root names; joining the root into a glob would misinterpret
+  it. Both source and Go adoption probes run under a bracketed root.
+- Numeric orphan identities use all 66 Python Unicode 14 decimal digit blocks
+  and arbitrary-precision counters. A source fixture pins 74 input recipes,
+  including mixed scripts, invalid digits, future Unicode and an 80-digit
+  counter. Unicode ledger names stay intact; newly allocated names are ASCII.
+  Superscripts/circled digits are still reportable in Go, while source's
+  isdigit/int combination may raise ValueError during construction.
+- Rebind prepares cwd/sandbox before publishing future executions; admitted
+  commands retain their executor and the ledger retains its original root.
+  This pins at admission more strongly than Python's coroutine-time workspace
+  lookup. Go additionally cleans cancelled-before-start metadata and ledger;
+  actual source can leave Running/ledger in that window. Go refuses negative
+  retention, bounds orphan reads to one MiB and treats wrong field types as
+  unreadable rather than source coercion. Start-observer panic containment kills
+  and joins the group; worker/start faults expose only the panic type. Trusted
+  Started callbacks must return promptly.
+- Snapshot 37 executes twelve actual Python/native shell commands, unrecorded
+  execution, five retained completions, started cancellation and the pre-start
+  cancellation source gap, five orphan seeds/Unicode counter reservation, 53
+  orphans through an actual Agent completion injector, ten slow-operation
+  heuristics and the decimal input recipes. Source module hashes are recorded;
+  no paid model endpoint was called. Native Go tests compare source outputs and
+  add concurrent admission, selective credentials/split-stream masking,
+  foreground-interrupt isolation, rebind and close ownership checks.
+- README canonical Mermaid adds the operator service and in-flight ledger with
+  their direct library entry. The interactive map aggregates these under the
+  shared shell and explicitly leaves runtime injection/manager joins pending.
+
+### Remaining work
+
+Next background step is exact model-tool schemas/inputs/identity/null behavior,
+common-gate handlers, bounded completion injection and live-count interruption
+markers/events. Then compose manager lifecycle close before delete/stop,
+execution-workspace rebind, fresh child/fork scopes and explicit activation.
+Cron, teams, workflows, owner resources/memory/decisions, MCP, SQLite
+session/approval/lease restore, durable SSE, remaining provider variants and the
+full G7 differential/release audit remain open. The operator service alone does
+not make these runtime paths available.
+
+### Validation
+
+- Narrow background/shell/source-derived tests: pass. Full
+  `go test ./... -coverpkg=./... -coverprofile=...`, `go vet ./...` and
+  `go test -race ./...`: pass. Final aggregate statement coverage is **87.9%**
+  (**8,947 / 10,184** statements); background is **90.2%** (230 / 255), shell
+  **93.8%** (363 / 387). These are execution measurements, not feature parity.
+- `python/tools/export_go_contracts.py --check`: **37 files current**.
+  All **36** previous source-export files were byte-compared against HEAD and
+  are unchanged. `verify_scans.py`: **19** scanner guards anchored.
+  `verify_guards.py -k background`: all **12** selected source mutations caught,
+  including sandbox/environment/masking, retention/listing, worktree rebind,
+  descendant timeout, notification cap, source manager delete, orphan adoption
+  and interruption markers. This is Python guard verification, not Go mutation
+  coverage; the complete unrelated guard sweep was not rerun. Python runtime
+  package modules and guard anchors remain unchanged, so package invariants do
+  not apply to this exporter-only source change.
+- `.venv/bin/python -m pytest -q`: **2151 passed, 28 skipped, 24 subtests
+  passed, 3 warnings**, 164.21 s. The previously failing unchanged forty-turn
+  0.5s performance test passed in this run. Python runtime/test files and the
+  threshold were not changed; this pass does not establish the cause of the
+  prior failures.
+- Archify final validate/deliver: **9/9 showcase**, zero errors/warnings,
+  correction_rounds: 0. Specification SHA-256:
+  `27fdc21acdd021b595dbdd727b7c4d60055c40ef2a876af741c4e79e58056bde` (31492 bytes); artifact SHA-256:
+  `fa84ec187c2aa6eb780f93535d173237600f5308e3245481dfdfc50ed31f675c` (671240 bytes). Exact current bytes match the final receipt.
+  Visual review remains skipped because local HTML access was previously denied;
+  rendered visual acceptance is not claimed.
+- README/plan outline review and `git diff --check`: pass. Validation uses native
+  macOS, Go 1.23.3 and Git 2.39.5 (Apple Git-154); Linux remains unvalidated.

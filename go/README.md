@@ -624,6 +624,59 @@ five schemas/traits and five HTTP results. Go tests add real process contention,
 readonly refusal before directory creation, argument cloning/masking/null identity,
 manager/fork activation and fresh workspace isolation.
 
+### Operator background commands
+
+`background.New(background.Config{Shell: shell.Config{Workspace: root}})` creates
+an explicit library service. `Run(ctx, Request{Command: command})` returns a typed
+Started value immediately; `Started.Render()` matches source text. The caller
+context controls admission only. Tasks have independent contexts and Unix
+process groups; use `Wait`, `Get`, `Check`, `LiveCount`, `Drain` or `DrainBatch` to
+observe results. `CancelAll` returns joinable handles; `Close(ctx)` cancels and
+joins the current handles, with the caller responsible for admission quiescence.
+As in Python, a later Run remains allowed. Foreground Interrupt excludes them.
+
+Commands pass the same case-sensitive typo blocklist, sandbox argv, scrubbed
+and selectively injected environment, whole-stream masking and group cleanup
+as foreground commands. Background merges stdout/stderr into one native pipe
+and bounds **bytes**, retaining raw newlines and Python maximal-subpart UTF-8
+replacement. Foreground counts decoded characters and normalizes newlines.
+Default capture is 5,000,000 bytes, default timeout is 300 seconds. `Request.Timeout`
+is optional; explicit zero uses the default and negative is an immediate timeout.
+Finished nonzero exits remain Completed with visible exit text; timeout/spawn
+faults are Error. Rendering preserves the 50,000-character tail recipe.
+
+`Config.MaxResultsRetained` nil means 100, explicit zero sheds every full result,
+and negative is refused. Shed task records still answer with the source marker;
+completion notifications keep independent text until drained. No-argument Check
+lists the newest 50 tasks. DrainBatch keeps the latest 50 notifications and names
+the omitted count. Metadata and undrained notification queues remain unbounded,
+as in source; this is not a globally bounded task store.
+
+The original workspace `.background` ledger records masked 200-character
+command previews, PID and start time before/during execution. Writes are atomic
+best-effort private leaves without fsync or a host ACL; a failed initial write
+adds the source unrecorded warning while execution proceeds. Terminal completion
+and cancellation remove the record. On construction, matching records become
+Orphaned, the counter reserves numeric IDs and the ledger is removed. PID
+liveness is informational, with no ownership/PID-reuse proof; Close never signals
+adopted PIDs. No restart replay, process adoption or session restoration occurs.
+
+Rebind prepares a fresh executor before publishing future cwd/sandbox. Admitted
+commands keep the prior executor; the ledger stays at its original root, matching
+source's pinned `_ledger_dir`. Go additionally publishes deterministic cancelled
+metadata and cleans the ledger even if cancellation precedes process start;
+actual Python cancellation before coroutine entry leaves Running and a record.
+Go also bounds orphan reads to one MiB, rejects malformed field types, catches
+start observer/worker panics without secret-bearing panic values, and refuses
+negative retention. Numeric ledger filenames reserve IDs using Python Unicode
+14 decimal digits, including mixed scripts and arbitrarily large counters. Other
+numeric characters such as superscripts remain reportable orphans; Python can
+raise ValueError while adopting them. No lease is inferred.
+
+This slice is library-only. Common-gate model schemas/handlers, automatic
+completion injection/interruption events, manager delete/stop joins and standalone
+feature activation remain pending. Default catalogue remains ten tools.
+
 ### Operator worktree lifecycle
 
 `worktrees.New(worktrees.Config{Repository: repo})` provides named worktree and

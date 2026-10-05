@@ -290,8 +290,9 @@ plus an optional typed persistent task graph and owned task-board HTTP view,
 plus the operator library worktree lifecycle and task binding,
 plus five explicitly installed worktree tools and serialized execution workspace
 switching with retained lifecycle cleanup ownership, plus an explicit typed
-managed-worktree factory with source directory-cleanup semantics,
-reviewed **2026-10-05** (Go baseline `a3ae8b9` plus the managed-worktree-factory slice).
+managed-worktree factory with source directory-cleanup semantics, plus a typed
+operator background-command service with merged byte capture and orphan records,
+reviewed **2026-10-05** (Go baseline `d007ae8` plus the background-service slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -358,6 +359,10 @@ flowchart LR
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
+        GoBackground["Explicit background service library<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
+        GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
+        GoBackground -->|shared argv / environment / group control| GoBash
+        GoBackground -->|atomic best-effort in-flight files| GoBgLedger
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional persistent task tools · masked file graph<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -396,6 +401,7 @@ flowchart LR
     Caller --> Entry
     Caller --> GoEntry
     Caller -. explicit library selection .-> GoWorktrees
+    Caller -. operator-owned background commands .-> GoBackground
     GoWorktrees -. pinned task files; execution scope switch .-> GoResources
     Manager -->|bind owner · create / restore / route| Session
     Manager -. preview current session .-> Drafts
@@ -431,6 +437,26 @@ host and actual listener before admitting unauthenticated traffic. `--dump-confi
 reports redacted settings/availability without creating a runtime or probing a model;
 it is not the full Python effective-posture report. See
 [Go startup](go/README.md#run-the-standalone-http-server).
+`go/background` is an explicit operator library. Typed task IDs/statuses,
+independent contexts and native process groups let admitted commands outlive the
+caller turn. It shares shell argv, credential scrubbing/injection, masking and
+bounded cleanup with foreground execution, while merging stdout/stderr and
+counting raw bytes. The default capture is five million bytes; rendering keeps
+the tail at 50,000 characters and names overflow/nonzero exit. Foreground
+Interrupt excludes background groups. CancelAll requests cancellation and returns
+joinable handles; Close cancels and joins the current handles;
+Close requires caller-owned admission quiescence and permits later Run.
+The workspace `.background` ledger masks commands before atomic best-effort
+writes. A new manager reports orphan outcome/PID liveness without re-running or
+signalling the PID. It is evidence, not session/process recovery or ownership.
+Full results retain 100 completions, listings and notification projections keep
+the newest 50; metadata and undrained notifications still grow like Python.
+Rebind prepares future cwd/sandbox together; admitted tasks stay pinned and the
+ledger retains its original root. Go cleans cancellation even before process
+start, where actual Python can leave running metadata and an orphan record.
+Model-tool installation, automatic completion injection and SessionManager
+close composition remain pending; default tools and standalone flags stay as
+previously documented. See [background library](go/README.md#operator-background-commands).
 `go/worktrees` is an explicitly selected library service: named records and
 task binding, Git status/ahead checks plus Git's independent refusal, and local
 JSONL audit events. Factory failures can return plain directories, matching Python;

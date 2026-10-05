@@ -1170,6 +1170,32 @@ purge runs after manager drain. File recording has no session-restoration author
 file-size checks before Build. The standalone traceview CLI is an operator reader,
 with no synthetic HTTP principal. Original CSS and filter JS are embedded.
 
+### Go background command service
+
+`background.New(Config{Shell: shell.Config{Workspace: root, Secrets: registry,
+Sandbox: sandbox}})` binds the operator library explicitly. Request timeout and
+retention are typed; each admitted command receives its own cancellable context.
+Run caller cancellation controls admission only. CancelAll returns cancelled
+joinable handles; Close cancels and joins current handles, with admission
+quiescence supplied by the embedding caller.
+Foreground Interrupt does not reach them. Close permits later Run like source.
+
+The foreground/background paths share argv, environment, mask and native group
+control. Background merges native streams and counts raw bytes, unlike foreground
+character capture/newline decoding. A Started observer must return promptly;
+panic containment ends and joins the process group. Service Rebind prepares a new
+executor, pins existing executions and keeps the original ledger root. Sandbox
+construction must preserve that binding; no OS backend is supplied here.
+
+Ledger writes mask the command preview and tolerate recording failure. Orphan
+records report unknown outcomes and current PID liveness; they never replay work,
+adopt authority or signal the PID. Atomic private files are not fsync, a lease or
+host ownership. Full-result retention is 100, listing/projection counts are 50;
+metadata and undrained notifications remain unbounded. Go validates ledger field
+types/read sizes, refuses negative retention and cleans pre-start cancellation,
+where Python can leave Running metadata. Runtime model-tool/injector/manager
+composition remains pending, with default ten tools unchanged.
+
 ### Go operator worktree service
 
 `worktrees.New(worktrees.Config{Repository: repo})` explicitly selects a repository.

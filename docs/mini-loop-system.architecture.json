@@ -341,7 +341,7 @@
       "id": "goBash",
       "type": "backend",
       "label": "Workspace shell.Executor",
-      "sublabel": "groups / deadlines / typed results",
+      "sublabel": "foreground / merged background bytes",
       "pos": [
         1920,
         1180
@@ -350,7 +350,7 @@
         280,
         76
       ],
-      "tag": "masked string spill; typed bypass"
+      "tag": "background: operator library only"
     },
     {
       "id": "goFiles",
@@ -1220,7 +1220,11 @@
         "Shell rebind retains deadline, capture, secrets, spill and foreground interrupt ownership; custom factories must report the target root. OS sandbox backend and full feature activation remain pending",
         "Go SessionManager aggregates an explicit WorktreeWorkspaceFactory adapter to go/worktrees: factory provisioning is independent of model-tool activation and paths are scratch, including plain-directory fallback",
         "Actual Python and Go delete drain shared holders then remove even dirty factory directories, leaving Git registration and branch; stop, PreserveWorkspace and explicit bound admission retain work. Guarded worktree Remove is separate",
-        "The existing Go failed-admission cleanup removes unpublished scratch without Git metadata cleanup; Python create instead leaves the allocation. Source has no Git-aware manager reclaimer"
+        "The existing Go failed-admission cleanup removes unpublished scratch without Git metadata cleanup; Python create instead leaves the allocation. Source has no Git-aware manager reclaimer",
+        "Go shell node aggregates the explicit background operator library: typed task lifecycle and independent contexts/groups share argv, scrubbed environment and masking; merged raw-byte capture is distinct from foreground character/newline capture",
+        "Background .background records mask commands, atomically record in-flight evidence and report orphan/PID liveness without replay or ownership. CancelAll returns joinable cancelled handles; Close joins them. Caller owns admission quiescence and later Run is allowed",
+        "Background retains 100 full results, lists/projects newest 50 and preserves undrained notifications; metadata/undrained queue remain unbounded. Future rebind pins admitted executors and original ledger root. Go cleans pre-start cancellation where Python leaves Running/ledger",
+        "Background library does not install model tools or join SessionManager yet; common-gate schemas, automatic result/interruption injection, manager close and full feature activation remain pending"
       ]
     }
   ]

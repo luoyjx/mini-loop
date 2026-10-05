@@ -2280,6 +2280,125 @@ def _trajectory_contracts(scratch: Path) -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("trajectory.py", "session.py", "agent.py", "server.py")}, "stores":cases, "rounding":[{"input":value, "output":round(value, 3)} for value in (25.12355, -25.12355, 1.2345, -1.2345, 0.0005, -0.0005, 2.675, 1.0625, -1.0625, 0.00001)], "managed":asyncio.run(collect()), "http":{"seed":normalize(seed), "routes":routes}}
 
 
+def _background_contracts(scratch: Path) -> dict:
+    """Execute actual background commands, ledger adoption and bounded injection."""
+    import asyncio
+    from unittest.mock import patch
+    from mini_loop.background import BackgroundManager, background_injector, should_run_background
+    from mini_loop.agent import Agent
+    from mini_loop import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+
+    commands = [
+        ("merged", "printf one; printf two >&2; printf three", 5_000_000, None),
+        ("empty", ":", 5_000_000, None),
+        ("exit", "printf fail; exit 7", 5_000_000, None),
+        ("empty-exit", "exit 3", 5_000_000, None),
+        ("raw-newlines", r"printf 'a\r\nb\rc\n'", 5_000_000, None),
+        ("invalid-utf8", r"printf '\377\342\202'", 5_000_000, None),
+        ("exact-bytes", "printf 中", 3, None),
+        ("byte-overflow", "printf 中中", 3, None),
+        ("partial-utf8", "printf 中x", 2, None),
+        ("tail", "i=0; while [ $i -lt 60000 ]; do printf x; i=$((i+1)); done; printf FINAL; exit 4", 5_000_000, 30),
+        ("timeout", "sleep 30", 5_000_000, 1),
+        ("negative-timeout", "sleep 30", 5_000_000, -1),
+    ]
+    async def joined(manager, bg_id):
+        await asyncio.wait_for(asyncio.shield(manager._tasks[bg_id]["handle"]), 40)
+    def probe(manager):
+        return {"listing": manager.check(), "live": manager.live_count(),
+                "checks": [{"id": key, "output": manager.check(key)} for key in manager._tasks],
+                "ledger_after": sorted(path.name for path in manager._ledger_dir.glob("bg_*.json"))}
+    async def one(name, command, limit, timeout):
+        root=scratch/name; root.mkdir(parents=True)
+        manager=BackgroundManager(root, default_timeout=3)
+        with patch("mini_loop.background.MAX_BASH_CAPTURE", limit):
+            started=manager.run(command, timeout)
+            await joined(manager,"bg_0001")
+        result={"name":name,"command":command,"limit":limit,"timeout":timeout,
+                "started":started, **probe(manager), "done":manager.drain()}
+        await manager.close()
+        return result
+    async def collect():
+        rows=[await one(*spec) for spec in commands]
+        root=scratch/"unrecorded";root.mkdir(parents=True);(root/".background").write_text("blocked")
+        manager=BackgroundManager(root)
+        started=manager.run("printf ok")
+        await joined(manager,"bg_0001")
+        unrecorded={"started":started,**probe(manager),"done":manager.drain()}
+        await manager.close()
+        root=scratch/"retention";root.mkdir(parents=True)
+        manager=BackgroundManager(root,max_results_retained=2)
+        starts=[]
+        for i in range(5):
+            starts.append(manager.run(f"printf result-{i}"))
+            await joined(manager,f"bg_{i+1:04d}")
+        retained={"starts":starts,**probe(manager),"done":manager.drain()}
+        await manager.close()
+        root=scratch/"cancel";root.mkdir(parents=True)
+        manager=BackgroundManager(root)
+        started=manager.run("sleep 30")
+        for _ in range(1000):
+            path=root/".background/bg_0001.json"
+            if path.exists() and json.loads(path.read_text()).get("pid") is not None: break
+            await asyncio.sleep(.005)
+        else: raise AssertionError("source background PID never landed")
+        await manager.close()
+        cancelled={"started":started,**probe(manager),"done":manager.drain()}
+        root=scratch/"prestart-cancel";root.mkdir(parents=True)
+        manager=BackgroundManager(root)
+        manager.run("sleep 30")
+        await manager.close()
+        prestart=probe(manager)
+        seeds=[("bg_0002",'{"command":"old work","pid":null}'),
+               ("bg_0005",'{"command":"live work","pid":<PID>}'),
+               ("bg_0007",'broken'), ("bg_old",'{}'),
+               ("bg_００１０",'{"command":"unicode counter","pid":null}')]
+        root=scratch/"orphans[source-scope]";ledger=root/".background";ledger.mkdir(parents=True)
+        for key,raw in seeds: (ledger/(key+".json")).write_text(raw.replace("<PID>",str(os.getpid())))
+        manager=BackgroundManager(root)
+        adopted={**probe(manager),"done":manager.drain()}
+        next_started=manager.run("printf fresh")
+        await joined(manager,"bg_0011")
+        await manager.close()
+        # Normalize only the currently live process identity.
+        adopted=json.loads(json.dumps(adopted).replace(str(os.getpid()),"<PID>"))
+        root=scratch/"notifications";ledger=root/".background";ledger.mkdir(parents=True)
+        for i in range(53):
+            (ledger/f"bg_{i+1:04d}.json").write_text(json.dumps({"command":f"cmd-{i}","pid":None}))
+        manager=BackgroundManager(root)
+        listing=manager.check()
+        events=[]
+        async def emit(event): events.append(event)
+        agent=Agent(client=FakeAsyncAnthropic(),settings=Settings(fake_llm=True,workspace_root=root/"ws"),
+                    workspace=root,state={"background":manager},emit=emit)
+        messages=await background_injector(agent)
+        batch={"listing":listing,"messages":messages,"events":events,"drained":manager.drain()}
+        await manager.close()
+        return {"commands":rows,"unrecorded":unrecorded,"retained":retained,"cancelled":cancelled,
+                "prestart_cancel_source_gap":prestart,"orphan_seeds":[{"id":key,"raw":raw} for key,raw in seeds],
+                "adopted":adopted,"next_started":next_started,"batch":batch}
+    result=asyncio.run(collect())
+    result["heuristics"]=[{"command":command,"explicit":explicit,"result":should_run_background(command,explicit)}
+                          for command,explicit in [("echo ok",False),("echo ok",True),("npm INSTALL",False),
+                           ("cargo build",False),("pytest",False),("echo TEST",False),("echo compile",False),
+                           ("echo docker build",False),("echo make",False),("testing",False)]]
+    # Pin the primitive used by source orphan-ID adoption to Python's Unicode version.
+    import unicodedata
+    zeros=[chr(value) for value in range(0x110000) if unicodedata.decimal(chr(value), -1) == 0]
+    samples=["1"+zero+chr(ord(zero)+9) for zero in zeros]
+    samples += ["", "+1", "-1", "1.0", "²", "①", "\U00011f50", "9"*80]
+    counters=[]
+    for digits in samples:
+        try: value=str(int(digits)) if digits.isdigit() else None
+        except ValueError: value=None
+        counters.append({"digits":digits,"value":value})
+    result["counter_digits"]={"unicode_version":unicodedata.unidata_version,"cases":counters}
+    result["source_sha256"]={name:hashlib.sha256((PYTHON_ROOT/"mini_loop"/name).read_bytes()).hexdigest()
+                             for name in ("background.py","tools.py")}
+    return result
+
+
 def _managed_worktree_contracts(scratch: Path) -> dict:
     """Actual managed factory allocation, ordinary delete and stop semantics."""
     import asyncio
@@ -3152,6 +3271,7 @@ def _snapshot() -> dict[str, bytes]:
         worktree_contracts = _worktree_contracts(Path(scratch) / "worktrees")
         worktree_tool_contracts = _worktree_tool_contracts(Path(scratch) / "worktree-tools")
         managed_worktree_contracts = _managed_worktree_contracts(Path(scratch) / "managed-worktrees")
+        background_contracts = _background_contracts(Path(scratch) / "background")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -3203,6 +3323,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-worktrees.json": _json_bytes(worktree_contracts),
         "python-worktree-tools.json": _json_bytes(worktree_tool_contracts),
         "python-managed-worktrees.json": _json_bytes(managed_worktree_contracts),
+        "python-background.json": _json_bytes(background_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }
