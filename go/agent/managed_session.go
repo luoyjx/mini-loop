@@ -394,6 +394,9 @@ func (s *Session) recordInterruption(reason string) []string {
 	}
 	if len(repaired) == 0 {
 		note := "[Turn interrupted: " + reason + "]"
+		if live := s.backgroundLive(); live > 0 {
+			note += fmt.Sprintf("\n[%d background task(s) kept running through this interruption and may have already changed files; check_background shows their state.]", live)
+		}
 		if partial != "" {
 			note = partial + "\n" + note
 		}

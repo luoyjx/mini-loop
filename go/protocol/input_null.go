@@ -17,17 +17,19 @@ func (field *nullField) UnmarshalJSON(data []byte) error {
 }
 
 type inputNullFields struct {
-	WorktreeTaskID   nullField `json:"task_id"`
-	WorktreeDiscard  nullField `json:"discard_changes"`
-	TaskDescription  nullField `json:"description"`
-	TaskDependencies nullField `json:"blockedBy"`
-	TaskWorktree     nullField `json:"worktree"`
-	Background       nullField `json:"run_in_background"`
-	ApprovalPrefix   nullField `json:"approval_prefix"`
-	Limit            nullField `json:"limit"`
-	Offset           nullField `json:"offset"`
-	AgentType        nullField `json:"agent_type"`
-	Scope            nullField `json:"scope"`
+	BackgroundTimeout nullField `json:"timeout"`
+	BackgroundID      nullField `json:"bg_id"`
+	WorktreeTaskID    nullField `json:"task_id"`
+	WorktreeDiscard   nullField `json:"discard_changes"`
+	TaskDescription   nullField `json:"description"`
+	TaskDependencies  nullField `json:"blockedBy"`
+	TaskWorktree      nullField `json:"worktree"`
+	Background        nullField `json:"run_in_background"`
+	ApprovalPrefix    nullField `json:"approval_prefix"`
+	Limit             nullField `json:"limit"`
+	Offset            nullField `json:"offset"`
+	AgentType         nullField `json:"agent_type"`
+	Scope             nullField `json:"scope"`
 }
 
 // wireOptional is used only in concretely instantiated encoding boundary structs.
@@ -46,6 +48,18 @@ func (input ToolInput) marshalOptionalJSON() ([]byte, error) {
 		return nil, err
 	}
 	switch input.name {
+	case ToolBackgroundRun:
+		v := input.backgroundRun
+		return json.Marshal(struct {
+			Command string                  `json:"command"`
+			Timeout *wireOptional[int]      `json:"timeout,omitempty"`
+			Prefix  *wireOptional[[]string] `json:"approval_prefix,omitempty"`
+		}{v.Command, optionalWire(v.Timeout, input.nulls.BackgroundTimeout), optionalWire(v.ApprovalPrefix, input.nulls.ApprovalPrefix)})
+	case ToolCheckBackground:
+		return json.Marshal(struct {
+			ID *wireOptional[string] `json:"bg_id,omitempty"`
+		}{optionalWire(input.checkBackground.ID, input.nulls.BackgroundID)})
+
 	case ToolCreateWorktree:
 		v := input.createWorktree
 		return json.Marshal(struct {

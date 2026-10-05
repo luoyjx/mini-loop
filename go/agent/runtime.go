@@ -53,6 +53,7 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	BackgroundTools      bool
 	WorktreeTools        bool
 	Worktrees            *worktrees.Manager
 	WorkspaceBashFactory BashFactory
@@ -99,6 +100,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	background           *backgroundState
 	worktrees            *worktrees.Manager
 	workspaceBashFactory BashFactory
 	taskStore            *tasks.Store
@@ -131,6 +133,11 @@ func (signal *compressionSignal) take() bool {
 }
 
 func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, error) {
+	if input.Name() == protocol.ToolBash {
+		out, _, err := handler.executeDetailedTool(ctx, authority, input)
+		return out, err
+	}
+
 	handler.mu.Lock()
 	defer handler.mu.Unlock()
 	if authority.SessionID != handler.binding.SessionID || authority.OwnerID != handler.binding.OwnerID {
@@ -144,6 +151,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolBackgroundRun, protocol.ToolCheckBackground:
+		return handler.executeBackground(ctx, input)
 	case protocol.ToolCreateWorktree, protocol.ToolRemoveWorktree, protocol.ToolKeepWorktree, protocol.ToolListWorktrees, protocol.ToolEnterWorktree:
 		return handler.executeWorktree(ctx, input)
 	case protocol.ToolCreateTask, protocol.ToolListTasks, protocol.ToolGetTask, protocol.ToolClaimTask, protocol.ToolCompleteTask:
@@ -301,10 +310,36 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		}
 		definitions = append(definitions, definition)
 	}
+	if config.BackgroundTools {
+		native, ok := config.Bash.(*shell.Executor)
+		if !ok || native == nil || native.Workspace() != files.Root() {
+			return nil, errors.New("background tools require a native shell bound to the session workspace")
+		}
+		handler.background = &backgroundState{executor: native}
+		for i := range definitions {
+			if definitions[i].name == protocol.ToolBash {
+				definitions[i].handler = handler
+				definitions[i].classifier = backgroundBashClassifier{}
+			}
+		}
+	}
 	if config.TaskTools {
 		for _, schema := range protocol.TaskBoardSchemas() {
 			traits := ToolTraits{Risk: RiskWrite}
 			if schema.Name == protocol.ToolListTasks || schema.Name == protocol.ToolGetTask {
+				traits = ToolTraits{Risk: RiskRead, Readonly: true}
+			}
+			definition, err := NewToolDefinitionWithSchema(schema, traits, handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
+		}
+	}
+	if config.BackgroundTools {
+		for _, schema := range protocol.BackgroundSchemas() {
+			traits := ToolTraits{Risk: RiskExec}
+			if schema.Name == protocol.ToolCheckBackground {
 				traits = ToolTraits{Risk: RiskRead, Readonly: true}
 			}
 			definition, err := NewToolDefinitionWithSchema(schema, traits, handler)
@@ -366,6 +401,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	session.events.sessionID, session.events.sink = config.ID, config.EventSink
 	session.bindEventHistory()
 	handler.session = session
+	session.background = handler.background
 	session.questions = questions
 	if config.Label != "" {
 		session.label = config.Label

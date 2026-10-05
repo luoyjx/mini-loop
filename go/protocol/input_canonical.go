@@ -13,6 +13,16 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return "", err
 	}
 	switch input.Name() {
+	case ToolBackgroundRun:
+		v := input.backgroundRun
+		return PythonJSON(struct {
+			Prefix  *wireOptional[[]string] `json:"approval_prefix,omitempty"`
+			Command string                  `json:"command"`
+			Timeout *wireOptional[int]      `json:"timeout,omitempty"`
+		}{optionalWire(v.ApprovalPrefix, input.nulls.ApprovalPrefix), v.Command, optionalWire(v.Timeout, input.nulls.BackgroundTimeout)}, false, compact)
+	case ToolCheckBackground:
+		return PythonJSON(input, false, compact)
+
 	case ToolCreateWorktree:
 		v := input.createWorktree
 		return PythonJSON(struct {

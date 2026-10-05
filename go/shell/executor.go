@@ -141,6 +141,9 @@ func (executor *Executor) WithMasker(masker TextMasker) (*Executor, error) {
 
 func (executor *Executor) Workspace() string { return executor.root }
 
+// MaskText supplies the same credential projection to a bound background ledger.
+func (executor *Executor) MaskText(text string) string { return executor.secrets.MaskText(text) }
+
 // Configured sandbox argv is not evidence of OS confinement.
 func (executor *Executor) SandboxConfigured() bool { return executor.sandbox != nil }
 func (executor *Executor) ExecuteBash(ctx context.Context, input protocol.BashInput) (string, error) {

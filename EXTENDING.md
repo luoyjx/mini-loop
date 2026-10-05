@@ -1193,8 +1193,19 @@ adopt authority or signal the PID. Atomic private files are not fsync, a lease o
 host ownership. Full-result retention is 100, listing/projection counts are 50;
 metadata and undrained notifications remain unbounded. Go validates ledger field
 types/read sizes, refuses negative retention and cleans pre-start cancellation,
-where Python can leave Running metadata. Runtime model-tool/injector/manager
-composition remains pending, with default ten tools unchanged.
+where Python can leave Running metadata.
+
+RuntimeConfig.BackgroundTools explicitly selects two closed native-session tool
+variants, conditional Bash dispatch/classification, bounded next-round completion
+injection and typed background_result events. The native executor supplies the
+exact admitted credentials, sandbox and capture policy through NewWithExecutor;
+no shared manager is injected. State is lazy and also boots for ledger evidence.
+Source-compatible shell prefix approvals and immutable denial cover both names.
+Workspace entry publishes one prepared shell to foreground/background bindings.
+Library callers quiesce admission before CloseBackground; cancelling a turn leaves
+background work running and names live survivors in its interruption marker.
+Manager lifecycle/standalone and selected-child background ownership remain
+pending, with the default ten tools unchanged.
 
 ### Go operator worktree service
 

@@ -100,7 +100,7 @@ type slot struct {
 type Manager struct {
 	mu             sync.Mutex
 	executor       *shell.Executor
-	secrets        shell.SecretSource
+	secrets        shell.TextMasker
 	defaultTimeout time.Duration
 	retention      int
 	ledgerDir      string
@@ -129,9 +129,35 @@ func New(config Config) (*Manager, error) {
 	if err != nil {
 		return nil, err
 	}
-	m := &Manager{executor: executor, secrets: config.Shell.Secrets, defaultTimeout: config.DefaultTimeout, retention: retention, ledgerDir: filepath.Join(executor.Workspace(), ".background"), tasks: make(map[ID]*slot)}
+	m := &Manager{executor: executor, secrets: executor, defaultTimeout: config.DefaultTimeout, retention: retention, ledgerDir: filepath.Join(executor.Workspace(), ".background"), tasks: make(map[ID]*slot)}
 	m.adoptOrphans()
 	return m, nil
+}
+
+// NewWithExecutor preserves an already admitted native shell's exact credentials,
+// sandbox and capture policy while giving background work independent ownership.
+func NewWithExecutor(executor *shell.Executor) (*Manager, error) {
+	if executor == nil || executor.Workspace() == "" {
+		return nil, errors.New("background requires a bound native shell executor")
+	}
+	m := &Manager{executor: executor, secrets: executor, defaultTimeout: 300 * time.Second, retention: DefaultResultsRetained, ledgerDir: filepath.Join(executor.Workspace(), ".background"), tasks: make(map[ID]*slot)}
+	m.adoptOrphans()
+	return m, nil
+}
+
+// RebindExecutor publishes a fully prepared native scope. Existing tasks and the
+// original ledger remain pinned. The caller owns the outer workspace barrier.
+func (manager *Manager) RebindExecutor(ctx context.Context, executor *shell.Executor) error {
+	manager.mu.Lock()
+	defer manager.mu.Unlock()
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if executor == nil || executor.Workspace() == "" {
+		return errors.New("background requires a bound native shell executor")
+	}
+	manager.executor, manager.secrets = executor, executor
+	return nil
 }
 
 func (manager *Manager) Workspace() string {

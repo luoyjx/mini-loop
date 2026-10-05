@@ -167,6 +167,15 @@ func (h *runtimeHandler) enterWorkspace(ctx context.Context, path string) error 
 	if err := ctx.Err(); err != nil {
 		return err
 	}
+	if s.background != nil {
+		native, ok := executor.(*shell.Executor)
+		if !ok {
+			return errors.New("background workspace switch requires a native shell executor")
+		}
+		if err := s.background.rebind(ctx, native); err != nil {
+			return err
+		}
+	}
 	// Catalogue snapshots remain immutable. This gate keeps its hooks, journal,
 	// diagnostics and live mode; later calls in this same batch use the new root.
 	s.gate.catalog, s.gate.policy = catalog, policy

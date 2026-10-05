@@ -4835,8 +4835,8 @@
         <text data-detail="fine" x="1510" y="1248" class="t-security" font-size="7" text-anchor="middle">deny is final</text>
         </g>
 
-        <g id="node-goBash" data-node-id="goBash" data-node-label="Workspace shell.Executor" tabindex="0" role="button" aria-label="Focus Workspace shell.Executor, foreground / merged background bytes, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="foreground / merged background bytes" data-node-tag="background: operator library only" data-node-context="Independent Go port - in progress">
-          <title>Workspace shell.Executor · foreground / merged background bytes · Independent Go port - in progress · background: operator library only</title>
+        <g id="node-goBash" data-node-id="goBash" data-node-label="Workspace shell.Executor" tabindex="0" role="button" aria-label="Focus Workspace shell.Executor, foreground / merged background bytes, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="foreground / merged background bytes" data-node-tag="background: explicit session flag" data-node-context="Independent Go port - in progress">
+          <title>Workspace shell.Executor · foreground / merged background bytes · Independent Go port - in progress · background: explicit session flag</title>
           <rect x="1920" y="1180" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1920" y="1180" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1926 1186) scale(0.6875)">
@@ -4844,7 +4844,7 @@
           </g>
           <text data-detail-anchor x="2060" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Workspace shell.Executor</text>
         <text data-detail="context" x="2060" y="1232" class="t-muted" font-size="9" text-anchor="middle">foreground / merged background bytes</text>
-        <text data-detail="fine" x="2060" y="1248" class="t-backend" font-size="7" text-anchor="middle">background: operator library only</text>
+        <text data-detail="fine" x="2060" y="1248" class="t-backend" font-size="7" text-anchor="middle">background: explicit session flag</text>
         </g>
 
         <g id="node-goFiles" data-node-id="goFiles" data-node-label="Workspace Files" tabindex="0" role="button" aria-label="Focus Workspace Files, read / write / edit / glob, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="read / write / edit / glob" data-node-tag="atomic replacement" data-node-context="Independent Go port - in progress">
@@ -5419,10 +5419,10 @@
           <li>&bull; Go SessionManager aggregates an explicit WorktreeWorkspaceFactory adapter to go/worktrees: factory provisioning is independent of model-tool activation and paths are scratch, including plain-directory fallback</li>
           <li>&bull; Actual Python and Go delete drain shared holders then remove even dirty factory directories, leaving Git registration and branch; stop, PreserveWorkspace and explicit bound admission retain work. Guarded worktree Remove is separate</li>
           <li>&bull; The existing Go failed-admission cleanup removes unpublished scratch without Git metadata cleanup; Python create instead leaves the allocation. Source has no Git-aware manager reclaimer</li>
-          <li>&bull; Go shell node aggregates the explicit background operator library: typed task lifecycle and independent contexts/groups share argv, scrubbed environment and masking; merged raw-byte capture is distinct from foreground character/newline capture</li>
+          <li>&bull; Go shell node aggregates background.NewWithExecutor and the explicit RuntimeConfig.BackgroundTools library flag: fresh per-session lazy state shares native argv/credentials/sandbox, with distinct merged-byte capture. Two model tools use the same gate</li>
           <li>&bull; Background .background records mask commands, atomically record in-flight evidence and report orphan/PID liveness without replay or ownership. CancelAll returns joinable cancelled handles; Close joins them. Caller owns admission quiescence and later Run is allowed</li>
           <li>&bull; Background retains 100 full results, lists/projects newest 50 and preserves undrained notifications; metadata/undrained queue remain unbounded. Future rebind pins admitted executors and original ledger root. Go cleans pre-start cancellation where Python leaves Running/ledger</li>
-          <li>&bull; Background library does not install model tools or join SessionManager yet; common-gate schemas, automatic result/interruption injection, manager close and full feature activation remain pending</li>
+          <li>&bull; Background completion queues feed Go Session before model requests: optional background_run/check_background and conditional Bash dispatch/classification share the gate; bounded task_notification injection emits typed background_result events. Interruption markers name live survivors; prepared background scopes follow workspace entry. Manager/standalone and selected-child activation remain pending</li>
         </ul>
       </div>
     </div>

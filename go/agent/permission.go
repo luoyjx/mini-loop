@@ -143,11 +143,8 @@ func DefaultPermissionPolicy(approver Approver) *PermissionPolicy {
 			}},
 		{name: "destructive-shell", message: "Potentially destructive shell command", action: RuleAsk,
 			matches: func(_ ToolAuthority, call ToolCall, _ ToolRisk, _ bool) bool {
-				if call.Name() != protocol.ToolBash {
-					return false
-				}
-				input, _ := call.Input.Bash()
-				return destructiveShell.MatchString(input.Command)
+				command, ok := call.Input.ShellCommand()
+				return ok && destructiveShell.MatchString(command)
 			}},
 		{name: "external-action", message: "Tool acts outside this machine", action: RuleAsk,
 			matches: func(_ ToolAuthority, _ ToolCall, risk ToolRisk, exists bool) bool {
@@ -169,10 +166,9 @@ func (policy *PermissionPolicy) Evaluate(ctx context.Context, authority ToolAuth
 		return PermissionOutcome{}, err
 	}
 	var outcome PermissionOutcome
-	if call.Name() == protocol.ToolBash {
-		input, _ := call.Input.Bash()
+	if command, ok := call.Input.ShellCommand(); ok {
 		for _, pattern := range policy.denyCommands {
-			if strings.Contains(input.Command, pattern) {
+			if strings.Contains(command, pattern) {
 				outcome.denied = true
 				outcome.message = fmt.Sprintf("Permission denied: '%s' is blocked", pattern)
 				outcome.events = append(outcome.events, PermissionEvent{PermissionDeny, "immutable-deny-list", call.Name(), pattern})

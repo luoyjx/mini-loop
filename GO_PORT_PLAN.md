@@ -111,7 +111,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; background runtime composition, full activation and other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager lifecycle, selected-child/standalone activation and other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ## 2026-10-02 checkpoint
@@ -2737,3 +2737,92 @@ not make these runtime paths available.
   rendered visual acceptance is not claimed.
 - README/plan outline review and `git diff --check`: pass. Validation uses native
   macOS, Go 1.23.3 and Git 2.39.5 (Apple Git-154); Linux remains unvalidated.
+
+## 2026-10-05 background model-tool and notification slice
+
+Reviewed base: `16d88fc`. This completes the second background step: typed
+native-session tools, common-gate Bash dispatch, completion delivery and
+interruption evidence. Execution-workspace rebinding was included here because
+an enabled runtime must preserve foreground/background confinement together.
+G0–G7 remain open; manager, standalone and selected-child composition follow.
+
+### Implementation and actual source boundary
+
+- `RuntimeConfig.BackgroundTools` explicitly adds background_run/check_background
+  to a native session. The default catalogue remains ten tools. Activation
+  requires a nonnil native shell executor bound to the resolved session root.
+  Each session owns lazy concrete state; no shared manager injection can borrow
+  another session's credentials, IDs or completion queue. NewWithExecutor uses
+  the exact shell already prepared for that session.
+- Named inputs preserve absent/null/zero values, detached timeout/prefix/ID
+  accessors, canonical action identity and masked recording copies. Timeout is
+  optional integer seconds. Go refuses values outside native duration range;
+  source's unbounded integer input is not silently narrowed or overflowed.
+- Both shell names use the immutable deny list, destructive-command approval
+  and validated remembered-prefix candidates through the common execution gate.
+  Source tool traits and schemas are preserved. Enabled Bash dispatches explicit
+  true and slow-operation heuristics into the same service; only explicit true
+  changes scheduling to parallel. Foreground results retain structured status
+  and exit metadata; an enqueued task does not fabricate foreground metadata.
+- Before the next model request, the queue delivers one user task_notification
+  batch and a typed background_result count/dropped event. Projection retains the
+  newest 50 completions, leaves omitted IDs queryable and consumes the queue once.
+  Existing nonempty ledger evidence triggers lazy adoption without a tool call.
+- Operator turn cancellation leaves independent background tasks running. When
+  no tool-result repair must remain last, the source interruption text names
+  live survivors and points to check_background. CloseBackground is a separate
+  cancel/join operation requiring caller-owned admission quiescence.
+- Workspace entry publishes a single prepared native shell to foreground and
+  background state. Already admitted work and the original ledger stay pinned.
+  Default child roles retain native foreground Bash and do not borrow parent
+  background state; explicitly selected child background tools remain
+  unconfigured until the ownership composition step.
+- Snapshot 38 exports actual source schemas/traits, eleven optional input and
+  prefix recipes, six enabled/disabled Bash classifications, fifteen real
+  common-gate calls, disabled foreground behavior and native live-task
+  interruption evidence. Go tests compare these and exercise notifications in
+  actual model requests, orphan batch limits, permission/credential boundaries,
+  cancellation, prepared workspace rebind and default child isolation. No paid
+  model endpoint was called.
+- README canonical Mermaid includes gate-to-background and completion-to-session
+  flow. The interactive map aggregates background under its shared native shell;
+  its semantic card describes notification, cancellation and rebind relationships.
+
+### Remaining work
+
+Compose CloseBackground with manager delete/stop after admission is quiesced,
+enable the feature explicitly through manager/standalone settings and give
+selected children/forks fresh ownership. Complete the remaining optional groups,
+SQLite session/approval/lease restore, durable SSE, provider options and full G7
+differential/release audit. The current library flag does not activate these
+unimplemented paths.
+
+### Validation
+
+- Narrow source-derived protocol/runtime tests: pass. Full
+  `go test ./... -coverpkg=./... -coverprofile=...`, `go vet ./...` and
+  `go test -race ./...`: pass. Aggregate statement coverage is **87.9%**
+  (**9,135 / 10,392**), deduplicating shared profile blocks across packages.
+  Agent is **89.0%** (3,893 / 4,373), background **90.3%** (242 / 268),
+  protocol **88.5%** (910 / 1,028), shell **93.8%** (364 / 388).
+  These are execution measurements, not feature parity.
+- Source export `--check`: **38 files current**. All **37** previous tracked
+  exports were byte-compared against HEAD and remain unchanged.
+  `verify_scans.py`: **19** scanner guards anchored.
+  `verify_guards.py -k background`: all **12** selected source mutations caught.
+  This verifies Python source guards, not Go mutation coverage; unrelated guard
+  groups were not rerun. Python runtime package modules and mutation anchors
+  are unchanged; package invariants do not apply to this exporter-only change.
+- `.venv/bin/python -m pytest -q`: **2151 passed, 28 skipped, 24 subtests
+  passed, 3 warnings**, 135.12 s. Runtime/test files and the forty-turn
+  performance threshold were unchanged; this run passed that existing gate.
+- Archify final validate/deliver: **9/9 showcase**, zero errors/warnings;
+  correction_rounds: 2. Specification SHA-256:
+  `f0f7e4ba345fc78a32e84636b66d9cf61a06f027a532bca4c9f4461dfaa528da`
+  (31,705 bytes); generated artifact SHA-256:
+  `a3e2b4fc63fd2141b36a896c4a0103a51ab6684816f3bc7a55b7c02c693d90ec`
+  (671,453 bytes). Exact bytes match the delivery receipt. Visual review remains
+  skipped because local HTML access was previously denied; rendered visual
+  acceptance is not claimed.
+- README/plan outline review and `git diff --check`: pass. Native macOS,
+  Go 1.23.3 and Git 2.39.5 (Apple Git-154); Linux remains unvalidated.

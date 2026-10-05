@@ -34,6 +34,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	background                                        *backgroundState
 	repairedToolUses                                  []string
 	id                                                SessionID
 	owner                                             OwnerID

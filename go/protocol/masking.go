@@ -15,6 +15,19 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolBackgroundRun:
+		input.backgroundRun.Command = mask(input.backgroundRun.Command)
+		if input.backgroundRun.ApprovalPrefix != nil {
+			for i, v := range *input.backgroundRun.ApprovalPrefix {
+				(*input.backgroundRun.ApprovalPrefix)[i] = mask(v)
+			}
+		}
+	case ToolCheckBackground:
+		if input.checkBackground.ID != nil {
+			v := mask(*input.checkBackground.ID)
+			input.checkBackground.ID = &v
+		}
+
 	case ToolCreateWorktree:
 		input.createWorktree.Name = mask(input.createWorktree.Name)
 		if input.createWorktree.TaskID != nil {

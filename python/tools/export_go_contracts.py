@@ -2280,6 +2280,102 @@ def _trajectory_contracts(scratch: Path) -> dict:
     return {"source_sha256":{name:hashlib.sha256((REPO_ROOT / "python/mini_loop" / name).read_bytes()).hexdigest() for name in ("trajectory.py", "session.py", "agent.py", "server.py")}, "stores":cases, "rounding":[{"input":value, "output":round(value, 3)} for value in (25.12355, -25.12355, 1.2345, -1.2345, 0.0005, -0.0005, 2.675, 1.0625, -1.0625, 0.00001)], "managed":asyncio.run(collect()), "http":{"seed":normalize(seed), "routes":routes}}
 
 
+
+def _background_tool_contracts(scratch: Path) -> dict:
+    """Actual optional schemas, gate calls, classifier and interruption marker."""
+    import asyncio
+    from mini_loop import Settings
+    from mini_loop.agent import Agent
+    from mini_loop.background import install_background
+    from mini_loop.builtins import full_registry
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.registry import ToolRegistry, ToolCall
+    from mini_loop.approvals import grant_candidate, proposed_candidate
+    from mini_loop.session import AgentSession
+    registry=install_background(ToolRegistry())
+    metadata=[{"name":tool.name,"risk":tool.risk,"readonly":tool.readonly,
+               "parallel_safe":tool.parallel_safe,"capabilities":sorted(tool.capabilities)}
+              for name in registry.names() if (tool:=registry.get(name)) is not None]
+    variants=[
+        {"name":"background_run","input":{"command":"printf é"}},
+        {"name":"background_run","input":{"command":"printf é","timeout":None,"approval_prefix":None}},
+        {"name":"background_run","input":{"command":"printf é","timeout":0}},
+        {"name":"background_run","input":{"command":"printf é","timeout":-1}},
+        {"name":"background_run","input":{"command":"git status --short","timeout":12,"approval_prefix":["git","status"]}},
+        {"name":"background_run","input":{"command":"rm -rf stuff","approval_prefix":["rm","-rf"]}},
+        {"name":"background_run","input":{"command":"git status --short","approval_prefix":["git","pull"]}},
+        {"name":"check_background","input":{}},
+        {"name":"check_background","input":{"bg_id":None}},
+        {"name":"check_background","input":{"bg_id":""}},
+        {"name":"check_background","input":{"bg_id":"bg_0001"}},
+    ]
+    for row in variants:
+        row["canonical"]=json.dumps(row["input"],sort_keys=True,ensure_ascii=False,separators=(",",":"))
+        row["candidate"]=list(grant_candidate(row["name"],row["input"]) or [])
+        row["proposed"]=list(proposed_candidate(row["name"],row["input"]) or [])
+    def tools(enabled):
+        return full_registry(background=enabled,tasks=False,memory=False,cron=False,plan=False,goals=False,
+                             diagnostics=False,session_query=False,teams=False,worktrees=False,mcp=False,self_audit=False)
+    mode_rows=[]
+    for enabled in (False,True):
+        reg=tools(enabled)
+        for explicit in (None,False,True):
+            value={"command":"printf test"}
+            if explicit is not None:value["run_in_background"]=explicit
+            mode_rows.append({"enabled":enabled,"input":value,"mode":reg.get("bash").execution_mode(ToolCall("bash",value,"mode"))})
+    async def collect():
+        root=scratch/"enabled";root.mkdir(parents=True)
+        agent=Agent(client=FakeAsyncAnthropic(),settings=Settings(fake_llm=True,workspace_root=root/"ws"),
+                    workspace=root,tools=tools(True),state={"permission_mode":"auto"})
+        specs=[("check_background",{}),
+               ("background_run",{"command":"printf hello","timeout":2}),
+               ("check_background",{"bg_id":"bg_0001"}),
+               ("background_run",{"command":":","timeout":0,"approval_prefix":None}),
+               ("check_background",{"bg_id":"bg_0002"}),
+               ("bash",{"command":"printf explicit","run_in_background":True}),
+               ("check_background",{"bg_id":"bg_0003"}),
+               ("bash",{"command":"printf ' build'","run_in_background":False}),
+               ("check_background",{"bg_id":"bg_0004"}),
+               ("bash",{"command":"printf foreground; exit 3"}),
+               ("background_run",{"command":"sleep 30","timeout":-1}),
+               ("check_background",{"bg_id":"bg_0005"}),
+               ("background_run",{"command":"rm  -rf  /"}),
+               ("check_background",{"bg_id":"missing"}),
+               ("check_background",{})]
+        rows=[]
+        for index,(name,value) in enumerate(specs):
+            out=await agent._exec_tool(ToolCall(name,value,f"bg-tool-{index}"))
+            rows.append({"name":name,"input":value,"output":str(out)})
+            if str(out).startswith("Started background task"):
+                bg_id=str(out).split()[3].removesuffix(":")
+                await asyncio.wait_for(asyncio.shield(agent.state["background"]._tasks[bg_id]["handle"]),5)
+        await agent.state["background"].close()
+        # Actual source interruption method with one observed, running native PID.
+        await agent._exec_tool(ToolCall("background_run",{"command":"sleep 30"},"survivor"))
+        manager=agent.state["background"]
+        for _ in range(1000):
+            path=root/".background/bg_0006.json"
+            if path.exists() and json.loads(path.read_text()).get("pid") is not None:break
+            await asyncio.sleep(.005)
+        else:raise AssertionError("source survivor never started")
+        agent.messages=[];agent.streamed_text="partial source"
+        outer=AgentSession("bg-source",root);outer.agent=agent
+        marked=outer._record_interruption("source bg cancel",[])
+        marker=agent.messages[-1]["content"][0]["text"]
+        repaired=outer._record_interruption("source bg cancel",["pending"])
+        await manager.close()
+        root=scratch/"disabled";root.mkdir(parents=True)
+        disabled=Agent(client=FakeAsyncAnthropic(),settings=Settings(fake_llm=True,workspace_root=root/"ws"),
+                       workspace=root,tools=tools(False))
+        value={"command":"printf disabled","run_in_background":True}
+        output=await disabled._exec_tool(ToolCall("bash",value,"disabled"))
+        return {"steps":rows,"disabled":{"input":value,"output":str(output),"has_manager":"background" in disabled.state},
+                "interruption":{"marked":marked,"text":marker,"repaired":repaired}}
+    return {"schemas":registry.schemas(),"metadata":metadata,"variants":variants,"modes":mode_rows,
+            **asyncio.run(collect()),"source_sha256":{name:hashlib.sha256((PYTHON_ROOT/"mini_loop"/name).read_bytes()).hexdigest()
+            for name in ("background.py","builtins.py","permissions.py","approvals.py","session.py")}}
+
+
 def _background_contracts(scratch: Path) -> dict:
     """Execute actual background commands, ledger adoption and bounded injection."""
     import asyncio
@@ -3272,6 +3368,7 @@ def _snapshot() -> dict[str, bytes]:
         worktree_tool_contracts = _worktree_tool_contracts(Path(scratch) / "worktree-tools")
         managed_worktree_contracts = _managed_worktree_contracts(Path(scratch) / "managed-worktrees")
         background_contracts = _background_contracts(Path(scratch) / "background")
+        background_tool_contracts = _background_tool_contracts(Path(scratch) / "background-tools")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -3324,6 +3421,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-worktree-tools.json": _json_bytes(worktree_tool_contracts),
         "python-managed-worktrees.json": _json_bytes(managed_worktree_contracts),
         "python-background.json": _json_bytes(background_contracts),
+        "python-background-tools.json": _json_bytes(background_tool_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

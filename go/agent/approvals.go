@@ -72,8 +72,8 @@ func (candidate GrantCandidate) MarshalJSON() ([]byte, error) {
 }
 func shellTokens(command string) []string { return strings.FieldsFunc(command, pytext.IsSpace) }
 func DefaultGrantCandidate(input protocol.ToolInput) GrantCandidate {
-	if value, ok := input.Bash(); ok {
-		tokens := shellTokens(value.Command)
+	if command, ok := input.ShellCommand(); ok {
+		tokens := shellTokens(command)
 		if len(tokens) < GrantPrefixTokens {
 			return GrantCandidate{}
 		}
@@ -82,11 +82,12 @@ func DefaultGrantCandidate(input protocol.ToolInput) GrantCandidate {
 	return GrantCandidate{tool: input.Name()}
 }
 func ProposedGrantCandidate(input protocol.ToolInput) GrantCandidate {
-	value, ok := input.Bash()
-	if !ok || value.ApprovalPrefix == nil {
+	command, ok := input.ShellCommand()
+	prefix := input.ShellApprovalPrefix()
+	if !ok || prefix == nil {
 		return GrantCandidate{}
 	}
-	proposed, tokens := *value.ApprovalPrefix, shellTokens(value.Command)
+	proposed, tokens := *prefix, shellTokens(command)
 	if len(proposed) < GrantPrefixTokens || len(proposed) > GrantProposalMaxTokens || len(tokens) < len(proposed) || !slices.Equal(proposed, tokens[:len(proposed)]) {
 		return GrantCandidate{}
 	}

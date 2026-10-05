@@ -8,25 +8,27 @@ import (
 )
 
 const (
-	ToolReadFile       ToolName = "read_file"
-	ToolWriteFile      ToolName = "write_file"
-	ToolEditFile       ToolName = "edit_file"
-	ToolGlob           ToolName = "glob"
-	ToolTodoWrite      ToolName = "TodoWrite"
-	ToolTask           ToolName = "task"
-	ToolLoadSkill      ToolName = "load_skill"
-	ToolCompress       ToolName = "compress"
-	ToolAskUser        ToolName = "ask_user"
-	ToolCreateTask     ToolName = "create_task"
-	ToolListTasks      ToolName = "list_tasks"
-	ToolGetTask        ToolName = "get_task"
-	ToolClaimTask      ToolName = "claim_task"
-	ToolCompleteTask   ToolName = "complete_task"
-	ToolCreateWorktree ToolName = "create_worktree"
-	ToolRemoveWorktree ToolName = "remove_worktree"
-	ToolKeepWorktree   ToolName = "keep_worktree"
-	ToolListWorktrees  ToolName = "list_worktrees"
-	ToolEnterWorktree  ToolName = "enter_worktree"
+	ToolReadFile        ToolName = "read_file"
+	ToolWriteFile       ToolName = "write_file"
+	ToolEditFile        ToolName = "edit_file"
+	ToolGlob            ToolName = "glob"
+	ToolTodoWrite       ToolName = "TodoWrite"
+	ToolTask            ToolName = "task"
+	ToolLoadSkill       ToolName = "load_skill"
+	ToolCompress        ToolName = "compress"
+	ToolAskUser         ToolName = "ask_user"
+	ToolCreateTask      ToolName = "create_task"
+	ToolListTasks       ToolName = "list_tasks"
+	ToolGetTask         ToolName = "get_task"
+	ToolClaimTask       ToolName = "claim_task"
+	ToolCompleteTask    ToolName = "complete_task"
+	ToolBackgroundRun   ToolName = "background_run"
+	ToolCheckBackground ToolName = "check_background"
+	ToolCreateWorktree  ToolName = "create_worktree"
+	ToolRemoveWorktree  ToolName = "remove_worktree"
+	ToolKeepWorktree    ToolName = "keep_worktree"
+	ToolListWorktrees   ToolName = "list_worktrees"
+	ToolEnterWorktree   ToolName = "enter_worktree"
 )
 
 // DefaultToolNames is the complete Python default_registry inventory at the
@@ -119,23 +121,25 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
-	name           ToolName
-	nulls          inputNullFields
-	bash           BashInput
-	readFile       ReadFileInput
-	writeFile      WriteFileInput
-	editFile       EditFileInput
-	glob           GlobInput
-	todoWrite      TodoWriteInput
-	task           TaskInput
-	loadSkill      LoadSkillInput
-	compress       CompressInput
-	askUser        AskUserInput
-	createTask     CreateTaskInput
-	taskRef        TaskReferenceInput
-	createWorktree CreateWorktreeInput
-	removeWorktree RemoveWorktreeInput
-	worktreeName   WorktreeNameInput
+	name            ToolName
+	nulls           inputNullFields
+	bash            BashInput
+	readFile        ReadFileInput
+	writeFile       WriteFileInput
+	editFile        EditFileInput
+	glob            GlobInput
+	todoWrite       TodoWriteInput
+	task            TaskInput
+	loadSkill       LoadSkillInput
+	compress        CompressInput
+	askUser         AskUserInput
+	createTask      CreateTaskInput
+	taskRef         TaskReferenceInput
+	createWorktree  CreateWorktreeInput
+	removeWorktree  RemoveWorktreeInput
+	backgroundRun   BackgroundRunInput
+	checkBackground CheckBackgroundInput
+	worktreeName    WorktreeNameInput
 }
 
 func BashToolInput(value BashInput) ToolInput {
@@ -298,6 +302,10 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() { result.nulls = input.nulls }()
 	switch input.name {
+	case ToolBackgroundRun:
+		return BackgroundRunToolInput(input.backgroundRun)
+	case ToolCheckBackground:
+		return CheckBackgroundToolInput(input.checkBackground)
 	case ToolBash:
 		value, _ := input.Bash()
 		return BashToolInput(value)
@@ -326,7 +334,7 @@ func (input ToolInput) clone() (result ToolInput) {
 
 func (input ToolInput) Validate() error {
 	switch input.name {
-	case ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
+	case ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
 		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
 		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
 		return nil
@@ -354,7 +362,7 @@ func (input ToolInput) Validate() error {
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
 	switch input.name {
-	case ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask, ToolCreateWorktree, ToolRemoveWorktree:
+	case ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask, ToolCreateWorktree, ToolRemoveWorktree:
 		return input.marshalOptionalJSON()
 	}
 	if err := input.Validate(); err != nil {
@@ -410,6 +418,26 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolBackgroundRun:
+		var wire struct {
+			Command        *string   `json:"command"`
+			Timeout        *int      `json:"timeout"`
+			ApprovalPrefix *[]string `json:"approval_prefix"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Command == nil {
+			return result, errors.New("background_run requires command")
+		}
+		result = BackgroundRunToolInput(BackgroundRunInput{*wire.Command, wire.Timeout, wire.ApprovalPrefix})
+	case ToolCheckBackground:
+		var wire CheckBackgroundInput
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		result = CheckBackgroundToolInput(wire)
+
 	case ToolCreateWorktree:
 		var wire struct {
 			Name   *string `json:"name"`

@@ -23,6 +23,7 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	bash                                           BashExecutor
 	authority                                      ToolAuthority
 	label                                          string
 	depth                                          int
@@ -161,6 +162,9 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	child.secrets = parent.secrets
 	child.bash = nil
 	for _, definition := range definitions {
+		if definition.name == protocol.ToolBash {
+			child.bash = parent.bash
+		}
 		if handler, ok := definition.handler.(bashHandler); ok {
 			child.bash = handler.executor
 		}
@@ -226,6 +230,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
+		bash:      s.bash,
 		authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
 		model: s.model, maxTokens: s.maxTokens, tokenThreshold: s.tokenThreshold, maxRounds: s.subagentMaxRounds, maxDepth: s.subagentMaxDepth,
 		provider: s.provider, recovery: s.recovery, streamProgress: s.streamProgress, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},

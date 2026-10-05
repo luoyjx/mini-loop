@@ -673,9 +673,39 @@ negative retention. Numeric ledger filenames reserve IDs using Python Unicode
 numeric characters such as superscripts remain reportable orphans; Python can
 raise ValueError while adopting them. No lease is inferred.
 
-This slice is library-only. Common-gate model schemas/handlers, automatic
-completion injection/interruption events, manager delete/stop joins and standalone
-feature activation remain pending. Default catalogue remains ten tools.
+`RuntimeConfig.BackgroundTools: true` enables two additional native-session
+model tools through the common gate: background_run (exec) and check_background
+(read). Named inputs preserve absent/null/zero values, detached optional pointers,
+canonical action/step identity and masked recording copies. Timeout is optional
+integer seconds; Go rejects values outside its native duration range instead of
+overflowing. Both shell tool names use the same immutable command deny list,
+destructive-command approval and validated remembered prefix logic.
+
+Activation requires a real shell.Executor bound to the session root. Per-session
+state constructs its manager lazily, including when an existing nonempty ledger
+must surface without a tool call. No caller-supplied shared manager is accepted.
+Enabled Bash uses explicit true or the source slow-operation heuristic to enqueue;
+only the explicit true flag changes scheduling to parallel. Other Bash calls remain
+exclusive and preserve typed foreground metadata. Disabled activation keeps both
+foreground behavior and the default ten-tool catalogue.
+
+Before model requests, completed work becomes a bounded user task_notification
+batch and typed background_result count/dropped event. The injector consumes the
+queue once, keeps the newest 50 and leaves omitted IDs queryable. Operator
+interruption markers name tasks still running, except when repaired tool results
+must remain last. Turn cancellation never closes background task ownership.
+
+Workspace entry prepares the native shell once and publishes it to the background
+state alongside the other execution bindings; in-flight work and original ledger
+stay pinned. Default child roles omit the two capability-empty tools and retain
+native foreground Bash with fresh state. Custom child selection of background
+tools is still unconfigured; full fresh-child ownership is a remaining step.
+
+Library callers must quiesce admission then call Session.CloseBackground or
+ManagedSession.CloseBackground to cancel/join ownership. SessionManager delete/stop
+composition and standalone feature activation remain pending. ManagerServices
+currently cannot request this flag. Source codecs and 15 real gated source calls
+are captured in snapshot 38; no production model call is part of validation.
 
 ### Operator worktree lifecycle
 

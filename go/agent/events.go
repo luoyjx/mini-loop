@@ -76,6 +76,7 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
+	backgroundResult  BackgroundResultEvent
 	trajectory        TrajectoryLifecycle
 	sessionForked     SessionForkedEvent
 	steeringDelivered SteeringDeliveredEvent
