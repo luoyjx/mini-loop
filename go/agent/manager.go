@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/luoyjx/mini-loop/go/cron"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/workspace"
 )
@@ -23,11 +24,13 @@ const (
 	ManagerStopped  ManagerState = "stopped"
 )
 
-// SessionManager owns process-local session handles, shared services and scratch
-// reclamation. No HTTP authentication, durable restoration or trajectory store
-// is implied. Public lookups require an already established owner identity.
+// SessionManager owns process-local session handles, shared services, cron and
+// scratch reclamation. Cron files and trajectory evidence do not restore sessions
+// or leases. Public lookups require an already established owner identity.
 type SessionManager struct {
 	mu                             sync.Mutex
+	cronMu                         sync.Mutex
+	cron                           *cron.Scheduler
 	workspaceMu                    sync.Mutex
 	config                         ManagerConfig
 	state                          ManagerState
@@ -137,7 +140,12 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 	if err = os.MkdirAll(root, 0700); err != nil {
 		return nil, err
 	}
-	return &SessionManager{config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}, nil
+	manager := &SessionManager{config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
+	manager.cron, err = cron.New(cron.Config{Resolver: managerCronResolver{manager}, DurablePath: filepath.Join(root, ".cron.json"), Secrets: cronMasker{services.Secrets}})
+	if err != nil {
+		return nil, err
+	}
+	return manager, nil
 }
 
 func (manager *SessionManager) State() ManagerState {
@@ -402,10 +410,12 @@ func (manager *SessionManager) finishCleanup(id SessionID) {
 	}
 }
 func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options DeleteSessionOptions) (bool, error) {
+	manager.cronMu.Lock()
 	manager.mu.Lock()
 	session := manager.sessions[id]
 	if owner == "" || session == nil || session.Owner() != owner {
 		manager.mu.Unlock()
+		manager.cronMu.Unlock()
 		return false, ErrSessionNotFound
 	}
 	session.StopAccepting("session deleted")
@@ -420,6 +430,10 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 	manager.retiring[id] = session
 	manager.beginCleanupLocked()
 	manager.mu.Unlock()
+	if _, err := manager.cron.CancelForSession(cron.SessionID(id)); err != nil {
+		manager.recordCleanupError(id, filepath.Join(manager.config.WorkspaceRoot, ".cron.json"), err)
+	}
+	manager.cronMu.Unlock()
 	manager.config.Services.Approvals.CancelSession(id)
 	cleanup := func() {
 		manager.drainSession(session, "session deleted", manager.config.DeleteGrace)
@@ -530,6 +544,7 @@ func (manager *SessionManager) drainSession(session *ManagedSession, reason stri
 	<-active.done
 }
 func (manager *SessionManager) Stop(ctx context.Context) error {
+	manager.cronMu.Lock()
 	manager.mu.Lock()
 	if manager.state == ManagerActive {
 		manager.state = ManagerStopping
@@ -544,6 +559,7 @@ func (manager *SessionManager) Stop(ctx context.Context) error {
 	}
 	done := manager.stopped
 	manager.mu.Unlock()
+	manager.cronMu.Unlock()
 	select {
 	case <-done:
 		return nil
@@ -563,6 +579,9 @@ func (manager *SessionManager) shutdown(sessions []*ManagedSession, creating <-c
 		}()
 	}
 	group.Wait()
+	if err := manager.cron.Stop(context.Background()); err != nil {
+		manager.recordCleanupError("", filepath.Join(manager.config.WorkspaceRoot, ".cron.json"), err)
+	}
 	manager.WaitCleanup(context.Background())
 	manager.mu.Lock()
 	manager.state = ManagerStopped

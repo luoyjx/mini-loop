@@ -1231,7 +1231,11 @@ Default ten tools are unchanged.
 `cron.New(Config{Resolver, DurablePath, Secrets})` explicitly binds a typed
 operator scheduler. Resolver/Runner adapt session lookup/restoration and an
 always-untrusted Invocation into the embedding runtime; the adapter must create
-a fresh untrusted RunContext. Go manager/tool/HTTP composition is still pending.
+a fresh untrusted RunContext. SessionManager supplies this adapter for live
+managed sessions and owns a scheduler by default. Its ScheduleCron/CronJobs/
+CancelCron/ArmCron APIs require owner identity; CronScheduler exposes privileged
+operator access without owner checks. Model tool and HTTP composition remain
+pending, as does session/lease restoration.
 Schedule arms only current-process jobs. Restored jobs stay disarmed until the
 operator calls Arm/ArmAll, and no model arm tool is supplied. Start is explicit;
 Stop cancels/joins ticker and admitted runs, retaining armed in-memory jobs for
@@ -1243,7 +1247,12 @@ minute claims suppress competing stale readers. Failure reports lost occurrences
 without dispatch. This does not arbitrate stale whole-file writers or transact
 with external effects. The eight-MiB store bound and strict scalar decoding are
 Go additions. Resolver callbacks run outside the state lock; Mask must not
-reenter scheduler methods. Loaded and live prompts differ when masking changes
+reenter scheduler or manager cron methods. Manager owner mutations serialize
+with deletion/stop; deletion removes future jobs and records save failures while
+continuing cleanup. Stop revokes turn admission, drains sessions and then joins
+cron. Standalone Serve calls manager.Start without arming restored jobs. A fresh
+untrusted ManagedSession.Run retains the normal gate/pools/recording boundaries.
+Loaded and live prompts differ when masking changes
 the stored copy, and that change is diagnosed. See the operator library contract
 in [go/README.md](go/README.md#operator-cron-scheduler).
 

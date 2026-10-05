@@ -261,6 +261,9 @@ func (a *App) Serve(ctx context.Context, listener net.Listener) error {
 	}
 	a.served = true
 	a.mu.Unlock()
+	if err := a.manager.Start(); err != nil {
+		return fmt.Errorf("manager startup: %w", err)
+	}
 	server := &http.Server{Handler: a.handler, ReadHeaderTimeout: 5 * time.Second, IdleTimeout: 60 * time.Second, MaxHeaderBytes: 1 << 20, BaseContext: func(net.Listener) context.Context { return ctx }}
 	finished := make(chan error, 1)
 	go func() { finished <- server.Serve(listener) }()

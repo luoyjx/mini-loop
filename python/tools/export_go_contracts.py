@@ -2281,6 +2281,96 @@ def _trajectory_contracts(scratch: Path) -> dict:
 
 
 
+def _managed_cron_contracts(scratch: Path) -> dict:
+    """Actual default manager ownership, managed authority and shutdown."""
+    import asyncio
+    from mini_loop import Settings, SessionManager
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text
+    from mini_loop.run_context import RunContext
+    from mini_loop.cron import CronJob
+    from datetime import datetime
+    scratch.mkdir(parents=True)
+    when=datetime(2026,10,5,12,30)
+    def client():return FakeAsyncAnthropic(responder=lambda _:([text('done')],'end_turn'),thinking=False)
+    def manager(root,**kwargs):return SessionManager(Settings(fake_llm=True,workspace_root=root),client(),**kwargs)
+    seen=[]
+    async def capture(agent):
+        seen.append(agent.current_run_context.as_dict())
+        return []
+    actual=manager(scratch/'authority',injectors=[capture])
+    session=actual.create(owner='alice',permission_mode='auto')
+    # Outside an event loop: source schedule does not implicitly start ticking.
+    actual.cron.schedule(session.id,'30 12 5 10 *','scheduled')
+    job=next(iter(actual.cron.jobs.values()))
+    async def authority():
+        try:
+            await session.run('human',run_context=RunContext.explicit_human(actor_id='human',approved_capabilities=('personal_skill.capture_source',)))
+            actual.cron._tick_once(when)
+            await asyncio.gather(*tuple(actual.cron._running))
+            ids=[c['message_id'] for c in seen]
+            contexts=[{**c,'message_id':'<message>'} for c in seen]
+            return {'contexts':contexts,'distinct_ids':len(ids)==len(set(ids)),
+                    'run_count':session.info()['run_count'],'status':session.info()['status'],
+                    'history_count':len(session.agent.messages),
+                    'scheduled_prompt':session.agent.messages[-2]['content'].replace(job.id,'<job>'),
+                    'default_tools':session.agent.tools.names(),'default_scheduler':actual.cron is not None}
+        finally:await actual.stop()
+    async def ownership(name,action,bound):
+        root=(scratch/name).resolve();root.mkdir();checkout=root/'checkout';checkout.mkdir()
+        m=SessionManager(Settings(fake_llm=True,workspace_root=root/'ws',bindable_roots=(checkout,)),client())
+        a=m.create(owner='alice',permission_mode='auto',workspace=checkout if bound else None)
+        b=m.create(owner='bob',permission_mode='auto')
+        try:
+            m.cron.schedule(a.id,'0 0 31 2 *','alice')
+            m.cron.schedule(b.id,'0 0 31 2 *','bob')
+            aj=next(j for j in m.cron.jobs.values() if j.session_id==a.id)
+            foreign_cancel=m.cron.cancel(aj.id,session_id=b.id).replace(aj.id,'<job>')
+            foreign_arm=m.cron.arm(aj.id,session_id=b.id).replace(aj.id,'<job>')
+            child=await m.fork_session(a.id) if action=='fork' else None
+            child_jobs=0 if child is None else sum(j.session_id==child.id for j in m.cron.jobs.values())
+            shared=child is None or child.agent.state['cron'] is m.cron
+            if action=='stop':removed=None;await m.stop()
+            else:removed=m.delete(a.id,remove_workspace=action!='preserve')
+            if m._cleanup_tasks:await asyncio.gather(*tuple(m._cleanup_tasks))
+            stored=json.loads(m.cron.durable_path.read_text())
+            return {'name':name,'action':action,'bound':bound,'removed':removed,
+                    'workspace_exists':a.workspace.exists(),
+                    'alice_jobs':sum(j.session_id==a.id for j in m.cron.jobs.values()),
+                    'bob_jobs':sum(j.session_id==b.id for j in m.cron.jobs.values()),
+                    'stored_jobs':len(stored),'foreign_cancel':foreign_cancel,'foreign_arm':foreign_arm,
+                    'child_jobs':child_jobs,'shared_service':shared,'problems':m.cron.problems.summary()}
+        finally:await m.stop()
+    async def stopped_run():
+        entered,cancelled=asyncio.Event(),asyncio.Event()
+        async def block(agent):
+            entered.set()
+            try:await asyncio.Event().wait()
+            except asyncio.CancelledError:cancelled.set();raise
+            return []
+        m=manager(scratch/'stop-live',injectors=[block])
+        s=m.create(owner='alice',permission_mode='auto')
+        m.cron.jobs['running']=CronJob('running','* * * * *','wait',s.id)
+        m.cron._armed.add('running')
+        try:
+            m.cron._tick_once(when)
+            await asyncio.wait_for(entered.wait(),5)
+            await m.stop()
+            return {'cancelled':cancelled.is_set(),'busy':s.busy,'status':s.info()['status'],
+                    'run_count':s.info()['run_count'],'running_tasks':len(m.cron._running),
+                    'workspace_exists':s.workspace.exists()}
+        finally:await m.stop()
+    async def collect():
+        ownership_rows=[await ownership(*row) for row in (
+            ('delete','delete',False),('preserve','preserve',False),('bound','delete',True),
+            ('fork','fork',False),('stop','stop',False))]
+        return ownership_rows,await stopped_run()
+    authority_row=asyncio.run(authority())
+    ownership_rows,stop_row=asyncio.run(collect())
+    return {'authority':authority_row,'ownership':ownership_rows,'stop_live':stop_row,
+            'source_sha256':{name:hashlib.sha256((PYTHON_ROOT/'mini_loop'/name).read_bytes()).hexdigest()
+                             for name in ('manager.py','session.py','cron.py','run_context.py')}}
+
+
 def _cron_contracts(scratch: Path) -> dict:
     """Actual cron parsing, operator state, claims, loss and dispatch authority."""
     import asyncio
@@ -3662,6 +3752,7 @@ def _snapshot() -> dict[str, bytes]:
         managed_background_contracts = _managed_background_contracts(Path(scratch) / "managed-background")
         child_background_contracts = _child_background_contracts(Path(scratch) / "child-background")
         cron_contracts = _cron_contracts(Path(scratch) / "cron")
+        managed_cron_contracts = _managed_cron_contracts(Path(scratch) / "managed-cron")
 
     methods = {"get", "post", "put", "patch", "delete"}
     operations = sum(
@@ -3718,6 +3809,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-managed-background.json": _json_bytes(managed_background_contracts),
         "python-child-background.json": _json_bytes(child_background_contracts),
         "python-cron.json": _json_bytes(cron_contracts),
+        "python-managed-cron.json": _json_bytes(managed_cron_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }

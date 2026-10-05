@@ -111,17 +111,17 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence implemented; session/lease/SQLite restore remains)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; cron manager/tool/HTTP composition and other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; cron tools/HTTP composition and other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next cron slices
 
-1. Port the explicit operator scheduler: five-field matching, typed jobs,
+1. Completed: explicit operator scheduler: five-field matching, typed jobs,
    per-session controls, bounded problems, disarmed restoration, masked atomic
    persistence, exclusive occurrence claims and cancellation/join. Compare actual
    Python operations and disk state, including loss-before-dispatch boundaries.
-2. Compose the service with managed untrusted turns, session deletion and stop;
-   add closed tool variants and owned operator HTTP activation. Arm remains an
+2. Managed untrusted turns, session deletion/stop and standalone startup are
+   implemented. Next add closed tool variants and owned operator HTTP activation. Arm remains an
    operator act, never a model tool. Keep comprehensive activation unavailable
    until all feature groups are implemented.
 3. Audit restoration/lease interaction and differential failures in G5/G7;
@@ -3158,3 +3158,101 @@ lease restore, durable SSE and the full differential/release audit remain open.
   to the earlier local HTML access denial; rendered acceptance is not claimed.
 - README/plan outlines and `git diff --check`: pass. Native macOS / Go 1.23.3;
   Linux remains unvalidated. No dependency or paid model endpoint was added.
+
+## 2026-10-06 managed cron lifecycle slice
+
+Reviewed base: `d62aa98`. This advances the managed portion of cron work package
+2. G0–G7 remain open; Python and Go remain independently runnable. The previous
+coverage status turn refreshed the actual worktree profile rather than changing
+implementation. This iteration delivers the already implemented managed path,
+its source contract and runtime/architecture evidence.
+
+### Implementation and source contract
+
+- SessionManager creates one typed cron scheduler after workspace/config
+  validation, using `<WorkspaceRoot>/.cron.json` and the configured secret masker.
+  This default ownership matches actual Python with features disabled; construction
+  loads without starting a ticker, and the ten default model tools remain unchanged.
+- Concrete ScheduleCronRequest and CronJobView records bind owner-scoped schedule,
+  list, cancel and arm operations. Caller input cannot supply an authoritative
+  session. Foreign sessions use ErrSessionNotFound, foreign jobs read like missing
+  jobs, and list results are detached. CronScheduler remains privileged explicit
+  operator access without owner checks; raw scheduler Start stays explicit.
+- Managed resolution selects a live session only while the manager is active.
+  RunScheduled verifies the typed invocation binding and invokes ManagedSession.Run
+  with its fresh default untrusted RunContext. A previous human actor, grant or
+  message identity is not retained. The normal serialized queue, tool gate, shared
+  model/tool pools and per-run trajectory capture remain in force. No session/lease
+  restoration adapter is supplied yet.
+- Manager.Start starts existing jobs without arming restored records; standalone
+  Serve calls it after actual listener admission. An admitted owner schedule starts
+  its ticker even if persistence fails after in-memory admission, matching source's
+  retained job/start behavior. Invalid requests do not start it. Arm is an operator
+  act; no model arm tool is introduced.
+- Owner cron mutations, deletion and Stop share an admission lock. Delete revokes
+  the session and removes future jobs before draining/reclaiming scratch. A failed
+  cron save is retained in CleanupErrors while cleanup continues; Python currently
+  propagates that save exception after removing its session. This is a documented
+  Go addition. Mask callbacks must not reenter scheduler or manager cron methods.
+- Manager.Stop revokes all turn admission, joins managed drains, then cancels/joins
+  the cron ticker and admitted runs before terminal state. A cron request queued
+  behind another turn cannot reenter after Stop. Expired Stop observers can resume
+  the existing join. PreserveWorkspace, bound workspaces and normal Stop retain
+  files; forks share the service without copying parent jobs.
+- Snapshot 42 exercises actual Python manager/session/cron/run-context code: a
+  human then scheduled turn with fresh untrusted authority, five delete/preserve/
+  bound/fork/stop ownership states, and a live scheduled turn cancelled by Stop.
+  Only random message/job identities are normalized. The fixed civil minute and
+  source module SHA-256 values are pinned; scheduling the authority case outside
+  an event loop avoids ambient wall-clock ticking. No paid provider is contacted.
+- Go tests compare those source projections and additionally exercise foreign
+  owner refusal before mutation, detached lists, closed admission after delete/
+  Stop, a queued cron turn, save-failure cleanup, and actual foreground shell PID
+  reaping on manager Stop. Real TCP launcher startup loads durable disarmed jobs,
+  starts their ticker, consumes no occurrence and joins shutdown while retaining
+  the store. Native process evidence is macOS only.
+- README canonical Mermaid now connects manager ownership, launcher startup and
+  fresh untrusted managed dispatch. Its explanation, interactive specification,
+  Go README, extension seam and parity matrix are updated together. The interactive
+  overview adds the manager ownership edge and aggregates file/dispatch details
+  in its cron component and semantic card. Generated HTML is produced by Archify.
+
+### Remaining boundaries
+
+Closed schedule/list/cancel model tool variants, owner-scoped cron HTTP operations
+and operator activation are next in work package 2. Comprehensive feature-bundle
+activation remains unsupported. SQLite sessions/approvals/leases, restoration
+interaction, teams/workflows, remaining context/provider/UI groups, durable SSE
+and G7 remain open. Occurrence claims still do not arbitrate stale whole-file
+writers, transact with external effects or prove exactly-once work. The raw
+privileged operator surface does not confer HTTP ownership checks.
+
+### Validation
+
+- Narrow agent cron tests and launcher restored-startup test: pass. Full
+  `go test ./... -coverpkg=./... -coverprofile=...`: pass. Shared coverage blocks
+  are deduplicated across test binaries: **88.13%** (**9,686 / 10,990**) statements;
+  agent **89.10%** (3,998 / 4,487), cron **92.77%** (436 / 470), launcher **76.67%**
+  (115 / 150). These are execution metrics, not functional parity percentages.
+- `go test -race ./...` and `go vet ./...`: pass. No dependency was added.
+- Source exporter `--check`: **42 files current**; all **41** previously tracked
+  exports, including the SQLite SQL file, are byte-identical to HEAD. This check
+  emits existing model-deprecation warnings and exits zero. Python runtime/test
+  modules and mutation anchors are unchanged; package invariants do not apply
+  to the exporter-only change.
+- `verify_scans.py`: all **19** scanning guards anchored.
+  `verify_guards.py -k cron`: all **14** selected source mutations caught. No
+  Go mutation coverage or unrelated full mutation sweep is claimed.
+- Python full `.venv/bin/python -m pytest -q`: **2,151 passed / 28 skipped /
+  24 subtests passed**, three warnings, **80.21 seconds**. The original performance
+  gate is unchanged.
+- Final Archify validate/deliver: **9/9 showcase**, zero errors/warnings. Three
+  focused layout repairs moved the cron component near its manager and removed
+  diagnosed route crossings/node intersections. The final candidate is frozen:
+  specification SHA-256 `4a76fc47208003ae517e67ad2eab7eb75c9375eb4a05c401f098f2d88d4572c8`
+  (**33,307 bytes**), artifact SHA-256
+  `ec27f3e0625f4816f4011034a98055c6cfe4802b8a1d8615122d7f92932f44ab`
+  (**674,351 bytes**). Visual review remains skipped due to the earlier local HTML
+  access denial; no rendered visual acceptance is claimed.
+- README/plan/source outlines and `git diff --check`: pass. Native macOS /
+  Go 1.23.3; Linux remains unvalidated.

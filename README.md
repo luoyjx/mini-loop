@@ -298,7 +298,9 @@ with independent startup selection, plus selected child scopes retained for
 lifetime cleanup with independent qualified IDs and completion queues,
 plus an explicitly bound typed cron operator scheduler with masked persistence,
 disarmed restoration, exclusive minute claims and cancellation/join,
-reviewed **2026-10-05** (Go baseline `aaa499b` plus the operator-cron slice).
+plus manager-owned cron with fresh untrusted turns, owner-scoped operations,
+delete/stop joins and standalone startup,
+reviewed **2026-10-06** (Go baseline `d62aa98` plus the managed-cron slice).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -376,9 +378,13 @@ flowchart LR
         GoChildren -. selected background tools: separate scopes / queues .-> GoBackground
         GoCron["Explicit operator cron<br/>typed jobs · five fields · disarmed restore<br/>per-session controls · ticker / run cancellation"]
         GoCronStore["Operator cron JSON / claim files<br/>masked prompts · mark before dispatch<br/>exclusive minute claim; no external transaction"]
-        GoCronRunner["Embedding resolver / scheduled runner<br/>untrusted invocation · optional restore adapter<br/>manager / tool / HTTP composition pending"]
+        GoCronRunner["Managed resolver / scheduled runner<br/>fresh untrusted ManagedSession.Run<br/>no session restore; tools / HTTP pending"]
+        GoManager -->|default ownership / owner-scoped operations| GoCron
+        GoLaunch -. Serve starts disarmed restored jobs .-> GoCron
+        GoManager -. revoke turns then stop / join .-> GoCron
         GoCron -->|atomic persisted mark / O_EXCL claim| GoCronStore
         GoCron -->|only after occurrence admission| GoCronRunner
+        GoCronRunner -->|fresh untrusted serialized turn| GoManaged
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional persistent task tools · masked file graph<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -499,11 +505,14 @@ matching, per-session cancel/arm, masked atomic files and exclusive minute claim
 Restored jobs stay disarmed until an operator authorizes them in this process;
 activation is never persisted. Occurrence marks and one-shot removal are saved
 before dispatch, so save/claim failures report lost work and never dispatch it.
-The resolver receives an untrusted invocation; embedding code must translate it
-into a fresh untrusted runtime context. Start is explicit in Go; Stop cancels and
-joins the ticker and admitted runs. Go manager deletion, model tools and HTTP
-activation are not composed yet. Independent live writers still hold stale
-whole-file state; claim files do not transact with external effects or prove
+The manager owns a scheduler by default, matching Python, and resolves live
+sessions into fresh untrusted ManagedSession.Run turns without retaining the
+scheduling caller's actor or grants. Owner-scoped library operations hide foreign
+sessions/jobs. Delete removes future jobs before scratch cleanup; stop revokes
+turn admission, drains sessions, then cancels/joins cron. Standalone Serve starts
+loaded jobs without arming them. Model tools, HTTP activation and durable session
+restore remain pending. Raw operator Start remains explicit. Independent live
+writers still hold stale whole-file state; claim files do not transact with external effects or prove
 exactly-once execution. See [cron library](go/README.md#operator-cron-scheduler).
 `go/worktrees` is an explicitly selected library service: named records and
 task binding, Git status/ahead checks plus Git's independent refusal, and local

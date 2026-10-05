@@ -4579,8 +4579,8 @@
         <rect data-graph-role="structural-frame" data-composition-frame-kind="security-group" data-composition-frame-id="2" x="1760" y="520" width="585" height="276" rx="8" class="c-security-group" stroke-width="1"/>
         <text x="1768" y="538" class="t-security" font-size="9" font-weight="600">Guarded host effects</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="3" x="288" y="938" width="1954" height="698" rx="12" class="c-region" stroke-width="1"/>
-        <text x="296" y="956" class="t-cloud" font-size="9" font-weight="600">Independent Go port - in progress</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="3" x="288" y="844" width="1954" height="792" rx="12" class="c-region" stroke-width="1"/>
+        <text x="296" y="862" class="t-cloud" font-size="9" font-weight="600">Independent Go port - in progress</text>
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="4" x="306" y="776" width="378" height="120" rx="12" class="c-region" stroke-width="1"/>
         <text x="314" y="794" class="t-cloud" font-size="9" font-weight="600">Go startup / HTTP admission</text>
@@ -4623,6 +4623,7 @@
         <path data-edge-from="goGate" data-edge-to="goResources" data-edge-label="bound session effect" data-edge-key="34" data-edge-id="goResourceEffect" data-composition-points="1650,1218;1785,1218;1785,1578;1920,1578" d="M 1650 1218 L 1777 1218 Q 1785 1218 1785 1226 L 1785 1570 Q 1785 1578 1793 1578 L 1920 1578" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="goManaged" data-edge-to="goSession" data-edge-label="turn / fork" data-edge-key="35" data-edge-id="goManagedRun" data-composition-points="990,1056;990,1120;1015,1120;1015,1180" d="M 990 1056 L 990 1112 Q 990 1120 998 1120 L 1007 1120 Q 1015 1120 1015 1128 L 1015 1180" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="goEntry" data-edge-to="goManaged" data-edge-key="36" data-edge-id="goHTTPAdmission" data-composition-points="660,838;990,838;990,980" d="M 660 838 L 982 838 Q 990 838 990 846 L 990 980" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="goManaged" data-edge-to="goCron" data-edge-key="37" data-edge-id="goManagedCron" data-composition-points="1130,1018;1220,1018;1220,924;1310,924" d="M 1130 1018 L 1212 1018 Q 1220 1018 1220 1010 L 1220 932 Q 1220 924 1228 924 L 1310 924" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4971,16 +4972,16 @@
         <text data-detail="fine" x="495" y="868" class="t-backend" font-size="7" text-anchor="middle">public browser / protected data</text>
         </g>
 
-        <g id="node-goCron" data-node-id="goCron" data-node-label="Go operator cron" tabindex="0" role="button" aria-label="Focus Go operator cron, typed jobs / masked store / claims, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="typed jobs / masked store / claims" data-node-tag="explicit resolver; runtime wiring pending" data-node-context="Independent Go port - in progress">
-          <title>Go operator cron · typed jobs / masked store / claims · Independent Go port - in progress · explicit resolver; runtime wiring pending</title>
-          <rect x="850" y="1540" width="330" height="76" rx="6" class="c-mask"/>
-          <rect x="850" y="1540" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 1546) scale(0.6875)">
+        <g id="node-goCron" data-node-id="goCron" data-node-label="Go managed cron" tabindex="0" role="button" aria-label="Focus Go managed cron, untrusted turns / masked store / claims, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="untrusted turns / masked store / claims" data-node-tag="manager-owned; tools / HTTP pending" data-node-context="Independent Go port - in progress">
+          <title>Go managed cron · untrusted turns / masked store / claims · Independent Go port - in progress · manager-owned; tools / HTTP pending</title>
+          <rect x="1310" y="886" width="330" height="76" rx="6" class="c-mask"/>
+          <rect x="1310" y="886" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1316 892) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-detail-anchor x="1015" y="1576" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go operator cron</text>
-        <text data-detail="context" x="1015" y="1592" class="t-muted" font-size="9" text-anchor="middle">typed jobs / masked store / claims</text>
-        <text data-detail="fine" x="1015" y="1608" class="t-backend" font-size="7" text-anchor="middle">explicit resolver; runtime wiring pending</text>
+          <text data-detail-anchor x="1475" y="922" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go managed cron</text>
+        <text data-detail="context" x="1475" y="938" class="t-muted" font-size="9" text-anchor="middle">untrusted turns / masked store / claims</text>
+        <text data-detail="fine" x="1475" y="954" class="t-backend" font-size="7" text-anchor="middle">manager-owned; tools / HTTP pending</text>
         </g>
 
         <!-- Connection labels -->
@@ -5116,6 +5117,7 @@
           <rect x="1068.6" y="1130" width="62.8" height="14" rx="3" class="c-mask"/>
           <text x="1100" y="1140" class="t-muted" font-size="8" text-anchor="middle">turn / fork</text>
         </g>
+
 
 
         <!-- Legend -->
@@ -5435,7 +5437,7 @@
           <li>&bull; Background .background records mask commands, atomically record in-flight evidence and report orphan/PID liveness without replay or ownership. CancelAll returns joinable cancelled handles; Close joins them. Caller owns admission quiescence and later Run is allowed</li>
           <li>&bull; Background retains 100 full results, lists/projects newest 50 and preserves undrained notifications; metadata/undrained queue remain unbounded. Future rebind pins admitted executors and original ledger root. Go cleans pre-start cancellation where Python leaves Running/ledger</li>
           <li>&bull; Background completion queues feed Go Session before model requests: optional background_run/check_background and conditional Bash dispatch/classification share the gate; bounded task_notification injection emits typed background_result events. Interruption markers name live survivors; prepared background scopes follow workspace entry. Manager delete/stop join lazy service ownership after turn drain, before scratch cleanup; forks get fresh state/root. Standalone --background-tools selects this individual service; the comprehensive feature bundle stays unsupported. Explicitly selected child scopes use independent qualified IDs/queues and remain owned through return; root cleanup cancels/joins descendants. Root adopts existing evidence before child admission; no child adopts live parent records. Qualified child orphans remain reportable after restart. Metadata/queues are unbounded and cross-process/shared-session ledger arbitration remains absent</li>
-          <li>&bull; Explicit Go cron operator service preserves disarmed restoration, mark-before-dispatch, exclusive minute claims and untrusted invocations; tools, manager lifecycle and HTTP activation remain pending. Shared JSON writers are not a lease or an external exactly-once transaction.</li>
+          <li>&bull; Go SessionManager owns cron by default: owner-scoped schedule/list/cancel/arm, live resolution into fresh untrusted ManagedSession.Run, future-job removal on delete and revoke/drain/stop/join on shutdown. Standalone Serve starts restored jobs while they remain disarmed. Cron files preserve mark-before-dispatch and exclusive minute claims; tools/HTTP and session/lease restoration remain pending. Save-failure cleanup continues with a diagnostic. Shared JSON writers are not a lease or an external exactly-once transaction.</li>
         </ul>
       </div>
     </div>

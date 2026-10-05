@@ -759,10 +759,11 @@ binds the operator library explicitly. Job, SessionID, ID, Request, Invocation,
 Problem and Expression are concrete types. The Resolver resolves/restores a
 session through `ResolveScheduled`; the Runner consumes `RunScheduled` with
 read-only prompt/session accessors and an always-untrusted authority accessor.
-The embedding adapter must create a fresh untrusted runtime context. The Go
-manager, model tools, HTTP arm/cancel routes and launcher selection are pending;
-this package alone does not connect a scheduled turn to an Agent or authorize
-restored sessions. No default feature activation changes.
+The embedding adapter must create a fresh untrusted runtime context. The manager
+now supplies that adapter and owns the service by default, matching Python even
+with the comprehensive feature bundle disabled. Model tools, HTTP routes and
+durable session/lease restoration remain pending; the default tool catalogue
+still contains ten tools.
 
 Parse matches Python's five-field ranges/lists/steps, Sunday 0 and restricted
 day-of-month/day-of-week OR rule. Numeric parsing pins Unicode 14 decimal digits,
@@ -810,7 +811,45 @@ removal, two stale claimers, three claim/save loss cases, masked restoration,
 prompt/job limits and actual source untrusted dispatch/missing-session diagnostics.
 Go tests additionally run two independent processes sharing the store and cover
 native filesystem failures, ticker cancellation/resumed joins and delayed
-resolution. Operator evidence does not complete cron runtime composition or G7.
+resolution. Operator evidence alone does not complete the remaining cron tools,
+HTTP, restoration or G7.
+
+### Managed cron lifecycle
+
+`SessionManager.CronScheduler()` is a privileged operator surface without owner
+checks. User-facing callers instead use `ScheduleCron(owner, session, request)`,
+`CronJobs`, `CancelCron` and `ArmCron`: session ownership is checked first and
+foreign job IDs read like missing ones. Inputs and list rows are concrete types;
+callers cannot choose an authoritative session through ScheduleCronRequest.
+
+The default service stores masked durable jobs at `<WorkspaceRoot>/.cron.json`.
+Construction loads jobs without starting goroutines. `SessionManager.Start()`
+starts existing jobs while retaining their disarmed state; standalone Serve calls
+it after listener admission. An admitted owner schedule starts the ticker,
+including a job retained in memory after a save failure. Invalid requests never
+start it. These managed rules are distinct from raw operator Schedule, whose
+Start is explicit. Arm remains an operator action.
+
+Resolution finds a live managed session and calls Run with a fresh default
+untrusted context: no scheduling actor, approved capabilities or parent message
+identity is reused. The ordinary session queue, common gate, shared pools and
+trajectory capture remain in force. A fork shares the service but has no copied
+jobs. Missing or stopping sessions produce lost-occurrence diagnostics; there is
+no SQLite restore fallback yet.
+
+Owner mutations and manager deletion/stop share an admission lock. Delete removes
+future jobs before drain and scratch reclamation; save failure is recorded in
+CleanupErrors and cleanup continues, a Go addition to Python's propagating error.
+Stop revokes admission and drains managed turns before cancelling/joining ticker
+and runs. Queued jobs cannot reenter, native foreground shells are reaped, and an
+expired Stop observer can resume the join. Preserved/bound workspaces and normal
+stop retain files. Cron masking callbacks must not reenter either scheduler or
+manager cron methods while persistence holds their locks.
+
+Snapshot 42 compares actual source authority, delete/preserve/bound/fork/stop
+states and a live cancelled scheduled turn. Additional Go tests exercise foreign
+owner refusal, detached lists, closed admission, a queued scheduled turn, delete
+save failure, real native-shell cleanup and restored-disarmed launcher startup.
 
 ### Operator worktree lifecycle
 
