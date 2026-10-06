@@ -112,7 +112,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; trusted resource binding, memory and publication remain; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next decision slices
@@ -4718,3 +4718,43 @@ passed all nine showcase cases without warnings. Generated HTML SHA256:
 `62f3f5b19819e2ce475d2efced848fd4250b4fb7bfe04990fa80651c0fe0e1bd`
 (679,600 bytes). Visual inspection remains skipped after local-file access was
 denied; regeneration does not establish visual review.
+
+## Implementation checkpoint — 2026-10-06 layered skill snapshots
+
+Concrete LayeredCatalog binds independent agent/user Catalog construction
+snapshots. Unique names resolve, collisions refuse unless source-qualified or
+scoped; rendered instructions carry source/body digest. Single-layer and layered
+serving share source verification. Combined descriptions preserve both headings,
+reserve the largest omission receipt, consider agent entries first and cap the
+whole output at 8,000 Unicode characters. Unknown-name lists are separately
+bounded. Construction diagnostics copy once; later file failures stay in their
+source catalogue. Native bounded logs deduplicate/count reports.
+
+Snapshot 59 executes actual Python LayeredSkillLoader in 16 cases, comparing
+exact descriptions, load result hashes and separate problem logs. Cases include
+normalization/validation order, ambiguity, both-layer mutation/removal/identical
+rewrite/newline-equivalence, single/both-source floods and available-name caps.
+Native tests cover compiled sources, cancellation and detached diagnostic values.
+No dependencies added. Owner bundles, layered runtime session/child/restore
+binding, memory, publication and native SQL remain open; G0–G7 remain open.
+
+Next owner-resource slices: typed memory-store contracts and native owner memory;
+immutable resource bundles; create-only canonical publication with future-session
+snapshot replacement; then trusted manager/restore/child inheritance and scoped
+serving. Layered library completion does not close those activation boundaries.
+
+Validation: focused skills tests, full `go test ./... -count=1`, full race suite
+and `go vet ./...` passed. The 16 source cases contain 47 load comparisons;
+all 59 generated contracts are current. All 19 scanning guards remain anchored.
+The source `skill-served-after-tampering` mutation was caught; an isolated Go
+mutation removing shared digest verification failed both agent/user changed-file
+cases. Concurrent layered rendering/loading retains stable output and omission
+counts. Full Python: 2,151 passed, 28 skipped, 24 subtests, three dependency
+deprecation warnings in 80.93 seconds. The exporter emitted existing dependency/
+model deprecation warnings. Package invariants were not applicable: no Python
+package module changed. README outline and `git diff --check` passed.
+
+Archify delivery passed nine showcase checks with no errors/warnings; generated
+HTML SHA256 `39576aa9c479935e1d2c34ff4e49d457fa03ce777c20d881bc3054c2950b393b`
+(679,744 bytes). Visual inspection remains skipped after the earlier local-file
+access denial. Coverage was not refreshed in this slice.

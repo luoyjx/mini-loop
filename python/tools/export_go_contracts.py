@@ -5191,6 +5191,59 @@ def _owner_directory_contracts(scratch: Path) -> dict:
     return {"cases": cases, "source_sha256": hashlib.sha256((PYTHON_ROOT / "mini_loop" / "user_resources.py").read_bytes()).hexdigest()}
 
 
+def _layered_skill_contracts(scratch: Path) -> dict:
+    """Actual two-source catalogue, scope selection and source verification."""
+    from mini_loop.skills import SkillLoader, LayeredSkillLoader
+    cases = []
+    def recipe(source, name, description="", body="body", count=1):
+        return dict(source=source, name=name, description=description, body=body, count=count)
+    def add(name, recipes, loads, mutations=()):
+        base = scratch / name
+        roots = {source: base / source for source in ("agent", "user")}
+        for root in roots.values(): root.mkdir(parents=True)
+        for row in recipes:
+            for i in range(row["count"]):
+                skill_name = row["name"] if row["count"] == 1 else f'{row["name"]}-{i:03d}'
+                path = roots[row["source"]] / skill_name / "SKILL.md"
+                path.parent.mkdir()
+                path.write_text(f'---\nname: {skill_name}\ndescription: {row["description"]}\n---\n{row["body"]}', encoding="utf-8")
+        agent, user = (SkillLoader(roots[source]) for source in ("agent", "user"))
+        layered = LayeredSkillLoader(agent, user)
+        descriptions = layered.descriptions()
+        assert layered.descriptions() == descriptions
+        for row in mutations:
+            path = roots[row["source"]] / row["name"] / "SKILL.md"
+            if row.get("remove"): path.unlink()
+            else: path.write_text(row["text"], encoding="utf-8")
+        results = []
+        for request in loads:
+            output = layered.load(**request)
+            results.append(dict(input=request, sha256=hashlib.sha256(output.encode()).hexdigest(), failed=output.startswith("Error:")))
+        normalize = lambda text: text.replace(str(roots["agent"]), "$AGENT").replace(str(roots["user"]), "$USER")
+        problems = lambda loader: [dict(message=normalize(str(p)), count=loader.problems.counts[str(p)]) for p in loader.problems]
+        cases.append(dict(name=name, recipes=recipes, mutations=list(mutations), descriptions=descriptions,
+                          loads=results, problems=problems(layered), agent_problems=problems(agent), user_problems=problems(user)))
+    requests = [dict(name=n) for n in ("shared", "agent:shared", "user:shared", "agent-only", "user-only", "missing", "", "bad/name", "other:shared", "user:")]
+    requests += [dict(name="shared", scope=s) for s in ("agent", "user", " USER ", "\x1cAGENT\x1f", "invalid", "")]
+    requests += [dict(name="agent:shared", scope="user"), dict(name="bad/name", scope="invalid")]
+    add("collision", [recipe("agent","shared", "Agent", "a"), recipe("user","shared", "User", "u"), recipe("agent","agent-only"), recipe("user","user-only")], requests)
+    add("empty", [], [dict(name="missing"),dict(name="missing",scope="user")])
+    add("agent-only", [recipe("agent","one", "中文", "🌱")], [dict(name="one"),dict(name="user:one")])
+    add("user-only", [recipe("user","one")], [dict(name="one"),dict(name="agent:one")])
+    for source in ("agent", "user"):
+        for mode in ("changed", "removed", "identical", "newlines"):
+            text = "new" if mode == "changed" else "---\nname: shared\ndescription: Desc\n---\nbody"
+            if mode == "newlines": text = text.replace("\n", "\r\n")
+            add(source+"-"+mode, [recipe("agent","shared","Desc"),recipe("user","shared","Desc")],
+                [dict(name=source+":shared"),dict(name=source+":shared")],
+                [dict(source=source,name="shared",remove=mode=="removed",text=text)])
+    for source in ("agent", "user"):
+        add(source+"-flood", [recipe(source,"note","中"*201,"body",100)], [dict(name="note-099"),dict(name="missing")])
+    add("both-flood", [recipe("agent","policy","🌱"*200,"a",40),recipe("user","note","中"*200,"u",80)], [dict(name="user:note-079")])
+    add("available-cap", [recipe("agent","a"*55,"","a",100),recipe("user","u"*55,"","u",100)], [dict(name="missing"),dict(name="missing",scope="user")])
+    return dict(cases=cases, source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skills.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5304,6 +5357,7 @@ def _snapshot() -> dict[str, bytes]:
         decision_sink_contracts = _decision_sink_contracts(Path(scratch) / "decision-sinks")
         user_skill_contracts = _user_skill_contracts()
         owner_directory_contracts = _owner_directory_contracts(Path(scratch) / "owner-directories")
+        layered_skill_contracts = _layered_skill_contracts(Path(scratch) / "layered-skills")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5377,6 +5431,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-decision-sinks.json": _json_bytes(decision_sink_contracts),
         "python-user-skills.json": _json_bytes(user_skill_contracts),
         "python-owner-directories.json": _json_bytes(owner_directory_contracts),
+        "python-layered-skills.json": _json_bytes(layered_skill_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

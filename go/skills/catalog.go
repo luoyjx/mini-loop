@@ -275,22 +275,35 @@ func (catalog *Catalog) Load(ctx context.Context, input protocol.LoadSkillInput)
 	if !exists {
 		return "", fmt.Errorf("Unknown skill '%s'. Available: %s", name, catalog.available())
 	}
-	if catalog.builtin {
-		return "<skill name=\"" + name + "\">\n" + entry.Body + "\n</skill>", nil
+	if err := catalog.verifySnapshot(ctx, entry); err != nil {
+		return "", err
 	}
+	return "<skill name=\"" + name + "\">\n" + entry.Body + "\n</skill>", nil
+}
+
+// verifySnapshot is shared by legacy and layered serving. The source catalogue
+// retains ownership of its verification diagnostics.
+func (catalog *Catalog) verifySnapshot(ctx context.Context, entry Entry) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if catalog.builtin {
+		return nil
+	}
+	name := entry.Name
 	current, err := readSource(ctx, entry.Path)
 	if ctx.Err() != nil {
-		return "", ctx.Err()
+		return ctx.Err()
 	}
 	if err != nil {
 		catalog.report(ProblemUnreadable, fmt.Sprintf("%s: %s refused at load; the file became unreadable after cataloguing (%s)", entry.Path, pytext.Repr(name), readErrorName(err)))
-		return "", fmt.Errorf("skill %s was catalogued at session start but its file is now missing or unreadable; refusing to serve instructions that can no longer be audited", pytext.Repr(name))
+		return fmt.Errorf("skill %s was catalogued at session start but its file is now missing or unreadable; refusing to serve instructions that can no longer be audited", pytext.Repr(name))
 	}
 	if current.digest != entry.SourceDigest {
 		catalog.report(ProblemChanged, fmt.Sprintf("%s: %s refused at load; the file changed after cataloguing (source digest mismatch)", entry.Path, pytext.Repr(name)))
-		return "", fmt.Errorf("skill %s changed on disk after it was catalogued; refusing to serve instructions nobody audited. Restart the session to catalogue the new version.", pytext.Repr(name))
+		return fmt.Errorf("skill %s changed on disk after it was catalogued; refusing to serve instructions nobody audited. Restart the session to catalogue the new version.", pytext.Repr(name))
 	}
-	return "<skill name=\"" + name + "\">\n" + entry.Body + "\n</skill>", nil
+	return nil
 }
 func (catalog *Catalog) available() string {
 	if len(catalog.ordered) == 0 {

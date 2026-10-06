@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `be94099` plus explicit owner directory binding).
+reviewed **2026-10-06** (Go baseline `4eff785` plus explicit layered skill catalogues).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -366,7 +366,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback<br/>default goal stop · bounded continuation"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>spill → snip → micro → summary · optional plan guidance"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>operator agent/user layers · runtime binding pending<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
@@ -538,8 +538,11 @@ owner directory keys hash exact trusted identifiers without trimming or folding.
 An explicit DirectoryResolver now pins the configured physical root, creates
 private 0700 digest/skills/memory directories, refuses pre-planted child links and
 caches immutable exact-owner bindings. It is an operator filesystem library,
-aggregated with filesystem backends in the interactive map. Layered loaders,
-memory stores, publication, trusted session binding and routes remain pending.
+aggregated with filesystem backends in the interactive map. Memory stores,
+publication, trusted session binding and routes remain pending.
+`skills.NewLayeredCatalog` now provides explicit agent/user provenance, collision
+refusal, a shared prompt budget and source-owned serve-time verification; it is
+an operator composition library until trusted session binding is implemented.
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,

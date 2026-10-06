@@ -1393,7 +1393,7 @@ Snapshot 57 compares 42 actual source canonicalization cases and ten exact owner
 keys, including Unicode character limits, splitlines boundaries, wrapper aliases
 and newline normalization. Go additionally refuses invalid UTF-8 skill fields.
 Owner directory binding is now available as an explicit operator library.
-Memory, layered skill snapshots, create-only publication,
+Memory, trusted layered session binding, create-only publication,
 next-session activation and runtime/HTTP/configuration integration remain pending.
 
 ### Owner resource directories
@@ -1416,3 +1416,27 @@ trusted root links/dangling targets, link/.. ordering, lax modes and planted lin
 Native tests add concurrent cache reuse, owner separation and cancellation. The
 source also constructs stores; the native resolver binds directories only. No
 skill/memory store, publication, runtime binding, route or config activation yet.
+
+### Explicit layered skill catalogues
+
+`skills.NewLayeredCatalog(agent, user)` binds two concrete `*skills.Catalog`
+construction snapshots. It implements Descriptions/Load while retaining separate
+source authority: unique names resolve automatically; collisions require
+`agent:name`, `user:name` or explicit scope. No user skill shadows agent policy.
+Rendered instructions include source and body digest. Single-layer and layered
+loads share source-file verification; changed or missing files refuse, and
+diagnostics stay with the source catalogue. The layer copies construction
+problems once and owns combined-budget diagnostics; bounded native logs aggregate
+repeated reports and return detached values.
+
+Both provenance headings and an omission receipt share the 8,000-character
+budget. Agent entries are considered first; user flooding cannot erase the
+agent heading. Explicit loads can still select entries omitted from the prompt.
+Snapshot 59 compares 16 actual Python cases for selection, diagnostics, file
+mutation/newline equivalence and combined/unknown-name bounds. Compiled builtin
+entries need no file re-read. Catalogues are immutable after construction;
+problem logs support concurrent calls.
+
+This is an explicit operator seam. Owner resource bundles, manager/child/restore
+binding, memory stores, publication/next-session activation and configuration
+remain pending. The normal runtime continues to use its agent catalogue.

@@ -142,3 +142,10 @@ tighten 0700 permissions, reject planted child symlinks/files and cache immutabl
 exact owner paths. Cancellation/concurrent reuse are tested. The source's stores
 and layered catalogue are not constructed natively yet; session/HTTP/configuration
 activation remains pending. Source path checks are not external-process fencing.
+
+Layered skill progress: snapshot 59 compares 16 actual Python source pairs,
+qualified/scope selection, collision/invalid/unknown-name refusals, Unicode
+combined budgets and per-source changed/missing/identical/newline-equivalent
+file verification. Native LayeredCatalog is concrete, uses the same verifier as
+legacy Catalog and preserves separate problem ownership. Builtin/cancellation
+and detached diagnostics are native tests. Owner/session composition is pending.

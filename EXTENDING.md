@@ -1138,6 +1138,17 @@ contract and inheritance matrix are in
 
 ---
 
+### Go layered skill composition
+
+`skills.NewLayeredCatalog(agent, user)` takes two concrete construction snapshots
+and provides Descriptions/Load with source-qualified names, collision refusal
+and one total prompt budget. The source catalogue owns serve-time digest checks
+and diagnostics. Layered construction copies existing source problems once;
+later source failures stay in the source log. Return values and bounded problem
+reports retain the native catalogue conventions. Callers must bind the user
+catalogue from trusted owner resources; the model cannot supply an owner.
+The library does not yet create full owner bundles or activate runtime layering.
+
 ## 6. LLM / provider — the client
 
 Any object exposing `await client.messages.create(model=, messages=, tools=,
