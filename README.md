@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `e54d5c9` plus explicit owner-bound memory tools).
+reviewed **2026-10-06** (Go baseline `2c4effd` plus automatic memory selection/context).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -366,7 +366,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback<br/>default goal stop · bounded continuation"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>explicit pinned agent/user layers<br/>spill → snip → micro → summary · optional plan guidance"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
@@ -550,9 +550,14 @@ the common permission gate. Runtime construction requires a matching scoped stor
 or uses the admitted owner resource bundle; `ManagerServices.MemoryTools` selects
 these tools with an explicit resolver. Model inputs contain no owner/root.
 Selected children retain the bound store, and read-only mode denies writes.
-Default tools and launcher activation remain unchanged. Automatic selection,
-extraction/consolidation, runtime-facts integration and root configuration remain
-pending; carrying a resource bundle alone still installs no memory tools.
+With both tools selected, automatic memory selection now uses a 200-token side
+request, falling back to lexical search. It injects selected provenance blocks
+after prompt rewriting and before the user message is appended. The side request
+uses normal model/recovery/limiter/cache/event flow without changing the live token
+meter. An explicit false MemoryAuto disables selection; its value is detached.
+The dynamic index appears only with recall, and is appended only when it changes.
+Default tools and launcher activation remain unchanged. Extraction/consolidation
+and root configuration remain pending; carrying a bundle alone installs no tools.
 `userresources.NewResolver` now composes exact-owner directory, layered skill and
 bound memory snapshots, caching only complete bindings. Its operator problem
 view preserves owner-local logs and skips shared deployment diagnostics.
@@ -561,7 +566,7 @@ create/fork/restore session construction; RuntimeConfig.UserResources validates 
 complete matching owner bundle before filesystem effects. Sessions and selected
 children keep their fixed catalogue and scoped memory binding; forks resolve the
 latest cache. The nil default keeps legacy skills. Extraction/consolidation and
-memory tools remain pending. Operator-only publication is implemented.
+launcher activation remain pending. Operator-only publication is implemented.
 `go/durable` adds the publication prerequisite: component-wise no-follow directory
 opens, bounded regular-file reads and fsynced create-only hard links. The hard link
 is the commit point; post-commit cleanup cannot turn success into a retryable error.

@@ -75,6 +75,7 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		defaults.MaxRounds = DefaultSessionMaxRounds
 	}
 	defaults.System = clonePointer(defaults.System)
+	config.Services.MemoryAuto = clonePointer(config.Services.MemoryAuto)
 	if config.ModelConcurrency < 0 || config.ToolConcurrency < 0 || config.ApprovalTimeout < 0 || config.ShutdownGrace < 0 || config.DeleteGrace < 0 || config.StateLeaseTTL < 0 {
 		return nil, errors.New("manager limits cannot be negative")
 	}
@@ -399,6 +400,7 @@ func (manager *SessionManager) managedRuntimeConfig(ctx context.Context, id Sess
 	}
 	runtime := RuntimeConfig{DecisionTools: services.DecisionTools, DecisionProvider: services.DecisionProvider, DecisionLLM: services.DecisionLLM, GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
 	runtime.MemoryTools = services.MemoryTools
+	runtime.MemoryAuto = services.MemoryAuto
 	if resolver := services.UserResources; resolver != nil {
 		resources, err := resolver.ForOwner(ctx, userresources.OwnerID(owner))
 		if err != nil {

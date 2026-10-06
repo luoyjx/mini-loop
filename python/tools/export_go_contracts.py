@@ -5600,6 +5600,62 @@ def _memory_tool_contracts(scratch: Path) -> dict:
                 for name in registry.names() if (t:=registry.get(name))], steps=asyncio.run(scenario()))
 
 
+def _memory_context_contracts(scratch: Path) -> dict:
+    """Actual selection side requests, source wrappers and change-only facts."""
+    import asyncio
+    import copy
+    from types import SimpleNamespace
+    from mini_loop.agent import Agent
+    from mini_loop.caching import NullCachePolicy, runtime_facts_injector
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeMessage, FakeUsage, text
+    from mini_loop.memory import MemoryStore, install_memory, prepare_memory_context
+    from mini_loop.registry import ToolRegistry
+    recipes = [
+        dict(name="selected", reply="[2,0]", query="unrelated"),
+        dict(name="duplicates-bools-and-floats", reply='prefix [true,false,1.0,"2",{},-1,99,2,2,0,1] suffix', query="unrelated"),
+        dict(name="empty-selection-fallback", reply="[]", query="beta"),
+        dict(name="malformed-fallback", reply="not JSON", query="gamma"),
+        dict(name="fault-fallback", reply="", query="alpha", fault=True),
+        dict(name="no-hits", reply="[]", query="no match"),
+        dict(name="empty-store", reply="[0]", query="alpha", empty=True),
+        dict(name="automatic-disabled", reply="[0]", query="alpha", auto=False),
+        dict(name="recall-missing", reply="[0]", query="alpha", recall=False),
+        dict(name="remember-missing", reply="[0]", query="alpha", remember=False),
+        dict(name="unicode-query-tail", reply="[1]", query="前"*4001+"tail"),
+        dict(name="non-array-brackets", reply='[0] [2]', query="alpha"),
+    ]
+    async def scenario(row):
+        root=scratch/row["name"];root.mkdir(parents=True)
+        store=MemoryStore(root/"memory")
+        store.write("foreign","project","foreign private","foreign memory",owner="foreign")
+        if not row.get("empty",False):
+            for name,kind,origin in (("alpha","project","explicit"),("beta","feedback","imported"),("gamma","reference","auto_extracted")):
+                store.write(name,kind,name+" facts",name+" body",owner="owner",origin=origin)
+        calls,events=[],[]
+        async def create(**kwargs):
+            calls.append(copy.deepcopy(kwargs))
+            if row.get("fault",False):raise RuntimeError("selection failed")
+            return FakeMessage([text(row["reply"])],"end_turn",FakeUsage(777,3),model="served-memory")
+        async def emit(event):events.append(copy.deepcopy(event))
+        registry=install_memory(ToolRegistry())
+        if not row.get("recall",True):registry.unregister("recall")
+        if not row.get("remember",True):registry.unregister("remember")
+        agent=Agent(client=SimpleNamespace(messages=SimpleNamespace(create=create)),workspace=root,tools=registry,emit=emit,
+                    cache_policy=NullCachePolicy(),state=dict(memory=store,resource_owner="owner",memory_auto=row.get("auto",True)),
+                    settings=Settings(fake_llm=True,spill_dir=None,skills_dir=root/"empty"))
+        meter=agent.token_meter.snapshot()
+        prepared=await prepare_memory_context(agent,row["query"])
+        assert agent.token_meter.snapshot()==meter
+        facts=[]
+        for _ in range(2):facts.extend(await runtime_facts_injector(agent) or [])
+        return {**row,"fault":row.get("fault",False),"empty":row.get("empty",False),"auto":row.get("auto",True),
+                "recall":row.get("recall",True),"remember":row.get("remember",True),"prepared":prepared,"calls":calls,
+                "events":[{k:e[k] for k in ("action","count")} for e in events if e["type"]=="memory"],"facts":facts}
+    async def run():return [await scenario(row) for row in recipes]
+    return dict(cases=asyncio.run(run()))
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5720,6 +5776,7 @@ def _snapshot() -> dict[str, bytes]:
         publication_contracts = _publication_contracts(Path(scratch) / "publication")
         user_session_resource_contracts = _user_session_resource_contracts(Path(scratch) / "user-session-resources")
         memory_tool_contracts = _memory_tool_contracts(Path(scratch) / "memory-tools")
+        memory_context_contracts = _memory_context_contracts(Path(scratch) / "memory-context")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5800,6 +5857,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-user-publication.json": _json_bytes(publication_contracts),
         "python-user-session-resources.json": _json_bytes(user_session_resource_contracts),
         "python-memory-tools.json": _json_bytes(memory_tool_contracts),
+        "python-memory-context.json": _json_bytes(memory_context_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

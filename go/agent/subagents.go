@@ -26,6 +26,7 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	memoryAuto                                     bool
 	memory                                         *memory.ScopedStore
 	ownerResources                                 *userresources.Resources
 	decisionProvider                               decisions.Provider
@@ -189,6 +190,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	child.planApprover = parent.planApprover
 	child.ownerResources = parent.ownerResources
 	child.memory = parent.memory
+	child.memoryAuto = parent.memoryAuto
 	child.decisionProvider, child.decisionLLM = parent.decisionProvider, parent.decisionLLM
 	child.recovery = parent.recovery
 	child.streamProgress = parent.streamProgress
@@ -261,6 +263,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
+		memoryAuto:       s.memoryAuto,
 		memory:           s.memory,
 		ownerResources:   s.ownerResources,
 		decisionProvider: s.decisionProvider, decisionLLM: s.decisionLLM,

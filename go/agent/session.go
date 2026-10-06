@@ -37,6 +37,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	memoryAuto                                        bool
 	memory                                            *memory.ScopedStore
 	ownerResources                                    *userresources.Resources
 	decisionProvider                                  decisions.Provider
@@ -281,6 +282,10 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 	if err != nil {
 		return "", err
 	}
+	prompt, err = s.prepareMemoryContext(ctx, prompt)
+	if err != nil {
+		return "", err
+	}
 	s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent(prompt)})
 	var lastText string
 	resumptions := 0
@@ -290,7 +295,9 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			return "", err
 		}
 		s.injectControls()
-		s.injectRuntimeFacts(envelope)
+		if err := s.injectRuntimeFacts(ctx, envelope); err != nil {
+			return "", err
+		}
 		if err := s.compact(ctx, envelope, false); err != nil {
 			return "", err
 		}

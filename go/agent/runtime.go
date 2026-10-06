@@ -58,6 +58,7 @@ type Questioner interface {
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
 	MemoryTools          bool
+	MemoryAuto           *bool
 	Memory               *memory.ScopedStore
 	UserResources        *userresources.Resources
 	DecisionTools        bool
@@ -499,6 +500,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	session.planApprover = config.PlanApprover
 	session.ownerResources = resources
 	session.memory = config.Memory
+	session.memoryAuto = config.MemoryAuto == nil || *config.MemoryAuto
 	session.decisionProvider, session.decisionLLM = config.DecisionProvider, decisionLLM
 	session.streamProgress = streamProgress(config.StreamProgress)
 	if config.CachePolicy != nil {

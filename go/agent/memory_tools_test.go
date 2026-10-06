@@ -163,7 +163,7 @@ func TestManagedMemoryToolsAndSelectedChildRetainOwnerStore(t *testing.T) {
 	if _, err := bound.Memory().Write(ctx, memory.Input{Name: "parent", Type: memory.Project, Body: "parent memory", Origin: memory.Explicit}); err != nil {
 		t.Fatal(err)
 	}
-	provider := resourceProvider{tools: []protocol.Block{protocol.NewToolUse("recall", protocol.RecallToolInput(protocol.RecallInput{}))}}
+	provider := memoryChildProvider{}
 	cfg := managerTestConfig(t.TempDir(), provider)
 	cfg.Services.UserResources, cfg.Services.MemoryTools, cfg.Services.RoleToolPolicy = resolver, true, allRoleTools{}
 	manager := makeManager(t, cfg)

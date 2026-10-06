@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"context"
 	"crypto/sha256"
 	"fmt"
 	"strings"
@@ -162,7 +163,7 @@ func (s *Session) buildRequest() (protocol.ModelRequest, string, error) {
 	return request, requestEnvelope(snapshot, system), nil
 }
 
-func (s *Session) injectRuntimeFacts(envelope string) {
+func (s *Session) injectRuntimeFacts(ctx context.Context, envelope string) error {
 	var parts []string
 	if s.todos != nil && len(s.todos.Snapshot()) != 0 {
 		parts = append(parts, "Current TodoWrite state:\n"+s.todos.Render())
@@ -177,10 +178,26 @@ func (s *Session) injectRuntimeFacts(envelope string) {
 			break
 		}
 	}
+	if s.memory != nil {
+		if _, available := s.gate.catalog.Lookup(protocol.ToolRecall); available {
+			records, err := s.memory.List(ctx)
+			if err != nil {
+				return err
+			}
+			if len(records) != 0 {
+				index, err := s.memory.Index(ctx)
+				if err != nil {
+					return err
+				}
+				parts = append(parts, "Known user memories (use `recall` for full text):\n"+index)
+			}
+		}
+	}
 	facts := strings.Join(parts, "\n\n")
 	changed := facts != s.runtimeFacts
 	s.runtimeFacts = facts
 	if changed && facts != "" {
 		s.appendMessages(protocol.Message{Role: protocol.RoleUser, Content: protocol.PlainContent("<runtime-state>\n" + facts + "\n</runtime-state>")})
 	}
+	return nil
 }

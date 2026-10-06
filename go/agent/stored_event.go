@@ -84,6 +84,16 @@ func storedGrant(tokens []string) GrantCandidate {
 func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent, error) {
 	event := SessionEvent{kind: kind}
 	switch kind {
+	case EventMemory:
+		v, err := storedPayload[MemoryEvent](data)
+		if err != nil {
+			return event, err
+		}
+		if err := v.Validate(); err != nil {
+			return event, err
+		}
+		event.memory = v
+		return event, nil
 	case EventDecisionCompleted:
 		v, err := storedPayload[DecisionCompletedEvent](data)
 		event.decisionCompleted = v

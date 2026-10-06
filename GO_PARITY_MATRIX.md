@@ -214,3 +214,14 @@ explicit runtime/managed tools retain bound owner stores and selected-child
 sharing. Native malformed non-string payloads are refused at the typed boundary.
 Default tools/launcher activation, automatic memory selection/extraction/
 consolidation, context index and capture/routes remain pending.
+
+Memory context progress: snapshot 66 executes 12 actual source selection side
+queries and change-only runtime-facts cases. Native optional memory tools now
+default automatic selection on, with detached MemoryAuto=false override.
+Prepared input, request tail/budget/absence of tools/system, model fault fallback,
+ordered duplicate/bool indices, owner isolation, unchanged live meter and typed
+load events match. Native JSON rejects nonfinite values into lexical fallback;
+transcript/lease authority failures propagate. Runtime index requires recall,
+independently of the auto flag. Full native turn and cancellation tests exercise
+request integration. Extraction/consolidation, healthy-endpoint capture and
+launcher/default activation remain pending.

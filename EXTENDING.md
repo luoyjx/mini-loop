@@ -1241,9 +1241,20 @@ durable sink; gate masking protects recorded inputs and returned observations.
 Recall renders the source provenance wrapper and lexical search's five-record
 limit. A selected in-process child keeps the parent's scoped store and is
 subject to its own role and permission mode; default role capabilities still
-omit these tools. No automatic selection/extraction/consolidation or context
-integration is activated by this selection. Those lifecycle components, capture/
-preview/routes and launcher root configuration remain pending.
+omit these tools. With both present, automatic selection defaults on; explicit
+RuntimeConfig/ManagerServices.MemoryAuto=false disables it, with copied values.
+The selection request has purpose memory_selection, budget 200, no system/tools
+and the source 4,000-character query tail. It follows normal provider/recovery/
+cache/limiter/event behavior and never anchors the live conversation meter.
+Valid indices retain order/duplicates, including source boolean-as-integer
+behavior; invalid or empty selections and provider faults fall back to lexical
+search. Cancellation and native persistence authority failures propagate.
+The native JSON boundary rejects nonfinite/malformed JSON and uses fallback.
+Selected reference blocks follow rewritten input; a typed memory/load event is
+serialized and decoded for archival reads without granting authority. The dynamic
+index is sent in changed runtime facts only with recall, even when automatic
+selection is disabled. Extraction/consolidation, capture/preview/routes and
+launcher root configuration remain pending.
 
 ### Go trusted session resource binding
 

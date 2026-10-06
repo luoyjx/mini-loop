@@ -112,7 +112,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools implemented; launcher root selection and memory lifecycle remain; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; launcher root selection and extraction/consolidation remain; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next decision slices
@@ -5132,4 +5132,78 @@ zero errors/warnings. Specification SHA-256:
 1c802ed52c44090cc27cba32e78b3619159fe165fd0382b1d964a26d2d8e2a6f (40,312 bytes).
 HTML SHA-256: c235242311cda03a89b7a6a818b5dc2007614dd6b7feec2282d3e689088850e3
 (682,112 bytes). Visual inspection remains skipped after the earlier local-file
+access denial; renderer acceptance is not visual inspection.
+
+## Implementation checkpoint — 2026-10-06 automatic memory selection/context
+
+Base: 2c4effd. G1/G6 advance; G0–G7 remain open. Both selected memory tools
+now enable automatic selection by default, matching source memory_enabled.
+Explicit RuntimeConfig/ManagerServices.MemoryAuto=false disables selection;
+construction copies the option and selected children inherit its value.
+Carrying a resource bundle without the tool pair still enables no selection.
+
+After prompt rewriting and before appending the user message, a scoped List
+produces the source index/name/description catalogue. A 200-token memory_selection
+request carries only one user message, with the last 4,000 Unicode codepoints
+of rewritten input and no system/tools. Normal cache/provider/stream/recovery/
+limiter/event flow remains active, including configured recovery model changes;
+this is the source's ordinary side request, not the isolated decision query.
+Its usage is recorded but does not observe the live conversation token meter.
+Selected integer indices preserve order/duplicates and Python bool-as-int
+behavior; floats and other values are ignored. Empty/invalid selections or
+provider failures use scoped lexical search. Cancellation propagates; native
+transcript/lease failures are preserved instead of converted to fallback.
+Native JSON parsing uses standard finite JSON: source's permissive nonfinite
+JSON values lead to lexical fallback at the native boundary.
+
+Selected blocks use source provenance wrappers inside memory_context and emit
+a closed MemoryEvent load/count variant. Flat serialization and archival decoding
+retain informational provenance without restoring authority. The runtime-facts
+message now includes a scoped nonempty memory index only when recall exists.
+It is appended only on change, even when automatic selection is disabled.
+Store errors propagate; no stale index is silently substituted.
+
+Snapshot 66 executes actual prepare_memory_context / Agent._create and the source
+runtime_facts injector in 12 cases: selected order, duplicate/bool/float indices,
+empty/malformed/provider-failure lexical fallback, misses, empty owner store,
+disabled auto, absent recall/remember, Unicode tail and extra bracket rejection.
+Foreign records never enter the selection catalogue or index. Native tests
+compare prepared input, actual request fields, load events, unchanged token
+meter and change-only facts. Additional full-turn tests pin prompt-hook order
+and main request integration; cancellation cannot append a turn or load fallback.
+The existing selected-child test provider now routes by request purpose and
+actual tool-result presence, because memory index injection adds a user message.
+
+Remaining: extraction/consolidation and healthy-endpoint capture, launcher root/
+default activation, capture/preview/routes, teams, native SQL and remaining groups.
+Coverage is not refreshed; no new dependency or dynamic domain payload is added.
+
+Validation: focused selection/context/full-turn/child/cancellation tests passed.
+Final `go test ./...` passed (agent 11.436s); final `go test -race ./...` passed
+(agent 28.078s); `go vet ./...` passed. Exporter `--check` confirmed 66 files
+current; previous generated snapshots remained byte-identical. `verify_scans.py`
+confirmed all 19 scanning guards anchored. Source index-shown-without-the-tool
+mutation was caught. Native automatic-selection, runtime-index-change and
+live-meter mutations were caught by their intended assertions.
+
+Mutation audit: the first runtime-index mutation failed compilation because it
+left changed unused; it was not counted. The repaired mutation retains a used
+tautological expression and fails on repeated facts. The first live-meter
+mutation escaped: the native test provider reported zero input tokens, which
+Observe intentionally ignores. Its selection reply now reports the same 777
+input / 3 output tokens as the actual source probe. The mutation then fails on
+changed meter state. Full Go/race gates were rerun after this test repair.
+
+After all other verification jobs terminated, the full Python suite ran alone:
+2,151 passed, 28 skipped and 24 subtests passed in 84.96s, with three dependency
+deprecation warnings. No Python package module changed, so package invariants
+were not rerun. README outline and `git diff --check` passed. Initial exporter
+generation printed an unknown-child cleanup warning and exited successfully;
+the final `--check` completed successfully without that cleanup message.
+
+Archify regenerated the canonical artifact with 9/9 showcase checks and zero
+errors/warnings. Specification SHA-256:
+286489e709a666d0cd010de53f3e985a74d41480918e87739123ca346c82cbcf (40,939 bytes).
+HTML SHA-256: c4faade9289d055a20c455737b9984180ba5bcada3ed30bf7dcd98423e4f4562
+(682,745 bytes). Visual inspection remains skipped after the earlier local-file
 access denial; renderer acceptance is not visual inspection.
