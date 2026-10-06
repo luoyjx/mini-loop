@@ -5318,6 +5318,65 @@ def _memory_store_contracts(scratch: Path) -> dict:
     return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "memory.py").read_bytes()).hexdigest())
 
 
+def _owner_resource_contracts(scratch: Path) -> dict:
+    """Actual immutable resource caches, owner-local logs and mutable memory."""
+    from mini_loop.user_resources import UserResourceResolver
+    from mini_loop.skills import SkillLoader
+    from mini_loop.memory import ScopedMemory
+    from mini_loop.secrets import SecretRegistry
+    cases = []
+    def file(source, name, text, owner=""):
+        return dict(source=source, owner=owner, name=name, text=text)
+    def add(name, files, steps, secret=""):
+        base=scratch/name; agent_dir=base/"agent"; root=base/"users"
+        agent_dir.mkdir(parents=True);root.mkdir()
+        def write(row):
+            directory=agent_dir if row["source"]=="agent" else root/UserResourceResolver._owner_key(row["owner"])/"skills"
+            path=directory/row["name"]/"SKILL.md";path.parent.mkdir(parents=True,exist_ok=True);path.write_text(row["text"],encoding="utf-8")
+        for row in files: write(row)
+        agent=SkillLoader(agent_dir)
+        secrets=None
+        if secret: secrets=SecretRegistry();secrets.register("TEST_SECRET",secret)
+        resolver=UserResourceResolver(root,agent,secrets)
+        pinned={};results=[]
+        for step in steps:
+            row=dict(step);owner=step.get("owner","");op=step["op"]
+            if op=="file":write(step["file"])
+            elif op=="resolve":
+                resource=resolver.for_owner(owner);old=pinned.get(owner);pinned.setdefault(owner,resource)
+                row.update(cached=old is resource if old is not None else False,scope=resource.scope,
+                           key=resource.root.name,descriptions=resource.skills.descriptions())
+            elif op=="new-resolver":resolver=UserResourceResolver(root,agent,secrets)
+            elif op=="load":
+                resource=resolver.for_owner(owner);output=resource.skills.load(step["name"])
+                row.update(output=output,failed=output.startswith("Error:"))
+            elif op=="remember":
+                row["output"]=ScopedMemory(resolver.for_owner(owner).memory,owner).write(step["name"],"project","",step["body"])
+            elif op=="index":row["output"]=ScopedMemory(resolver.for_owner(owner).memory,owner).index()
+            elif op=="problems":
+                normalize=lambda text:text.replace(str(root),"$USERS").replace(str(agent_dir),"$AGENT")
+                row["problems"]=[normalize(str(p)) for p in resolver.problems]
+                row["local_problems"]=[normalize(str(p)) for p in resolver.for_owner(owner).skills.problems]
+            else:raise AssertionError(op)
+            results.append(row)
+        cases.append(dict(name=name,files=files,steps=results,secret=secret))
+    skill=lambda name,body: f'---\nname: {name}\ndescription: {name} description\n---\n{body}'
+    add("owners",[file("agent","shared",skill("shared","agent")),
+        file("user","shared",skill("shared","alice"),"alice"),file("user","only",skill("only","bob"),"bob")],
+        [*[dict(op="resolve",owner=o) for o in ("alice","bob"," alice ","é","e\u0301","alice")],
+         dict(op="load",owner="alice",name="shared"),dict(op="load",owner="alice",name="user:shared"),
+         dict(op="load",owner="bob",name="shared"),dict(op="load",owner="bob",name="user:shared"),
+         dict(op="remember",owner="alice",name="one",body="private-alice"),dict(op="index",owner="bob"),dict(op="index",owner="alice")])
+    add("snapshot",[],[dict(op="resolve",owner="alice"),dict(op="file",file=file("user","later",skill("later","new"),"alice")),
+        dict(op="resolve",owner="alice"),dict(op="load",owner="alice",name="later"),dict(op="new-resolver"),
+        dict(op="resolve",owner="alice"),dict(op="load",owner="alice",name="later")])
+    bad="---\nname: bad/name\n---\nrefused"
+    add("problems",[file("agent","bad",bad),file("user","bad",bad,"alice"),file("user","other",bad,"bob")],
+        [dict(op="resolve",owner="alice"),dict(op="problems",owner="alice"),dict(op="resolve",owner="bob"),dict(op="problems",owner="alice"),dict(op="problems",owner="bob")])
+    add("masked",[],[dict(op="resolve",owner="alice"),dict(op="remember",owner="alice",name="one",body="token-secret-12345"),dict(op="index",owner="alice")],secret="token-secret-12345")
+    return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT/"mini_loop"/"user_resources.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5433,6 +5492,7 @@ def _snapshot() -> dict[str, bytes]:
         owner_directory_contracts = _owner_directory_contracts(Path(scratch) / "owner-directories")
         layered_skill_contracts = _layered_skill_contracts(Path(scratch) / "layered-skills")
         memory_store_contracts = _memory_store_contracts(Path(scratch) / "memory-store")
+        owner_resource_contracts = _owner_resource_contracts(Path(scratch) / "owner-resources")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5508,6 +5568,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-owner-directories.json": _json_bytes(owner_directory_contracts),
         "python-layered-skills.json": _json_bytes(layered_skill_contracts),
         "python-memory-store.json": _json_bytes(memory_store_contracts),
+        "python-owner-resources.json": _json_bytes(owner_resource_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

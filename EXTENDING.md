@@ -1159,6 +1159,16 @@ Store all-owner views/replacement remain operator operations. Resource bundles
 and runtime extraction/tool activation remain pending; do not inject the raw
 store into an owner-facing handler.
 
+### Go owner resource snapshots
+
+`userresources.NewResolver` takes a concrete deployment catalogue and optional
+typed memory masker. ForOwner resolves a trusted exact owner into immutable
+Resources; Skills() is a concrete LayeredCatalog and Memory() a bound ScopedStore.
+Keep this snapshot for the live session and its selected descendants. Successful
+cache entries never silently rebind; cancelled/failed builds are not published.
+Problems(ctx) is operator-only and derives a fresh bounded view from owner-local
+logs. Publication and managed session activation are still pending.
+
 ## 6. LLM / provider — the client
 
 Any object exposing `await client.messages.create(model=, messages=, tools=,

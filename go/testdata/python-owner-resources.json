@@ -1,0 +1,285 @@
+{
+  "cases": [
+    {
+      "files": [
+        {
+          "name": "shared",
+          "owner": "",
+          "source": "agent",
+          "text": "---\nname: shared\ndescription: shared description\n---\nagent"
+        },
+        {
+          "name": "shared",
+          "owner": "alice",
+          "source": "user",
+          "text": "---\nname: shared\ndescription: shared description\n---\nalice"
+        },
+        {
+          "name": "only",
+          "owner": "bob",
+          "source": "user",
+          "text": "---\nname: only\ndescription: only description\n---\nbob"
+        }
+      ],
+      "name": "owners",
+      "secret": "",
+      "steps": [
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  - agent:shared [digest=d4f0bc5a29de06b5]: shared description\nUser-scoped skills:\n  - user:shared [digest=2bd806c97f0e00af]: shared description",
+          "key": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+          "op": "resolve",
+          "owner": "alice",
+          "scope": "user"
+        },
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  - agent:shared [digest=d4f0bc5a29de06b5]: shared description\nUser-scoped skills:\n  - user:only [digest=81b637d8fcd2c6da]: only description",
+          "key": "u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9",
+          "op": "resolve",
+          "owner": "bob",
+          "scope": "user"
+        },
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  - agent:shared [digest=d4f0bc5a29de06b5]: shared description\nUser-scoped skills:\n  (none)",
+          "key": "u-ab00452d2fe5cced3f8adeedb941ff63efa3f3af4befaf095aac5cb965934ba9",
+          "op": "resolve",
+          "owner": " alice ",
+          "scope": "user"
+        },
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  - agent:shared [digest=d4f0bc5a29de06b5]: shared description\nUser-scoped skills:\n  (none)",
+          "key": "u-4a99557e4033c3539de2eb65472017cad5f9557f7a0625a09f1c3f6e2ba69c4c",
+          "op": "resolve",
+          "owner": "é",
+          "scope": "user"
+        },
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  - agent:shared [digest=d4f0bc5a29de06b5]: shared description\nUser-scoped skills:\n  (none)",
+          "key": "u-bf12767b0f2a56b2190075bae8169f656e3ce8d6357d4aff184bc6c7ea48f9f6",
+          "op": "resolve",
+          "owner": "é",
+          "scope": "user"
+        },
+        {
+          "cached": true,
+          "descriptions": "Agent-provided skills:\n  - agent:shared [digest=d4f0bc5a29de06b5]: shared description\nUser-scoped skills:\n  - user:shared [digest=2bd806c97f0e00af]: shared description",
+          "key": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+          "op": "resolve",
+          "owner": "alice",
+          "scope": "user"
+        },
+        {
+          "failed": true,
+          "name": "shared",
+          "op": "load",
+          "output": "Error: Ambiguous skill 'shared'; choose agent:shared or user:shared or pass scope='agent'/'user'",
+          "owner": "alice"
+        },
+        {
+          "failed": false,
+          "name": "user:shared",
+          "op": "load",
+          "output": "<skill name=\"shared\" source=\"user\" digest=\"2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90\">\nalice\n</skill>",
+          "owner": "alice"
+        },
+        {
+          "failed": false,
+          "name": "shared",
+          "op": "load",
+          "output": "<skill name=\"shared\" source=\"agent\" digest=\"d4f0bc5a29de06b510f9aa428f1eedba926012b591fef7a518e776a7c9bd1824\">\nagent\n</skill>",
+          "owner": "bob"
+        },
+        {
+          "failed": true,
+          "name": "user:shared",
+          "op": "load",
+          "output": "Error: Unknown user skill 'shared'. Available: user:only",
+          "owner": "bob"
+        },
+        {
+          "body": "private-alice",
+          "name": "one",
+          "op": "remember",
+          "output": "Remembered 'one' (project)",
+          "owner": "alice"
+        },
+        {
+          "op": "index",
+          "output": "(no memories yet)",
+          "owner": "bob"
+        },
+        {
+          "op": "index",
+          "output": "  - one [project]: ",
+          "owner": "alice"
+        }
+      ]
+    },
+    {
+      "files": [],
+      "name": "snapshot",
+      "secret": "",
+      "steps": [
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "key": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+          "op": "resolve",
+          "owner": "alice",
+          "scope": "user"
+        },
+        {
+          "file": {
+            "name": "later",
+            "owner": "alice",
+            "source": "user",
+            "text": "---\nname: later\ndescription: later description\n---\nnew"
+          },
+          "op": "file"
+        },
+        {
+          "cached": true,
+          "descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "key": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+          "op": "resolve",
+          "owner": "alice",
+          "scope": "user"
+        },
+        {
+          "failed": true,
+          "name": "later",
+          "op": "load",
+          "output": "Error: Unknown skill 'later'. Available: (none)",
+          "owner": "alice"
+        },
+        {
+          "op": "new-resolver"
+        },
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:later [digest=11507a0e2f5e69d5]: later description",
+          "key": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+          "op": "resolve",
+          "owner": "alice",
+          "scope": "user"
+        },
+        {
+          "failed": false,
+          "name": "later",
+          "op": "load",
+          "output": "<skill name=\"later\" source=\"user\" digest=\"11507a0e2f5e69d5dfa40a62a1bd7b6ee57e6bcd85c67c9b8431b36fff21c437\">\nnew\n</skill>",
+          "owner": "alice"
+        }
+      ]
+    },
+    {
+      "files": [
+        {
+          "name": "bad",
+          "owner": "",
+          "source": "agent",
+          "text": "---\nname: bad/name\n---\nrefused"
+        },
+        {
+          "name": "bad",
+          "owner": "alice",
+          "source": "user",
+          "text": "---\nname: bad/name\n---\nrefused"
+        },
+        {
+          "name": "other",
+          "owner": "bob",
+          "source": "user",
+          "text": "---\nname: bad/name\n---\nrefused"
+        }
+      ],
+      "name": "problems",
+      "secret": "",
+      "steps": [
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "key": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+          "op": "resolve",
+          "owner": "alice",
+          "scope": "user"
+        },
+        {
+          "local_problems": [
+            "agent: $AGENT/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+            "user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name"
+          ],
+          "op": "problems",
+          "owner": "alice",
+          "problems": [
+            "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name"
+          ]
+        },
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "key": "u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9",
+          "op": "resolve",
+          "owner": "bob",
+          "scope": "user"
+        },
+        {
+          "local_problems": [
+            "agent: $AGENT/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+            "user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name"
+          ],
+          "op": "problems",
+          "owner": "alice",
+          "problems": [
+            "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+            "u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9: user: /private$USERS/u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9/skills/other/SKILL.md: refused, 'bad/name' is not a valid skill name"
+          ]
+        },
+        {
+          "local_problems": [
+            "agent: $AGENT/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+            "user: /private$USERS/u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9/skills/other/SKILL.md: refused, 'bad/name' is not a valid skill name"
+          ],
+          "op": "problems",
+          "owner": "bob",
+          "problems": [
+            "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90: user: /private$USERS/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90/skills/bad/SKILL.md: refused, 'bad/name' is not a valid skill name",
+            "u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9: user: /private$USERS/u-81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9/skills/other/SKILL.md: refused, 'bad/name' is not a valid skill name"
+          ]
+        }
+      ]
+    },
+    {
+      "files": [],
+      "name": "masked",
+      "secret": "token-secret-12345",
+      "steps": [
+        {
+          "cached": false,
+          "descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "key": "u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+          "op": "resolve",
+          "owner": "alice",
+          "scope": "user"
+        },
+        {
+          "body": "token-secret-12345",
+          "name": "one",
+          "op": "remember",
+          "output": "Remembered 'one' (project)",
+          "owner": "alice"
+        },
+        {
+          "op": "index",
+          "output": "  - one [project]: ",
+          "owner": "alice"
+        }
+      ]
+    }
+  ],
+  "source_sha256": "c92644f64cd19f34e34b5efcc7defce5005896d3e1f5cfe1cac2d98c26df4549"
+}

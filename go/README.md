@@ -1476,3 +1476,32 @@ Cache semantics can retain same-mtime/same-size external edits, matching source;
 multi-file replacement is not transactional or cross-process fenced. No LLM
 extraction/consolidation, runtime memory tools, owner resource bundle, manager/
 restore/child binding or configuration activation ships yet.
+
+### Immutable owner resource snapshots
+
+`userresources.NewResolver(ctx, root, agentCatalog, masker)` composes the existing
+private directory policy, concrete agent/user skill catalogues and typed memory
+store. `ForOwner(ctx, OwnerID)` validates the exact identifier and caches one
+complete Resources value, with private binding fields and operator-only path
+accessors. Memory() returns a ScopedStore directly, a stronger boundary than
+Python's raw store inside its frozen bundle. It has no owner override.
+
+Serialized construction and context checks admit the cache only after all
+services exist. Failed/cancelled construction can leave uncached directories;
+retry rechecks every directory rather than reusing a partial directory cache.
+Cached successful bindings preserve their original catalogue and memory service.
+A new resolver reads later user skill edits; live old snapshots remain pinned,
+and changed source files still refuse through the shared skill verifier.
+
+Problems(ctx) is a detached bounded operator projection in owner-resolution
+order. It summarizes repeated local reports with source-compatible counts,
+prefixes opaque owner directory keys and omits agent diagnostics already audited
+through the deployment catalogue. It does not make one owner's model catalogue
+share another owner's mutable log. Snapshot 61 compares four actual Python
+resource/cache/log/memory scenarios; native tests add concurrent reuse, failure/
+retry rechecks, cancellation and invalid-construction side-effect refusal.
+
+This explicit composition library creates full resource bundles; create-only
+skill publication, future-session refresh, manager/restore/child inheritance,
+configuration, scoped serving and memory lifecycle/tool activation remain open.
+Directory checks remain process-local checks, not filesystem fencing.

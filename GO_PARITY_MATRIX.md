@@ -157,3 +157,11 @@ and masking. Context cancellation, private temporary modes and closed scoped API
 are native additions; imported bodies retain source full reads and mtime/size
 cache behavior. LLM selection/extraction/consolidation, tools and trusted runtime
 resource composition remain pending.
+
+Owner resource composition progress: snapshot 61 compares actual Python frozen
+bundles, exact owner caches, fixed skill snapshots, independent user logs,
+operator diagnostics, masked memory and owner isolation. Native Resources uses
+private binding fields and returns ScopedStore directly; completed cache values
+are shared, failed builds are uncached and retries recheck links. Four source
+scenarios and native concurrency/cancellation/retry checks pass. Publication,
+manager/restore/child composition, configuration and routes remain pending.

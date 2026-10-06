@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `e437b99` plus typed owner memory storage).
+reviewed **2026-10-06** (Go baseline `b56bb4b` plus immutable owner resource snapshots).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -377,7 +377,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · atomic replacement<br/>operator owner directories / memory · session binding pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · atomic replacement<br/>operator owner resource snapshots · session binding pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -545,8 +545,11 @@ refusal, a shared prompt budget and source-owned serve-time verification; it is
 an operator composition library until trusted session binding is implemented.
 `go/memory` now provides typed Markdown Store/ScopedStore libraries: exact owner
 keys, scoped replacement, lexical search, lazy index/cache and secret masking.
-Extraction/consolidation queries, memory tools and session resource binding are
-not activated yet.
+`userresources.NewResolver` now composes exact-owner directory, layered skill and
+bound memory snapshots, caching only complete bindings. Its operator problem
+view preserves owner-local logs and skips shared deployment diagnostics.
+Extraction/consolidation queries, memory tools, publication and managed session
+resource binding are not activated yet.
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,
