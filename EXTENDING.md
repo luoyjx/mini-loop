@@ -1316,6 +1316,30 @@ Do not Consume before publication, because a publication fault must retain the
 reviewed draft. This is a library only: admitted-turn projection, model preview,
 manager binding and authenticated routes remain subsequent work.
 
+### Go skill evidence projections
+
+ProjectSessionText accepts typed protocol messages and implements the legacy
+current-epoch fallback: strip greedy lowercase memory wrappers, unwrap whole
+interjections, exclude internal markers and discard user block arrays as a unit.
+Assistant blocks contribute cleaned text only; thinking/tool data are excluded.
+Compaction markers set the exclusion flag even when their text is filtered out.
+Python whitespace/IGNORECASE and Unicode 14 word boundaries are preserved.
+
+ProjectAuthenticatedText takes already-admitted AuthenticatedText rows. It keeps
+nonempty user/assistant text verbatim, including internal-looking strings, and
+carries prior omissions/excluded-history flags. Neither function establishes
+provenance. The future trusted ledger must enforce admission before using this
+seam; legacy blacklist filtering is not a substitute for provenance.
+
+Both mask the two fixed display fields and their keys before budgeting, then keep
+a suffix of whole messages by compact non-ASCII sorted-key Python JSON character
+cost, including commas/brackets, capped at 40,000. ProjectedText holds only fixed
+content/label/key values; MarshalJSON uses a temporary string map at the boundary
+for source key masking/collisions. A masked ProjectionLabel is data, never a
+provider role. Returned arrays are detached. Native positive-limit and UTF-8
+refusals are typed errors rather than source ValueError/dynamic malformed rows.
+The two helpers have no manager/runtime/HTTP binding or model/file effect.
+
 ### Go trusted session resource binding
 
 `ManagerServices.UserResources` accepts a concrete Resolver and defaults to nil.

@@ -9,13 +9,15 @@ TARGET = Path(__file__).resolve().parents[2] / 'go/internal/pytext/python_case_d
 
 
 def render() -> str:
-    lower, upper, cased, ignorable = [], [], [], []
+    lower, upper, cased, ignorable, word = [], [], [], [], []
     for ordinal in range(0x110000):
         char = chr(ordinal)
         if char.lower() != char:
             lower.append((ordinal, char.lower()))
         if char.upper() != char:
             upper.append((ordinal, char.upper()))
+        if char.isalnum() or char == "_":
+            word.append(ordinal)
         is_cased = char.islower() or char.isupper() or char.istitle()
         if is_cased:
             cased.append(ordinal)
@@ -38,7 +40,7 @@ def render() -> str:
         lines.append(f'var {name} = [...]caseMapping{{')
         lines += [f'\t{{0x{ordinal:x}, {json.dumps(value, ensure_ascii=False)}}},' for ordinal, value in values]
         lines += ['}', '']
-    for name, values in [('pythonCased', cased), ('pythonCaseIgnorable', ignorable)]:
+    for name, values in [('pythonCased', cased), ('pythonCaseIgnorable', ignorable), ('pythonWord', word)]:
         lines.append(f'var {name} = [...]caseRange{{')
         lines += [f'\t{{0x{first:x}, 0x{last:x}}},' for first, last in ranges(values)]
         lines += ['}', '']

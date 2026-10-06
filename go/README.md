@@ -1576,3 +1576,28 @@ as source does; the future candidate parser must validate evidence against its
 projection. There is no manager/launcher injection, model preview, authenticated
 turn projection or HTTP skill route yet. Publication should retain a Peek handle
 until successful durable commit, then discard it; Consume is not a pre-commit step.
+
+
+### Pure skill evidence projection
+
+userresources.ProjectSessionText preserves the source legacy projection over
+protocol.Message: only cleaned ordinary plain user text and assistant text
+blocks survive. User arrays are dropped completely; recalled memory is stripped
+greedily through the final closing wrapper, malformed wrappers are excluded,
+whole user-interjection wrappers unwrap, and known internal markers are excluded.
+Compaction/snipping flags remain visible without their text. Python whitespace,
+IGNORECASE dotted/dotless i and Unicode 14 word boundaries are explicit; the
+shared Unicode exporter now generates the word table along with casing.
+
+ProjectAuthenticatedText accepts already-admitted typed text and preserves its
+nonempty content verbatim. Callers retain provenance responsibility. Both mask
+before fitting a whole-message suffix into compact Unicode Python JSON, with a
+40,000-character cap and source coverage/omission flags. Display role labels and
+the two fixed JSON keys can be masked, including key collisions; these are data
+labels, not provider roles. A transient map is used only by MarshalJSON; domain
+values retain no open payload. Positive integer limits and UTF-8 are checked;
+malformed dynamic protocol data is rejected earlier at native typed boundaries.
+Snapshot 72 compares 38 actual source projections, with deterministic repeats
+for large budget cases, exact JSON hashes, omissions, coverage and exclusion flags.
+No ledger capture, manager binding, model preview or authenticated skill route is
+added here. Those remain the next integration slices.

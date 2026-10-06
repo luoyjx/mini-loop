@@ -286,3 +286,18 @@ Native tests add 32 concurrent consumers, detached evidence and hidden authority
 Configuration uses typed durations and safe errors (Python uses ValueError);
 initial entropy failure occurs before quota mutation. Model preview/projection,
 manager injection and authenticated skill routes are still pending.
+
+
+Skill evidence projection progress (2026-10-07): snapshot 72 compares 38 actual
+source legacy/admitted-text cases, full compact Unicode JSON hashes and metadata.
+The native pure helpers preserve greedy recalled-memory stripping, malformed
+wrapper refusal, whole interjection handling, injected marker/compaction flags,
+assistant text-only blocks and complete user-array exclusion. Already-admitted
+text is preserved verbatim. Source whitespace/IGNORECASE and Unicode 14 word
+boundaries are pinned, including a Unicode 15 classification difference. Fixed
+field strings/keys mask before whole-message suffix budgeting, including key
+collisions and role-label redaction; labels establish no provider role. Exact
+brackets/commas/escapes/Unicode cost, 40k cap, omissions and coverage match. Native
+limits/UTF-8/typed protocol validation are stricter at malformed boundaries.
+Provenance ledger capture, model preview and authenticated skill routes remain
+pending; legacy filtering does not grant admission.

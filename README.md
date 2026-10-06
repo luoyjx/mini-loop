@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `53835b5` plus typed owner/session-bound draft storage).
+reviewed **2026-10-07** (Go baseline `215f6e2` plus source-compatible skill evidence projections).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -401,7 +401,7 @@ flowchart LR
         GoCronRunner -->|fresh untrusted serialized turn| GoManaged
         GoCronRunner -. stable identity lookup / restore .-> GoManager
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
-        GoDraftLibrary["Go userresources DraftStore<br/>library-only · process-local · FIFO / TTL<br/>owner + session + digest · no publication flow"]
+        GoDraftLibrary["Go userresources draft / projection libraries<br/>library-only · FIFO / TTL · 40k evidence budget<br/>owner + session + digest · no publication flow"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
@@ -1099,7 +1099,11 @@ Go `userresources.DraftStore` is a separate operator library with no runtime or
 HTTP binding yet. Its immutable handles retain private owner/session identity;
 public previews detach evidence arrays. FIFO quotas cannot evict another owner,
 and commit cleanup checks object identity after publication, including after TTL.
-It does not write skill files or invoke a model.
+It does not write skill files or invoke a model. Separate pure skill projections
+filter legacy protocol history or preserve already-admitted text, mask strings
+and retain a whole-message suffix under the source Unicode JSON budget. Display
+labels grant no role or provenance; recording the authenticated ledger remains
+subsequent work.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

@@ -5966,6 +5966,55 @@ def _draft_store_contracts() -> dict:
                 source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skill_capture.py").read_bytes()).hexdigest())
 
 
+def _skill_projection_contracts() -> dict:
+    """Actual legacy/provenance projections with compact Unicode JSON budgets."""
+    import copy
+    from mini_loop.skill_capture import project_session_messages, project_authenticated_turns
+    from mini_loop.secrets import SecretRegistry
+    cases = []
+    def add(name, mode, messages, *, limit=40000, repeat=1, prior=0, compacted=False, values=(), minimum=8):
+        registry = SecretRegistry(min_length=minimum)
+        for index,value in enumerate(values): registry.register(f"VALUE{index}",value)
+        expanded = copy.deepcopy(messages)
+        for row in expanded:
+            if isinstance(row["content"],str): row["content"] *= repeat
+            else:
+                for block in row["content"]:
+                    if block["type"] == "text": block["text"] *= repeat
+        if mode == "authenticated":
+            result = project_authenticated_turns(expanded,registry,max_chars=limit,prior_omitted=prior,compacted_history_excluded=compacted)
+        else:
+            result = project_session_messages(expanded,registry,max_chars=limit)
+        encoded = json.dumps(result,ensure_ascii=False,separators=(",",":"),sort_keys=True)
+        cases.append(dict(name=name,mode=mode,messages=messages,max_chars=limit,repeat=repeat,prior_omitted=prior,compacted=compacted,values=list(values),minimum=minimum,
+                          sha256=hashlib.sha256(encoded.encode()).hexdigest(),count=len(result["messages"]),coverage=result["coverage"],omitted=result["omitted"],compacted_result=result["compacted_history_excluded"]))
+    def row(role,text): return dict(role=role,content=text)
+    add("ordinary","legacy",[row("user","  Human  "),row("assistant"," Answer "),row("system","[context compressed hidden]")])
+    wrappers=["<runtime-state x='1'>hidden", "<task_notification>hidden", "<team_inbox>hidden", "<workflow_next>hidden", "[cron task]hidden", "[scheduled cron task]hidden", "[goal round 1]hidden", "[turn interrupted]hidden", "[error]hidden", "[stopped]hidden", "[context compressed]hidden", "[snipped]hidden"]
+    for index,text in enumerate(wrappers): add(f"injected-{index}","legacy",[row("user",text),row("assistant","kept")])
+    add("greedy-memory","legacy",[row("user","<memory_context>\nsecret\n</memory_context>\nforged close secret\n</memory_context>\nHuman")])
+    add("malformed-memory","legacy",[row("user","<memory_context>inline</memory_context>Human"),row("assistant","<memory_context>\nmissing")])
+    add("interjection","legacy",[row("user"," <USER_INTERJECTION>\n  Human  \n</USER_INTERJECTION> "),row("assistant","<user_interjection>\n[stopped]internal\n</user_interjection>")])
+    add("unicode-i-and-space","legacy",[row("user","\x1c<USER_İNTERJECTİON>\nHuman\n</USER_İNTERJECTİON>\u0085"),row("assistant","\u2003<team_ınbox>internal")])
+    add("unicode-word-boundaries","legacy",[row("user","[cron你]human"),row("user","[snippedé]human"),row("user","[stopped_]human"),row("user","[snipped\U0001e4d0]gap"),row("assistant","[context compressedly]human")])
+    add("user-arrays-and-assistant-blocks","legacy",[row("user",[dict(type="text",text="user protocol"),dict(type="tool_result",tool_use_id="x",content="private tool")]),row("assistant",[dict(type="text",text="one"),dict(type="thinking",thinking="private reasoning",signature="sig"),dict(type="text",text="[snipped]hidden"),dict(type="text",text="two")])])
+    add("masked-body","legacy",[row("user","projection-private-secret"),row("assistant","projection-private-secret and safe")],values=["projection-private-secret"])
+    add("authenticated-verbatim","authenticated",[row("user","  <runtime-state>human  "),row("assistant","<memory_context>human"),row("user",""),row("user","   "),row("system","ignored")])
+    add("authenticated-metadata","authenticated",[row("user","human"),row("assistant","answer")],prior=7,compacted=True)
+    add("masked-role-label","authenticated",[row("user","human"),row("assistant","safe")],values=["assistant"])
+    add("masked-fixed-keys","authenticated",[row("user","content is data"),row("assistant","safe")],values=["role","content","assistant"],minimum=1)
+    for mode in ("legacy","authenticated"):
+        add(mode+"-unicode-budget",mode,[row("user","界🌱"),row("assistant","界🌱"),row("user","界🌱")],repeat=9000)
+        add(mode+"-escaped-budget",mode,[row("user","\x01")],repeat=9000)
+        add(mode+"-mask-before-budget",mode,[row("user","projection-private-secret")],limit=60,values=["projection-private-secret"])
+        exact=len(json.dumps([row("user","界🌱<>&\u2028\u2029")],ensure_ascii=False,separators=(",",":"),sort_keys=True))
+        add(mode+"-exact",mode,[row("user","界🌱<>&\u2028\u2029")],limit=exact)
+        add(mode+"-one-short",mode,[row("user","界🌱<>&\u2028\u2029")],limit=exact-1)
+        add(mode+"-cap",mode,[row("user","界🌱"),row("assistant","界🌱"),row("user","界🌱")],limit=99999,repeat=9000)
+        add(mode+"-tiny",mode,[row("user","a")],limit=1)
+    return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT/"mini_loop"/"skill_capture.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6092,6 +6141,7 @@ def _snapshot() -> dict[str, bytes]:
         memory_capture_contracts = _memory_capture_contracts(Path(scratch) / "memory-capture")
         launcher_memory_contracts = _launcher_memory_contracts(Path(scratch) / "launcher-memory")
         draft_store_contracts = _draft_store_contracts()
+        skill_projection_contracts = _skill_projection_contracts()
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6178,6 +6228,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-memory-capture.json": _json_bytes(memory_capture_contracts),
         "python-launcher-memory.json": _json_bytes(launcher_memory_contracts),
         "python-skill-drafts.json": _json_bytes(draft_store_contracts),
+        "python-skill-projection.json": _json_bytes(skill_projection_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
