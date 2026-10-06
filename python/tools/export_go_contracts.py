@@ -5060,6 +5060,64 @@ def _decision_replay_contracts(scratch: Path) -> dict:
                                         *(PYTHON_ROOT / "mini_loop" / n for n in ("actions.py", "decisions.py", "decision_tools.py", "agent.py", "storage.py")))}}
 
 
+def _decision_sink_contracts(scratch: Path) -> dict:
+    """Actual escaped-result masking and cooperative gate cancellation."""
+    import asyncio
+    from mini_loop.agent import Agent
+    from mini_loop.actions import InMemoryActionJournal
+    from mini_loop.config import Settings
+    from mini_loop.decision_tools import install_decisions
+    from mini_loop.decisions import DecisionResult
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.registry import ToolRegistry, ToolCall
+    from mini_loop.secrets import SecretRegistry
+    scratch.mkdir(parents=True)
+    secret = 'clé-secret-"中文"-123'
+    request = {"state": {secret: [secret]}, "questions": {"q": {"type": "noul", "instructions": "Ready?"}}}
+    async def run():
+        events, requests = [], []
+        secrets = SecretRegistry(); secrets.register("canary", secret)
+        class Backend:
+            async def evaluate(self, request):
+                requests.append(request.to_dict())
+                return DecisionResult(provider="custom", model=secret, usage={}, probability_source="llm_estimate",
+                                      answers={"q": {"type": "noul", "noul": .9}})
+        registry = ToolRegistry(); install_decisions(registry, Backend())
+        async def emit(e): events.append(e)
+        journal = InMemoryActionJournal()
+        agent = Agent(client=FakeAsyncAnthropic(), workspace=scratch, tools=registry, secrets=secrets, emit=emit, llm_semaphore=asyncio.Semaphore(1),
+                      settings=Settings(fake_llm=True, skills_dir=scratch / "skills", spill_dir=None),
+                      state={"session_id": "sink", "action_journal": journal, "permission_mode": "auto"})
+        output = await agent._exec_tool(ToolCall("decision", request, "mask"))
+        if not output.startswith("{"):
+            raise RuntimeError("Decision sink recipe did not return structured output")
+        escaped = {"backend_request": requests[0], "output_model": json.loads(output)["model"],
+                   "metadata_models": [e["model"] for e in events if e["type"] == "decision_completed"]}
+        events.clear()
+        entered = asyncio.Event()
+        class Waiting:
+            async def evaluate(self, request):
+                entered.set()
+                await asyncio.Event().wait()
+        registry = ToolRegistry(); install_decisions(registry, Waiting()); agent.tools = registry
+        task = asyncio.create_task(agent._exec_tool(ToolCall("decision", request, "cancel")))
+        await entered.wait(); task.cancel()
+        cancelled = False
+        try:
+            await task
+        except asyncio.CancelledError:
+            cancelled = True
+        records = [r for r in journal._records.values() if r.tool_use_id == "cancel"]
+        return escaped, {"propagated": cancelled, "decision_completed": any(e["type"] == "decision_completed" for e in events),
+                         "decision_failed": any(e["type"] == "decision_failed" for e in events),
+                         "model_status": [e["status"] for e in events if e["type"] == "model_end"],
+                         "action_status": records[0].status, "permit": agent.semaphore._value}
+    escaped, cancellation = asyncio.run(run())
+    return {"secret": secret, "request": request, "escaped": escaped, "cancellation": cancellation,
+            "source_sha256": {n: hashlib.sha256((PYTHON_ROOT / "mini_loop" / n).read_bytes()).hexdigest()
+                              for n in ("agent.py", "decision_tools.py", "decisions.py", "secrets.py", "actions.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5170,6 +5228,7 @@ def _snapshot() -> dict[str, bytes]:
         decision_contracts = _decision_contracts(Path(scratch) / "decisions")
         decision_runtime_contracts = _decision_runtime_contracts(Path(scratch) / "decision-runtime")
         decision_replay_contracts = _decision_replay_contracts(Path(scratch) / "decision-replay")
+        decision_sink_contracts = _decision_sink_contracts(Path(scratch) / "decision-sinks")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5240,6 +5299,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-decisions.json": _json_bytes(decision_contracts),
         "python-decision-runtime.json": _json_bytes(decision_runtime_contracts),
         "python-decision-replay.json": _json_bytes(decision_replay_contracts),
+        "python-decision-sinks.json": _json_bytes(decision_sink_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

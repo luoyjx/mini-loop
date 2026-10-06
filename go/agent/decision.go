@@ -129,6 +129,11 @@ func (handler *runtimeHandler) executeDecision(ctx context.Context, authority To
 		handler.events.append(SessionEvent{kind: EventModelEnd, decisionModelEnd: &end})
 	}
 	handler.events.append(SessionEvent{kind: EventDecisionCompleted, decisionCompleted: DecisionCompletedEvent{Provider: result.Provider(), Model: result.Model(), ProbabilitySource: result.ProbabilitySource(), QuestionCount: len(request.Questions()), Usage: usage}})
-	encoded, err := result.MarshalJSON()
-	return string(encoded), err
+	// Mask the closed result before JSON escaping: model/provenance strings can
+	// contain registered values returned by the backend, independently of input.
+	var mask func(string) string
+	if session.secrets != nil {
+		mask = session.secrets.MaskText
+	}
+	return protocol.MaskedPythonJSON(result, mask, false, true)
 }

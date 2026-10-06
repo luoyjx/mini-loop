@@ -130,7 +130,8 @@ Record its parity evidence and remaining gaps before checking it off.
    cancellation and sink masking before claiming complete decision parity.
    Snapshot 55 now compares maximum-size replay, aggregate shedding and Unicode
    bounds with actual source memory/SQLite-reopen operations; native SQL reopen
-   and the remaining sink/cancellation audit remain open.
+   remains open. Snapshot 56 now compares cooperative cancellation and sink
+   masking, including a deliberately stronger native escaped-result guard.
 
 ### Next persistence slices
 
@@ -4603,3 +4604,45 @@ and completed without that warning. Scans: 19 anchored checks. Decision
 aggregate-budget mutation: caught. Full Python suite: 2151 passed, 28 skipped, 3 warnings, 24 subtests passed in 112.94s (0:01:52). Diff check and README outline pass. No Python package
 module changed, so invariants were not rerun. Runtime topology is unchanged;
 interactive architecture regeneration was not required for this test-only slice.
+
+## Implementation checkpoint — 2026-10-06 decision sinks and cancellation
+
+Snapshot 56 invokes actual Python Agent/common gate with registered quote/Unicode
+canary values and a cooperative cancelled backend. Explicit state/member names
+are masked before execution. Cancellation propagates, emits a cancelled custom
+model end, settles the journal as cancelled, emits neither decision_completed nor
+decision_failed, and releases a one-slot model semaphore. Native tests compare
+these outcomes and reacquire the shared permit under a bounded deadline.
+
+The source negative recipe returns a raw canary as the backend model. The bare
+Agent result retains the encoded secret: text masking after serialization cannot
+match the escaped quote. Its raw emit callback also receives that model; this is
+not a claim about source ManagedSession's separate sink masking. Go now masks
+the closed validated Result before JSON escaping with the existing typed
+projection encoder. The provider still returns its actual typed result; only
+output/recording projection is changed. No generic domain field is introduced.
+This deliberately stronger native guard closes the source output masking gap.
+
+A complete native managed tool turn inspects decoded JSON, including nested
+result strings, across next model request, live/SSE event projection, EventSink,
+private trajectories, stored event/message test backing and action journal.
+Remote decision requests match the source masked structure. Native SQL/restart
+and live-provider audits remain open; typed test storage is not SQLite proof.
+
+Validation: focused managed-sink and cancellation tests pass. Full Go tests and
+go vet pass. All 56 source contracts are current; no transport cleanup warning
+in this export. Scans: 19 anchored checks. verify_guards -k decision catches the
+source aggregate-budget mutation. Additional isolated Go mutation removes the
+pre-escape mask and is caught by the escaped-model sink test. Full Go race
+suite passes. Initial full Python run: 1 failed/2,150 passed; the unchanged
+40-turn performance test measured 0.513s against its 0.5s threshold while other
+verification tasks were active. Isolated recheck: 1 passed (0.49s pytest total).
+No threshold/runtime change. Standalone full-suite recheck: 2151 passed, 28 skipped, 4 warnings, 24 subtests passed in 116.88s (0:01:56). Diff check and README outline pass. No Python package module
+changed, so invariants were not rerun.
+
+Archify validate/deliver: showcase 9/9, zero errors/warnings. Specification
+58fce370566218be0c553020d7172b3dd8346073db55a013007632154a7fbc26
+(37,394 bytes); HTML 89598e18fde73d93c4534cceca7ebe269ef8df7fd3bf92dc5293ec9256a8eb28
+(679,101 bytes). Visual review remains skipped after prior local-file denial.
+Mermaid and boundary prose describe masking before escaping; default activation
+and ownership stay unchanged. G0–G7 remain open.

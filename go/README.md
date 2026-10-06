@@ -485,7 +485,12 @@ aggregate shedding. Native gate tests retain exact maximum-size bytes, replay
 from a fresh session, retain three of five maximum results under the shared
 budget, and preserve shed action identities without reexecution. Unicode bounds
 and recorded-tool reconciliation match source. Recreated stored adapters use a
-test backing; native SQLite/restart, remaining sink/cancellation audit and live
+test backing. Snapshot 56 compares cooperative cancellation, cancelled action
+settlement and permit release. Go also masks the closed backend result before
+JSON escaping, covering backend model strings with quote/Unicode secrets. Managed
+tests inspect nested decoded results across live/SSE, EventSink, journal, stored
+messages/events and private trajectories. This closes a source escaped-output
+masking gap recorded by the negative recipe. Native SQLite/restart and live
 provider verification remain pending.
 
 ### Use streaming model calls

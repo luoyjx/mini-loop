@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `036373c` plus source large-decision replay and retention audit).
+reviewed **2026-10-06** (Go baseline `36e59a4` plus decision result masking and cancellation audit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -361,7 +361,7 @@ flowchart LR
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
-        GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked explicit state · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
+        GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
@@ -526,7 +526,10 @@ remain authoritative during replay. The interactive map aggregates bound decisio
 handlers in Session Resources and transports in Go providers; its Go-path card
 explains the isolated query. The Go launcher now accepts MINILOOP_DECISIONS=llm
 or jev, retaining explicit backend precedence and credential-free inspection.
-The full source large-result replay/SQL restart audit remains pending. See [Go decisions](go/README.md#typed-decision-operator-library).
+Source snapshots cover large-result retention and cooperative cancellation.
+Go additionally masks the closed result before escaping to prevent encoded
+backend model values from leaking through output/journal/recording sinks.
+Native SQL restart and live-provider audit remain pending. See [Go decisions](go/README.md#typed-decision-operator-library).
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,

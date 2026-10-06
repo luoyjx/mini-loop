@@ -1,0 +1,52 @@
+{
+  "cancellation": {
+    "action_status": "cancelled",
+    "decision_completed": false,
+    "decision_failed": false,
+    "model_status": [
+      "cancelled"
+    ],
+    "permit": 1,
+    "propagated": true
+  },
+  "escaped": {
+    "backend_request": {
+      "questions": {
+        "q": {
+          "instructions": "Ready?",
+          "type": "noul"
+        }
+      },
+      "state": {
+        "<secret-hidden>": [
+          "<secret-hidden>"
+        ]
+      }
+    },
+    "metadata_models": [
+      "clé-secret-\"中文\"-123"
+    ],
+    "output_model": "clé-secret-\"中文\"-123"
+  },
+  "request": {
+    "questions": {
+      "q": {
+        "instructions": "Ready?",
+        "type": "noul"
+      }
+    },
+    "state": {
+      "clé-secret-\"中文\"-123": [
+        "clé-secret-\"中文\"-123"
+      ]
+    }
+  },
+  "secret": "clé-secret-\"中文\"-123",
+  "source_sha256": {
+    "actions.py": "88e79470f10061ed628966ea70417d67d28171ffefbd2c2e5d6bde0a35f746eb",
+    "agent.py": "c8e88035edc59d81812bc8b0d83e56519eb93427898d332d3cef4d2be66263b6",
+    "decision_tools.py": "77a9d49ea5e88557200b650f56c70aeb4b30de92844472a0fedda6860528c2e0",
+    "decisions.py": "fb7ed0e3888914149877334e39dbdc9e4af32c97e94400b37c466e811c718e91",
+    "secrets.py": "f87f520bbb5f03527bdaaa37107e0faa4aa438722c4f8f57ae204deb3e4c23f6"
+  }
+}

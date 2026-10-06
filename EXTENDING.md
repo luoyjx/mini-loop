@@ -296,7 +296,8 @@ mask/revalidate explicit state, and share the model limiter. Providers must hono
 contexts; arbitrary backend error text is omitted. The LLM child shares recovery
 and explicit peer provenance, with fresh history/tools/cache/meter and no stream.
 Typed decision metadata reaches existing sinks; full masked requests are private
-trajectory fields. Selected custom roles may inherit the tool; default child roles
+trajectory fields. Native tool results mask closed structures before JSON escaping,
+including backend model/provenance strings; typed provider results remain intact. Selected custom roles may inherit the tool; default child roles
 omit it. Results and replay confer no approval or execution authority. The native
 launcher now accepts MINILOOP_DECISIONS=llm or jev; Jev uses TYPESAFE_API_KEY and
 MINILOOP_DECISION_MODEL. Launcher Options can explicitly install/override the
