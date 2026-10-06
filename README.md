@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `4fa42e3` plus admitted-turn skill evidence capture).
+reviewed **2026-10-07** (Go baseline `0f2c268` plus typed skill candidate parsing).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -401,7 +401,7 @@ flowchart LR
         GoCronRunner -->|fresh untrusted serialized turn| GoManaged
         GoCronRunner -. stable identity lookup / restore .-> GoManager
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
-        GoDraftLibrary["Go userresources draft / projection libraries<br/>library-only · FIFO / TTL · 40k evidence budget<br/>owner + session + digest · no publication flow"]
+        GoDraftLibrary["Go userresources draft / evidence libraries<br/>library-only · FIFO / TTL · typed candidate parsing<br/>owner + session + digest · no publication flow"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -1113,8 +1113,12 @@ messages, preserving source omission counts. String-history compaction markers
 set a sticky exclusion flag. Short/unresolved or unavailable secret screening
 rejects new evidence and latches a preview refusal without failing the completed
 turn. Detached evidence is process-local, fresh per agent and not reconstructed
-from restored/forked history. Candidate generation and authenticated publication
-routes remain pending.
+from restored/forked history. The separate candidate parser now checks exact
+schema fields, recursive sensitive-output refusal, create/skip semantics and
+unique in-range integer evidence before canonical skill validation. It retains
+only typed validated fields; source JSON duplicate-key and nonfinite-type
+outcomes are preserved without retained nonfinite values. Model generation and
+authenticated publication routes remain pending.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

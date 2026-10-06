@@ -1572,11 +1572,24 @@ add evidence detachment, private JSON projection, copied limits and concurrent
 consumption. Typed duration/configuration errors and initial entropy failure use
 safe native errors; source config ValueError and malformed dynamic types have
 no direct domain counterpart. Store Add permits signed/duplicate integer evidence,
-as source does; the future candidate parser must validate evidence against its
+as source does; the candidate parser validates evidence against its
 projection. There is no manager/launcher injection, model preview, authenticated
 turn projection or HTTP skill route yet. Publication should retain a Peek handle
 until successful durable commit, then discard it; Consume is not a pre-commit step.
 
+
+### Typed skill candidate parsing
+
+userresources.ParseSkillCandidate returns an immutable SkillCandidate or a named
+CandidateError. Exact five-field schema checks precede recursive secret refusal,
+then decision, field types, strict integer evidence, empty skip and canonical
+create validation. Original strings and evidence order are retained; evidence
+accessors detach. It preserves source duplicate-key last-wins and nonfinite-type
+outcomes using transient JSON boundaries, with no dynamic retained payload or
+nonfinite domain value. Snapshot 74 compares 63 actual Python parser outcomes,
+accepted-field hashes and budget recipes. Native lone-surrogate/invalid-UTF-8
+refusals prevent lossy decoding; native masking panics have a safe named failure.
+This library adds no model request, route, durable effect or publication grant.
 
 ### Admitted-turn skill evidence capture
 
@@ -1592,7 +1605,7 @@ returns. Detached snapshots retain established-empty versus absent evidence.
 Projection checks the latch and masked canonical fields without granting roles.
 Snapshot 73 compares 20 actual Python recipes; native tests cover concurrent
 snapshots, contained faults, terminal order and real HTTP idempotent admission.
-Candidate parsing/model preview, manager draft injection and publication routes
+Model preview, manager draft injection and publication routes
 remain pending. Capture is not persisted or reconstructed from history.
 
 ### Pure skill evidence projection

@@ -1362,7 +1362,33 @@ capture_source_unavailable/503. Typed native storage cannot represent a corrupt
 dynamic Python state/list or omitted field. Masking faults/invalid UTF-8 use a
 safe capture_failed latch, never private host exceptions. Nothing is persisted
 or restored, and optional capture cannot fail a durably completed turn. Candidate
-parsing/model preview, manager draft injection and preview/commit routes remain.
+parsing is described below; model preview, manager draft injection and
+preview/commit routes remain.
+
+### Go skill candidate parsing
+
+ParseSkillCandidate accepts raw model text, the caller's requested name, projected
+message count and a trusted masker. It returns an immutable SkillCandidate with
+named create/skip decisions, original description/body and detached integer
+evidence, or a safe enumerated CandidateError. It grants no owner/publication
+authority. The five-field schema must match before recursive secret checks;
+masked fixed/nested keys or strings refuse sensitive_output before subsequent
+schema/decision/type validation. Description/body must be strings; evidence must
+be a list of integers, excluding booleans and float/exponent lexemes. Skip requires
+empty fields/evidence and does not validate the requested name. Create requires
+nonempty unique in-range evidence and reuses NewCanonicalSkill validation without
+normalizing its returned original fields.
+
+Transient RawMessage maps/arrays exist only during JSON boundary validation;
+they never enter domain/service state. Duplicate object keys retain the last
+value, including discarding overridden sensitive values as Python does. Bare
+NaN/Infinity/-Infinity lower to null only for invalid-type outcomes; quoted values
+are preserved and no nonfinite native value is stored. The source default
+4,300-digit integer ceiling is pinned by fixtures. Invalid UTF-8 and escaped lone
+surrogates refuse malformed_json before lossy decoding; Python can represent
+lone surrogate strings. Native masker panics return masking_unavailable without
+private error text. Registry health checks belong to the preview caller, matching
+the source parser's responsibility. Model preview/routes remain unbound.
 
 ### Go trusted session resource binding
 

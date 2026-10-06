@@ -6082,6 +6082,79 @@ def _skill_capture_contracts() -> dict:
     return dict(cases=cases, source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skill_capture.py").read_bytes()).hexdigest())
 
 
+def _skill_candidate_contracts() -> dict:
+    """Actual parser outcomes, including source validation order and JSON lexemes."""
+    import sys
+    from mini_loop.skill_capture import _parse_candidate
+    from mini_loop.secrets import SecretRegistry
+    cases = []
+    base = dict(schema="mini-loop.personal-skill-draft/v1", decision="create", description=" Useful recipe ", body=" Do this.\r\nThen that. ", evidence_indexes=[1, 0])
+
+    def add(name, fields=None, *, raw=None, requested_name="recipe", count=3, values=(), minimum=8, repeat_text="", repeat_count=0):
+        if raw is None:
+            raw = json.dumps(base if fields is None else fields, ensure_ascii=False, separators=(",", ":"))
+        expanded = raw.replace("__REPEAT__", repeat_text * repeat_count) if repeat_count else raw
+        registry = SecretRegistry(min_length=minimum)
+        for index, value in enumerate(values):
+            registry.register(f"VALUE{index}", value)
+        expected = dict(error="", decision="", sha256="")
+        try:
+            parsed = _parse_candidate(expanded, name=requested_name, message_count=count, secrets=registry)
+        except ValueError as error:
+            expected["error"] = str(error)
+        else:
+            if parsed == "skip":
+                result = dict(decision="skip", description="", body="", evidence_indexes=[])
+            else:
+                description, body, evidence = parsed
+                result = dict(decision="create", description=description, body=body, evidence_indexes=list(evidence))
+            expected["decision"] = result["decision"]
+            expected["sha256"] = hashlib.sha256(json.dumps(result, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode()).hexdigest()
+        cases.append(dict(name=name, raw=raw, requested_name=requested_name, message_count=count, values=list(values), minimum=minimum, repeat_text=repeat_text, repeat_count=repeat_count, expected=expected))
+
+    add("create-original-fields")
+    add("unicode-outer-trim", raw="\x1c" + json.dumps(base) + "\u0085")
+    add("skip", {**base, "decision":"skip", "description":"", "body":"", "evidence_indexes":[]}, requested_name="../invalid")
+    for name, raw in (("malformed", "{private malformed"), ("fenced", "```json\n{}\n```"), ("trailing", "{} {}"), ("root-list", "[]"), ("root-null", "null"), ("root-string", '"private"'), ("root-nan", "NaN")):
+        add(name, raw=raw)
+    add("missing-field", {key:value for key,value in base.items() if key != "body"})
+    add("extra-field", {**base, "extra":"candidate-private-secret"}, values=["candidate-private-secret"])
+    add("sensitive-body", {**base, "body":"candidate-private-secret"}, values=["candidate-private-secret"])
+    add("sensitive-nested-before-schema", {**base, "description":{"nested":"candidate-private-secret"}}, values=["candidate-private-secret"])
+    add("sensitive-nested-key-before-evidence", {**base, "evidence_indexes":[{"candidate-private-secret":"value"}]}, values=["candidate-private-secret"])
+    add("sensitive-fixed-key", values=["body"], minimum=1)
+    add("sensitive-decision-before-schema", {**base, "schema":"wrong"}, values=["create"], minimum=1)
+    add("schema-wrong", {**base, "schema":"wrong"})
+    add("schema-null", {**base, "schema":None})
+    add("decision-wrong", {**base, "decision":"publish"})
+    add("decision-list", {**base, "decision":[]})
+    add("description-null", {**base, "description":None})
+    add("body-object", {**base, "body":{"private":"value"}})
+    for name, evidence in (("null",None), ("object",{}), ("empty",[]), ("bool",[True]), ("float",[0.0]), ("exponent",[1e1]), ("string",["0"]), ("negative",[-1]), ("out-of-range",[3]), ("duplicate",[0,0]), ("big-int",[10**100])):
+        add("evidence-"+name, {**base, "evidence_indexes":evidence})
+    for name, over in (("description",dict(description=" ")), ("body",dict(body="x")), ("evidence",dict(evidence_indexes=[0])), ("big-int",dict(evidence_indexes=[10**100])), ("bool",dict(evidence_indexes=[False]))):
+        add("skip-"+name, {**base, "decision":"skip", "description":"", "body":"", "evidence_indexes":[], **over})
+    for name, over in (("name",{}), ("description-line",dict(description="two\nlines")), ("empty-description",dict(description=" ")), ("empty-body",dict(body=" ")), ("nul",dict(body="\0")), ("wrapper",dict(body="<SKİLL>private</SKİLL>"))):
+        add("invalid-skill-"+name, {**base, **over}, requested_name="../bad" if name == "name" else "recipe")
+    add("description-limit", {**base,"description":"__REPEAT__"}, repeat_text="x", repeat_count=201)
+    add("body-limit", {**base,"body":"__REPEAT__"}, repeat_text="x", repeat_count=50001)
+    add("body-boundary", {**base,"body":"__REPEAT__"}, repeat_text="x", repeat_count=50000)
+    add("line-limit", {**base,"body":"__REPEAT__"}, repeat_text="x\\n", repeat_count=501)
+    add("short-registry-not-parser-health", values=["tiny"])
+    ordinary = json.dumps(base, separators=(",", ":"))
+    add("duplicate-last-wins", raw=ordinary[:-1]+',"body":"final body"}')
+    add("duplicate-discarded-secret", raw='{"body":"candidate-private-secret",'+ordinary[1:], values=["candidate-private-secret"])
+    add("negative-zero", raw=ordinary.replace('[1,0]', '[-0]'))
+    for name, key, value in (("nan-description","description",float("nan")), ("infinite-body","body",float("inf")), ("nan-evidence","evidence_indexes",[float("nan")]), ("negative-inf-evidence","evidence_indexes",[float("-inf")]), ("schema-nan","schema",float("nan"))):
+        add(name, {**base,key:value})
+    add("overflow-float-evidence", raw=ordinary.replace('[1,0]', '[1e999]'))
+    add("quoted-nonfinite", {**base,"body":"NaN Infinity -Infinity are strings"})
+    add("integer-digit-limit", raw=ordinary.replace('[1,0]', '[__REPEAT__]'), repeat_text="9", repeat_count=sys.get_int_max_str_digits()+1)
+    add("paired-surrogates", raw=ordinary.replace('Useful recipe', r'Useful \ud83c\udf31'))
+    add("escaped-backslash-u", {**base,"body":r"literal \ud800"})
+    return dict(cases=cases, integer_digit_limit=sys.get_int_max_str_digits(), source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skill_capture.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6210,6 +6283,7 @@ def _snapshot() -> dict[str, bytes]:
         draft_store_contracts = _draft_store_contracts()
         skill_projection_contracts = _skill_projection_contracts()
         skill_capture_contracts = _skill_capture_contracts()
+        skill_candidate_contracts = _skill_candidate_contracts()
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6298,6 +6372,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-skill-drafts.json": _json_bytes(draft_store_contracts),
         "python-skill-projection.json": _json_bytes(skill_projection_contracts),
         "python-skill-capture.json": _json_bytes(skill_capture_contracts),
+        "python-skill-candidate.json": _json_bytes(skill_candidate_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
