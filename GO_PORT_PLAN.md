@@ -4445,3 +4445,15 @@ masking/event/limiter and large-result replay integration.
 - Go 1.23.3 darwin/arm64; Linux-host and paid-provider audits remain open. SQLite
   driver approval remains pending; independent port work continues. Required
   gates are terminal before exact-path staging, commit and push.
+
+## Implementation checkpoint — 2026-10-06 closed decision estimation
+
+Pure `decisions.Estimate` validates bounded current-LLM response JSON against the
+explicit request, preserves response member order for ties and probability folds,
+and computes choice confidence and rubric scores. Integer score/probability
+spelling is retained. Closed `Value.MapStrings` masks member names and string
+values on detached copies before JSON escaping. Malformed, duplicate, nonfinite
+and oversized responses fail without retaining provider text.
+
+This library slice installs no tool. Native focused estimate tests and the final
+Go full/race/vet gates cover it; runtime integration is delivered separately.

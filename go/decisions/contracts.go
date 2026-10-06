@@ -249,6 +249,9 @@ func (r Request) Questions() map[string]Question {
 	return qs
 }
 func (r Request) Clone() Request { return Request{r.State(), r.Questions()} }
+
+// Value returns the detached complete request structure for pre-encoding masks.
+func (r Request) Value() Value { return r.value() }
 func (r Request) value() Value {
 	q := map[string]Value{}
 	for k, v := range r.questions {
@@ -282,9 +285,11 @@ type NoulAnswer struct{ Probability float64 }
 type answerNumberShape struct {
 	confidenceInteger, scoreInteger, noulInteger bool
 	probabilityIntegers                          map[string]bool
+	probabilityOrder                             []string
 }
 
 func (s answerNumberShape) clone() answerNumberShape {
+	s.probabilityOrder = append([]string(nil), s.probabilityOrder...)
 	if s.probabilityIntegers != nil {
 		m := make(map[string]bool, len(s.probabilityIntegers))
 		for k, v := range s.probabilityIntegers {
@@ -637,7 +642,8 @@ func ValidateResult(request Request, r Result) error {
 		}
 		sum, maxP := 0.0, -1.0
 		valid := len(probs) == len(expected)
-		for name, p := range probs {
+		for _, name := range a.probabilityKeys(probs) {
+			p := probs[name]
 			valid = valid && expected[name] && probability(p)
 			sum += p
 			maxP = math.Max(maxP, p)
@@ -654,9 +660,13 @@ func ValidateResult(request Request, r Result) error {
 			valid := len(a.score.Legend) == len(q.levels)
 			for i, v := range q.levels {
 				key := strconv.Itoa(i)
-				wanted += float64(i) * probs[key]
+
 				x, ok := a.score.Legend[key]
 				valid = valid && ok && sameDescription(x, v)
+			}
+			for _, key := range a.probabilityKeys(probs) {
+				i, _ := strconv.Atoi(key)
+				wanted += float64(i) * probs[key]
 			}
 			if !valid || math.IsNaN(a.score.Score) || math.IsInf(a.score.Score, 0) || a.score.Score < 0 || a.score.Score > float64(len(q.levels)-1) || math.Abs(a.score.Score-wanted) > tolerance {
 				return invalid("Score and legend must match the requested rubric and probabilities.")
@@ -731,6 +741,7 @@ func answerFromValue(v Value) (Answer, error) {
 		}
 		out := ChoiceResult(ChoiceAnswer{choice, conf, probs})
 		out.shape.confidenceInteger = integerSpelling(v.object["confidence"])
+		out.shape.probabilityOrder = p.Keys()
 		out.shape.probabilityIntegers = make(map[string]bool, len(p.object))
 		for k, x := range p.object {
 			out.shape.probabilityIntegers[k] = integerSpelling(x)
@@ -745,6 +756,7 @@ func answerFromValue(v Value) (Answer, error) {
 	out := ScoreResult(ScoreAnswer{score, conf, probs, cloneObject(legend.object)})
 	out.shape.confidenceInteger = integerSpelling(v.object["confidence"])
 	out.shape.scoreInteger = integerSpelling(v.object["score"])
+	out.shape.probabilityOrder = p.Keys()
 	out.shape.probabilityIntegers = make(map[string]bool, len(p.object))
 	for k, x := range p.object {
 		out.shape.probabilityIntegers[k] = integerSpelling(x)

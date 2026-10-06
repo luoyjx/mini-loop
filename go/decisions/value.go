@@ -21,6 +21,7 @@ type Value struct {
 	boolean bool
 	array   []Value
 	object  map[string]Value
+	keys    []string
 }
 type ValueKind uint8
 
@@ -69,10 +70,59 @@ func (v Value) Number() (string, bool)           { return v.text, v.kind == Numb
 func (v Value) Bool() (bool, bool)               { return v.boolean, v.kind == Boolean }
 func (v Value) Array() ([]Value, bool)           { return cloneValues(v.array), v.kind == Array }
 func (v Value) Object() (map[string]Value, bool) { return cloneObject(v.object), v.kind == Object }
+
+// Keys preserves decoded member order for source tie breaking. Constructed
+// objects have canonical order. The mutable slice never escapes this value.
+func (v Value) Keys() []string {
+	if v.kind != Object {
+		return nil
+	}
+	if v.keys != nil {
+		return append([]string{}, v.keys...)
+	}
+	keys := make([]string, 0, len(v.object))
+	for k := range v.object {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
+}
 func (v Value) Clone() Value {
 	v.array = cloneValues(v.array)
 	v.object = cloneObject(v.object)
+	v.keys = append([]string(nil), v.keys...)
 	return v
+}
+
+// MapStrings detaches a JSON projection and masks strings and member names before
+// escaping. Masked-key collisions retain the last member, as in source dicts.
+func (v Value) MapStrings(mask func(string) string) Value {
+	if mask == nil {
+		return v.Clone()
+	}
+	switch v.kind {
+	case String:
+		return StringValue(mask(v.text))
+	case Array:
+		items := make([]Value, len(v.array))
+		for i, item := range v.array {
+			items[i] = item.MapStrings(mask)
+		}
+		return ArrayValue(items)
+	case Object:
+		members := make(map[string]Value, len(v.object))
+		keys := make([]string, 0, len(v.object))
+		for _, key := range v.Keys() {
+			masked := mask(key)
+			if _, exists := members[masked]; !exists {
+				keys = append(keys, masked)
+			}
+			members[masked] = v.object[key].MapStrings(mask)
+		}
+		return Value{kind: Object, object: members, keys: keys}
+	default:
+		return v.Clone()
+	}
 }
 func cloneValues(a []Value) []Value {
 	if a == nil {
@@ -157,6 +207,7 @@ func readValue(d *json.Decoder, depth int) (Value, error) {
 		}
 		if x == '{' {
 			a := map[string]Value{}
+			keys := []string{}
 			for d.More() {
 				k, e := d.Token()
 				if e != nil {
@@ -174,11 +225,12 @@ func readValue(d *json.Decoder, depth int) (Value, error) {
 					return Value{}, e
 				}
 				a[key] = v
+				keys = append(keys, key)
 			}
 			if t, e := d.Token(); e != nil || t != json.Delim('}') {
 				return Value{}, invalid("Decision values must be valid JSON data.")
 			}
-			return Value{kind: Object, object: a}, nil
+			return Value{kind: Object, object: a, keys: keys}, nil
 		}
 	}
 	return Value{}, invalid("Decision values must be valid JSON data.")
