@@ -4646,3 +4646,34 @@ Archify validate/deliver: showcase 9/9, zero errors/warnings. Specification
 (679,101 bytes). Visual review remains skipped after prior local-file denial.
 Mermaid and boundary prose describe masking before escaping; default activation
 and ownership stay unchanged. G0–G7 remain open.
+
+## Implementation checkpoint — 2026-10-06 user skill contract library
+
+The next owner-resource slices are: (1) canonical user fields and exact owner
+keys, (2) owner directory isolation and layered skill/memory snapshots,
+(3) create-only publication/idempotency and future-session activation,
+(4) trusted manager/restore/child binding and owner-scoped serving. The original
+G0–G7 scope stays open; native SQLite still awaits dependency approval.
+
+Slice 1 is implemented in go/userresources with named SkillFields, CanonicalSkill,
+ValidationCode/Error and DirectoryKey. Canonical content is immutable UTF-8;
+normalized fields return value copies. Digest means canonical content SHA-256.
+Name/description/body limits and validation order match source. Python whitespace
+and splitlines semantics include their control/Unicode separators; wrapper
+matching includes Python IGNORECASE dotted/dotless I aliases without changing
+published content. Native invalid UTF-8 refusal is deliberate.
+
+Snapshot 57 invokes actual _canonical_user_skill_parts and _owner_key, pins
+user_resources.py/skills.py, and compares 42 validation/canonical SHA recipes and
+ten exact owner keys. Case/whitespace/composed Unicode/path-like owners remain
+distinct safe digest keys. It does not call for_owner or create directories.
+No catalogue, memory, publication, session, route or activation is claimed.
+Runtime topology/defaults are unchanged; README baseline/boundary prose reviewed.
+
+Validation: focused userresources source/UTF-8 tests pass; full Go tests, race
+suite and go vet pass. All 57 Python contracts are current. Scans: 19 anchored
+checks. verify_guards -k skill-body-uncapped catches the source body-budget
+mutation; an isolated native mutation removes the wrapper refusal and is
+caught by the source-contract test. Full Python suite ran alone: 2151 passed, 28 skipped, 3 warnings, 24 subtests passed in 108.64s (0:01:48). No Python package module changed,
+so invariants were not rerun. README outline and diff checks pass. Architecture
+review found no new runtime topology or activation; interactive map unchanged.

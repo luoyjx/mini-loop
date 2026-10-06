@@ -125,3 +125,13 @@ guardian, typed decisions, and workflows are off unless configured. SQLite,
 sandbox, and secrets are null boundaries by default. The verified loop is
 library-only. Go documentation and tests must state the actual Go posture,
 even while it differs from Python.
+
+## Owner resource contract progress
+
+Snapshot 57 invokes Python user_resources canonicalization and owner hashing.
+Go userresources now has closed SkillFields, immutable CanonicalSkill, named safe
+ValidationError/Code and exact DirectoryKey derivation. Character/line bounds,
+Unicode wrapper matching, newline/whitespace normalization and content hashes
+match 42 source cases; ten owner keys preserve exact identifiers. Native UTF-8
+refusal is stronger. No directory/owner binding, layered loader, memory store,
+publication/activation or HTTP route ships in this library slice.

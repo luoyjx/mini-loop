@@ -5118,6 +5118,40 @@ def _decision_sink_contracts(scratch: Path) -> dict:
                               for n in ("agent.py", "decision_tools.py", "decisions.py", "secrets.py", "actions.py")}}
 
 
+def _user_skill_contracts() -> dict:
+    """Actual owner hashing and pure user-skill canonicalization, without writes."""
+    from mini_loop.user_resources import _canonical_user_skill_parts, UserResourceResolver, UserSkillValidationError
+    recipes = [
+        {"name": "note", "description": " Useful ", "body": "\r\n  Read this.\rSecond line. \r\n"},
+        {"name": "123", "description": "中文", "body": "\x1cBody\x1f"},
+        *({"name": n, "description": "d", "body": "b"} for n in ("", "Upper", "a_b", "a--b", "../escape", "a" * 64, "a" * 65)),
+        *({"name": "note", "description": d, "body": "b"} for d in ("", " ", "a\nb", "a\rb", "nul\x00", "<skill>", "< / ſkill >", "\x1f")),
+        {"name": "note", "description": "中", "description_repeat": 200, "body": "b"},
+        {"name": "note", "description": "中", "description_repeat": 201, "body": "b"},
+        *({"name": "note", "description": "d", "body": b} for b in ("", " ", "\x00", "<SKILL/>", "<\u2028/skill>", "<sKİll>", "<sKıll>", "<skillish>", "front\r\nbody\rback")),
+        *({"name": "note", "description": "d", "body": "中", "body_repeat": n} for n in (50000, 50001)),
+        *({"name": "note", "description": "d", "body": "x" + sep, "body_repeat": n}
+          for sep in ("\n", "\r\n", "\x85", "\u2028", "\x1c", "\x1f") for n in (500, 501)),
+    ]
+    cases = []
+    for recipe in recipes:
+        description = recipe["description"] * recipe.get("description_repeat", 1)
+        body = recipe["body"] * recipe.get("body_repeat", 1)
+        row = {"input": recipe}
+        try:
+            canonical, description, body = _canonical_user_skill_parts(recipe["name"], description, body)
+            row.update(text_sha256=hashlib.sha256(canonical.encode()).hexdigest(),
+                       description=description, body_sha256=hashlib.sha256(body.encode()).hexdigest())
+        except UserSkillValidationError as error:
+            row.update(error_code=error.code, error=str(error))
+        cases.append(row)
+    owners = [{"owner": owner, "key": UserResourceResolver._owner_key(owner)}
+              for owner in ("alice", "Alice", "alice ", " ", "../../escape", "é", "e\u0301", "anonymous", "共享owner", "nul\x00owner")]
+    return {"cases": cases, "owners": owners, "source_sha256": {
+            n: hashlib.sha256((PYTHON_ROOT / "mini_loop" / n).read_bytes()).hexdigest()
+            for n in ("user_resources.py", "skills.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5229,6 +5263,7 @@ def _snapshot() -> dict[str, bytes]:
         decision_runtime_contracts = _decision_runtime_contracts(Path(scratch) / "decision-runtime")
         decision_replay_contracts = _decision_replay_contracts(Path(scratch) / "decision-replay")
         decision_sink_contracts = _decision_sink_contracts(Path(scratch) / "decision-sinks")
+        user_skill_contracts = _user_skill_contracts()
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5300,6 +5335,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-decision-runtime.json": _json_bytes(decision_runtime_contracts),
         "python-decision-replay.json": _json_bytes(decision_replay_contracts),
         "python-decision-sinks.json": _json_bytes(decision_sink_contracts),
+        "python-user-skills.json": _json_bytes(user_skill_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `36e59a4` plus decision result masking and cancellation audit).
+reviewed **2026-10-06** (Go baseline `c73578d` plus pure user-skill canonicalization and exact owner keys).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -530,6 +530,12 @@ Source snapshots cover large-result retention and cooperative cancellation.
 Go additionally masks the closed result before escaping to prevent encoded
 backend model values from leaking through output/journal/recording sinks.
 Native SQL restart and live-provider audit remain pending. See [Go decisions](go/README.md#typed-decision-operator-library).
+
+`go/userresources` now separates user-authored skill fields from agent skills.
+Its pure typed constructor validates and normalizes canonical SKILL.md content;
+owner directory keys hash exact trusted identifiers without trimming or folding.
+This is a library boundary only: no owner resolver, layered loader, memory store,
+publication, session binding or route is activated yet.
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,

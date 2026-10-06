@@ -1374,3 +1374,23 @@ go test -race ./...
 
 See [the plan](../GO_PORT_PLAN.md) and [parity matrix](../GO_PARITY_MATRIX.md)
 for remaining work. Do not treat a compiling package as runtime parity.
+
+### User-authored skill contracts
+
+`userresources.NewCanonicalSkill(SkillFields)` validates lowercase kebab names,
+raw character/line limits, one-line descriptions, NUL and skill-wrapper refusal.
+Description/body snapshots are normalized like Python: universal CRLF/CR
+newlines and Python whitespace trimming. Content and its SHA-256 are immutable
+strings; returned fields are detached value copies. Digest is the canonical UTF-8
+content hash, not a live catalogue entry digest.
+
+`OwnerDirectoryKey(owner)` derives u- plus SHA-256 from the exact UTF-8 identifier;
+case, whitespace and Unicode normalization forms remain separate. Empty/invalid
+UTF-8 identifiers fail. Only trusted composition may choose this owner. The
+function creates no directory and binds no authority.
+
+Snapshot 57 compares 42 actual source canonicalization cases and ten exact owner
+keys, including Unicode character limits, splitlines boundaries, wrapper aliases
+and newline normalization. Go additionally refuses invalid UTF-8 skill fields.
+Owner directories, memory, layered skill snapshots, create-only publication,
+next-session activation and runtime/HTTP/configuration integration remain pending.
