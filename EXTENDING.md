@@ -1294,6 +1294,12 @@ errors. Skill capture/preview/routes and launcher root configuration remain pend
 ### Go trusted session resource binding
 
 `ManagerServices.UserResources` accepts a concrete Resolver and defaults to nil.
+`ManagerServices.Memory` accepts a concrete shared Store as the fallback when no
+resolver is configured. The common create/fork/restore composition binds it to
+the admitted owner through `memory.Bind`; it never passes a raw store to tools.
+Resolver failures refuse admission instead of falling back to shared storage.
+Shared bindings retain the Store lifecycle lock, and files survive fleet stop.
+Neither field alone installs memory tools; select MemoryTools explicitly.
 Create, fork and recorded/scheduled restoration resolve the admitted owner before
 the managed runtime is built. Fork uses the current generation, while existing
 sessions retain their earlier catalogue. Delete and stop preserve durable owner

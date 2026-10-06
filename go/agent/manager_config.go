@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/spill"
 	"github.com/luoyjx/mini-loop/go/userresources"
@@ -47,6 +48,9 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	// Memory is the shared fallback when no owner resource resolver is configured.
+	// Managed runtimes always receive an owner-bound view of this store.
+	Memory                    *memory.Store
 	MemoryAuto                *bool
 	MemoryTools               bool
 	UserResources             *userresources.Resolver

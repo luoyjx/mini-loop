@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/cron"
+	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/userresources"
 	"github.com/luoyjx/mini-loop/go/workspace"
@@ -407,6 +408,12 @@ func (manager *SessionManager) managedRuntimeConfig(ctx context.Context, id Sess
 			return RuntimeConfig{}, err
 		}
 		runtime.UserResources = &resources
+	} else if store := services.Memory; store != nil {
+		bound, err := memory.Bind(store, memory.OwnerID(owner))
+		if err != nil {
+			return RuntimeConfig{}, err
+		}
+		runtime.Memory = bound
 	}
 	return runtime, nil
 }
