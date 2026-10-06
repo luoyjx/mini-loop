@@ -355,3 +355,10 @@ managers start empty; SQL source evidence does not prove a native SQL backend.
 Native checks verify adapter retention/owner absence and global 64-item capacity
 across sixteen sessions without foreign eviction. Manager preview admission/lease
 and authenticated routes remain pending.
+
+Owned manager preview (2026-10-07): snapshot 78 compares eight actual source
+policy/preview outcomes. Native owner/configuration, admission identity recheck,
+lease requirement and strict ledger supply are implemented. Readonly can preview.
+Native before/during request lease loss maps to safe 409; turns retain idle status
+and count, with separate private cancellation/join on deletion/stop. This join
+extends source turn-only cleanup. Commit/publication HTTP routes remain open.

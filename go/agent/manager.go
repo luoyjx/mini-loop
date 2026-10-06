@@ -533,7 +533,7 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 			manager.reclaimUnusedWorkspace(id, session.core.workspace)
 		}
 	}
-	if session.Info().Busy || session.core.backgroundInitialized() {
+	if session.Info().Busy || session.hasSkillPreview() || session.core.backgroundInitialized() {
 		go cleanup()
 	} else {
 		cleanup()
@@ -608,6 +608,7 @@ func (manager *SessionManager) drainSession(session *ManagedSession, reason stri
 			manager.recordCleanupError(session.ID(), filepath.Join(session.core.workspace, ".background"), err)
 		}
 	}()
+	defer session.drainSkillPreview(grace)
 	session.mu.Lock()
 	active := session.active
 	session.mu.Unlock()

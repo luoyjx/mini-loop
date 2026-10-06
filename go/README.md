@@ -1654,3 +1654,15 @@ Snapshot 72 compares 38 actual source projections, with deterministic repeats
 for large budget cases, exact JSON hashes, omissions, coverage and exclusion flags.
 The pure helpers do not grant admission. Managed capture is described above;
 native-session preview binding and authenticated skill publication routes remain pending.
+
+### Owned manager skill preview
+
+SessionManager.PreviewPersonalSkill checks owner/configuration, serializes through
+managed admission, rechecks identity/accepting state and requires the process
+lease. It always supplies the admitted-turn ledger and uses the shared draft pool.
+Snapshot 78 compares eight actual source manager policy/preview outcomes, including
+readonly previews and refusal of legacy history when the ledger is empty. The
+private preview lifetime retains idle turn status/count and turn-cancel behavior.
+Go explicitly cancels and joins it on deletion/stop, adding to source turn-only
+cleanup. Lease loss maps to a safe 409 before and during requests. Commit and
+HTTP routes remain pending; no publication permission or model tool is added.

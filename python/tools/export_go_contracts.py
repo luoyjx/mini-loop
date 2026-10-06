@@ -6382,6 +6382,61 @@ def _manager_skill_draft_contracts(scratch: Path) -> dict:
     return asyncio.run(scenario())
 
 
+def _manager_skill_preview_contracts(scratch: Path) -> dict:
+    """Actual manager policy ordering, ledger refusal and successful previews."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, FakeMessage, FakeUsage, text
+    from mini_loop.manager import SessionManager
+    from mini_loop.session import LeaseLost
+    from mini_loop.skills import SkillLoader
+    from mini_loop.skill_capture import PersonalSkillError, record_personal_skill_turn
+    from mini_loop.user_resources import UserResourceResolver
+
+    async def scenario(name):
+        root = scratch / name
+        root.mkdir(parents=True)
+        skills = SkillLoader(root / "empty")
+        resolver = None if name == "disabled" else UserResourceResolver(root / "users", skills)
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                            skills_dir=root / "empty", user_resources_root=None)
+        manager = SessionManager(settings, FakeAsyncAnthropic(), user_resources=resolver)
+        session = manager.create(owner="anonymous" if name == "anonymous" else "alice",
+                                 permission_mode="readonly" if name == "readonly" else "interactive")
+        calls = []
+        async def create(messages, **kwargs):
+            calls.append(kwargs["purpose"])
+            return FakeMessage([text(json.dumps(dict(schema="mini-loop.personal-skill-draft/v1",
+                decision="create", description="recipe", body="procedure", evidence_indexes=[0])))],
+                "end_turn", FakeUsage(777, 3))
+        session.agent._create = create
+        session.agent.messages = [dict(role="user", content="legacy evidence")]
+        if name != "empty":
+            record_personal_skill_turn(session.agent, "human evidence", "assistant evidence")
+        if name == "closed":
+            session._accepting_runs = False
+        if name == "lease-lost":
+            def lost():
+                raise LeaseLost("private holder")
+            session._require_lease = lost
+        owner = "foreign" if name == "foreign" else session.owner
+        expected = dict(error="", status=0, coverage="")
+        try:
+            result = await manager.preview_personal_skill(session.id, owner, "recipe")
+        except PersonalSkillError as error:
+            expected.update(error=error.code, status=error.status_code)
+        else:
+            expected["coverage"] = result["coverage"]
+        finally:
+            await manager.stop()
+        return dict(name=name, expected=expected, calls=calls)
+
+    async def run():
+        return [await scenario(name) for name in
+                ("foreign", "anonymous", "disabled", "empty", "valid", "readonly", "closed", "lease-lost")]
+    return dict(cases=asyncio.run(run()))
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6514,6 +6569,7 @@ def _snapshot() -> dict[str, bytes]:
         skill_preview_contracts = _skill_preview_contracts()
         native_skill_preview_contracts = _native_skill_preview_contracts(Path(scratch) / "native-skill-preview")
         manager_skill_draft_contracts = _manager_skill_draft_contracts(Path(scratch) / "manager-skill-drafts")
+        manager_skill_preview_contracts = _manager_skill_preview_contracts(Path(scratch) / "manager-skill-preview")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6606,6 +6662,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-skill-preview.json": _json_bytes(skill_preview_contracts),
         "python-native-skill-preview.json": _json_bytes(native_skill_preview_contracts),
         "python-manager-skill-drafts.json": _json_bytes(manager_skill_draft_contracts),
+        "python-manager-skill-preview.json": _json_bytes(manager_skill_preview_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

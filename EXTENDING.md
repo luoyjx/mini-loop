@@ -1412,7 +1412,7 @@ service state. Model adapters must extract text blocks and preserve source norma
 model recovery/telemetry with non-live history/meter ownership, empty tools and
 personal_skill_preview purpose. Managed callers must hold admission/lease and
 supply a ledger; this library enforces no session/HTTP authority itself. Those
-managed bindings and authenticated preview/commit routes remain pending.
+manager preview binding is described below; commit and HTTP routes remain pending.
 Standalone Session.PreviewPersonalSkill now serializes with the core turn gate
 and binds owner/session from runtime configuration. Its native adapter calls
 completeSideModel with empty tools and preview purpose, concatenates only text
@@ -1422,8 +1422,17 @@ The per-session previewer retains only process-local drafts. A manager now owns
 one default DraftStore and injects it through its common runtime factory for
 create/fork/ordinary and scheduled restoration. That internal typed binding keeps
 64/16/4 quotas at fleet/owner/session scope; standalone callers keep their own
-store. Manager restarts start fresh pools and no publication flow is installed. A future managed entrypoint must supply its ledger, including empty
-ledger state, and own admission/lease/cancellation through completion.
+store. Manager restarts start fresh pools and no publication flow is installed.
+SessionManager.PreviewPersonalSkill now checks owner/configuration before
+admission, rechecks the same accepting handle while holding the manager/session
+locks, then requires the lease and supplies the ledger even when empty. Policy
+errors expose closed codes/statuses; typed ledger storage cannot be corrupted
+like the source dynamic list. Lease loss before or during model work maps to
+session_lease_lost/409. A separate preview lifetime does not change run status,
+count or operator turn-cancel behavior. StopAccepting cancels it; deletion/stop
+join it before closing services, releasing leases or reclaiming workspace.
+That join extends the source turn-only cleanup. Context cancellation discards
+any exact retained draft before returning failure. Commit/HTTP routes remain open.
 
 ### Go trusted session resource binding
 

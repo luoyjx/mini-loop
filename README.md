@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `5b6c0ce` plus manager-owned shared skill draft storage).
+reviewed **2026-10-07** (Go baseline `ec7c2a1` plus owned Manager skill preview).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -423,7 +423,7 @@ flowchart LR
         GoTraceCLI --> GoTraceView
         GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
-        GoManager -. shared process-local draft pool .-> GoDraftLibrary
+        GoManager -. owner / admission / lease / preview .-> GoDraftLibrary
         GoSession -. standalone non-live preview .-> GoDraftLibrary
         GoSession -. writable auto-memory lifecycle .-> GoFiles
         GoGate --> GoResources
@@ -1131,8 +1131,13 @@ live history/token-meter ownership. Manager construction now owns one process-lo
 DraftStore and injects it through the common create/fork/restore runtime factory,
 preserving fleet-wide quotas and owner/session/digest binding. A new manager gets
 a fresh pool; drafts are never reconstructed from persisted state. Manager
-admission/lease binding and authenticated
-publication routes remain pending; the service grants no publication authority.
+PreviewPersonalSkill now checks owned handles, rejects anonymous/disabled
+publication configuration and rechecks accepting identity after admission. It
+requires the lease and always supplies the capture ledger, including empty state.
+Previews retain idle turn status and count; a separate private lifetime is cancelled
+and joined by deletion/stop, including lease-acquisition waiting. This native
+join is additional to Python’s currently turn-only cleanup. Commit and HTTP
+publication routes remain pending; previews grant no publication authority.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

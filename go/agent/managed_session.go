@@ -115,20 +115,21 @@ type activeTurn struct {
 // Its underlying core is private: children use Session directly and do not
 // fabricate outer session status/done events.
 type ManagedSession struct {
-	skillCapture   userresources.CaptureLedger
-	build          string
-	core           *Session
-	mu             sync.Mutex
-	admission      chan struct{}
-	accepting      bool
-	closedReason   string
-	status         SessionStatus
-	active         *activeTurn
-	cancelReason   *string
-	createdAt      float64
-	runCount       int
-	approvals      *ApprovalBroker
-	workspaceBound bool
+	skillPreviewOperation *skillPreviewOperation
+	skillCapture          userresources.CaptureLedger
+	build                 string
+	core                  *Session
+	mu                    sync.Mutex
+	admission             chan struct{}
+	accepting             bool
+	closedReason          string
+	status                SessionStatus
+	active                *activeTurn
+	cancelReason          *string
+	createdAt             float64
+	runCount              int
+	approvals             *ApprovalBroker
+	workspaceBound        bool
 }
 
 func NewManagedSession(config RuntimeConfig) (*ManagedSession, error) {
@@ -187,6 +188,9 @@ func (session *ManagedSession) StopAccepting(reason string) {
 	defer session.mu.Unlock()
 	session.accepting = false
 	session.closedReason = reason
+	if operation := session.skillPreviewOperation; operation != nil {
+		operation.cancel(context.Canceled)
+	}
 }
 func (session *ManagedSession) admissionError() error {
 	if session.accepting {
