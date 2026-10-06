@@ -112,7 +112,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; scoped extraction/consolidation and contained memory capture at the actual source endpoints implemented; shared manager memory fallback with exact owner binding and launcher root/tool/auto selection and explicit typed owner/session-bound draft storage and source-compatible pure skill evidence projections implemented; skill capture/preview/routes remain; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; scoped extraction/consolidation and contained memory capture at the actual source endpoints implemented; shared manager memory fallback with exact owner binding and launcher root/tool/auto selection and explicit typed owner/session-bound draft storage and source-compatible pure skill evidence projections and trusted completed-turn evidence capture implemented; candidate parsing/preview/routes remain; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next decision slices
@@ -5629,3 +5629,52 @@ outline pass. Archify regeneration passes 9/9 checks with zero errors/warnings;
 visual inspection remains skipped after the earlier local-file access denial.
 No Python package-module or guarded Python mutation-anchor changes occurred.
 Coverage was not refreshed; G0-G7 remain open.
+
+## Implementation checkpoint — 2026-10-07 admitted-turn skill evidence capture
+
+Base: 4fa42e3. G1/G6 advance; G0-G7 remain open. The real source recorder
+record_personal_skill_turn and AgentSession._run terminal ordering are implemented
+through a typed process-local CaptureLedger owned by ManagedSession. Success
+after terminal flush and the trusted capture capability are required; HTTP
+admission already stamps it. Ordinary/peer/cron turns and cancellation do not
+gain evidence. Restored/forked histories have fresh ledgers.
+
+Source trimming, recursive display-field/key masking, 64 messages and 40k compact
+Unicode JSON characters are preserved. Single-message FIFO eviction increments
+omissions and can split pairs. Plain history gaps set sticky exclusion; block
+arrays do not. Short/unresolved, missing or panicking health reports refuse new
+evidence and latch screening failure. Healthy later capture does not clear the
+latch. Snapshots detach, preserve fixed key collisions and distinguish an absent
+ledger from an established empty ledger; projection interprets canonical source
+fields and refuses capture errors with capture_source_unavailable/503. Typed
+storage excludes dynamic corrupt-list/omitted cases; native masking faults and
+invalid UTF-8 use safe capture_failed without leaking exception text. Optional
+recording cannot change a completed turn into failure. No dependency or durable
+state/default feature activation changed.
+
+Snapshot 73 compares 20 actual Python recorder recipes with state and projection
+hashes, including message/Unicode/escaped budgets, split-pair eviction, source
+whitespace, recalled/internal-looking human input, plain/block/Unicode history
+gaps, field/key/role masks, collisions, unresolved/short registries and sticky
+recovery. Native tests add concurrent snapshots, masking panic and invalid UTF-8;
+managed tests cover capability loss in peer derivation, ordinary runs, masked
+admitted pairs, cancellation, screening recovery and terminal ordering. Actual
+HTTP normal and streaming calls capture once; idempotent replay and foreign
+requests cannot append. Candidate parsing, locked non-live model preview, manager
+draft injection and authenticated preview/commit routes remain next. Coverage
+was not refreshed.
+
+Validation: targeted recorder/projection, managed admission/terminal and real
+HTTP masking/idempotency tests passed. Full `go test ./...`, full
+`go test -race ./...` and `go vet ./...` passed. Nine compiling mutations were
+caught: capability bypass, screening bypass, clearing the latch, byte budgets,
+message count, omitted count, masked-key interpretation, history gaps and capture
+before terminal commitment. The source exporter confirms all 73 files current;
+all 19 scanning guards are anchored. After every Go/exporter/scanner/mutation
+job was terminal, the isolated full Python suite passed: 2,151 tests, 28 skipped,
+24 subtests, three existing deprecation warnings (81.02s). `git diff --check`
+and README outline passed. Archify regeneration passes 9/9 checks, zero errors
+and warnings; visual inspection remains skipped after the earlier local-file
+access denial. Python package modules and source mutation anchors were unchanged,
+so package-invariant and source-guard mutation verifiers were not rerun. Coverage
+was not refreshed; G0-G7 remain open.

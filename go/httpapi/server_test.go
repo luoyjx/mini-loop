@@ -142,6 +142,14 @@ func TestHTTPRecordingMasksResponsesReplayAndSSEWithoutChangingHistory(t *testin
 	if !bytes.Contains(raw, []byte(value)) {
 		t.Fatal("recording projection mutated live model history")
 	}
+	captured := managed.SkillCapture()
+	if !captured.Established || captured.Error != "" || len(captured.Messages) != 4 || captured.Messages[1].Content != secrets.Mask || captured.Messages[3].Content != secrets.Mask {
+		t.Fatal("HTTP capture missing, leaking or duplicated by idempotent replay", captured)
+	}
+	foreign := request(s, "POST", "/sessions/"+string(session.ID)+"/messages", `{"message":"foreign"}`, "token-b")
+	if foreign.Code != 404 || len(managed.SkillCapture().Messages) != 4 {
+		t.Fatal("foreign HTTP request captured", foreign.Code)
+	}
 }
 
 type panicMasker struct{}

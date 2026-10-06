@@ -1578,6 +1578,23 @@ turn projection or HTTP skill route yet. Publication should retain a Peek handle
 until successful durable commit, then discard it; Consume is not a pre-commit step.
 
 
+### Admitted-turn skill evidence capture
+
+ManagedSession records successful input/final pairs after terminal flush when
+the trusted caller granted personal_skill.capture_source. HTTP normal/streaming
+admission already supplies it; ordinary/peer/cron calls, errors and cancellation
+do not grant capture. Its process-local CaptureLedger is fresh per agent, trims
+source Unicode whitespace, masks fixed fields/keys before 64-message/40k compact
+Unicode JSON bounds and evicts single oldest messages with omission counts.
+Only plain history gap strings set excluded-compaction flags. Unavailable secret
+screening refuses append and latches errors even after a healthy registry later
+returns. Detached snapshots retain established-empty versus absent evidence.
+Projection checks the latch and masked canonical fields without granting roles.
+Snapshot 73 compares 20 actual Python recipes; native tests cover concurrent
+snapshots, contained faults, terminal order and real HTTP idempotent admission.
+Candidate parsing/model preview, manager draft injection and publication routes
+remain pending. Capture is not persisted or reconstructed from history.
+
 ### Pure skill evidence projection
 
 userresources.ProjectSessionText preserves the source legacy projection over
@@ -1599,5 +1616,5 @@ values retain no open payload. Positive integer limits and UTF-8 are checked;
 malformed dynamic protocol data is rejected earlier at native typed boundaries.
 Snapshot 72 compares 38 actual source projections, with deterministic repeats
 for large budget cases, exact JSON hashes, omissions, coverage and exclusion flags.
-No ledger capture, manager binding, model preview or authenticated skill route is
-added here. Those remain the next integration slices.
+The pure helpers do not grant admission. Managed capture is described above;
+model preview and authenticated skill publication routes remain pending.

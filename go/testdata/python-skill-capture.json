@@ -1,0 +1,534 @@
+{
+  "cases": [
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "ordinary-and-trim",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "06c3f65a3158341b693e277d0e7f21922765668f722de3810ee104d4956dd287",
+          "sha256": "e064a9af898547ca70688f2e818448a78f81e0f0bde5e266f522fe6370d0483f"
+        },
+        {
+          "count": 4,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "17f9c41daf36f03bc1fc75b314769a1f84e5d920869bb4db92a33e30a952f983",
+          "sha256": "7976f36945063c8d317a750871eb608cadcc5c1f0fea3fde03a18e16c7834374"
+        }
+      ],
+      "steps": [
+        {
+          "final": "  Answer  ",
+          "user": "\u001c Human "
+        },
+        {
+          "final": "next answer",
+          "user": "next"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "empty-pairs",
+      "results": [
+        {
+          "count": 0,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "f8a69fb5fb767f2da951d2daa719a840366feba3a566b6dfd7e677c4d08da68a",
+          "sha256": "b23d089d659701568a95484797563e2b4a3b1dc9e645d5e3388522f709fd7b06"
+        },
+        {
+          "count": 0,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "f8a69fb5fb767f2da951d2daa719a840366feba3a566b6dfd7e677c4d08da68a",
+          "sha256": "b23d089d659701568a95484797563e2b4a3b1dc9e645d5e3388522f709fd7b06"
+        },
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "b85210415301c7d43da5ff272c512872e2066221be9c9f31df477051b40d558e",
+          "sha256": "e17e83d1e36ca94d58bd037a4c2fc749fc2ea067df1f8863f283cdae7852d655"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "user": " "
+        },
+        {
+          "final": " ",
+          "user": "human"
+        },
+        {
+          "final": "answer",
+          "user": "human"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "message-count",
+      "results": [
+        {
+          "count": 64,
+          "error": "",
+          "omitted": 16,
+          "projection_sha256": "391a20b25d529fe867f82854466eba601ec9e3828b0ba771a4061af2691455e4",
+          "sha256": "1ca121907d96142c47d5534541b74ede4e60dab7ec0a29552662e2a2b49823ee"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "turns": 40,
+          "user": "human"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "unicode-budget",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "d90815853328cd0633637810fdc12e3302f9d22dc241efed643c6634482b275a",
+          "sha256": "ccefad2ae7c210acfddcbf834fdad996f6fdf3880333980c08897cd94d78d4d8"
+        }
+      ],
+      "steps": [
+        {
+          "final": "界🌱",
+          "repeat": 9000,
+          "user": "界🌱"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "escaped-budget",
+      "results": [
+        {
+          "count": 0,
+          "error": "",
+          "omitted": 2,
+          "projection_sha256": "a5a555a802d0b32638d6ff85b1623861cf17ee622f4338bc9b03e6e998aee901",
+          "sha256": "2de374b192e8cffc012a62dd0c22c7cd8ac49bc7352ce027c3191736319859a2"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "repeat": 9000,
+          "user": "\u0001"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "oversized-pair",
+      "results": [
+        {
+          "count": 0,
+          "error": "",
+          "omitted": 2,
+          "projection_sha256": "a5a555a802d0b32638d6ff85b1623861cf17ee622f4338bc9b03e6e998aee901",
+          "sha256": "2de374b192e8cffc012a62dd0c22c7cd8ac49bc7352ce027c3191736319859a2"
+        }
+      ],
+      "steps": [
+        {
+          "final": "界🌱",
+          "repeat": 20001,
+          "user": "界🌱"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "one-message-eviction",
+      "results": [
+        {
+          "count": 1,
+          "error": "",
+          "omitted": 1,
+          "projection_sha256": "7c6804d7ae1612a599cf2f3c5286f6c4169c13c7c40eb013c2e75dcac4104a73",
+          "sha256": "2cd35e4d2219aa86c764de1e331749874ad557d2cbe668023bd6f5ee2e7bd8cc"
+        }
+      ],
+      "steps": [
+        {
+          "final": "a",
+          "repeat": 15000,
+          "user": "界🌱"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "memory-looking-human",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "bdd9d0a4c95687190beda2ed43d09e1e0dd56279ee1f4b87953250a3ce4f810c",
+          "sha256": "08dd4b0af3fc8a76217cb8a27c1c90172d8e5744c0b44928bf73340cfec76804"
+        }
+      ],
+      "steps": [
+        {
+          "final": "<runtime-state>answer",
+          "user": "<memory_context>human"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "sticky-gap",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "4b31eae8e54de5ec29753f9a91d91d79d588c0ed8563302dc60ab3fb8e20af8c",
+          "sha256": "13d17742e85c07578c569bc21a1542252bcdc03c1bab3b7791c57baf468b99a7"
+        },
+        {
+          "count": 4,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "d51411f5a3188f7e9f5ad38f9adb8663319565cda2d487c71e7a63c4b4d0beda",
+          "sha256": "cfa7901200a9e3f6ba15723032060856bfa93d3dafab5131247a7391681047a5"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "history": [
+            {
+              "content": "[Context compressed here]",
+              "role": "system"
+            }
+          ],
+          "user": "human"
+        },
+        {
+          "final": "answer",
+          "user": "human"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "unicode-gap",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "b85210415301c7d43da5ff272c512872e2066221be9c9f31df477051b40d558e",
+          "sha256": "e17e83d1e36ca94d58bd037a4c2fc749fc2ea067df1f8863f283cdae7852d655"
+        },
+        {
+          "count": 4,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "d51411f5a3188f7e9f5ad38f9adb8663319565cda2d487c71e7a63c4b4d0beda",
+          "sha256": "cfa7901200a9e3f6ba15723032060856bfa93d3dafab5131247a7391681047a5"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "history": [
+            {
+              "content": "[snippedé]human",
+              "role": "user"
+            }
+          ],
+          "user": "human"
+        },
+        {
+          "final": "answer",
+          "history": [
+            {
+              "content": "[snipped𞓐]gap",
+              "role": "user"
+            }
+          ],
+          "user": "human"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "block-gap-ignored",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "b85210415301c7d43da5ff272c512872e2066221be9c9f31df477051b40d558e",
+          "sha256": "e17e83d1e36ca94d58bd037a4c2fc749fc2ea067df1f8863f283cdae7852d655"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "history": [
+            {
+              "content": [
+                {
+                  "text": "[snipped]gap",
+                  "type": "text"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "user": "human"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "body-masking",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "bbaf8997b6cc4b30130b599cfb00361f2cb2f456818b9559af18cb19505ce5a7",
+          "sha256": "f61b03fc4b07bd949e01606e5dcc581e47c75dd1d6853a88db0c8cbcc3066790"
+        }
+      ],
+      "steps": [
+        {
+          "final": "capture-private-secret and answer",
+          "user": "capture-private-secret"
+        }
+      ],
+      "values": [
+        "capture-private-secret"
+      ]
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "role-label-masking",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "3f99f5cb2f599637e6489123d9e5c31933a046349795d07b92511c64329e65aa",
+          "sha256": "c5c8004ac1a6836e64c66fba014fa9198019d54cf5a919db13c067a386291c9a"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "user": "human"
+        }
+      ],
+      "values": [
+        "assistant"
+      ]
+    },
+    {
+      "flavor": "registry",
+      "minimum": 1,
+      "name": "role-key-masking",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "f8a69fb5fb767f2da951d2daa719a840366feba3a566b6dfd7e677c4d08da68a",
+          "sha256": "705f30f0b1533e505f180d50cad528cc571d98d72e6265d80fcb8fc3c2367376"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "user": "human"
+        }
+      ],
+      "values": [
+        "role"
+      ]
+    },
+    {
+      "flavor": "registry",
+      "minimum": 1,
+      "name": "content-key-masking",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "f8a69fb5fb767f2da951d2daa719a840366feba3a566b6dfd7e677c4d08da68a",
+          "sha256": "977d30b0add16ab3cd601cd51e63b2b6a7e5476be52c55f7551a0c9401e93aea"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "user": "human"
+        }
+      ],
+      "values": [
+        "content"
+      ]
+    },
+    {
+      "flavor": "registry",
+      "minimum": 1,
+      "name": "key-collision",
+      "results": [
+        {
+          "count": 2,
+          "error": "",
+          "omitted": 0,
+          "projection_sha256": "f8a69fb5fb767f2da951d2daa719a840366feba3a566b6dfd7e677c4d08da68a",
+          "sha256": "df27781e9eb8f7d5b380a0488ce40912a6859932841db193c164e83dbcb72841"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "user": "human"
+        }
+      ],
+      "values": [
+        "role",
+        "content"
+      ]
+    },
+    {
+      "flavor": "registry",
+      "minimum": 8,
+      "name": "short-sticky-recovery",
+      "results": [
+        {
+          "count": 0,
+          "error": "secret_screening_unavailable",
+          "omitted": 0,
+          "sha256": "b95219fce6f3ded3160359cb0e264d71bb6cba9473fbc33ca0eee8c67ff8d835"
+        },
+        {
+          "count": 2,
+          "error": "secret_screening_unavailable",
+          "omitted": 0,
+          "sha256": "458d64ad56073c1bdd03b1a68f099a2cecdc0ffbaf8ab157b01cbaa9e5e8c955"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "user": "human"
+        },
+        {
+          "final": "answer",
+          "recover": true,
+          "user": "human"
+        }
+      ],
+      "values": [
+        "tiny"
+      ]
+    },
+    {
+      "flavor": "unresolved",
+      "minimum": 8,
+      "name": "unresolved",
+      "results": [
+        {
+          "count": 0,
+          "error": "secret_screening_unavailable",
+          "omitted": 0,
+          "sha256": "b95219fce6f3ded3160359cb0e264d71bb6cba9473fbc33ca0eee8c67ff8d835"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "user": "human"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "missing_reports",
+      "minimum": 8,
+      "name": "missing-reports",
+      "results": [
+        {
+          "count": 0,
+          "error": "secret_screening_unavailable",
+          "omitted": 0,
+          "sha256": "b95219fce6f3ded3160359cb0e264d71bb6cba9473fbc33ca0eee8c67ff8d835"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "user": "human"
+        }
+      ],
+      "values": []
+    },
+    {
+      "flavor": "crashing_reports",
+      "minimum": 8,
+      "name": "crashing-reports",
+      "results": [
+        {
+          "count": 0,
+          "error": "secret_screening_unavailable",
+          "omitted": 0,
+          "sha256": "b95219fce6f3ded3160359cb0e264d71bb6cba9473fbc33ca0eee8c67ff8d835"
+        }
+      ],
+      "steps": [
+        {
+          "final": "answer",
+          "user": "human"
+        }
+      ],
+      "values": []
+    }
+  ],
+  "source_sha256": "eb7ec349acfc78570bbed02994193df4c9ff950f69ed0e1a9cc46d849950cd19"
+}

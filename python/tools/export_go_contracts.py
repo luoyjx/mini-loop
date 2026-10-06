@@ -6015,6 +6015,73 @@ def _skill_projection_contracts() -> dict:
     return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT/"mini_loop"/"skill_capture.py").read_bytes()).hexdigest())
 
 
+def _skill_capture_contracts() -> dict:
+    """Real source recorder transitions and their authenticated projections."""
+    from types import SimpleNamespace
+    from mini_loop.skill_capture import record_personal_skill_turn, project_authenticated_turns
+    from mini_loop.secrets import SecretRegistry
+    cases = []
+
+    def add(name, steps, *, values=(), minimum=8, flavor="registry"):
+        registry = SecretRegistry(min_length=minimum)
+        for index, value in enumerate(values):
+            registry.register(f"VALUE{index}", value)
+        if flavor == "unresolved":
+            registry.register("missing", lambda: None)
+        elif flavor in ("missing_reports", "crashing_reports"):
+            class Reports:
+                def names(self): return ("registered",)
+                def mask_payload(self, value): return value
+            if flavor == "crashing_reports":
+                def fail(): raise RuntimeError("private screening failure")
+                Reports.unresolved = staticmethod(fail)
+                Reports.short_values = staticmethod(lambda: ())
+            registry = Reports()
+        agent = SimpleNamespace(state={}, secrets=registry, messages=[])
+        results = []
+        for step in steps:
+            if step.get("recover"):
+                registry.register("VALUE0", "healthy-replacement-secret")
+            agent.messages = step.get("history", [])
+            for _ in range(step.get("turns", 1)):
+                record_personal_skill_turn(agent, step["user"] * step.get("repeat", 1), step["final"] * step.get("repeat", 1))
+            state = dict(established="personal_skill_turns" in agent.state,
+                         messages=agent.state.get("personal_skill_turns", []),
+                         omitted=agent.state.get("personal_skill_turns_omitted", 0),
+                         compacted_history_excluded=agent.state.get("personal_skill_compacted_history_excluded", False),
+                         error=agent.state.get("personal_skill_capture_error", ""))
+            digest = lambda value: hashlib.sha256(json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode()).hexdigest()
+            result = dict(sha256=digest(state), count=len(state["messages"]), omitted=state["omitted"], error=state["error"])
+            if not state["error"]:
+                projected = project_authenticated_turns(state["messages"], registry, prior_omitted=state["omitted"], compacted_history_excluded=state["compacted_history_excluded"])
+                result["projection_sha256"] = digest(projected)
+            results.append(result)
+        cases.append(dict(name=name, steps=steps, values=list(values), minimum=minimum, flavor=flavor, results=results))
+
+    def step(user="human", final="answer", **extra): return dict(user=user, final=final, **extra)
+    add("ordinary-and-trim", [step("\x1c Human \u0085", "\u2003 Answer \u2029"), step("next", "next answer")])
+    add("empty-pairs", [step(" ", "answer"), step("human", "\u2003"), step()])
+    add("message-count", [step(turns=40)])
+    add("unicode-budget", [step("界🌱", "界🌱", repeat=9000)])
+    add("escaped-budget", [step("\x01", "answer", repeat=9000)])
+    add("oversized-pair", [step("界🌱", "界🌱", repeat=20001)])
+    add("one-message-eviction", [step("界🌱", "a", repeat=15000)])
+    add("memory-looking-human", [step("<memory_context>human", "<runtime-state>answer")])
+    add("sticky-gap", [step(history=[dict(role="system", content="[Context compressed here]")]), step()])
+    add("unicode-gap", [step(history=[dict(role="user", content="[snippedé]human")]), step(history=[dict(role="user", content="[snipped\U0001e4d0]gap")])])
+    add("block-gap-ignored", [step(history=[dict(role="assistant", content=[dict(type="text", text="[snipped]gap")])])])
+    add("body-masking", [step("capture-private-secret", "capture-private-secret and answer")], values=["capture-private-secret"])
+    add("role-label-masking", [step()], values=["assistant"])
+    add("role-key-masking", [step()], values=["role"], minimum=1)
+    add("content-key-masking", [step()], values=["content"], minimum=1)
+    add("key-collision", [step()], values=["role", "content"], minimum=1)
+    add("short-sticky-recovery", [step(), step(recover=True)], values=["tiny"])
+    add("unresolved", [step()], flavor="unresolved")
+    add("missing-reports", [step()], flavor="missing_reports")
+    add("crashing-reports", [step()], flavor="crashing_reports")
+    return dict(cases=cases, source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skill_capture.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6142,6 +6209,7 @@ def _snapshot() -> dict[str, bytes]:
         launcher_memory_contracts = _launcher_memory_contracts(Path(scratch) / "launcher-memory")
         draft_store_contracts = _draft_store_contracts()
         skill_projection_contracts = _skill_projection_contracts()
+        skill_capture_contracts = _skill_capture_contracts()
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6229,6 +6297,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-launcher-memory.json": _json_bytes(launcher_memory_contracts),
         "python-skill-drafts.json": _json_bytes(draft_store_contracts),
         "python-skill-projection.json": _json_bytes(skill_projection_contracts),
+        "python-skill-capture.json": _json_bytes(skill_capture_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `215f6e2` plus source-compatible skill evidence projections).
+reviewed **2026-10-07** (Go baseline `4fa42e3` plus admitted-turn skill evidence capture).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -402,6 +402,7 @@ flowchart LR
         GoCronRunner -. stable identity lookup / restore .-> GoManager
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoDraftLibrary["Go userresources draft / projection libraries<br/>library-only · FIFO / TTL · 40k evidence budget<br/>owner + session + digest · no publication flow"]
+        GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
@@ -415,6 +416,7 @@ flowchart LR
         GoProvider --> GoSession
         GoContext --> GoArchives
         GoManaged -->|start / ordered capture / finish| GoTraces
+        GoManaged -->|successful terminal flush + capture capability| GoSkillCapture
         GoEntry -. owner-scoped list / inspect / export .-> GoTraces
         GoEntry -->|owned bounded document| GoTraceView
         GoTraceCLI -->|operator read| GoTraces
@@ -1102,8 +1104,17 @@ and commit cleanup checks object identity after publication, including after TTL
 It does not write skill files or invoke a model. Separate pure skill projections
 filter legacy protocol history or preserve already-admitted text, mask strings
 and retain a whole-message suffix under the source Unicode JSON budget. Display
-labels grant no role or provenance; recording the authenticated ledger remains
-subsequent work.
+labels grant no role or provenance. ManagedSession now records trimmed admitted
+input/final pairs after successful terminal flush, only with the trusted capture
+capability stamped by HTTP admission. Ordinary/peer/cron turns, failed admission
+and cancellation do not gain evidence. Keys/labels/content are masked before
+64-message and 40k compact Unicode JSON bounds; eviction removes single oldest
+messages, preserving source omission counts. String-history compaction markers
+set a sticky exclusion flag. Short/unresolved or unavailable secret screening
+rejects new evidence and latches a preview refusal without failing the completed
+turn. Detached evidence is process-local, fresh per agent and not reconstructed
+from restored/forked history. Candidate generation and authenticated publication
+routes remain pending.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

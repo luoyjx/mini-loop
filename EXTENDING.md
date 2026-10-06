@@ -1328,8 +1328,9 @@ Python whitespace/IGNORECASE and Unicode 14 word boundaries are preserved.
 ProjectAuthenticatedText takes already-admitted AuthenticatedText rows. It keeps
 nonempty user/assistant text verbatim, including internal-looking strings, and
 carries prior omissions/excluded-history flags. Neither function establishes
-provenance. The future trusted ledger must enforce admission before using this
-seam; legacy blacklist filtering is not a substitute for provenance.
+provenance. ManagedSession now enforces the trusted capture capability before
+recording a successful completed pair; legacy blacklist filtering does not grant
+provenance.
 
 Both mask the two fixed display fields and their keys before budgeting, then keep
 a suffix of whole messages by compact non-ASCII sorted-key Python JSON character
@@ -1338,7 +1339,30 @@ content/label/key values; MarshalJSON uses a temporary string map at the boundar
 for source key masking/collisions. A masked ProjectionLabel is data, never a
 provider role. Returned arrays are detached. Native positive-limit and UTF-8
 refusals are typed errors rather than source ValueError/dynamic malformed rows.
-The two helpers have no manager/runtime/HTTP binding or model/file effect.
+The pure helpers have no model/file effect. CaptureLedger.Project uses the
+authenticated helper after interpreting the two canonical source fields from
+masked key labels; masked role keys or role values do not become authority.
+
+### Go admitted-turn skill capture
+
+ManagedSession owns one zero-value CaptureLedger. Successful terminal flush and
+the caller-stamped personal_skill.capture_source capability precede Record.
+HTTP admission supplies that capability; ordinary/peer/cron calls do not.
+Record trims source Unicode whitespace, masks both display fields and keys,
+checks secret names/unresolved/short reports and retains at most 64 messages and
+40k compact Unicode JSON characters. Each oldest message evicted increments the
+omitted count; pairs can split at the bound as in Python. Only plain string
+history markers set sticky compaction exclusion. Block arrays do not.
+
+Screening failure prevents append and latches secret_screening_unavailable;
+recovered registries can append later pairs but do not clear that agent's error.
+Snapshots detach rows; established distinguishes an absent source ledger from a
+valid empty bounded ledger. Project refuses any capture error with source
+capture_source_unavailable/503. Typed native storage cannot represent a corrupt
+dynamic Python state/list or omitted field. Masking faults/invalid UTF-8 use a
+safe capture_failed latch, never private host exceptions. Nothing is persisted
+or restored, and optional capture cannot fail a durably completed turn. Candidate
+parsing/model preview, manager draft injection and preview/commit routes remain.
 
 ### Go trusted session resource binding
 

@@ -96,6 +96,23 @@ func cleanProjectionText(text string) (string, bool) {
 	return text, text != ""
 }
 
+func maskProjectionText(message ProjectedText, masker memory.Masker) (ProjectedText, error) {
+	if !utf8.ValidString(message.Content) || !utf8.ValidString(string(message.Role)) {
+		return ProjectedText{}, draftError(DraftInvalidPreview, 422)
+	}
+	if masker != nil {
+		message.Content = masker.MaskText(message.Content)
+		message.Role = ProjectionLabel(masker.MaskText(string(message.Role)))
+		message.maskedKeys = true
+		message.contentKey = masker.MaskText("content")
+		message.roleKey = masker.MaskText("role")
+	}
+	if !utf8.ValidString(message.Content) || !utf8.ValidString(string(message.Role)) || !utf8.ValidString(message.contentKey) || !utf8.ValidString(message.roleKey) {
+		return ProjectedText{}, draftError(DraftInvalidPreview, 422)
+	}
+	return message, nil
+}
+
 func boundProjection(messages []ProjectedText, masker memory.Masker, options ProjectionOptions, coverage DraftCoverage) (SkillProjection, error) {
 	if options.MaxChars <= 0 {
 		return SkillProjection{}, draftError(DraftInvalidPreview, 422)
@@ -104,18 +121,9 @@ func boundProjection(messages []ProjectedText, masker memory.Masker, options Pro
 	masked := make([]ProjectedText, len(messages))
 	costs := make([]int, len(messages))
 	for i, message := range messages {
-		if !utf8.ValidString(message.Content) {
-			return SkillProjection{}, draftError(DraftInvalidPreview, 422)
-		}
-		if masker != nil {
-			message.Content = masker.MaskText(message.Content)
-			message.Role = ProjectionLabel(masker.MaskText(string(message.Role)))
-			message.maskedKeys = true
-			message.contentKey = masker.MaskText("content")
-			message.roleKey = masker.MaskText("role")
-		}
-		if !utf8.ValidString(message.Content) || !utf8.ValidString(string(message.Role)) || !utf8.ValidString(message.contentKey) || !utf8.ValidString(message.roleKey) {
-			return SkillProjection{}, draftError(DraftInvalidPreview, 422)
+		message, err := maskProjectionText(message, masker)
+		if err != nil {
+			return SkillProjection{}, err
 		}
 		masked[i] = message
 		serialized, err := protocol.PythonJSON(message, false, true)

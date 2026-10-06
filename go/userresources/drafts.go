@@ -24,13 +24,14 @@ const (
 type DraftCode string
 
 const (
-	DraftInvalidOwner   DraftCode = "invalid_owner"
-	DraftInvalidSession DraftCode = "invalid_session"
-	DraftInvalidPreview DraftCode = "invalid_preview"
-	DraftCapacity       DraftCode = "draft_capacity"
-	DraftNotFound       DraftCode = "draft_not_found"
-	DraftExpired        DraftCode = "draft_expired"
-	DraftDigestMismatch DraftCode = "draft_digest_mismatch"
+	DraftInvalidOwner             DraftCode = "invalid_owner"
+	DraftInvalidSession           DraftCode = "invalid_session"
+	DraftInvalidPreview           DraftCode = "invalid_preview"
+	DraftCapacity                 DraftCode = "draft_capacity"
+	DraftNotFound                 DraftCode = "draft_not_found"
+	DraftExpired                  DraftCode = "draft_expired"
+	DraftDigestMismatch           DraftCode = "draft_digest_mismatch"
+	DraftCaptureSourceUnavailable DraftCode = "capture_source_unavailable"
 )
 
 // DraftError never includes owner bindings, model output or host faults.

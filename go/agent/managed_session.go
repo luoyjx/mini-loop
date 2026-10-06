@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/userresources"
 )
 
 type SessionStatus string
@@ -114,6 +115,7 @@ type activeTurn struct {
 // Its underlying core is private: children use Session directly and do not
 // fabricate outer session status/done events.
 type ManagedSession struct {
+	skillCapture   userresources.CaptureLedger
 	build          string
 	core           *Session
 	mu             sync.Mutex
@@ -332,6 +334,9 @@ func (session *ManagedSession) runActive(turnCtx context.Context, prompt string,
 			session.mu.Lock()
 			session.status = StatusError
 			session.mu.Unlock()
+		}
+		if err == nil && run.Allows(CapabilityPersonalSkillCaptureSource) {
+			session.skillCapture.Record(prompt, output, session.core.Messages(), session.core.secrets)
 		}
 		if reason != nil {
 			repaired := session.core.recordInterruption(*reason)
