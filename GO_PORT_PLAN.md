@@ -112,7 +112,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots implemented as a library; trusted session binding, memory lifecycle and publication remain; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; trusted session binding, memory lifecycle and publication remain; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next decision slices
@@ -4901,3 +4901,51 @@ SHA256 `98d120fbd92127f22df69f98db4310df7ac8ee112d1698e4991e87c2b17e8b75`
 (680,298 bytes). Visual review remains skipped after the earlier local-file
 access denial. Darwin constants reference the official
 [pinned XNU syscall table](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/syscalls.master).
+
+## Implementation checkpoint — 2026-10-06 pre-commit catalogue preparation
+
+Actual Python UserResourceResolver.publish_skill builds and validates the entire
+future snapshot, sorts its entries by source path and allocates the receipt before
+atomic_create_text. This iteration supplies the native catalogue prerequisite:
+Catalog.WithSourceDocument takes a trusted absolute clean SKILL.md path and a
+bounded document, uses the same source reader as disk construction, rejects
+malformed/truncated metadata/body and refuses name or path replacement. It returns
+a separate ordered entry map and bounded diagnostic history. No file operation,
+owner authority, secret screening or resolver cache replacement occurs here.
+
+Full source digests are retained in prepared entries, so absent/changed files
+cannot serve even through an operator-created snapshot. This is stronger than
+the Python publisher's synthetic entry without source_digest; it intentionally
+retains the existing native supply-chain invariant rather than weakening it.
+Ordinary source construction and runtime defaults remain unchanged.
+
+Fourteen valid canonical cases from actual Python snapshot 57 compare both
+digests, detached prepared entries and restart descriptions/load output. Native
+cases cover missing/changed sources, sorted insertion, copied diagnostic counters,
+concurrent old-source refusals, malformed/oversized input, collisions, nil and
+cancelled preparation. The first isolated shared-map mutation escaped because
+Entries only observes the ordered slice. The strengthened test exercises the
+original catalogue's lookup after file creation; the repeated isolated mutation
+now fails with the intended lookup-isolation assertion. No implementation change
+was needed to make the guard load-bearing.
+
+Full create-only publication, strict secret health screening, safe typed receipts,
+idempotent bounded verification and future-resolution-only cache replacement
+remain next. Managed session activation and G0–G7 remain open.
+
+Validation: focused skill tests, full `go test ./...`, full `go test -race ./...`
+and `go vet ./...` passed on Darwin arm64, including reruns after the stronger
+lookup assertion. All 62 Python-exported contracts are current; export completed
+with dependency/model deprecations and an unknown-child-process cleanup message.
+The source skill-served-after-tampering mutation was caught, as was the revised
+native shared-map mutation. All 19 scanning guards remain anchored. README
+outline and `git diff --check` passed. No Python package modules changed, so
+verify_invariants was not applicable. Coverage was not refreshed.
+
+Full Python ran alone after the preceding jobs terminated: 2,151 passed,
+28 skipped, 24 subtests passed and three dependency deprecation warnings in
+92.64 seconds. Archify delivery passed all nine showcase checks with no
+errors/warnings; HTML SHA256
+`6c7a6d12882414392aad55007e4fd86add998f6415bbe2da49f5bb43db376f46`
+(680,519 bytes). Visual review remains skipped after earlier local-file access
+denial; no bypass was attempted.

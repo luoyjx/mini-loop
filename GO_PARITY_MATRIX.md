@@ -173,3 +173,12 @@ scratch and no-replace hard-link commits; typed device/inode identity is returne
 Darwin native concurrency/rename/cancellation/FIFO tests pass. Linux/Intel-Darwin
 compile checks are separate from runtime evidence. Full skill publication remains
 pending; no path-only replacement is used as an equivalent.
+
+Pre-commit catalogue progress: native Catalog.WithSourceDocument prepares a
+detached snapshot with the existing parser before filesystem commit, refusing
+name/path conflicts and malformed/truncated sources. Existing snapshot 57's valid
+actual Python canonical cases compare full-source/body hashes, prepared entries,
+restart descriptions and loaded output. Native tests cover absent/changed-file
+refusal, path ordering, independent concurrent diagnostics, bounds and cancelled
+preparation. This is a publisher prerequisite; full publication and managed
+activation remain pending. No new source snapshot or coverage measurement.

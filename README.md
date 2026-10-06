@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `581b304` plus anchored create-only file primitives).
+reviewed **2026-10-06** (Go baseline `8308dcd` plus detached pre-commit skill catalogue preparation).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -377,7 +377,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · atomic replacement / anchored create<br/>operator owner resource snapshots · session binding pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>operator owner resource snapshots · session binding pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -553,7 +553,12 @@ resource binding are not activated yet.
 `go/durable` adds the publication prerequisite: component-wise no-follow directory
 opens, bounded regular-file reads and fsynced create-only hard links. The hard link
 is the commit point; post-commit cleanup cannot turn success into a retryable error.
-The publisher and future-session catalogue replacement remain pending.
+`Catalog.WithSourceDocument` prepares a detached, path-ordered snapshot without
+filesystem effects, using the normal parser and retaining full source verification.
+It refuses name/path collisions and carries an independent bounded diagnostic log.
+The publisher must compose existing canonical validation and owner binding with
+strict secret screening and future-session cache replacement; that composition
+remains pending above this operator seam.
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,

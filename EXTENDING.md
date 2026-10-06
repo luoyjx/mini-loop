@@ -1147,7 +1147,7 @@ and diagnostics. Layered construction copies existing source problems once;
 later source failures stay in the source log. Return values and bounded problem
 reports retain the native catalogue conventions. Callers must bind the user
 catalogue from trusted owner resources; the model cannot supply an owner.
-The library does not yet create full owner bundles or activate runtime layering.
+The owner Resolver composes full bundles; managed runtime layering remains pending.
 
 ### Go owner memory storage
 
@@ -1155,8 +1155,8 @@ The library does not yet create full owner bundles or activate runtime layering.
 one trusted owner with `memory.Bind`; ScopedStore exposes only owner-sensitive
 methods without an override parameter or automatic delegation. Optional Masker
 has one typed MaskText operation and can use the existing secrets.Registry. Raw
-Store all-owner views/replacement remain operator operations. Resource bundles
-and runtime extraction/tool activation remain pending; do not inject the raw
+Store all-owner views/replacement remain operator operations. The owner Resolver supplies resource bundles;
+runtime extraction/tool activation remains pending. Do not inject the raw
 store into an owner-facing handler.
 
 ### Go owner resource snapshots
@@ -1178,6 +1178,21 @@ the link commit point. Keep canonical validation, secret screening, collision
 checks and future-session bundle preparation above this seam before creating a
 file. The publisher composition remains pending. Darwin/Linux require no added
 dependency; Darwin syscall constants are pinned in the platform file.
+
+### Go pre-commit skill catalogue preparation
+
+`Catalog.WithSourceDocument(ctx, absolutePath, document)` returns a new concrete
+Catalog without reading or writing files. It parses through the same bounded
+Markdown reader as NewCatalog, refuses malformed/truncated entries and existing
+name/path collisions, sorts by source path and copies bounded diagnostic history
+under the source lock. The original catalogue and later diagnostic mutations stay
+independent. Full source digest verification remains mandatory at load time, so
+a prepared skill cannot serve until its file exists with the expected content.
+
+This operator seam prepares the future snapshot before the hard-link commit. It
+does not establish owner authority, validate the stricter canonical publication
+fields, screen secrets, commit a file or replace a resolver cache. The complete
+create-only publisher must compose those operations in that order.
 
 ## 6. LLM / provider — the client
 
