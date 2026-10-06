@@ -17,11 +17,13 @@ import (
 	"github.com/luoyjx/mini-loop/go/config"
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/httpapi"
+	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/provider"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/spill"
 	"github.com/luoyjx/mini-loop/go/trajectory"
+	"github.com/luoyjx/mini-loop/go/userresources"
 )
 
 type BuildIdentity struct {
@@ -51,7 +53,17 @@ type ProviderStatus struct {
 	Endpoint   string `json:"endpoint"`
 	Credential string `json:"credential"`
 }
+type MemoryBackend string
+
+const (
+	SharedMemory MemoryBackend = "shared"
+	OwnerMemory  MemoryBackend = "owner-local"
+)
+
 type Report struct {
+	MemoryBackend   MemoryBackend               `json:"memory_backend"`
+	MemoryTools     bool                        `json:"memory_tools"`
+	MemoryAuto      bool                        `json:"memory_auto"`
 	DecisionBackend DecisionBackend             `json:"decision_backend"`
 	GoalTools       bool                        `json:"goal_tools"`
 	PlanModeTools   bool                        `json:"plan_mode_tools"`
@@ -76,6 +88,8 @@ func Inspect(settings config.Settings, server config.ServerSettings, auth httpap
 // Options selects individual implemented Go services. The comprehensive Python
 // MINILOOP_FEATURES setting remains unsupported until its complete bundle exists.
 type Options struct {
+	MemoryTools      bool
+	MemoryAuto       *bool
 	DecisionTools    bool
 	DecisionProvider decisions.Provider
 	DecisionLLM      agent.DecisionLLMConfig
@@ -100,7 +114,12 @@ func InspectWithOptions(settings config.Settings, server config.ServerSettings, 
 		name, endpoint = "fake", ""
 	}
 	snapshot := settings.Snapshot()
-	return Report{DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
+	backend := SharedMemory
+	if settings.UserResourcesRoot != nil {
+		backend = OwnerMemory
+	}
+	auto := options.MemoryAuto == nil || *options.MemoryAuto
+	return Report{MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
 }
 
 type boundBashFactory struct{ timeout time.Duration }
@@ -194,6 +213,29 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 		return nil, err
 	}
 	fallback := ""
+	// The source constructs shared storage even with owner-local resources selected.
+	// A broken shared root therefore remains a startup failure in either mode.
+	memoryRoot := filepath.Join(settings.WorkspaceRoot, ".memory")
+	if settings.MemoryRoot != nil {
+		memoryRoot = *settings.MemoryRoot
+	}
+	sharedMemory, err := memory.NewStore(ctx, memoryRoot, nil)
+	if err != nil {
+		if transport != nil {
+			transport.CloseIdleConnections()
+		}
+		return nil, err
+	}
+	var resources *userresources.Resolver
+	if settings.UserResourcesRoot != nil {
+		resources, err = userresources.NewResolver(ctx, *settings.UserResourcesRoot, catalog, nil)
+		if err != nil {
+			if transport != nil {
+				transport.CloseIdleConnections()
+			}
+			return nil, err
+		}
+	}
 	if settings.FallbackModel != nil {
 		fallback = *settings.FallbackModel
 	}
@@ -227,7 +269,7 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 	manager, err := agent.NewSessionManager(agent.ManagerConfig{WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
-		Services: agent.ManagerServices{DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
+		Services: agent.ManagerServices{Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
 	if err != nil {
 		if transport != nil {
 			transport.CloseIdleConnections()

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `141c013` plus owner-bound shared memory fleet composition).
+reviewed **2026-10-07** (Go baseline `82e6de3` plus launcher memory roots and individual tool selection).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -357,7 +357,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision backend selection · bind guard<br/>listener ownership · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
@@ -1095,8 +1095,13 @@ session-restoration mechanism, or HTTP route is added. See
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before
 runtime publication; an explicit owner resource resolver takes precedence. This
-binding alone does not install memory tools. Launcher root selection remains
-pending.
+binding alone does not install memory tools. Standalone startup constructs shared
+storage at `MINILOOP_MEMORY_ROOT` or `<workspace root>/.memory`; an optional
+`MINILOOP_USER_RESOURCES_ROOT` selects owner-local resources. `--memory-tools`
+installs remember/recall, and `--memory-auto=false` disables their automatic
+selection/capture. Both roots must construct successfully, including the shared
+root with owner-local resources selected. Pure configuration inspection does not
+construct them.
 
 SQLite durability applies only when a real `StateStore` is configured; the
 default server keeps the documented `Null*` boundaries. Owner skills and

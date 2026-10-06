@@ -34,6 +34,24 @@ func TestDumpConfigReportsDefaultsWithoutStartupOrSecrets(t *testing.T) {
 	}
 }
 
+func TestMemoryFlagsAndRootsReportSelectionWithoutStartup(t *testing.T) {
+	root := t.TempDir()
+	env := map[string]string{"MINILOOP_WORKSPACE_ROOT": filepath.Join(root, "ws"), "MINILOOP_MEMORY_ROOT": filepath.Join(root, "memory"), "MINILOOP_USER_RESOURCES_ROOT": filepath.Join(root, "users"), "MINILOOP_FEATURES": "1"}
+	var out, errout bytes.Buffer
+	if code := execute(context.Background(), []string{"--memory-tools", "--memory-auto=false", "--dump-config"}, env, &out, &errout); code != 0 {
+		t.Fatal(code, errout.String())
+	}
+	var report launcher.Report
+	if err := json.Unmarshal(out.Bytes(), &report); err != nil || report.MemoryBackend != launcher.OwnerMemory || !report.MemoryTools || report.MemoryAuto || len(report.Unsupported) != 1 {
+		t.Fatal(report, err)
+	}
+	for _, name := range []string{"ws", "memory", "users"} {
+		if _, err := os.Stat(filepath.Join(root, name)); !os.IsNotExist(err) {
+			t.Fatal("dump started runtime", name, err)
+		}
+	}
+}
+
 func TestBackgroundFlagReportsExplicitSelectionWithoutStartup(t *testing.T) {
 	env := map[string]string{"MINILOOP_WORKSPACE_ROOT": filepath.Join(t.TempDir(), "ws"), "MINILOOP_FEATURES": "1"}
 	var out, errout bytes.Buffer

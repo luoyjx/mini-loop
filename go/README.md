@@ -668,8 +668,8 @@ trajectory root failure refuses startup. The launcher best-effort constructs the
 spill store at `MINILOOP_SPILL_DIR` (default `./var/spill`; empty disables it).
 A root construction failure disables preservation while startup continues, matching
 Python. The launcher also refuses enabled
-feature/workflow/guardian/decision/token-efficiency/AST integrations and configured
-owner-resource/memory roots. Inactive optional settings remain typed and validated.
+comprehensive feature/workflow/guardian/token-efficiency/AST integrations.
+Implemented decision providers and memory roots have independent selections. Inactive optional settings remain typed and validated.
 Ordinary workspace compaction artifacts remain separate from the private store.
 The default structured Bash tool currently bypasses string-output preservation in
 both Python and Go; see the preservation section below. No dependency was added.
@@ -1473,9 +1473,24 @@ Snapshot 60 compares 13 actual Python scenarios and 118 operations, exact file
 bytes, body hashes, metadata, index timing and diagnostics. Native tests add
 concurrent scoped replacement, owner protection, cancellation and detached values.
 Cache semantics can retain same-mtime/same-size external edits, matching source;
-multi-file replacement is not transactional or cross-process fenced. No LLM
-extraction/consolidation, runtime memory tools, owner resource bundle, manager/
-restore/child binding or configuration activation ships yet.
+multi-file replacement is not transactional or cross-process fenced. Subsequent
+slices deliver owner resource bundles, manager/restore/child binding, explicit
+remember/recall, automatic selection/extraction/consolidation and contained capture.
+
+The standalone launcher constructs shared storage at MINILOOP_MEMORY_ROOT or
+<workspace root>/.memory even with MINILOOP_USER_RESOURCES_ROOT selected. The
+optional owner resolver takes precedence; its root is eagerly private (0700),
+while owner children remain lazy. Either root construction failure refuses
+startup. Binding refusal precedes all these effects. --memory-tools installs
+remember/recall; default startup carries storage without those tools.
+--memory-auto=false disables automatic selection/capture with the tool pair;
+changed context indices still follow recall independently. Embedding uses
+launcher.Options.MemoryTools/MemoryAuto or explicit agent.ManagerServices.Memory
+and UserResources. Inspect/dump reports memory_backend, memory_tools and memory_auto
+without creating roots or making model calls; these are configuration choices,
+not runtime health evidence. Snapshot 70 compares seven actual source constructor
+cases. Native HTTP model tests verify selected roots, exact owners and the copied
+auto override. User-skill capture/preview/HTTP routes remain pending.
 
 ### Immutable owner resource snapshots
 

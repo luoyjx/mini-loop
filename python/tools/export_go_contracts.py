@@ -5841,6 +5841,62 @@ def _memory_capture_contracts(scratch: Path) -> dict:
     return dict(cases=asyncio.run(run()))
 
 
+def _launcher_memory_contracts(scratch: Path) -> dict:
+    """Actual source default roots, eager failures and default tool selection."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+
+    async def run():
+        rows = []
+        cases = [
+            ("default-shared", False, False, ""),
+            ("configured-shared", True, False, ""),
+            ("owner-local", False, True, ""),
+            ("owner-and-shared", True, True, ""),
+            ("shared-file", True, False, "memory"),
+            ("shared-file-with-owner", True, True, "memory"),
+            ("owner-file", False, True, "users"),
+        ]
+        for name, configured, owner_local, blocked in cases:
+            base = scratch / name
+            base.mkdir(parents=True)
+            memory_root = base / "memory" if configured else base / "workspaces" / ".memory"
+            users_root = base / "users"
+            if blocked:
+                path = memory_root if blocked == "memory" else users_root
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("root is a regular file", encoding="utf-8")
+            settings = Settings(fake_llm=True, workspace_root=base / "workspaces",
+                                trajectory_enabled=False, spill_dir=None,
+                                memory_root=memory_root if configured else None,
+                                user_resources_root=users_root if owner_local else None)
+            manager = None
+            row = dict(name=name, configured_shared=configured, owner_local=owner_local,
+                       blocked=blocked)
+            try:
+                manager = SessionManager(settings, FakeAsyncAnthropic())
+                row["started"] = True
+                row["backend"] = "owner-local" if manager.user_resources is not None else "shared"
+                row["shared_path"] = manager.memory.dir.relative_to(base).as_posix()
+                session = manager.create(owner="alice")
+                row["memory_tools"] = [n for n in session.agent.tools.names() if n in ("remember", "recall")]
+                row["users_mode"] = (users_root.stat().st_mode & 0o777) if owner_local else None
+            except OSError:
+                row["started"] = False
+            finally:
+                if manager is not None:
+                    await manager.stop()
+            row["shared_directory"] = memory_root.is_dir()
+            row["users_directory"] = users_root.is_dir()
+            rows.append(row)
+        return rows
+
+    return dict(cases=asyncio.run(run()),
+                source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "manager.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5965,6 +6021,7 @@ def _snapshot() -> dict[str, bytes]:
         memory_extraction_contracts = _memory_extraction_contracts(Path(scratch) / "memory-extraction")
         memory_consolidation_contracts = _memory_consolidation_contracts(Path(scratch) / "memory-consolidation")
         memory_capture_contracts = _memory_capture_contracts(Path(scratch) / "memory-capture")
+        launcher_memory_contracts = _launcher_memory_contracts(Path(scratch) / "launcher-memory")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6049,6 +6106,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-memory-extraction.json": _json_bytes(memory_extraction_contracts),
         "python-memory-consolidation.json": _json_bytes(memory_consolidation_contracts),
         "python-memory-capture.json": _json_bytes(memory_capture_contracts),
+        "python-launcher-memory.json": _json_bytes(launcher_memory_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

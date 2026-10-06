@@ -1289,7 +1289,8 @@ pointers, flat serializers and archival readers use known event variants, and
 memory_capture_error carries bounded detail through normal registry masking.
 Native error class labels differ from Python class names. Ordinary capture faults
 preserve the completed turn; cancellation and native state authority loss remain
-errors. Skill capture/preview/routes and launcher root configuration remain pending.
+errors. Skill capture/preview/routes remain pending; launcher root configuration
+and individual memory selection are implemented as described below.
 
 ### Go trusted session resource binding
 
@@ -1314,7 +1315,15 @@ SubagentParent and native in-process children inherit the parent's binding. Pyth
 in-process subagents explicitly inherit skills; native complete bundle retention
 also pins owner memory for future integrations. Source teammates inherit both,
 but Go teammate scheduling is still pending. Memory tools/hooks are not activated
- by carrying a bundle. Launcher root selection and capture/routes remain pending.
+by carrying a bundle. The launcher always constructs shared storage at the
+configured MemoryRoot or WorkspaceRoot/.memory, then optionally constructs a
+UserResourcesRoot resolver with the same agent catalogue. Both roots are mandatory
+when selected; root faults close the owned transport and refuse startup. Binding
+validation precedes root effects. Options.MemoryTools (default false) and the
+copied Options.MemoryAuto override independently select tools and automatic
+lifecycle behavior. --memory-tools and --memory-auto expose these choices; pure
+Inspect reports selection without root creation. User-skill capture/routes remain
+pending.
 
 Builtin Catalog/LayeredCatalog Load returns named skills.RefusalError for domain
 refusals. The runtime renders those as source-compatible `Error: ...` completed

@@ -112,7 +112,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; scoped extraction/consolidation and contained memory capture at the actual source endpoints implemented; shared manager memory fallback with exact owner binding implemented; launcher root selection and skill capture/preview/routes remain; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; scoped extraction/consolidation and contained memory capture at the actual source endpoints implemented; shared manager memory fallback with exact owner binding and launcher root/tool/auto selection implemented; skill capture/preview/routes remain; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next decision slices
@@ -5461,3 +5461,58 @@ errors/warnings. Specification SHA-256:
 c47758dc980bc54f0155fac6545f90966e0cdd2762b06093cac954db62a5d5bc
 (684,438 bytes). Visual inspection remains skipped after the earlier local-file
 access denial; renderer acceptance does not establish visual review.
+
+
+## Implementation checkpoint — 2026-10-07 launcher memory roots and selection
+
+### Source contract and implementation
+
+Snapshot 70 measures actual Python manager construction and default registries
+across seven root configurations, including regular-file failures. Startup
+constructs one shared Store at MemoryRoot or WorkspaceRoot/.memory even with
+UserResourcesRoot configured, then optionally creates a private root Resolver
+with the selected agent catalogue. The manager binds owners and retains resolver
+precedence. Root failure refuses startup and closes owned provider connections;
+open-bind/model/configuration refusal still precedes root effects. Construction
+may retain earlier filesystem effects if a later root fails, matching source.
+Owner children remain lazy. No dependency was added.
+
+Options.MemoryTools and --memory-tools explicitly install remember/recall;
+default startup preserves the source default catalogue without memory tools.
+Options.MemoryAuto is copied by the manager and defaults true with the tool pair;
+--memory-auto=false opts out. Context index exposure still follows recall.
+Named MemoryBackend values and detached boolean choices appear in pure Inspect/
+dump-config without storage creation or provider calls. Roots no longer appear
+as unsupported settings. Comprehensive MINILOOP_FEATURES remains refused.
+
+### Evidence and remaining scope
+
+Native fixture tests compare all seven constructor outcomes, paths, root effects
+and permissions. Real mocked HTTP provider requests verify default/configured
+shared and owner-local roots, scoped Alice/Bob/anonymous recall, resolver
+precedence, retained auto=false and default tools off. CLI dump compares flag/
+root selections without startup, while retaining comprehensive-feature refusal.
+User-skill capture/preview/HTTP routes, SQL backend/restart and remaining G0-G7
+requirements remain open. Coverage percentages were not refreshed.
+
+Validation passed: focused launcher/CLI/configuration tests, go test ./...
+(launcher 2.466s), go test -race ./... (launcher 3.882s) and go vet ./....
+Exporter --check confirmed all 70 files current; the original 69 fixtures remain
+unchanged. It exited successfully with dependency/model deprecation warnings and
+an Unknown child process diagnostic. verify_scans.py confirmed all 19 scanner
+guards anchored. The selected source private-root guard was caught. Six compiling
+isolated native mutations were caught: wrong default root, skipping shared root
+with owner resources, ignoring owner resolver, memory tools default-on, dropping
+the auto override and bind refusal after root effects. No native mutation timed
+out or failed to compile. All these jobs were terminal before the full Python
+suite ran alone: 2,151 passed, 28 skipped, 24 subtests passed, three dependency
+deprecation warnings in 128.47s. No Python package module changed, so package
+invariants were not rerun. README outline and git diff --check passed.
+
+Archify delivered the overview with 9/9 showcase checks, zero errors/warnings.
+Specification SHA-256:
+ec1f815d5c30dec35635ca9888d75a6d79125dd15ec50072cd8ea0835107a5af
+(43,113 bytes); HTML SHA-256:
+04a37d07daa56e76e429c2b6e2daad18a249354fb00816941aef60723bcf6628
+(684,919 bytes). Visual inspection remains skipped after the earlier local-file
+access denial; renderer acceptance is not visual inspection.
