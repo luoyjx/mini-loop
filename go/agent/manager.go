@@ -13,6 +13,7 @@ import (
 
 	"github.com/luoyjx/mini-loop/go/cron"
 	"github.com/luoyjx/mini-loop/go/skills"
+	"github.com/luoyjx/mini-loop/go/userresources"
 	"github.com/luoyjx/mini-loop/go/workspace"
 )
 
@@ -353,7 +354,11 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 	if request.System != nil {
 		system = request.System
 	}
-	session, err = newManagedSession(manager.managedRuntimeConfig(id, request.Owner, path, mode, model, system, bash), true)
+	runtime, err := manager.managedRuntimeConfig(ctx, id, request.Owner, path, mode, model, system, bash)
+	if err != nil {
+		return nil, err
+	}
+	session, err = newManagedSession(runtime, true)
 	if err != nil {
 		return nil, err
 	}
@@ -385,14 +390,22 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 
 // One composition map serves both new and restored handles. Metadata and history
 // are installed before initialization/publication by the respective consumer.
-func (manager *SessionManager) managedRuntimeConfig(id SessionID, owner OwnerID, path string, mode PermissionMode, model string, system *string, bash BashExecutor) RuntimeConfig {
+func (manager *SessionManager) managedRuntimeConfig(ctx context.Context, id SessionID, owner OwnerID, path string, mode PermissionMode, model string, system *string, bash BashExecutor) (RuntimeConfig, error) {
 	services := manager.config.Services
 	defaults := manager.config.Defaults
 	builder := services.SystemBuilder
 	if system != nil {
 		builder = FixedSystem(*system)
 	}
-	return RuntimeConfig{DecisionTools: services.DecisionTools, DecisionProvider: services.DecisionProvider, DecisionLLM: services.DecisionLLM, GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
+	runtime := RuntimeConfig{DecisionTools: services.DecisionTools, DecisionProvider: services.DecisionProvider, DecisionLLM: services.DecisionLLM, GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
+	if resolver := services.UserResources; resolver != nil {
+		resources, err := resolver.ForOwner(ctx, userresources.OwnerID(owner))
+		if err != nil {
+			return RuntimeConfig{}, err
+		}
+		runtime.UserResources = &resources
+	}
+	return runtime, nil
 }
 
 func (manager *SessionManager) Get(owner OwnerID, id SessionID) (*ManagedSession, error) {

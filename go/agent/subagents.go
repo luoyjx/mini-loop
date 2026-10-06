@@ -9,6 +9,7 @@ import (
 
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/userresources"
 )
 
 const DefaultSubagentMaxDepth = 2
@@ -24,6 +25,7 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	ownerResources                                 *userresources.Resources
 	decisionProvider                               decisions.Provider
 	decisionLLM                                    DecisionLLMConfig
 	planApprover                                   PlanApprover
@@ -61,7 +63,13 @@ func (parent SubagentParent) Authority() ToolAuthority {
 	return value
 }
 func (parent SubagentParent) Label() string { return parent.label }
-func (parent SubagentParent) Depth() int    { return parent.depth }
+func (parent SubagentParent) UserResources() (userresources.Resources, bool) {
+	if parent.ownerResources == nil {
+		return userresources.Resources{}, false
+	}
+	return *parent.ownerResources, true
+}
+func (parent SubagentParent) Depth() int { return parent.depth }
 
 type SubagentSettings struct {
 	Model          string
@@ -176,6 +184,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 		}
 	}
 	child.planApprover = parent.planApprover
+	child.ownerResources = parent.ownerResources
 	child.decisionProvider, child.decisionLLM = parent.decisionProvider, parent.decisionLLM
 	child.recovery = parent.recovery
 	child.streamProgress = parent.streamProgress
@@ -248,6 +257,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
+		ownerResources:   s.ownerResources,
 		decisionProvider: s.decisionProvider, decisionLLM: s.decisionLLM,
 		planApprover: s.planApprover,
 		background:   s.background,

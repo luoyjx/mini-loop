@@ -8,6 +8,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/spill"
+	"github.com/luoyjx/mini-loop/go/userresources"
 	"github.com/luoyjx/mini-loop/go/worktrees"
 )
 
@@ -46,6 +47,7 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	UserResources             *userresources.Resolver
 	DecisionTools             bool
 	DecisionProvider          decisions.Provider
 	DecisionLLM               DecisionLLMConfig

@@ -12,6 +12,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/skills"
+	"github.com/luoyjx/mini-loop/go/userresources"
 	workspacepkg "github.com/luoyjx/mini-loop/go/workspace"
 )
 
@@ -35,6 +36,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	ownerResources                                    *userresources.Resources
 	decisionProvider                                  decisions.Provider
 	decisionLLM                                       DecisionLLMConfig
 	goals                                             goalState
@@ -226,6 +228,15 @@ func (s *Session) recordStop(event ProviderStopEvent) {
 
 // Run serializes turns within this session. Different sessions do not share a
 // lock and can make model progress concurrently.
+// UserResources returns the fixed owner bundle, not the resolver's current cache.
+// The binding is immutable after construction; memory operations remain scoped.
+func (s *Session) UserResources() (userresources.Resources, bool) {
+	if s.ownerResources == nil {
+		return userresources.Resources{}, false
+	}
+	return *s.ownerResources, true
+}
+
 func (s *Session) Run(ctx context.Context, prompt string) (string, error) {
 	run, err := DefaultRunContext()
 	if err != nil {

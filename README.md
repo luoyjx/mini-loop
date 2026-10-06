@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `0ca5e45` plus create-only owner skill publication).
+reviewed **2026-10-06** (Go baseline `75c5595` plus explicit managed owner resource snapshots).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -362,11 +362,11 @@ flowchart LR
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
-        GoManager["Go SessionManager<br/>owner lookup · shared services / pools<br/>workspace policy · delete / stop drain"]
+        GoManager["Go SessionManager<br/>owner lookup · fixed resource snapshots / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback<br/>default goal stop · bounded continuation"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>operator agent/user layers · runtime binding pending<br/>spill → snip → micro → summary · optional plan guidance"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>explicit pinned agent/user layers<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
@@ -377,7 +377,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>create-only skill publication · session binding pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>create-only skill publication · explicit session snapshots"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -408,7 +408,7 @@ flowchart LR
         GoBrowser -->|authenticated API / SSE| GoTrust
         GoLaunch -. construct / stop .-> GoManager
         GoManager -. explicit typed workspace factory .-> GoWorktrees
-        GoManager -->|create / fork / own| GoManaged --> GoControls --> GoSession
+        GoManager -->|create / fork / restore · pin resources| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
         GoSession --> GoContext --> GoProvider
         GoProvider --> GoSession
@@ -538,18 +538,22 @@ owner directory keys hash exact trusted identifiers without trimming or folding.
 An explicit DirectoryResolver now pins the configured physical root, creates
 private 0700 digest/skills/memory directories, refuses pre-planted child links and
 caches immutable exact-owner bindings. It is an operator filesystem library,
-aggregated with filesystem backends in the interactive map. Publication, trusted
-session binding and routes remain pending.
+aggregated with filesystem backends in the interactive map. Launcher/configuration
+and authenticated capture/publication routes remain pending.
 `skills.NewLayeredCatalog` now provides explicit agent/user provenance, collision
 refusal, a shared prompt budget and source-owned serve-time verification; it is
-an operator composition library until trusted session binding is implemented.
+available through explicit owner-bound RuntimeConfig and ManagerServices snapshots.
 `go/memory` now provides typed Markdown Store/ScopedStore libraries: exact owner
 keys, scoped replacement, lexical search, lazy index/cache and secret masking.
 `userresources.NewResolver` now composes exact-owner directory, layered skill and
 bound memory snapshots, caching only complete bindings. Its operator problem
 view preserves owner-local logs and skips shared deployment diagnostics.
-Extraction/consolidation queries, memory tools and managed session resource
-binding are not activated yet. Operator-only publication is now implemented.
+Explicit ManagerServices.UserResources now resolves trusted owners before
+create/fork/restore session construction; RuntimeConfig.UserResources validates a
+complete matching owner bundle before filesystem effects. Sessions and selected
+children keep their fixed catalogue and scoped memory binding; forks resolve the
+latest cache. The nil default keeps legacy skills. Extraction/consolidation and
+memory tools remain pending. Operator-only publication is implemented.
 `go/durable` adds the publication prerequisite: component-wise no-follow directory
 opens, bounded regular-file reads and fsynced create-only hard links. The hard link
 is the commit point; post-commit cleanup cannot turn success into a retryable error.
@@ -561,8 +565,7 @@ and health checks, fresh disk collision checks, bounded no-follow idempotent
 verification, prepared receipts/catalogues and create-only files. Successful
 publication replaces only the resolver cache for future resolutions, preserving
 live snapshots and the bound memory service. It is an operator library; trusted
-manager activation, capture/preview drafts, configuration and HTTP routes remain
-pending. Custom maskers without a typed registration surface fail closed.
+capture/preview drafts, launcher/configuration and HTTP routes remain pending. Custom maskers without a typed registration surface fail closed.
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,

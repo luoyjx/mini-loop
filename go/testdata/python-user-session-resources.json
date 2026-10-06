@@ -1,0 +1,331 @@
+{
+  "frames": [
+    {
+      "bound": true,
+      "descriptions": "Agent-provided skills:\n  - agent:first [digest=d4f0bc5a29de06b5]: First\nUser-scoped skills:\n  - user:first [digest=2bd806c97f0e00af]: First",
+      "loads": [
+        {
+          "failed": false,
+          "input": {
+            "name": "agent:first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:first"
+          },
+          "sha256": "228f0936f528f31cbbaa390358bd467e113e545286360b0b2f57ba56fda09286"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:later"
+          },
+          "sha256": "7ad2f329a0a21ddab2ca11aad62b0875e5da44fe692a8cab89dc7c48d224c43a"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "first"
+          },
+          "sha256": "1d6a520d3e62221b4422ff9198630e17fadc10917df25bcbd18b2c42303a2514"
+        }
+      ],
+      "name": "alice-old",
+      "owner": "alice"
+    },
+    {
+      "bound": true,
+      "descriptions": "Agent-provided skills:\n  - agent:first [digest=d4f0bc5a29de06b5]: First\nUser-scoped skills:\n  - user:first [digest=81b637d8fcd2c6da]: First",
+      "loads": [
+        {
+          "failed": false,
+          "input": {
+            "name": "agent:first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:first"
+          },
+          "sha256": "5456ccb3ebbacfa0772f01754d2e68b546fb4a5842d3ed764e96c949aed70e84"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:later"
+          },
+          "sha256": "7ad2f329a0a21ddab2ca11aad62b0875e5da44fe692a8cab89dc7c48d224c43a"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "first"
+          },
+          "sha256": "1d6a520d3e62221b4422ff9198630e17fadc10917df25bcbd18b2c42303a2514"
+        }
+      ],
+      "name": "bob",
+      "owner": "bob"
+    },
+    {
+      "bound": true,
+      "descriptions": "Agent-provided skills:\n  - agent:first [digest=d4f0bc5a29de06b5]: First\nUser-scoped skills:\n  (none)",
+      "loads": [
+        {
+          "failed": false,
+          "input": {
+            "name": "agent:first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:first"
+          },
+          "sha256": "df95218f95deb02b64daad75518b6926bc94b9d8abceae88a1e4b8a931b37841"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:later"
+          },
+          "sha256": "309bdb51c637a7642cd52fd332af7988cbe3a1abfeca17b4809d9e40c1ef9f39"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        }
+      ],
+      "name": "anonymous",
+      "owner": "anonymous"
+    },
+    {
+      "bound": true,
+      "descriptions": "Agent-provided skills:\n  - agent:first [digest=d4f0bc5a29de06b5]: First\nUser-scoped skills:\n  - user:first [digest=2bd806c97f0e00af]: First",
+      "loads": [
+        {
+          "failed": false,
+          "input": {
+            "name": "agent:first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:first"
+          },
+          "sha256": "228f0936f528f31cbbaa390358bd467e113e545286360b0b2f57ba56fda09286"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:later"
+          },
+          "sha256": "7ad2f329a0a21ddab2ca11aad62b0875e5da44fe692a8cab89dc7c48d224c43a"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "first"
+          },
+          "sha256": "1d6a520d3e62221b4422ff9198630e17fadc10917df25bcbd18b2c42303a2514"
+        }
+      ],
+      "name": "alice-live",
+      "owner": "alice"
+    },
+    {
+      "bound": true,
+      "descriptions": "Agent-provided skills:\n  - agent:first [digest=d4f0bc5a29de06b5]: First\nUser-scoped skills:\n  - user:first [digest=2bd806c97f0e00af]: First\n  - user:later [digest=11507a0e2f5e69d5]: Later",
+      "loads": [
+        {
+          "failed": false,
+          "input": {
+            "name": "agent:first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:first"
+          },
+          "sha256": "228f0936f528f31cbbaa390358bd467e113e545286360b0b2f57ba56fda09286"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:later"
+          },
+          "sha256": "ebe9d5b8648870d3c39b423b588d38d32700b5bdae554f9084dab4e2c45715b9"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "first"
+          },
+          "sha256": "1d6a520d3e62221b4422ff9198630e17fadc10917df25bcbd18b2c42303a2514"
+        }
+      ],
+      "name": "fork",
+      "owner": "alice"
+    },
+    {
+      "bound": true,
+      "descriptions": "Agent-provided skills:\n  - agent:first [digest=d4f0bc5a29de06b5]: First\nUser-scoped skills:\n  - user:first [digest=2bd806c97f0e00af]: First",
+      "loads": [
+        {
+          "failed": false,
+          "input": {
+            "name": "agent:first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:first"
+          },
+          "sha256": "228f0936f528f31cbbaa390358bd467e113e545286360b0b2f57ba56fda09286"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:later"
+          },
+          "sha256": "7ad2f329a0a21ddab2ca11aad62b0875e5da44fe692a8cab89dc7c48d224c43a"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "first"
+          },
+          "sha256": "1d6a520d3e62221b4422ff9198630e17fadc10917df25bcbd18b2c42303a2514"
+        }
+      ],
+      "name": "teammate",
+      "owner": "alice"
+    },
+    {
+      "bound": true,
+      "descriptions": "Agent-provided skills:\n  - agent:first [digest=d4f0bc5a29de06b5]: First\nUser-scoped skills:\n  - user:first [digest=2bd806c97f0e00af]: First\n  - user:later [digest=11507a0e2f5e69d5]: Later",
+      "loads": [
+        {
+          "failed": false,
+          "input": {
+            "name": "agent:first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:first"
+          },
+          "sha256": "228f0936f528f31cbbaa390358bd467e113e545286360b0b2f57ba56fda09286"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:later"
+          },
+          "sha256": "ebe9d5b8648870d3c39b423b588d38d32700b5bdae554f9084dab4e2c45715b9"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "first"
+          },
+          "sha256": "1d6a520d3e62221b4422ff9198630e17fadc10917df25bcbd18b2c42303a2514"
+        }
+      ],
+      "name": "restored-alice",
+      "owner": "alice"
+    },
+    {
+      "bound": true,
+      "descriptions": "Agent-provided skills:\n  - agent:first [digest=d4f0bc5a29de06b5]: First\nUser-scoped skills:\n  (none)",
+      "loads": [
+        {
+          "failed": false,
+          "input": {
+            "name": "agent:first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:first"
+          },
+          "sha256": "df95218f95deb02b64daad75518b6926bc94b9d8abceae88a1e4b8a931b37841"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:later"
+          },
+          "sha256": "309bdb51c637a7642cd52fd332af7988cbe3a1abfeca17b4809d9e40c1ef9f39"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "first"
+          },
+          "sha256": "fc0825530d49e510d45ea7d69695f63ea309f3e0c8e8b542fc6a8077e992bb01"
+        }
+      ],
+      "name": "scheduled-anonymous",
+      "owner": "anonymous"
+    },
+    {
+      "bound": false,
+      "descriptions": "  - first: First",
+      "loads": [
+        {
+          "failed": false,
+          "input": {
+            "name": "agent:first"
+          },
+          "sha256": "304f60b88af372122a26b5079bb8c5d814e9779d3aa2dbcd48c802e3908a01ce"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:first"
+          },
+          "sha256": "b56b895080b330f83022e249a58861ddb05e173d87713974dade8a2b7894a254"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "user:later"
+          },
+          "sha256": "b56b895080b330f83022e249a58861ddb05e173d87713974dade8a2b7894a254"
+        },
+        {
+          "failed": false,
+          "input": {
+            "name": "first"
+          },
+          "sha256": "304f60b88af372122a26b5079bb8c5d814e9779d3aa2dbcd48c802e3908a01ce"
+        }
+      ],
+      "name": "disabled",
+      "owner": "alice"
+    }
+  ],
+  "memory_reused": true,
+  "resources_retained": true,
+  "teammate_memory_pinned": true
+}

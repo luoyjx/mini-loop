@@ -5484,6 +5484,70 @@ def _publication_contracts(scratch: Path) -> dict:
     return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT/"mini_loop"/"user_resources.py").read_bytes()).hexdigest())
 
 
+def _user_session_resource_contracts(scratch: Path) -> dict:
+    """Actual manager create/fork/teammate/SQLite restoration resource binding."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.registry import ToolCall
+    from mini_loop.skills import SkillLoader
+    from mini_loop.storage import SQLiteStateStore
+    from mini_loop.user_resources import UserResourceResolver, canonical_user_skill
+    async def scenario():
+        scratch.mkdir(parents=True);agent_dir=scratch/"agent";agent_dir.mkdir()
+        path=agent_dir/"first"/"SKILL.md";path.parent.mkdir()
+        path.write_text(canonical_user_skill("first","First","agent"),encoding="utf-8")
+        agent=SkillLoader(agent_dir);root=scratch/"users";resolver=UserResourceResolver(root,agent)
+        resolver.publish_skill("alice",dict(name="first",description="First",body="alice"))
+        resolver.publish_skill("bob",dict(name="first",description="First",body="bob"))
+        store=SQLiteStateStore(scratch/"state.db")
+        settings=Settings(fake_llm=True,workspace_root=scratch/"workspaces",skills_dir=agent_dir,user_resources_root=None)
+        manager=SessionManager(settings,FakeAsyncAnthropic(),skills=agent,user_resources=resolver,state_store=store)
+        frames=[]
+        async def capture(name,session,bound=True):
+            events=[];original=session.agent.emit
+            async def emit(event):events.append(event)
+            session.agent.emit=emit
+            loads=[]
+            try:
+                for value in ("agent:first","user:first","user:later","first"):
+                    output=await session.agent._exec_tool(ToolCall("load_skill",dict(name=value),"probe"))
+                    final=next(event for event in reversed(events) if event.get("type")=="tool_result")
+                    loads.append(dict(input=dict(name=value),sha256=hashlib.sha256(output.encode()).hexdigest(),failed=bool(final["error"])))
+            finally:session.agent.emit=original
+            frames.append(dict(name=name,owner=session.owner,bound=bound,descriptions=session.agent.skills.descriptions(),loads=loads))
+        try:
+            alice=manager.create(owner="alice");bob=manager.create(owner="bob");anonymous=manager.create(owner="anonymous")
+            await capture("alice-old",alice);await capture("bob",bob);await capture("anonymous",anonymous)
+            resolver.publish_skill("alice",dict(name="later",description="Later",body="new"))
+            await capture("alice-live",alice)
+            fork=await manager.fork_session(alice.id);await capture("fork",fork)
+            await manager.spawn_teammate(alice.id,"worker","implementer","stand by")
+            teammate=next(item for item in manager.list() if item.id not in (alice.id,bob.id,anonymous.id,fork.id))
+            await capture("teammate",teammate)
+            memory_reused=fork.agent.state["memory"] is alice.agent.state["memory"]
+            teammate_memory_pinned=teammate.agent.state["memory"] is alice.agent.state["memory"]
+            manager.delete(bob.id)
+            resources_retained=(root/resolver._owner_key("bob")/"skills"/"first"/"SKILL.md").exists()
+        finally:await manager.stop()
+        refreshed=UserResourceResolver(root,agent)
+        restored_manager=SessionManager(settings,FakeAsyncAnthropic(),skills=agent,user_resources=refreshed,state_store=store)
+        try:
+            restored=restored_manager.restore_sessions()
+            saved=next(item for item in restored if item.id==alice.id)
+            await capture("restored-alice",saved)
+            scheduled=restored_manager.restore_scheduled_session("missing")
+            await capture("scheduled-anonymous",scheduled)
+        finally:await restored_manager.stop();store.close()
+        disabled=SessionManager(settings,FakeAsyncAnthropic(),skills=agent)
+        try:await capture("disabled",disabled.create(owner="alice"),False)
+        finally:await disabled.stop()
+        return dict(frames=frames,memory_reused=memory_reused,teammate_memory_pinned=teammate_memory_pinned,
+                    resources_retained=resources_retained)
+    return asyncio.run(scenario())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5602,6 +5666,7 @@ def _snapshot() -> dict[str, bytes]:
         owner_resource_contracts = _owner_resource_contracts(Path(scratch) / "owner-resources")
         durable_create_contracts = _durable_create_contracts(Path(scratch) / "durable-create")
         publication_contracts = _publication_contracts(Path(scratch) / "publication")
+        user_session_resource_contracts = _user_session_resource_contracts(Path(scratch) / "user-session-resources")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5680,6 +5745,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-owner-resources.json": _json_bytes(owner_resource_contracts),
         "python-durable-create.json": _json_bytes(durable_create_contracts),
         "python-user-publication.json": _json_bytes(publication_contracts),
+        "python-user-session-resources.json": _json_bytes(user_session_resource_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

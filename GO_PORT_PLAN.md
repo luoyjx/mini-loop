@@ -112,7 +112,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; trusted session binding and memory lifecycle remain; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots implemented; launcher root selection and memory lifecycle remain; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next decision slices
@@ -5014,3 +5014,64 @@ or warnings. HTML SHA256
 `38c7ef6c2a777c0145f7ad24fad22a8687c14e3f01792cab49228c4e1c761c25`
 (680,960 bytes). Visual review remains skipped after earlier local-file access
 denial; it was not retried or bypassed.
+
+## Implementation checkpoint — 2026-10-06 managed owner resource snapshots
+
+Actual Python manager binds owner before _build_agent, forks through create using
+the current resolver generation, and rebinds recorded/scheduled restoration from
+stored owner. Source teammates explicitly inherit parent skill/memory references;
+in-process subagents explicitly inherit the skill harness. This iteration wires
+the concrete Resolver into explicit ManagerServices.UserResources and copies one
+complete owner-matching Resources through RuntimeConfig.UserResources. Validation
+happens before runtime filesystem effects. Nil preserves legacy skill selection.
+
+The shared managed construction map resolves before new/forked/restored runtime
+construction. Getter values remain fixed; source cache refresh does not change
+live handlers. Native selected children retain the parent's typed bundle, also
+pinning scoped memory for future integrations. This is a stronger explicit native
+binding than Python in-process skill-only inheritance; no memory tools/hooks are
+activated by it. Default children still obey role/depth/gate policy. Go teams are
+not implemented: the source teammate frame compares inherited resource binding
+through a native runtime, not teammate scheduling. Session deletion preserves owner
+files, and resource admission failure cannot publish a handle or retain scratch.
+
+Runtime integration exposed a source outcome distinction: builtin missing/name/
+collision/tampered skill refusals are completed `Error: ...` text, with failed=false.
+Catalog/LayeredCatalog now return a named RefusalError while retaining standalone
+error signatures; runtime adapts only that domain variant. Cancellation and custom
+backend errors stay faults. The source probe initially listened for managed
+`tool_end`; direct Agent emit instead publishes `tool_result`. After correcting
+the probe, actual source events confirm the outcome flags.
+
+Snapshot 64 executes actual Python manager/SQLite lifecycle and nine frames:
+alice/bob/anonymous, old live generation, refreshed fork, inherited teammate,
+recorded owner restore, missing scheduled anonymous restore and disabled legacy
+source. All 36 tool outputs and failure flags, catalogue descriptions, source
+memory reference reuse and durable resource retention are compared. Native Go
+restore uses the existing injected test backing: native SQLite/restart remains
+unproven. Additional tests validate owner/zero-bundle refusal before writes, caller
+pointer detachment, failed manager admission cleanup, real qualified child tool
+execution, pinned child bundles and custom backend/cancellation distinction.
+
+Next: launcher/configuration root selection, memory lifecycle/tools, source
+capture/preview/commit authority and remaining feature groups. G0–G7 remain open;
+no new dependency or broad dynamic domain structure is introduced.
+
+Validation: focused managed/resource/refusal tests, `go test ./...`,
+`go test -race ./...` and `go vet ./...` passed. Contract exporter `--check`
+confirmed all 64 snapshots current. Source scans confirmed all 19 guard anchors;
+the skill-served-after-tampering guard passed. Three isolated native mutations
+(owner match, caller detachment and refusal adaptation) were caught by their
+intended assertions. Python resource lifecycle tests passed (9 tests).
+
+After all Go/export/mutation jobs finished, the full Python suite ran alone:
+2,151 passed, 28 skipped and 24 subtests passed in 92.27s, with three dependency
+deprecation warnings. No Python package modules changed, so package invariants
+were not rerun. README outline and `git diff --check` passed. Coverage was not
+refreshed in this iteration.
+
+Archify regeneration passed 9/9 showcase checks with zero errors or warnings.
+Specification SHA-256: 96266f5467a9dc51f5154df33e735f0f03333d866922e22fe76194392f20034e.
+HTML SHA-256: 0d42b938f54e077a996a579b6ab8f7c0cb9749e918130728e8fb70647249810d
+(681,653 bytes). Visual inspection remained skipped after local-file access was
+denied; renderer acceptance is not visual inspection.

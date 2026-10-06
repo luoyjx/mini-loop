@@ -1147,7 +1147,8 @@ and diagnostics. Layered construction copies existing source problems once;
 later source failures stay in the source log. Return values and bounded problem
 reports retain the native catalogue conventions. Callers must bind the user
 catalogue from trusted owner resources; the model cannot supply an owner.
-The owner Resolver composes full bundles; managed runtime layering remains pending.
+The owner Resolver composes full bundles; explicit managed runtime layering is
+selected through ManagerServices.UserResources.
 
 ### Go owner memory storage
 
@@ -1168,7 +1169,7 @@ Keep this snapshot for the live session and its selected descendants. Successful
 cache entries never silently rebind; cancelled/failed builds are not published.
 Problems(ctx) is operator-only and derives a fresh bounded view from owner-local
 logs. PublishSkill replaces the cache only for future resolutions; managed
-session activation remains pending.
+launcher/configuration activation remains pending.
 
 ### Go anchored instruction publication files
 
@@ -1216,8 +1217,33 @@ JSON projections; Publication.Resources is internal owner composition.
 
 Native prepared entries retain source digests, so later file tampering is refused
 without requiring a restart. Capture/preview, authenticated commit routes, trusted
-manager activation and cross-process cache refresh remain pending. This library
+launcher/configuration activation and cross-process cache refresh remain pending. This library
 operation does not authorize model-driven publication.
+
+### Go trusted session resource binding
+
+`ManagerServices.UserResources` accepts a concrete Resolver and defaults to nil.
+Create, fork and recorded/scheduled restoration resolve the admitted owner before
+the managed runtime is built. Fork uses the current generation, while existing
+sessions retain their earlier catalogue. Delete and stop preserve durable owner
+files. Failed resource admission cannot publish a handle; native scratch cleanup
+still follows the manager's unpublished-allocation rules.
+
+`RuntimeConfig.UserResources` accepts one concrete Resources value through an
+optional pointer. The constructor copies it, verifies matching owner and complete
+skills/memory, then uses its layered source. The session's UserResources getter
+returns that fixed bundle; changing the caller's config value cannot rebind it.
+SubagentParent and native in-process children inherit the parent's binding. Python
+in-process subagents explicitly inherit skills; native complete bundle retention
+also pins owner memory for future integrations. Source teammates inherit both,
+but Go teammate scheduling is still pending. Memory tools/hooks are not activated
+by carrying a bundle. Launcher root selection and capture/routes remain pending.
+
+Builtin Catalog/LayeredCatalog Load returns named skills.RefusalError for domain
+refusals. The runtime renders those as source-compatible `Error: ...` completed
+text outcomes; custom backend faults and cancellation retain error semantics.
+This distinction is verified against actual Python tool events, not inferred
+from an output prefix.
 
 ## 6. LLM / provider — the client
 

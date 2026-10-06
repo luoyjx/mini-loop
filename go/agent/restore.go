@@ -228,7 +228,11 @@ func (manager *SessionManager) restoreSelected(ctx context.Context, id SessionID
 	if err != nil {
 		return nil, err
 	}
-	session, err = newManagedSession(manager.managedRuntimeConfig(id, owner, path, ModeInteractive, manager.config.Defaults.Model, system, bash), true)
+	runtime, err := manager.managedRuntimeConfig(ctx, id, owner, path, ModeInteractive, manager.config.Defaults.Model, system, bash)
+	if err != nil {
+		return nil, err
+	}
+	session, err = newManagedSession(runtime, true)
 	if err != nil {
 		return nil, err
 	}

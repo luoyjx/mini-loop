@@ -12,6 +12,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/spill"
 	"github.com/luoyjx/mini-loop/go/tasks"
+	"github.com/luoyjx/mini-loop/go/userresources"
 	"github.com/luoyjx/mini-loop/go/workspace"
 	"github.com/luoyjx/mini-loop/go/worktrees"
 )
@@ -55,6 +56,7 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	UserResources        *userresources.Resources
 	DecisionTools        bool
 	DecisionProvider     decisions.Provider
 	DecisionLLM          DecisionLLMConfig
@@ -217,7 +219,12 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return output, err
 	case protocol.ToolLoadSkill:
 		value, _ := input.LoadSkill()
-		return handler.skills.Load(ctx, value)
+		output, err := handler.skills.Load(ctx, value)
+		var refusal *skills.RefusalError
+		if errors.As(err, &refusal) {
+			return "Error: " + refusal.Error(), nil
+		}
+		return output, err
 	case protocol.ToolAskUser:
 		if handler.questions == nil {
 			return "[ask_user unavailable on this surface: no approval broker]", nil
@@ -271,6 +278,15 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	if config.ID == "" || config.Owner == "" || config.Provider == nil || config.Bash == nil || !config.Mode.Valid() || config.MaxRounds < 1 {
 		return nil, errors.New("runtime session requires valid identity, provider, executor, mode and round limit")
+	}
+	var resources *userresources.Resources
+	if config.UserResources != nil {
+		bound := *config.UserResources
+		if bound.Owner() != userresources.OwnerID(config.Owner) || bound.Skills() == nil || bound.Memory() == nil {
+			return nil, errors.New("user resource snapshot must be complete and bound to the session owner")
+		}
+		resources = &bound
+		config.Skills = bound.Skills()
 	}
 	if config.MaxTokens < 0 || config.TokenThreshold < 0 {
 		return nil, errors.New("runtime model budgets cannot be negative")
@@ -454,6 +470,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		session.recovery = config.Recovery
 	}
 	session.planApprover = config.PlanApprover
+	session.ownerResources = resources
 	session.decisionProvider, session.decisionLLM = config.DecisionProvider, decisionLLM
 	session.streamProgress = streamProgress(config.StreamProgress)
 	if config.CachePolicy != nil {

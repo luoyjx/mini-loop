@@ -243,7 +243,8 @@ func (catalog *Catalog) Descriptions() string {
 	return strings.Join(lines, "\n")
 }
 
-func (catalog *Catalog) Load(ctx context.Context, input protocol.LoadSkillInput) (string, error) {
+func (catalog *Catalog) Load(ctx context.Context, input protocol.LoadSkillInput) (output string, err error) {
+	defer func() { err = loadRefusal(err) }()
 	if err := ctx.Err(); err != nil {
 		return "", err
 	}

@@ -143,7 +143,8 @@ func (catalog *LayeredCatalog) available(source protocol.SkillScope) string {
 	return result
 }
 
-func (catalog *LayeredCatalog) Load(ctx context.Context, input protocol.LoadSkillInput) (string, error) {
+func (catalog *LayeredCatalog) Load(ctx context.Context, input protocol.LoadSkillInput) (output string, err error) {
+	defer func() { err = loadRefusal(err) }()
 	if err := ctx.Err(); err != nil {
 		return "", err
 	}
