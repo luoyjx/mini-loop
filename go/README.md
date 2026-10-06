@@ -480,8 +480,13 @@ default). `launcher.Options.DecisionProvider` overrides a selected backend; alon
 it leaves off-mode disabled. With environment off, `DecisionTools` explicitly
 selects LLM when no backend is supplied. `--dump-config` reports off/llm/jev/custom without I/O or
 credentials. FakeLLM does not substitute a fake Jev backend.
-Full actual-source large-result retention/restart audit,
-Go SQLite and live-provider verification remain pending.
+Snapshot 55 compares actual source memory/SQLite-reopen large-result replay and
+aggregate shedding. Native gate tests retain exact maximum-size bytes, replay
+from a fresh session, retain three of five maximum results under the shared
+budget, and preserve shed action identities without reexecution. Unicode bounds
+and recorded-tool reconciliation match source. Recreated stored adapters use a
+test backing; native SQLite/restart, remaining sink/cancellation audit and live
+provider verification remain pending.
 
 ### Use streaming model calls
 

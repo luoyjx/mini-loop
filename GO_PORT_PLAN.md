@@ -128,6 +128,9 @@ Record its parity evidence and remaining gaps before checking it off.
 3. Individual configuration/launcher selection is implemented, retaining
    default-off and explicit-provider precedence. Compare exact large result replay/retention,
    cancellation and sink masking before claiming complete decision parity.
+   Snapshot 55 now compares maximum-size replay, aggregate shedding and Unicode
+   bounds with actual source memory/SQLite-reopen operations; native SQL reopen
+   and the remaining sink/cancellation audit remain open.
 
 ### Next persistence slices
 
@@ -4568,3 +4571,35 @@ errors/warnings; specification fb71683005ba68fe1e89cfb318f50d7862d8ea210ed7ec799
 No Python package modules or scanner targets changed, so invariants/scans were
 not rerun. README outline and diff checks pass. Full Go race suite passes. Full Python: 2151 passed, 28 skipped, 3 warnings, 24 subtests passed in 100.96s (0:01:40).
 G0–G7 remain open.
+
+## Implementation checkpoint — 2026-10-06 large decision replay audit
+
+Snapshot 55 invokes actual test_decision_replay.py helpers, Agent tool execution,
+InMemoryActionJournal and SQLiteStateStore. Four recipes compare exact replay
+for 10,203-byte and 524,288-byte results, before/after source SQLite reopen.
+Additional recipes cover five maximum payloads and decision/ordinary Unicode
+character bounds, including actual SQL unknown-to-completed reconciliation.
+Fixture records use lengths and canonical hashes rather than duplicating 512 KiB
+payloads; source test/runtime/storage hashes are pinned.
+
+Native common-gate tests preserve the exact first-returned bytes on fresh-session
+replay, compare source canonical result hashes and refuse readonly replay.
+The stored adapter is recreated over a typed test backing; this proves adapter
+behavior, not Go SQLite durability. After five maximum results, both journals
+retain three payloads/1,572,864 characters, keep all five identities, emit the
+same bounded problem and return the shed marker without another backend call.
+Terminal resettlement cannot double-count or replace the retained result. Unicode
+bounds and recorded-tool reconciliation match source hashes.
+
+No runtime implementation change was needed: current bounds and aggregate
+retention match this evidence. Source SQL reopen is verified; native SQL/restart,
+remaining source sink/cancellation audit and G0–G7 stay open.
+
+Validation: focused DecisionSource tests pass; full Go tests, race suite and
+go vet pass. All 55 Python contract snapshots are current; exporter returned
+zero but emitted an ignored subprocess-transport cleanup warning
+(Event loop is closed). The new isolated replay export has no subprocess calls
+and completed without that warning. Scans: 19 anchored checks. Decision
+aggregate-budget mutation: caught. Full Python suite: 2151 passed, 28 skipped, 3 warnings, 24 subtests passed in 112.94s (0:01:52). Diff check and README outline pass. No Python package
+module changed, so invariants were not rerun. Runtime topology is unchanged;
+interactive architecture regeneration was not required for this test-only slice.

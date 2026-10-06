@@ -4997,6 +4997,69 @@ def _decision_runtime_contracts(scratch: Path) -> dict:
             for n in ("decision_llm.py", "decision_tools.py", "decisions.py", "agent.py", "registry.py", "permissions.py", "secrets.py")}}
 
 
+def _decision_replay_contracts(scratch: Path) -> dict:
+    """Run actual source large-result gates, SQL reopen and retention budgets."""
+    import asyncio
+    import runpy
+    from mini_loop.actions import _bounded_result
+    helpers = runpy.run_path(str(PYTHON_ROOT / "tests" / "test_decision_replay.py"))
+    scratch.mkdir(parents=True)
+    request = helpers["_request"]()
+    baseline = asyncio.run(helpers["CountingProvider"]().evaluate(request)).to_dict()
+    canonical = lambda value: json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    digest = lambda text: hashlib.sha256(text.encode()).hexdigest()
+    cases = []
+    for durable in (False, True):
+        for maximum in (False, True):
+            root = scratch / f"{durable}-{maximum}"
+            root.mkdir()
+            journal = (helpers["DurableActionJournal"](helpers["SQLiteStateStore"](root / "actions.db"))
+                       if durable else helpers["InMemoryActionJournal"]())
+            provider = helpers["CountingProvider"](at_limit=maximum)
+            run = helpers["RunContext"].default()
+            call = helpers["ToolCall"]("decision", request.to_dict(), "same-decision")
+            first = asyncio.run(helpers["_agent"](root, journal, provider)._exec_tool(call, run_context=run))
+            if durable:
+                journal.store.close()
+                journal = helpers["DurableActionJournal"](helpers["SQLiteStateStore"](root / "actions.db"))
+            replay = asyncio.run(helpers["_agent"](root, journal, provider)._exec_tool(call, run_context=run))
+            cases.append({"backing": "sqlite-reopen" if durable else "memory", "maximum": maximum,
+                          "bytes": len(first.encode()), "canonical_sha256": digest(canonical(json.loads(first))),
+                          "replay_exact": replay == first, "calls": provider.calls})
+            if durable:
+                journal.store.close()
+    journal = helpers["InMemoryActionJournal"]()
+    provider = helpers["CountingProvider"](at_limit=True)
+    agent = helpers["_agent"](scratch, journal, provider)
+    run = helpers["RunContext"].default()
+    calls = [helpers["ToolCall"]("decision", request.to_dict(), f"decision-{i}") for i in range(5)]
+    for call in calls:
+        asyncio.run(agent._exec_tool(call, run_context=run))
+    replay = asyncio.run(agent._exec_tool(calls[0], run_context=run))
+    retained = [r for r in journal._records.values() if r.result != helpers["SHED_RESULT"]]
+    bounds = []
+    for tool, limit in (("decision", helpers["MAX_DECISION_ACTION_RESULT_CHARS"]),
+                        ("ordinary", helpers["MAX_ACTION_RESULT_CHARS"])):
+        for extra in (0, 1):
+            value = _bounded_result("é" * (limit + extra), tool_name=tool)
+            stored = helpers["DurableActionJournal"](helpers["SQLiteStateStore"](scratch / f"bound-{tool}-{extra}.db"))
+            try:
+                helpers["_begin"](stored, tool_name=tool)
+                stored.finish("a1", status="unknown")
+                reconciled = stored.reconcile("a1", status="completed", result="é" * (limit + extra))
+                bounds.append({"tool": tool, "input_chars": limit + extra, "chars": len(value),
+                               "sha256": digest(value), "reconciled_sha256": digest(reconciled.result)})
+            finally:
+                stored.store.close()
+    return {"request": request.to_dict(), "baseline": baseline, "cases": cases, "bounds": bounds,
+            "aggregate": {"records": len(journal._records), "retained": len(retained),
+                          "retained_chars": journal._retained_result_chars,
+                          "calls": provider.calls, "replay": replay, "problems": journal.problems},
+            "source_sha256": {str(p.relative_to(PYTHON_ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+                              for p in (PYTHON_ROOT / "tests" / "test_decision_replay.py",
+                                        *(PYTHON_ROOT / "mini_loop" / n for n in ("actions.py", "decisions.py", "decision_tools.py", "agent.py", "storage.py")))}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5106,6 +5169,7 @@ def _snapshot() -> dict[str, bytes]:
         plan_outcome_contracts = _plan_outcome_contracts(Path(scratch) / "plan-outcomes")
         decision_contracts = _decision_contracts(Path(scratch) / "decisions")
         decision_runtime_contracts = _decision_runtime_contracts(Path(scratch) / "decision-runtime")
+        decision_replay_contracts = _decision_replay_contracts(Path(scratch) / "decision-replay")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5175,6 +5239,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-plan-outcomes.json": _json_bytes(plan_outcome_contracts),
         "python-decisions.json": _json_bytes(decision_contracts),
         "python-decision-runtime.json": _json_bytes(decision_runtime_contracts),
+        "python-decision-replay.json": _json_bytes(decision_replay_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
