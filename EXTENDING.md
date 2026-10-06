@@ -1289,7 +1289,7 @@ pointers, flat serializers and archival readers use known event variants, and
 memory_capture_error carries bounded detail through normal registry masking.
 Native error class labels differ from Python class names. Ordinary capture faults
 preserve the completed turn; cancellation and native state authority loss remain
-errors. Native-session skill preview/routes remain pending; launcher root configuration
+errors. Managed-session skill preview/routes remain pending; launcher root configuration
 and individual memory selection are implemented as described below.
 
 ### Go owner-bound draft storage
@@ -1362,8 +1362,8 @@ capture_source_unavailable/503. Typed native storage cannot represent a corrupt
 dynamic Python state/list or omitted field. Masking faults/invalid UTF-8 use a
 safe capture_failed latch, never private host exceptions. Nothing is persisted
 or restored, and optional capture cannot fail a durably completed turn. Candidate
-parsing and preview business flow are described below; native model binding, manager draft injection and
-preview/commit routes remain.
+parsing, preview business flow and standalone native model binding are described
+below; manager draft injection and preview/commit routes remain.
 
 ### Go skill candidate parsing
 
@@ -1412,7 +1412,15 @@ service state. Model adapters must extract text blocks and preserve source norma
 model recovery/telemetry with non-live history/meter ownership, empty tools and
 personal_skill_preview purpose. Managed callers must hold admission/lease and
 supply a ledger; this library enforces no session/HTTP authority itself. Those
-bindings and authenticated preview/commit routes remain pending.
+managed bindings and authenticated preview/commit routes remain pending.
+Standalone Session.PreviewPersonalSkill now serializes with the core turn gate
+and binds owner/session from runtime configuration. Its native adapter calls
+completeSideModel with empty tools and preview purpose, concatenates only text
+blocks and preserves configured cache/recovery/shared model limiter and telemetry.
+It grants recovery no live history and does not observe the live token meter.
+The per-session previewer retains only process-local drafts; no publication flow
+is installed. A future managed entrypoint must supply its ledger, including empty
+ledger state, and own admission/lease/cancellation through completion.
 
 ### Go trusted session resource binding
 

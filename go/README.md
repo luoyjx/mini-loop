@@ -1589,8 +1589,12 @@ without quoting prior output. Successful parse is followed by another health
 check, skip refusal or owner/session-bound draft retention. Failures retain no
 draft; cancellation propagates and native host faults use safe typed errors.
 Snapshot 75 compares 29 actual Python flows, every request hash and accepted
-draft fields. The service has no native-session model adapter, manager admission/
-lease binding or HTTP routes yet; no publication permission/default is activated.
+draft fields. Explicit standalone Session.PreviewPersonalSkill now binds the
+normal model cache/recovery/shared limiter/telemetry with preview purpose and
+empty tools, joining only text blocks. Snapshot 76 compares six actual Agent
+request/repair/refusal/provider flows and model events. Core turn admission
+serializes it; history and token meter remain unchanged. Manager admission/lease
+binding and HTTP routes remain pending; no publication default is activated.
 
 ### Typed skill candidate parsing
 

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `68364c8` plus typed skill preview business flow).
+reviewed **2026-10-07** (Go baseline `6c596e8` plus standalone native skill preview adapter).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -401,7 +401,7 @@ flowchart LR
         GoCronRunner -->|fresh untrusted serialized turn| GoManaged
         GoCronRunner -. stable identity lookup / restore .-> GoManager
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
-        GoDraftLibrary["Go userresources draft / preview libraries<br/>library-only · typed candidate / two-attempt model seam<br/>owner + session + digest · no publication flow"]
+        GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · no publication flow"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -423,6 +423,7 @@ flowchart LR
         GoTraceCLI --> GoTraceView
         GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
+        GoSession -. standalone non-live preview .-> GoDraftLibrary
         GoSession -. writable auto-memory lifecycle .-> GoFiles
         GoGate --> GoResources
         GoGate -. explicit external-risk decision tool .-> GoDecisionLibrary
@@ -1122,7 +1123,10 @@ SkillPreviewer now implements the source projection/focus/masking, two-attempt
 generation/repair, health checks and owner/session-bound draft retention through
 an explicit non-live model interface. An empty supplied ledger never falls back
 to history. The repair prompt contains a safe reason, never the previous output.
-Native-session model adapter, manager admission/lease binding and authenticated
+Standalone Session.PreviewPersonalSkill now binds that seam to the normal model
+cache/recovery/limiter/telemetry path with personal_skill_preview purpose and empty
+tools, concatenating only text blocks. It serializes with core turns and preserves
+live history/token-meter ownership. Manager admission/lease binding and authenticated
 publication routes remain pending; the service grants no publication authority.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.

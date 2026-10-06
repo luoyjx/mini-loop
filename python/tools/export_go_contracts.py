@@ -6232,6 +6232,94 @@ def _skill_preview_contracts() -> dict:
     return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skill_capture.py").read_bytes()).hexdigest())
 
 
+def _native_skill_preview_contracts(scratch: Path) -> dict:
+    """Preview through the actual Agent._create recovery/cache/event path."""
+    import asyncio
+    import copy
+    from types import SimpleNamespace
+    from mini_loop.agent import Agent
+    from mini_loop.caching import NullCachePolicy
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeMessage, FakeUsage, text, thinking, tool
+    from mini_loop.skill_capture import preview_personal_skill, PersonalSkillError
+
+    def candidate(decision: str, description: str, body: str, evidence: list[int]) -> str:
+        return json.dumps(
+            dict(schema="mini-loop.personal-skill-draft/v1", decision=decision,
+                 description=description, body=body, evidence_indexes=evidence),
+            separators=(",", ":"),
+        )
+
+    valid = candidate("create", "recipe", "procedure", [0])
+    skip = candidate("skip", "", "", [])
+    recipes = [
+        dict(name="valid", responses=[valid]),
+        dict(name="repair", responses=["malformed", valid]),
+        dict(name="skip", responses=[skip]),
+        dict(name="tool-block-ignored", responses=[valid], tool=True),
+        dict(name="empty-refusal", responses=["", ""]),
+        dict(name="provider-error", responses=[valid], fault=True),
+    ]
+
+    async def scenario(row):
+        root = scratch / row["name"]
+        root.mkdir(parents=True)
+        calls, events = [], []
+
+        async def create(**kwargs):
+            calls.append(copy.deepcopy(kwargs))
+            if row.get("fault"):
+                raise RuntimeError("private preview provider failure")
+            raw = row["responses"][len(calls) - 1]
+            # Split inside a JSON string to detect inserted text separators.
+            middle = raw.index("procedure") + 4 if "procedure" in raw else len(raw) // 2
+            blocks = [thinking("private ignored thinking"), text(raw[:middle]), text(raw[middle:])]
+            if row.get("tool"):
+                blocks.append(tool("bash", command="touch NEVER"))
+            return FakeMessage(
+                blocks, "tool_use" if row.get("tool") else "end_turn",
+                FakeUsage(777, 3), model="served-preview",
+            )
+
+        async def emit(event):
+            events.append(copy.deepcopy(event))
+
+        agent = Agent(
+            client=SimpleNamespace(messages=SimpleNamespace(create=create)),
+            workspace=root, emit=emit, cache_policy=NullCachePolicy(),
+            state=dict(session_id="session"),
+            settings=Settings(fake_llm=True, spill_dir=None, skills_dir=root / "empty"),
+        )
+        history = [
+            dict(role="user", content="human evidence"),
+            dict(role="assistant", content="assistant evidence"),
+        ]
+        agent.messages = copy.deepcopy(history)
+        before = agent.token_meter.snapshot()
+        expected = dict(error="", status=0, preview=None)
+        try:
+            draft = await preview_personal_skill(agent, "owner", "recipe")
+        except PersonalSkillError as error:
+            expected.update(error=error.code, status=error.status_code)
+        else:
+            expected["preview"] = {
+                key: value for key, value in draft.public_dict().items()
+                if key not in ("draft_id", "created_at", "expires_at")
+            }
+        assert agent.messages == history and agent.token_meter.snapshot() == before
+        return {
+            **row, "fault": row.get("fault", False), "tool": row.get("tool", False),
+            "messages": history, "calls": calls, "expected": expected,
+            "purposes": [e["purpose"] for e in events if e["type"] == "model_start"],
+            "ends": [e["status"] for e in events if e["type"] == "model_end"],
+        }
+
+    async def run():
+        return [await scenario(row) for row in recipes]
+
+    return dict(cases=asyncio.run(run()))
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6362,6 +6450,7 @@ def _snapshot() -> dict[str, bytes]:
         skill_capture_contracts = _skill_capture_contracts()
         skill_candidate_contracts = _skill_candidate_contracts()
         skill_preview_contracts = _skill_preview_contracts()
+        native_skill_preview_contracts = _native_skill_preview_contracts(Path(scratch) / "native-skill-preview")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6452,6 +6541,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-skill-capture.json": _json_bytes(skill_capture_contracts),
         "python-skill-candidate.json": _json_bytes(skill_candidate_contracts),
         "python-skill-preview.json": _json_bytes(skill_preview_contracts),
+        "python-native-skill-preview.json": _json_bytes(native_skill_preview_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
