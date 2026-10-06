@@ -5897,6 +5897,75 @@ def _launcher_memory_contracts(scratch: Path) -> dict:
                 source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "manager.py").read_bytes()).hexdigest())
 
 
+def _draft_store_contracts() -> dict:
+    """Actual bounded draft operations; UUIDs normalize to stable recipe labels."""
+    from dataclasses import replace
+    from mini_loop.skill_capture import PersonalSkillDraftStore, PersonalSkillError
+    recipes = [
+        dict(name="quotas-authority-expiry", ttl=10, max_items=4, max_per_owner=3, max_per_session=2, start=100,
+             operations=[
+                 ("add","a1","alice","s1"),("add","a2","alice","s1"),("get","a1","alice","s1"),
+                 ("add","a3","alice","s1"),("get","a1","alice","s1"),
+                 ("get","a2","bob","s1"),("get","a2","alice","s2"),("wrong-digest","a2","alice","s1"),
+                 ("add","a4","alice","s2"),("add","a5","alice","s3"),("get","a2","alice","s1"),
+                 ("add","b1","bob","s1"),("add","c1","carol","s1"),("add","b2","bob","s1"),
+                 ("get","b1","bob","s1"),("wrong-consume","a3","alice","s1"),("get","a3","alice","s1"),
+                 ("consume","a3","alice","s1"),("peek","a3","alice","s1"),
+                 ("advance","", "", ""),("get","b2","alice","s1"),("peek","b2","bob","s1"),
+                 ("peek","b2","bob","s1"),("add","c2","carol","s1"),("discard","a4","","")]),
+        dict(name="identity-and-normalization", ttl=5, max_items=4, max_per_owner=None, max_per_session=4, start=0,
+             operations=[("add","first"," alice ","s"),("get","first","alice","s"),
+                         ("advance","","",""),("discard","first","",""),("get","first"," alice ","s"),
+                         ("add","second","alice","s"),("discard-clone","second","",""),("peek","second","alice","s"),
+                         ("consume","second","alice","s"),("discard","second","",""),
+                         ("add","no-owner","","s"),("add","no-session","alice",""),
+                         ("invalid-name","bad","alice","s"),("invalid-coverage","bad","alice","s"),
+                         ("negative-omitted","bad","alice","s")]),
+    ]
+    result = []
+    for recipe in recipes:
+        clock = [float(recipe["start"])]
+        store = PersonalSkillDraftStore(ttl_seconds=recipe["ttl"], max_items=recipe["max_items"],
+                                        max_per_owner=recipe["max_per_owner"], max_per_session=recipe["max_per_session"], clock=lambda: clock[0])
+        handles = {}; steps = []
+        for action, ref, owner, session in recipe["operations"]:
+            step = dict(action=action, ref=ref, owner=owner, session=session)
+            try:
+                draft = None
+                if action in ("add", "invalid-name", "invalid-coverage", "negative-omitted"):
+                    fields = dict(name="reviewed-skill" if action != "invalid-name" else "Bad Name", description="  Review workflow  ",
+                                  body="  One.\r\nTwo.\rThree.  ", evidence_indexes=[-1,0,0,2],
+                                  coverage="unknown" if action == "invalid-coverage" else "authenticated_turns_tail",
+                                  omitted=-1 if action == "negative-omitted" else 3, compacted_history_excluded=True)
+                    step["input"] = fields
+                    draft = store.add(owner=owner, session_id=session, **fields)
+                    handles[ref] = draft
+                elif action == "advance":
+                    clock[0] += recipe["ttl"]
+                elif action in ("discard", "discard-clone"):
+                    draft = handles[ref]
+                    step["discarded"] = store.discard_committed(replace(draft) if action == "discard-clone" else draft)
+                    draft = None
+                else:
+                    draft_id = handles[ref].draft_id if ref in handles else ref
+                    digest = "0" * 64 if action in ("wrong-digest","wrong-consume") else handles[ref].digest if action == "consume" else None
+                    if action in ("consume", "wrong-consume"):
+                        draft = store.consume(draft_id, owner=owner, session_id=session, digest=digest)
+                    else:
+                        method = store.peek if action == "peek" else store.get
+                        draft = method(draft_id, owner=owner, session_id=session, digest=digest)
+                if draft is not None:
+                    public = draft.public_dict(); public["draft_id"] = ref
+                    step["preview"] = public
+            except PersonalSkillError as error:
+                step["error"] = dict(code=error.code, status=error.status_code, message=str(error))
+            steps.append(step)
+        result.append(dict(config={key:recipe[key] for key in ("name","ttl","max_items","max_per_owner","max_per_session","start")}, steps=steps))
+    defaults = PersonalSkillDraftStore()
+    return dict(cases=result, defaults=dict(ttl=defaults.ttl_seconds,max_items=defaults.max_items,max_per_owner=defaults.max_per_owner,max_per_session=defaults.max_per_session),
+                source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skill_capture.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6022,6 +6091,7 @@ def _snapshot() -> dict[str, bytes]:
         memory_consolidation_contracts = _memory_consolidation_contracts(Path(scratch) / "memory-consolidation")
         memory_capture_contracts = _memory_capture_contracts(Path(scratch) / "memory-capture")
         launcher_memory_contracts = _launcher_memory_contracts(Path(scratch) / "launcher-memory")
+        draft_store_contracts = _draft_store_contracts()
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6107,6 +6177,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-memory-consolidation.json": _json_bytes(memory_consolidation_contracts),
         "python-memory-capture.json": _json_bytes(memory_capture_contracts),
         "python-launcher-memory.json": _json_bytes(launcher_memory_contracts),
+        "python-skill-drafts.json": _json_bytes(draft_store_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

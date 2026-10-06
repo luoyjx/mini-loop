@@ -1,0 +1,868 @@
+{
+  "cases": [
+    {
+      "config": {
+        "max_items": 4,
+        "max_per_owner": 3,
+        "max_per_session": 2,
+        "name": "quotas-authority-expiry",
+        "start": 100,
+        "ttl": 10
+      },
+      "steps": [
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "a1",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "a1",
+          "session": "s1"
+        },
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "a2",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "a2",
+          "session": "s1"
+        },
+        {
+          "action": "get",
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "a1",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "a1",
+          "session": "s1"
+        },
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "a3",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "a3",
+          "session": "s1"
+        },
+        {
+          "action": "get",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": "alice",
+          "ref": "a1",
+          "session": "s1"
+        },
+        {
+          "action": "get",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": "bob",
+          "ref": "a2",
+          "session": "s1"
+        },
+        {
+          "action": "get",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": "alice",
+          "ref": "a2",
+          "session": "s2"
+        },
+        {
+          "action": "wrong-digest",
+          "error": {
+            "code": "draft_digest_mismatch",
+            "message": "draft digest mismatch",
+            "status": 409
+          },
+          "owner": "alice",
+          "ref": "a2",
+          "session": "s1"
+        },
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "a4",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "a4",
+          "session": "s2"
+        },
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "a5",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "a5",
+          "session": "s3"
+        },
+        {
+          "action": "get",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": "alice",
+          "ref": "a2",
+          "session": "s1"
+        },
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "bob",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "b1",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "b1",
+          "session": "s1"
+        },
+        {
+          "action": "add",
+          "error": {
+            "code": "draft_capacity",
+            "message": "draft capacity",
+            "status": 429
+          },
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "carol",
+          "ref": "c1",
+          "session": "s1"
+        },
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "bob",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "b2",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "b2",
+          "session": "s1"
+        },
+        {
+          "action": "get",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": "bob",
+          "ref": "b1",
+          "session": "s1"
+        },
+        {
+          "action": "wrong-consume",
+          "error": {
+            "code": "draft_digest_mismatch",
+            "message": "draft digest mismatch",
+            "status": 409
+          },
+          "owner": "alice",
+          "ref": "a3",
+          "session": "s1"
+        },
+        {
+          "action": "get",
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "a3",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "a3",
+          "session": "s1"
+        },
+        {
+          "action": "consume",
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 100.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "a3",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 110.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "a3",
+          "session": "s1"
+        },
+        {
+          "action": "peek",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": "alice",
+          "ref": "a3",
+          "session": "s1"
+        },
+        {
+          "action": "advance",
+          "owner": "",
+          "ref": "",
+          "session": ""
+        },
+        {
+          "action": "get",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": "alice",
+          "ref": "b2",
+          "session": "s1"
+        },
+        {
+          "action": "peek",
+          "error": {
+            "code": "draft_expired",
+            "message": "draft expired",
+            "status": 410
+          },
+          "owner": "bob",
+          "ref": "b2",
+          "session": "s1"
+        },
+        {
+          "action": "peek",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": "bob",
+          "ref": "b2",
+          "session": "s1"
+        },
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "carol",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 110.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "c2",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 120.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "c2",
+          "session": "s1"
+        },
+        {
+          "action": "discard",
+          "discarded": false,
+          "owner": "",
+          "ref": "a4",
+          "session": ""
+        }
+      ]
+    },
+    {
+      "config": {
+        "max_items": 4,
+        "max_per_owner": null,
+        "max_per_session": 4,
+        "name": "identity-and-normalization",
+        "start": 0,
+        "ttl": 5
+      },
+      "steps": [
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": " alice ",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 0.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "first",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 5.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "first",
+          "session": "s"
+        },
+        {
+          "action": "get",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": "alice",
+          "ref": "first",
+          "session": "s"
+        },
+        {
+          "action": "advance",
+          "owner": "",
+          "ref": "",
+          "session": ""
+        },
+        {
+          "action": "discard",
+          "discarded": true,
+          "owner": "",
+          "ref": "first",
+          "session": ""
+        },
+        {
+          "action": "get",
+          "error": {
+            "code": "draft_not_found",
+            "message": "draft not found",
+            "status": 404
+          },
+          "owner": " alice ",
+          "ref": "first",
+          "session": "s"
+        },
+        {
+          "action": "add",
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 5.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "second",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 10.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "second",
+          "session": "s"
+        },
+        {
+          "action": "discard-clone",
+          "discarded": false,
+          "owner": "",
+          "ref": "second",
+          "session": ""
+        },
+        {
+          "action": "peek",
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 5.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "second",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 10.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "second",
+          "session": "s"
+        },
+        {
+          "action": "consume",
+          "owner": "alice",
+          "preview": {
+            "body": "One.\nTwo.\nThree.",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "created_at": 5.0,
+            "description": "Review workflow",
+            "digest": "e3d8f1d09cefc71e500d3e59f2135ea6ea5ae2d30d2bf1a112a3cdef8a4cbf8d",
+            "draft_id": "second",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "expires_at": 10.0,
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "ref": "second",
+          "session": "s"
+        },
+        {
+          "action": "discard",
+          "discarded": false,
+          "owner": "",
+          "ref": "second",
+          "session": ""
+        },
+        {
+          "action": "add",
+          "error": {
+            "code": "invalid_owner",
+            "message": "invalid owner",
+            "status": 500
+          },
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "",
+          "ref": "no-owner",
+          "session": "s"
+        },
+        {
+          "action": "add",
+          "error": {
+            "code": "invalid_session",
+            "message": "invalid session",
+            "status": 500
+          },
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "alice",
+          "ref": "no-session",
+          "session": ""
+        },
+        {
+          "action": "invalid-name",
+          "error": {
+            "code": "invalid_preview",
+            "message": "invalid preview",
+            "status": 422
+          },
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "Bad Name",
+            "omitted": 3
+          },
+          "owner": "alice",
+          "ref": "bad",
+          "session": "s"
+        },
+        {
+          "action": "invalid-coverage",
+          "error": {
+            "code": "invalid_preview",
+            "message": "invalid preview",
+            "status": 422
+          },
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "unknown",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": 3
+          },
+          "owner": "alice",
+          "ref": "bad",
+          "session": "s"
+        },
+        {
+          "action": "negative-omitted",
+          "error": {
+            "code": "invalid_preview",
+            "message": "invalid preview",
+            "status": 422
+          },
+          "input": {
+            "body": "  One.\r\nTwo.\rThree.  ",
+            "compacted_history_excluded": true,
+            "coverage": "authenticated_turns_tail",
+            "description": "  Review workflow  ",
+            "evidence_indexes": [
+              -1,
+              0,
+              0,
+              2
+            ],
+            "name": "reviewed-skill",
+            "omitted": -1
+          },
+          "owner": "alice",
+          "ref": "bad",
+          "session": "s"
+        }
+      ]
+    }
+  ],
+  "defaults": {
+    "max_items": 64,
+    "max_per_owner": 16,
+    "max_per_session": 4,
+    "ttl": 900.0
+  },
+  "source_sha256": "eb7ec349acfc78570bbed02994193df4c9ff950f69ed0e1a9cc46d849950cd19"
+}

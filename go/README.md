@@ -1550,3 +1550,29 @@ mode, identity, overflow/errors and scratch cleanup. Native tests add concurrent
 no-replace winners, cancellation, descriptor-preserving parent rename and FIFO
 refusal. The create-only skill publisher, strict secret screening, safe receipts
 and next-session resource replacement are the next composition slice.
+
+
+### Owner/session-bound personal-skill drafts
+
+userresources.NewDraftStore(DefaultDraftStoreConfig()) supplies an explicit
+process-local operator store: 15-minute TTL, 64 total drafts, 16 per owner and
+four per session. The canonical skill validator normalizes fields and hashes
+exact canonical UTF-8 bytes. Evidence integers and four named coverage variants
+stay typed. Add takes trusted owner/session identifiers separately from content.
+Draft handles are immutable identities; Preview detaches public values and
+never emits owner/session authority. Get/Peek use exact owner/session and optional
+digest; wrong authority is indistinguishable from absence. Access preserves FIFO,
+and full capacity can replace only the requester's own oldest draft. Atomic
+Consume has one winner; post-publication DiscardCommitted uses exact identity
+and succeeds after TTL when the object remains stored. It never publishes a file.
+
+Snapshot 71 compares 40 actual Python operations, including quota ordering,
+non-consuming failures, TTL boundary and object-identity cleanup. Native tests
+add evidence detachment, private JSON projection, copied limits and concurrent
+consumption. Typed duration/configuration errors and initial entropy failure use
+safe native errors; source config ValueError and malformed dynamic types have
+no direct domain counterpart. Store Add permits signed/duplicate integer evidence,
+as source does; the future candidate parser must validate evidence against its
+projection. There is no manager/launcher injection, model preview, authenticated
+turn projection or HTTP skill route yet. Publication should retain a Peek handle
+until successful durable commit, then discard it; Consume is not a pre-commit step.

@@ -272,3 +272,17 @@ Dump/Inspect reports selected memory backend/tool/auto choices without effects.
 Comprehensive feature activation stays unavailable. Root errors refuse startup;
 no memory tool can change owner or roots. Native SQLite and user-skill capture/
 preview/routes remain open.
+
+
+Personal-skill draft storage progress (2026-10-07): snapshot 71 compares 40 actual
+Python operations and source defaults. The native explicit DraftStore uses typed
+coverage, identifiers, immutable private handles and detached public previews.
+FIFO session/owner/global quotas preserve other owners; wrong authority is 404
+before expiry/digest checks, expired access is 410, digest mismatch is 409 and
+capacity refusal is 429. Get/Peek do not consume; atomic Consume is one-shot;
+DiscardCommitted requires exact identity and ignores TTL after publication.
+Evidence remains signed/duplicate integers at this storage layer, matching source.
+Native tests add 32 concurrent consumers, detached evidence and hidden authority.
+Configuration uses typed durations and safe errors (Python uses ValueError);
+initial entropy failure occurs before quota mutation. Model preview/projection,
+manager injection and authenticated skill routes are still pending.

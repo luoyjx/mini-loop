@@ -1292,6 +1292,30 @@ preserve the completed turn; cancellation and native state authority loss remain
 errors. Skill capture/preview/routes remain pending; launcher root configuration
 and individual memory selection are implemented as described below.
 
+### Go owner-bound draft storage
+
+Construct userresources.DraftStore with DefaultDraftStoreConfig or an explicit
+positive TTL and bounded limits. Defaults are 15 minutes, 64 total, 16 per owner
+and four per session. MaxPerOwner nil selects min(16, MaxItems). Clock is an
+optional trusted concurrency-safe test clock. Configuration is copied; Go uses
+time.Duration/integers and stable typed errors rather than Python ValueError.
+
+Add validates canonical fields and binds separate OwnerID/DraftSessionID values.
+The returned Draft is an immutable private identity handle; Preview returns a
+detached DraftPreview with no owner/session fields. Get/Peek bind owner, session
+and optional constant-time digest comparison; wrong authority is 404 before TTL
+or digest evaluation. Successful Consume is atomic and one-shot. Capacity
+replacement is FIFO within the requester; foreign reviewed drafts cannot be
+removed to make room. A cryptographic UUID4 hex identifier is generated; initial
+entropy failure returns a stable 500 before quota mutation.
+
+A future publication flow must Peek, publish the exact reviewed fields, then
+DiscardCommitted with that exact handle. Cleanup checks pointer identity and
+ignores elapsed TTL; it cannot remove a different object with the same ID.
+Do not Consume before publication, because a publication fault must retain the
+reviewed draft. This is a library only: admitted-turn projection, model preview,
+manager binding and authenticated routes remain subsequent work.
+
 ### Go trusted session resource binding
 
 `ManagerServices.UserResources` accepts a concrete Resolver and defaults to nil.

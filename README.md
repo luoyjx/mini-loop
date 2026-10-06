@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `82e6de3` plus launcher memory roots and individual tool selection).
+reviewed **2026-10-07** (Go baseline `53835b5` plus typed owner/session-bound draft storage).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -401,6 +401,7 @@ flowchart LR
         GoCronRunner -->|fresh untrusted serialized turn| GoManaged
         GoCronRunner -. stable identity lookup / restore .-> GoManager
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
+        GoDraftLibrary["Go userresources DraftStore<br/>library-only · process-local · FIFO / TTL<br/>owner + session + digest · no publication flow"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
@@ -597,8 +598,10 @@ It refuses name/path collisions and carries an independent bounded diagnostic lo
 and health checks, fresh disk collision checks, bounded no-follow idempotent
 verification, prepared receipts/catalogues and create-only files. Successful
 publication replaces only the resolver cache for future resolutions, preserving
-live snapshots and the bound memory service. It is an operator library; trusted
-capture/preview drafts, launcher/configuration and HTTP routes remain pending. Custom maskers without a typed registration surface fail closed.
+live snapshots and the bound memory service. It remains an operator library.
+Typed process-local draft storage is available separately. Model
+preview, admitted-turn projection and HTTP skill routes remain pending; launcher
+memory roots and independent selection are implemented. Custom maskers without a typed registration surface fail closed.
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,
@@ -1091,6 +1094,12 @@ Neither backend executes the selected action or grants permission to do so.
 Decision results use existing tool and event records; no decision database,
 session-restoration mechanism, or HTTP route is added. See
 [Typed decisions](docs/DECISIONS.md) for configuration and evidence boundaries.
+
+Go `userresources.DraftStore` is a separate operator library with no runtime or
+HTTP binding yet. Its immutable handles retain private owner/session identity;
+public previews detach evidence arrays. FIFO quotas cannot evict another owner,
+and commit cleanup checks object identity after publication, including after TTL.
+It does not write skill files or invoke a model.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before
