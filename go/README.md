@@ -1440,3 +1440,39 @@ problem logs support concurrent calls.
 This is an explicit operator seam. Owner resource bundles, manager/child/restore
 binding, memory stores, publication/next-session activation and configuration
 remain pending. The normal runtime continues to use its agent catalogue.
+
+### Typed owner memory storage
+
+`memory.NewStore(ctx, root, masker)` pins a physical operator root and creates
+a serialized process-local Markdown store. `Write`, `List`, `Index`, `Search`,
+`ReplaceAll`, `Flush` use explicit contexts and typed Input/Record/OwnerID/Origin.
+Writes normalize headers, clamp bodies at 32,000 characters, cap filename slugs,
+mask the whole document, fsync a same-directory temporary file and rename it;
+directory fsync is best effort. New temporary files and roots use private modes,
+which is stronger than standalone Python's default modes. Existing owner roots
+retain DirectoryResolver's permission policy. Invalid UTF-8 fields refuse.
+
+Authenticated filenames digest byte-length-prefixed exact owner/name pairs;
+anonymous filenames preserve compatibility. Legacy same-name/same-owner files
+migrate lazily. Parsed owner keys take precedence over display-owner lines.
+`memory.Bind(store, owner)` returns ScopedStore with no owner override and no
+catch-all delegation; replacement always keeps other owners' files. Passing nil
+to raw Store owner filters is an explicit operator view/replacement of all owners.
+
+Parse caches use mtime/size, including unreadable-file failures; external edits
+reparse and returned records are values. Invalid UTF-8/unreadable memories are
+skipped with bounded diagnostics. Imported type text is retained; writes use the
+four supported types with project fallback. Origins normalize to the four
+supported values. The source's full imported body reads are retained, so write
+caps do not bound operator-imported files. Indices render from records rather
+than trusting MEMORY.md, have an 8,000-character prefix with omission notice, and
+flush deferred disk state on index/search. Lexical search uses unique lowercase
+word terms, occurrence scores, stable filename tie order and Python slice limits.
+
+Snapshot 60 compares 13 actual Python scenarios and 118 operations, exact file
+bytes, body hashes, metadata, index timing and diagnostics. Native tests add
+concurrent scoped replacement, owner protection, cancellation and detached values.
+Cache semantics can retain same-mtime/same-size external edits, matching source;
+multi-file replacement is not transactional or cross-process fenced. No LLM
+extraction/consolidation, runtime memory tools, owner resource bundle, manager/
+restore/child binding or configuration activation ships yet.

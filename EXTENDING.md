@@ -1149,6 +1149,16 @@ reports retain the native catalogue conventions. Callers must bind the user
 catalogue from trusted owner resources; the model cannot supply an owner.
 The library does not yet create full owner bundles or activate runtime layering.
 
+### Go owner memory storage
+
+`memory.NewStore(ctx, root, masker)` is an explicit typed file-store seam. Bind
+one trusted owner with `memory.Bind`; ScopedStore exposes only owner-sensitive
+methods without an override parameter or automatic delegation. Optional Masker
+has one typed MaskText operation and can use the existing secrets.Registry. Raw
+Store all-owner views/replacement remain operator operations. Resource bundles
+and runtime extraction/tool activation remain pending; do not inject the raw
+store into an owner-facing handler.
+
 ## 6. LLM / provider — the client
 
 Any object exposing `await client.messages.create(model=, messages=, tools=,

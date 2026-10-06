@@ -149,3 +149,11 @@ combined budgets and per-source changed/missing/identical/newline-equivalent
 file verification. Native LayeredCatalog is concrete, uses the same verifier as
 legacy Catalog and preserves separate problem ownership. Builtin/cancellation
 and detached diagnostics are native tests. Owner/session composition is pending.
+
+Memory storage progress: snapshot 60 compares 13 actual Python MemoryStore/
+ScopedMemory scenarios, 118 operations and exact file hashes. Typed native file
+storage implements cache/deferred index/search/owner replacement/legacy migration
+and masking. Context cancellation, private temporary modes and closed scoped API
+are native additions; imported bodies retain source full reads and mtime/size
+cache behavior. LLM selection/extraction/consolidation, tools and trusted runtime
+resource composition remain pending.

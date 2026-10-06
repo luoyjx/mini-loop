@@ -5244,6 +5244,80 @@ def _layered_skill_contracts(scratch: Path) -> dict:
     return dict(cases=cases, source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skills.py").read_bytes()).hexdigest())
 
 
+def _memory_store_contracts(scratch: Path) -> dict:
+    """Actual file memory operations, exact owner identity and scoped replacement."""
+    from mini_loop.memory import MemoryStore, ScopedMemory, MAX_BODY
+    from mini_loop.secrets import SecretRegistry
+    cases = []
+    def write(name, owner="anonymous", **fields):
+        return dict(op="write", owner=owner, name=name, **fields)
+    def add(name, steps, files=(), secret=""):
+        root = scratch / name; root.mkdir(parents=True)
+        for row in files:
+            path = root / row["path"]
+            if row.get("directory"): path.mkdir()
+            else: path.write_bytes(bytes.fromhex(row["hex"]) if row.get("hex") else row.get("text", "").encode())
+        secrets = None
+        if secret:
+            secrets = SecretRegistry(); secrets.register("TEST_SECRET", secret)
+        store = MemoryStore(root, secrets=secrets)
+        results = []
+        for step in steps:
+            row = dict(step)
+            owner = step.get("owner")
+            bound = ScopedMemory(store, owner) if step.get("scoped") else store
+            kwargs = {} if step.get("scoped") else dict(owner=owner)
+            op = step["op"]
+            output, records = "", []
+            if op == "write":
+                output = bound.write(step["name"], step.get("type", "project"), step.get("description", ""),
+                    step.get("body", "") * step.get("repeat", 1), origin=step.get("origin", "explicit"), **kwargs)
+            elif op == "replace": bound.replace_all(step.get("memories", []), origin=step.get("origin", "imported"), **kwargs)
+            elif op == "list": records = bound.list(**kwargs)
+            elif op == "index": output = bound.index(**kwargs)
+            elif op == "search": records = bound.search(step.get("query"), step.get("limit", 5), **kwargs)
+            elif op == "flush": store.flush()
+            elif op == "mutate":
+                target = root / step["path"]
+                if step.get("remove"): target.unlink()
+                else: target.write_bytes(bytes.fromhex(step["hex"]) if step.get("hex") else step.get("text", "").encode())
+            else: raise AssertionError(op)
+            row.update(output=output, records=[dict(**{k:v for k,v in m.items() if k!="body"}, body_sha256=hashlib.sha256(m["body"].encode()).hexdigest(), body_characters=len(m["body"])) for m in records])
+            row["index_exists"] = store.index_path.exists()
+            results.append(row)
+        final = [dict(path=path.name, sha256=hashlib.sha256(path.read_bytes()).hexdigest()) for path in sorted(root.iterdir()) if path.is_file()]
+        cases.append(dict(name=name, files=list(files), secret=secret, steps=results, final_files=final,
+            problems=[dict(message=str(p),count=store.problems.counts[str(p)]) for p in store.problems]))
+    add("exact-owners", [write("a b", "alice", body="red apple"),write("a-b", "alice",body="green apple"),
+        write("a b", "bob",body="other"),write("a b", " alice ",body="spaced"),write("a b", "alice\n",body="newline"),
+        dict(op="list"),*[dict(op="list",owner=o) for o in ("alice","bob"," alice ","alice\n")],dict(op="index",owner="alice"),
+        dict(op="search",owner="alice",query="apple",limit=5)])
+    add("names", [*[write(n,body="memo") for n in ("中文", "🌱", "memory", "MEMORY", "../out", "", "A"*120, "İß")],dict(op="list"),dict(op="index")])
+    add("headers-origins", [write(" title\nsecond ","alice\x1c",type="invalid",description="A\u2028B",body=" whitespace ",origin="invalid"),
+        write("auto","alice",type="feedback",origin="auto_extracted",body="remember"),dict(op="list"),dict(op="list",owner="alice\x1c")])
+    add("body-cap",[write("huge",body="中",repeat=MAX_BODY+1),dict(op="list"),dict(op="search",query="中中",limit=1)])
+    add("masked",[write("credential","alice",description="token-secret-12345",body="token-secret-12345"),dict(op="index",owner="alice"),dict(op="list",owner="alice")],secret="token-secret-12345")
+    add("scoped-replace",[write("one","alice",body="alpha"),write("one","bob",body="beta"),
+        dict(op="replace",owner="alice",scoped=True,origin="consolidated",memories=[dict(name="new",body="alpha new")]),
+        dict(op="list",owner="alice",scoped=True),dict(op="list",owner="bob",scoped=True),dict(op="index",owner="bob",scoped=True)])
+    add("all-replace",[write("one","alice",body="old"),dict(op="replace",memories=[dict(name="fresh",origin="bad",body="new")]),dict(op="list"),dict(op="search",limit=-1)])
+    legacy=lambda name,owner,body: f'---\nname: {name}\nowner: {owner}\n---\n{body}'
+    add("legacy-migrate",[dict(op="list",owner="alice"),write("a b","alice",body="new"),dict(op="list",owner="alice"),write("a-b","alice",body="distinct"),dict(op="list",owner="alice")],
+        [dict(path="a-b.md",text=legacy("a b","alice","old"))])
+    add("unreadable",[dict(op="list"),dict(op="index"),dict(op="replace",owner="alice",memories=[]),dict(op="list")],
+        [dict(path="bad.md",hex="fffe"),dict(path="folder.md",directory=True),dict(path="plain.md",text="plain\r\ntext")])
+    add("parse-cache",[dict(op="list"),dict(op="mutate",path="note.md",text=legacy("note","anonymous","changed long")),dict(op="list"),
+        dict(op="mutate",path="note.md",remove=True),dict(op="list")],[dict(path="note.md",text=legacy("note","anonymous","initial"))])
+    add("search",[write("Beta",body="apple apple "),write("Alpha",body="apple pear"),write("Greek",body="中文 短句 αβ αβ ½½"),
+        dict(op="search",query="apple APPLE",limit=5),dict(op="search",query="中文 αβ ½½",limit=2),dict(op="search",query="a !",limit=5),dict(op="search",limit=0)])
+    add("keyed-import",[dict(op="list",owner="alice"),dict(op="list",owner="bob"),dict(op="list")],
+        [dict(path="key.md",text="---\nname: key\nowner: bob\nowner_key: "+hashlib.sha256(b"alice").hexdigest().upper()+"\norigin: nope\ntype: custom\n---\nbody"),
+         dict(path="invalid.md",text="---\nowner: alice\nowner_key: bad\n---\nlegacy")])
+    flood=[write(f"note-{i:03d}",description="中"*200) for i in range(50)]
+    add("index-cap",flood+[dict(op="index"),dict(op="list")])
+    return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "memory.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5358,6 +5432,7 @@ def _snapshot() -> dict[str, bytes]:
         user_skill_contracts = _user_skill_contracts()
         owner_directory_contracts = _owner_directory_contracts(Path(scratch) / "owner-directories")
         layered_skill_contracts = _layered_skill_contracts(Path(scratch) / "layered-skills")
+        memory_store_contracts = _memory_store_contracts(Path(scratch) / "memory-store")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5432,6 +5507,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-user-skills.json": _json_bytes(user_skill_contracts),
         "python-owner-directories.json": _json_bytes(owner_directory_contracts),
         "python-layered-skills.json": _json_bytes(layered_skill_contracts),
+        "python-memory-store.json": _json_bytes(memory_store_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
