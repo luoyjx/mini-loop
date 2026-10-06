@@ -57,6 +57,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	// Manager-owned process-local drafts; standalone sessions leave this nil.
+	skillDrafts          *userresources.DraftStore
 	MemoryTools          bool
 	MemoryAuto           *bool
 	Memory               *memory.ScopedStore
@@ -498,6 +500,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		session.recovery = config.Recovery
 	}
 	session.planApprover = config.PlanApprover
+	session.skillDrafts = config.skillDrafts
 	session.ownerResources = resources
 	session.memory = config.Memory
 	session.memoryAuto = config.MemoryAuto == nil || *config.MemoryAuto

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `6c596e8` plus standalone native skill preview adapter).
+reviewed **2026-10-07** (Go baseline `5b6c0ce` plus manager-owned shared skill draft storage).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -423,6 +423,7 @@ flowchart LR
         GoTraceCLI --> GoTraceView
         GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
+        GoManager -. shared process-local draft pool .-> GoDraftLibrary
         GoSession -. standalone non-live preview .-> GoDraftLibrary
         GoSession -. writable auto-memory lifecycle .-> GoFiles
         GoGate --> GoResources
@@ -1126,7 +1127,11 @@ to history. The repair prompt contains a safe reason, never the previous output.
 Standalone Session.PreviewPersonalSkill now binds that seam to the normal model
 cache/recovery/limiter/telemetry path with personal_skill_preview purpose and empty
 tools, concatenating only text blocks. It serializes with core turns and preserves
-live history/token-meter ownership. Manager admission/lease binding and authenticated
+live history/token-meter ownership. Manager construction now owns one process-local
+DraftStore and injects it through the common create/fork/restore runtime factory,
+preserving fleet-wide quotas and owner/session/digest binding. A new manager gets
+a fresh pool; drafts are never reconstructed from persisted state. Manager
+admission/lease binding and authenticated
 publication routes remain pending; the service grants no publication authority.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.

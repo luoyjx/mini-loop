@@ -53,7 +53,7 @@ func (s *Session) PreviewPersonalSkill(ctx context.Context, name, focus string) 
 func (s *Session) previewPersonalSkillLocked(ctx context.Context, name, focus string, ledger *userresources.CaptureLedger) (userresources.Draft, error) {
 	if s.skillPreview == nil {
 		var err error
-		s.skillPreview, err = userresources.NewSkillPreviewer(userresources.SkillPreviewConfig{Model: skillPreviewModel{s}, Secrets: s.secrets})
+		s.skillPreview, err = userresources.NewSkillPreviewer(userresources.SkillPreviewConfig{Model: skillPreviewModel{s}, Secrets: s.secrets, Drafts: s.skillDrafts})
 		if err != nil {
 			return userresources.Draft{}, err
 		}

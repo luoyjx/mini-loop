@@ -1595,6 +1595,11 @@ empty tools, joining only text blocks. Snapshot 76 compares six actual Agent
 request/repair/refusal/provider flows and model events. Core turn admission
 serializes it; history and token meter remain unchanged. Manager admission/lease
 binding and HTTP routes remain pending; no publication default is activated.
+Manager construction now owns one typed DraftStore and shares it through the
+common create/fork/restore factory. Snapshot 77 compares seven actual Python
+manager injection frames and process-local draft loss at restart. Global 64-item
+capacity cannot be bypassed through another session; foreign owners cannot be
+evicted. Standalone previewers retain independent stores.
 
 ### Typed skill candidate parsing
 

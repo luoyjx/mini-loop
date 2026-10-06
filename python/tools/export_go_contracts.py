@@ -6320,6 +6320,68 @@ def _native_skill_preview_contracts(scratch: Path) -> dict:
     return dict(cases=asyncio.run(run()))
 
 
+def _manager_skill_draft_contracts(scratch: Path) -> dict:
+    """Actual manager pool injection across create/fork and SQL restoration."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.skill_capture import _draft_store, PersonalSkillError
+    from mini_loop.storage import SQLiteStateStore
+
+    async def scenario():
+        scratch.mkdir(parents=True)
+        settings = Settings(fake_llm=True, workspace_root=scratch / "workspaces",
+                            skills_dir=scratch / "empty", user_resources_root=None)
+        store = SQLiteStateStore(scratch / "state.db")
+        frames = []
+        manager = SessionManager(settings, FakeAsyncAnthropic(), state_store=store)
+
+        def capture(name, fleet, session):
+            frames.append(dict(name=name, shared=_draft_store(session.agent) is fleet.personal_skill_drafts))
+
+        try:
+            alice = manager.create(owner="alice")
+            bob = manager.create(owner="bob")
+            anonymous = manager.create()
+            capture("alice", manager, alice)
+            capture("bob", manager, bob)
+            capture("anonymous", manager, anonymous)
+            fork = await manager.fork_session(alice.id)
+            capture("fork", manager, fork)
+            draft = manager.personal_skill_drafts.add(
+                owner="alice", session_id=alice.id, name="recipe", description="recipe",
+                body="procedure", evidence_indexes=[0], coverage="current_epoch", omitted=0,
+            )
+            old_pool = manager.personal_skill_drafts
+        finally:
+            await manager.stop()
+
+        for scheduled in (False, True):
+            fleet = SessionManager(settings, FakeAsyncAnthropic(), state_store=store)
+            try:
+                if scheduled:
+                    restored = fleet.restore_scheduled_session(alice.id)
+                    capture("scheduled-alice", fleet, restored)
+                    capture("scheduled-missing", fleet, fleet.restore_scheduled_session("missing"))
+                else:
+                    restored = next(row for row in fleet.restore_sessions() if row.id == alice.id)
+                    capture("restored-alice", fleet, restored)
+                assert fleet.personal_skill_drafts is not old_pool
+                try:
+                    fleet.personal_skill_drafts.peek(draft.draft_id, owner="alice", session_id=alice.id)
+                except PersonalSkillError as error:
+                    assert error.code == "draft_not_found"
+                else:
+                    raise AssertionError("process-local draft survived manager restart")
+            finally:
+                await fleet.stop()
+        store.close()
+        return dict(frames=frames, restart_discards_drafts=True, resources_disabled=True)
+
+    return asyncio.run(scenario())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6451,6 +6513,7 @@ def _snapshot() -> dict[str, bytes]:
         skill_candidate_contracts = _skill_candidate_contracts()
         skill_preview_contracts = _skill_preview_contracts()
         native_skill_preview_contracts = _native_skill_preview_contracts(Path(scratch) / "native-skill-preview")
+        manager_skill_draft_contracts = _manager_skill_draft_contracts(Path(scratch) / "manager-skill-drafts")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6542,6 +6605,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-skill-candidate.json": _json_bytes(skill_candidate_contracts),
         "python-skill-preview.json": _json_bytes(skill_preview_contracts),
         "python-native-skill-preview.json": _json_bytes(native_skill_preview_contracts),
+        "python-manager-skill-drafts.json": _json_bytes(manager_skill_draft_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

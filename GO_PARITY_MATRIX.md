@@ -346,3 +346,12 @@ owner/session to process-local drafts. Normal cache/recovery/shared limiter and
 telemetry are retained; tools are empty and only text response blocks are joined.
 Recovery receives no live history and the live token meter is unchanged. Manager
 admission/lease/cancellation, draft injection and authenticated routes remain open.
+
+Manager skill draft storage (2026-10-07): snapshot 77 compares seven actual
+Python create/fork/ordinary and scheduled restore frames with the shared pool,
+including resources-disabled and anonymous construction. Managers now inject
+one process-local typed DraftStore through the common runtime factory. New
+managers start empty; SQL source evidence does not prove a native SQL backend.
+Native checks verify adapter retention/owner absence and global 64-item capacity
+across sixteen sessions without foreign eviction. Manager preview admission/lease
+and authenticated routes remain pending.

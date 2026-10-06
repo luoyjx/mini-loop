@@ -1418,8 +1418,11 @@ and binds owner/session from runtime configuration. Its native adapter calls
 completeSideModel with empty tools and preview purpose, concatenates only text
 blocks and preserves configured cache/recovery/shared model limiter and telemetry.
 It grants recovery no live history and does not observe the live token meter.
-The per-session previewer retains only process-local drafts; no publication flow
-is installed. A future managed entrypoint must supply its ledger, including empty
+The per-session previewer retains only process-local drafts. A manager now owns
+one default DraftStore and injects it through its common runtime factory for
+create/fork/ordinary and scheduled restoration. That internal typed binding keeps
+64/16/4 quotas at fleet/owner/session scope; standalone callers keep their own
+store. Manager restarts start fresh pools and no publication flow is installed. A future managed entrypoint must supply its ledger, including empty
 ledger state, and own admission/lease/cancellation through completion.
 
 ### Go trusted session resource binding

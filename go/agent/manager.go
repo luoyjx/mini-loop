@@ -31,6 +31,7 @@ const (
 // transcripts or leases; state is restored through the injected store consumer.
 // Public lookups require an already established owner identity.
 type SessionManager struct {
+	skillDrafts                    *userresources.DraftStore
 	restoreLifetime                context.Context
 	restoreCancel                  context.CancelFunc
 	restoreTurn                    chan struct{}
@@ -171,6 +172,10 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		return nil, err
 	}
 	manager := &SessionManager{restoreTurn: make(chan struct{}, 1), config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
+	manager.skillDrafts, err = userresources.NewDraftStore(userresources.DefaultDraftStoreConfig())
+	if err != nil {
+		return nil, err
+	}
 	manager.restoreLifetime, manager.restoreCancel = context.WithCancel(context.Background())
 	manager.restoreTurn <- struct{}{}
 	if services.StateStore != nil {
@@ -400,6 +405,7 @@ func (manager *SessionManager) managedRuntimeConfig(ctx context.Context, id Sess
 		builder = FixedSystem(*system)
 	}
 	runtime := RuntimeConfig{DecisionTools: services.DecisionTools, DecisionProvider: services.DecisionProvider, DecisionLLM: services.DecisionLLM, GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
+	runtime.skillDrafts = manager.skillDrafts
 	runtime.MemoryTools = services.MemoryTools
 	runtime.MemoryAuto = services.MemoryAuto
 	if resolver := services.UserResources; resolver != nil {

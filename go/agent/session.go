@@ -37,6 +37,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	skillDrafts                                       *userresources.DraftStore
 	skillPreview                                      *userresources.SkillPreviewer
 	memoryAuto                                        bool
 	memory                                            *memory.ScopedStore
