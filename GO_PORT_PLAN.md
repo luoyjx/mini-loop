@@ -4457,3 +4457,11 @@ and oversized responses fail without retaining provider text.
 
 This library slice installs no tool. Native focused estimate tests and the final
 Go full/race/vet gates cover it; runtime integration is delivered separately.
+
+## Implementation checkpoint — 2026-10-06 opaque thinking replies
+
+Protocol messages and direct HTTP/SSE decoding now preserve the named
+`redacted_thinking` block with required opaque string data. It does not become
+text or a provisional text delta. Tests cover detached access, strict malformed
+wire refusal and complete direct/SSE reply round trips. This decoder slice
+changes no activation or authority. Full Go/race/vet gates passed.

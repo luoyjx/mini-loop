@@ -56,6 +56,7 @@ func decodeBlock(raw []byte) (protocol.Block, error) {
 		Text      *string            `json:"text"`
 		Thinking  *string            `json:"thinking"`
 		Signature *string            `json:"signature"`
+		Data      *string            `json:"data"`
 		ID        *string            `json:"id"`
 		Name      *protocol.ToolName `json:"name"`
 		Input     json.RawMessage    `json:"input"`
@@ -69,6 +70,11 @@ func decodeBlock(raw []byte) (protocol.Block, error) {
 		return protocol.Block{}, errors.New("malformed block")
 	}
 	switch wire.Type {
+	case protocol.BlockRedactedThinking:
+		if wire.Data == nil {
+			return protocol.Block{}, errors.New("redacted thinking has no data")
+		}
+		return protocol.NewRedactedThinkingBlock(*wire.Data), nil
 	case protocol.BlockText:
 		if wire.Text == nil {
 			return protocol.Block{}, errors.New("text block has no text")

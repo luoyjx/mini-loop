@@ -21,10 +21,11 @@ const (
 type BlockKind string
 
 const (
-	BlockText       BlockKind = "text"
-	BlockThinking   BlockKind = "thinking"
-	BlockToolUse    BlockKind = "tool_use"
-	BlockToolResult BlockKind = "tool_result"
+	BlockText             BlockKind = "text"
+	BlockThinking         BlockKind = "thinking"
+	BlockRedactedThinking BlockKind = "redacted_thinking"
+	BlockToolUse          BlockKind = "tool_use"
+	BlockToolResult       BlockKind = "tool_result"
 )
 
 type ToolName string
@@ -40,6 +41,9 @@ type TextBlock struct {
 type ThinkingBlock struct {
 	Thinking  string `json:"thinking"`
 	Signature string `json:"signature"`
+}
+type RedactedThinkingBlock struct {
+	Data string `json:"data"`
 }
 
 type ToolUseBlock struct {
@@ -57,12 +61,13 @@ type ToolResultBlock struct {
 
 // Block is a closed tagged union. Exactly one variant is populated.
 type Block struct {
-	callerPresent bool
-	kind          BlockKind
-	text          *TextBlock
-	thinking      *ThinkingBlock
-	toolUse       *ToolUseBlock
-	toolResult    *ToolResultBlock
+	callerPresent    bool
+	kind             BlockKind
+	text             *TextBlock
+	thinking         *ThinkingBlock
+	redactedThinking *RedactedThinkingBlock
+	toolUse          *ToolUseBlock
+	toolResult       *ToolResultBlock
 }
 
 func NewTextBlock(text string) Block {
@@ -71,6 +76,15 @@ func NewTextBlock(text string) Block {
 
 func NewThinkingBlock(thinking, signature string) Block {
 	return Block{kind: BlockThinking, thinking: &ThinkingBlock{Thinking: thinking, Signature: signature}}
+}
+func NewRedactedThinkingBlock(data string) Block {
+	return Block{kind: BlockRedactedThinking, redactedThinking: &RedactedThinkingBlock{Data: data}}
+}
+func (b Block) RedactedThinking() (RedactedThinkingBlock, bool) {
+	if b.kind != BlockRedactedThinking || b.redactedThinking == nil {
+		return RedactedThinkingBlock{}, false
+	}
+	return *b.redactedThinking, true
 }
 
 func NewBashUse(id, command string) Block {
@@ -139,7 +153,14 @@ func (b Block) ToolResult() (ToolResultBlock, bool) {
 }
 
 func (b Block) Validate() error {
+	if b.kind != BlockRedactedThinking && b.redactedThinking != nil {
+		return errors.New("block has an unexpected redacted-thinking variant")
+	}
 	switch b.kind {
+	case BlockRedactedThinking:
+		if b.redactedThinking == nil || b.text != nil || b.thinking != nil || b.toolUse != nil || b.toolResult != nil {
+			return errors.New("redacted thinking requires data and no other variant")
+		}
 	case BlockText:
 		if b.text == nil || b.thinking != nil || b.toolUse != nil || b.toolResult != nil {
 			return errors.New("text block has invalid variant fields")
@@ -173,6 +194,12 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		return nil, err
 	}
 	switch b.kind {
+	case BlockRedactedThinking:
+		return json.Marshal(struct {
+			Type BlockKind `json:"type"`
+			RedactedThinkingBlock
+			CacheControl *CacheControl `json:"cache_control,omitempty"`
+		}{BlockRedactedThinking, *b.redactedThinking, control})
 	case BlockText:
 		return json.Marshal(struct {
 			Type BlockKind `json:"type"`
@@ -241,6 +268,18 @@ func (b *Block) UnmarshalJSON(data []byte) error {
 	}
 	var next Block
 	switch tag.Type {
+	case BlockRedactedThinking:
+		var wire struct {
+			Type BlockKind `json:"type"`
+			Data *string   `json:"data"`
+		}
+		if err := decodeStrict(data, &wire); err != nil {
+			return err
+		}
+		if wire.Data == nil {
+			return errors.New("redacted thinking requires data")
+		}
+		next = NewRedactedThinkingBlock(*wire.Data)
 	case BlockText:
 		var wire struct {
 			Type BlockKind `json:"type"`
@@ -330,6 +369,10 @@ func (c Content) Clone() Content {
 		if b.thinking != nil {
 			v := *b.thinking
 			blocks[i].thinking = &v
+		}
+		if b.redactedThinking != nil {
+			v := *b.redactedThinking
+			blocks[i].redactedThinking = &v
 		}
 		if b.toolResult != nil {
 			v := *b.toolResult
