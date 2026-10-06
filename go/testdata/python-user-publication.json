@@ -1,0 +1,637 @@
+{
+  "cases": [
+    {
+      "collision": false,
+      "files": [
+        {
+          "mode": 384,
+          "owner": "alice",
+          "path": "review/SKILL.md",
+          "sha256": "e3d92864693ca8588a8e681e76060cce46646b457d08f4afe5062e171e9dd9ac"
+        }
+      ],
+      "name": "create-retry-conflict",
+      "secret_mode": "",
+      "seed": "",
+      "steps": [
+        {
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "future_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:review [digest=034177b4685761cb]: Review safely",
+          "load_sha256": "5d517ed6d153fb310866dd135e89f2aa9d40f2844ddab16733a2a663cca59fdd",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "owner": "alice",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": null,
+            "content_digest": "034177b4685761cb19df79ce6cc2dfcb428eb71d9c59d297d95d5df8dd2f3569",
+            "digest": "e3d92864693ca8588a8e681e76060cce46646b457d08f4afe5062e171e9dd9ac",
+            "idempotent": false,
+            "name": "review"
+          }
+        },
+        {
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "future_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:review [digest=034177b4685761cb]: Review safely",
+          "load_sha256": "5d517ed6d153fb310866dd135e89f2aa9d40f2844ddab16733a2a663cca59fdd",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "owner": "alice",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": null,
+            "content_digest": "034177b4685761cb19df79ce6cc2dfcb428eb71d9c59d297d95d5df8dd2f3569",
+            "digest": "e3d92864693ca8588a8e681e76060cce46646b457d08f4afe5062e171e9dd9ac",
+            "idempotent": true,
+            "name": "review"
+          }
+        },
+        {
+          "error": {
+            "code": "user_skill_exists",
+            "error": "A user skill with this name already exists"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "different",
+            "name": "review"
+          },
+          "owner": "alice"
+        },
+        {
+          "error": {
+            "code": "user_skill_exists",
+            "error": "A user skill with this name already exists"
+          },
+          "fields": {
+            "body": "different",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [
+        {
+          "mode": 384,
+          "owner": "alice",
+          "path": "review/SKILL.md",
+          "sha256": "56faf5fcfedc32c3ed06fc34452822bb6a05bea1eea0ca2bbfa94fefee37af21"
+        }
+      ],
+      "name": "normalized",
+      "secret_mode": "",
+      "seed": "",
+      "steps": [
+        {
+          "fields": {
+            "body": "\r\n  Read first.\rSecond line. \r\n",
+            "description": "  spaced  ",
+            "name": "review"
+          },
+          "future_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:review [digest=ded1da6cd6c6c433]: spaced",
+          "load_sha256": "fb8287d098252e377de484839b61a46a89968a61aee2c6dd127eea9dd2c5885b",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "owner": "alice",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": null,
+            "content_digest": "ded1da6cd6c6c43373d8993c465e386c10ef14428cf3f5985181fbcfe6aed73c",
+            "digest": "56faf5fcfedc32c3ed06fc34452822bb6a05bea1eea0ca2bbfa94fefee37af21",
+            "idempotent": false,
+            "name": "review"
+          }
+        },
+        {
+          "fields": {
+            "body": "Read first.\nSecond line.",
+            "description": "spaced",
+            "name": "review"
+          },
+          "future_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:review [digest=ded1da6cd6c6c433]: spaced",
+          "load_sha256": "fb8287d098252e377de484839b61a46a89968a61aee2c6dd127eea9dd2c5885b",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "owner": "alice",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": null,
+            "content_digest": "ded1da6cd6c6c43373d8993c465e386c10ef14428cf3f5985181fbcfe6aed73c",
+            "digest": "56faf5fcfedc32c3ed06fc34452822bb6a05bea1eea0ca2bbfa94fefee37af21",
+            "idempotent": true,
+            "name": "review"
+          }
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [
+        {
+          "mode": 384,
+          "owner": "alice",
+          "path": "alpha/SKILL.md",
+          "sha256": "924812ee237e426312856330733824bb8d745f10f015620d67b38d8f81befac1"
+        },
+        {
+          "mode": 384,
+          "owner": "alice",
+          "path": "zulu/SKILL.md",
+          "sha256": "6551a0a4920671cb0d55eff951c0d79e77df62aa4eda1de77a8202c96bf43251"
+        }
+      ],
+      "name": "ordering",
+      "secret_mode": "",
+      "seed": "",
+      "steps": [
+        {
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "zulu"
+          },
+          "future_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:zulu [digest=034177b4685761cb]: Review safely",
+          "load_sha256": "ab39d8051ece9a0623532c09dfd4432862edf37033c95cbe28b8a661a3810d9a",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "owner": "alice",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": null,
+            "content_digest": "034177b4685761cb19df79ce6cc2dfcb428eb71d9c59d297d95d5df8dd2f3569",
+            "digest": "6551a0a4920671cb0d55eff951c0d79e77df62aa4eda1de77a8202c96bf43251",
+            "idempotent": false,
+            "name": "zulu"
+          }
+        },
+        {
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "alpha"
+          },
+          "future_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:alpha [digest=034177b4685761cb]: Review safely\n  - user:zulu [digest=034177b4685761cb]: Review safely",
+          "load_sha256": "e076cbc039ade810ffb4964ecd5ba6846beb0490906853f1662b155cc5b2606b",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "owner": "alice",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": null,
+            "content_digest": "034177b4685761cb19df79ce6cc2dfcb428eb71d9c59d297d95d5df8dd2f3569",
+            "digest": "924812ee237e426312856330733824bb8d745f10f015620d67b38d8f81befac1",
+            "idempotent": false,
+            "name": "alpha"
+          }
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [
+        {
+          "mode": 384,
+          "owner": "alice",
+          "path": "review/SKILL.md",
+          "sha256": "e3d92864693ca8588a8e681e76060cce46646b457d08f4afe5062e171e9dd9ac"
+        },
+        {
+          "mode": 384,
+          "owner": "bob",
+          "path": "review/SKILL.md",
+          "sha256": "ecd5259c040f995766999e74b0bc7ab8ff92bb51529e93464f2bf7a171cbba6e"
+        },
+        {
+          "mode": 384,
+          "owner": " alice ",
+          "path": "review/SKILL.md",
+          "sha256": "6b393cf92c6227db541d057beeadd5559421f88a4e9278b9c351fc514c6757ae"
+        }
+      ],
+      "name": "owners",
+      "secret_mode": "",
+      "seed": "",
+      "steps": [
+        {
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "future_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:review [digest=034177b4685761cb]: Review safely",
+          "load_sha256": "5d517ed6d153fb310866dd135e89f2aa9d40f2844ddab16733a2a663cca59fdd",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "owner": "alice",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": null,
+            "content_digest": "034177b4685761cb19df79ce6cc2dfcb428eb71d9c59d297d95d5df8dd2f3569",
+            "digest": "e3d92864693ca8588a8e681e76060cce46646b457d08f4afe5062e171e9dd9ac",
+            "idempotent": false,
+            "name": "review"
+          }
+        },
+        {
+          "fields": {
+            "body": "bob",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "future_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:review [digest=81b637d8fcd2c6da]: Review safely",
+          "load_sha256": "10a6ddbb822b6b84500f8345f2a14b8262a6eb55c54b573f49a6b419d9840998",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "owner": "bob",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": null,
+            "content_digest": "81b637d8fcd2c6da6359e6963113a1170de795e4b725b84d1e0b4cfd9ec58ce9",
+            "digest": "ecd5259c040f995766999e74b0bc7ab8ff92bb51529e93464f2bf7a171cbba6e",
+            "idempotent": false,
+            "name": "review"
+          }
+        },
+        {
+          "fields": {
+            "body": "spaced",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "future_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  - user:review [digest=4cf28831d09470e8]: Review safely",
+          "load_sha256": "aec53831b5231de04b3f437223fb68f2b2c41762839a40cf1c85f239639b7b96",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  (none)\nUser-scoped skills:\n  (none)",
+          "owner": " alice ",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": null,
+            "content_digest": "4cf28831d09470e8185fbb6ace85c0ae1238bebb05972737d6422c7ff8783cce",
+            "digest": "6b393cf92c6227db541d057beeadd5559421f88a4e9278b9c351fc514c6757ae",
+            "idempotent": false,
+            "name": "review"
+          }
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": true,
+      "files": [
+        {
+          "mode": 384,
+          "owner": "alice",
+          "path": "review/SKILL.md",
+          "sha256": "e3d92864693ca8588a8e681e76060cce46646b457d08f4afe5062e171e9dd9ac"
+        }
+      ],
+      "name": "agent-collision",
+      "secret_mode": "",
+      "seed": "",
+      "steps": [
+        {
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "future_descriptions": "Agent-provided skills:\n  - agent:review [digest=479a2928887ec1d4]: Review safely\nUser-scoped skills:\n  - user:review [digest=034177b4685761cb]: Review safely",
+          "load_sha256": "5d517ed6d153fb310866dd135e89f2aa9d40f2844ddab16733a2a663cca59fdd",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  - agent:review [digest=479a2928887ec1d4]: Review safely\nUser-scoped skills:\n  (none)",
+          "owner": "alice",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": "An agent-provided skill has the same name; use an explicit agent: or user: source",
+            "content_digest": "034177b4685761cb19df79ce6cc2dfcb428eb71d9c59d297d95d5df8dd2f3569",
+            "digest": "e3d92864693ca8588a8e681e76060cce46646b457d08f4afe5062e171e9dd9ac",
+            "idempotent": false,
+            "name": "review"
+          }
+        },
+        {
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "future_descriptions": "Agent-provided skills:\n  - agent:review [digest=479a2928887ec1d4]: Review safely\nUser-scoped skills:\n  - user:review [digest=034177b4685761cb]: Review safely",
+          "load_sha256": "5d517ed6d153fb310866dd135e89f2aa9d40f2844ddab16733a2a663cca59fdd",
+          "memory_reused": true,
+          "old_descriptions": "Agent-provided skills:\n  - agent:review [digest=479a2928887ec1d4]: Review safely\nUser-scoped skills:\n  (none)",
+          "owner": "alice",
+          "receipt": {
+            "activation": "next_session",
+            "collision_warning": "An agent-provided skill has the same name; use an explicit agent: or user: source",
+            "content_digest": "034177b4685761cb19df79ce6cc2dfcb428eb71d9c59d297d95d5df8dd2f3569",
+            "digest": "e3d92864693ca8588a8e681e76060cce46646b457d08f4afe5062e171e9dd9ac",
+            "idempotent": true,
+            "name": "review"
+          }
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "secret-body",
+      "secret_mode": "long",
+      "seed": "",
+      "steps": [
+        {
+          "error": {
+            "code": "secret_detected",
+            "error": "Skill content contains a registered secret"
+          },
+          "fields": {
+            "body": "secret-token",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "secret-name",
+      "secret_mode": "long",
+      "seed": "",
+      "steps": [
+        {
+          "error": {
+            "code": "secret_detected",
+            "error": "Skill content contains a registered secret"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "secret-token"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "secret-description",
+      "secret_mode": "long",
+      "seed": "",
+      "steps": [
+        {
+          "error": {
+            "code": "secret_detected",
+            "error": "Skill content contains a registered secret"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "secret-token",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "secret-before-normalization",
+      "secret_mode": "raw",
+      "seed": "",
+      "steps": [
+        {
+          "error": {
+            "code": "secret_detected",
+            "error": "Skill content contains a registered secret"
+          },
+          "fields": {
+            "body": " secret-token ",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "short-secret",
+      "secret_mode": "short",
+      "seed": "",
+      "steps": [
+        {
+          "error": {
+            "code": "secret_check_failed",
+            "error": "Skill secret screening is unavailable"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "unresolved-secret",
+      "secret_mode": "unresolved",
+      "seed": "",
+      "steps": [
+        {
+          "error": {
+            "code": "secret_check_failed",
+            "error": "Skill secret screening is unavailable"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [
+        {
+          "mode": 420,
+          "owner": "alice",
+          "path": "aaa/SKILL.md",
+          "sha256": "e3d92864693ca8588a8e681e76060cce46646b457d08f4afe5062e171e9dd9ac"
+        }
+      ],
+      "name": "alternate",
+      "secret_mode": "",
+      "seed": "alternate",
+      "steps": [
+        {
+          "error": {
+            "code": "user_skill_exists",
+            "error": "A user skill with this name already exists"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "directory-link",
+      "secret_mode": "",
+      "seed": "directory-link",
+      "steps": [
+        {
+          "error": {
+            "code": "unsafe_path",
+            "error": "User skill path is unsafe"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "file-link",
+      "secret_mode": "",
+      "seed": "file-link",
+      "steps": [
+        {
+          "error": {
+            "code": "unsafe_path",
+            "error": "User skill path is unsafe"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "file-directory",
+      "secret_mode": "",
+      "seed": "file-directory",
+      "steps": [
+        {
+          "error": {
+            "code": "publish_failed",
+            "error": "Existing user skill could not be verified"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    },
+    {
+      "collision": false,
+      "files": [],
+      "name": "invalid",
+      "secret_mode": "",
+      "seed": "",
+      "steps": [
+        {
+          "error": {
+            "code": "invalid_owner",
+            "error": "Owner must be a non-empty string"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": ""
+        },
+        {
+          "error": {
+            "code": "invalid_name",
+            "error": "Skill name must be lowercase kebab-case"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "Review safely",
+            "name": "Upper"
+          },
+          "owner": "alice"
+        },
+        {
+          "error": {
+            "code": "invalid_description",
+            "error": "Skill description must be non-empty"
+          },
+          "fields": {
+            "body": "Read first.",
+            "description": "",
+            "name": "review"
+          },
+          "owner": "alice"
+        },
+        {
+          "error": {
+            "code": "invalid_body",
+            "error": "Skill body must be non-empty"
+          },
+          "fields": {
+            "body": "",
+            "description": "Review safely",
+            "name": "review"
+          },
+          "owner": "alice"
+        }
+      ],
+      "victim_unchanged": true
+    }
+  ],
+  "source_sha256": "c92644f64cd19f34e34b5efcc7defce5005896d3e1f5cfe1cac2d98c26df4549"
+}

@@ -33,6 +33,7 @@ type DirectoryResolver struct {
 
 var errDirectory = errors.New("user resource directory is unavailable")
 var errLink = errors.New("user resource directory must not be a symlink")
+var errOutside = errors.New("user resource directory resolves outside the configured root")
 
 // resolveRoot follows trusted configuration links, including dangling targets,
 // with Python resolve(strict=False) component order (link/.. is not pre-cleaned).
@@ -130,7 +131,7 @@ func (r *DirectoryResolver) directory(ctx context.Context, path string) (string,
 	}
 	relative, e := filepath.Rel(r.root, resolved)
 	if e != nil || relative == ".." || strings.HasPrefix(relative, ".."+string(os.PathSeparator)) {
-		return "", errors.New("user resource directory resolves outside the configured root")
+		return "", errOutside
 	}
 	return resolved, nil
 }

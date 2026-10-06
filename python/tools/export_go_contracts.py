@@ -5412,6 +5412,78 @@ def _durable_create_contracts(scratch: Path) -> dict:
     return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT/"mini_loop"/"durable.py").read_bytes()).hexdigest())
 
 
+def _publication_contracts(scratch: Path) -> dict:
+    """Actual create-only source publisher, safe receipts and future snapshots."""
+    from mini_loop.user_resources import UserResourceResolver, UserSkillPublicationError, canonical_user_skill
+    from mini_loop.skills import SkillLoader
+    from mini_loop.secrets import SecretRegistry
+    cases = []
+    def fields(name="review", description="Review safely", body="Read first."):
+        return dict(name=name, description=description, body=body)
+    def step(value=None, owner="alice"):
+        return dict(owner=owner, fields=value or fields())
+    def add(name, steps, secret_mode="", collision=False, seed=""):
+        base=scratch/name;agent_dir=base/"agent";agent_dir.mkdir(parents=True)
+        if collision:
+            path=agent_dir/"review"/"SKILL.md";path.parent.mkdir()
+            path.write_text(canonical_user_skill(**fields(body="agent policy")),encoding="utf-8")
+        registry=None
+        if secret_mode:
+            registry=SecretRegistry()
+            registry.register("TEST_SECRET", (lambda: None) if secret_mode=="unresolved" else "1234" if secret_mode=="short" else " secret-token " if secret_mode=="raw" else "secret-token")
+        root=base/"users";agent=SkillLoader(agent_dir);resolver=UserResourceResolver(root,agent,registry)
+        previous={}
+        for item in steps:
+            owner=item["owner"]
+            if owner and owner not in previous: previous[owner]=resolver.for_owner(owner)
+        target=root/resolver._owner_key("alice")/"skills"/"review"/"SKILL.md"
+        victim=base/"victim";victim.mkdir()
+        if seed=="alternate":
+            path=target.parent.parent/"aaa"/"SKILL.md";path.parent.mkdir()
+            path.write_text(canonical_user_skill(**fields()),encoding="utf-8")
+            path.chmod(0o644)
+        elif seed=="directory-link":target.parent.symlink_to(victim,target_is_directory=True)
+        elif seed=="file-link":
+            target.parent.mkdir();(victim/"SKILL.md").write_text("untouched",encoding="utf-8");target.symlink_to(victim/"SKILL.md")
+        elif seed=="file-directory":target.mkdir(parents=True)
+        elif seed:raise AssertionError(seed)
+        results=[]
+        for item in steps:
+            row=dict(item);owner=item["owner"]
+            try:
+                publication=resolver.publish_skill(owner,item["fields"])
+                resource=resolver.for_owner(owner)
+                row.update(receipt=publication.as_dict(),future_descriptions=resource.skills.descriptions(),
+                           memory_reused=resource.memory is previous[owner].memory,
+                           old_descriptions=previous[owner].skills.descriptions(),
+                           load_sha256=hashlib.sha256(resource.skills.load("user:"+item["fields"]["name"]).encode()).hexdigest())
+            except UserSkillPublicationError as error:row["error"]=error.as_dict()
+            results.append(row)
+        files=[]
+        for owner in previous:
+            skill_root=root/resolver._owner_key(owner)/"skills"
+            for path in sorted(skill_root.rglob("SKILL.md")):
+                if path.is_symlink() or not path.is_file():continue
+                files.append(dict(owner=owner,path=str(path.relative_to(skill_root)),sha256=hashlib.sha256(path.read_bytes()).hexdigest(),mode=path.stat().st_mode&0o777))
+        cases.append(dict(name=name,steps=results,secret_mode=secret_mode,collision=collision,seed=seed,files=files,
+                          victim_unchanged=not (victim/"SKILL.md").exists() or (victim/"SKILL.md").read_text()=="untouched"))
+    add("create-retry-conflict",[step(),step(),step(fields(description="different")),step(fields(body="different"))])
+    add("normalized",[step(fields(description="  spaced  ",body="\r\n  Read first.\rSecond line. \r\n")),
+                      step(fields(description="spaced",body="Read first.\nSecond line."))])
+    add("ordering",[step(fields(name="zulu")),step(fields(name="alpha"))])
+    add("owners",[step(),step(fields(body="bob"),"bob"),step(fields(body="spaced")," alice ")])
+    add("agent-collision",[step(),step()],collision=True)
+    add("secret-body",[step(fields(body="secret-token"))],secret_mode="long")
+    add("secret-name",[step(fields(name="secret-token"))],secret_mode="long")
+    add("secret-description",[step(fields(description="secret-token"))],secret_mode="long")
+    add("secret-before-normalization",[step(fields(body=" secret-token "))],secret_mode="raw")
+    add("short-secret",[step()],secret_mode="short")
+    add("unresolved-secret",[step()],secret_mode="unresolved")
+    for seed in ("alternate","directory-link","file-link","file-directory"):add(seed,[step()],seed=seed)
+    add("invalid",[step(owner=""),step(fields(name="Upper")),step(fields(description="")),step(fields(body=""))])
+    return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT/"mini_loop"/"user_resources.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5529,6 +5601,7 @@ def _snapshot() -> dict[str, bytes]:
         memory_store_contracts = _memory_store_contracts(Path(scratch) / "memory-store")
         owner_resource_contracts = _owner_resource_contracts(Path(scratch) / "owner-resources")
         durable_create_contracts = _durable_create_contracts(Path(scratch) / "durable-create")
+        publication_contracts = _publication_contracts(Path(scratch) / "publication")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5606,6 +5679,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-memory-store.json": _json_bytes(memory_store_contracts),
         "python-owner-resources.json": _json_bytes(owner_resource_contracts),
         "python-durable-create.json": _json_bytes(durable_create_contracts),
+        "python-user-publication.json": _json_bytes(publication_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

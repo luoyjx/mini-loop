@@ -112,7 +112,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; trusted session binding, memory lifecycle and publication remain; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; trusted session binding and memory lifecycle remain; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next decision slices
@@ -4949,3 +4949,68 @@ errors/warnings; HTML SHA256
 `6c7a6d12882414392aad55007e4fd86add998f6415bbe2da49f5bb43db376f46`
 (680,519 bytes). Visual review remains skipped after earlier local-file access
 denial; no bypass was attempted.
+
+## Implementation checkpoint — 2026-10-06 create-only owner skill publisher
+
+Actual Python UserResourceResolver.publish_skill validates canonical fields,
+screens all original raw fields, refuses short/unresolved registered secrets,
+rechecks the user directory and freshly catalogs disk. Native Resolver.PublishSkill
+now composes that contract with immutable Resources, detached prepared catalogues
+and descriptor-anchored durable file operations. Closed PublicationReceipt and
+PublicationFailure expose only the source JSON keys; canonical/body digests remain
+distinct. Internal owner bundles are private fields with explicit accessors.
+
+Canonical validation precedes screening, but screening receives the unnormalized
+fields. Named typed registration/health interfaces use the existing Registry; nil
+and secrets.Null represent the no-secret configuration. Custom maskers lacking
+Names fail closed even though Python treats missing Names as empty. Registered
+values require both health readers. Mask/health panics map to safe reviewed errors;
+no values/names/host errors appear in receipts. Static SkillFields makes unknown
+mapping keys an ingress concern; this operator API has no invalid_fields mapping.
+
+Publication serializes through the resolver permit and a lock-internal owner
+builder. Current disk names and exact target/content hashes govern retries. Same
+canonical content is idempotent, description/body changes conflict and a matching
+name at another active path is not adopted. Layered collision warnings preserve
+agent/user provenance. Candidate catalogues, receipts and resource bindings are
+prepared before the hard link. Only unsuccessful EEXIST attempts rescan a racing
+winner. Link success is followed only by cache overwrite and return: no validation
+or late cancellation may revoke it. Live Resources stay pinned and memory is
+reused; only future resolutions see the replacement. No cross-process cache
+refresh is claimed. Prepared native entries retain source digests for later file
+verification, stronger than Python synthetic entries without source_digest.
+
+Snapshot 63 compares 16 actual Python scenarios and 27 calls: receipt/error
+projections, canonical normalization, exact file hashes/modes, description/body
+conflicts, ordering, owners, agent collision, each secret field, raw whitespace
+secret screening, short/unresolved values, alternate active paths and file/dir
+links. Fixture decoding first exposed the source's `error` key rather than the
+assumed `message`; native failure projections now match. External seed permissions
+are explicitly 0644 and preserved, while new publication files are 0600.
+Native tests add two independent resolvers with 20 identical/conflicting attempts,
+secret-surface/health panics, screening before owner writes, safe host-fault/context
+projection, cancellation before/after link, restart identity and tamper refusal.
+
+This is an operator library, not a model tool or authenticated publication route.
+Next: trusted manager/fork/child/restore binding and configuration, memory lifecycle
+and capture/preview/commit authority. G0–G7 remain open. No new dependency or vague
+domain/service payload was introduced.
+
+Validation: focused native publication/skill tests passed, and all 29 actual
+Python publication tests passed. Full `go test ./...`, full `go test -race ./...`
+and `go vet ./...` passed on Darwin arm64. Export --check reports all 63
+contracts current; dependency/model deprecations remain. The first regeneration
+also reported an unknown-child-process cleanup message but exited successfully.
+All 19 source scanning guards remain anchored, and the source private-owner-
+directory permission mutation was caught. Isolated native mutations removing
+secret-health refusal and adding post-link cancellation both failed the intended
+tests. README outline and `git diff --check` passed. Python package invariants
+were not applicable because only its exporter changed. Coverage not refreshed.
+
+Full Python ran alone after all preceding process handles terminated: 2,151
+passed, 28 skipped, 24 subtests passed and three dependency deprecation warnings
+in 86.00 seconds. Archify delivery passed nine showcase checks with no errors
+or warnings. HTML SHA256
+`38c7ef6c2a777c0145f7ad24fad22a8687c14e3f01792cab49228c4e1c761c25`
+(680,960 bytes). Visual review remains skipped after earlier local-file access
+denial; it was not retried or bypassed.

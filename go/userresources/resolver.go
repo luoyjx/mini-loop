@@ -73,6 +73,11 @@ func (r *Resolver) ForOwner(ctx context.Context, owner OwnerID) (Resources, erro
 		return Resources{}, err
 	}
 	defer r.release()
+	return r.forOwner(ctx, owner, key)
+}
+
+// forOwner requires the resolver permit; publication holds it through commit.
+func (r *Resolver) forOwner(ctx context.Context, owner OwnerID, key DirectoryKey) (Resources, error) {
 	if resources, ok := r.resources[owner]; ok {
 		return resources, nil
 	}

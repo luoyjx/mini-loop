@@ -1167,7 +1167,8 @@ Resources; Skills() is a concrete LayeredCatalog and Memory() a bound ScopedStor
 Keep this snapshot for the live session and its selected descendants. Successful
 cache entries never silently rebind; cancelled/failed builds are not published.
 Problems(ctx) is operator-only and derives a fresh bounded view from owner-local
-logs. Publication and managed session activation are still pending.
+logs. PublishSkill replaces the cache only for future resolutions; managed
+session activation remains pending.
 
 ### Go anchored instruction publication files
 
@@ -1176,7 +1177,7 @@ explicit contexts. They anchor each directory component without symlink followin
 the typed identity names the committed hard-link object. No fallible return follows
 the link commit point. Keep canonical validation, secret screening, collision
 checks and future-session bundle preparation above this seam before creating a
-file. The publisher composition remains pending. Darwin/Linux require no added
+file. PublishSkill composes this seam. Darwin/Linux require no added
 dependency; Darwin syscall constants are pinned in the platform file.
 
 ### Go pre-commit skill catalogue preparation
@@ -1192,7 +1193,31 @@ a prepared skill cannot serve until its file exists with the expected content.
 This operator seam prepares the future snapshot before the hard-link commit. It
 does not establish owner authority, validate the stricter canonical publication
 fields, screen secrets, commit a file or replace a resolver cache. The complete
-create-only publisher must compose those operations in that order.
+create-only publisher now composes these seams while preserving live snapshots.
+
+### Go create-only owner skill publication
+
+`Resolver.PublishSkill(ctx, trustedOwner, SkillFields)` is an operator seam. It
+screens all raw fields, requires a typed registration surface for custom maskers
+and requires healthy registered values. Nil and secrets.Null preserve no-secret
+configuration. A custom memory-only masker without Names cannot publish. Masking
+or health panics become safe errors; no secret names, values or host faults enter
+receipts. Canonical field failures preserve the source code/text; static Go fields
+remove the mapping-shaped invalid_fields case from this library API.
+
+Publication prepares the new source catalogue, layered bundle and receipt before
+the no-replace hard link. Same canonical document/body/active target retries are
+idempotent; changed descriptions/bodies and alternate active paths conflict. A
+competing link winner is freshly scanned and verified without changing its file.
+The successful-link path performs no fallible validation or cancellation check.
+Only the future resolver cache changes; old Resources and their memory binding
+remain pinned. Publication.Receipt and PublicationError.Receipt are safe typed
+JSON projections; Publication.Resources is internal owner composition.
+
+Native prepared entries retain source digests, so later file tampering is refused
+without requiring a restart. Capture/preview, authenticated commit routes, trusted
+manager activation and cross-process cache refresh remain pending. This library
+operation does not authorize model-driven publication.
 
 ## 6. LLM / provider — the client
 
