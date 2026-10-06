@@ -1243,8 +1243,8 @@ Store, matching the source lifecycle_lock. Explicit remember holds it through
 Write; recall remains outside it. Waiting observes cancellation and callback
 errors/panics release the lock. Callbacks can perform ordinary scoped operations
 but cannot recursively acquire the lifecycle. The lock is process-local, has no
-rollback, and is independent across Store instances. Automatic extraction and
-consolidation are still pending consumers of this seam.
+rollback, and is independent across Store instances. The implemented extraction stage expects its lifecycle caller to own this lock;
+consolidation and automatic endpoint capture remain pending consumers.
 
 Recall renders the source provenance wrapper and lexical search's five-record
 limit. A selected in-process child keeps the parent's scoped store and is
@@ -1261,8 +1261,18 @@ The native JSON boundary rejects nonfinite/malformed JSON and uses fallback.
 Selected reference blocks follow rewritten input; a typed memory/load event is
 serialized and decoded for archival reads without granting authority. The dynamic
 index is sent in changed runtime facts only with recall, even when automatic
-selection is disabled. Extraction/consolidation, capture/preview/routes and
-launcher root configuration remain pending.
+selection is disabled. The extraction stage projects supported typed message
+variants, excluding recalled contexts, runtime facts and all tool-result bodies.
+Its source agent_turn request uses a separate side-call entry point so purpose
+alone cannot grant live history/meter ownership. It uses the source 1,500-token
+budget, 40,000-character ASCII JSON tail, first/last bracket decoding, text-block
+concatenation and first-five incremental writes. Missing optional fields use
+source defaults; additional owner/root/origin fields are ignored and the bound
+store fixes attribution. Non-string/null fields are rejected by the native typed
+boundary; source can coerce some malformed scalars. Ordinary faults return zero,
+including after partial writes; cancellation and native state authority failures
+propagate. It has not yet been connected to automatic turn-end capture.
+Consolidation, capture/preview/routes and launcher root configuration remain pending.
 
 ### Go trusted session resource binding
 

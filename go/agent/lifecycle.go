@@ -257,6 +257,17 @@ func (s *Session) appendText(text string, phase TextPhase) {
 	}
 }
 func (s *Session) completeModel(ctx context.Context, request protocol.ModelRequest, catalog *ToolCatalogSnapshot) (protocol.ModelReply, error) {
+	return s.completeModelWithHistory(ctx, request, catalog, request.Purpose == protocol.PurposeAgentTurn)
+}
+
+// Side requests can use the source's agent_turn purpose without referencing
+// the live transcript. Purpose alone must not grant recovery history or meter
+// ownership. Cache, recovery, transport and telemetry still use the normal path.
+func (s *Session) completeSideModel(ctx context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+	return s.completeModelWithHistory(ctx, request, nil, false)
+}
+
+func (s *Session) completeModelWithHistory(ctx context.Context, request protocol.ModelRequest, catalog *ToolCatalogSnapshot, liveHistory bool) (protocol.ModelReply, error) {
 	if err := stateRunError(ctx); err != nil {
 		return protocol.ModelReply{}, err
 	}
@@ -345,7 +356,7 @@ func (s *Session) completeModel(ctx context.Context, request protocol.ModelReque
 	started := time.Now()
 	input := RecoveryInput{Request: request, Streaming: false}
 	_, input.Streaming = s.provider.(StreamingProvider)
-	if request.Purpose == protocol.PurposeAgentTurn {
+	if liveHistory {
 		input.LiveHistory = append([]protocol.Message(nil), s.messages...)
 	}
 	reply, err := s.recovery.Recover(ctx, input, RecoveryServices{
@@ -380,7 +391,7 @@ func (s *Session) completeModel(ctx context.Context, request protocol.ModelReque
 		s.events.append(SessionEvent{kind: EventModelEnd, modelEnd: end})
 		return protocol.ModelReply{}, err
 	}
-	if request.Purpose == protocol.PurposeAgentTurn {
+	if liveHistory {
 		s.meter.Observe(reply.Usage, s.messages, s.envelope)
 	}
 	end.Status, end.StopReason, end.Usage, end.ServedModel = ModelCompleted, &reply.StopReason, &reply.Usage, &reply.Model

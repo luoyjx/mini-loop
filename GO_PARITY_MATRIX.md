@@ -233,3 +233,15 @@ python/mini_loop/memory.py install_memory; automatic extraction/consolidation
 remain pending. Native tests exercise shared bindings, cancellable waiting,
 error release, independent stores, and scoped operations inside a callback.
 A native bypass mutation is caught by the gated remember cancellation test.
+
+Memory extraction stage progress (2026-10-07): snapshot 67 executes actual
+extract_memories through Agent._create in 13 cases, comparing the prompt,
+1,500-token request, source agent_turn purpose, incremental count/files/origins,
+owner isolation, ASCII Unicode tail and greedy context stripping. Go retains
+supported typed thinking/tool-use variants while removing tool results and
+runtime/recalled context. Side requests now carry explicit history ownership;
+normal recovery/cache/provider/event behavior remains, without live meter/history.
+The native decoder rejects non-string/null entry fields and nonfinite JSON;
+source may coerce malformed header scalars. Cancellation and native transcript/
+lease failures propagate. The stage awaits consolidation and healthy-endpoint
+capture wiring; default runtime end behavior has not been activated yet.

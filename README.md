@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `29c5fad` plus scoped memory lifecycle serialization).
+reviewed **2026-10-07** (Go baseline `e693bf0` plus the memory extraction stage and explicit side-request history ownership).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -365,7 +365,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>owner lookup · fixed resource snapshots / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · retry / continue / shrink / fallback<br/>default goal stop · bounded continuation"]
+        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
@@ -561,8 +561,14 @@ after prompt rewriting and before the user message is appended. The side request
 uses normal model/recovery/limiter/cache/event flow without changing the live token
 meter. An explicit false MemoryAuto disables selection; its value is detached.
 The dynamic index appears only with recall, and is appended only when it changes.
-Default tools and launcher activation remain unchanged. Extraction/consolidation
-and root configuration remain pending; carrying a bundle alone installs no tools.
+The extraction stage now cleans recalled contexts, runtime facts and tool-result
+bodies, sends the source 40,000-character JSON tail, and writes at most five
+owner-bound auto_extracted records incrementally. Its normal agent_turn side
+request uses recovery/cache/transport/events without taking live history or token
+meter ownership. This internal stage is not invoked at turn endpoints yet;
+consolidation and the contained healthy-endpoint adapter remain pending.
+Default tools and launcher activation remain unchanged. Root configuration
+remains pending; carrying a bundle alone installs no tools.
 `userresources.NewResolver` now composes exact-owner directory, layered skill and
 bound memory snapshots, caching only complete bindings. Its operator problem
 view preserves owner-local logs and skips shared deployment diagnostics.

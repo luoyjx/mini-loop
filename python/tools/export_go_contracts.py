@@ -5656,6 +5656,75 @@ def _memory_context_contracts(scratch: Path) -> dict:
     return dict(cases=asyncio.run(run()))
 
 
+def _memory_extraction_contracts(scratch: Path) -> dict:
+    """Actual extraction through Agent._create, with incremental owner writes."""
+    import asyncio
+    import copy
+    from types import SimpleNamespace
+    from mini_loop.agent import Agent
+    from mini_loop.caching import NullCachePolicy
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeMessage, FakeUsage, text
+    from mini_loop.memory import MemoryStore, ScopedMemory, extract_memories
+    base = [
+        {"role":"user", "content":"<memory_context>\nrecalled private\n</memory_context>\n\nRemember café 用户"},
+        {"role":"user", "content":"<runtime-state>\nprivate index\n</runtime-state>"},
+        {"role":"assistant", "content":[
+            {"type":"thinking","thinking":"durable reasoning","signature":"signed"},
+            {"type":"tool_use","id":"call","name":"bash","input":{"command":"echo relevant"}},
+            {"type":"text","text":"<runtime-state>\nexclude\n</runtime-state>"},
+            {"type":"text","text":"actual assistant fact"}]},
+        {"role":"user", "content":[{"type":"tool_result","tool_use_id":"call","content":"private tool result"},
+                                      {"type":"text","text":"actual user fact"}]},
+        {"role":"user", "content":""},
+    ]
+    valid = dict(name="new", type="feedback", description="durable", body="learned")
+    recipes = [
+        dict(name="valid", reply=json.dumps([valid])),
+        dict(name="ignored-authority-fields", reply=json.dumps([{**valid,"owner":"foreign","origin":"explicit","root":"outside"}])),
+        dict(name="defaults", reply='[{"name":"minimal"}]'),
+        dict(name="unknown-type", reply='[{"name":"unknown","type":"custom","body":"fact"}]'),
+        dict(name="max-five", reply=json.dumps([{**valid,"name":f"fact-{i}"} for i in range(7)])),
+        dict(name="partial-write-missing-name", reply=json.dumps([valid,dict(body="invalid"),dict(name="never")])),
+        dict(name="partial-write-nonobject", reply=json.dumps([valid,7,dict(name="never")])),
+        dict(name="empty", reply="[]"), dict(name="malformed",reply="not JSON"),
+        dict(name="multiple-arrays",reply="[{}] [1]"),
+        dict(name="provider-fault",reply="[]",fault=True),
+        dict(name="unicode-tail",reply="[]",tail=True),
+        dict(name="greedy-memory-prefix",reply="[]",greedy=True),
+    ]
+    async def scenario(row):
+        root=scratch/row["name"]; root.mkdir(parents=True)
+        raw=MemoryStore(root/"memory"); store=ScopedMemory(raw,"owner")
+        raw.write("foreign","project","foreign description","foreign secret",owner="foreign")
+        store.write("existing","project","known","seed",origin="explicit")
+        calls, events = [], []
+        async def create(**kwargs):
+            calls.append(copy.deepcopy(kwargs))
+            if row.get("fault",False): raise RuntimeError("extraction failed")
+            # Concatenation of text blocks, rather than joining with newlines.
+            middle=len(row["reply"])//2
+            return FakeMessage([text("prefix "+row["reply"][:middle]),text(row["reply"][middle:]+" suffix")],
+                               "end_turn",FakeUsage(777,3),model="served-memory")
+        async def emit(event): events.append(copy.deepcopy(event))
+        agent=Agent(client=SimpleNamespace(messages=SimpleNamespace(create=create)),workspace=root,emit=emit,
+                    cache_policy=NullCachePolicy(),state=dict(memory=raw,resource_owner="owner"),
+                    settings=Settings(fake_llm=True,spill_dir=None,skills_dir=root/"empty"))
+        messages=copy.deepcopy(base)
+        if row.get("tail",False): messages=[{"role":"user","content":"字"*7000+"tail"}]
+        if row.get("greedy",False): messages=[{"role":"user","content":"<memory_context>\none\n</memory_context>\n\nbetween\n</memory_context>\n\nkeep"}]
+        agent.messages=copy.deepcopy(messages)
+        before=agent.token_meter.snapshot()
+        count=await extract_memories(store,list(agent.messages),agent.client,agent.settings.model,create=agent._create)
+        assert agent.token_meter.snapshot()==before
+        assert agent.messages==messages
+        return {**row,"fault":row.get("fault",False),"messages":messages,"calls":calls,"count":count,
+                "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),
+                "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
+    async def run(): return [await scenario(row) for row in recipes]
+    return dict(cases=asyncio.run(run()))
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5777,6 +5846,7 @@ def _snapshot() -> dict[str, bytes]:
         user_session_resource_contracts = _user_session_resource_contracts(Path(scratch) / "user-session-resources")
         memory_tool_contracts = _memory_tool_contracts(Path(scratch) / "memory-tools")
         memory_context_contracts = _memory_context_contracts(Path(scratch) / "memory-context")
+        memory_extraction_contracts = _memory_extraction_contracts(Path(scratch) / "memory-extraction")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5858,6 +5928,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-user-session-resources.json": _json_bytes(user_session_resource_contracts),
         "python-memory-tools.json": _json_bytes(memory_tool_contracts),
         "python-memory-context.json": _json_bytes(memory_context_contracts),
+        "python-memory-extraction.json": _json_bytes(memory_extraction_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

@@ -5251,3 +5251,70 @@ Specification SHA-256: 680c9926ce64b62c5e371f371085126684da2d93f20e631d0c92ef331
 dca13ac0281e5849c4138159673328ac8b58a8a63c47f5e552214593bc5f31c4 (683,101 bytes).
 Visual inspection remains skipped after the earlier local-file access denial;
 renderer acceptance is not visual inspection.
+
+## Implementation checkpoint — 2026-10-07 memory extraction stage
+
+Base: e693bf0. G1/G6 advance; G0–G7 remain open. Actual Python extract_memories
+cleans recalled memory prefixes, full runtime-state messages and every tool-result
+body. It keeps thinking/tool-use blocks; the cleaned list need not be a valid
+paired provider transcript because it is JSON text inside one user prompt.
+Native projection retains the supported closed protocol variants and source
+role/content key order. Greedy anchored prefix removal matches source; ASCII
+PythonJSON gives the source last 40,000-character tail. Scoped existing names/
+descriptions are the only catalogue used in the extraction prompt.
+
+The source uses max_tokens=1500 and purpose=agent_turn with temporary messages.
+Agent._create checks message identity before annotation: a side call does not
+provide live recovery history or observe the live meter. Go now separates
+completeSideModel from completeModel, sharing normal cache/recovery/limiter/
+transport/telemetry while explicitly passing non-live history ownership. Ordinary
+main turns keep their prior live-history behavior. Side usage is still recorded.
+
+Text reply blocks concatenate without delimiters, first/last brackets delimit
+the JSON array, and only the first five items are decoded and written. Decoding
+is per entry: later malformed entries stop extraction with count zero while
+previous writes remain, matching source. Typed Input fixes auto_extracted origin;
+scoped Write fixes the owner and physical path. Unknown string types normalize
+in the existing store. Extra model owner/root/origin fields are discarded.
+Native null/non-string fields are refused; source can stringify some malformed
+header scalars. Native finite JSON refusal is also stricter than source.
+Ordinary store/model faults return zero; cancellation and native transcript/
+lease errors remain errors. The lifecycle adapter must own WithLifecycle.
+
+Snapshot 67 executes real Python Agent._create/extract_memories in 13 cases:
+valid, ignored authority fields, missing defaults, unknown type, first-five cap,
+partial missing-name/nonobject writes, empty/malformed/multiple-array replies,
+provider fault, Unicode tail and greedy prefix. Native tests compare exact
+requests, counts, files/provenance, foreign records and live meter/history.
+Additional tests pin recovery's absent live history, cancelled requests and
+native authority faults. A test provider initially omitted required native reply
+ID/type/role; it was repaired to use the existing valid fakeReply constructor,
+without weakening reply validation or expected source results.
+
+The source tool-result-reingestion mutation fails the existing hygiene assertion.
+Compiling native mutations granting side calls live history/meter and retaining
+tool-result bodies fail their intended native differential/recovery assertions.
+All mutations were restored before final gates. Existing 66 exports remain
+byte-identical. No dependencies or dynamic domain/service fields are introduced.
+Remaining: consolidation, contained healthy-endpoint capture, launcher root/
+default activation, capture/preview/routes and all remaining plan groups.
+The stage is implemented but not yet invoked at automatic turn endpoints.
+Coverage is not refreshed.
+
+Validation: focused extraction differential, recovery history, cancellation and
+authority tests passed. Full go test ./... passed (agent 9.837s), go test -race
+./... passed (agent 36.010s), and go vet ./... passed. Exporter --check confirmed
+67 files current; verify_scans.py confirmed all 19 scanner guards anchored.
+Exporter generation initially printed an unknown-child cleanup warning and
+exited successfully; the final --check completed without that message.
+All Go/exporter/mutation/scanner jobs terminated before the Python suite ran
+alone: 2,151 passed, 28 skipped, 24 subtests passed in 76.36s, with three dependency
+deprecation warnings. No Python package module remains changed, so package
+invariants were not rerun. README outline and git diff --check passed.
+
+Archify regenerated the map with 9/9 showcase checks and zero errors/warnings.
+Specification SHA-256: a640f85bce52aafee5e9c790ae60c5a3a86a4932084ae5d414ef212bf5cfe1c3
+(41,625 bytes); HTML SHA-256:
+b3a08bef87919960d164e8c08ea0220d74742c910335c6201953efb251095c94 (683,428 bytes).
+Visual inspection remains skipped after the earlier local-file access denial;
+renderer acceptance is not visual inspection.
