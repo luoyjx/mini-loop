@@ -297,9 +297,11 @@ contexts; arbitrary backend error text is omitted. The LLM child shares recovery
 and explicit peer provenance, with fresh history/tools/cache/meter and no stream.
 Typed decision metadata reaches existing sinks; full masked requests are private
 trajectory fields. Selected custom roles may inherit the tool; default child roles
-omit it. Results and replay confer no approval or execution authority. Environment
-selection and full source replay/SQL audit remain pending; launcher activation
-still refuses. See [Go decisions](go/README.md#typed-decision-operator-library).
+omit it. Results and replay confer no approval or execution authority. The native
+launcher now accepts MINILOOP_DECISIONS=llm or jev; Jev uses TYPESAFE_API_KEY and
+MINILOOP_DECISION_MODEL. Launcher Options can explicitly install/override the
+backend and tune LLM settings; provider injection alone leaves off-mode disabled.
+Full source replay/SQL audit remains pending. See [Go decisions](go/README.md#typed-decision-operator-library).
 
 ---
 

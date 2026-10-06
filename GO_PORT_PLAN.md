@@ -125,8 +125,8 @@ Record its parity evidence and remaining gaps before checking it off.
    limiter and isolated current-LLM queries with complete-response checks,
    recovery isolation and estimated-probability provenance. Native large-result
    replay is tested; snapshot 54 compares 31 actual LLM and eight gate cases.
-3. Wire individual configuration/launcher selection; preserve default-off and
-   explicit-provider precedence. Compare exact large result replay/retention,
+3. Individual configuration/launcher selection is implemented, retaining
+   default-off and explicit-provider precedence. Compare exact large result replay/retention,
    cancellation and sink masking before claiming complete decision parity.
 
 ### Next persistence slices
@@ -4541,3 +4541,30 @@ Native SQLite requires the pending dependency choice. G0–G7 remain open.
   no bypass or visual-pass claim. Mermaid remains canonical; HTML regenerated.
 - Separate staged-tree tests passed for estimation, opaque protocol/provider,
   and decision protocol plus pre-integration agent, proving commit dependencies.
+
+## Implementation checkpoint — 2026-10-06 decision launcher selection
+
+Go launcher now accepts the existing typed off/llm/jev settings. LLM remains
+complete-only and isolated; Jev uses the fixed endpoint, configured model and
+explicit Typesafe credential. Constructor/inspection makes no provider request.
+FakeLLM does not replace Jev. A selected explicit Options provider wins; injecting
+a backend alone does not enable an off tool. Options also exposes explicit
+DecisionTools and DecisionLLM. Comprehensive features remain unsupported.
+
+Source evidence: Python manager.py construction installs decisions only for
+non-off settings and preserves an installed explicit decision backend; Settings
+validation still requires the Jev key. Native launcher tests exercise seven
+selection/precedence cases, redacted offline reports and complete HTTP tool
+turns for LLM and Jev-mode with an explicit mock backend. No paid call is made.
+Jev construction is verified separately; fixed HTTP transport already has
+snapshot 53. This is not full SQL/restart or large-result source replay proof.
+
+Validation: focused launcher and CLI decision tests pass; full Go and go vet pass.
+All 54 Python contract snapshots are current. The decision aggregate-budget
+mutation is caught. Archify validate/deliver passes showcase 9/9 with zero
+errors/warnings; specification fb71683005ba68fe1e89cfb318f50d7862d8ea210ed7ec799908ecbebe2a8394
+(37,154 bytes), HTML 7a79bfdfc3cc1489fe37ae14dacc65c94f75e48dff5110fcbd6c74602bbe8975
+(678,861 bytes). Visual review remains skipped following prior access denial.
+No Python package modules or scanner targets changed, so invariants/scans were
+not rerun. README outline and diff checks pass. Full Go race suite passes. Full Python: 2151 passed, 28 skipped, 3 warnings, 24 subtests passed in 100.96s (0:01:40).
+G0–G7 remain open.

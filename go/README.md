@@ -474,8 +474,13 @@ provider faults, small custom model events and parent isolation.
 Native reply contracts require complete usage/model; Python permits missing usage.
 Go refuses lone surrogate JSON earlier, and unknown backend failures use sanitized
 `RuntimeError`. Derived floats compare within 1e-12; raw probability spelling is
-retained. Environment/launcher selection remains pending: `MINILOOP_DECISIONS`
-activation still refuses. Full actual-source large-result retention/restart audit,
+retained. The standalone launcher now accepts `MINILOOP_DECISIONS=off|llm|jev`.
+Jev requires `TYPESAFE_API_KEY` and uses `MINILOOP_DECISION_MODEL` (jev-latest by
+default). `launcher.Options.DecisionProvider` overrides a selected backend; alone
+it leaves off-mode disabled. With environment off, `DecisionTools` explicitly
+selects LLM when no backend is supplied. `--dump-config` reports off/llm/jev/custom without I/O or
+credentials. FakeLLM does not substitute a fake Jev backend.
+Full actual-source large-result retention/restart audit,
 Go SQLite and live-provider verification remain pending.
 
 ### Use streaming model calls

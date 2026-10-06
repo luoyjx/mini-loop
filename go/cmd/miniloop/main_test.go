@@ -123,3 +123,21 @@ func TestGoalFlagReportsSelectionWithoutStartingRuntime(t *testing.T) {
 		t.Fatal("inspection started runtime")
 	}
 }
+
+func TestDecisionEnvironmentDumpDoesNotStartProviders(t *testing.T) {
+	for _, mode := range []string{"llm", "jev"} {
+		root := filepath.Join(t.TempDir(), "workspace")
+		env := map[string]string{"MINILOOP_WORKSPACE_ROOT": root, "MINILOOP_DECISIONS": mode, "TYPESAFE_API_KEY": "secret-key"}
+		var out, errout bytes.Buffer
+		if code := execute(context.Background(), []string{"--dump-config"}, env, &out, &errout); code != 0 {
+			t.Fatal(code, errout.String())
+		}
+		var report launcher.Report
+		if err := json.Unmarshal(out.Bytes(), &report); err != nil || string(report.DecisionBackend) != mode || len(report.Unsupported) != 0 || strings.Contains(out.String(), "secret-key") {
+			t.Fatal(out.String(), err)
+		}
+		if _, err := os.Stat(root); !os.IsNotExist(err) {
+			t.Fatal("inspection created workspace", err)
+		}
+	}
+}
