@@ -435,9 +435,48 @@ refuses duplicate local request keys, nonstandard nonfinite JSON and excessive
 raw/ignored response nesting before domain decoding. Map ordering is canonical,
 so byte-for-byte object key order is not a compatibility promise.
 
-Go gate/LLM/configuration, masking/events, shared limiter and decision-specific
-journal replay integration remain pending. No decision tool or launcher option
-is installed by this library; `MINILOOP_DECISIONS` activation still refuses.
+The runtime can explicitly install this tool with `RuntimeConfig.DecisionTools`
+or `ManagerServices.DecisionTools`. `DecisionProvider` selects a custom/Jev
+backend; when omitted, a fresh isolated current-LLM query is used. Supplying a
+backend alone does not install the tool. The ten default tools remain unchanged.
+
+```go
+config := agent.RuntimeConfig{
+    DecisionTools: true,
+    DecisionProvider: backend, // an existing decisions.Provider; nil selects LLM
+    DecisionLLM: agent.DecisionLLMConfig{MaxOutputTokens: 4096},
+}
+// Pass config to NewRuntimeSession. Managers use the same fields in ManagerServices.
+```
+
+The external-risk gate preserves before/guard/permission/execute/after/observer
+order, readonly refusal and interactive approval. Explicit state and description
+strings/member names are masked and revalidated before either backend. Both
+backends share the session model limiter; custom providers receive detached
+requests and must honor cancellation. Total tool timeout is 60 seconds.
+
+The LLM query has one explicit user JSON message, the source system prompt and
+no tools, parent transcript, cache policy, stream or parent meter. Recovery is
+shared, with isolated model fallback and actual served model/usage. Only complete
+end-turn text/thinking/opaque-thinking replies are accepted; text alone feeds
+bounded strict estimation. Response key order determines ties and numeric folds.
+Confidence is normalized entropy, not calibrated correctness. Zero LLM settings
+select 60 seconds and 4096 output tokens; negative values fail construction.
+`NewLLMDecisionProvider(parent, run, config)` pins explicit run provenance.
+
+Typed decision events carry metadata; full masked inputs remain private trajectory
+fields. Recording-only masked tool projections cannot execute or acquire action
+identity. Native tests retain and replay a full result larger than 4 KiB without
+another provider call; replay still crosses current guards. Snapshot 54 compares
+31 actual Python LLM recipes and eight common-gate outcomes, including masking,
+provider faults, small custom model events and parent isolation.
+
+Native reply contracts require complete usage/model; Python permits missing usage.
+Go refuses lone surrogate JSON earlier, and unknown backend failures use sanitized
+`RuntimeError`. Derived floats compare within 1e-12; raw probability spelling is
+retained. Environment/launcher selection remains pending: `MINILOOP_DECISIONS`
+activation still refuses. Full actual-source large-result retention/restart audit,
+Go SQLite and live-provider verification remain pending.
 
 ### Use streaming model calls
 

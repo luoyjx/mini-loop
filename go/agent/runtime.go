@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
@@ -54,6 +55,9 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	DecisionTools        bool
+	DecisionProvider     decisions.Provider
+	DecisionLLM          DecisionLLMConfig
 	GoalTools            bool
 	PlanModeTools        bool
 	PlanApprover         PlanApprover
@@ -162,6 +166,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolDecision:
+		return handler.executeDecision(ctx, authority, input)
 	case protocol.ToolGoalCreate, protocol.ToolGoalStatus, protocol.ToolGoalComplete, protocol.ToolGoalBlock, protocol.ToolGoalResume:
 		return handler.executeGoal(ctx, authority, input)
 	case protocol.ToolEnterPlanMode, protocol.ToolExitPlanMode:
@@ -241,6 +247,10 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if config.StateStore != nil || config.StateLeaseOwner != "" || config.StateLeaseTTL != 0 {
 		return nil, errors.New("state persistence requires NewManagedSession")
 	}
+	decisionLLM, err := config.DecisionLLM.normalized()
+	if err != nil {
+		return nil, err
+	}
 	for _, hook := range config.UserPromptHooks {
 		if hook == nil {
 			return nil, errors.New("user prompt hook cannot be nil")
@@ -315,6 +325,13 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		handler.questions = surface
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
+	if config.DecisionTools {
+		definition, err := NewToolDefinitionWithSchema(protocol.DecisionSchema(), ToolTraits{Risk: RiskExternal}, handler)
+		if err != nil {
+			return nil, err
+		}
+		definitions = append(definitions, definition)
+	}
 	handler.worktrees, handler.workspaceBashFactory = config.Worktrees, config.WorkspaceBashFactory
 	for _, name := range []protocol.ToolName{protocol.ToolTodoWrite, protocol.ToolTask, protocol.ToolLoadSkill, protocol.ToolCompress, protocol.ToolAskUser} {
 		traits := ToolTraits{Risk: RiskRead, Readonly: true}
@@ -437,6 +454,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		session.recovery = config.Recovery
 	}
 	session.planApprover = config.PlanApprover
+	session.decisionProvider, session.decisionLLM = config.DecisionProvider, decisionLLM
 	session.streamProgress = streamProgress(config.StreamProgress)
 	if config.CachePolicy != nil {
 		session.cachePolicy = config.CachePolicy

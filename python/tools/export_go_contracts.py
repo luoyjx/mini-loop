@@ -4874,6 +4874,129 @@ def _decision_contracts(scratch: Path) -> dict:
     return {"requests": requests, "results": results, "bounds": bounds, "http": asyncio.run(run()), "source_sha256": {"decisions.py": hashlib.sha256((PYTHON_ROOT / "mini_loop" / "decisions.py").read_bytes()).hexdigest()}}
 
 
+def _decision_runtime_contracts(scratch: Path) -> dict:
+    """Execute real decision LLM calls and the common tool gate, without remote I/O."""
+    import asyncio
+    import copy
+    from types import SimpleNamespace
+    from mini_loop.agent import Agent, _CURRENT_RUN_CONTEXT
+    from mini_loop.config import Settings
+    from mini_loop.decision_llm import LLMDecisionProvider, _SYSTEM
+    from mini_loop.decision_tools import install_decisions
+    from mini_loop.decisions import DecisionRequest, DecisionResult
+    from mini_loop.fake_llm import FakeMessage, FakeAsyncAnthropic
+    from mini_loop.registry import ToolRegistry, ToolCall
+    from mini_loop.run_context import RunContext
+    from mini_loop.secrets import SecretRegistry
+    scratch.mkdir(parents=True)
+    request = {"state": {"ticket": "duplicate charge", "nested": [None, True, 1]}, "questions": {
+        "route": {"type": "choice", "instructions": "Select a team", "criteria": {"billing": "Charges", "support": None}},
+        "quality": {"type": "score", "instructions": {"question": "Completeness?"}, "criteria": ["missing", {"partial": True}, ["complete"]]},
+        "ready": {"type": "noul", "instructions": "Enough detail?"}}}
+    distributions = {"route": {"billing": .8, "support": .2}, "quality": {"0": .1, "1": .2, "2": .7}, "ready": {"true": .6, "false": .4}}
+    body = json.dumps({"distributions": distributions}, ensure_ascii=False)
+    recipes = []
+    def add(name, output=body, stop="end_turn", value=None, content=None):
+        recipes.append({"name": name, "input": copy.deepcopy(value or request), "reply": {
+            "id": "msg_decision", "type": "message", "role": "assistant", "model": "served-decision-v1",
+            "content": content if content is not None else [{"type": "text", "text": output}],
+            "stop_reason": stop, "usage": {"input_tokens": 17, "output_tokens": 5}}})
+    add("mixed")
+    tied = copy.deepcopy(distributions); tied["route"] = {"support": .5, "billing": .5}
+    add("response-order-tie", json.dumps({"distributions": tied}))
+    integers = copy.deepcopy(distributions); integers["route"] = {"support": 0, "billing": 1}; integers["ready"] = {"true": 1, "false": 0}; integers["quality"] = {"2": 1, "0": 0, "1": 0}
+    add("integer-probabilities", json.dumps({"distributions": integers}))
+    add("single-choice", '{"distributions":{"q":{"only":1}}}', value={"state": [], "questions": {"q": {"type": "choice", "instructions": "Only?", "criteria": {"only": None}}}})
+    add("thinking-and-split-text", content=[{"type": "thinking", "thinking": "private reasoning", "signature": "signed"}, {"type": "text", "text": body[:20]}, {"type": "text", "text": body[20:]}])
+    add("redacted-thinking", content=[{"type": "redacted_thinking", "data": "opaque encrypted reasoning"}, {"type": "text", "text": body}])
+    for stop in ("max_tokens", "tool_use", "pause_turn", "refusal", "stop_sequence"):
+        add("stop-" + stop, stop=stop)
+    add("empty-content", content=[])
+    add("tool-content", content=[{"type": "tool_use", "id": "extra", "name": "compress", "input": {}}])
+    for name, output in (("malformed", "private payload"), ("fence", "```json\n{}\n```"), ("array", "[]"),
+            ("empty-object", "{}"), ("duplicate", '{"distributions":{},"distributions":{}}'),
+            ("nonfinite", '{"distributions":{"route":{"billing":NaN}}}'),
+            ("oversize", "x" * (128 * 1024 + 1)), ("surrogate", '"\\ud800"')):
+        add(name, output)
+    for name, probabilities in (("sum", {"billing": .2, "support": .2}), ("negative", {"billing": 1.1, "support": -.1}),
+            ("boolean", {"billing": True, "support": 0}), ("string", {"billing": "0.8", "support": .2}),
+            ("missing", {"billing": 1}), ("extra", {"billing": .8, "support": .2, "extra": 0}),
+            ("huge-integer", {"billing": 10 ** 1000, "support": 0}),
+            ("sum-tolerance", {"billing": .8, "support": .200001})):
+        d = copy.deepcopy(distributions); d["route"] = probabilities
+        add("probability-" + name, json.dumps({"distributions": d}))
+    add("wrong-ids", '{"distributions":{"unknown":{"true":1,"false":0}}}')
+    add("provider-fault")
+    async def llm(row):
+        requests, events = [], []
+        async def create(**kwargs):
+            requests.append(copy.deepcopy(kwargs))
+            if row["name"] == "provider-fault": raise RuntimeError("private upstream credential")
+            wire = row["reply"]
+            return FakeMessage(copy.deepcopy(wire["content"]), wire["stop_reason"],
+                usage=SimpleNamespace(**wire["usage"]), model=wire["model"], message_id=wire["id"])
+        async def emit(event): events.append(copy.deepcopy(event))
+        parent = Agent(client=SimpleNamespace(messages=SimpleNamespace(create=create)), emit=emit,
+            workspace=scratch, settings=Settings(fake_llm=True, model="configured-model", skills_dir=scratch / "empty", spill_dir=None), label="parent", depth=2)
+        parent.messages = [{"role": "user", "content": "unrelated private history"}]
+        parent.state["recovery_model"] = "previous-parent-model"
+        parent.last_text, parent.streamed_text, parent._last_model_span_id = "answer", "stream", "parent-span"
+        before = (copy.deepcopy(parent.messages), copy.deepcopy(parent.state), parent.token_meter.snapshot())
+        run = RunContext(message_id="parent-message")
+        token = _CURRENT_RUN_CONTEXT.set(run)
+        result = copy.deepcopy(row)
+        try:
+            result["result"] = (await LLMDecisionProvider(parent).evaluate(DecisionRequest(**row["input"]))).to_dict()
+        except Exception as error:
+            result["error"] = str(error); result["error_type"] = type(error).__name__
+        finally:
+            result["parent_context_restored"] = _CURRENT_RUN_CONTEXT.get() is run
+            _CURRENT_RUN_CONTEXT.reset(token)
+        result["requests"] = requests
+        result["parent_unchanged"] = before == (parent.messages, parent.state, parent.token_meter.snapshot()) and (parent.last_text, parent.streamed_text, parent._last_model_span_id) == ("answer", "stream", "parent-span")
+        result["model_scopes"] = [{"agent": e.get("agent"), "depth": e.get("depth"), "purpose": e.get("purpose"), "parent_message_id": e.get("parent_message_id"), "has_child_message": e.get("message_id") != run.message_id} for e in events if e["type"] == "model_start"]
+        result["event_types"] = [e["type"] for e in events]
+        return result
+    secret = 'clé-"private"\\Ω-token'
+    async def tool_case(name, mode):
+        calls, events = [], []
+        class Backend:
+            model = "configured-decision"
+            async def evaluate(self, value):
+                calls.append(value.to_dict())
+                if name == "provider-fault": raise RuntimeError("private upstream credential")
+                probability = 9 if name == "bad-answer" else .9
+                return DecisionResult(provider="custom", model="served-custom", probability_source="llm_estimate",
+                    answers={"q": {"type": "noul", "noul": probability}}, usage={} if name == "unavailable-usage" else {"input_tokens": 13, "output_tokens": 3})
+        registry = ToolRegistry(); install_decisions(registry, Backend())
+        secrets = SecretRegistry(min_length=1); secrets.register("canary", secret)
+        if name == "mask-invalid": secrets.register("type", "noul")
+        async def emit(event): events.append(copy.deepcopy(event))
+        parent = Agent(client=FakeAsyncAnthropic(), workspace=scratch, tools=registry, secrets=secrets, emit=emit,
+            state={"permission_mode": mode}, settings=Settings(fake_llm=True, skills_dir=scratch / "empty", spill_dir=None))
+        value = {"state": {secret: [secret]}, "questions": {"q": {"type": "noul", "instructions": "Ready?"}}} if name == "masked" else {"state": "urgent", "questions": {"q": {"type": "noul", "instructions": "Ready?"}}}
+        output = await parent._exec_tool(ToolCall("decision", value, "decision-1"))
+        projected = []
+        for e in events:
+            if e["type"] not in {"model_start", "model_end", "decision_completed", "decision_failed"}: continue
+            projected.append({k: v for k, v in e.items() if k in {"type", "purpose", "model", "tool_count", "message_count", "status", "served_model", "usage", "prompt_tokens", "provider", "probability_source", "question_count", "error_type"}})
+        final = next(e for e in reversed(events) if e["type"] == "tool_result")
+        return {"name": name, "mode": mode, "input": value, "calls": calls, "events": projected,
+                "output": output, "failed": final["error"], "denied": bool(final.get("denied"))}
+    async def run():
+        return [await llm(row) for row in recipes], [await tool_case(name, mode) for name, mode in (
+            ("success", "auto"), ("readonly", "readonly"), ("headless", "interactive"), ("provider-fault", "auto"),
+            ("bad-answer", "auto"), ("unavailable-usage", "auto"), ("masked", "auto"), ("mask-invalid", "auto"))]
+    llm_cases, tool_cases = asyncio.run(run())
+    registry = ToolRegistry(); install_decisions(registry)
+    tool = registry.get("decision")
+    return {"system": _SYSTEM, "schemas": registry.schemas(), "metadata": {"risk": tool.risk, "readonly": tool.readonly,
+        "parallel_safe": tool.parallel_safe, "capabilities": sorted(tool.capabilities)}, "secret": secret,
+        "llm": llm_cases, "tools": tool_cases, "source_sha256": {
+            n: hashlib.sha256((PYTHON_ROOT / "mini_loop" / n).read_bytes()).hexdigest()
+            for n in ("decision_llm.py", "decision_tools.py", "decisions.py", "agent.py", "registry.py", "permissions.py", "secrets.py")}}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -4982,6 +5105,7 @@ def _snapshot() -> dict[str, bytes]:
         goal_contracts = _goal_contracts(Path(scratch) / "goals")
         plan_outcome_contracts = _plan_outcome_contracts(Path(scratch) / "plan-outcomes")
         decision_contracts = _decision_contracts(Path(scratch) / "decisions")
+        decision_runtime_contracts = _decision_runtime_contracts(Path(scratch) / "decision-runtime")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5050,6 +5174,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-plan-mode.json": _json_bytes(plan_mode_contracts),
         "python-plan-outcomes.json": _json_bytes(plan_outcome_contracts),
         "python-decisions.json": _json_bytes(decision_contracts),
+        "python-decision-runtime.json": _json_bytes(decision_runtime_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

@@ -84,6 +84,14 @@ func storedGrant(tokens []string) GrantCandidate {
 func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent, error) {
 	event := SessionEvent{kind: kind}
 	switch kind {
+	case EventDecisionCompleted:
+		v, err := storedPayload[DecisionCompletedEvent](data)
+		event.decisionCompleted = v
+		return event, err
+	case EventDecisionFailed:
+		v, err := storedPayload[DecisionFailedEvent](data)
+		event.decisionFailed = v
+		return event, err
 	case EventGoalChange:
 		v, err := storedPayload[GoalChangeEvent](data)
 		if err != nil {
@@ -235,6 +243,18 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 			PermissionMode: v.Mode, Sandbox: v.Sandbox, SandboxConfined: v.Confined}
 		return event, err
 	case EventModelStart:
+		probe, err := storedPayload[struct {
+			Purpose protocol.RequestPurpose `json:"purpose"`
+			Max     *int                    `json:"max_tokens"`
+		}](data)
+		if err != nil {
+			return event, err
+		}
+		if probe.Purpose == protocol.PurposeDecision && probe.Max == nil {
+			v, err := storedPayload[DecisionModelStartEvent](data)
+			event.decisionModelStart = &v
+			return event, err
+		}
 		v, err := storedPayload[struct {
 			Span       SpanID                  `json:"span_id"`
 			Purpose    protocol.RequestPurpose `json:"purpose"`
@@ -252,6 +272,20 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 			ToolCatalogFingerprint: v.Catalog, SystemHash: v.System, CapabilityFingerprint: v.Capability}
 		return event, err
 	case EventModelEnd:
+		probe, err := storedPayload[struct {
+			Purpose protocol.RequestPurpose `json:"purpose"`
+			Stop    *protocol.StopReason    `json:"stop_reason"`
+			Error   *string                 `json:"error"`
+			Meter   *TokenMeterSnapshot     `json:"token_meter"`
+		}](data)
+		if err != nil {
+			return event, err
+		}
+		if probe.Purpose == protocol.PurposeDecision && probe.Stop == nil && probe.Error == nil && probe.Meter == nil {
+			v, err := storedPayload[DecisionModelEndEvent](data)
+			event.decisionModelEnd = &v
+			return event, err
+		}
 		v, err := storedPayload[struct {
 			Span     SpanID                  `json:"span_id"`
 			Purpose  protocol.RequestPurpose `json:"purpose"`

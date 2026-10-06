@@ -9,6 +9,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/skills"
 	workspacepkg "github.com/luoyjx/mini-loop/go/workspace"
@@ -34,6 +35,8 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	decisionProvider                                  decisions.Provider
+	decisionLLM                                       DecisionLLMConfig
 	goals                                             goalState
 	planMode                                          atomic.Bool
 	planApprover                                      PlanApprover

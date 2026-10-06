@@ -76,37 +76,41 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
-	goalChange        GoalChangeEvent
-	planMode          PlanModeEvent
-	backgroundResult  BackgroundResultEvent
-	trajectory        TrajectoryLifecycle
-	sessionForked     SessionForkedEvent
-	steeringDelivered SteeringDeliveredEvent
-	postureUpdate     PostureUpdateEvent
-	kind              SessionEventKind
-	stop              ProviderStopEvent
-	todos             []protocol.TodoItem
-	compact           CompactionEvent
-	subagent          SubagentEvent
-	runError          RunErrorEvent
-	approval          ApprovalEvent
-	stuck             StuckEvent
-	modelStart        ModelStartEvent
-	modelEnd          ModelEndEvent
-	assistantText     AssistantTextEvent
-	delta             AssistantDeltaEvent
-	streamStart       StreamStartEvent
-	toolUse           ToolUseEvent
-	toolResult        ToolResultEvent
-	toolCatalog       ToolCatalogEvent
-	systemPrompt      SystemPromptEvent
-	capabilityPlan    CapabilityPlanEvent
-	activity          ActivityUpdateEvent
-	reconcile         ReconcileEvent
-	status            StatusEvent
-	done              DoneEvent
-	cancelled         CancelledEvent
-	recovery          RecoveryEvent
+	decisionCompleted  DecisionCompletedEvent
+	decisionFailed     DecisionFailedEvent
+	decisionModelStart *DecisionModelStartEvent
+	decisionModelEnd   *DecisionModelEndEvent
+	goalChange         GoalChangeEvent
+	planMode           PlanModeEvent
+	backgroundResult   BackgroundResultEvent
+	trajectory         TrajectoryLifecycle
+	sessionForked      SessionForkedEvent
+	steeringDelivered  SteeringDeliveredEvent
+	postureUpdate      PostureUpdateEvent
+	kind               SessionEventKind
+	stop               ProviderStopEvent
+	todos              []protocol.TodoItem
+	compact            CompactionEvent
+	subagent           SubagentEvent
+	runError           RunErrorEvent
+	approval           ApprovalEvent
+	stuck              StuckEvent
+	modelStart         ModelStartEvent
+	modelEnd           ModelEndEvent
+	assistantText      AssistantTextEvent
+	delta              AssistantDeltaEvent
+	streamStart        StreamStartEvent
+	toolUse            ToolUseEvent
+	toolResult         ToolResultEvent
+	toolCatalog        ToolCatalogEvent
+	systemPrompt       SystemPromptEvent
+	capabilityPlan     CapabilityPlanEvent
+	activity           ActivityUpdateEvent
+	reconcile          ReconcileEvent
+	status             StatusEvent
+	done               DoneEvent
+	cancelled          CancelledEvent
+	recovery           RecoveryEvent
 }
 
 func (event SessionEvent) Stuck() (StuckEvent, bool) {
@@ -158,6 +162,12 @@ func (event SessionEvent) Todos() ([]protocol.TodoItem, bool) {
 	return append([]protocol.TodoItem{}, event.todos...), true
 }
 func (event SessionEvent) clone() SessionEvent {
+	event.decisionCompleted.Usage = event.decisionCompleted.Usage.clone()
+	event.decisionModelStart = clonePointer(event.decisionModelStart)
+	if event.decisionModelEnd != nil {
+		v := event.decisionModelEnd.clone()
+		event.decisionModelEnd = &v
+	}
 	event.goalChange = event.goalChange.Clone()
 	event.recovery = event.recovery.clone()
 	event.todos = append([]protocol.TodoItem(nil), event.todos...)

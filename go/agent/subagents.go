@@ -7,6 +7,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
@@ -23,6 +24,8 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	decisionProvider                               decisions.Provider
+	decisionLLM                                    DecisionLLMConfig
 	planApprover                                   PlanApprover
 	background                                     *backgroundState
 	bash                                           BashExecutor
@@ -173,6 +176,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 		}
 	}
 	child.planApprover = parent.planApprover
+	child.decisionProvider, child.decisionLLM = parent.decisionProvider, parent.decisionLLM
 	child.recovery = parent.recovery
 	child.streamProgress = parent.streamProgress
 	child.model, child.maxTokens, child.tokenThreshold = parent.model, parent.maxTokens, parent.tokenThreshold
@@ -244,6 +248,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
+		decisionProvider: s.decisionProvider, decisionLLM: s.decisionLLM,
 		planApprover: s.planApprover,
 		background:   s.background,
 		bash:         s.bash,

@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"sort"
 )
@@ -21,6 +22,18 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	event.decisionCompleted.Provider = mask(event.decisionCompleted.Provider)
+	event.decisionCompleted.Model = mask(event.decisionCompleted.Model)
+	event.decisionCompleted.ProbabilitySource = decisions.ProbabilitySource(mask(string(event.decisionCompleted.ProbabilitySource)))
+	event.decisionFailed.ErrorType = decisions.ErrorKind(mask(string(event.decisionFailed.ErrorType)))
+	if event.decisionModelStart != nil {
+		event.decisionModelStart.Model = mask(event.decisionModelStart.Model)
+		event.decisionModelStart.SpanID = SpanID(mask(string(event.decisionModelStart.SpanID)))
+	}
+	if event.decisionModelEnd != nil {
+		event.decisionModelEnd.SpanID = SpanID(mask(string(event.decisionModelEnd.SpanID)))
+		maskStringPointer(mask, &event.decisionModelEnd.ServedModel)
+	}
 	if g := event.goalChange.Goal; g != nil {
 		g.ID = GoalID(mask(string(g.ID)))
 		g.Objective = mask(g.Objective)
@@ -146,6 +159,19 @@ func maskStringPointer(mask func(string) string, p **string) {
 func maskedSchema(schema protocol.InputSchema, mask func(string) string) protocol.InputSchema {
 	schema = schema.Clone()
 	schema.Description = mask(schema.Description)
+	schema.Type = protocol.SchemaType(mask(string(schema.Type)))
+	for i := range schema.Types {
+		schema.Types[i] = protocol.SchemaType(mask(string(schema.Types[i])))
+	}
+	maskStringPointer(mask, &schema.Const)
+	for i := range schema.OneOf {
+		schema.OneOf[i] = maskedSchema(schema.OneOf[i], mask)
+	}
+	if schema.Additional != nil {
+		if rule, ok := schema.Additional.Rule(); ok {
+			schema.Additional = protocol.AdditionalSchema(maskedSchema(rule, mask))
+		}
+	}
 	for i := range schema.Enum {
 		schema.Enum[i] = mask(schema.Enum[i])
 	}

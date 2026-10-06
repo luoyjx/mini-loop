@@ -190,10 +190,10 @@ func (event ToolCatalogEvent) clone() ToolCatalogEvent {
 	return event
 }
 func (event SessionEvent) ModelStart() (ModelStartEvent, bool) {
-	return event.modelStart.clone(), event.kind == EventModelStart
+	return event.modelStart.clone(), event.kind == EventModelStart && event.decisionModelStart == nil
 }
 func (event SessionEvent) ModelEnd() (ModelEndEvent, bool) {
-	return event.modelEnd.clone(), event.kind == EventModelEnd
+	return event.modelEnd.clone(), event.kind == EventModelEnd && event.decisionModelEnd == nil
 }
 func (event SessionEvent) AssistantText() (AssistantTextEvent, bool) {
 	return event.assistantText, event.kind == EventAssistantText

@@ -286,9 +286,20 @@ score and noul variants; state/criteria use the six supported JSON Value kinds.
 performing I/O during construction. An optional HTTP client is borrowed through
 a private shallow copy that disables redirects; its transport must support
 concurrent evaluations. Owned transports ignore environment proxies and close
-idle connections after each call. This operator library adds no gate, permission,
-model tool, implicit context, fallback or HTTP route. Native decision tool/LLM
-composition is a subsequent port slice; deployment activation remains refused.
+idle connections after each call.
+
+Native `RuntimeConfig` and `ManagerServices` explicitly select `DecisionTools`;
+`DecisionProvider` chooses the backend, while nil selects an isolated current-LLM
+query. Provider injection alone never activates a tool. `DecisionLLMConfig` zero
+values select the source defaults. All calls cross the common external-risk gate,
+mask/revalidate explicit state, and share the model limiter. Providers must honor
+contexts; arbitrary backend error text is omitted. The LLM child shares recovery
+and explicit peer provenance, with fresh history/tools/cache/meter and no stream.
+Typed decision metadata reaches existing sinks; full masked requests are private
+trajectory fields. Selected custom roles may inherit the tool; default child roles
+omit it. Results and replay confer no approval or execution authority. Environment
+selection and full source replay/SQL audit remain pending; launcher activation
+still refuses. See [Go decisions](go/README.md#typed-decision-operator-library).
 
 ---
 

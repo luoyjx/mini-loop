@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
@@ -132,10 +133,11 @@ type TrajectoryLifecycle struct {
 
 // Private details are a closed variant, never part of replay or live SSE.
 type trajectoryDetails struct {
-	kind    SessionEventKind
-	request protocol.ModelRequest
-	reply   []protocol.Block
-	text    string
+	decisionRequest *decisions.Request
+	kind            SessionEventKind
+	request         protocol.ModelRequest
+	reply           []protocol.Block
+	text            string
 }
 type TrajectoryRecord struct {
 	Record  SessionEventRecord
@@ -168,24 +170,32 @@ func (record TrajectoryRecord) MarshalJSON() ([]byte, error) {
 		delete(members, "trajectory_recording_error")
 	}
 	if record.details.kind == EventModelStart {
-		input, err := record.details.request.Wire()
-		if err != nil {
-			return nil, err
+		if record.details.decisionRequest != nil {
+			encoded, err := json.Marshal(record.details.decisionRequest)
+			if err != nil {
+				return nil, err
+			}
+			members["model_input"] = encoded
+		} else {
+			input, err := record.details.request.Wire()
+			if err != nil {
+				return nil, err
+			}
+			encoded, err := json.Marshal(input)
+			if err != nil {
+				return nil, err
+			}
+			var fields map[string]json.RawMessage
+			if err = json.Unmarshal(encoded, &fields); err != nil {
+				return nil, err
+			}
+			delete(fields, "model")
+			encoded, err = json.Marshal(fields)
+			if err != nil {
+				return nil, err
+			}
+			members["model_input"] = encoded
 		}
-		encoded, err := json.Marshal(input)
-		if err != nil {
-			return nil, err
-		}
-		var fields map[string]json.RawMessage
-		if err = json.Unmarshal(encoded, &fields); err != nil {
-			return nil, err
-		}
-		delete(fields, "model")
-		encoded, err = json.Marshal(fields)
-		if err != nil {
-			return nil, err
-		}
-		members["model_input"] = encoded
 	}
 	if record.details.kind == EventModelEnd {
 		encoded, err := json.Marshal(record.details.reply)

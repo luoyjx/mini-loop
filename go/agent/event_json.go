@@ -59,6 +59,10 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 		h.ParentMessageID = record.Scope.RunContext.Snapshot().ParentMessageID
 	}
 	switch e.kind {
+	case EventDecisionCompleted:
+		return marshalEvent(h, e.decisionCompleted)
+	case EventDecisionFailed:
+		return marshalEvent(h, e.decisionFailed)
 	case EventGoalChange:
 		if err := e.goalChange.Validate(); err != nil {
 			return nil, err
@@ -163,6 +167,9 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 			Text []eventSystemBlock `json:"text"`
 		}{e.systemPrompt.Hash, []eventSystemBlock{{Type: protocol.BlockText, Text: e.systemPrompt.System, Cache: e.systemPrompt.Cache}}})
 	case EventModelStart:
+		if e.decisionModelStart != nil {
+			return marshalEvent(h, e.decisionModelStart)
+		}
 		v := e.modelStart
 		return marshalEvent(h, struct {
 			Span       SpanID                  `json:"span_id"`
@@ -177,6 +184,9 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 			Capability *string                 `json:"capability_fingerprint,omitempty"`
 		}{v.SpanID, v.Purpose, v.Model, v.MessageCount, v.InputTokensEstimate, v.ToolCount, v.MaxTokens, v.ToolCatalogFingerprint, v.SystemHash, v.CapabilityFingerprint})
 	case EventModelEnd:
+		if e.decisionModelEnd != nil {
+			return marshalEvent(h, e.decisionModelEnd)
+		}
 		v := e.modelEnd
 		return marshalEvent(h, struct {
 			Span     SpanID                  `json:"span_id"`

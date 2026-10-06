@@ -84,6 +84,11 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		config.DeleteGrace = DefaultDeleteGrace
 	}
 	services := &config.Services
+	decisionLLM, err := services.DecisionLLM.normalized()
+	if err != nil {
+		return nil, err
+	}
+	services.DecisionLLM = decisionLLM
 	services.StreamProgress = services.StreamProgress.clone()
 	for _, pool := range []*ConcurrencyLimiter{services.ModelLimiter, services.ToolLimiter} {
 		if pool != nil && pool.slots == nil {
@@ -387,7 +392,7 @@ func (manager *SessionManager) managedRuntimeConfig(id SessionID, owner OwnerID,
 	if system != nil {
 		builder = FixedSystem(*system)
 	}
-	return RuntimeConfig{GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
+	return RuntimeConfig{DecisionTools: services.DecisionTools, DecisionProvider: services.DecisionProvider, DecisionLLM: services.DecisionLLM, GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
 }
 
 func (manager *SessionManager) Get(owner OwnerID, id SessionID) (*ManagedSession, error) {

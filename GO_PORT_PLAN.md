@@ -109,7 +109,7 @@ Record its parity evidence and remaining gaps before checking it off.
       optional routes and complete validation semantics remain)
 - [ ] G4 provider (direct HTTP, typed normalization, bounded SDK retries, SSE assembly
       and streamed-text cancellation repair implemented;
-      default Agent recovery, explicit operator Jev HTTP library, configurable coalescing and stateful signed fake clients
+      default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
 - [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; other groups remain; source Git-aware cleanup is absent)
@@ -120,10 +120,11 @@ Record its parity evidence and remaining gaps before checking it off.
 1. Closed JSON values, choice/score/noul contracts and an explicit operator Jev
    provider are implemented and compared with actual Python contracts and HTTP
    mocks. They add no runtime tool, route or activation flag.
-2. Add the closed decision tool variant through the common external-risk gate;
-   mask explicit state before either backend, preserve model/decision events and
-   shared model limiter, and port the explicitly selected current-LLM backend
-   with complete-response checks and estimated-probability provenance.
+2. Implemented: closed decision tool through the common external-risk gate;
+   masked/revalidated explicit state, typed model/decision events, shared model
+   limiter and isolated current-LLM queries with complete-response checks,
+   recovery isolation and estimated-probability provenance. Native large-result
+   replay is tested; snapshot 54 compares 31 actual LLM and eight gate cases.
 3. Wire individual configuration/launcher selection; preserve default-off and
    explicit-provider precedence. Compare exact large result replay/retention,
    cancellation and sink masking before claiming complete decision parity.
@@ -4477,3 +4478,66 @@ cannot execute or acquire an action identity. Live inputs remain validated.
 This protocol slice installs no tool. Its staged snapshot passes protocol tests;
 the complete integration passes Go full/race/vet. Runtime activation follows in
 a separate commit.
+
+## Implementation checkpoint — 2026-10-06 gated decisions and isolated LLM
+
+### Composition and source evidence
+
+Explicit RuntimeConfig/ManagerServices DecisionTools installs the common
+external-risk tool. A custom/Jev provider overrides the current-LLM default;
+provider injection alone installs nothing. Selected custom child roles inherit
+the service with a rebound session; default roles omit it. No new route,
+environment activation or SQL dependency is introduced.
+
+Supplied state/member names are masked and revalidated before execution. Custom
+providers receive detached requests and share the model limiter through result
+validation. The LLM query shares provider/recovery/limits and explicit peer run
+provenance, but creates fresh history, tools, cache, meter and fallback state,
+using Complete only. Nonfinal/tool-bearing replies are refused before recovery.
+Total deadlines include permit wait/retry; contexts must be honored by providers.
+Panics and unknown errors produce sanitized failures.
+
+Named decision/custom-model event variants preserve metadata and optional whole
+usage. Full masked input stays private trajectory evidence; recording projections
+refuse execution/identity. Complete >4 KiB native results retain exact replay
+without another provider call, with current guards and hook ordering retained.
+
+Snapshot 54 invokes actual Python Agent, LLMDecisionProvider and common gate for
+31 LLM recipes and eight gate outcomes. It pins the source schema/system prompt,
+response-order tie/folds, integer probability/score spelling, model provenance,
+lineage, parent isolation, structural masks and model/decision event shapes.
+Native tests add manager/selected-child integration, fallback, pool contention,
+cancellation/panics, real tool turns, private recording and journal replay.
+
+### Limits and remaining work
+
+Native ModelReply still requires complete model/usage; Python can return empty
+usage. Lone-surrogate JSON is refused earlier. Unknown custom errors normalize
+to RuntimeError. Derived floats compare at 1e-12; raw numeric probabilities are
+retained. Zero native LLM config selects defaults, while negatives fail. Source
+request map insertion order is not promised. No paid provider audit was run.
+
+Environment/launcher decision activation remains refused. Full actual-source
+large-result aggregate retention, SQL/restart and cancellation audit remain open.
+Native SQLite requires the pending dependency choice. G0–G7 remain open.
+
+### Validation
+
+- Focused decision/estimate/opaque tests: agent, provider, protocol, decisions pass.
+- Full Go: go test ./... -count=1 -timeout=180s with shared coverage; pass.
+- Race: go test -race ./... -count=1 -timeout=240s; pass.
+- go vet ./...; pass.
+- Coverage: 12,392 / 13,895 statements = 89.18% (deduplicated blocks).
+  Agent 90.54%, decisions 89.11%, protocol 90.08%, provider 85.00%.
+- Python contracts --check: all 54 current; verify_scans: 19 anchored checks.
+- verify_guards -k decision: one aggregate-budget mutation caught.
+- Full Python pytest: 2,151 passed, 28 skipped, 24 subtests, three existing
+  deprecation warnings; 103.36 seconds.
+- Python invariants: not rerun; no Python package module changed (exporter only).
+- Archify validate/deliver: showcase 9/9, zero errors/warnings. Specification
+  8ba0d1e641fd9b20d53ea27b79f5cb7c2f94c603826b982abc442126029fbbff,
+  37,078 bytes; HTML ba0f790de193b5dcf4278e7c82627b6d1466fd9c7ee9b61dc524e84226bbac24,
+  678,785 bytes. Visual review skipped after prior local-file access denial;
+  no bypass or visual-pass claim. Mermaid remains canonical; HTML regenerated.
+- Separate staged-tree tests passed for estimation, opaque protocol/provider,
+  and decision protocol plus pre-integration agent, proving commit dependencies.
