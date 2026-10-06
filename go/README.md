@@ -1392,5 +1392,27 @@ function creates no directory and binds no authority.
 Snapshot 57 compares 42 actual source canonicalization cases and ten exact owner
 keys, including Unicode character limits, splitlines boundaries, wrapper aliases
 and newline normalization. Go additionally refuses invalid UTF-8 skill fields.
-Owner directories, memory, layered skill snapshots, create-only publication,
+Owner directory binding is now available as an explicit operator library.
+Memory, layered skill snapshots, create-only publication,
 next-session activation and runtime/HTTP/configuration integration remain pending.
+
+### Owner resource directories
+
+`userresources.NewDirectoryResolver(ctx, root)` resolves trusted configured links
+before creating/tightening the private root. `ForOwner(ctx, OwnerID)` creates
+0700 digest, skills and memory directories and caches immutable DirectoryBinding
+values. Exact owner IDs remain separate. Paths are operator accessors, not JSON
+receipts; the model never chooses an owner. Cache waiting and initial resolution
+honor cancellation. Cancelled work may leave partial directories, never a cached
+partial binding. Root symlink resolution is bounded at 128 links.
+
+Pre-planted owner/skills/memory links and directory files fail with sanitized
+errors. Checks match source path policy; they are not atomic filesystem fencing
+against an external process replacing directories during checks. Cached paths
+retain source snapshot semantics and are not re-resolved on every call.
+
+Snapshot 58 compares ten actual Python resolver directory recipes, including
+trusted root links/dangling targets, link/.. ordering, lax modes and planted links.
+Native tests add concurrent cache reuse, owner separation and cancellation. The
+source also constructs stores; the native resolver binds directories only. No
+skill/memory store, publication, runtime binding, route or config activation yet.

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `c73578d` plus pure user-skill canonicalization and exact owner keys).
+reviewed **2026-10-06** (Go baseline `be94099` plus explicit owner directory binding).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -377,7 +377,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Workspace Files<br/>read · write · edit · glob<br/>bound path · atomic replacement"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · atomic replacement<br/>operator owner directories · session binding pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -440,6 +440,7 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoEntry
+    Caller -. operator owner directory binding .-> GoFiles
     Caller -. explicit operator evaluation .-> GoDecisionLibrary
     Caller -. explicit library selection .-> GoWorktrees
     Caller -. operator-owned background commands .-> GoBackground
@@ -534,8 +535,11 @@ Native SQL restart and live-provider audit remain pending. See [Go decisions](go
 `go/userresources` now separates user-authored skill fields from agent skills.
 Its pure typed constructor validates and normalizes canonical SKILL.md content;
 owner directory keys hash exact trusted identifiers without trimming or folding.
-This is a library boundary only: no owner resolver, layered loader, memory store,
-publication, session binding or route is activated yet.
+An explicit DirectoryResolver now pins the configured physical root, creates
+private 0700 digest/skills/memory directories, refuses pre-planted child links and
+caches immutable exact-owner bindings. It is an operator filesystem library,
+aggregated with filesystem backends in the interactive map. Layered loaders,
+memory stores, publication, trusted session binding and routes remain pending.
 
 `go/background` is an explicit operator library; native runtime sessions can
 select `RuntimeConfig.BackgroundTools`. Typed task IDs/statuses,

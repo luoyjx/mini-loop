@@ -4677,3 +4677,44 @@ mutation; an isolated native mutation removes the wrapper refusal and is
 caught by the source-contract test. Full Python suite ran alone: 2151 passed, 28 skipped, 3 warnings, 24 subtests passed in 108.64s (0:01:48). No Python package module changed,
 so invariants were not rerun. README outline and diff checks pass. Architecture
 review found no new runtime topology or activation; interactive map unchanged.
+
+## Implementation checkpoint — 2026-10-06 private owner directories
+
+The owner-resource path layer now has OwnerID, immutable DirectoryBinding and
+explicit DirectoryResolver. Configured root links resolve before creation,
+including dangling targets and physical link/.. ordering. Root and digest/skills/
+memory directories are tightened to 0700; planted child links and files refuse
+without leaking host paths. Exact owner cache values are detached, serialized
+through a context-aware permit and cached only after all paths complete.
+
+Snapshot 58 calls actual Python UserResourceResolver/for_owner for ten directory
+recipes; it records path suffixes, private modes, cache reuse, planted-link
+refusals and outside permissions. Native tests compare these results and add
+concurrent reuse, owner isolation, cancelled construction and cancelled cache
+wait. Native root resolution bounds link traversal at 128. Cached bindings keep
+source snapshot semantics. Filesystem checks are not atomic external-process
+fencing; cancellation can leave uncached partial directory creation.
+
+This completes directory binding only. Full resource snapshots, layered agent/
+user skill catalogues, memory stores, publication/next-session activation, trusted
+manager/restore/child binding and serving remain open. No runtime activation or
+SQL dependency is added. G0–G7 remain open.
+
+Validation: focused userresources tests, full `go test ./...`, full race suite
+and `go vet ./...` passed. All 58 Python contract snapshots are current;
+the exporter exited successfully with an asyncio subprocess cleanup warning
+(`Event loop is closed`). All 19 source scanning guards remain anchored. Both
+source private-directory permission guards and an isolated native planted-link
+guard mutation were caught. Full Python: 2,151 passed, 28 skipped, 24 subtests,
+three dependency deprecation warnings in 91.33 seconds. A fresh full Go coverage
+run passed: 86.5% of statements overall, 86.9% in userresources (default package
+coverage scope). Python coverage was not refreshed; the root `.coverage` file
+predates the Python directory move and cannot report against current paths.
+Python package-module
+invariants were not applicable: only the contract exporter changed.
+
+README outline and `git diff --check` passed. Archify validation and regeneration
+passed all nine showcase cases without warnings. Generated HTML SHA256:
+`62f3f5b19819e2ce475d2efced848fd4250b4fb7bfe04990fa80651c0fe0e1bd`
+(679,600 bytes). Visual inspection remains skipped after local-file access was
+denied; regeneration does not establish visual review.

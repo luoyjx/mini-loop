@@ -135,3 +135,10 @@ Unicode wrapper matching, newline/whitespace normalization and content hashes
 match 42 source cases; ten owner keys preserve exact identifiers. Native UTF-8
 refusal is stronger. No directory/owner binding, layered loader, memory store,
 publication/activation or HTTP route ships in this library slice.
+
+Owner directory progress: snapshot 58 compares ten actual Python root/child path
+recipes. Native DirectoryResolver/DirectoryBinding now pin resolved trusted roots,
+tighten 0700 permissions, reject planted child symlinks/files and cache immutable
+exact owner paths. Cancellation/concurrent reuse are tested. The source's stores
+and layered catalogue are not constructed natively yet; session/HTTP/configuration
+activation remains pending. Source path checks are not external-process fencing.

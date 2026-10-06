@@ -1,0 +1,110 @@
+{
+  "cases": [
+    {
+      "cached": true,
+      "modes": [
+        448,
+        448,
+        448,
+        448
+      ],
+      "outside_mode": 493,
+      "owner": "alice",
+      "owner_root": "configured/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+      "recipe": "fresh",
+      "root": "configured"
+    },
+    {
+      "cached": true,
+      "modes": [
+        448,
+        448,
+        448,
+        448
+      ],
+      "outside_mode": 493,
+      "owner": "alice",
+      "owner_root": "configured/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+      "recipe": "lax",
+      "root": "configured"
+    },
+    {
+      "cached": true,
+      "modes": [
+        448,
+        448,
+        448,
+        448
+      ],
+      "outside_mode": 448,
+      "owner": "alice",
+      "owner_root": "outside/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+      "recipe": "root-link",
+      "root": "outside"
+    },
+    {
+      "cached": true,
+      "modes": [
+        448,
+        448,
+        448,
+        448
+      ],
+      "outside_mode": 493,
+      "owner": "alice",
+      "owner_root": "missing-target/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+      "recipe": "dangling-root",
+      "root": "missing-target"
+    },
+    {
+      "cached": true,
+      "modes": [
+        448,
+        448,
+        448,
+        448
+      ],
+      "outside_mode": 493,
+      "owner": "alice",
+      "owner_root": "outside/configured/u-2bd806c97f0e00af1a1fc3328fa763a9269723c8db8fac4f93af71db186d6e90",
+      "recipe": "link-parent",
+      "root": "outside/configured"
+    },
+    {
+      "error": true,
+      "outside_mode": 493,
+      "owner": "alice",
+      "recipe": "owner-link",
+      "symlink_refusal": true
+    },
+    {
+      "error": true,
+      "outside_mode": 493,
+      "owner": "alice",
+      "recipe": "skills-link",
+      "symlink_refusal": true
+    },
+    {
+      "error": true,
+      "outside_mode": 493,
+      "owner": "alice",
+      "recipe": "memory-link",
+      "symlink_refusal": true
+    },
+    {
+      "error": true,
+      "outside_mode": 493,
+      "owner": "alice",
+      "recipe": "owner-file",
+      "symlink_refusal": false
+    },
+    {
+      "error": true,
+      "outside_mode": 493,
+      "owner": "alice",
+      "recipe": "cycle-root",
+      "symlink_refusal": false
+    }
+  ],
+  "source_sha256": "c92644f64cd19f34e34b5efcc7defce5005896d3e1f5cfe1cac2d98c26df4549"
+}

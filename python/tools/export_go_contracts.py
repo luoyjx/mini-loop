@@ -5152,6 +5152,45 @@ def _user_skill_contracts() -> dict:
             for n in ("user_resources.py", "skills.py")}}
 
 
+def _owner_directory_contracts(scratch: Path) -> dict:
+    """Actual resolver directory policy; store/catalogue behavior is not exported."""
+    from mini_loop.user_resources import UserResourceResolver
+    from mini_loop.skills import SkillLoader
+    scratch.mkdir(parents=True)
+    cases = []
+    for recipe in ("fresh", "lax", "root-link", "dangling-root", "link-parent", "owner-link", "skills-link", "memory-link", "owner-file", "cycle-root"):
+        base = scratch / recipe; base.mkdir()
+        root, outside = base / "configured", base / "outside"
+        outside.mkdir(mode=0o755); outside.chmod(0o755)
+        if recipe == "lax": root.mkdir(mode=0o755)
+        if recipe in {"root-link", "dangling-root"}:
+            target = outside if recipe == "root-link" else base / "missing-target"
+            root.symlink_to(target, target_is_directory=True)
+        if recipe == "link-parent":
+            nested = outside / "nested"; nested.mkdir()
+            (base / "jump").symlink_to(nested, target_is_directory=True)
+            root = base / "jump" / ".." / "configured"
+        if recipe == "cycle-root": root.symlink_to(root)
+        row = {"recipe": recipe, "owner": "alice"}
+        try:
+            resolver = UserResourceResolver(root, SkillLoader(base / "agent"))
+            owner = resolver.root / resolver._owner_key("alice")
+            if recipe in {"owner-link", "skills-link", "memory-link"}:
+                target = owner
+                if recipe != "owner-link": owner.mkdir(); target = owner / recipe.split("-")[0]
+                target.symlink_to(outside, target_is_directory=True)
+            if recipe == "owner-file": owner.write_text("keep")
+            resources = resolver.for_owner("alice")
+            row.update(root=str(resolver.root.relative_to(base.resolve())), owner_root=str(resources.root.relative_to(base.resolve())),
+                       modes=[p.stat().st_mode & 0o777 for p in (resolver.root,resources.root,resources.root/"skills",resources.root/"memory")],
+                       cached=resolver.for_owner("alice") is resources)
+        except Exception as error:
+            row.update(error=True, symlink_refusal="must not be a symlink" in str(error))
+        row["outside_mode"] = outside.stat().st_mode & 0o777
+        cases.append(row)
+    return {"cases": cases, "source_sha256": hashlib.sha256((PYTHON_ROOT / "mini_loop" / "user_resources.py").read_bytes()).hexdigest()}
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5264,6 +5303,7 @@ def _snapshot() -> dict[str, bytes]:
         decision_replay_contracts = _decision_replay_contracts(Path(scratch) / "decision-replay")
         decision_sink_contracts = _decision_sink_contracts(Path(scratch) / "decision-sinks")
         user_skill_contracts = _user_skill_contracts()
+        owner_directory_contracts = _owner_directory_contracts(Path(scratch) / "owner-directories")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5336,6 +5376,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-decision-replay.json": _json_bytes(decision_replay_contracts),
         "python-decision-sinks.json": _json_bytes(decision_sink_contracts),
         "python-user-skills.json": _json_bytes(user_skill_contracts),
+        "python-owner-directories.json": _json_bytes(owner_directory_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
