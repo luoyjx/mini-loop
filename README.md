@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `75c5595` plus explicit managed owner resource snapshots).
+reviewed **2026-10-06** (Go baseline `e54d5c9` plus explicit owner-bound memory tools).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -377,7 +377,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>create-only skill publication · explicit session snapshots"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · optional memory tools"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -545,6 +545,14 @@ refusal, a shared prompt budget and source-owned serve-time verification; it is
 available through explicit owner-bound RuntimeConfig and ManagerServices snapshots.
 `go/memory` now provides typed Markdown Store/ScopedStore libraries: exact owner
 keys, scoped replacement, lexical search, lazy index/cache and secret masking.
+Explicit `RuntimeConfig.MemoryTools` now installs typed `remember`/`recall` through
+the common permission gate. Runtime construction requires a matching scoped store
+or uses the admitted owner resource bundle; `ManagerServices.MemoryTools` selects
+these tools with an explicit resolver. Model inputs contain no owner/root.
+Selected children retain the bound store, and read-only mode denies writes.
+Default tools and launcher activation remain unchanged. Automatic selection,
+extraction/consolidation, runtime-facts integration and root configuration remain
+pending; carrying a resource bundle alone still installs no memory tools.
 `userresources.NewResolver` now composes exact-owner directory, layered skill and
 bound memory snapshots, caching only complete bindings. Its operator problem
 view preserves owner-local logs and skips shared deployment diagnostics.

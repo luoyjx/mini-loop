@@ -10,6 +10,7 @@ import (
 	"sync/atomic"
 
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/userresources"
@@ -36,6 +37,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	memory                                            *memory.ScopedStore
 	ownerResources                                    *userresources.Resources
 	decisionProvider                                  decisions.Provider
 	decisionLLM                                       DecisionLLMConfig

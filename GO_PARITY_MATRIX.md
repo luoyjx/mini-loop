@@ -205,3 +205,12 @@ evidence uses the injected test backing, not Go SQLite. Complete native child
 bundle retention also pins scoped memory, while Python in-process subagents
 explicitly inherit skills. Memory lifecycle/tools, launcher root selection,
 capture/routes, native SQL, teams and remaining groups are still pending.
+
+Memory tool progress: snapshot 65 captures 14 actual Python common-gate calls
+over a shared memory store, including owner isolation, overwrite, defaults/nulls,
+unknown string type normalization, recall provenance/escaping and readonly
+denial. Native closed input variants compare schema/traits/replay identity;
+explicit runtime/managed tools retain bound owner stores and selected-child
+sharing. Native malformed non-string payloads are refused at the typed boundary.
+Default tools/launcher activation, automatic memory selection/extraction/
+consolidation, context index and capture/routes remain pending.

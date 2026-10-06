@@ -1,0 +1,224 @@
+{
+  "metadata": [
+    {
+      "capabilities": [],
+      "name": "remember",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    },
+    {
+      "capabilities": [],
+      "name": "recall",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read"
+    }
+  ],
+  "schemas": [
+    {
+      "description": "Save a durable fact to the current user's memory (survives across sessions).",
+      "input_schema": {
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "user",
+              "feedback",
+              "project",
+              "reference"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "content"
+        ],
+        "type": "object"
+      },
+      "name": "remember"
+    },
+    {
+      "description": "Recall the current user's memories matching a query (or list all).",
+      "input_schema": {
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "name": "recall"
+    }
+  ],
+  "steps": [
+    {
+      "canonical": "{}",
+      "denied": false,
+      "failed": false,
+      "input": {},
+      "name": "recall",
+      "output": "(no matching memories)",
+      "owner": "alice"
+    },
+    {
+      "canonical": "{\"content\":\"alice café\",\"name\":\"same\"}",
+      "denied": false,
+      "failed": false,
+      "input": {
+        "content": "alice café",
+        "name": "same"
+      },
+      "name": "remember",
+      "output": "Remembered 'same' (project)",
+      "owner": "alice"
+    },
+    {
+      "canonical": "{}",
+      "denied": false,
+      "failed": false,
+      "input": {},
+      "name": "recall",
+      "output": "(no matching memories)",
+      "owner": "bob"
+    },
+    {
+      "canonical": "{\"content\":\"bob only\",\"description\":\"\",\"name\":\"same\",\"type\":\"user\"}",
+      "denied": false,
+      "failed": false,
+      "input": {
+        "content": "bob only",
+        "description": "",
+        "name": "same",
+        "type": "user"
+      },
+      "name": "remember",
+      "output": "Remembered 'same' (user)",
+      "owner": "bob"
+    },
+    {
+      "canonical": "{\"query\":null}",
+      "denied": false,
+      "failed": false,
+      "input": {
+        "query": null
+      },
+      "name": "recall",
+      "output": "<memory scope=\"user\" origin=\"explicit\" name=\"same\" type=\"project\">\nalice café\n</memory>",
+      "owner": "alice"
+    },
+    {
+      "canonical": "{\"query\":\"bob\"}",
+      "denied": false,
+      "failed": false,
+      "input": {
+        "query": "bob"
+      },
+      "name": "recall",
+      "output": "<memory scope=\"user\" origin=\"explicit\" name=\"same\" type=\"user\">\nbob only\n</memory>",
+      "owner": "bob"
+    },
+    {
+      "canonical": "{\"content\":\"replaced\",\"description\":\"updated\",\"name\":\"same\",\"type\":\"feedback\"}",
+      "denied": false,
+      "failed": false,
+      "input": {
+        "content": "replaced",
+        "description": "updated",
+        "name": "same",
+        "type": "feedback"
+      },
+      "name": "remember",
+      "output": "Remembered 'same' (feedback)",
+      "owner": "alice"
+    },
+    {
+      "canonical": "{\"content\":\"<raw body>\",\"description\":null,\"name\":\"<name & \\\"quote\\\" 'apostrophe'>\",\"type\":\"unknown\"}",
+      "denied": false,
+      "failed": false,
+      "input": {
+        "content": "<raw body>",
+        "description": null,
+        "name": "<name & \"quote\" 'apostrophe'>",
+        "type": "unknown"
+      },
+      "name": "remember",
+      "output": "Remembered '<name & \"quote\" 'apostrophe'>' (project)",
+      "owner": "alice"
+    },
+    {
+      "canonical": "{\"content\":\"null type\",\"name\":\"nullable\",\"type\":null}",
+      "denied": false,
+      "failed": false,
+      "input": {
+        "content": "null type",
+        "name": "nullable",
+        "type": null
+      },
+      "name": "remember",
+      "output": "Remembered 'nullable' (project)",
+      "owner": "alice"
+    },
+    {
+      "canonical": "{\"query\":\"raw body\"}",
+      "denied": false,
+      "failed": false,
+      "input": {
+        "query": "raw body"
+      },
+      "name": "recall",
+      "output": "<memory scope=\"user\" origin=\"explicit\" name=\"&lt;name &amp; &quot;quote&quot; &#x27;apostrophe&#x27;&gt;\" type=\"project\">\n<raw body>\n</memory>",
+      "owner": "alice"
+    },
+    {
+      "canonical": "{\"query\":\"missing\"}",
+      "denied": false,
+      "failed": false,
+      "input": {
+        "query": "missing"
+      },
+      "name": "recall",
+      "output": "(no matching memories)",
+      "owner": "alice"
+    },
+    {
+      "canonical": "{}",
+      "denied": false,
+      "failed": false,
+      "input": {},
+      "name": "recall",
+      "output": "<memory scope=\"user\" origin=\"explicit\" name=\"same\" type=\"feedback\">\nreplaced\n</memory>\n\n<memory scope=\"user\" origin=\"explicit\" name=\"nullable\" type=\"project\">\nnull type\n</memory>\n\n<memory scope=\"user\" origin=\"explicit\" name=\"&lt;name &amp; &quot;quote&quot; &#x27;apostrophe&#x27;&gt;\" type=\"project\">\n<raw body>\n</memory>",
+      "owner": "alice"
+    },
+    {
+      "canonical": "{\"content\":\"must not persist\",\"name\":\"blocked\"}",
+      "denied": true,
+      "failed": false,
+      "input": {
+        "content": "must not persist",
+        "name": "blocked"
+      },
+      "name": "remember",
+      "output": "Permission denied: this session is read-only (tool risk: write)",
+      "owner": "readonly"
+    },
+    {
+      "canonical": "{}",
+      "denied": false,
+      "failed": false,
+      "input": {},
+      "name": "recall",
+      "output": "(no matching memories)",
+      "owner": "readonly"
+    }
+  ]
+}

@@ -9,6 +9,8 @@ import (
 )
 
 const (
+	ToolRemember        ToolName = "remember"
+	ToolRecall          ToolName = "recall"
 	ToolDecision        ToolName = "decision"
 	ToolGoalCreate      ToolName = "goal_create"
 	ToolGoalStatus      ToolName = "goal_status"
@@ -133,6 +135,8 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
+	remember RememberInput
+	recall   RecallInput
 	decision decisions.Request
 	// A masked recording projection is a closed JSON tree, never executable input.
 	decisionProjection *decisions.Value
@@ -323,6 +327,10 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() { result.nulls = input.nulls }()
 	switch input.name {
+	case ToolRemember:
+		return RememberToolInput(input.remember)
+	case ToolRecall:
+		return RecallToolInput(input.recall)
 	case ToolDecision:
 		result := DecisionToolInput(input.decision)
 		if input.decisionProjection != nil {
@@ -366,6 +374,10 @@ func (input ToolInput) clone() (result ToolInput) {
 
 func (input ToolInput) Validate() error {
 	switch input.name {
+	case ToolRemember:
+		return nil
+	case ToolRecall:
+		return nil
 	case ToolDecision:
 		if input.decisionProjection != nil {
 			return fmt.Errorf("decision recording projection cannot be executed")
@@ -400,6 +412,8 @@ func (input ToolInput) Validate() error {
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
 	switch input.name {
+	case ToolRemember, ToolRecall:
+		return input.marshalMemoryJSON()
 	case ToolDecision:
 		if input.decisionProjection != nil {
 			return input.decisionProjection.MarshalJSON()
@@ -471,6 +485,8 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolRemember, ToolRecall:
+		return decodeMemoryInput(name, data)
 	case ToolDecision:
 		r, e := decisions.DecodeRequest(data)
 		if e != nil {

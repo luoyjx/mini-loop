@@ -5548,6 +5548,58 @@ def _user_session_resource_contracts(scratch: Path) -> dict:
     return asyncio.run(scenario())
 
 
+def _memory_tool_contracts(scratch: Path) -> dict:
+    """Execute actual owner-scoped memory tools through the source Agent gate."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.memory import install_memory
+    from mini_loop.registry import ToolRegistry, ToolCall
+    registry = install_memory(ToolRegistry())
+    specs = [
+        ("alice", "recall", {}),
+        ("alice", "remember", dict(name="same", content="alice café")),
+        ("bob", "recall", {}),
+        ("bob", "remember", dict(name="same", content="bob only", type="user", description="")),
+        ("alice", "recall", dict(query=None)),
+        ("bob", "recall", dict(query="bob")),
+        ("alice", "remember", dict(name="same", content="replaced", type="feedback", description="updated")),
+        ("alice", "remember", dict(name="<name & \"quote\" 'apostrophe'>", content="<raw body>", type="unknown", description=None)),
+        ("alice", "remember", dict(name="nullable", content="null type", type=None)),
+        ("alice", "recall", dict(query="raw body")),
+        ("alice", "recall", dict(query="missing")),
+        ("alice", "recall", {}),
+        ("readonly", "remember", dict(name="blocked", content="must not persist")),
+        ("readonly", "recall", {}),
+    ]
+    async def scenario():
+        settings = Settings(fake_llm=True, enable_features=False, trajectory_enabled=False,
+                            spill_dir=None, user_resources_root=None, workspace_root=scratch/"workspaces")
+        manager = SessionManager(settings, FakeAsyncAnthropic())
+        sessions = {owner: manager.create(owner=owner, permission_mode="readonly" if owner == "readonly" else "auto")
+                    for owner in ("alice", "bob", "readonly")}
+        events = {}
+        for owner, session in sessions.items():
+            install_memory(session.agent.tools)
+            events[owner] = []
+            async def emit(event, owner=owner): events[owner].append(event)
+            session.agent.emit = emit
+        steps = []
+        try:
+            for index, (owner, name, value) in enumerate(specs):
+                output = await sessions[owner].agent._exec_tool(ToolCall(name, value, f"memory-{index}"))
+                event = next(e for e in reversed(events[owner]) if e.get("type") == "tool_result")
+                steps.append(dict(owner=owner, name=name, input=value, output=output,
+                                  canonical=json.dumps(value,sort_keys=True,ensure_ascii=False,separators=(',',':')),
+                                  failed=bool(event["error"]), denied=bool(event.get("denied", False))))
+        finally: await manager.stop()
+        return steps
+    return dict(schemas=registry.schemas(), metadata=[dict(name=t.name,risk=t.risk,readonly=t.readonly,
+                parallel_safe=t.parallel_safe,capabilities=sorted(t.capabilities))
+                for name in registry.names() if (t:=registry.get(name))], steps=asyncio.run(scenario()))
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5667,6 +5719,7 @@ def _snapshot() -> dict[str, bytes]:
         durable_create_contracts = _durable_create_contracts(Path(scratch) / "durable-create")
         publication_contracts = _publication_contracts(Path(scratch) / "publication")
         user_session_resource_contracts = _user_session_resource_contracts(Path(scratch) / "user-session-resources")
+        memory_tool_contracts = _memory_tool_contracts(Path(scratch) / "memory-tools")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5746,6 +5799,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-durable-create.json": _json_bytes(durable_create_contracts),
         "python-user-publication.json": _json_bytes(publication_contracts),
         "python-user-session-resources.json": _json_bytes(user_session_resource_contracts),
+        "python-memory-tools.json": _json_bytes(memory_tool_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

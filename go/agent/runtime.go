@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
@@ -56,6 +57,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	MemoryTools          bool
+	Memory               *memory.ScopedStore
 	UserResources        *userresources.Resources
 	DecisionTools        bool
 	DecisionProvider     decisions.Provider
@@ -115,6 +118,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	memory               *memory.ScopedStore
 	planApprover         PlanApprover
 	cron                 CronControl
 	background           *backgroundState
@@ -168,6 +172,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolRemember, protocol.ToolRecall:
+		return handler.executeMemory(ctx, input)
 	case protocol.ToolDecision:
 		return handler.executeDecision(ctx, authority, input)
 	case protocol.ToolGoalCreate, protocol.ToolGoalStatus, protocol.ToolGoalComplete, protocol.ToolGoalBlock, protocol.ToolGoalResume:
@@ -287,6 +293,13 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		}
 		resources = &bound
 		config.Skills = bound.Skills()
+		config.Memory = bound.Memory()
+	}
+	if config.Memory != nil && config.Memory.Owner() != memory.OwnerID(config.Owner) {
+		return nil, errors.New("memory store must be bound to the session owner")
+	}
+	if config.MemoryTools && config.Memory == nil {
+		return nil, errors.New("memory tools require a bound memory store")
 	}
 	if config.MaxTokens < 0 || config.TokenThreshold < 0 {
 		return nil, errors.New("runtime model budgets cannot be negative")
@@ -341,6 +354,20 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		handler.questions = surface
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
+	handler.memory = config.Memory
+	if config.MemoryTools {
+		for _, schema := range protocol.MemorySchemas() {
+			traits := ToolTraits{Risk: RiskWrite}
+			if schema.Name == protocol.ToolRecall {
+				traits = ToolTraits{Risk: RiskRead, Readonly: true}
+			}
+			definition, err := NewToolDefinitionWithSchema(schema, traits, handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
+		}
+	}
 	if config.DecisionTools {
 		definition, err := NewToolDefinitionWithSchema(protocol.DecisionSchema(), ToolTraits{Risk: RiskExternal}, handler)
 		if err != nil {
@@ -471,6 +498,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	session.planApprover = config.PlanApprover
 	session.ownerResources = resources
+	session.memory = config.Memory
 	session.decisionProvider, session.decisionLLM = config.DecisionProvider, decisionLLM
 	session.streamProgress = streamProgress(config.StreamProgress)
 	if config.CachePolicy != nil {

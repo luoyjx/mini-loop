@@ -16,6 +16,22 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolRemember:
+		input.remember.Name = mask(input.remember.Name)
+		input.remember.Content = mask(input.remember.Content)
+		if input.remember.Description != nil {
+			v := mask(*input.remember.Description)
+			input.remember.Description = &v
+		}
+		if input.remember.Type != nil {
+			v := MemoryType(mask(string(*input.remember.Type)))
+			input.remember.Type = &v
+		}
+	case ToolRecall:
+		if input.recall.Query != nil {
+			v := mask(*input.recall.Query)
+			input.recall.Query = &v
+		}
 	case ToolDecision:
 		v := input.decision.Value()
 		if input.decisionProjection != nil {

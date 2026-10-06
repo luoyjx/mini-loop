@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/userresources"
 )
@@ -25,6 +26,7 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	memory                                         *memory.ScopedStore
 	ownerResources                                 *userresources.Resources
 	decisionProvider                               decisions.Provider
 	decisionLLM                                    DecisionLLMConfig
@@ -147,6 +149,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 		questions = nil
 	}
 	handler := &runtimeHandler{
+		memory:       parent.memory,
 		planApprover: parent.planApprover,
 		binding:      ToolAuthority{SessionID: id, OwnerID: parent.authority.OwnerID, Workspace: parent.authority.Workspace, Mode: mode},
 		todos:        &TodoManager{}, events: &sessionEvents{parent: parent.events, secrets: parent.secrets, sessionID: parent.events.sessionID}, skills: parent.skills, questions: questions, compression: &compressionSignal{},
@@ -185,6 +188,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	}
 	child.planApprover = parent.planApprover
 	child.ownerResources = parent.ownerResources
+	child.memory = parent.memory
 	child.decisionProvider, child.decisionLLM = parent.decisionProvider, parent.decisionLLM
 	child.recovery = parent.recovery
 	child.streamProgress = parent.streamProgress
@@ -257,6 +261,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
+		memory:           s.memory,
 		ownerResources:   s.ownerResources,
 		decisionProvider: s.decisionProvider, decisionLLM: s.decisionLLM,
 		planApprover: s.planApprover,

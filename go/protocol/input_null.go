@@ -17,6 +17,8 @@ func (field *nullField) UnmarshalJSON(data []byte) error {
 }
 
 type inputNullFields struct {
+	MemoryType        nullField `json:"type"`
+	MemoryQuery       nullField `json:"query"`
 	GoalMaxRounds     nullField `json:"max_rounds"`
 	CronRecurring     nullField `json:"recurring"`
 	CronDurable       nullField `json:"durable"`

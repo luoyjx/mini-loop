@@ -1220,6 +1220,31 @@ without requiring a restart. Capture/preview, authenticated commit routes, trust
 launcher/configuration activation and cross-process cache refresh remain pending. This library
 operation does not authorize model-driven publication.
 
+### Go explicit owner memory tools
+
+`RuntimeConfig.MemoryTools` is default-off. An explicit matching `Memory`
+ScopedStore supplies the legacy shared-store binding, or UserResources supplies
+the owner-local store with precedence. Construction rejects missing/foreign
+bindings before workspace writes. `ManagerServices.MemoryTools` selects the pair
+with an explicit UserResources resolver. The launcher still rejects resource/
+memory settings until the associated default lifecycle is implemented.
+
+`remember` is a write-risk exclusive tool; `recall` is a readonly read-risk
+exclusive tool. Both pass through the shared rewrite/permission/guard/masking
+gate. Their closed typed inputs have no owner or root override; optional values
+are detached and preserve absent/null values for replay identity. Source
+string/null unknown memory types normalize to project, and empty/null
+descriptions fall back to the name. Malformed non-string fields are refused
+by the typed Go boundary. Store masking must be configured separately for its
+durable sink; gate masking protects recorded inputs and returned observations.
+
+Recall renders the source provenance wrapper and lexical search's five-record
+limit. A selected in-process child keeps the parent's scoped store and is
+subject to its own role and permission mode; default role capabilities still
+omit these tools. No automatic selection/extraction/consolidation or context
+integration is activated by this selection. Those lifecycle components, capture/
+preview/routes and launcher root configuration remain pending.
+
 ### Go trusted session resource binding
 
 `ManagerServices.UserResources` accepts a concrete Resolver and defaults to nil.
@@ -1237,7 +1262,7 @@ SubagentParent and native in-process children inherit the parent's binding. Pyth
 in-process subagents explicitly inherit skills; native complete bundle retention
 also pins owner memory for future integrations. Source teammates inherit both,
 but Go teammate scheduling is still pending. Memory tools/hooks are not activated
-by carrying a bundle. Launcher root selection and capture/routes remain pending.
+ by carrying a bundle. Launcher root selection and capture/routes remain pending.
 
 Builtin Catalog/LayeredCatalog Load returns named skills.RefusalError for domain
 refusals. The runtime renders those as source-compatible `Error: ...` completed
