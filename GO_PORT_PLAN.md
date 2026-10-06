@@ -5207,3 +5207,47 @@ errors/warnings. Specification SHA-256:
 HTML SHA-256: c4faade9289d055a20c455737b9984180ba5bcada3ed30bf7dcd98423e4f4562
 (682,745 bytes). Visual inspection remains skipped after the earlier local-file
 access denial; renderer acceptance is not visual inspection.
+
+## Implementation checkpoint — 2026-10-07 scoped memory lifecycle
+
+Base: 29c5fad. G2/G6 advance; G0–G7 remain open. Python install_memory
+holds store.lifecycle_lock through explicit remember, and memory_on_stop holds
+that same lock across extraction and consolidation. Go now supplies a distinct
+Store-owned lifecycle channel, exposed through ScopedStore.WithLifecycle;
+remember acquires it after the common tool gate and before scoped Write.
+All bindings of a shared Store serialize, including distinct owners, matching
+the source shared lock. Ordinary scoped operations retain their separate permit.
+Callbacks must not recursively acquire the lifecycle. Waiting checks cancellation
+before entry, and deferred release handles callback errors/panics. No rollback,
+external-process fencing or independent-Store coordination is implied.
+
+Native tests hold the lifecycle across Write/List/ReplaceAll, cancel a second
+binding's waiter, verify release after callback error and independent stores,
+and dispatch remember through the real gate while the lifecycle is held.
+Cancelled remember writes no record; a later dispatch writes under the bound
+owner. A compiling native mutation removes remember's lifecycle acquisition;
+the test fails on both missing cancellation and unexpected persisted memory.
+The mutant was restored before full verification.
+
+Remaining: extraction/consolidation, healthy-endpoint capture, launcher root/
+default activation, capture/preview/routes and remaining G0–G7 groups. This
+small commit supplies their shared serialization seam without activating them.
+Coverage is unrefreshed; no dependencies or Python package modules changed.
+
+Validation: focused lifecycle/gated remember tests and the bypass mutation
+passed. Final go test ./..., go test -race ./... and go vet ./... passed after
+the panic-release assertion was added (unchanged packages reused Go test cache).
+Exporter --check confirmed 66 current files; it exited successfully with an
+unknown-child cleanup warning and dependency deprecation warnings. After all Go,
+exporter and mutation jobs terminated, the Python full suite ran alone: 2,151
+passed, 28 skipped and 24 subtests passed in 81.55s, with three dependency
+warnings. No Python package module or scanner target changed, so package
+invariants and scanner/anchor verification were not rerun. README outline and
+git diff --check passed.
+
+Archify generated the map with 9/9 showcase checks, zero errors/warnings.
+Specification SHA-256: 680c9926ce64b62c5e371f371085126684da2d93f20e631d0c92ef33136a2102
+(41,298 bytes); HTML SHA-256:
+dca13ac0281e5849c4138159673328ac8b58a8a63c47f5e552214593bc5f31c4 (683,101 bytes).
+Visual inspection remains skipped after the earlier local-file access denial;
+renderer acceptance is not visual inspection.

@@ -18,6 +18,27 @@ func Bind(store *Store, owner OwnerID) (*ScopedStore, error) {
 	return &ScopedStore{store, owner}, nil
 }
 func (s *ScopedStore) Owner() OwnerID { return s.owner }
+
+// WithLifecycle serializes a multi-operation memory lifecycle across every
+// binding of this Store. The callback may call ordinary scoped operations, but
+// must not recursively acquire this lock. It provides no cross-process fencing
+// or rollback; separate Store instances have separate lifecycle locks.
+func (s *ScopedStore) WithLifecycle(ctx context.Context, run func() error) error {
+	if run == nil {
+		return errors.New("memory lifecycle callback is required")
+	}
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-s.store.lifecycle:
+	}
+	defer func() { s.store.lifecycle <- struct{}{} }()
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	return run()
+}
+
 func (s *ScopedStore) Write(ctx context.Context, input Input) (string, error) {
 	return s.store.Write(ctx, s.owner, input)
 }

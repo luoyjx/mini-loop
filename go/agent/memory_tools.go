@@ -23,7 +23,13 @@ func (h *runtimeHandler) executeMemory(ctx context.Context, input protocol.ToolI
 		if v.Description != nil && *v.Description != "" {
 			description = *v.Description
 		}
-		return h.memory.Write(ctx, memory.Input{Name: v.Name, Type: typ, Description: description, Body: v.Content, Origin: memory.Explicit})
+		var result string
+		err := h.memory.WithLifecycle(ctx, func() error {
+			var err error
+			result, err = h.memory.Write(ctx, memory.Input{Name: v.Name, Type: typ, Description: description, Body: v.Content, Origin: memory.Explicit})
+			return err
+		})
+		return result, err
 	}
 	v, _ := input.Recall()
 	query := ""

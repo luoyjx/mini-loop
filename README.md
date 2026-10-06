@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-06** (Go baseline `2c4effd` plus automatic memory selection/context).
+reviewed **2026-10-07** (Go baseline `29c5fad` plus scoped memory lifecycle serialization).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -377,7 +377,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
         GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · optional memory tools"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -550,6 +550,11 @@ the common permission gate. Runtime construction requires a matching scoped stor
 or uses the admitted owner resource bundle; `ManagerServices.MemoryTools` selects
 these tools with an explicit resolver. Model inputs contain no owner/root.
 Selected children retain the bound store, and read-only mode denies writes.
+Explicit remember acquires the Store-owned process-local lifecycle lock; scoped
+bindings of the same Store share it. Waiting is cancellable. Ordinary scoped
+operations use a separate lock, allowing future extraction/consolidation to hold
+the lifecycle across multiple operations. This is neither rollback nor external
+process fencing; independent Store instances do not share the lock.
 With both tools selected, automatic memory selection now uses a 200-token side
 request, falling back to lexical search. It injects selected provenance blocks
 after prompt rewriting and before the user message is appended. The side request

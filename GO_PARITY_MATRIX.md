@@ -225,3 +225,11 @@ transcript/lease authority failures propagate. Runtime index requires recall,
 independently of the auto flag. Full native turn and cancellation tests exercise
 request integration. Extraction/consolidation, healthy-endpoint capture and
 launcher/default activation remain pending.
+
+Memory lifecycle progress (2026-10-07): Store-owned process-local lifecycle
+serialization is shared by every scoped binding and separate from the ordinary
+operation lock. Explicit remember holds it through Write, matching
+python/mini_loop/memory.py install_memory; automatic extraction/consolidation
+remain pending. Native tests exercise shared bindings, cancellable waiting,
+error release, independent stores, and scoped operations inside a callback.
+A native bypass mutation is caught by the gated remember cancellation test.

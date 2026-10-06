@@ -1238,6 +1238,14 @@ descriptions fall back to the name. Malformed non-string fields are refused
 by the typed Go boundary. Store masking must be configured separately for its
 durable sink; gate masking protects recorded inputs and returned observations.
 
+ScopedStore.WithLifecycle serializes callbacks across all bindings of the same
+Store, matching the source lifecycle_lock. Explicit remember holds it through
+Write; recall remains outside it. Waiting observes cancellation and callback
+errors/panics release the lock. Callbacks can perform ordinary scoped operations
+but cannot recursively acquire the lifecycle. The lock is process-local, has no
+rollback, and is independent across Store instances. Automatic extraction and
+consolidation are still pending consumers of this seam.
+
 Recall renders the source provenance wrapper and lexical search's five-record
 limit. A selected in-process child keeps the parent's scoped store and is
 subject to its own role and permission mode; default role capabilities still

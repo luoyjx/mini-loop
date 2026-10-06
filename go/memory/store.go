@@ -23,12 +23,13 @@ type parsedFile struct {
 // Store owns a serialized process-local cache. File transactions and replacement
 // of multiple memories are not cross-process transactions.
 type Store struct {
-	root     string
-	masker   Masker
-	permit   chan struct{}
-	dirty    bool
-	parsed   map[string]parsedFile
-	problems []Problem
+	root      string
+	masker    Masker
+	permit    chan struct{}
+	lifecycle chan struct{}
+	dirty     bool
+	parsed    map[string]parsedFile
+	problems  []Problem
 }
 
 func NewStore(ctx context.Context, root string, masker Masker) (*Store, error) {
@@ -42,8 +43,9 @@ func NewStore(ctx context.Context, root string, masker Masker) (*Store, error) {
 	if err := os.MkdirAll(resolved, 0700); err != nil {
 		return nil, err
 	}
-	store := &Store{root: resolved, masker: masker, permit: make(chan struct{}, 1), parsed: make(map[string]parsedFile)}
+	store := &Store{root: resolved, masker: masker, permit: make(chan struct{}, 1), lifecycle: make(chan struct{}, 1), parsed: make(map[string]parsedFile)}
 	store.permit <- struct{}{}
+	store.lifecycle <- struct{}{}
 	return store, nil
 }
 func (store *Store) acquire(ctx context.Context) error {
