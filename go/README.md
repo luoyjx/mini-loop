@@ -1505,3 +1505,33 @@ This explicit composition library creates full resource bundles; create-only
 skill publication, future-session refresh, manager/restore/child inheritance,
 configuration, scoped serving and memory lifecycle/tool activation remain open.
 Directory checks remain process-local checks, not filesystem fencing.
+
+### Anchored create-only files
+
+`durable.CreateText(ctx, path, text)` and `ReadBytesNoFollow(ctx, path, maxBytes)`
+implement the Python publication file boundary on Darwin/Linux without new
+dependencies or cgo. Paths are opened from `/` component by component using
+O_DIRECTORY/O_NOFOLLOW and owned descriptors; symlink/.. ordering is preserved.
+Relative inputs use the current working directory spelling, so linked components
+still refuse. Publication callers should use their pinned physical owner paths.
+
+Create uses a random same-directory O_EXCL/O_NOFOLLOW scratch file, exact 0600
+mode, file fsync and a no-replace linkat. It returns typed device/inode identity.
+Existing files/directories/links never get replaced. Link success is the commit
+point; cancellation is checked before it, and scratch cleanup/directory fsync/
+descriptor close are best effort afterward. An external rename can relocate the
+anchored directory; the operation stays on that inode rather than following a
+replacement link. This is a path boundary, not host tenancy or multi-file fencing.
+
+Reads verify regular-file type and retain at most maxBytes+1 bytes to detect
+overflow. NONBLOCK is a native strengthening: hostile FIFOs refuse instead of
+hanging before the regular-file check. Syscall pointers are confined to the
+boundary. Linux uses toolchain syscall constants; Darwin numbers are pinned to
+Apple XNU f6217f891ac0bb64f3d375211650a4c1ff8ca1ea, syscalls.master
+(openat 463, linkat 471, unlinkat 472), with Go 1.23's kernel syscall entry.
+
+Snapshot 62 compares 12 actual Python anchored create/read cases, file bytes,
+mode, identity, overflow/errors and scratch cleanup. Native tests add concurrent
+no-replace winners, cancellation, descriptor-preserving parent rename and FIFO
+refusal. The create-only skill publisher, strict secret screening, safe receipts
+and next-session resource replacement are the next composition slice.

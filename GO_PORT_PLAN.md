@@ -4850,3 +4850,54 @@ Archify delivery passed nine showcase checks without errors/warnings. HTML
 SHA256 `f506a9c346ee88830e2c826e40b504599993f8ed1292b7420bd4ea810f297b20`
 (680,105 bytes). Visual review remains skipped after the earlier local-file
 access denial.
+
+## Implementation checkpoint — 2026-10-06 anchored publication file boundary
+
+The source publisher requires descriptor-anchored component traversal and a
+no-replace hard link. Go 1.23 Darwin's public syscall package lacks the required
+at helpers, so native durable confines typed syscall wrappers/pointers to one
+boundary and platform constants to separate files. Apple XNU revision
+f6217f891ac0bb64f3d375211650a4c1ff8ca1ea, bsd/kern/syscalls.master, confirms
+463/471/472; the installed Go 1.23.3 Darwin syscall assembly confirms the kernel
+entry convention. Linux uses architecture-specific Go constants. No dependency,
+cgo, path-based replacement or process-wide chdir is introduced.
+
+CreateText uses component-wise O_DIRECTORY/O_NOFOLLOW/CLOEXEC, exact private
+scratch mode, file fsync and same-descriptor linkat. Typed device/inode identity
+is prepared before linking. Link success commits; post-link cleanup, directory
+fsync and close cannot turn success into error. ReadBytesNoFollow verifies regular
+files and reads one extra byte to detect overflow. Native NONBLOCK avoids hostile
+FIFO hangs. Cancellation is checked before the commit point. Anchoring survives
+parent relocation, which is not a proof of global filesystem tenancy/fencing.
+
+Snapshot 62 executes 12 actual Python create/read scenarios: fresh/existing
+file/directory/links, parent link and link/.. refusal, exact/oversized/empty reads,
+file bytes, private mode, identity and scratch cleanup. Native tests add 20
+concurrent attempts with one winner, cancelled creation, a parent renamed and
+replaced by a symlink after opening, and FIFO refusal.
+
+This is the necessary file boundary for the full create-only publisher. Next:
+pre-link canonical catalogue construction, strict secret health screening, typed
+safe publication/conflict receipts, idempotent bounded no-follow verification and
+future-resolution-only resource replacement. Managed session activation and the
+remaining port remain open; G0–G7 are not complete.
+
+Validation: focused native/source differential tests, full `go test ./...`, full
+race suite and `go vet ./...` passed on Darwin arm64. Linux amd64 and Darwin amd64
+durable test binaries compiled; they were not executed. Three actual source file
+boundary tests passed. All 62 generated contracts are current, all 19 scanning
+guards remain anchored and the source owner-directory permission mutation was
+caught. An isolated native removal of component O_NOFOLLOW failed parent-link
+cases. README outline and `git diff --check` passed.
+
+Full Python: 2,151 passed, 28 skipped, 24 subtests, four warnings in 153.24 seconds.
+Warnings include three dependency deprecations and an asyncio subprocess cleanup
+warning (Event loop is closed). Contract export also exited successfully with
+that cleanup warning and existing dependency/model deprecations. Python package
+invariants were not applicable: only the exporter changed. Coverage not refreshed.
+
+Archify delivery passed nine showcase checks without warnings/errors. HTML
+SHA256 `98d120fbd92127f22df69f98db4310df7ac8ee112d1698e4991e87c2b17e8b75`
+(680,298 bytes). Visual review remains skipped after the earlier local-file
+access denial. Darwin constants reference the official
+[pinned XNU syscall table](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/syscalls.master).

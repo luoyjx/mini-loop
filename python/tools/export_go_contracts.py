@@ -5377,6 +5377,41 @@ def _owner_resource_contracts(scratch: Path) -> dict:
     return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT/"mini_loop"/"user_resources.py").read_bytes()).hexdigest())
 
 
+def _durable_create_contracts(scratch: Path) -> dict:
+    """Actual anchored no-replace create and bounded no-follow reads."""
+    from mini_loop.durable import atomic_create_bytes, read_bytes_no_follow
+    import errno
+    cases=[]
+    recipes=("fresh", "exists", "directory", "leaf-link", "parent-link", "link-parent", "read-exact", "read-over", "read-directory", "read-leaf-link", "read-parent-link", "read-empty")
+    for recipe in recipes:
+        base=(scratch/recipe).resolve();base.mkdir(parents=True)
+        parent=base/"parent";outside=base/"outside";parent.mkdir();outside.mkdir()
+        target=parent/"SKILL.md";payload=b"canonical\n";read=recipe.startswith("read-")
+        if recipe in {"exists", "read-exact", "read-over"}:target.write_bytes(b"existing")
+        if recipe=="read-empty":target.write_bytes(b"")
+        if recipe in {"directory","read-directory"}:target.mkdir()
+        if recipe in {"leaf-link","read-leaf-link"}:
+            (outside/"SKILL.md").write_bytes(b"outside");target.symlink_to(outside/"SKILL.md")
+        if recipe in {"parent-link","read-parent-link"}:
+            (base/"alias").symlink_to(outside,target_is_directory=True)
+            (outside/"SKILL.md").write_bytes(b"outside");target=base/"alias"/"SKILL.md"
+        if recipe=="link-parent":
+            (base/"alias").symlink_to(parent,target_is_directory=True);target=base/"alias"/".."/"SKILL.md"
+        row=dict(recipe=recipe,read=read,limit=7 if recipe=="read-over" else 8)
+        try:
+            if read:row["hex"]=read_bytes_no_follow(target,max_bytes=row["limit"]).hex()
+            else:
+                identity=atomic_create_bytes(target,payload);stat=target.stat()
+                row.update(identity_matches=identity==(stat.st_dev,stat.st_ino),mode=stat.st_mode&0o777)
+        except Exception as error:
+            row.update(failed=True,exists=isinstance(error,FileExistsError),too_large=isinstance(error,OverflowError),
+                unsafe=isinstance(error,OSError) and error.errno in (errno.ELOOP,errno.ENOTDIR),not_regular="requires a regular file" in str(error))
+        row["files"]=[dict(path=str(path.relative_to(base)),hex=path.read_bytes().hex()) for directory in (base,parent,outside) for path in sorted(directory.iterdir()) if path.is_file() and not path.is_symlink()]
+        row["scratch_count"]=sum(1 for path in base.rglob("*.tmp"))
+        cases.append(row)
+    return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT/"mini_loop"/"durable.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5493,6 +5528,7 @@ def _snapshot() -> dict[str, bytes]:
         layered_skill_contracts = _layered_skill_contracts(Path(scratch) / "layered-skills")
         memory_store_contracts = _memory_store_contracts(Path(scratch) / "memory-store")
         owner_resource_contracts = _owner_resource_contracts(Path(scratch) / "owner-resources")
+        durable_create_contracts = _durable_create_contracts(Path(scratch) / "durable-create")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5569,6 +5605,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-layered-skills.json": _json_bytes(layered_skill_contracts),
         "python-memory-store.json": _json_bytes(memory_store_contracts),
         "python-owner-resources.json": _json_bytes(owner_resource_contracts),
+        "python-durable-create.json": _json_bytes(durable_create_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

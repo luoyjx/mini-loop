@@ -1,0 +1,183 @@
+{
+  "cases": [
+    {
+      "files": [
+        {
+          "hex": "63616e6f6e6963616c0a",
+          "path": "parent/SKILL.md"
+        }
+      ],
+      "identity_matches": true,
+      "limit": 8,
+      "mode": 384,
+      "read": false,
+      "recipe": "fresh",
+      "scratch_count": 0
+    },
+    {
+      "exists": true,
+      "failed": true,
+      "files": [
+        {
+          "hex": "6578697374696e67",
+          "path": "parent/SKILL.md"
+        }
+      ],
+      "limit": 8,
+      "not_regular": false,
+      "read": false,
+      "recipe": "exists",
+      "scratch_count": 0,
+      "too_large": false,
+      "unsafe": false
+    },
+    {
+      "exists": true,
+      "failed": true,
+      "files": [],
+      "limit": 8,
+      "not_regular": false,
+      "read": false,
+      "recipe": "directory",
+      "scratch_count": 0,
+      "too_large": false,
+      "unsafe": false
+    },
+    {
+      "exists": true,
+      "failed": true,
+      "files": [
+        {
+          "hex": "6f757473696465",
+          "path": "outside/SKILL.md"
+        }
+      ],
+      "limit": 8,
+      "not_regular": false,
+      "read": false,
+      "recipe": "leaf-link",
+      "scratch_count": 0,
+      "too_large": false,
+      "unsafe": false
+    },
+    {
+      "exists": false,
+      "failed": true,
+      "files": [
+        {
+          "hex": "6f757473696465",
+          "path": "outside/SKILL.md"
+        }
+      ],
+      "limit": 8,
+      "not_regular": false,
+      "read": false,
+      "recipe": "parent-link",
+      "scratch_count": 0,
+      "too_large": false,
+      "unsafe": true
+    },
+    {
+      "exists": false,
+      "failed": true,
+      "files": [],
+      "limit": 8,
+      "not_regular": false,
+      "read": false,
+      "recipe": "link-parent",
+      "scratch_count": 0,
+      "too_large": false,
+      "unsafe": true
+    },
+    {
+      "files": [
+        {
+          "hex": "6578697374696e67",
+          "path": "parent/SKILL.md"
+        }
+      ],
+      "hex": "6578697374696e67",
+      "limit": 8,
+      "read": true,
+      "recipe": "read-exact",
+      "scratch_count": 0
+    },
+    {
+      "exists": false,
+      "failed": true,
+      "files": [
+        {
+          "hex": "6578697374696e67",
+          "path": "parent/SKILL.md"
+        }
+      ],
+      "limit": 7,
+      "not_regular": false,
+      "read": true,
+      "recipe": "read-over",
+      "scratch_count": 0,
+      "too_large": true,
+      "unsafe": false
+    },
+    {
+      "exists": false,
+      "failed": true,
+      "files": [],
+      "limit": 8,
+      "not_regular": true,
+      "read": true,
+      "recipe": "read-directory",
+      "scratch_count": 0,
+      "too_large": false,
+      "unsafe": false
+    },
+    {
+      "exists": false,
+      "failed": true,
+      "files": [
+        {
+          "hex": "6f757473696465",
+          "path": "outside/SKILL.md"
+        }
+      ],
+      "limit": 8,
+      "not_regular": false,
+      "read": true,
+      "recipe": "read-leaf-link",
+      "scratch_count": 0,
+      "too_large": false,
+      "unsafe": true
+    },
+    {
+      "exists": false,
+      "failed": true,
+      "files": [
+        {
+          "hex": "6f757473696465",
+          "path": "outside/SKILL.md"
+        }
+      ],
+      "limit": 8,
+      "not_regular": false,
+      "read": true,
+      "recipe": "read-parent-link",
+      "scratch_count": 0,
+      "too_large": false,
+      "unsafe": true
+    },
+    {
+      "files": [
+        {
+          "hex": "",
+          "path": "parent/SKILL.md"
+        }
+      ],
+      "hex": "",
+      "limit": 8,
+      "read": true,
+      "recipe": "read-empty",
+      "scratch_count": 0
+    }
+  ],
+  "source_sha256": "0b26ec888f3e623235ef22826ce94c31edce3e5c0cb79540cca5521ddd052be8"
+}

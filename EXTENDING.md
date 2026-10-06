@@ -1169,6 +1169,16 @@ cache entries never silently rebind; cancelled/failed builds are not published.
 Problems(ctx) is operator-only and derives a fresh bounded view from owner-local
 logs. Publication and managed session activation are still pending.
 
+### Go anchored instruction publication files
+
+`durable.CreateText` and `ReadBytesNoFollow` take operator-selected paths and
+explicit contexts. They anchor each directory component without symlink following;
+the typed identity names the committed hard-link object. No fallible return follows
+the link commit point. Keep canonical validation, secret screening, collision
+checks and future-session bundle preparation above this seam before creating a
+file. The publisher composition remains pending. Darwin/Linux require no added
+dependency; Darwin syscall constants are pinned in the platform file.
+
 ## 6. LLM / provider — the client
 
 Any object exposing `await client.messages.create(model=, messages=, tools=,

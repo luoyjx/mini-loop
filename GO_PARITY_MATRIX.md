@@ -165,3 +165,11 @@ private binding fields and returns ScopedStore directly; completed cache values
 are shared, failed builds are uncached and retries recheck links. Four source
 scenarios and native concurrency/cancellation/retry checks pass. Publication,
 manager/restore/child composition, configuration and routes remain pending.
+
+Publication file-boundary progress: snapshot 62 compares 12 actual Python
+atomic_create_bytes/read_bytes_no_follow scenarios. Native durable uses anchored
+component-wise O_NOFOLLOW descriptors, bounded regular reads, private fsynced
+scratch and no-replace hard-link commits; typed device/inode identity is returned.
+Darwin native concurrency/rename/cancellation/FIFO tests pass. Linux/Intel-Darwin
+compile checks are separate from runtime evidence. Full skill publication remains
+pending; no path-only replacement is used as an equivalent.
