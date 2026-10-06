@@ -1,0 +1,1181 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "current_epoch",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "legacy-create",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "006baf7913b96f80e91a1c7a9765918c5106663aee9c31f1785516f8655e030c"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "authenticated_turns",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": true,
+      "minimum": 8,
+      "name": "authenticated-create",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "55a95abf493d925ac968d261381636fcb0006b664e8ae43f1ffdae65b39ada5a"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "authenticated_turns_tail",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 16
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": true,
+      "minimum": 8,
+      "name": "authenticated-tail",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 40,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [],
+        "error": "empty_transcript",
+        "preview": null,
+        "status": 422
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": true,
+      "minimum": 8,
+      "name": "empty-ledger-no-history-fallback",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 0,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "cf1d48ff44375cd046dafda727359e3b62c32760b297ff99bb2d9fc99567bffb"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": true,
+          "coverage": "authenticated_turns",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "[Context compressed here]",
+          "role": "user"
+        }
+      ],
+      "ledger": true,
+      "minimum": 8,
+      "name": "authenticated-gap",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "7593316862cbefa0123f36bd63087561aec3a22100249c84da880700773f9a79"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": true,
+          "coverage": "current_epoch",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "[snipped]gap",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "legacy-gap",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [],
+        "error": "empty_transcript",
+        "preview": null,
+        "status": 422
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "<runtime-state>internal",
+          "role": "user"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "legacy-only-internal",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [],
+        "error": "invalid_name",
+        "preview": null,
+        "status": 422
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "invalid-name",
+      "owner": "",
+      "requested_name": "../bad",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [],
+        "error": "invalid_owner",
+        "preview": null,
+        "status": 500
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "invalid-owner",
+      "owner": "",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [],
+        "error": "sensitive_name",
+        "preview": null,
+        "status": 422
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 1,
+      "name": "sensitive-name",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": [
+        "recipe"
+      ]
+    },
+    {
+      "expected": {
+        "calls": [],
+        "error": "secret_screening_unavailable",
+        "preview": null,
+        "status": 503
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "short-health",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": [
+        "tiny"
+      ]
+    },
+    {
+      "expected": {
+        "calls": [],
+        "error": "secret_screening_unavailable",
+        "preview": null,
+        "status": 503
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "unresolved-health",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": true,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [],
+        "error": "capture_source_unavailable",
+        "preview": null,
+        "status": 503
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": true,
+      "minimum": 8,
+      "name": "latched-capture",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": [
+        "tiny"
+      ]
+    },
+    {
+      "expected": {
+        "calls": [
+          "7aedb941c0fd5b69d42bbb4aee61ba2006b956b22196e83f0290e953d6c92484"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "current_epoch",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "preview-private-secret then safe",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "focus-mask",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": [
+        "preview-private-secret"
+      ]
+    },
+    {
+      "expected": {
+        "calls": [
+          "4509bcfeb8d6d491ef76e6b87956e0d9447d71c2e0cecf1e77db1b7456fce100"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "current_epoch",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱界🌱",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "focus-unicode-bound",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "0bd8631952b49f5db2cf801387cbdc1303a3a2e32048d19e0886c28a10934337"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "current_epoch",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 1,
+      "name": "root-key-mask",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": [
+        "requested_name"
+      ]
+    },
+    {
+      "expected": {
+        "calls": [
+          "8ed781315c77876f6fbab6f674f412a6f32353bc1601667df77b5ca8cae772e7"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "current_epoch",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 1,
+      "name": "legacy-role-key-mask",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": [
+        "role"
+      ]
+    },
+    {
+      "expected": {
+        "calls": [],
+        "error": "empty_transcript",
+        "preview": null,
+        "status": 422
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": true,
+      "minimum": 1,
+      "name": "authenticated-role-key-mask",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": [
+        "role"
+      ]
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab",
+          "b7f06d119f4fe3f699d45aafa2e05ef32e3e3349aa69a781454232041d38d68d"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "current_epoch",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "repair-malformed",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "private malformed candidate",
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab",
+          "0688c710ccdea3c9c53c73302301572cb9977d18ea09edfe27eadc8b16329764"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "current_epoch",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "repair-sensitive",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\": \"mini-loop.personal-skill-draft/v1\", \"decision\": \"create\", \"description\": \" Useful recipe \", \"body\": \"preview-private-secret\", \"evidence_indexes\": [0]}",
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": [
+        "preview-private-secret"
+      ]
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab",
+          "0c44a7f0d9a83917fab65116742095490637caefa1b7a20cb3de37c38aa03884"
+        ],
+        "error": "",
+        "preview": {
+          "body": "First.\nThen.",
+          "compacted_history_excluded": false,
+          "coverage": "current_epoch",
+          "description": "Useful recipe",
+          "digest": "f87eaf122902c62975d9ef0d39ab0ef33cf8ef28e50831c802f2e9101daf4085",
+          "evidence_indexes": [
+            0
+          ],
+          "name": "recipe",
+          "omitted": 0
+        },
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "repair-evidence",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\": \"mini-loop.personal-skill-draft/v1\", \"decision\": \"create\", \"description\": \" Useful recipe \", \"body\": \" First.\\r\\nThen. \", \"evidence_indexes\": [999]}",
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab",
+          "b7f06d119f4fe3f699d45aafa2e05ef32e3e3349aa69a781454232041d38d68d"
+        ],
+        "error": "invalid_preview",
+        "preview": null,
+        "status": 422
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "two-invalid",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "private malformed one",
+        "private malformed two"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab"
+        ],
+        "error": "preview_skipped",
+        "preview": null,
+        "status": 422
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "skip",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"skip\",\"description\":\"\",\"body\":\"\",\"evidence_indexes\":[]}"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab"
+        ],
+        "error": "secret_screening_unavailable",
+        "preview": null,
+        "status": 503
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "post-create-health",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "session",
+      "short_after": true,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab"
+        ],
+        "error": "secret_screening_unavailable",
+        "preview": null,
+        "status": 503
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "post-skip-health",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"skip\",\"description\":\"\",\"body\":\"\",\"evidence_indexes\":[]}"
+      ],
+      "session": "session",
+      "short_after": true,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab"
+        ],
+        "error": "provider_failure",
+        "preview": null,
+        "status": 502
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "provider-error",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "provider-error"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab",
+          "b7f06d119f4fe3f699d45aafa2e05ef32e3e3349aa69a781454232041d38d68d"
+        ],
+        "error": "provider_failure",
+        "preview": null,
+        "status": 502
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "repair-provider-error",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "bad",
+        "provider-error"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab"
+        ],
+        "error": "cancelled",
+        "preview": null,
+        "status": 0
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "cancelled",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "cancelled"
+      ],
+      "session": "session",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    },
+    {
+      "expected": {
+        "calls": [
+          "9fcbf90a0f6a2fc8677c67c7280e680fd00b16acef2201d0be96d28864fb39ab"
+        ],
+        "error": "invalid_session",
+        "preview": null,
+        "status": 500
+      },
+      "final": "answer",
+      "focus": "",
+      "history": [
+        {
+          "content": "human",
+          "role": "user"
+        },
+        {
+          "content": "answer",
+          "role": "assistant"
+        }
+      ],
+      "ledger": false,
+      "minimum": 8,
+      "name": "invalid-session-after-model",
+      "owner": "owner",
+      "requested_name": "recipe",
+      "responses": [
+        "{\"schema\":\"mini-loop.personal-skill-draft/v1\",\"decision\":\"create\",\"description\":\" Useful recipe \",\"body\":\" First.\\r\\nThen. \",\"evidence_indexes\":[0]}"
+      ],
+      "session": "",
+      "short_after": false,
+      "turns": 1,
+      "unresolved": false,
+      "user": "human",
+      "values": []
+    }
+  ],
+  "source_sha256": "eb7ec349acfc78570bbed02994193df4c9ff950f69ed0e1a9cc46d849950cd19"
+}

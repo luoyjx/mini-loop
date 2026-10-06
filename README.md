@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `0f2c268` plus typed skill candidate parsing).
+reviewed **2026-10-07** (Go baseline `68364c8` plus typed skill preview business flow).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -401,7 +401,7 @@ flowchart LR
         GoCronRunner -->|fresh untrusted serialized turn| GoManaged
         GoCronRunner -. stable identity lookup / restore .-> GoManager
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
-        GoDraftLibrary["Go userresources draft / evidence libraries<br/>library-only · FIFO / TTL · typed candidate parsing<br/>owner + session + digest · no publication flow"]
+        GoDraftLibrary["Go userresources draft / preview libraries<br/>library-only · typed candidate / two-attempt model seam<br/>owner + session + digest · no publication flow"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -1117,8 +1117,13 @@ from restored/forked history. The separate candidate parser now checks exact
 schema fields, recursive sensitive-output refusal, create/skip semantics and
 unique in-range integer evidence before canonical skill validation. It retains
 only typed validated fields; source JSON duplicate-key and nonfinite-type
-outcomes are preserved without retained nonfinite values. Model generation and
-authenticated publication routes remain pending.
+outcomes are preserved without retained nonfinite values. A separate typed
+SkillPreviewer now implements the source projection/focus/masking, two-attempt
+generation/repair, health checks and owner/session-bound draft retention through
+an explicit non-live model interface. An empty supplied ledger never falls back
+to history. The repair prompt contains a safe reason, never the previous output.
+Native-session model adapter, manager admission/lease binding and authenticated
+publication routes remain pending; the service grants no publication authority.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

@@ -1490,7 +1490,7 @@ and UserResources. Inspect/dump reports memory_backend, memory_tools and memory_
 without creating roots or making model calls; these are configuration choices,
 not runtime health evidence. Snapshot 70 compares seven actual source constructor
 cases. Native HTTP model tests verify selected roots, exact owners and the copied
-auto override. User-skill capture/preview/HTTP routes remain pending.
+auto override. Admitted skill capture is described below; native-session preview/HTTP routes remain pending.
 
 ### Immutable owner resource snapshots
 
@@ -1578,6 +1578,20 @@ turn projection or HTTP skill route yet. Publication should retain a Peek handle
 until successful durable commit, then discard it; Consume is not a pre-commit step.
 
 
+### Typed skill preview business flow
+
+userresources.SkillPreviewer implements the source preview function through
+an explicit SkillPreviewModel seam and typed DraftStore. It preserves name/owner/
+sensitive-name ordering, strict ledger selection, empty-transcript refusal,
+2,000-character masked focus, source system text and 2,500 output tokens. Two
+generation attempts rebuild sanitized payloads; repair contains a safe reason
+without quoting prior output. Successful parse is followed by another health
+check, skip refusal or owner/session-bound draft retention. Failures retain no
+draft; cancellation propagates and native host faults use safe typed errors.
+Snapshot 75 compares 29 actual Python flows, every request hash and accepted
+draft fields. The service has no native-session model adapter, manager admission/
+lease binding or HTTP routes yet; no publication permission/default is activated.
+
 ### Typed skill candidate parsing
 
 userresources.ParseSkillCandidate returns an immutable SkillCandidate or a named
@@ -1605,7 +1619,7 @@ returns. Detached snapshots retain established-empty versus absent evidence.
 Projection checks the latch and masked canonical fields without granting roles.
 Snapshot 73 compares 20 actual Python recipes; native tests cover concurrent
 snapshots, contained faults, terminal order and real HTTP idempotent admission.
-Model preview, manager draft injection and publication routes
+Native-session model binding, manager draft injection and publication routes
 remain pending. Capture is not persisted or reconstructed from history.
 
 ### Pure skill evidence projection
@@ -1630,4 +1644,4 @@ malformed dynamic protocol data is rejected earlier at native typed boundaries.
 Snapshot 72 compares 38 actual source projections, with deterministic repeats
 for large budget cases, exact JSON hashes, omissions, coverage and exclusion flags.
 The pure helpers do not grant admission. Managed capture is described above;
-model preview and authenticated skill publication routes remain pending.
+native-session preview binding and authenticated skill publication routes remain pending.

@@ -6155,6 +6155,83 @@ def _skill_candidate_contracts() -> dict:
     return dict(cases=cases, integer_digit_limit=sys.get_int_max_str_digits(), source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skill_capture.py").read_bytes()).hexdigest())
 
 
+def _skill_preview_contracts() -> dict:
+    """Actual complete preview business flow, using a recorded model boundary."""
+    import asyncio
+    from types import SimpleNamespace
+    from mini_loop.skill_capture import preview_personal_skill, record_personal_skill_turn, PersonalSkillError
+    from mini_loop.secrets import SecretRegistry
+    cases = []
+    candidate = dict(schema="mini-loop.personal-skill-draft/v1", decision="create", description=" Useful recipe ", body=" First.\r\nThen. ", evidence_indexes=[0])
+    accepted = json.dumps(candidate, separators=(",", ":"))
+    skipped = json.dumps({**candidate,"decision":"skip","description":"","body":"","evidence_indexes":[]}, separators=(",", ":"))
+
+    async def add(name, *, requested_name="recipe", owner="owner", session="session", focus="", ledger=False, turns=1, user="human", final="answer", history=None, values=(), minimum=8, unresolved=False, responses=None, short_after=False):
+        history = history if history is not None else [dict(role="user",content="human"),dict(role="assistant",content="answer")]
+        responses = responses if responses is not None else [accepted]
+        registry = SecretRegistry(min_length=minimum)
+        for index, value in enumerate(values): registry.register(f"VALUE{index}",value)
+        if unresolved: registry.register("missing", lambda: None)
+        state = dict(session_id=session)
+        if ledger: state["personal_skill_turns"] = []
+        calls = []
+        async def create(messages, **kwargs):
+            calls.append(dict(messages=messages, **kwargs))
+            response = responses[len(calls)-1]
+            if response == "provider-error": raise RuntimeError("private-provider-error")
+            if response == "cancelled": raise asyncio.CancelledError()
+            if short_after: registry.register("new-short", "tiny")
+            return SimpleNamespace(content=[dict(type="thinking", thinking="private ignored"),dict(type="text",text=response)])
+        agent = SimpleNamespace(state=state, secrets=registry, messages=history, _create=create)
+        if ledger:
+            for _ in range(turns): record_personal_skill_turn(agent,user,final)
+        expected = dict(error="",status=0,preview=None)
+        try:
+            draft = await preview_personal_skill(agent, owner, requested_name, focus)
+        except asyncio.CancelledError:
+            expected["error"] = "cancelled"
+        except PersonalSkillError as error:
+            expected.update(error=error.code,status=error.status_code)
+        else:
+            public = draft.public_dict()
+            expected["preview"] = {key:value for key,value in public.items() if key not in ("draft_id","created_at","expires_at")}
+        expected["calls"] = [hashlib.sha256(json.dumps(call,ensure_ascii=False,separators=(",", ":"),sort_keys=True).encode()).hexdigest() for call in calls]
+        cases.append(dict(name=name,requested_name=requested_name,owner=owner,session=session,focus=focus,ledger=ledger,turns=turns,user=user,final=final,history=history,values=list(values),minimum=minimum,unresolved=unresolved,responses=responses,short_after=short_after,expected=expected))
+
+    async def run():
+        await add("legacy-create")
+        await add("authenticated-create",ledger=True)
+        await add("authenticated-tail",ledger=True,turns=40)
+        await add("empty-ledger-no-history-fallback",ledger=True,turns=0)
+        await add("authenticated-gap",ledger=True,history=[dict(role="user",content="[Context compressed here]")])
+        await add("legacy-gap",history=[dict(role="user",content="[snipped]gap"),dict(role="assistant",content="answer")])
+        await add("legacy-only-internal",history=[dict(role="user",content="<runtime-state>internal")])
+        await add("invalid-name",requested_name="../bad",owner="")
+        await add("invalid-owner",owner="")
+        await add("sensitive-name",values=["recipe"],minimum=1)
+        await add("short-health",values=["tiny"])
+        await add("unresolved-health",unresolved=True)
+        await add("latched-capture",ledger=True,values=["tiny"])
+        await add("focus-mask",focus="preview-private-secret then safe",values=["preview-private-secret"])
+        await add("focus-unicode-bound",focus="界🌱"*1200)
+        await add("root-key-mask",values=["requested_name"],minimum=1)
+        await add("legacy-role-key-mask",values=["role"],minimum=1)
+        await add("authenticated-role-key-mask",ledger=True,values=["role"],minimum=1)
+        await add("repair-malformed",responses=["private malformed candidate",accepted])
+        await add("repair-sensitive",responses=[json.dumps({**candidate,"body":"preview-private-secret"}),accepted],values=["preview-private-secret"])
+        await add("repair-evidence",responses=[json.dumps({**candidate,"evidence_indexes":[999]}),accepted])
+        await add("two-invalid",responses=["private malformed one","private malformed two"])
+        await add("skip",responses=[skipped])
+        await add("post-create-health",short_after=True)
+        await add("post-skip-health",responses=[skipped],short_after=True)
+        await add("provider-error",responses=["provider-error"])
+        await add("repair-provider-error",responses=["bad","provider-error"])
+        await add("cancelled",responses=["cancelled"])
+        await add("invalid-session-after-model",session="")
+    asyncio.run(run())
+    return dict(cases=cases,source_sha256=hashlib.sha256((PYTHON_ROOT / "mini_loop" / "skill_capture.py").read_bytes()).hexdigest())
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6284,6 +6361,7 @@ def _snapshot() -> dict[str, bytes]:
         skill_projection_contracts = _skill_projection_contracts()
         skill_capture_contracts = _skill_capture_contracts()
         skill_candidate_contracts = _skill_candidate_contracts()
+        skill_preview_contracts = _skill_preview_contracts()
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6373,6 +6451,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-skill-projection.json": _json_bytes(skill_projection_contracts),
         "python-skill-capture.json": _json_bytes(skill_capture_contracts),
         "python-skill-candidate.json": _json_bytes(skill_candidate_contracts),
+        "python-skill-preview.json": _json_bytes(skill_preview_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

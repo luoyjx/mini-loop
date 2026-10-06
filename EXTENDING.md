@@ -1289,7 +1289,7 @@ pointers, flat serializers and archival readers use known event variants, and
 memory_capture_error carries bounded detail through normal registry masking.
 Native error class labels differ from Python class names. Ordinary capture faults
 preserve the completed turn; cancellation and native state authority loss remain
-errors. Skill capture/preview/routes remain pending; launcher root configuration
+errors. Native-session skill preview/routes remain pending; launcher root configuration
 and individual memory selection are implemented as described below.
 
 ### Go owner-bound draft storage
@@ -1362,7 +1362,7 @@ capture_source_unavailable/503. Typed native storage cannot represent a corrupt
 dynamic Python state/list or omitted field. Masking faults/invalid UTF-8 use a
 safe capture_failed latch, never private host exceptions. Nothing is persisted
 or restored, and optional capture cannot fail a durably completed turn. Candidate
-parsing is described below; model preview, manager draft injection and
+parsing and preview business flow are described below; native model binding, manager draft injection and
 preview/commit routes remain.
 
 ### Go skill candidate parsing
@@ -1388,7 +1388,31 @@ are preserved and no nonfinite native value is stored. The source default
 surrogates refuse malformed_json before lossy decoding; Python can represent
 lone surrogate strings. Native masker panics return masking_unavailable without
 private error text. Registry health checks belong to the preview caller, matching
-the source parser's responsibility. Model preview/routes remain unbound.
+the source parser's responsibility. Preview business flow is described below;
+runtime and routes remain unbound.
+
+### Go skill preview business flow
+
+SkillPreviewer owns a trusted SkillPreviewModel, masker and process-local DraftStore
+(default source quotas/lifetime when no store is supplied). Preview validates name,
+owner and sensitive name before projection. A supplied CaptureLedger selects
+authenticated evidence, even when empty; nil selects standalone legacy history.
+Empty evidence refuses before a model request. Masked focus is bounded to 2,000
+Unicode characters; secret health is checked before generation. Fixed system text,
+2,500 output tokens and an immutable prompt are supplied to the model seam.
+
+At most two attempts run. Candidate errors add only the safe repair reason to a
+fresh recursively masked, sorted compact Unicode JSON payload; prior model output
+is never quoted. Provider faults refuse provider_failure/502; cancellation passes
+through. Valid candidates trigger another secret-health check before skip refusal
+or bound draft retention. Failed/cancelled operations retain no draft. Native
+masker/provider panics have safe 503/502 errors; explicit context deadlines also
+propagate. Closed JSON Value maps are transient boundary projections, not retained
+service state. Model adapters must extract text blocks and preserve source normal
+model recovery/telemetry with non-live history/meter ownership, empty tools and
+personal_skill_preview purpose. Managed callers must hold admission/lease and
+supply a ledger; this library enforces no session/HTTP authority itself. Those
+bindings and authenticated preview/commit routes remain pending.
 
 ### Go trusted session resource binding
 
