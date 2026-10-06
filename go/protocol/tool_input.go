@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/luoyjx/mini-loop/go/decisions"
 )
 
 const (
+	ToolDecision        ToolName = "decision"
 	ToolGoalCreate      ToolName = "goal_create"
 	ToolGoalStatus      ToolName = "goal_status"
 	ToolGoalComplete    ToolName = "goal_complete"
@@ -131,31 +133,34 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
-	createGoal      CreateGoalInput
-	goalRef         GoalReferenceInput
-	blockGoal       BlockGoalInput
-	exitPlanMode    ExitPlanModeInput
-	name            ToolName
-	nulls           inputNullFields
-	bash            BashInput
-	readFile        ReadFileInput
-	writeFile       WriteFileInput
-	editFile        EditFileInput
-	glob            GlobInput
-	todoWrite       TodoWriteInput
-	task            TaskInput
-	loadSkill       LoadSkillInput
-	compress        CompressInput
-	askUser         AskUserInput
-	createTask      CreateTaskInput
-	taskRef         TaskReferenceInput
-	createWorktree  CreateWorktreeInput
-	removeWorktree  RemoveWorktreeInput
-	backgroundRun   BackgroundRunInput
-	checkBackground CheckBackgroundInput
-	worktreeName    WorktreeNameInput
-	scheduleCron    ScheduleCronInput
-	cancelCron      CancelCronInput
+	decision decisions.Request
+	// A masked recording projection is a closed JSON tree, never executable input.
+	decisionProjection *decisions.Value
+	createGoal         CreateGoalInput
+	goalRef            GoalReferenceInput
+	blockGoal          BlockGoalInput
+	exitPlanMode       ExitPlanModeInput
+	name               ToolName
+	nulls              inputNullFields
+	bash               BashInput
+	readFile           ReadFileInput
+	writeFile          WriteFileInput
+	editFile           EditFileInput
+	glob               GlobInput
+	todoWrite          TodoWriteInput
+	task               TaskInput
+	loadSkill          LoadSkillInput
+	compress           CompressInput
+	askUser            AskUserInput
+	createTask         CreateTaskInput
+	taskRef            TaskReferenceInput
+	createWorktree     CreateWorktreeInput
+	removeWorktree     RemoveWorktreeInput
+	backgroundRun      BackgroundRunInput
+	checkBackground    CheckBackgroundInput
+	worktreeName       WorktreeNameInput
+	scheduleCron       ScheduleCronInput
+	cancelCron         CancelCronInput
 }
 
 func BashToolInput(value BashInput) ToolInput {
@@ -318,6 +323,13 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() { result.nulls = input.nulls }()
 	switch input.name {
+	case ToolDecision:
+		result := DecisionToolInput(input.decision)
+		if input.decisionProjection != nil {
+			v := input.decisionProjection.Clone()
+			result.decisionProjection = &v
+		}
+		return result
 	case ToolGoalCreate:
 		return CreateGoalToolInput(input.createGoal)
 	case ToolScheduleCron:
@@ -354,6 +366,12 @@ func (input ToolInput) clone() (result ToolInput) {
 
 func (input ToolInput) Validate() error {
 	switch input.name {
+	case ToolDecision:
+		if input.decisionProjection != nil {
+			return fmt.Errorf("decision recording projection cannot be executed")
+		}
+		_, err := decisions.NewRequest(input.decision.State(), input.decision.Questions())
+		return err
 	case ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
 		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
 		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
@@ -382,6 +400,11 @@ func (input ToolInput) Validate() error {
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
 	switch input.name {
+	case ToolDecision:
+		if input.decisionProjection != nil {
+			return input.decisionProjection.MarshalJSON()
+		}
+		return input.decision.MarshalJSON()
 	case ToolGoalCreate, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask, ToolCreateWorktree, ToolRemoveWorktree:
 		return input.marshalOptionalJSON()
 	}
@@ -448,6 +471,12 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolDecision:
+		r, e := decisions.DecodeRequest(data)
+		if e != nil {
+			return ToolInput{}, e
+		}
+		return DecisionToolInput(r), nil
 	case ToolGoalCreate:
 		var wire struct {
 			Objective *string `json:"objective"`

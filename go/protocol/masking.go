@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"github.com/luoyjx/mini-loop/go/decisions"
 	"io"
 )
 
@@ -15,6 +16,14 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolDecision:
+		v := input.decision.Value()
+		if input.decisionProjection != nil {
+			v = input.decisionProjection.Clone()
+		}
+		v = v.MapStrings(mask)
+		input.decisionProjection = &v
+		input.decision = decisions.Request{}
 	case ToolGoalCreate:
 		input.createGoal.Objective = mask(input.createGoal.Objective)
 	case ToolGoalBlock:

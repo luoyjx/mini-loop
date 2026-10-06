@@ -13,6 +13,8 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return "", err
 	}
 	switch input.Name() {
+	case ToolDecision:
+		return PythonJSON(input.decision, false, compact)
 	case ToolGoalCreate:
 		v := input.createGoal
 		return PythonJSON(struct {

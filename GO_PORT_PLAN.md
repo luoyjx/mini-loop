@@ -4465,3 +4465,15 @@ Protocol messages and direct HTTP/SSE decoding now preserve the named
 text or a provisional text delta. Tests cover detached access, strict malformed
 wire refusal and complete direct/SSE reply round trips. This decoder slice
 changes no activation or authority. Full Go/race/vet gates passed.
+
+## Implementation checkpoint — 2026-10-06 closed decision tool protocols
+
+The closed ToolInput variant and source decision schema now support explicit
+state and choice/score/noul questions. Schema composition has named union,
+constant, numeric, array and additional-property variants. Diagnostic masking
+projects detached member names and values before escaping; the projection
+cannot execute or acquire an action identity. Live inputs remain validated.
+
+This protocol slice installs no tool. Its staged snapshot passes protocol tests;
+the complete integration passes Go full/race/vet. Runtime activation follows in
+a separate commit.
