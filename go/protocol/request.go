@@ -307,10 +307,11 @@ func (schema ToolSchema) Validate() error {
 type RequestPurpose string
 
 const (
-	PurposeAgentTurn       RequestPurpose = "agent_turn"
-	PurposeCompaction      RequestPurpose = "compaction"
-	PurposeDecision        RequestPurpose = "decision"
-	PurposeMemorySelection RequestPurpose = "memory_selection"
+	PurposeAgentTurn           RequestPurpose = "agent_turn"
+	PurposeCompaction          RequestPurpose = "compaction"
+	PurposeDecision            RequestPurpose = "decision"
+	PurposeMemorySelection     RequestPurpose = "memory_selection"
+	PurposeMemoryConsolidation RequestPurpose = "memory_consolidation"
 )
 
 // ModelRequest is detached from session state. Purpose is local provenance,
@@ -357,7 +358,7 @@ func (request ModelRequest) Validate() error {
 	if request.Model == "" || request.MaxTokens < 1 || len(request.Messages) == 0 {
 		return errors.New("model request requires model, positive max tokens and messages")
 	}
-	if request.Purpose != PurposeAgentTurn && request.Purpose != PurposeCompaction && request.Purpose != PurposeDecision && request.Purpose != PurposeMemorySelection {
+	if request.Purpose != PurposeAgentTurn && request.Purpose != PurposeCompaction && request.Purpose != PurposeDecision && request.Purpose != PurposeMemorySelection && request.Purpose != PurposeMemoryConsolidation {
 		return errors.New("unsupported model request purpose")
 	}
 	if err := ValidateTranscript(request.Messages); err != nil {

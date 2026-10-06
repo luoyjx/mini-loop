@@ -1227,7 +1227,7 @@ ScopedStore supplies the legacy shared-store binding, or UserResources supplies
 the owner-local store with precedence. Construction rejects missing/foreign
 bindings before workspace writes. `ManagerServices.MemoryTools` selects the pair
 with an explicit UserResources resolver. The launcher still rejects resource/
-memory settings until the associated default lifecycle is implemented.
+memory settings until root configuration and default composition are implemented.
 
 `remember` is a write-risk exclusive tool; `recall` is a readonly read-risk
 exclusive tool. Both pass through the shared rewrite/permission/guard/masking
@@ -1243,8 +1243,8 @@ Store, matching the source lifecycle_lock. Explicit remember holds it through
 Write; recall remains outside it. Waiting observes cancellation and callback
 errors/panics release the lock. Callbacks can perform ordinary scoped operations
 but cannot recursively acquire the lifecycle. The lock is process-local, has no
-rollback, and is independent across Store instances. The implemented extraction stage expects its lifecycle caller to own this lock;
-consolidation and automatic endpoint capture remain pending consumers.
+rollback, and is independent across Store instances. Automatic end-of-turn capture now holds this lock across the model extraction
+and consolidation stages. The ordinary operation permit remains separate.
 
 Recall renders the source provenance wrapper and lexical search's five-record
 limit. A selected in-process child keeps the parent's scoped store and is
@@ -1271,8 +1271,25 @@ source defaults; additional owner/root/origin fields are ignored and the bound
 store fixes attribution. Non-string/null fields are rejected by the native typed
 boundary; source can coerce some malformed scalars. Ordinary faults return zero,
 including after partial writes; cancellation and native state authority failures
-propagate. It has not yet been connected to automatic turn-end capture.
-Consolidation, capture/preview/routes and launcher root configuration remain pending.
+propagate. Capture now runs after final text, a stop-hook stuck halt, and round
+exhaustion when both tools, MemoryAuto and writable posture permit it. Provider
+fault and cancellation exits do not initiate capture. The source tool-batch stuck
+halt lacks capture and is preserved as a measured source omission.
+
+Consolidation starts at ten scoped records and uses a 2,500-token
+memory_consolidation side request. Source lowercase ordered record fields are
+serialized with non-ASCII JSON. Nonobjects/missing names are skipped; no usable
+entries leaves the store untouched. Exact name/type/description/body identities
+retain original origins; changed/new entries receive consolidated. Replacement
+always uses the scoped owner. The source's multi-file replacement has no rollback.
+List failures outside the consolidation best-effort block reach contained capture;
+normal model/parse/write faults return zero. memory/extract carries count and an
+explicit consolidated count; memory/load omits it. Accessors/event clones detach
+pointers, flat serializers and archival readers use known event variants, and
+memory_capture_error carries bounded detail through normal registry masking.
+Native error class labels differ from Python class names. Ordinary capture faults
+preserve the completed turn; cancellation and native state authority loss remain
+errors. Skill capture/preview/routes and launcher root configuration remain pending.
 
 ### Go trusted session resource binding
 

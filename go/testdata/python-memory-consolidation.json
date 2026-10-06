@@ -1,0 +1,2239 @@
+{
+  "cases": [
+    {
+      "before": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [],
+      "count": 0,
+      "fault": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "changed",
+      "name": "below-threshold",
+      "purposes": [],
+      "records": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "[{\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"changed\"}, {\"name\": \"new\", \"body\": \"merged\", \"owner\": \"foreign\", \"origin\": \"explicit\"}]",
+      "seed": 9
+    },
+    {
+      "before": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [
+        {
+          "max_tokens": 2500,
+          "messages": [
+            {
+              "content": "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n[{\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+              "role": "user"
+            }
+          ],
+          "model": "claude-sonnet-4-6"
+        }
+      ],
+      "count": 3,
+      "fault": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "changed",
+      "name": "threshold-and-origins",
+      "purposes": [
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "changed",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "merged",
+          "description": "",
+          "file": "u-9e0b51b66f03d51ee64ab67d8bd7f78c3760e927d30e1dfea048790fdc2ace98-new.md",
+          "name": "new",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "[{\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"changed\"}, {\"name\": \"new\", \"body\": \"merged\", \"owner\": \"foreign\", \"origin\": \"explicit\"}]",
+      "seed": 10
+    },
+    {
+      "before": [
+        {
+          "body": "body-10 café",
+          "description": "description-10 中文",
+          "file": "u-0920578b19d1f8b10800d173998baeb2b9b04ea13ebdb46c763ee52338617051-fact-10.md",
+          "name": "fact-10",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-11 café",
+          "description": "description-11 中文",
+          "file": "u-8ff7ab4637d9d4ed38314cdefa9c9ee1fe8363bcf079e211980603f609336547-fact-11.md",
+          "name": "fact-11",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [
+        {
+          "max_tokens": 2500,
+          "messages": [
+            {
+              "content": "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n[{\"file\": \"u-0920578b19d1f8b10800d173998baeb2b9b04ea13ebdb46c763ee52338617051-fact-10.md\", \"name\": \"fact-10\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-10 中文\", \"type\": \"project\", \"body\": \"body-10 café\"}, {\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-8ff7ab4637d9d4ed38314cdefa9c9ee1fe8363bcf079e211980603f609336547-fact-11.md\", \"name\": \"fact-11\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-11 中文\", \"type\": \"project\", \"body\": \"body-11 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+              "role": "user"
+            }
+          ],
+          "model": "claude-sonnet-4-6"
+        }
+      ],
+      "count": 12,
+      "fault": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "same",
+      "name": "all-unchanged",
+      "purposes": [
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "body-10 café",
+          "description": "description-10 中文",
+          "file": "u-0920578b19d1f8b10800d173998baeb2b9b04ea13ebdb46c763ee52338617051-fact-10.md",
+          "name": "fact-10",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-11 café",
+          "description": "description-11 中文",
+          "file": "u-8ff7ab4637d9d4ed38314cdefa9c9ee1fe8363bcf079e211980603f609336547-fact-11.md",
+          "name": "fact-11",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "[{\"file\": \"u-0920578b19d1f8b10800d173998baeb2b9b04ea13ebdb46c763ee52338617051-fact-10.md\", \"name\": \"fact-10\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-10 中文\", \"type\": \"project\", \"body\": \"body-10 café\"}, {\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-8ff7ab4637d9d4ed38314cdefa9c9ee1fe8363bcf079e211980603f609336547-fact-11.md\", \"name\": \"fact-11\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-11 中文\", \"type\": \"project\", \"body\": \"body-11 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+      "seed": 12
+    },
+    {
+      "before": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [
+        {
+          "max_tokens": 2500,
+          "messages": [
+            {
+              "content": "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n[{\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+              "role": "user"
+            }
+          ],
+          "model": "claude-sonnet-4-6"
+        }
+      ],
+      "count": 1,
+      "fault": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "skip",
+      "name": "ignored-nonobjects",
+      "purposes": [
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "[null, 7, {}, {\"body\": \"missing\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}]",
+      "seed": 10
+    },
+    {
+      "before": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [
+        {
+          "max_tokens": 2500,
+          "messages": [
+            {
+              "content": "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n[{\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+              "role": "user"
+            }
+          ],
+          "model": "claude-sonnet-4-6"
+        }
+      ],
+      "count": 0,
+      "fault": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "invalid",
+      "name": "no-valid-entries",
+      "purposes": [
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "[null, 7, {}, {\"body\": \"missing\"}]",
+      "seed": 10
+    },
+    {
+      "before": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [
+        {
+          "max_tokens": 2500,
+          "messages": [
+            {
+              "content": "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n[{\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+              "role": "user"
+            }
+          ],
+          "model": "claude-sonnet-4-6"
+        }
+      ],
+      "count": 0,
+      "fault": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "empty",
+      "name": "empty-array",
+      "purposes": [
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "[]",
+      "seed": 10
+    },
+    {
+      "before": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [
+        {
+          "max_tokens": 2500,
+          "messages": [
+            {
+              "content": "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n[{\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+              "role": "user"
+            }
+          ],
+          "model": "claude-sonnet-4-6"
+        }
+      ],
+      "count": 0,
+      "fault": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "malformed",
+      "name": "malformed",
+      "purposes": [
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "not JSON",
+      "seed": 10
+    },
+    {
+      "before": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [
+        {
+          "max_tokens": 2500,
+          "messages": [
+            {
+              "content": "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n[{\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+              "role": "user"
+            }
+          ],
+          "model": "claude-sonnet-4-6"
+        }
+      ],
+      "count": 0,
+      "fault": true,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "changed",
+      "name": "provider-fault",
+      "purposes": [
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "[{\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"changed\"}, {\"name\": \"new\", \"body\": \"merged\", \"owner\": \"foreign\", \"origin\": \"explicit\"}]",
+      "seed": 10
+    },
+    {
+      "before": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [
+        {
+          "max_tokens": 2500,
+          "messages": [
+            {
+              "content": "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n[{\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+              "role": "user"
+            }
+          ],
+          "model": "claude-sonnet-4-6"
+        }
+      ],
+      "count": 1,
+      "fault": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "type",
+      "name": "changed-type",
+      "purposes": [
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "[{\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"unknown\", \"body\": \"body-0 café\"}]",
+      "seed": 10
+    },
+    {
+      "before": [
+        {
+          "body": "body-1 café",
+          "description": "description-1 中文",
+          "file": "u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md",
+          "name": "fact-1",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-5 café",
+          "description": "description-5 中文",
+          "file": "u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md",
+          "name": "fact-5",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-4 café",
+          "description": "description-4 中文",
+          "file": "u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md",
+          "name": "fact-4",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-6 café",
+          "description": "description-6 中文",
+          "file": "u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md",
+          "name": "fact-6",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-0 café",
+          "description": "description-0 中文",
+          "file": "u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md",
+          "name": "fact-0",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-7 café",
+          "description": "description-7 中文",
+          "file": "u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md",
+          "name": "fact-7",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-3 café",
+          "description": "description-3 中文",
+          "file": "u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md",
+          "name": "fact-3",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-8 café",
+          "description": "description-8 中文",
+          "file": "u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md",
+          "name": "fact-8",
+          "origin": "explicit",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-9 café",
+          "description": "description-9 中文",
+          "file": "u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md",
+          "name": "fact-9",
+          "origin": "auto_extracted",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        },
+        {
+          "body": "body-2 café",
+          "description": "description-2 中文",
+          "file": "u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md",
+          "name": "fact-2",
+          "origin": "imported",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "calls": [
+        {
+          "max_tokens": 2500,
+          "messages": [
+            {
+              "content": "Deduplicate and consolidate these memories. Preserve current facts and remove obsolete or contradictory duplicates. Return ONLY JSON array entries with name,type,description,body.\n\n[{\"file\": \"u-14e4250d412aae33c69678c67d7310fe2c830ceddc27b498ee36d2b48acaf558-fact-1.md\", \"name\": \"fact-1\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-1 中文\", \"type\": \"project\", \"body\": \"body-1 café\"}, {\"file\": \"u-39c35645eb5ad796842b49d1a2f65de087f392ecff35b31443bc942436ad4e35-fact-5.md\", \"name\": \"fact-5\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-5 中文\", \"type\": \"project\", \"body\": \"body-5 café\"}, {\"file\": \"u-56165c486d8b5c5aaab933d5e889b48cd2d5ce433d0c3e901099f7da7fdd4a9c-fact-4.md\", \"name\": \"fact-4\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-4 中文\", \"type\": \"project\", \"body\": \"body-4 café\"}, {\"file\": \"u-695d9e8162663c8c4c9496c7e20ee5932b0b3cac594e3df9c7c66966117eef67-fact-6.md\", \"name\": \"fact-6\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-6 中文\", \"type\": \"project\", \"body\": \"body-6 café\"}, {\"file\": \"u-71b4fe6b1cbac838009fb36f28eb35c9c6cdcfc55c97049e55e8553fb9dae463-fact-0.md\", \"name\": \"fact-0\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-0 中文\", \"type\": \"project\", \"body\": \"body-0 café\"}, {\"file\": \"u-7cfc6a9158d72902822da35f42cf27926d41e116afb18c00eb33da218634950e-fact-7.md\", \"name\": \"fact-7\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-7 中文\", \"type\": \"project\", \"body\": \"body-7 café\"}, {\"file\": \"u-aa23b278851c1b7145e2e5e660a58513dca85250a5f1235ed1ff3a5f4a9667f6-fact-3.md\", \"name\": \"fact-3\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"consolidated\", \"description\": \"description-3 中文\", \"type\": \"project\", \"body\": \"body-3 café\"}, {\"file\": \"u-db1024502626744080f8f08307b23ccbb487abcadf5232cc0e442c1b32a7063e-fact-8.md\", \"name\": \"fact-8\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"explicit\", \"description\": \"description-8 中文\", \"type\": \"project\", \"body\": \"body-8 café\"}, {\"file\": \"u-dfee70b0ccdae0b055a21e3b76bc65244bba65ef7fa0acad87c767d4116628a3-fact-9.md\", \"name\": \"fact-9\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"auto_extracted\", \"description\": \"description-9 中文\", \"type\": \"project\", \"body\": \"body-9 café\"}, {\"file\": \"u-e0f595d32ac60d9d423dcfa442680f2676b86bb848998e9194414aad166ef298-fact-2.md\", \"name\": \"fact-2\", \"owner\": \"owner\", \"owner_key\": \"4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581\", \"scope\": \"user\", \"origin\": \"imported\", \"description\": \"description-2 中文\", \"type\": \"project\", \"body\": \"body-2 café\"}]",
+              "role": "user"
+            }
+          ],
+          "model": "claude-sonnet-4-6"
+        }
+      ],
+      "count": 1,
+      "fault": false,
+      "foreign": [
+        {
+          "body": "foreign secret",
+          "description": "foreign description",
+          "file": "u-aba2a12ac511565832c192484f5a9b7bd33a2fe72d18974672f665bb7ded51a2-foreign.md",
+          "name": "foreign",
+          "origin": "explicit",
+          "owner": "foreign",
+          "owner_key": "656771905e1ef731f65cd0a0d9fb061238380a1a012e6abdf846ecc7d2ea36fd",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "mode": "defaults",
+      "name": "absent-defaults",
+      "purposes": [
+        "memory_consolidation"
+      ],
+      "records": [
+        {
+          "body": "",
+          "description": "",
+          "file": "u-586c3bb72a9f672bb57aaa1dfa3f43f5802c5be3fb3e08c743c7bc10a6419638-minimal.md",
+          "name": "minimal",
+          "origin": "consolidated",
+          "owner": "owner",
+          "owner_key": "4c1029697ee358715d3a14a2add817c4b01651440de808371f78165ac90dc581",
+          "scope": "user",
+          "type": "project"
+        }
+      ],
+      "reply": "[{\"name\": \"minimal\"}]",
+      "seed": 10
+    }
+  ]
+}

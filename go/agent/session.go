@@ -410,6 +410,9 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 				if signal != nil {
 					nudge, headline := s.nudgeOrHalt(*signal)
 					if !nudge {
+						if err := s.captureMemories(ctx); err != nil {
+							return "", err
+						}
 						return stoppedText(headline, lastText), nil
 					}
 					text = signal.Reminder() + "\n\n" + text
@@ -418,6 +421,9 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 				continue
 			}
 			s.appendText(roundText, PhaseFinalAnswer)
+			if err := s.captureMemories(ctx); err != nil {
+				return "", err
+			}
 			return lastText, nil
 		}
 		s.roundsWithoutTools = 0
@@ -445,6 +451,9 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 	}
 	s.events.append(SessionEvent{kind: EventError, runError: RunErrorEvent{kind: ErrorRoundExhaustion, rounds: s.maxRounds}})
 	headline := fmt.Sprintf("[stopped after %d rounds without finishing]", s.maxRounds)
+	if err := s.captureMemories(ctx); err != nil {
+		return "", err
+	}
 	return stoppedText(headline, lastText), nil
 }
 

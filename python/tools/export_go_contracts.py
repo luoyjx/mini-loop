@@ -5725,6 +5725,122 @@ def _memory_extraction_contracts(scratch: Path) -> dict:
     return dict(cases=asyncio.run(run()))
 
 
+def _memory_consolidation_contracts(scratch: Path) -> dict:
+    """Actual scoped consolidation threshold, request and origin identity."""
+    import asyncio
+    import copy
+    from types import SimpleNamespace
+    from mini_loop.agent import Agent
+    from mini_loop.caching import NullCachePolicy
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeMessage, FakeUsage, text
+    from mini_loop.memory import MemoryStore, ScopedMemory, consolidate_memories
+    recipes=[dict(name="below-threshold",seed=9,mode="changed"),
+             dict(name="threshold-and-origins",seed=10,mode="changed"),
+             dict(name="all-unchanged",seed=12,mode="same"),
+             dict(name="ignored-nonobjects",seed=10,mode="skip"),
+             dict(name="no-valid-entries",seed=10,mode="invalid"),
+             dict(name="empty-array",seed=10,mode="empty"),
+             dict(name="malformed",seed=10,mode="malformed"),
+             dict(name="provider-fault",seed=10,mode="changed",fault=True),
+             dict(name="changed-type",seed=10,mode="type"),
+             dict(name="absent-defaults",seed=10,mode="defaults")]
+    async def scenario(row):
+        root=scratch/row["name"];root.mkdir(parents=True)
+        raw=MemoryStore(root/"memory");store=ScopedMemory(raw,"owner")
+        raw.write("foreign","project","foreign description","foreign secret",owner="foreign")
+        origins=("explicit","auto_extracted","imported","consolidated")
+        for i in range(row["seed"]):store.write(f"fact-{i}","project",f"description-{i} 中文",f"body-{i} café",origin=origins[i%4])
+        before=store.list(); indexed={r["name"]:r for r in before}
+        mode=row["mode"]
+        if mode=="same":items=copy.deepcopy(before)
+        elif mode=="skip":items=[None,7,{},dict(body="missing"),copy.deepcopy(indexed["fact-0"])]
+        elif mode=="invalid":items=[None,7,{},dict(body="missing")]
+        elif mode=="empty":items=[]
+        elif mode=="defaults":items=[dict(name="minimal")]
+        elif mode=="type":items=[{**indexed["fact-0"],"type":"unknown"}]
+        else:items=[copy.deepcopy(indexed["fact-0"]),{**indexed["fact-1"],"body":"changed"},dict(name="new",body="merged",owner="foreign",origin="explicit")]
+        reply="not JSON" if mode=="malformed" else json.dumps(items,ensure_ascii=False)
+        calls,events=[],[]
+        async def create(**kwargs):
+            calls.append(copy.deepcopy(kwargs))
+            if row.get("fault",False):raise RuntimeError("consolidation failed")
+            return FakeMessage([text(reply)],"end_turn",FakeUsage(888,4),model="served-memory")
+        async def emit(event):events.append(copy.deepcopy(event))
+        agent=Agent(client=SimpleNamespace(messages=SimpleNamespace(create=create)),workspace=root,emit=emit,
+                    cache_policy=NullCachePolicy(),state=dict(memory=raw,resource_owner="owner"),
+                    settings=Settings(fake_llm=True,spill_dir=None,skills_dir=root/"empty"))
+        count=await consolidate_memories(store,agent)
+        return {**row,"fault":row.get("fault",False),"reply":reply,"before":before,"calls":calls,"count":count,
+                "records":store.list(),"foreign":ScopedMemory(raw,"foreign").list(),
+                "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
+    async def run():return [await scenario(row) for row in recipes]
+    return dict(cases=asyncio.run(run()))
+
+
+def _memory_capture_contracts(scratch: Path) -> dict:
+    """Actual Agent endpoint capture, including the source tool-halt omission."""
+    import asyncio
+    import copy
+    from types import SimpleNamespace
+    from mini_loop.agent import Agent
+    from mini_loop.caching import NullCachePolicy
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeMessage, FakeUsage, text, tool
+    from mini_loop.memory import MemoryStore, ScopedMemory, install_memory
+    from mini_loop.registry import ToolRegistry, Tool, Hooks
+    from mini_loop.stuck import DefaultStuckDetector, StuckThresholds, NullStuckDetector
+    class Resume(Hooks):
+        async def stop(self,*args):return "keep going"
+    recipes=[dict(name=k) for k in ("normal","exhaustion","resume-halt","tool-halt","provider-error","readonly","disabled","no-pair","cancel","capture-error","threshold-after-extract")]
+    async def scenario(row):
+        root=scratch/row["name"];root.mkdir(parents=True)
+        raw=MemoryStore(root/"memory");store=ScopedMemory(raw,"owner")
+        raw.write("foreign","project","foreign description","foreign secret",owner="foreign")
+        if row["name"]=="threshold-after-extract":
+            for i in range(9):store.write(f"seed-{i}","project",f"seed-{i}","original",origin="explicit")
+        registry=install_memory(ToolRegistry())
+        async def same(ctx,command):return "same"
+        registry.register(Tool("bash","shell",{"type":"object","properties":{"command":{"type":"string"}},"required":["command"]},same,risk="exec"))
+        if row["name"]=="no-pair":registry.unregister("remember")
+        calls,events=[],[]
+        original_list=raw.list
+        async def create(**kwargs):
+            calls.append(copy.deepcopy(kwargs));budget=kwargs["max_tokens"]
+            if budget==200:content=[text("[0]")];reason="end_turn"
+            elif budget==1500:content=[text('[{"name":"captured","body":"fact"}]')];reason="end_turn"
+            elif budget==2500:content=[text('[{"name":"merged","body":"fact"}]')];reason="end_turn"
+            else:
+                if row["name"]=="provider-error":raise RuntimeError("main provider failed")
+                if row["name"]=="cancel":raise asyncio.CancelledError()
+                if row["name"]=="capture-error":
+                    def broken(*args,**kw):raise RuntimeError("capture listing failed")
+                    raw.list=broken
+                if row["name"] in ("exhaustion","tool-halt"):content=[tool("bash",_id=f"u{len(calls)}",command="same")];reason="tool_use"
+                else:content=[text("done")];reason="end_turn"
+            return FakeMessage(content,reason,FakeUsage(1234,2),model="served-memory")
+        async def emit(event):events.append(copy.deepcopy(event))
+        detector=DefaultStuckDetector(StuckThresholds(monologue=2,repeat_action_result=2,max_nudges=0)) if row["name"] in ("resume-halt","tool-halt") else NullStuckDetector()
+        agent=Agent(client=SimpleNamespace(messages=SimpleNamespace(create=create)),workspace=root,emit=emit,
+                    tools=registry,hooks=Resume() if row["name"]=="resume-halt" else Hooks(),stuck_detector=detector,
+                    cache_policy=NullCachePolicy(),max_rounds=2,
+                    state=dict(memory=raw,resource_owner="owner",memory_auto=row["name"]!="disabled",permission_mode="readonly" if row["name"]=="readonly" else "auto"),
+                    settings=Settings(fake_llm=True,spill_dir=None,skills_dir=root/"empty"))
+        error=False
+        try:await agent.run("learn")
+        except (Exception,asyncio.CancelledError):error=True
+        raw.list=original_list
+        projected=[]
+        for event in events:
+            if event["type"]=="memory":projected.append({k:event[k] for k in ("action","count","consolidated") if k in event})
+        return {**row,"budgets":[c["max_tokens"] for c in calls],"error":error,"records":store.list(),
+                "foreign":ScopedMemory(raw,"foreign").list(),"memory":projected,
+                "capture_errors":sum(e["type"]=="memory_capture_error" for e in events),
+                "purposes":[e["purpose"] for e in events if e["type"]=="model_start"]}
+    async def run():return [await scenario(row) for row in recipes]
+    return dict(cases=asyncio.run(run()))
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -5847,6 +5963,8 @@ def _snapshot() -> dict[str, bytes]:
         memory_tool_contracts = _memory_tool_contracts(Path(scratch) / "memory-tools")
         memory_context_contracts = _memory_context_contracts(Path(scratch) / "memory-context")
         memory_extraction_contracts = _memory_extraction_contracts(Path(scratch) / "memory-extraction")
+        memory_consolidation_contracts = _memory_consolidation_contracts(Path(scratch) / "memory-consolidation")
+        memory_capture_contracts = _memory_capture_contracts(Path(scratch) / "memory-capture")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -5929,6 +6047,8 @@ def _snapshot() -> dict[str, bytes]:
         "python-memory-tools.json": _json_bytes(memory_tool_contracts),
         "python-memory-context.json": _json_bytes(memory_context_contracts),
         "python-memory-extraction.json": _json_bytes(memory_extraction_contracts),
+        "python-memory-consolidation.json": _json_bytes(memory_consolidation_contracts),
+        "python-memory-capture.json": _json_bytes(memory_capture_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

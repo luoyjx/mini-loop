@@ -77,6 +77,7 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
 	memory             MemoryEvent
+	memoryCaptureError MemoryCaptureErrorEvent
 	decisionCompleted  DecisionCompletedEvent
 	decisionFailed     DecisionFailedEvent
 	decisionModelStart *DecisionModelStartEvent
@@ -163,6 +164,7 @@ func (event SessionEvent) Todos() ([]protocol.TodoItem, bool) {
 	return append([]protocol.TodoItem{}, event.todos...), true
 }
 func (event SessionEvent) clone() SessionEvent {
+	event.memory.Consolidated = clonePointer(event.memory.Consolidated)
 	event.decisionCompleted.Usage = event.decisionCompleted.Usage.clone()
 	event.decisionModelStart = clonePointer(event.decisionModelStart)
 	if event.decisionModelEnd != nil {

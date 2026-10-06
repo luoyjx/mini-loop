@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `e693bf0` plus the memory extraction stage and explicit side-request history ownership).
+reviewed **2026-10-07** (Go baseline `5f72738` plus scoped consolidation and contained end-of-turn memory capture).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -365,7 +365,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>owner lookup · fixed resource snapshots / pools<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation"]
+        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
@@ -420,6 +420,7 @@ flowchart LR
         GoTraceCLI --> GoTraceView
         GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
+        GoSession -. writable auto-memory lifecycle .-> GoFiles
         GoGate --> GoResources
         GoGate -. explicit external-risk decision tool .-> GoDecisionLibrary
         GoDecisionLibrary -. isolated complete-only query .-> GoProvider
@@ -552,7 +553,7 @@ these tools with an explicit resolver. Model inputs contain no owner/root.
 Selected children retain the bound store, and read-only mode denies writes.
 Explicit remember acquires the Store-owned process-local lifecycle lock; scoped
 bindings of the same Store share it. Waiting is cancellable. Ordinary scoped
-operations use a separate lock, allowing future extraction/consolidation to hold
+operations use a separate lock, allowing extraction/consolidation to hold
 the lifecycle across multiple operations. This is neither rollback nor external
 process fencing; independent Store instances do not share the lock.
 With both tools selected, automatic memory selection now uses a 200-token side
@@ -565,8 +566,17 @@ The extraction stage now cleans recalled contexts, runtime facts and tool-result
 bodies, sends the source 40,000-character JSON tail, and writes at most five
 owner-bound auto_extracted records incrementally. Its normal agent_turn side
 request uses recovery/cache/transport/events without taking live history or token
-meter ownership. This internal stage is not invoked at turn endpoints yet;
-consolidation and the contained healthy-endpoint adapter remain pending.
+meter ownership. Automatic capture now holds the lifecycle across extraction
+and consolidation on a normal final answer, a stop-hook continuation stuck halt,
+and round exhaustion. Read-only mode, MemoryAuto=false or a missing tool pair
+skip it. Provider-error and cancellation exits initiate no capture. The source's
+tool-batch stuck halt has no capture call; Go preserves this measured omission.
+At ten owner memories, a 2,500-token memory_consolidation side request replaces
+only the bound owner's records, retaining unchanged origins and marking changed
+facts consolidated. Ordinary capture failures emit a bounded masked
+memory_capture_error and preserve the completed result; cancellation and native
+transcript/lease failures propagate. Typed memory/extract counts and capture
+errors support detached access and archival reads without granting authority.
 Default tools and launcher activation remain unchanged. Root configuration
 remains pending; carrying a bundle alone installs no tools.
 `userresources.NewResolver` now composes exact-owner directory, layered skill and
@@ -576,8 +586,7 @@ Explicit ManagerServices.UserResources now resolves trusted owners before
 create/fork/restore session construction; RuntimeConfig.UserResources validates a
 complete matching owner bundle before filesystem effects. Sessions and selected
 children keep their fixed catalogue and scoped memory binding; forks resolve the
-latest cache. The nil default keeps legacy skills. Extraction/consolidation and
-launcher activation remain pending. Operator-only publication is implemented.
+latest cache. The nil default keeps legacy skills. Launcher activation remains pending. Operator-only publication is implemented.
 `go/durable` adds the publication prerequisite: component-wise no-follow directory
 opens, bounded regular-file reads and fsynced create-only hard links. The hard link
 is the commit point; post-commit cleanup cannot turn success into a retryable error.

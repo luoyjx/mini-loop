@@ -84,6 +84,10 @@ func storedGrant(tokens []string) GrantCandidate {
 func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent, error) {
 	event := SessionEvent{kind: kind}
 	switch kind {
+	case EventMemoryCaptureError:
+		v, err := storedPayload[MemoryCaptureErrorEvent](data)
+		event.memoryCaptureError = v
+		return event, err
 	case EventMemory:
 		v, err := storedPayload[MemoryEvent](data)
 		if err != nil {

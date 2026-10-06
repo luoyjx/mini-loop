@@ -112,7 +112,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; launcher root selection and extraction/consolidation remain; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; scoped extraction/consolidation and contained memory capture at the actual source endpoints implemented; launcher root selection and skill capture/preview/routes remain; other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next decision slices
@@ -5316,5 +5316,93 @@ Archify regenerated the map with 9/9 showcase checks and zero errors/warnings.
 Specification SHA-256: a640f85bce52aafee5e9c790ae60c5a3a86a4932084ae5d414ef212bf5cfe1c3
 (41,625 bytes); HTML SHA-256:
 b3a08bef87919960d164e8c08ea0220d74742c910335c6201953efb251095c94 (683,428 bytes).
+Visual inspection remains skipped after the earlier local-file access denial;
+renderer acceptance is not visual inspection.
+
+## Implementation checkpoint — 2026-10-07 consolidation and end-of-turn capture
+
+Base: 5f72738. G1/G6 advance; G0–G7 remain open. Scoped consolidation now starts
+at ten records. It sends source lowercase ordered record fields in non-ASCII
+PythonJSON with max_tokens=2500 and purpose=memory_consolidation through the normal
+non-live side path. Nonobjects/missing names are skipped; empty/unusable outputs
+leave storage unchanged. Exact name/type/description/body identity retains the
+original origin; changed/new entries are consolidated. Typed Input ignores model
+owner/root/origin overrides and ScopedStore.ReplaceAll confines replacement to
+the owner. The source multi-file replacement remains nontransactional.
+
+Automatic capture now holds the Store-owned lifecycle across extraction and
+consolidation. It requires both tools, MemoryAuto and non-readonly posture. Native
+three endpoints mirror actual Python calls: normal final after final text, stuck
+halt after a stop-hook continuation, and round exhaustion after its error marker.
+Provider error and cancellation exits initiate no capture. Actual source inspection
+found the tool-batch stuck return has no capture call, despite the hardening note's
+broad wording. Snapshot 69 measures that omission and Go preserves it explicitly.
+There is no claim that every possible stuck endpoint captures in either runtime.
+
+Ordinary lifecycle faults are contained with one bounded memory_capture_error;
+the completed result is retained. Source extraction/consolidation model and write
+faults return zero, while consolidation List (outside its try block) reaches this
+containment. Cancellation and native transcript/lease errors propagate. The
+memory/extract closed variant requires count and consolidated count; load omits
+the latter. Event clones/accessors detach pointers, masking protects error detail,
+and flat serialization/archival decoding restores informational data only.
+Native error class formatting differs from Python; both bound detail to 200
+characters before projection masking. Default memory tools/launcher remain off;
+explicit tools enable the source automatic lifecycle by default.
+
+Snapshot 68 compares ten actual Python consolidation cases: threshold, unchanged/
+changed/new origins, nonobject/missing-name skips, empty/unusable/malformed replies,
+provider fault, unknown type normalization and omitted defaults. Snapshot 69 runs
+real source Agent turns for eleven paths: normal, exhaustion, continuation halt,
+tool halt omission, provider error, readonly, disabled, missing pair, cancellation,
+contained List failure and extraction crossing the consolidation threshold.
+Native tests compare request budgets/purposes, record/provenance effects, foreign
+owners, events and archival projections. Additional tests pin held lifecycle during
+model await, cancelled explicit remember, cancellation release/no-success event,
+detached event pointers, known variants and registry masking.
+
+Initial native cancellation double returned context.Canceled with a still-live
+context; the ordinary provider-error branch contained it, as its contract allows.
+The double now cancels the caller-owned context before returning, matching the
+actual Python CancelledError signal. Expected source cancellation is unchanged.
+The older selection/full-turn test now expects the source third extraction request
+and verifies its 1,500-token/no-system/no-tools shape after selection and main turn.
+Existing 67 exports remain byte-identical. No dependencies or dynamic domain/
+service fields are added; native malformed scalar/null and finite JSON restrictions
+remain as documented in the extraction stage.
+
+Source guards for exhaustion-skips-memory, capture-failure-kills-the-turn and
+consolidation-wipes-every-tenant were all caught. Compiling native mutations for
+exhaustion omission, fatal capture error, unscoped replacement and lost unchanged
+origin were caught by their intended assertions and restored before final gates.
+Remaining: launcher resource/root selection, skill capture/preview/HTTP routes,
+teams/native SQL/other groups and the full G0–G7 audit. Coverage is unrefreshed.
+
+Architecture scope: README canonical Mermaid explicitly connects writable automatic
+capture from Session to filesystem memory. The interactive artifact retains a
+component-level overview, with capture's direct writes and posture/lifecycle
+boundaries in the Session/filesystem explanation. Adding that detailed edge to
+the overview first produced five direction/crossing diagnostics; a routed candidate
+reduced them to four crossing/label diagnostics. The overview omits that redundant
+detailed connector and retains its source-grounded component explanation, rather
+than accepting overlapping routes. No renderer internals or generated HTML were
+edited. Final generation evidence follows.
+
+Validation: focused memory/consolidation/capture/lifecycle tests passed. Full
+go test ./... passed (agent 9.960s); go test -race ./... passed (agent 34.231s);
+go vet ./... passed. Three selected source guards and four compiling native
+mutations were caught and restored. Exporter --check confirmed 69 current files;
+verify_scans.py confirmed all 19 scanner guards anchored. The exporter exited
+successfully but printed an ignored BaseSubprocessTransport destructor warning
+with Event loop is closed; the contract comparison itself completed. All Go,
+exporter, scanner and mutation jobs terminated before the full Python suite ran
+alone: 2,151 passed, 28 skipped, 24 subtests passed in 84.12s, with three dependency
+deprecation warnings. No Python package module changed, so package invariants
+were not rerun. README outline and git diff --check passed.
+
+Archify generated the overview with 9/9 showcase checks, zero errors/warnings.
+Specification SHA-256: 360f677df012be2f63acfa1e866a2720c4cecfe24f347c129453c31c8f350076
+(42,250 bytes); HTML SHA-256:
+63c8259693ef4d2a10dc4bb6acadde0bf881a81ea68797a513bd5af677f26058 (684,056 bytes).
 Visual inspection remains skipped after the earlier local-file access denial;
 renderer acceptance is not visual inspection.

@@ -17,20 +17,26 @@ const EventMemory SessionEventKind = "memory"
 type MemoryAction string
 
 const MemoryLoad MemoryAction = "load"
+const MemoryExtract MemoryAction = "extract"
 
 type MemoryEvent struct {
-	Action MemoryAction `json:"action"`
-	Count  int          `json:"count"`
+	Action       MemoryAction `json:"action"`
+	Count        int          `json:"count"`
+	Consolidated *int         `json:"consolidated,omitempty"`
 }
 
 func (v MemoryEvent) Validate() error {
-	if v.Action != MemoryLoad || v.Count < 0 {
-		return errors.New("invalid memory load event")
+	if v.Count < 0 || (v.Action != MemoryLoad && v.Action != MemoryExtract) ||
+		(v.Action == MemoryLoad && v.Consolidated != nil) ||
+		(v.Action == MemoryExtract && (v.Consolidated == nil || *v.Consolidated < 0)) {
+		return errors.New("invalid memory event")
 	}
 	return nil
 }
 func (event SessionEvent) Memory() (MemoryEvent, bool) {
-	return event.memory, event.kind == EventMemory
+	v := event.memory
+	v.Consolidated = clonePointer(v.Consolidated)
+	return v, event.kind == EventMemory
 }
 
 func (s *Session) automaticMemoryEnabled() bool {

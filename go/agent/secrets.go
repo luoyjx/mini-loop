@@ -22,6 +22,7 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	event.memoryCaptureError.Detail = mask(event.memoryCaptureError.Detail)
 	event.decisionCompleted.Provider = mask(event.decisionCompleted.Provider)
 	event.decisionCompleted.Model = mask(event.decisionCompleted.Model)
 	event.decisionCompleted.ProbabilitySource = decisions.ProbabilitySource(mask(string(event.decisionCompleted.ProbabilitySource)))

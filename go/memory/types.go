@@ -37,13 +37,15 @@ type Input struct {
 	Origin            Origin
 }
 type Record struct {
-	File, Name, Owner string
-	OwnerKey          string `json:"owner_key"`
-	Scope             Scope
-	Origin            Origin
-	Description       string
-	Type              Type
-	Body              string
+	File        string `json:"file"`
+	Name        string `json:"name"`
+	Owner       string `json:"owner"`
+	OwnerKey    string `json:"owner_key"`
+	Scope       Scope  `json:"scope"`
+	Origin      Origin `json:"origin"`
+	Description string `json:"description"`
+	Type        Type   `json:"type"`
+	Body        string `json:"body"`
 }
 type Masker interface{ MaskText(string) string }
 type Problem struct {

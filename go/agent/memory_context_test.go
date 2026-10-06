@@ -183,7 +183,7 @@ func TestMemoryContextRunsAfterPromptRewriteAndBeforeMainRequest(t *testing.T) {
 	if _, err := session.Run(ctx, "alpha request"); err != nil {
 		t.Fatal(err)
 	}
-	if len(provider.requests) != 2 || provider.requests[0].Purpose != protocol.PurposeMemorySelection || provider.requests[1].Purpose != protocol.PurposeAgentTurn {
+	if len(provider.requests) != 3 || provider.requests[2].MaxTokens != 1500 || provider.requests[2].System != nil || len(provider.requests[2].Tools) != 0 || provider.requests[0].Purpose != protocol.PurposeMemorySelection || provider.requests[1].Purpose != protocol.PurposeAgentTurn {
 		t.Fatal(provider.requests)
 	}
 	selection, _ := provider.requests[0].Messages[0].Content.Plain()
