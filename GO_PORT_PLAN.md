@@ -6045,3 +6045,31 @@ Visual inspection remains skipped after prior local-file access denial. Coverage
 not refreshed. After all other jobs finished, isolated full Python passed: 2,151
 tests, 28 skipped, 24 subtests and three existing warnings (85.67s). Final README
 outline and git diff --check pass.
+
+## Implementation checkpoint — 2026-10-07 scalar JSON byte decoding
+
+Base: 55d02a0. A named byte-encoding boundary now follows installed Python 3.11.3
+json.detect_encoding: UTF-32/16/8 BOM precedence, first-four-byte NUL heuristics
+and the two-byte special case. Scalar UTF-16/32 converts through explicit endian
+units before the existing typed syntax/schema pipeline. UTF-16 pairs preserve
+astral code points; truncated units and invalid UTF-32 ranges fail before parsing.
+Charset parameters do not override byte detection, matching source request.json.
+No dependency or publication default changes. Snapshot 84 compares 88 actual
+HTTP outcomes across ten byte forms and both routes, including Unicode validation
+and syntax positions. Six separate source surrogatepass cases return 500 while
+native decoding currently returns 400; they are recorded as pending counterexamples
+and excluded from passing counts. Isolated surrogates are explicitly refused,
+without replacement. Surrogatepass representation, nonfinite/extreme-number and
+depth-boundary fidelity remain next; G0-G7 remain open.
+
+Validation: 88 actual scalar-encoding comparisons and previous personal-skill
+HTTP suites pass. Full Go tests/race/vet pass; exporter confirms 84 snapshots
+current, with earlier exports unchanged. All 19 scan guards pass. Source package
+modules and source guard anchors are unchanged; package invariant/source mutation
+verifiers are not rerun. Canonical Mermaid, explanation and specification reflect
+byte conversion; regenerated HTML passes Archify 9/9 with zero errors/warnings.
+Visual inspection remains skipped after prior local-file access denial. Coverage
+is not refreshed. After all other jobs finished, isolated full Python passed:
+2,151 tests, 28 skipped, 24 subtests and three existing warnings (82.73s).
+README outline and final git diff --check pass. The six pending surrogate cases
+are source evidence, not passing native parity checks.

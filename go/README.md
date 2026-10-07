@@ -1730,5 +1730,19 @@ source safe 500 plain response. Snapshot 83 compares 63 actual HTTP results,
 including every supported syntax failure category, multibyte positions, media
 variants and encoding admission. JSON convenience tests now send Content-Type
 explicitly; dedicated missing-header cases use actual untyped requests. Alternate
-UTF-16/32 decoding, lone surrogates, nonfinite/extreme numeric values and depth
-boundary parity remain open.
+UTF-16/32 scalar decoding is described below. Surrogatepass, nonfinite/extreme
+numeric values and depth boundary parity remain open.
+
+### Personal-skill JSON byte decoding
+
+The byte decoder follows Python json.detect_encoding: UTF-32 BOM takes precedence
+over UTF-16, then UTF-8 BOM; absent BOMs use the first four bytes' NUL pattern or
+the two-byte special case. Named encodings and explicit endian reads lower scalar
+UTF-16/32 data into UTF-8 before existing syntax/schema validation. Valid surrogate
+pairs in UTF-16 become one scalar; truncated units and out-of-range UTF-32 refuse.
+Declared charset does not override detection, matching the source. Snapshot 84
+compares 88 actual HTTP results across ten byte forms and both routes. Six source
+surrogatepass counterexamples are separately recorded, not counted as covered:
+the source returns 500 while native decoding currently returns 400. Isolated
+surrogates are explicitly refused, without silent replacement. This unresolved
+representation boundary and nonfinite/extreme numbers/depth remain next.

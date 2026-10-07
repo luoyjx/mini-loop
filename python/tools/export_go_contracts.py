@@ -6718,6 +6718,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-personal-skill-http.json": _json_bytes(_personal_skill_http_contracts()),
         "python-personal-skill-http-validation.json": _json_bytes(_personal_skill_http_validation_contracts()),
         "python-personal-skill-http-parsing.json": _json_bytes(_personal_skill_http_parsing_contracts()),
+        "python-personal-skill-http-encoding.json": _json_bytes(_personal_skill_http_encoding_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -6949,6 +6950,63 @@ def _personal_skill_http_parsing_contracts() -> dict:
                     response=response.json() if json_response else None,
                     text=None if json_response else response.text))
     return dict(cases=rows)
+
+
+def _personal_skill_http_encoding_contracts() -> dict:
+    """Actual byte detection/transcoding, plus explicit unresolved surrogates."""
+    import base64
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+
+    encodings = [("utf8", "utf-8", b""), ("utf8-bom", "utf-8-sig", b""),
+        ("utf16le", "utf-16-le", b""), ("utf16be", "utf-16-be", b""),
+        ("utf16le-bom", "utf-16-le", b"\xff\xfe"),
+        ("utf16be-bom", "utf-16-be", b"\xfe\xff"),
+        ("utf32le", "utf-32-le", b""), ("utf32be", "utf-32-be", b""),
+        ("utf32le-bom", "utf-32-le", b"\xff\xfe\x00\x00"),
+        ("utf32be-bom", "utf-32-be", b"\x00\x00\xfe\xff")]
+    inputs = []
+    for kind in ("preview", "commit"):
+        valid = '{"name":"safe","focus":"界😀"}' if kind == "preview" else '{"digest":"' + "a" * 64 + '"}'
+        invalid = '{"name":"界😀"}' if kind == "preview" else '{"digest":"界😀"}'
+        for label, encoding, bom in encodings:
+            for name, payload in (("empty", "{}"), ("valid", valid),
+                                  ("validation", invalid), ("syntax", '{"界😀":1,}')):
+                inputs.append((kind, label + "-" + name, bom + payload.encode(encoding)))
+    inputs.extend(("preview", "invalid-" + str(index), raw)
+        for index, raw in enumerate([
+            b"\xff\xfe\x00", b"\xfe\xff\x00", b"\xff\xfe\x00\x00\x00",
+            b"\x00\x00\xfe\xff\x00", b"\xff\xfe\x00\x00\x00\x00\x11\x00",
+            b"\x00\x00\xfe\xff\x00\x11\x00\x00", b"\xc0\xaf", b"\xf4\x90\x80\x80",
+        ]))
+    pending = [("preview", "surrogate-" + label,
+                bom + '{"name":"safe","focus":"\ud800"}'.encode(encoding, "surrogatepass"))
+               for label, encoding, bom in encodings if label.endswith("-bom") or label == "utf8"]
+    rows, unresolved = [], []
+    with tempfile.TemporaryDirectory() as scratch:
+        root = Path(scratch)
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                            skills_dir=root / "empty", user_resources_root=None,
+                            trajectory_enabled=False)
+        with TestClient(create_app(manager=SessionManager(settings, FakeAsyncAnthropic())),
+                        raise_server_exceptions=False) as client:
+            client.app.state.auth = TokenAuth({"token-a": "alice"})
+            for destination, cases in ((rows, inputs), (unresolved, pending)):
+                for kind, name, raw in cases:
+                    suffix = "preview" if kind == "preview" else "draft/commit"
+                    response = client.post("/sessions/missing/personal-skills/" + suffix,
+                        content=raw, headers={"Authorization": "Bearer token-a",
+                                             "Content-Type": "application/json; charset=utf-8"})
+                    json_response = "application/json" in response.headers.get("content-type", "")
+                    destination.append(dict(kind=kind, name=name,
+                        body=base64.b64encode(raw).decode(), status=response.status_code,
+                        response=response.json() if json_response else None,
+                        text=None if json_response else response.text))
+    return dict(cases=rows, pending_surrogates=unresolved)
 
 
 def main() -> int:

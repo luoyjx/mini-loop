@@ -266,8 +266,8 @@ func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommit
 		}
 		input = ValidationInput{kind: validationText, text: string(raw)}
 	} else if len(raw) > 0 {
-		raw = bytes.TrimPrefix(raw, []byte{0xef, 0xbb, 0xbf})
-		if !utf8.Valid(raw) {
+		raw, err = decodeRequestJSONEncoding(raw)
+		if err != nil {
 			writeJSON(s, w, 400, ErrorResponse{"There was an error parsing the body"})
 			return result, false
 		}
