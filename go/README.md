@@ -1675,3 +1675,15 @@ only after success. The typed receipt activates in next_session; existing live
 resources remain pinned. Failure retains the draft, and durable success survives
 TTL/cancellation after the file commit. Snapshot 79 compares six actual source
 commit/retention outcomes. No model tool is added; HTTP routes remain pending.
+
+### Typed personal-skill HTTP requests
+
+PersonalSkillPreviewRequest and PersonalSkillCommitRequest decode into concrete
+name/focus and DraftDigest fields. Unknown fields are rejected with exact,
+case-sensitive keys; name and digest use the source lowercase patterns. Focus
+counts Unicode code points rather than UTF-8 bytes, defaults only when absent,
+and rejects explicit null. Duplicate JSON keys follow source last-value-wins
+behavior. Failed decoding preserves the existing receiver. Snapshot 80 compares
+43 actual Pydantic acceptance and normalized-value cases. These request types
+are not yet registered as routes; HTTP validation-error envelopes and malformed
+Unicode handling require separate route-boundary evidence.

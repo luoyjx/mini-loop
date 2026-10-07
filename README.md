@@ -310,7 +310,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `6b3770d` plus reviewed Manager skill publication).
+reviewed **2026-10-07** (Go baseline `3260abc` plus typed personal-skill request
+validation; personal-skill HTTP routing remains pending).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.

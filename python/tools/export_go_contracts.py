@@ -6714,10 +6714,80 @@ def _snapshot() -> dict[str, bytes]:
         "python-manager-skill-drafts.json": _json_bytes(manager_skill_draft_contracts),
         "python-manager-skill-preview.json": _json_bytes(manager_skill_preview_contracts),
         "python-manager-skill-commit.json": _json_bytes(manager_skill_commit_contracts),
+        "python-personal-skill-requests.json": _json_bytes(_personal_skill_request_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }
+
+
+def _personal_skill_request_contracts() -> dict:
+    """Actual Pydantic request acceptance and normalized concrete values."""
+    from pydantic import ValidationError
+    from mini_loop.server import PersonalSkillPreviewReq, PersonalSkillCommitReq
+
+    cases = []
+    preview = [
+        ("default-focus", {"name": "safe-name"}),
+        ("explicit-focus", {"name": "safe-name", "focus": "reviewed"}),
+        ("digit-name", {"name": "123"}),
+        ("name-limit", {"name": "a" * 64}),
+        ("long-name", {"name": "a" * 65}),
+        ("empty-name", {"name": ""}),
+        ("uppercase-name", {"name": "Safe"}),
+        ("trailing-newline", {"name": "safe\n"}),
+        ("double-hyphen", {"name": "safe--name"}),
+        ("leading-hyphen", {"name": "-safe"}),
+        ("trailing-hyphen", {"name": "safe-"}),
+        ("path-name", {"name": "../safe"}),
+        ("missing-name", {}),
+        ("null-name", {"name": None}),
+        ("number-name", {"name": 42}),
+        ("bool-name", {"name": True}),
+        ("null-focus", {"name": "safe", "focus": None}),
+        ("number-focus", {"name": "safe", "focus": 42}),
+        ("focus-limit", {"name": "safe", "focus": "界" * 2000}),
+        ("astral-focus-limit", {"name": "safe", "focus": "😀" * 2000}),
+        ("long-focus", {"name": "safe", "focus": "😀" * 2001}),
+        ("combining-focus-limit", {"name": "safe", "focus": "e\u0301" * 1000}),
+        ("owner-injection", {"name": "safe", "owner": "bob"}),
+        ("path-injection", {"name": "safe", "path": "../escape"}),
+        ("body-injection", {"name": "safe", "body": "procedure"}),
+        ("case-sensitive-field", {"Name": "safe"}),
+        ("array-root", []),
+        ("null-root", None),
+    ]
+    commit = [
+        ("valid", {"digest": "0123456789abcdef" * 4}),
+        ("short", {"digest": "a" * 63}),
+        ("long", {"digest": "a" * 65}),
+        ("uppercase", {"digest": "A" * 64}),
+        ("not-hex", {"digest": "g" * 64}),
+        ("trailing-newline", {"digest": "a" * 63 + "\n"}),
+        ("null", {"digest": None}),
+        ("number", {"digest": 42}),
+        ("missing", {}),
+        ("body-injection", {"digest": "a" * 64, "body": "changed"}),
+        ("owner-injection", {"digest": "a" * 64, "owner": "bob"}),
+        ("array-root", []),
+        ("null-root", None),
+    ]
+    for kind, model, inputs in (("preview", PersonalSkillPreviewReq, preview),
+                                 ("commit", PersonalSkillCommitReq, commit)):
+        for name, payload in inputs:
+            raw = json.dumps(payload, ensure_ascii=False)
+            try:
+                result = model.model_validate_json(raw).model_dump()
+            except ValidationError:
+                accepted, result = False, None
+            else:
+                accepted = True
+            cases.append(dict(kind=kind, name=name, raw=raw, accepted=accepted, result=result))
+        # JSON duplicate-key behavior is last-value-wins in the source boundary.
+        raw = '{"name":"bad/first","name":"last"}' if kind == "preview" else '{"digest":"bad","digest":"' + "a" * 64 + '"}'
+        cases.append(dict(kind=kind, name="duplicate-last-wins", raw=raw,
+                          accepted=True, result=model.model_validate_json(raw).model_dump()))
+    return dict(cases=cases)
 
 
 def main() -> int:

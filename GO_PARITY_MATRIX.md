@@ -78,6 +78,13 @@ claimed; the Go runtime tests use synchronized injected memory backings.
 
 ## HTTP inventory
 
+Personal-skill request boundary (2026-10-07): snapshot 80 compares 43 actual
+Pydantic preview/commit validation outcomes and normalized values with the native
+typed decoders. Unknown fields, exact keys, null/type rejection, source patterns,
+Unicode code-point limits and duplicate-key normalization are covered. This is
+request decoding evidence only; the two routes and their validation/error
+envelopes remain pending, including malformed Unicode boundary handling.
+
 `python/mini_loop/server.py` currently declares 44 routes. The default Go slice should
 start with `/healthz`, `/sessions`, session detail/deletion,
 `/sessions/{session_id}/messages`, `/sessions/{session_id}/cancel`,

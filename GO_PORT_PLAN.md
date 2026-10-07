@@ -5931,3 +5931,26 @@ comparison rather than payload hashing. The focused repeat passed (0.16s), then
 the full isolated repeat passed: 2,151 tests, 28 skipped, 24 subtests, three existing
 deprecation warnings (84.69s). No timing threshold or source behavior changed.
 Final git diff --check passes.
+
+## Implementation checkpoint — 2026-10-07 typed personal-skill HTTP requests
+
+Base: 3260abc. The next HTTP slice starts with closed concrete preview and commit
+request values. Decoder-local raw fields never enter service state. Unknown or
+case-mismatched fields, missing required fields, explicit null and non-string
+values refuse. Lowercase name/digest patterns and Unicode code-point bounds
+match the actual Pydantic models; omitted focus defaults to empty and duplicate
+JSON fields take their last value. Failed decoding preserves the typed receiver.
+Snapshot 80 exports 43 actual source acceptance/normalization cases. This is a
+separate small prerequisite commit; route registration, complete validation-error
+envelopes, malformed Unicode boundary handling and HTTP lifecycle tests remain
+next. G0-G7 remain open. No dependencies, defaults or runtime topology change.
+
+Validation: focused request contracts, full Go tests/race/vet pass; the exporter
+confirms 80 files current and all 19 source scanning guards remain anchored.
+Source package modules and guarded runtime behavior are unchanged, so package
+invariant and source mutation verifiers are not rerun. Architecture review finds
+no flow/topology change; the visible README baseline is updated without changing
+the canonical map. Coverage is not refreshed. After all Go/exporter/scanner jobs
+finished, isolated full Python validation passed: 2,151 tests, 28 skipped,
+24 subtests and three existing deprecation warnings (97.61s). README outline
+and final git diff --check pass.
