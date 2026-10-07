@@ -5985,3 +5985,32 @@ after prior local-file access denial; automated checks do not establish visual
 acceptance. Coverage is not refreshed. After all other validation jobs finished,
 isolated full Python passed: 2,151 tests, 28 skipped, 24 subtests and three existing
 deprecation warnings (92.48s). Final README outline and git diff --check pass.
+
+## Implementation checkpoint — 2026-10-07 typed HTTP validation diagnostics
+
+Base: e414508. Personal-skill routes now produce concrete ordered FastAPI-style
+validation detail lists for valid JSON instead of the generic body refusal.
+Diagnostic input uses a closed six-variant tree lowered immediately from decoder
+tokens, with no retained any/RawMessage payload. Fields validate in source schema
+order, then extra keys in decoded order. Duplicate keys preserve final values and
+original positions. Required/null/non-object handling, string types, Unicode
+lengths and source pattern contexts match actual HTTP errors. The existing masked
+writer screens diagnostic strings and keys before JSON escaping. Snapshot 82
+compares 41 actual FastAPI error responses, including nested input echo, multiple
+errors, duplicate-key refusal, empty bodies and root types. Native escaped-secret
+and extra-key tests verify the independent recording boundary. Successful request
+and publication behavior remains covered by earlier source snapshots. Malformed
+JSON/Unicode, extreme numeric input, content type and nesting-boundary fidelity
+remain next. Native diagnostic nesting is capped at 256. G0-G7 remain open.
+
+Validation: 41 actual HTTP validation comparisons and escaped-secret/key checks
+pass. Final full Go tests/race/vet pass, including the linear duplicate-key index.
+Exporter confirms 82 snapshots current; all 19 scan guards remain anchored. Source
+Python package modules and source guard anchors are unchanged; package invariant
+and source mutation verifiers are not rerun. The canonical Mermaid, boundary
+explanation and specification reflect the diagnostic flow; regenerated HTML passes
+Archify 9/9 with zero errors/warnings. Visual review remains skipped after prior
+local-file access denial; automatic checks do not establish visual acceptance.
+Coverage is not refreshed. After every other validation job finished, isolated
+full Python passed: 2,151 tests, 28 skipped, 24 subtests and three existing warnings
+(94.95s). README outline and final git diff --check pass.

@@ -33,7 +33,7 @@ func (s *Server) personalSkillFailure(w http.ResponseWriter, err error) {
 }
 
 func (s *Server) previewPersonalSkill(w http.ResponseWriter, r *http.Request) {
-	req, ok := decodeBody[PersonalSkillPreviewRequest](s, w, r)
+	req, ok := decodePersonalSkillBody[PersonalSkillPreviewRequest](s, w, r, true)
 	if !ok {
 		return
 	}
@@ -50,7 +50,7 @@ func (s *Server) previewPersonalSkill(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) commitPersonalSkill(w http.ResponseWriter, r *http.Request) {
-	req, ok := decodeBody[PersonalSkillCommitRequest](s, w, r)
+	req, ok := decodePersonalSkillBody[PersonalSkillCommitRequest](s, w, r, false)
 	if !ok {
 		return
 	}

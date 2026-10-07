@@ -1685,8 +1685,8 @@ counts Unicode code points rather than UTF-8 bytes, defaults only when absent,
 and rejects explicit null. Duplicate JSON keys follow source last-value-wins
 behavior. Failed decoding preserves the existing receiver. Snapshot 80 compares
 43 actual Pydantic acceptance and normalized-value cases. These request types
-now feed the preview/commit routes; complete HTTP validation-error envelopes and
-malformed Unicode handling require separate route-boundary evidence.
+now feed the preview/commit routes. Valid-JSON HTTP validation lists are described
+below; malformed Unicode handling still requires separate route-boundary evidence.
 
 ### Owned personal-skill HTTP routes
 
@@ -1699,6 +1699,19 @@ text. Snapshot 81 compares 11 actual HTTP responses, with authentic message
 capture, public preview and receipt fields, readonly/wrong-digest/cross-session
 refusals, successful publication and exact draft consumption. Dynamic IDs and
 timestamps are checked independently, then excluded from source comparison.
-Failure cases retain the same draft for eventual commit. Complete request-error
-validation lists and malformed Unicode handling remain open; existing generic
-422 decoding responses are not claimed as full FastAPI parity.
+Failure cases retain the same draft for eventual commit. Request validation is
+described below; malformed request boundary fidelity remains open.
+
+### Personal-skill request validation lists
+
+Valid-JSON validation failures now return typed ordered detail lists, preserving
+source type/location/message/input/context fields. Schema fields are validated
+in declaration order; extra fields follow input order. Duplicate keys retain
+their last value and original position. Absent or null bodies use body-level
+missing errors; non-object roots use model_attributes_type. A closed six-variant
+ValidationInput exists only in HTTP diagnostics. No open payload is retained in
+session/service state. Responses use the existing masked recording projection,
+including escaped input values and extra-field keys. Snapshot 82 compares 41
+actual FastAPI responses. Malformed JSON/Unicode, extreme numeric input, content
+type and nesting-boundary parity remain open. The native diagnostic tree caps
+nesting at 256; complete FastAPI parity is not claimed for these boundaries.

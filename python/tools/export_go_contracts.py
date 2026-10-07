@@ -6716,6 +6716,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-manager-skill-commit.json": _json_bytes(manager_skill_commit_contracts),
         "python-personal-skill-requests.json": _json_bytes(_personal_skill_request_contracts()),
         "python-personal-skill-http.json": _json_bytes(_personal_skill_http_contracts()),
+        "python-personal-skill-http-validation.json": _json_bytes(_personal_skill_http_validation_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -6853,6 +6854,45 @@ def _personal_skill_http_contracts() -> dict:
             record("commit", commit_path, reviewed)
             record("consumed", commit_path, reviewed)
     return dict(cases=rows)
+
+
+def _personal_skill_http_validation_contracts() -> dict:
+    """Actual FastAPI validation lists, including ordering and echoed input."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+
+    inputs = [dict(kind=c["kind"], name=c["name"], raw=c["raw"])
+              for c in _personal_skill_request_contracts()["cases"] if not c["accepted"]]
+    inputs.extend([
+        dict(kind="preview", name="absent-body", raw=""),
+        dict(kind="commit", name="absent-body", raw=""),
+        dict(kind="preview", name="multiple-errors", raw='{"owner":"bob","focus":false,"name":""}'),
+        dict(kind="preview", name="extra-order", raw='{"name":"safe","z":{"nested":[1,true,null,"界"]},"a":["x"]}'),
+        dict(kind="preview", name="duplicate-final-invalid", raw='{"name":"safe","name":"../bad"}'),
+        dict(kind="commit", name="root-number", raw="42"),
+        dict(kind="preview", name="root-string", raw='"not an object"'),
+        dict(kind="preview", name="root-bool", raw="true"),
+    ])
+    with tempfile.TemporaryDirectory() as scratch:
+        root = Path(scratch)
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                            skills_dir=root / "empty", user_resources_root=None,
+                            trajectory_enabled=False)
+        manager = SessionManager(settings, FakeAsyncAnthropic())
+        with TestClient(create_app(manager=manager)) as client:
+            client.app.state.auth = TokenAuth({"token-a": "alice"})
+            for case in inputs:
+                suffix = "preview" if case["kind"] == "preview" else "draft/commit"
+                response = client.post("/sessions/missing/personal-skills/" + suffix,
+                    content=case["raw"], headers={"Authorization": "Bearer token-a",
+                                                 "Content-Type": "application/json"})
+                assert response.status_code == 422
+                case.update(status=response.status_code, response=response.json())
+    return dict(cases=inputs)
 
 
 def main() -> int:

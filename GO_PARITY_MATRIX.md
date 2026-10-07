@@ -84,8 +84,9 @@ typed decoders. Unknown fields, exact keys, null/type rejection, source patterns
 Unicode code-point limits and duplicate-key normalization are covered. This is
 request decoding evidence. Snapshot 81 adds 11 actual HTTP outcomes for both
 routes, including authenticated capture, preview/receipt fields, policy/draft
-errors, and failure retention followed by success. Detailed Pydantic validation
-envelopes and malformed Unicode boundary handling remain pending.
+errors, and failure retention followed by success. Snapshot 82 compares 41 actual
+FastAPI validation lists with ordered errors, locations, context and input echo.
+Malformed JSON/Unicode, extreme numbers and nesting-boundary fidelity remain pending.
 
 `python/mini_loop/server.py` currently declares 44 routes. The default Go slice should
 start with `/healthz`, `/sessions`, session detail/deletion,
@@ -109,8 +110,8 @@ evidence. The current Go handler implements these thirty method/path operations:
 | POST | /sessions/{session_id}/mode | Current permission mode and next-round posture note |
 | POST | /sessions/{session_id}/steer | Owned idle wakeup or bounded busy steering |
 | POST | /sessions/{session_id}/fork | Completed transcript copy, fresh scratch, typed lineage and source event |
-| POST | /sessions/{session_id}/personal-skills/preview | Owned authenticated evidence preview; typed service errors; validation-list envelope pending |
-| POST | /sessions/{session_id}/personal-skills/{draft_id}/commit | Owned digest-bound publication; exact success cleanup; validation-list envelope pending |
+| POST | /sessions/{session_id}/personal-skills/preview | Owned authenticated evidence preview; typed service errors and valid-JSON validation lists; malformed-boundary fidelity pending |
+| POST | /sessions/{session_id}/personal-skills/{draft_id}/commit | Owned digest-bound publication; exact success cleanup; valid-JSON validation lists; malformed-boundary fidelity pending |
 | GET | /sessions/{session_id}/approvals | Scoped pending approvals |
 | POST | /sessions/{session_id}/approvals/{approval_id} | Bound allow/deny/answer/remember |
 | GET | /sessions/{session_id}/events | Bounded replay/live SSE; configured event-store catch-up (2,000 stored rows), owner admission before read and sequence deduplication; native SQL pending |

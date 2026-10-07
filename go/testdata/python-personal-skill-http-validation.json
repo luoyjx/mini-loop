@@ -1,0 +1,869 @@
+{
+  "cases": [
+    {
+      "kind": "preview",
+      "name": "long-name",
+      "raw": "{\"name\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "max_length": 64
+            },
+            "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should have at most 64 characters",
+            "type": "string_too_long"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "empty-name",
+      "raw": "{\"name\": \"\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "uppercase-name",
+      "raw": "{\"name\": \"Safe\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "input": "Safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should match pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "trailing-newline",
+      "raw": "{\"name\": \"safe\\n\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "input": "safe\n",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should match pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "double-hyphen",
+      "raw": "{\"name\": \"safe--name\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "input": "safe--name",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should match pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "leading-hyphen",
+      "raw": "{\"name\": \"-safe\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "input": "-safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should match pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "trailing-hyphen",
+      "raw": "{\"name\": \"safe-\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "input": "safe-",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should match pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "path-name",
+      "raw": "{\"name\": \"../safe\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "input": "../safe",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should match pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "missing-name",
+      "raw": "{}",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "null-name",
+      "raw": "{\"name\": null}",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "number-name",
+      "raw": "{\"name\": 42}",
+      "response": {
+        "detail": [
+          {
+            "input": 42,
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "bool-name",
+      "raw": "{\"name\": true}",
+      "response": {
+        "detail": [
+          {
+            "input": true,
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "null-focus",
+      "raw": "{\"name\": \"safe\", \"focus\": null}",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "number-focus",
+      "raw": "{\"name\": \"safe\", \"focus\": 42}",
+      "response": {
+        "detail": [
+          {
+            "input": 42,
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "long-focus",
+      "raw": "{\"name\": \"safe\", \"focus\": \"😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "max_length": 2000
+            },
+            "input": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "String should have at most 2000 characters",
+            "type": "string_too_long"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "owner-injection",
+      "raw": "{\"name\": \"safe\", \"owner\": \"bob\"}",
+      "response": {
+        "detail": [
+          {
+            "input": "bob",
+            "loc": [
+              "body",
+              "owner"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "path-injection",
+      "raw": "{\"name\": \"safe\", \"path\": \"../escape\"}",
+      "response": {
+        "detail": [
+          {
+            "input": "../escape",
+            "loc": [
+              "body",
+              "path"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "body-injection",
+      "raw": "{\"name\": \"safe\", \"body\": \"procedure\"}",
+      "response": {
+        "detail": [
+          {
+            "input": "procedure",
+            "loc": [
+              "body",
+              "body"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "case-sensitive-field",
+      "raw": "{\"Name\": \"safe\"}",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "Name": "safe"
+            },
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": "safe",
+            "loc": [
+              "body",
+              "Name"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "array-root",
+      "raw": "[]",
+      "response": {
+        "detail": [
+          {
+            "input": [],
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "null-root",
+      "raw": "null",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "short",
+      "raw": "{\"digest\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 64
+            },
+            "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "String should have at least 64 characters",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "long",
+      "raw": "{\"digest\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "max_length": 64
+            },
+            "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "String should have at most 64 characters",
+            "type": "string_too_long"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "uppercase",
+      "raw": "{\"digest\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "input": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "String should match pattern '^[0-9a-f]{64}$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "not-hex",
+      "raw": "{\"digest\": \"gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "input": "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "String should match pattern '^[0-9a-f]{64}$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "trailing-newline",
+      "raw": "{\"digest\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\n\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n",
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "String should match pattern '^[0-9a-f]{64}$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "null",
+      "raw": "{\"digest\": null}",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "number",
+      "raw": "{\"digest\": 42}",
+      "response": {
+        "detail": [
+          {
+            "input": 42,
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "missing",
+      "raw": "{}",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "body-injection",
+      "raw": "{\"digest\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"body\": \"changed\"}",
+      "response": {
+        "detail": [
+          {
+            "input": "changed",
+            "loc": [
+              "body",
+              "body"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "owner-injection",
+      "raw": "{\"digest\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"owner\": \"bob\"}",
+      "response": {
+        "detail": [
+          {
+            "input": "bob",
+            "loc": [
+              "body",
+              "owner"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "array-root",
+      "raw": "[]",
+      "response": {
+        "detail": [
+          {
+            "input": [],
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "null-root",
+      "raw": "null",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "absent-body",
+      "raw": "",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "absent-body",
+      "raw": "",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "multiple-errors",
+      "raw": "{\"owner\":\"bob\",\"focus\":false,\"name\":\"\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          },
+          {
+            "input": false,
+            "loc": [
+              "body",
+              "focus"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          },
+          {
+            "input": "bob",
+            "loc": [
+              "body",
+              "owner"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "extra-order",
+      "raw": "{\"name\":\"safe\",\"z\":{\"nested\":[1,true,null,\"界\"]},\"a\":[\"x\"]}",
+      "response": {
+        "detail": [
+          {
+            "input": {
+              "nested": [
+                1,
+                true,
+                null,
+                "界"
+              ]
+            },
+            "loc": [
+              "body",
+              "z"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          },
+          {
+            "input": [
+              "x"
+            ],
+            "loc": [
+              "body",
+              "a"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "type": "extra_forbidden"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "duplicate-final-invalid",
+      "raw": "{\"name\":\"safe\",\"name\":\"../bad\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "input": "../bad",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should match pattern '^[a-z0-9]+(?:-[a-z0-9]+)*$'",
+            "type": "string_pattern_mismatch"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "commit",
+      "name": "root-number",
+      "raw": "42",
+      "response": {
+        "detail": [
+          {
+            "input": 42,
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "root-string",
+      "raw": "\"not an object\"",
+      "response": {
+        "detail": [
+          {
+            "input": "not an object",
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422
+    },
+    {
+      "kind": "preview",
+      "name": "root-bool",
+      "raw": "true",
+      "response": {
+        "detail": [
+          {
+            "input": true,
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422
+    }
+  ]
+}
