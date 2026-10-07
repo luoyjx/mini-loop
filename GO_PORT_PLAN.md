@@ -1,5 +1,46 @@
 # Go port plan
 
+## 2026-10-08 verified-loop execute / accept / fold coordinator
+
+Service now drives execute -> pre-acceptance integrity -> actual acceptance ->
+receipt -> pure fold, using concrete typed effect seams and a closed telemetry
+union. Source snapshot 104 compares 22 real Python coordinator scenarios, complete
+receipts/checkpoints/outcomes, feedback objectives and exact effect/event order.
+Source success remains exit zero, !timeout, !tamper; overflow/error flags do not
+independently alter it. Initial nil sample disables probing. Later restoration
+can verify with clean final integrity while preserving earlier suspect receipts.
+Native ShellAcceptance and WorkspaceIntegrity use real configured shell/filesystem
+effects; integration tests run workspace commands, tamper then restore, and prove
+restoration during acceptance cannot undo the pre-run tamper decision. Additional
+native tests prove cancellation, private panic refusal and telemetry detachment.
+Callback errors abort, never manufacture receipt success. Source rune truncation,
+default three/explicit zero/negative rounds and stop-leading unverified summary
+remain intact. Coordinator state is per-call; callbacks require appropriate
+embedding synchronization. Existing scalar text/signed-counter profile remains.
+Next bind actual managed-session worker role, acceptance workspace/approval policy
+and typed events through the existing admission/cancellation/recording pipeline.
+Then compose proposal Git artifacts and POST, continue teams/workflows/native
+persistence and the full G0–G7 audit. This operator coordinator installs no model
+tool or default runtime service; HTTP remains 38/44 operations (35 patterns).
+
+Validation passed: focused verifiedloop tests; full Go tests and race checks
+(-count=1 -timeout=180s), go vet ./..., all 104 contract exports and 19 scan
+anchors. After those handles finished, isolated Python pytest passed 2151 tests,
+28 skipped and 24 subtests in 84.06s, with three dependency deprecations. Export
+reported two dependency deprecations and an existing child-process cleanup warning;
+the check passed. Python package invariant/guard sweeps were not rerun because
+only the exporter changed, not package modules or guarded behavior.
+Fresh Go shared-package coverage (-coverpkg=./..., duplicate blocks merged by
+maximum execution count) is 90.14% (16682/18507), verifiedloop 95.88% (326/340),
+improvement 96.41% (403/418), agent 90.84% (6178/6801), HTTP 89.70% (1341/1495).
+These are statement coverage, not migration completion; Python coverage was not
+refreshed. README outline and git diff --check pass. Regenerated architecture
+passes all nine automated checks with zero errors/warnings; visual inspection
+remains skipped after the earlier permission denial.
+Spec SHA256: 11a43a22737637ef67633a26163105ab22a774ce991a69d0a595023c104dc657.
+Artifact SHA256: ea825763a95617efa22b63849cf9335c9a58a31b20902a7c9c6144bb33313c3f.
+
+
 ## 2026-10-08 pure receipted verification folds
 
 This slice ports verified_loop.py as the standalone verifiedloop package. Named

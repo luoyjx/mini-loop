@@ -2144,3 +2144,20 @@ not an authorization signature. The eventual service must generate receipts from
 actual acceptance effects and sample integrity before every judgment, then bind
 the pure fold to the ordinary session/subagent/execution pipeline. This library
 activates no runtime tool, verifier execution, persistence or completion policy.
+
+## Go verified-loop coordination seam
+
+NewService requires a trusted Worker and AcceptanceRunner, with optional integrity
+probe and typed event sink. RunTask keeps state/receipts/feedback local, samples
+integrity before execution and immediately before each acceptance command, and
+folds verified only from its resulting clean complete receipt. Nil baseline
+disables subsequent probes as in source. Missing MaxRounds means three; explicit
+zero/negative emits an unverified checkpoint without executing a worker/command.
+Failures and cancellation abort; callback panics become private errors, not false
+receipts. ShellAcceptance uses the existing configured workspace, credentials,
+spill/process/sandbox policy; it does not establish OS confinement.
+WorkspaceIntegrity supplies the same four source globs, not expanded coverage.
+The embedding must bind worker role selection, owner/capability/approval admission,
+execution workspace and round/receipt/checkpoint telemetry to the ordinary session
+pipeline. Those adapters and proposal POST remain the next task. No model can
+choose these effect implementations or turn its summary into a verified result.

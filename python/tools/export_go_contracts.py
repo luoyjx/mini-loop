@@ -6738,6 +6738,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-improvement-archive-read.json": _json_bytes(_improvement_archive_read_contracts()),
         "python-improvement-http-read.json": _json_bytes(_improvement_http_read_contracts()),
         "python-verified-fold.json": _json_bytes(_verified_fold_contracts()),
+        "python-verified-service.json": _json_bytes(_verified_service_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8265,6 +8266,93 @@ def _verified_fold_contracts() -> dict:
             operations=recipe["operations"],receipts=[asdict(r) for r in receipts],canonical=outcome,error=error,
             initial_canonical=state.canonical(),statuses=[state.status_of("tests"),state.status_of("missing")]))
     return dict(contract=asdict(contract),contract_hash=contract.contract_hash,cases=cases)
+
+
+def _verified_service_contracts() -> dict:
+    """Run the actual coordinator over explicit worker/command/probe seams."""
+    import asyncio
+    from dataclasses import asdict
+    from types import SimpleNamespace
+    from mini_loop.verified_loop_service import VerifiedLoopService
+    from mini_loop.tools import CommandResult
+    def result(exit_code=0, **kwargs):
+        return {**dict(stdout="",stderr="",exit_code=exit_code,timed_out=False,
+            overflowed=False,duration_ms=0), **kwargs}
+    cases = [
+        dict(name="first-pass", results=[result()], summaries=["done"]),
+        dict(name="feedback-repair", results=[result(1),result()], summaries=["wrong","fixed"]),
+        dict(name="prose-cannot-complete", maximum=2, results=[result(7),result(7)], summaries=["complete","complete"]),
+        dict(name="nil-exit", maximum=1, results=[result(None)]),
+        dict(name="timeout", maximum=1, results=[{**result(),"timed_out":True,"error":"deadline"}]),
+        dict(name="overflow-zero-source", maximum=1, results=[{**result(),"overflowed":True}]),
+        dict(name="error-zero-source", maximum=1, results=[result(error="harness diagnostic")]),
+        dict(name="tampered", maximum=1, results=[result()], probes=["a","b"]),
+        dict(name="restored-next-round", results=[result(),result()], probes=["a","b","a"]),
+        dict(name="baseline-none", results=[result()], probes=[None,"b"]),
+        dict(name="current-none", maximum=1, results=[result()], probes=["a",None]),
+        dict(name="zero-rounds", maximum=0, results=[], probes=["a"]),
+        dict(name="negative-rounds", maximum=-2, results=[]),
+        dict(name="unicode-limits", request="界🌱"*1400, command="command:"+"界"*140, results=[result()]),
+        dict(name="feedback-tail", maximum=2, results=[result(2,stdout="prefix"+"🌱"*2100),result(3,stderr="last")]),
+        dict(name="empty-request-command", request="", command="", results=[result()]),
+        dict(name="worker-error", failure="worker", results=[result()]),
+        dict(name="acceptance-error", failure="acceptance", results=[result()]),
+        dict(name="initial-probe-error", failure="probe", probes=["a"], results=[result()]),
+        dict(name="round-event-error", failure="verified_round", results=[result()]),
+        dict(name="receipt-event-error", failure="verified_receipt", results=[result()]),
+        dict(name="checkpoint-event-error", failure="verified_checkpoint", results=[result()]),
+    ]
+    async def capture(recipe):
+        events=[];objectives=[];trace=[];probe_calls=0;command_calls=0;summary_calls=0
+        failure=recipe.get("failure")
+        async def emit(event):
+            trace.append(event["type"])
+            if failure==event["type"]:
+                raise RuntimeError(failure+" failed")
+            events.append(event)
+        async def worker(objective,role):
+            nonlocal summary_calls
+            assert role=="worker"
+            trace.append("worker");objectives.append(objective)
+            if failure=="worker":
+                raise RuntimeError("worker failed")
+            summary_calls+=1
+            summaries=recipe.get("summaries",["worker-summary"])
+            return summaries[min(summary_calls-1,len(summaries)-1)]
+        def command(text):
+            nonlocal command_calls
+            assert text==recipe.get("command","accept")
+            trace.append("acceptance")
+            if failure=="acceptance":
+                raise RuntimeError("acceptance failed")
+            row=recipe["results"][command_calls];command_calls+=1
+            return CommandResult(**row)
+        def probe():
+            nonlocal probe_calls
+            trace.append("probe")
+            if failure=="probe":
+                raise RuntimeError("probe failed")
+            value=recipe["probes"][probe_calls];probe_calls+=1
+            return value
+        session=SimpleNamespace(id="run-service",agent=SimpleNamespace(_run_subagent=worker,
+            toolset=SimpleNamespace(run_bash_result=command)),emit=emit)
+        kwargs=dict(acceptance_command=recipe.get("command","accept"))
+        if "maximum" in recipe:
+            kwargs["max_rounds"]=recipe["maximum"]
+        if "probes" in recipe:
+            kwargs["integrity_probe"]=probe
+        outcome=None;error=None
+        try:
+            raw=await VerifiedLoopService(session).run_task(recipe.get("request","repair the workspace"),**kwargs)
+            outcome={**raw,"checkpoint":raw["checkpoint"].canonical(),"receipts":[asdict(r) for r in raw["receipts"]]}
+        except RuntimeError as exc:
+            error=str(exc)
+        return {**recipe,"events":events,"objectives":objectives,"trace":trace,"outcome":outcome,"error":error}
+    return dict(cases=asyncio.run(_gather_verified_services(cases,capture)))
+
+
+async def _gather_verified_services(cases, capture):
+    return [await capture(case) for case in cases]
 
 
 def main() -> int:

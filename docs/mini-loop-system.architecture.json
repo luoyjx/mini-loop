@@ -552,7 +552,7 @@
       "id": "goImprovement",
       "type": "backend",
       "label": "Go archive / verified core",
-      "sublabel": "lineage / typed receipt folds",
+      "sublabel": "lineage / receipted execute / verify",
       "pos": [
         60,
         720
@@ -561,7 +561,7 @@
         245,
         76
       ],
-      "tag": "live GET / fold library only"
+      "tag": "live GET / coordinator library only"
     }
   ],
   "boundaries": [

@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (103 generated snapshots), plus registry masking,
+the current implementation (104 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -721,3 +721,28 @@ Native revisions are signed 64-bit, and canonical identity refuses non-scalar
 UTF-8 text; arbitrary-width counters/non-scalar Python canonical text are outside
 this native profile. ApplyPatch is pure; executor, acceptance command, integrity
 probe and session service remain pending. HTTP stays 38/44 and G0–G7 remains open.
+
+## Verified-loop execute / accept / fold coordination
+
+Snapshot 104 runs the actual Python VerifiedLoopService over explicit worker,
+CommandResult, probe and event seams in 22 scenarios: first success, repair after
+feedback, prose-only failure, None exit, timeout, source overflow/error-plus-zero
+exit behavior, tampered/restored instruments, nil baseline/current samples, zero/
+negative/default round counts, Unicode prefix/tail limits and effect/event errors.
+Outcomes, canonical checkpoints, full receipts, objective feedback and exact effect/
+event ordering match. The source success predicate is exit zero, not timed out and
+not tampered; overflow/error flags do not independently change that predicate.
+Successful later restoration yields clean final integrity while retaining earlier
+suspect receipts. A nil initial sample disables later probes, matching source None.
+
+Go Service uses typed Worker/AcceptanceRunner/IntegrityProbe/VerifiedEventSink seams
+and a closed round/receipt/checkpoint telemetry union. ShellAcceptance and
+WorkspaceIntegrity reuse actual workspace shell and instrument effects. Native
+tests prove actual command execution, tamper-before-acceptance refusal, restored
+second-round success, restoration during acceptance still refused, cancellation
+without late acceptance, private panic refusal and detached exit-code telemetry.
+Command/sink/probe errors abort without a successful outcome. Rune limits match
+source characters. Source-bound 64-bit/scalar text profile remains explicit.
+Runtime session/worker/approval/event binding, proposal Git/POST, native persistence
+and G0–G7 remain open; HTTP stays 38/44 (35 patterns). This is an explicit operator
+coordinator, not a registered runtime feature or a claim of live-model convergence.
