@@ -1877,4 +1877,31 @@ UTF-8 become native errors. Native OS error text is not Python exception spellin
 Snapshot 91 compares eight specifications, 50 real Python judge outcomes and the
 seed digest. Native tests also cover callback faults, cancellation, immutable
 lists/whitelists and explicit empty selection. Model-generated drafts are not
-admitted judges. Fresh-session arm execution and POST /benchmark remain pending.
+admitted judges. POST /benchmark's fake-only composition remains pending.
+
+### Owned benchmark arms
+
+`benchmark.RunArm` takes an explicit workload and ManagerConfig, captures task
+storage before callbacks, creates fresh anonymous interactive sessions and applies
+the selected catalogue. A caller-supplied workspace factory must isolate tasks.
+Workspaces remain available for inspection; injected shared services stay caller-owned.
+The owned manager is stopped/joined on success, setup faults and cancellation.
+Setup/create faults abort the arm, ordinary run/judge faults score failed rows,
+and cancellation propagates, including cancellation returned by a provider whose
+parent context remains live. Native stage errors unwrap their original cause.
+
+Time measures session.Run only, rounded to one decimal millisecond. Cost/motion
+measure final actual history; empty typed history costs zero. Source recovered
+provider-error text still reaches the effect judge, rather than automatically
+failing the task. Snapshot 92 contains eight actual Python arm recipes: visible,
+heldout, empty, setup/judge/entry-run faults, provider recovery and cancellation.
+All eight default-fake task effects/final texts/deterministic metrics match.
+Native fault labels remain Go diagnostics; the recovered fixture costs 38 tokens
+versus Python's 32 because that class spelling is longer.
+
+`FakeProvider.ObjectView()` represents Python's non-SDK fake-object transcript
+projection, omitting tool caller metadata. Raw FakeProvider continues to model
+the client wire reply with caller=null; dictionary/SDK simulations and actual
+provider absent/null semantics retain that view. The launcher now selects the
+object view. This distinction fixes four excess transcript-estimate tokens per
+default fake task without subtracting fabricated cost. No paid HTTP arm is exposed.

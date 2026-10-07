@@ -316,6 +316,9 @@ func (s *Session) RunWithContext(ctx context.Context, prompt string, run RunCont
 			if ctx.Err() != nil {
 				return "", stateRunError(ctx)
 			}
+			if errors.Is(err, context.Canceled) {
+				return "", err
+			}
 			if errors.Is(err, ErrStateTranscript) || errors.Is(err, ErrSessionLeaseLost) {
 				return "", err
 			}

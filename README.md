@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `e0a8e74` plus admitted benchmark tasks;
+reviewed **2026-10-07** (Go baseline `7d73ee5` plus owned benchmark arms;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -449,6 +449,7 @@ flowchart LR
     Caller --> Entry
     Caller --> GoEntry
     Caller -. supplied results / transcripts .-> GoBenchmarkLibrary
+    GoBenchmarkLibrary -. explicit operator arm create / run / stop .-> GoManager
     Caller -. operator owner directory binding .-> GoFiles
     Caller -. explicit operator evaluation .-> GoDecisionLibrary
     Caller -. explicit library selection .-> GoWorktrees
@@ -1225,15 +1226,28 @@ Unknown names cannot activate optional features, and permission modes stay intac
 Selection belongs to one construction: independent sessions, forks and restored
 handles use their configured profile, without restoring this transient selection.
 It is not a persisted policy or host sandbox. Child role policies narrow the
-selected parent catalogue. Native model-arm execution and `/benchmark` remain
-pending; this library grants no launch authority.
+selected parent catalogue. `benchmark.RunArm` now owns a manager and runs each
+admitted task in a fresh anonymous interactive session. Setup faults abort the
+arm; run/judge faults score failed rows, and cancellation aborts with joined
+manager teardown. Duration covers only the run; cost/motion use the actual final
+typed transcript. Workspaces remain available for inspection. Caller-owned
+custom factories must supply isolated paths. This is explicit operator launch
+authority; `/benchmark`'s fake-only HTTP composition remains pending.
 The five visible and three heldout admitted tasks now have concrete immutable
 specifications, typed trusted judge/setup callbacks and detached optional tool
 names. Prompts, 6000-line log bytes, permissive substring/existence judges and
 Python Unicode splitlines semantics match snapshot 91's eight specifications,
 50 actual judge outcomes and seed digest. Text reads are strict UTF-8 in the
 pinned source environment; directory/read failures remain judge errors. These
-callbacks do not launch models or admit model-generated task definitions.
+callbacks do not admit model-generated task definitions. Snapshot 92 compares
+actual visible/heldout default-fake arms, empty workloads, setup/run/judge faults
+and provider-failure recovery. A recovered error text is still judged as source
+does. Native fault labels differ from Python exception classes; the recovered
+fault fixture measures 38 native tokens versus 32 source tokens because of that
+diagnostic spelling. All eight default-fake task effects/final texts/metrics match.
+The launcher uses `FakeProvider.ObjectView()` to reproduce Python fake-object
+transcript serialization, omitting caller metadata while preserving the raw
+client wire view and real-provider absent/null distinctions. Empty history costs zero.
 Personal-skill previews are process-local; a committed `SKILL.md` is durable,
 never replaces an existing skill, and appears only in future session snapshots.
 

@@ -6,6 +6,10 @@ import (
 )
 
 func EstimateTokens(messages []protocol.Message) int {
+	// A typed nil history is an empty Python list, not JSON null.
+	if len(messages) == 0 {
+		return 0
+	}
 	text, err := protocol.PythonJSON(messages, true, false)
 	if err != nil {
 		return 0

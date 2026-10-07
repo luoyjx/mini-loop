@@ -175,7 +175,7 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 	var model agent.Provider
 	var transport *http.Transport
 	if settings.FakeLLM {
-		model = agent.NewFakeProvider(agent.FakeProviderConfig{Delay: server.FakeDelay})
+		model = agent.NewFakeProvider(agent.FakeProviderConfig{Delay: server.FakeDelay}).ObjectView()
 	} else {
 		transport = &http.Transport{}
 		if base, ok := http.DefaultTransport.(*http.Transport); ok {

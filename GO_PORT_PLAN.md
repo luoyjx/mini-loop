@@ -1,5 +1,81 @@
 # Go port plan
 
+## 2026-10-07 owned benchmark arm execution
+
+RunArm now owns one manager, captures admitted task storage before callbacks,
+creates fresh anonymous interactive sessions and applies the task's immutable
+catalogue subset. A custom caller-owned workspace factory must isolate paths;
+default scratch paths are independent. Workspaces are retained for inspection.
+Explicit empty/nil workloads mean no tasks; callers select visible/heldout lists.
+Setup/create failures abort with a typed ArmError and original unwrapped cause.
+Ordinary run/judge failures score failed rows; cancellation aborts. Panic handling
+for trusted setup/judge callbacks reports the type without exposing panic values.
+The manager is stopped/joined on every exit with an independent cleanup context,
+a stronger native lifecycle guarantee than source run_arm's implicit lifetime.
+Injected shared services retain caller ownership.
+
+Duration measures only session.Run and uses monotonic time/one decimal millisecond;
+setup/judge time is excluded. Cost/motion derive from actual final typed history,
+not fabricated provider usage. Empty typed history now estimates zero tokens,
+matching the source's empty list rather than native nil's JSON null spelling.
+Provider failures recovered into ordinary final error text still reach the effect
+judge. A separate ordinary session-entry failure skips the judge and scores a row.
+Provider-returned cancellation now propagates even when the parent context remains
+live, matching Python's BaseException cancellation boundary. A focused mutation
+removed that cancellation check; the new source-recipe test failed as expected,
+then the check was restored before the full gates.
+
+Actual default-fake arms revealed a representation difference: raw FakeProvider
+client replies correctly retain caller=null, while Python's non-SDK fake objects
+omit caller when Agent._content_payload writes history. FakeProvider.ObjectView
+now explicitly models that object profile; the launcher selects it. Raw client
+wire tests and real-provider absent/null distinctions remain unchanged. This
+fixes four excess history-estimate tokens per default fake task without inventing
+a cost adjustment. Dictionary/SDK simulations keep the raw client profile.
+
+Snapshot 92 captures eight actual source arm recipes: five visible tasks, three
+heldout tasks, empty workloads, setup/entry-run/judge faults, provider-failure
+recovery and provider cancellation. Wall time alone is omitted as nondeterministic;
+source histories, tool catalogues, owner/mode, workspace file effects and all other
+rows remain captured. The source entry-run fault is injected at AgentSession.run,
+while the native equivalent uses a failing user-prompt hook before history append.
+All eight default task effects/final texts/deterministic row measurements match.
+Native stage/error diagnostic spelling is explicit: the recovered fault fixture
+has 38 native versus 32 source tokens because the native bounded diagnostic adds
+its Go error type before the scripted source error text. That actual native cost
+is retained; arbitrary Go errors are not renamed to Python exception classes.
+
+Native tests also exercise setup/judge panic/error boundaries, cancellation and
+call joins, captured workload mutation, independent histories/workspaces, actual
+advertised/executable whitelists, forced anonymous/interactive mode and measured
+setup/judge exclusion. POST /benchmark's fake-only two-arm/default-plus-heldout
+composition remains pending. Paid evaluation stays operator initiated; this
+library is explicit operator launch authority. Native HTTP inventory remains
+33 operations/30 patterns; the broader migration and G0–G7 remain open.
+
+Validation:
+
+- Focused source arm/fault/recovery/cancellation, fake client wire and native
+  callback/capture/join tests passed. The targeted native cancellation mutation
+  failed as expected; restoration preceded all full gates. This is one focused
+  native mutation, not a full mutation sweep.
+- Full `go test ./... -count=1 -timeout=180s -coverpkg=./...` with shared profile,
+  `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+  Deduplicated statement coverage: overall **89.60%** (15244/17013), agent
+  **90.63%** (5967/6584), HTTP API **89.29%** (1259/1410), benchmark **94.32%**
+  (349/370). Coverage is not migration completion.
+- Contract exporter `--check`: all 92 files current. `verify_scans.py`: all 19
+  scanner guards anchored. Python package modules and mutation anchors are
+  unchanged; separate Python invariant/mutation verifier sweeps were not rerun.
+- After every Go/export/scanner handle was terminal, isolated
+  `.venv/bin/python -m pytest -q` passed: **2151 passed, 28 skipped,
+  24 subtests passed, 3 dependency deprecation warnings**, in 108.03s.
+  Python coverage was not refreshed.
+- `git diff --check` passed; README outline checked. The regenerated architecture
+  passed all 9 showcase checks after routing the new operator-arm edge around
+  diagnosed crossings. Visual inspection remains skipped after the earlier
+  local-file denial; automated checks are not visual evidence.
+
 ## 2026-10-07 admitted benchmark tasks and effect judges
 
 `go/benchmark` now has immutable Task specifications, explicit trusted Judge/Setup

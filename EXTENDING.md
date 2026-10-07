@@ -1970,11 +1970,21 @@ faults and cancellation, without turning them into passing effects. The source's
 permissive substring/existence/line-count judges and exact long-log bytes remain
 intentional. Model output and improvement drafts cannot become these callbacks.
 
-These operator components do not launch sessions or admit task drafts into the
-judged workload. Future arm execution must retain human-admitted task judges,
-setup and captured tool selections, independent
-workspaces and fake-only HTTP composition. Native execution/HTTP integration
-remains pending.
+`benchmark.RunArm(ctx, label, ManagerConfig, tasks)` now explicitly launches one
+owned manager and fresh anonymous interactive sessions, captures workload storage
+before callbacks, applies real catalogue reduction and stops/joins on every exit.
+Nil/empty tasks mean no tasks; callers explicitly select DefaultTasks or HeldoutTasks.
+Injected services remain caller-owned, and custom workspace factories must isolate
+task paths. Setup/create failures abort; ordinary run/judge failures score rows;
+cancellation aborts. Native stage errors support errors.Is/As. Duration excludes
+setup/judge; transcript cost and motion are actual measurements, not fake usage.
+Workspaces are retained. Runtime error diagnostic spelling remains native.
+
+`FakeProvider.ObjectView()` adapts non-SDK fake objects to source transcript
+semantics: tool caller metadata is absent. Raw FakeProvider retains client-wire
+caller=null and supports explicit dictionary/SDK simulations; real providers keep
+their existing absent/null contract. The launcher selects the object view. Model
+task drafts remain inadmissible; fake-only HTTP arm composition is still pending.
 
 * **Per session (isolated):** workspace, conversation history, `TodoManager`,
   `ctx.state`, the cloned `ToolRegistry`, the run `Lock`.

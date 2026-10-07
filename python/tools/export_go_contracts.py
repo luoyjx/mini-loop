@@ -6726,6 +6726,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-memory-http.json": _json_bytes(_memory_http_contracts()),
         "python-benchmark-statistics.json": _json_bytes(_benchmark_statistics_contracts()),
         "python-benchmark-tasks.json": _json_bytes(_benchmark_task_contracts()),
+        "python-benchmark-arms.json": _json_bytes(_benchmark_arm_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7480,6 +7481,75 @@ def _benchmark_task_contracts() -> dict:
         seed = dict(size=len(data), sha256=hashlib.sha256(data).hexdigest(),
                     first=lines[0], deep=lines[4320], last=lines[-1], lines=len(lines))
     return dict(specs=specs, cases=cases, seed=seed)
+
+
+def _benchmark_arm_contracts() -> dict:
+    """Actual source fresh-session runner, default fake effects and fault stages."""
+    import asyncio
+    from contextlib import nullcontext
+    from unittest.mock import patch
+    from mini_loop.benchmark import DEFAULT_TASKS, HELDOUT_TASKS, BenchTask, run_arm
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text
+    from mini_loop.manager import SessionManager as SourceManager
+
+    async def collect():
+        cases = []
+        with tempfile.TemporaryDirectory(prefix="go-benchmark-arms-") as directory:
+            root = Path(directory)
+            managers = []
+            class ObservedManager(SourceManager):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.observed = []
+                    managers.append(self)
+                def create(self, **kwargs):
+                    session = super().create(**kwargs)
+                    self.observed.append(session)
+                    return session
+            def fail_setup(workspace): raise ValueError("setup fault")
+            def fail_judge(workspace, final): raise ValueError("judge fault")
+            def fail_run(kwargs): raise ValueError("run fault")
+            def cancel_run(kwargs): raise asyncio.CancelledError()
+            recipes = [
+                ("visible", DEFAULT_TASKS, FakeAsyncAnthropic()),
+                ("heldout", HELDOUT_TASKS, FakeAsyncAnthropic()),
+                ("empty", (), FakeAsyncAnthropic()),
+                ("judge-fault", (BenchTask("bad-judge", "judge", fail_judge),),
+                 FakeAsyncAnthropic(responder=lambda kwargs: ([text("done")], "end_turn"))),
+                ("setup-fault", (BenchTask("bad-setup", "setup", lambda w,f: True, setup=fail_setup),), FakeAsyncAnthropic()),
+                ("provider-fault-recovered", (BenchTask("bad-run", "run", lambda w,f: True),), FakeAsyncAnthropic(responder=fail_run)),
+                ("run-fault", (BenchTask("bad-run", "run", lambda w,f: True),), FakeAsyncAnthropic()),
+                ("cancelled-provider", (BenchTask("cancelled", "cancel", lambda w,f: True),), FakeAsyncAnthropic(responder=cancel_run)),
+            ]
+            with patch.dict(os.environ, {}, clear=True), patch("mini_loop.manager.SessionManager", ObservedManager):
+                for name, tasks, client in recipes:
+                    settings = Settings(fake_llm=True, workspace_root=root/name,
+                                        skills_dir=root/"skills", spill_dir=None)
+                    try:
+                        async def fail_session_run(session, prompt):
+                            raise RuntimeError("run fault")
+                        with patch("mini_loop.session.AgentSession.run", fail_session_run) if name == "run-fault" else nullcontext():
+                            rows = await run_arm("test", settings, client, tasks)
+                        # Wall time is checked natively, not treated as a stable
+                        # fake/model measurement. Preserve every other source field.
+                        for row in rows: row.pop("duration_ms")
+                        error = None
+                    except Exception as exc:
+                        rows, error = None, type(exc).__name__ + ": " + str(exc)
+                    except asyncio.CancelledError:
+                        rows, error = None, "CancelledError"
+                    manager = managers[-1]
+                    sessions = [dict(owner=s.owner, mode=s.permission_mode,
+                                     messages=s.agent.messages,
+                                     files=sorted(str(p.relative_to(s.workspace)) for p in s.workspace.rglob("*") if p.is_file()),
+                                     tools=s.agent.tools.names()) for s in manager.observed]
+                    cases.append(dict(name=name, rows=rows, error=error, sessions=sessions))
+                    # The real runner has returned; this probe joins its captured
+                    # manager to avoid leaving source cleanup work live.
+                    await manager.stop()
+        return dict(cases=cases)
+    return asyncio.run(collect())
 
 
 def main() -> int:

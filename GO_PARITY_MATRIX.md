@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (91 generated snapshots), plus registry masking,
+the current implementation (92 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -434,6 +434,14 @@ eight source specs, 50 actual filesystem/text judgments and the 324000-byte log
 digest. Unicode splitlines, strict UTF-8 faults, permissive substring/existence
 behavior and symlink semantics are pinned. Nil native judges/zero tasks refuse
 explicitly; malformed arbitrary callback objects are unrepresentable.
-Native arm execution and POST /benchmark
-remain unimplemented; no route row or G7 acceptance is claimed from these
-component checks.
+Native RunArm now owns/joins a manager, executes fresh anonymous interactive
+sessions, captures task storage, applies whitelists and measures real run time and
+final transcript cost/motion. Setup/create/cancellation abort; ordinary run/judge
+faults score failed rows. Snapshot 92 captures eight actual source arm recipes,
+including visible/heldout default-fake effects, empty sets and fault/recovery
+boundaries. The eight default task effects/final texts/deterministic rows match.
+Native failure diagnostic spelling remains different: the recovered fault fixture
+costs 38 versus source 32. FakeObjectProvider models source non-SDK object transcript
+projection without changing raw client/real-provider absent/null semantics; the
+launcher selects it. Empty native history now costs zero. POST /benchmark remains
+unimplemented; no route row or G7 acceptance is claimed from these component checks.
