@@ -402,7 +402,7 @@
       "id": "goActions",
       "type": "database",
       "label": "Go Replay / State",
-      "sublabel": "typed state / restore / epoch reads",
+      "sublabel": "state / restore / in-memory diagnostic snapshots",
       "pos": [
         1370,
         1360
@@ -447,7 +447,7 @@
       "id": "goApprovals",
       "type": "security",
       "label": "Go Approval Broker",
-      "sublabel": "grants / questions / optional review",
+      "sublabel": "grants / questions / review / diagnostic snapshots",
       "pos": [
         1920,
         980
@@ -546,7 +546,7 @@
         245,
         76
       ],
-      "tag": "typed snapshot library; HTTP pending"
+      "tag": "snapshot lib / broker-journal seam; HTTP pending"
     }
   ],
   "boundaries": [

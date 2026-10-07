@@ -178,15 +178,15 @@ func BuildReport(observations Observations, scope Scope) string {
 			if len(summary) == 0 {
 				continue
 			}
-			total := len(summary)
+			total := strconv.Itoa(len(summary))
 			if ledger.Total != nil {
-				total = *ledger.Total
+				total = ledger.Total.String()
 			}
 			churn := ""
 			if ledger.Churning {
 				churn = " (churning: counts are lower bounds)"
 			}
-			lines = append(lines, fmt.Sprintf("### %s: %d reported%s", source.name, total, churn))
+			lines = append(lines, fmt.Sprintf("### %s: %s reported%s", source.name, total, churn))
 			for _, line := range summary {
 				lines = append(lines, "- "+line)
 			}
@@ -310,7 +310,7 @@ func BuildReport(observations Observations, scope Scope) string {
 	return report
 }
 
-func problems(observations Observations, owner *string, limit int) ([]Suggestion, error) {
+func suggestionProblems(observations Observations, owner *string, limit int) ([]Suggestion, error) {
 	sessions, err := recent(observations, owner)
 	if err != nil {
 		return nil, err
@@ -337,10 +337,10 @@ func problems(observations Observations, owner *string, limit int) ([]Suggestion
 	return result, nil
 }
 func SuggestObjectives(observations Observations, owner *string, limit int) ([]Suggestion, error) {
-	return problems(observations, owner, limit)
+	return suggestionProblems(observations, owner, limit)
 }
 func SuggestBenchTasks(observations Observations, owner *string, limit int) ([]BenchTaskDraft, error) {
-	suggestions, err := problems(observations, owner, limit)
+	suggestions, err := suggestionProblems(observations, owner, limit)
 	if err != nil {
 		return nil, err
 	}

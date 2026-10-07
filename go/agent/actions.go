@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/luoyjx/mini-loop/go/problems"
 	"strings"
 	"sync"
 	"time"
@@ -182,12 +183,13 @@ func attachAction(record ActionRecord, run WorkflowRunID) (ActionRecord, error) 
 // InMemoryActionJournal retains every identity; only terminal result payloads
 // are shed. This is process-local, and a started record is not a dispatch claim.
 type InMemoryActionJournal struct {
-	mu            sync.Mutex
-	records       map[ActionID]ActionRecord
-	completed     []ActionID
-	retainedChars int
-	maxResults    int
-	problems      []string
+	mu                 sync.Mutex
+	records            map[ActionID]ActionRecord
+	completed          []ActionID
+	retainedChars      int
+	maxResults         int
+	problemOccurrences *problems.Log
+	problems           []string
 }
 
 func NewInMemoryActionJournal(maxResults int) (*InMemoryActionJournal, error) {
@@ -261,6 +263,7 @@ func (journal *InMemoryActionJournal) shed() {
 	}
 }
 func (journal *InMemoryActionJournal) problem(value string) {
+	recordProblemOccurrence(&journal.problemOccurrences, value)
 	for _, prior := range journal.problems {
 		if prior == value {
 			return

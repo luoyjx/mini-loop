@@ -6729,6 +6729,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-benchmark-arms.json": _json_bytes(_benchmark_arm_contracts()),
         "python-benchmark-http.json": _json_bytes(_benchmark_http_contracts()),
         "python-self-audit.json": _json_bytes(_self_audit_contracts()),
+        "python-problem-log.json": _json_bytes(_problem_log_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7741,6 +7742,55 @@ def _self_audit_contracts() -> dict:
     owner_cap=dict(sessions=[session("s"+str(i),"alice",i) for i in range(21)],problems={},trajectories={"global":[],"by_session":{"s"+str(i):[dict(id="r"+str(i),status="complete",tool_uses=[dict(name="load_skill",skill="excluded" if i==0 else "visible")])] for i in range(21)},"has_events":True},cron={})
     capture("recent-owned-session-cap",owner_cap,"alice",False)
     budget=copy.deepcopy(mixed);budget["trajectories"]["global"][0]["tool_uses"]=[dict(name="read_file")]*200+[dict(name="load_skill",skill="beyond-budget")];capture("event-scan-budget",budget)
+    return dict(cases=cases)
+
+
+def _problem_log_contracts() -> dict:
+    """Actual source append/extend/clear/FIFO/count/churn state transitions."""
+    from mini_loop.problems import ProblemLog
+    cases = []
+    recipes = [
+        ("default", 50, []),
+        ("duplicate-order", 3, [("append", [text]) for text in "abacda"]),
+        ("churn-lifetime", 3, [("extend", list("abcd") * 100)]),
+        ("clear", 2, [("extend", list("abca")), ("clear", []), ("extend", ["界", "界"])]),
+        ("limit-one", 1, [("extend", ["a", "a", "b", "a", "a"])]),
+        ("zero", 0, [("append", ["a"]), ("extend", ["b", "c"]), ("clear", [])]),
+        ("negative", -1, [("append", ["a"]), ("clear", [])]),
+        ("exact-text", 50, [("extend", ["", "", "A", "a", " a ", "界", "界", "é", "é"])]),
+        ("capacity", 50, [
+            ("extend", ["p" + str(i) for i in range(51)]),
+            ("append", ["p1"]),
+            ("append", ["p0"]),
+        ]),
+    ]
+    for name, limit, operations in recipes:
+        log = ProblemLog(limit=limit)
+
+        def state():
+            return dict(
+                entries=[dict(text=text, count=log.counts[text]) for text in log],
+                total=log.total(), dropped=log.dropped, limit=log.limit,
+                churning=log.churning(),
+            )
+
+        steps = [dict(operation="snapshot", messages=[], state=state(), summary=log.summary(), error=None)]
+        for operation, messages in operations:
+            error = None
+            try:
+                if operation == "append":
+                    log.append(messages[0])
+                elif operation == "extend":
+                    log.extend(messages)
+                else:
+                    log.clear()
+            except Exception as exc:
+                error = type(exc).__name__
+            steps.append(dict(
+                operation=operation, messages=messages, state=state(),
+                summary=log.summary(), error=error,
+            ))
+        cases.append(dict(name=name, limit=limit, steps=steps))
     return dict(cases=cases)
 
 

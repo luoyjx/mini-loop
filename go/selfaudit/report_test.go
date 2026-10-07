@@ -1,9 +1,10 @@
-package selfaudit
+package selfaudit_test
 
 import (
 	"encoding/json"
 	"errors"
 	"github.com/luoyjx/mini-loop/go/benchmark"
+	"github.com/luoyjx/mini-loop/go/selfaudit"
 	"os"
 	"reflect"
 	"strings"
@@ -12,16 +13,16 @@ import (
 
 type contract struct {
 	Cases []struct {
-		Name            string           `json:"name"`
-		Observation     Observations     `json:"observation"`
-		Owner           *string          `json:"owner"`
-		IncludeGlobal   bool             `json:"include_global"`
-		Limit           int              `json:"limit"`
-		Report          string           `json:"report"`
-		Objectives      []Suggestion     `json:"objectives"`
-		ObjectivesError *string          `json:"objectives_error"`
-		Drafts          []BenchTaskDraft `json:"drafts"`
-		DraftsError     *string          `json:"drafts_error"`
+		Name            string                     `json:"name"`
+		Observation     selfaudit.Observations     `json:"observation"`
+		Owner           *string                    `json:"owner"`
+		IncludeGlobal   bool                       `json:"include_global"`
+		Limit           int                        `json:"limit"`
+		Report          string                     `json:"report"`
+		Objectives      []selfaudit.Suggestion     `json:"objectives"`
+		ObjectivesError *string                    `json:"objectives_error"`
+		Drafts          []selfaudit.BenchTaskDraft `json:"drafts"`
+		DraftsError     *string                    `json:"drafts_error"`
 	}
 }
 
@@ -40,16 +41,16 @@ func TestActualSourceSelfAudit(t *testing.T) {
 	for _, test := range fixture.Cases {
 		t.Run(test.Name, func(t *testing.T) {
 			before, _ := json.Marshal(test.Observation)
-			report := BuildReport(test.Observation, Scope{test.Owner, test.IncludeGlobal})
+			report := selfaudit.BuildReport(test.Observation, selfaudit.Scope{test.Owner, test.IncludeGlobal})
 			if report != test.Report {
 				t.Fatalf("report mismatch\ngot %s\nwant %s", report, test.Report)
 			}
-			objectives, err := SuggestObjectives(test.Observation, test.Owner, test.Limit)
+			objectives, err := selfaudit.SuggestObjectives(test.Observation, test.Owner, test.Limit)
 			checkError(t, err, test.ObjectivesError)
 			if !reflect.DeepEqual(objectives, test.Objectives) {
 				t.Fatalf("objectives %+v vs %+v", objectives, test.Objectives)
 			}
-			drafts, err := SuggestBenchTasks(test.Observation, test.Owner, test.Limit)
+			drafts, err := selfaudit.SuggestBenchTasks(test.Observation, test.Owner, test.Limit)
 			checkError(t, err, test.DraftsError)
 			got, _ := json.Marshal(drafts)
 			want, _ := json.Marshal(test.Drafts)
@@ -76,7 +77,7 @@ func checkError(t *testing.T, err error, want *string) {
 		}
 		return
 	}
-	var failure *ObservationError
+	var failure *selfaudit.ObservationError
 	if !errors.As(err, &failure) || failure.Class != *want {
 		t.Fatalf("error %v vs %s", err, *want)
 	}
@@ -87,12 +88,12 @@ func checkError(t *testing.T, err error, want *string) {
 
 func TestDraftExpectationIsClosed(t *testing.T) {
 	for _, input := range []string{`{}`, `true`, `"callable"`, `[]`} {
-		var expectation NoExpectation
+		var expectation selfaudit.NoExpectation
 		if err := json.Unmarshal([]byte(input), &expectation); err == nil {
 			t.Fatalf("draft expectation accepted %s", input)
 		}
 	}
-	var expectation NoExpectation
+	var expectation selfaudit.NoExpectation
 	if err := json.Unmarshal([]byte(" null \n"), &expectation); err != nil {
 		t.Fatal(err)
 	}

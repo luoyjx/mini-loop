@@ -5,6 +5,7 @@ package selfaudit
 import (
 	"bytes"
 	"errors"
+	"github.com/luoyjx/mini-loop/go/problems"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
@@ -19,11 +20,11 @@ type Failure struct {
 	Class string `json:"class"`
 }
 type Ledger struct {
-	Entries  []string  `json:"entries"`
-	Summary  *[]string `json:"summary,omitempty"`
-	Total    *int      `json:"total,omitempty"`
-	Churning bool      `json:"churning"`
-	Failure  *Failure  `json:"failure,omitempty"`
+	Entries  []string          `json:"entries"`
+	Summary  *[]string         `json:"summary,omitempty"`
+	Total    *problems.Counter `json:"total,omitempty"`
+	Churning bool              `json:"churning"`
+	Failure  *Failure          `json:"failure,omitempty"`
 }
 type GlobalLedgers struct {
 	Cron         *Ledger `json:"cron,omitempty"`
@@ -116,4 +117,13 @@ type BenchTaskDraft struct {
 	PromptDraft string        `json:"prompt_draft"`
 	Expect      NoExpectation `json:"expect"`
 	Note        string        `json:"note"`
+}
+
+// ProblemSource is an optional diagnostic seam; it returns detached observations.
+type ProblemSource interface{ SelfAuditProblems() Ledger }
+
+func FromProblems(snapshot problems.Snapshot) Ledger {
+	summary := snapshot.Summary()
+	total := snapshot.Total
+	return Ledger{Entries: snapshot.Messages(), Summary: &summary, Total: &total, Churning: snapshot.Churning}
 }

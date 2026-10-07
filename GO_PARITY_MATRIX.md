@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (94 generated snapshots), plus registry masking,
+the current implementation (95 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -481,3 +481,27 @@ This remains an explicit snapshot library: live manager collection, runtime tool
 installation and three HTTP routes remain pending. It does not synthesize empty
 reports for unimplemented services. Source parity evidence covers scalar UTF-8 and finite numeric observation
 profiles; arbitrary malformed Python namespace values are not claimed covered. No HTTP inventory/G7 acceptance is added by these core checks.
+
+
+## Exact problem ledger and holder diagnostics
+
+`go/problems.Log` ports source ProblemLog append/extend/clear, bounded distinct
+FIFO retention, repeat counts, lifetime totals, eviction counts and churn. Snapshot
+95 compares nine actual source sequences, including 400 appends across a churning
+four-message/three-slot log, returning evictions, exact Unicode/whitespace and
+nonpositive capacities. Source invalid-capacity append increments total before
+IndexError; native ErrEmptyEviction preserves that state and unwrap-compatible
+error identity. Native ingress accepts rendered strings; arbitrary Python object
+str() callbacks/list mutation are outside this typed API. Zero Log uses default
+50; explicit New(0) preserves zero and its append failure.
+
+Counters use immutable exact nonnegative integers and detached big.Int views.
+Ledger.Total now accepts that Counter instead of a machine-sized int, retaining
+all prior snapshot-94 report outputs and JSON integer shape. Source header counts
+are rendered without float conversion. Optional ProblemSource exposes detached
+SelfAuditProblems. ApprovalBroker and InMemoryActionJournal record every diagnostic
+occurrence before their legacy deduplication; existing Problems() remains unchanged.
+Native tests trigger repeated real reviewer faults and result shedding, checking
+counted snapshots, private panic omission, old API behavior and replay authority.
+Live manager collection, other holder/store adapters, model tool and the three
+HTTP routes remain pending; inventory stays 34 operations/31 patterns.

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `9d27582` plus typed self-audit observations;
+reviewed **2026-10-07** (Go baseline `3c83a34` plus exact problem-log diagnostics;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -375,9 +375,9 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>injected backend; SQLite pending"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
-        GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
+        GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock"]
@@ -1257,6 +1257,14 @@ diagnostic spelling. All eight default-fake task effects/final texts/metrics mat
 The launcher uses `FakeProvider.ObjectView()` to reproduce Python fake-object
 transcript serialization, omitting caller metadata while preserving the raw
 client wire view and real-provider absent/null distinctions. Empty history costs zero.
+Go problems.Log now retains 50 distinct FIFO entries with exact nonnegative
+integer occurrence/lifetime/eviction counters. Repeats retain their original
+position; returning evicted messages restart retained counts. Clear resets counts
+without changing capacity. Snapshots detach slices and integer storage. Approval
+and in-memory action holders now expose the optional typed SelfAuditProblems seam,
+recording every occurrence while preserving their legacy Problems() API. This
+prepares live observation; no new manager collector, model tool or HTTP route is
+installed. Existing stored journals and other holder adapters remain separate.
 The Go selfaudit library now renders concrete observations for session activity,
 problem ledgers/counts/churn, trajectory trends, skill-load correlation and cron
 arming. Owner filtering, global inclusion and source scan/report bounds are

@@ -2064,3 +2064,20 @@ selection as in source; authenticated routes must select owner and false.
 The library neither launches suggested objectives nor installs benchmark drafts.
 NoExpectation carries only null, and benchmark task construction still requires
 a reviewed judge. Live manager/model-tool/HTTP binding remains pending.
+
+
+### Exact diagnostic ledger seam
+
+The optional selfaudit.ProblemSource interface returns a detached Ledger through
+SelfAuditProblems. It changes no existing action/approval interface requirements.
+The broker and in-memory journal count every occurrence under their holder mutex
+before legacy deduplication; reads do not mutate live state. Shared problems.Log
+uses FIFO distinct retention and immutable Counter values. Ledger totals are exact
+JSON integers with decimal report formatting; Counter.BigInt gives a detached copy.
+
+Live collectors must establish owner scope before IO. The source ScopedMemory
+proxy delegates problems to its backing store through __getattr__; shared stores
+can therefore mix tenants' diagnostic filenames. That accessor alone is not
+owner attribution. The native collector must resolve this boundary before adding
+shared memory to authenticated reports. Other diagnostic/store adapters remain
+pending; no fake empty report is installed by this primitive.

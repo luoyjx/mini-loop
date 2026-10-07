@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/luoyjx/mini-loop/go/problems"
 	"slices"
 	"strings"
 	"sync"
@@ -248,15 +249,16 @@ type pendingApproval struct {
 // ApprovalBroker is process-local. Store faults are reported, but never change
 // an in-memory human decision. Remembered grants are deliberately not persisted.
 type ApprovalBroker struct {
-	mu       sync.Mutex
-	timeout  time.Duration
-	store    ApprovalStore
-	redactor ApprovalRedactor
-	reviewer ApprovalReviewer
-	pending  map[ApprovalID]*pendingApproval
-	order    []ApprovalID
-	grants   map[SessionID][]GrantCandidate
-	problems []string
+	mu                 sync.Mutex
+	timeout            time.Duration
+	store              ApprovalStore
+	redactor           ApprovalRedactor
+	reviewer           ApprovalReviewer
+	pending            map[ApprovalID]*pendingApproval
+	order              []ApprovalID
+	grants             map[SessionID][]GrantCandidate
+	problemOccurrences *problems.Log
+	problems           []string
 }
 
 func NewApprovalBroker(config ApprovalBrokerConfig) (*ApprovalBroker, error) {
@@ -318,6 +320,7 @@ func newApproval(snapshot ApprovalSnapshot) (*pendingApproval, error) {
 	return &pendingApproval{snapshot: snapshot, done: make(chan struct{})}, nil
 }
 func (broker *ApprovalBroker) problemLocked(value string) {
+	recordProblemOccurrence(&broker.problemOccurrences, value)
 	if slices.Contains(broker.problems, value) {
 		return
 	}

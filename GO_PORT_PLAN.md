@@ -1,5 +1,45 @@
 # Go port plan
 
+## 2026-10-07 exact problem ledger and diagnostic snapshots
+
+Live self-audit collection exposed a prerequisite: approval and in-memory action
+diagnostics discarded duplicate occurrence counts. The new problems.Log ports
+source FIFO distinct retention, repeat/total/dropped counters, churn and clear,
+with atomic detached snapshots. Source nonpositive capacities keep their exact
+failed-append total increment; the native sentinel is ErrEmptyEviction. Counter
+is an immutable exact nonnegative integer with copied big.Int storage, preserving
+JSON integer and decimal report identity. selfaudit.Ledger.Total now uses it.
+
+ApprovalBroker and InMemoryActionJournal mirror every diagnostic occurrence into
+the source-sized 50-entry ledger before preserving their old 100-entry Problems()
+API/deduplication. Optional ProblemSource supplies typed snapshots without
+changing action/approval interface requirements. Real repeated reviewer faults
+and action result shedding exercise these paths; denied permissions, private
+panic omission, released results and retained replay identity remain verified.
+
+Snapshot 95 captures nine actual source state sequences. Previous 26 self-audit
+profiles stay exact, and native tests exercise concurrent reads/appends, detached
+views and integers beyond machine bounds. Input strings are already rendered;
+arbitrary Python object __str__ and inherited list mutation are not native APIs.
+
+Live manager collection, other holder/stored adapters, runtime tool and HTTP
+routes remain pending. Source ScopedMemory delegates its problems accessor to
+the raw store; a shared store can hold diagnostic filenames for multiple owners.
+The native collector must preserve owner attribution before exposing that ledger
+in authenticated reports. No global fallback or fake empty route is added.
+Inventory remains 34 operations/31 patterns; G0–G7 and full migration remain open.
+
+Validation completed: full Go tests and race tests (`-count=1 -timeout=180s`),
+`go vet ./...`, all 95 contract exports (`--check`) and all 19 scan anchors pass.
+After every preceding process finished, isolated Python pytest passed: 2151 tests,
+28 skipped, 24 subtests, 3 dependency deprecation warnings in 131.80s. The formatted
+exporter also reproduces the new fixture byte-for-byte. `git diff --check` and
+README outline pass; Archify regeneration passes 9/9 automatic checks. Visual
+inspection remains skipped after the earlier denial; it was not retried. Python
+package invariants and guard mutation checks were not rerun because this change
+does not modify Python package modules or guarded behavior. Overall statement
+coverage was not refreshed in this iteration.
+
 ## 2026-10-07 typed self-audit observation core
 
 Concrete observations now support the full report processing core, typed

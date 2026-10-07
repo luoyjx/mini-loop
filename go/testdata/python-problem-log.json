@@ -1,0 +1,1853 @@
+{
+  "cases": [
+    {
+      "limit": 50,
+      "name": "default",
+      "steps": [
+        {
+          "error": null,
+          "messages": [],
+          "operation": "snapshot",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 50,
+            "total": 0
+          },
+          "summary": []
+        }
+      ]
+    },
+    {
+      "limit": 3,
+      "name": "duplicate-order",
+      "steps": [
+        {
+          "error": null,
+          "messages": [],
+          "operation": "snapshot",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 3,
+            "total": 0
+          },
+          "summary": []
+        },
+        {
+          "error": null,
+          "messages": [
+            "a"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [
+              {
+                "count": 1,
+                "text": "a"
+              }
+            ],
+            "limit": 3,
+            "total": 1
+          },
+          "summary": [
+            "a"
+          ]
+        },
+        {
+          "error": null,
+          "messages": [
+            "b"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [
+              {
+                "count": 1,
+                "text": "a"
+              },
+              {
+                "count": 1,
+                "text": "b"
+              }
+            ],
+            "limit": 3,
+            "total": 2
+          },
+          "summary": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "error": null,
+          "messages": [
+            "a"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [
+              {
+                "count": 2,
+                "text": "a"
+              },
+              {
+                "count": 1,
+                "text": "b"
+              }
+            ],
+            "limit": 3,
+            "total": 3
+          },
+          "summary": [
+            "a (x2)",
+            "b"
+          ]
+        },
+        {
+          "error": null,
+          "messages": [
+            "c"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [
+              {
+                "count": 2,
+                "text": "a"
+              },
+              {
+                "count": 1,
+                "text": "b"
+              },
+              {
+                "count": 1,
+                "text": "c"
+              }
+            ],
+            "limit": 3,
+            "total": 4
+          },
+          "summary": [
+            "a (x2)",
+            "b",
+            "c"
+          ]
+        },
+        {
+          "error": null,
+          "messages": [
+            "d"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": false,
+            "dropped": 1,
+            "entries": [
+              {
+                "count": 1,
+                "text": "b"
+              },
+              {
+                "count": 1,
+                "text": "c"
+              },
+              {
+                "count": 1,
+                "text": "d"
+              }
+            ],
+            "limit": 3,
+            "total": 5
+          },
+          "summary": [
+            "b",
+            "c",
+            "d"
+          ]
+        },
+        {
+          "error": null,
+          "messages": [
+            "a"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": false,
+            "dropped": 2,
+            "entries": [
+              {
+                "count": 1,
+                "text": "c"
+              },
+              {
+                "count": 1,
+                "text": "d"
+              },
+              {
+                "count": 1,
+                "text": "a"
+              }
+            ],
+            "limit": 3,
+            "total": 6
+          },
+          "summary": [
+            "c",
+            "d",
+            "a"
+          ]
+        }
+      ]
+    },
+    {
+      "limit": 3,
+      "name": "churn-lifetime",
+      "steps": [
+        {
+          "error": null,
+          "messages": [],
+          "operation": "snapshot",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 3,
+            "total": 0
+          },
+          "summary": []
+        },
+        {
+          "error": null,
+          "messages": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d",
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "operation": "extend",
+          "state": {
+            "churning": true,
+            "dropped": 397,
+            "entries": [
+              {
+                "count": 1,
+                "text": "b"
+              },
+              {
+                "count": 1,
+                "text": "c"
+              },
+              {
+                "count": 1,
+                "text": "d"
+              }
+            ],
+            "limit": 3,
+            "total": 400
+          },
+          "summary": [
+            "b",
+            "c",
+            "d"
+          ]
+        }
+      ]
+    },
+    {
+      "limit": 2,
+      "name": "clear",
+      "steps": [
+        {
+          "error": null,
+          "messages": [],
+          "operation": "snapshot",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 2,
+            "total": 0
+          },
+          "summary": []
+        },
+        {
+          "error": null,
+          "messages": [
+            "a",
+            "b",
+            "c",
+            "a"
+          ],
+          "operation": "extend",
+          "state": {
+            "churning": false,
+            "dropped": 2,
+            "entries": [
+              {
+                "count": 1,
+                "text": "c"
+              },
+              {
+                "count": 1,
+                "text": "a"
+              }
+            ],
+            "limit": 2,
+            "total": 4
+          },
+          "summary": [
+            "c",
+            "a"
+          ]
+        },
+        {
+          "error": null,
+          "messages": [],
+          "operation": "clear",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 2,
+            "total": 0
+          },
+          "summary": []
+        },
+        {
+          "error": null,
+          "messages": [
+            "界",
+            "界"
+          ],
+          "operation": "extend",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [
+              {
+                "count": 2,
+                "text": "界"
+              }
+            ],
+            "limit": 2,
+            "total": 2
+          },
+          "summary": [
+            "界 (x2)"
+          ]
+        }
+      ]
+    },
+    {
+      "limit": 1,
+      "name": "limit-one",
+      "steps": [
+        {
+          "error": null,
+          "messages": [],
+          "operation": "snapshot",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 1,
+            "total": 0
+          },
+          "summary": []
+        },
+        {
+          "error": null,
+          "messages": [
+            "a",
+            "a",
+            "b",
+            "a",
+            "a"
+          ],
+          "operation": "extend",
+          "state": {
+            "churning": true,
+            "dropped": 2,
+            "entries": [
+              {
+                "count": 2,
+                "text": "a"
+              }
+            ],
+            "limit": 1,
+            "total": 5
+          },
+          "summary": [
+            "a (x2)"
+          ]
+        }
+      ]
+    },
+    {
+      "limit": 0,
+      "name": "zero",
+      "steps": [
+        {
+          "error": null,
+          "messages": [],
+          "operation": "snapshot",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 0,
+            "total": 0
+          },
+          "summary": []
+        },
+        {
+          "error": "IndexError",
+          "messages": [
+            "a"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 0,
+            "total": 1
+          },
+          "summary": []
+        },
+        {
+          "error": "IndexError",
+          "messages": [
+            "b",
+            "c"
+          ],
+          "operation": "extend",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 0,
+            "total": 2
+          },
+          "summary": []
+        },
+        {
+          "error": null,
+          "messages": [],
+          "operation": "clear",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 0,
+            "total": 0
+          },
+          "summary": []
+        }
+      ]
+    },
+    {
+      "limit": -1,
+      "name": "negative",
+      "steps": [
+        {
+          "error": null,
+          "messages": [],
+          "operation": "snapshot",
+          "state": {
+            "churning": true,
+            "dropped": 0,
+            "entries": [],
+            "limit": -1,
+            "total": 0
+          },
+          "summary": []
+        },
+        {
+          "error": "IndexError",
+          "messages": [
+            "a"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": true,
+            "dropped": 0,
+            "entries": [],
+            "limit": -1,
+            "total": 1
+          },
+          "summary": []
+        },
+        {
+          "error": null,
+          "messages": [],
+          "operation": "clear",
+          "state": {
+            "churning": true,
+            "dropped": 0,
+            "entries": [],
+            "limit": -1,
+            "total": 0
+          },
+          "summary": []
+        }
+      ]
+    },
+    {
+      "limit": 50,
+      "name": "exact-text",
+      "steps": [
+        {
+          "error": null,
+          "messages": [],
+          "operation": "snapshot",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 50,
+            "total": 0
+          },
+          "summary": []
+        },
+        {
+          "error": null,
+          "messages": [
+            "",
+            "",
+            "A",
+            "a",
+            " a ",
+            "界",
+            "界",
+            "é",
+            "é"
+          ],
+          "operation": "extend",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [
+              {
+                "count": 2,
+                "text": ""
+              },
+              {
+                "count": 1,
+                "text": "A"
+              },
+              {
+                "count": 1,
+                "text": "a"
+              },
+              {
+                "count": 1,
+                "text": " a "
+              },
+              {
+                "count": 2,
+                "text": "界"
+              },
+              {
+                "count": 1,
+                "text": "é"
+              },
+              {
+                "count": 1,
+                "text": "é"
+              }
+            ],
+            "limit": 50,
+            "total": 9
+          },
+          "summary": [
+            " (x2)",
+            "A",
+            "a",
+            " a ",
+            "界 (x2)",
+            "é",
+            "é"
+          ]
+        }
+      ]
+    },
+    {
+      "limit": 50,
+      "name": "capacity",
+      "steps": [
+        {
+          "error": null,
+          "messages": [],
+          "operation": "snapshot",
+          "state": {
+            "churning": false,
+            "dropped": 0,
+            "entries": [],
+            "limit": 50,
+            "total": 0
+          },
+          "summary": []
+        },
+        {
+          "error": null,
+          "messages": [
+            "p0",
+            "p1",
+            "p2",
+            "p3",
+            "p4",
+            "p5",
+            "p6",
+            "p7",
+            "p8",
+            "p9",
+            "p10",
+            "p11",
+            "p12",
+            "p13",
+            "p14",
+            "p15",
+            "p16",
+            "p17",
+            "p18",
+            "p19",
+            "p20",
+            "p21",
+            "p22",
+            "p23",
+            "p24",
+            "p25",
+            "p26",
+            "p27",
+            "p28",
+            "p29",
+            "p30",
+            "p31",
+            "p32",
+            "p33",
+            "p34",
+            "p35",
+            "p36",
+            "p37",
+            "p38",
+            "p39",
+            "p40",
+            "p41",
+            "p42",
+            "p43",
+            "p44",
+            "p45",
+            "p46",
+            "p47",
+            "p48",
+            "p49",
+            "p50"
+          ],
+          "operation": "extend",
+          "state": {
+            "churning": false,
+            "dropped": 1,
+            "entries": [
+              {
+                "count": 1,
+                "text": "p1"
+              },
+              {
+                "count": 1,
+                "text": "p2"
+              },
+              {
+                "count": 1,
+                "text": "p3"
+              },
+              {
+                "count": 1,
+                "text": "p4"
+              },
+              {
+                "count": 1,
+                "text": "p5"
+              },
+              {
+                "count": 1,
+                "text": "p6"
+              },
+              {
+                "count": 1,
+                "text": "p7"
+              },
+              {
+                "count": 1,
+                "text": "p8"
+              },
+              {
+                "count": 1,
+                "text": "p9"
+              },
+              {
+                "count": 1,
+                "text": "p10"
+              },
+              {
+                "count": 1,
+                "text": "p11"
+              },
+              {
+                "count": 1,
+                "text": "p12"
+              },
+              {
+                "count": 1,
+                "text": "p13"
+              },
+              {
+                "count": 1,
+                "text": "p14"
+              },
+              {
+                "count": 1,
+                "text": "p15"
+              },
+              {
+                "count": 1,
+                "text": "p16"
+              },
+              {
+                "count": 1,
+                "text": "p17"
+              },
+              {
+                "count": 1,
+                "text": "p18"
+              },
+              {
+                "count": 1,
+                "text": "p19"
+              },
+              {
+                "count": 1,
+                "text": "p20"
+              },
+              {
+                "count": 1,
+                "text": "p21"
+              },
+              {
+                "count": 1,
+                "text": "p22"
+              },
+              {
+                "count": 1,
+                "text": "p23"
+              },
+              {
+                "count": 1,
+                "text": "p24"
+              },
+              {
+                "count": 1,
+                "text": "p25"
+              },
+              {
+                "count": 1,
+                "text": "p26"
+              },
+              {
+                "count": 1,
+                "text": "p27"
+              },
+              {
+                "count": 1,
+                "text": "p28"
+              },
+              {
+                "count": 1,
+                "text": "p29"
+              },
+              {
+                "count": 1,
+                "text": "p30"
+              },
+              {
+                "count": 1,
+                "text": "p31"
+              },
+              {
+                "count": 1,
+                "text": "p32"
+              },
+              {
+                "count": 1,
+                "text": "p33"
+              },
+              {
+                "count": 1,
+                "text": "p34"
+              },
+              {
+                "count": 1,
+                "text": "p35"
+              },
+              {
+                "count": 1,
+                "text": "p36"
+              },
+              {
+                "count": 1,
+                "text": "p37"
+              },
+              {
+                "count": 1,
+                "text": "p38"
+              },
+              {
+                "count": 1,
+                "text": "p39"
+              },
+              {
+                "count": 1,
+                "text": "p40"
+              },
+              {
+                "count": 1,
+                "text": "p41"
+              },
+              {
+                "count": 1,
+                "text": "p42"
+              },
+              {
+                "count": 1,
+                "text": "p43"
+              },
+              {
+                "count": 1,
+                "text": "p44"
+              },
+              {
+                "count": 1,
+                "text": "p45"
+              },
+              {
+                "count": 1,
+                "text": "p46"
+              },
+              {
+                "count": 1,
+                "text": "p47"
+              },
+              {
+                "count": 1,
+                "text": "p48"
+              },
+              {
+                "count": 1,
+                "text": "p49"
+              },
+              {
+                "count": 1,
+                "text": "p50"
+              }
+            ],
+            "limit": 50,
+            "total": 51
+          },
+          "summary": [
+            "p1",
+            "p2",
+            "p3",
+            "p4",
+            "p5",
+            "p6",
+            "p7",
+            "p8",
+            "p9",
+            "p10",
+            "p11",
+            "p12",
+            "p13",
+            "p14",
+            "p15",
+            "p16",
+            "p17",
+            "p18",
+            "p19",
+            "p20",
+            "p21",
+            "p22",
+            "p23",
+            "p24",
+            "p25",
+            "p26",
+            "p27",
+            "p28",
+            "p29",
+            "p30",
+            "p31",
+            "p32",
+            "p33",
+            "p34",
+            "p35",
+            "p36",
+            "p37",
+            "p38",
+            "p39",
+            "p40",
+            "p41",
+            "p42",
+            "p43",
+            "p44",
+            "p45",
+            "p46",
+            "p47",
+            "p48",
+            "p49",
+            "p50"
+          ]
+        },
+        {
+          "error": null,
+          "messages": [
+            "p1"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": false,
+            "dropped": 1,
+            "entries": [
+              {
+                "count": 2,
+                "text": "p1"
+              },
+              {
+                "count": 1,
+                "text": "p2"
+              },
+              {
+                "count": 1,
+                "text": "p3"
+              },
+              {
+                "count": 1,
+                "text": "p4"
+              },
+              {
+                "count": 1,
+                "text": "p5"
+              },
+              {
+                "count": 1,
+                "text": "p6"
+              },
+              {
+                "count": 1,
+                "text": "p7"
+              },
+              {
+                "count": 1,
+                "text": "p8"
+              },
+              {
+                "count": 1,
+                "text": "p9"
+              },
+              {
+                "count": 1,
+                "text": "p10"
+              },
+              {
+                "count": 1,
+                "text": "p11"
+              },
+              {
+                "count": 1,
+                "text": "p12"
+              },
+              {
+                "count": 1,
+                "text": "p13"
+              },
+              {
+                "count": 1,
+                "text": "p14"
+              },
+              {
+                "count": 1,
+                "text": "p15"
+              },
+              {
+                "count": 1,
+                "text": "p16"
+              },
+              {
+                "count": 1,
+                "text": "p17"
+              },
+              {
+                "count": 1,
+                "text": "p18"
+              },
+              {
+                "count": 1,
+                "text": "p19"
+              },
+              {
+                "count": 1,
+                "text": "p20"
+              },
+              {
+                "count": 1,
+                "text": "p21"
+              },
+              {
+                "count": 1,
+                "text": "p22"
+              },
+              {
+                "count": 1,
+                "text": "p23"
+              },
+              {
+                "count": 1,
+                "text": "p24"
+              },
+              {
+                "count": 1,
+                "text": "p25"
+              },
+              {
+                "count": 1,
+                "text": "p26"
+              },
+              {
+                "count": 1,
+                "text": "p27"
+              },
+              {
+                "count": 1,
+                "text": "p28"
+              },
+              {
+                "count": 1,
+                "text": "p29"
+              },
+              {
+                "count": 1,
+                "text": "p30"
+              },
+              {
+                "count": 1,
+                "text": "p31"
+              },
+              {
+                "count": 1,
+                "text": "p32"
+              },
+              {
+                "count": 1,
+                "text": "p33"
+              },
+              {
+                "count": 1,
+                "text": "p34"
+              },
+              {
+                "count": 1,
+                "text": "p35"
+              },
+              {
+                "count": 1,
+                "text": "p36"
+              },
+              {
+                "count": 1,
+                "text": "p37"
+              },
+              {
+                "count": 1,
+                "text": "p38"
+              },
+              {
+                "count": 1,
+                "text": "p39"
+              },
+              {
+                "count": 1,
+                "text": "p40"
+              },
+              {
+                "count": 1,
+                "text": "p41"
+              },
+              {
+                "count": 1,
+                "text": "p42"
+              },
+              {
+                "count": 1,
+                "text": "p43"
+              },
+              {
+                "count": 1,
+                "text": "p44"
+              },
+              {
+                "count": 1,
+                "text": "p45"
+              },
+              {
+                "count": 1,
+                "text": "p46"
+              },
+              {
+                "count": 1,
+                "text": "p47"
+              },
+              {
+                "count": 1,
+                "text": "p48"
+              },
+              {
+                "count": 1,
+                "text": "p49"
+              },
+              {
+                "count": 1,
+                "text": "p50"
+              }
+            ],
+            "limit": 50,
+            "total": 52
+          },
+          "summary": [
+            "p1 (x2)",
+            "p2",
+            "p3",
+            "p4",
+            "p5",
+            "p6",
+            "p7",
+            "p8",
+            "p9",
+            "p10",
+            "p11",
+            "p12",
+            "p13",
+            "p14",
+            "p15",
+            "p16",
+            "p17",
+            "p18",
+            "p19",
+            "p20",
+            "p21",
+            "p22",
+            "p23",
+            "p24",
+            "p25",
+            "p26",
+            "p27",
+            "p28",
+            "p29",
+            "p30",
+            "p31",
+            "p32",
+            "p33",
+            "p34",
+            "p35",
+            "p36",
+            "p37",
+            "p38",
+            "p39",
+            "p40",
+            "p41",
+            "p42",
+            "p43",
+            "p44",
+            "p45",
+            "p46",
+            "p47",
+            "p48",
+            "p49",
+            "p50"
+          ]
+        },
+        {
+          "error": null,
+          "messages": [
+            "p0"
+          ],
+          "operation": "append",
+          "state": {
+            "churning": false,
+            "dropped": 2,
+            "entries": [
+              {
+                "count": 1,
+                "text": "p2"
+              },
+              {
+                "count": 1,
+                "text": "p3"
+              },
+              {
+                "count": 1,
+                "text": "p4"
+              },
+              {
+                "count": 1,
+                "text": "p5"
+              },
+              {
+                "count": 1,
+                "text": "p6"
+              },
+              {
+                "count": 1,
+                "text": "p7"
+              },
+              {
+                "count": 1,
+                "text": "p8"
+              },
+              {
+                "count": 1,
+                "text": "p9"
+              },
+              {
+                "count": 1,
+                "text": "p10"
+              },
+              {
+                "count": 1,
+                "text": "p11"
+              },
+              {
+                "count": 1,
+                "text": "p12"
+              },
+              {
+                "count": 1,
+                "text": "p13"
+              },
+              {
+                "count": 1,
+                "text": "p14"
+              },
+              {
+                "count": 1,
+                "text": "p15"
+              },
+              {
+                "count": 1,
+                "text": "p16"
+              },
+              {
+                "count": 1,
+                "text": "p17"
+              },
+              {
+                "count": 1,
+                "text": "p18"
+              },
+              {
+                "count": 1,
+                "text": "p19"
+              },
+              {
+                "count": 1,
+                "text": "p20"
+              },
+              {
+                "count": 1,
+                "text": "p21"
+              },
+              {
+                "count": 1,
+                "text": "p22"
+              },
+              {
+                "count": 1,
+                "text": "p23"
+              },
+              {
+                "count": 1,
+                "text": "p24"
+              },
+              {
+                "count": 1,
+                "text": "p25"
+              },
+              {
+                "count": 1,
+                "text": "p26"
+              },
+              {
+                "count": 1,
+                "text": "p27"
+              },
+              {
+                "count": 1,
+                "text": "p28"
+              },
+              {
+                "count": 1,
+                "text": "p29"
+              },
+              {
+                "count": 1,
+                "text": "p30"
+              },
+              {
+                "count": 1,
+                "text": "p31"
+              },
+              {
+                "count": 1,
+                "text": "p32"
+              },
+              {
+                "count": 1,
+                "text": "p33"
+              },
+              {
+                "count": 1,
+                "text": "p34"
+              },
+              {
+                "count": 1,
+                "text": "p35"
+              },
+              {
+                "count": 1,
+                "text": "p36"
+              },
+              {
+                "count": 1,
+                "text": "p37"
+              },
+              {
+                "count": 1,
+                "text": "p38"
+              },
+              {
+                "count": 1,
+                "text": "p39"
+              },
+              {
+                "count": 1,
+                "text": "p40"
+              },
+              {
+                "count": 1,
+                "text": "p41"
+              },
+              {
+                "count": 1,
+                "text": "p42"
+              },
+              {
+                "count": 1,
+                "text": "p43"
+              },
+              {
+                "count": 1,
+                "text": "p44"
+              },
+              {
+                "count": 1,
+                "text": "p45"
+              },
+              {
+                "count": 1,
+                "text": "p46"
+              },
+              {
+                "count": 1,
+                "text": "p47"
+              },
+              {
+                "count": 1,
+                "text": "p48"
+              },
+              {
+                "count": 1,
+                "text": "p49"
+              },
+              {
+                "count": 1,
+                "text": "p50"
+              },
+              {
+                "count": 1,
+                "text": "p0"
+              }
+            ],
+            "limit": 50,
+            "total": 53
+          },
+          "summary": [
+            "p2",
+            "p3",
+            "p4",
+            "p5",
+            "p6",
+            "p7",
+            "p8",
+            "p9",
+            "p10",
+            "p11",
+            "p12",
+            "p13",
+            "p14",
+            "p15",
+            "p16",
+            "p17",
+            "p18",
+            "p19",
+            "p20",
+            "p21",
+            "p22",
+            "p23",
+            "p24",
+            "p25",
+            "p26",
+            "p27",
+            "p28",
+            "p29",
+            "p30",
+            "p31",
+            "p32",
+            "p33",
+            "p34",
+            "p35",
+            "p36",
+            "p37",
+            "p38",
+            "p39",
+            "p40",
+            "p41",
+            "p42",
+            "p43",
+            "p44",
+            "p45",
+            "p46",
+            "p47",
+            "p48",
+            "p49",
+            "p50",
+            "p0"
+          ]
+        }
+      ]
+    }
+  ]
+}

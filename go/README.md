@@ -1950,3 +1950,24 @@ benchmark judge. Snapshot 94 pins 26 actual Python processing profiles.
 Live manager collection, model-tool installation and the three self-audit HTTP
 routes remain pending. This package accepts concrete scalar/finite observations;
 it is not an arbitrary Python object interpreter or an owner-authentication layer.
+
+
+### Exact problem diagnostics
+
+`problems.Log` keeps 50 distinct messages by default, first-seen FIFO order and
+exact occurrence/total/eviction counters. Repeats retain their position; evicted
+entries restart at one when reintroduced. Clear resets total/dropped and retained
+messages while retaining capacity. Snapshot slices and Counter.BigInt views detach
+from the live log. Native locking makes append/clear/snapshot atomic; an Extend
+sequence performs its source append transitions individually. New(limit) preserves
+nonpositive source limits; Append then returns ErrEmptyEviction after incrementing
+total. The zero Log defaults to 50. Messages are already rendered strings.
+
+`selfaudit.ProblemSource` is an optional narrow holder seam. ApprovalBroker and
+InMemoryActionJournal now supply SelfAuditProblems with exact lifetime counts and
+source 50-entry retention. Their existing Problems() methods preserve their prior
+100-entry/deduplication contracts. Ledger.Total uses problems.Counter, so supplied
+counts beyond machine integers retain exact decimal output. It does not use floats
+or retain mutable integer aliases. Snapshot 95 pins nine actual source sequences.
+Live manager collection, other diagnostic holders/stored journals, model-tool
+installation and HTTP binding remain pending.
