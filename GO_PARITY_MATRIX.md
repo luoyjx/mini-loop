@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (96 generated snapshots), plus registry masking,
+the current implementation (97 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -111,7 +111,7 @@ start with `/healthz`, `/sessions`, session detail/deletion,
 `/ui`. Optional route groups cover skills/memory, workflows, cron, tasks/team,
 improvement, audit, and benchmark. Every route requires a response/error/event
 fixture before its row can be marked covered; route presence alone is weak
-evidence. The current Go handler implements these thirty-four method/path operations:
+evidence. The current Go handler implements these thirty-seven method/path operations:
 
 | Method | Path | Current boundary |
 |---|---|---|
@@ -119,6 +119,9 @@ evidence. The current Go handler implements these thirty-four method/path operat
 | GET | /ui | Public embedded full source shell; optional data routes remain open |
 | GET | /healthz | Basic fields; full posture deferred |
 | POST | /benchmark | Authenticated/rate-limited fake-only visible and heldout comparison; fresh supported config/deployment catalogue; joined temporary cleanup |
+| GET | /self-audit | Admitted-owner live report under auth; fleet operator view when open; projected plain text and source character cap |
+| GET | /self-audit/suggestions | Ledger-only inert typed objectives; source default limit; no recording IO or rate spending |
+| GET | /self-audit/bench-task-drafts | Ledger-only typed draft tasks with fixed null expectation; no admission or work launch |
 | POST, GET | /sessions | Create and bounded recent listing |
 | GET, DELETE | /sessions/{session_id} | Owner-scoped lookup and draining deletion |
 | POST | /sessions/{session_id}/messages | Atomic busy admission, replay and rate bounds |
@@ -478,7 +481,7 @@ empty/missing seams, Unicode/deduplication, scan/report caps and independent
 collection/inspection/event failures. No report fields or timings are normalized.
 Native tests also refuse non-null draft expectations and check input immutability.
 Snapshot 94 proves the processing library; manager collection is now implemented
-as described below. Runtime tool installation and three HTTP routes remain pending. It does not synthesize empty
+as described below. Runtime tool installation remains pending; the HTTP routes are implemented below. It does not synthesize empty
 reports for unimplemented services. Source parity evidence covers scalar UTF-8 and finite numeric observation
 profiles; arbitrary malformed Python namespace values are not claimed covered. No HTTP inventory/G7 acceptance is added by these core checks.
 
@@ -504,8 +507,8 @@ occurrence before their legacy deduplication; existing Problems() remains unchan
 Native tests trigger repeated real reviewer faults and result shedding, checking
 counted snapshots, private panic omission, old API behavior and replay authority.
 Manager collection and native holder adapters are now implemented below. Stored
-journals without a diagnostic seam, model tool and the three HTTP routes remain
-pending; inventory stays 34 operations/31 patterns.
+journals without a diagnostic seam and model tool remain pending. HTTP binding
+is implemented below; inventory is now 37 operations/34 patterns.
 
 
 ## Live self-audit observation
@@ -540,5 +543,37 @@ empty, mixed activity/owner, unknown-owner and 100-session cap profiles. Reports
 match exactly with no normalization. Native tests cover actual JSONL turns, owner
 admission before event IO, 20/10/50/200 budgets, cancellation, panic/error isolation,
 concurrent snapshots, lazy task faults and unattributed-memory filename omission.
-No HTTP inventory acceptance is added; model-tool/HTTP binding and other migration
-rows, including stored persistence/teams/workflows, remain open.
+This observer slice alone adds no HTTP acceptance; the route binding below has
+its own corpus. Model-tool and other migration rows, including stored persistence,
+teams and workflows, remain open.
+
+
+## Self-audit HTTP composition
+
+The three GETs now bind actual manager observation and the existing pure report,
+objective and draft processors. Configured authentication selects the already
+admitted principal and excludes fleet ledgers/cron; open deployments use the
+unscoped operator view. Query/body fields do not override owner, global inclusion
+or the fixed default curation limit. GETs consume no rate budget and do not launch
+turns, schedule jobs or admit benchmark tasks. Existing ingress caps and global
+authentication precede handlers; query tokens remain event-route-only.
+
+ObserveSelfAuditProblems uses a private finite collection mode to skip activity/
+Info, cron overview and trajectory list/visitor IO. It reads only existing ledgers
+and treats a failed collection as an error, not an empty suggestion set. Report
+mode retains independent visible class-only section failures. Curation failures
+return a private plain 500; typed JSON responses use the shared fail-closed
+projection. Native plain report masking is applied before writing, with the source
+Unicode cap/marker reapplied after replacements that can expand text. This extends
+source self-audit masking while preserving the native recording boundary.
+
+Snapshot 97 compares 72 actual source HTTP responses (open, authenticated, private
+owner-resource memory): scope, headers, report strings, objective/draft structures,
+ignored malformed bodies/query overrides, bearer/query authentication and wrong
+methods. Only generated session IDs are replaced with labels. Native tests cover
+real no-rate semantics before/after exhausted turn budget, body cap before auth,
+no recording IO/launches, shared-memory filename omission, projection panic/private
+errors, Unicode report cap and mask expansion. HTTP inventory is 37 operations/
+34 patterns versus source 44; seven improvement/team/workflow operations remain
+missing. Source shared-memory diagnostic delegation remains intentionally corrected
+as documented above, and model-tool installation remains open.

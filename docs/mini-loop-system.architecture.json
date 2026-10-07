@@ -492,7 +492,7 @@
       "id": "goEntry",
       "type": "backend",
       "label": "Go Startup / HTTP / SSE",
-      "sublabel": "HTTP / SSE / owned catalogue / memory",
+      "sublabel": "HTTP / SSE / owned resources / self-audit",
       "pos": [
         330,
         800
@@ -546,7 +546,7 @@
         245,
         76
       ],
-      "tag": "live owner admission / typed snapshots; HTTP pending"
+      "tag": "live reports / curation HTTP; model tool pending"
     }
   ],
   "boundaries": [
@@ -1237,6 +1237,14 @@
         ],
         [
           325,
+          760
+        ],
+        [
+          690,
+          760
+        ],
+        [
+          690,
           920
         ],
         [
@@ -1315,6 +1323,29 @@
         [
           315,
           1058
+        ]
+      ]
+    },
+    {
+      "id": "goSelfAuditHTTP",
+      "from": "goEntry",
+      "to": "goSelfAudit",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "top",
+      "route": "orthogonal-v",
+      "via": [
+        [
+          290,
+          838
+        ],
+        [
+          290,
+          1004
+        ],
+        [
+          182.5,
+          1004
         ]
       ]
     }

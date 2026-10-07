@@ -1,0 +1,1277 @@
+{
+  "scenarios": [
+    {
+      "cases": [
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "alice",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (3)\n3 idle\n\n## problems\n### skills: 6 reported\n- fleet private (x2)\n-   \n- repeat (x2)\n- unicode 界\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "bob",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (3)\n3 idle\n\n## problems\n### skills: 6 reported\n- fleet private (x2)\n-   \n- repeat (x2)\n- unicode 界\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "query-ignored",
+          "path": "/self-audit?owner=bob&include_global=true&limit=1",
+          "response": "# self-audit\n## sessions (3)\n3 idle\n\n## problems\n### skills: 6 reported\n- fleet private (x2)\n-   \n- repeat (x2)\n- unicode 界\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "body-ignored",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (3)\n3 idle\n\n## problems\n### skills: 6 reported\n- fleet private (x2)\n-   \n- repeat (x2)\n- unicode 界\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "no-auth",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (3)\n3 idle\n\n## problems\n### skills: 6 reported\n- fleet private (x2)\n-   \n- repeat (x2)\n- unicode 界\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+          "status": 200,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "query-auth",
+          "path": "/self-audit?access_token=token-a",
+          "response": "# self-audit\n## sessions (3)\n3 idle\n\n## problems\n### skills: 6 reported\n- fleet private (x2)\n-   \n- repeat (x2)\n- unicode 界\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+          "status": 200,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "bad-auth",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (3)\n3 idle\n\n## problems\n### skills: 6 reported\n- fleet private (x2)\n-   \n- repeat (x2)\n- unicode 界\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+          "status": 200,
+          "token": "bad"
+        },
+        {
+          "allow": "GET",
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method",
+          "path": "/self-audit",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "alice/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: repeat",
+                "problem": "repeat",
+                "source": "skills"
+              },
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: unicode 界",
+                "problem": "unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bob/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: repeat",
+                "problem": "repeat",
+                "source": "skills"
+              },
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: unicode 界",
+                "problem": "unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-ignored/suggestions",
+          "path": "/self-audit/suggestions?owner=bob&include_global=true&limit=1",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: repeat",
+                "problem": "repeat",
+                "source": "skills"
+              },
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: unicode 界",
+                "problem": "unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "body-ignored/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: repeat",
+                "problem": "repeat",
+                "source": "skills"
+              },
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: unicode 界",
+                "problem": "unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "no-auth/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: repeat",
+                "problem": "repeat",
+                "source": "skills"
+              },
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: unicode 界",
+                "problem": "unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-auth/suggestions",
+          "path": "/self-audit/suggestions?access_token=token-a",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: repeat",
+                "problem": "repeat",
+                "source": "skills"
+              },
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: unicode 界",
+                "problem": "unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bad-auth/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: repeat",
+                "problem": "repeat",
+                "source": "skills"
+              },
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: unicode 界",
+                "problem": "unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "bad"
+        },
+        {
+          "allow": "GET",
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "alice/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-25e2b6b1",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "repeat",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: repeat",
+                "source": "skills"
+              },
+              {
+                "expect": null,
+                "name": "ledger-360ee073",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "unicode 界",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bob/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-25e2b6b1",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "repeat",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: repeat",
+                "source": "skills"
+              },
+              {
+                "expect": null,
+                "name": "ledger-360ee073",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "unicode 界",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-ignored/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts?owner=bob&include_global=true&limit=1",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-25e2b6b1",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "repeat",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: repeat",
+                "source": "skills"
+              },
+              {
+                "expect": null,
+                "name": "ledger-360ee073",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "unicode 界",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "body-ignored/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-25e2b6b1",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "repeat",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: repeat",
+                "source": "skills"
+              },
+              {
+                "expect": null,
+                "name": "ledger-360ee073",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "unicode 界",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "no-auth/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-25e2b6b1",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "repeat",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: repeat",
+                "source": "skills"
+              },
+              {
+                "expect": null,
+                "name": "ledger-360ee073",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "unicode 界",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-auth/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts?access_token=token-a",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-25e2b6b1",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "repeat",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: repeat",
+                "source": "skills"
+              },
+              {
+                "expect": null,
+                "name": "ledger-360ee073",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "unicode 界",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bad-auth/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-25e2b6b1",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "repeat",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: repeat",
+                "source": "skills"
+              },
+              {
+                "expect": null,
+                "name": "ledger-360ee073",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "unicode 界",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: unicode 界",
+                "source": "skills"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "bad"
+        },
+        {
+          "allow": "GET",
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405,
+          "token": "token-a"
+        }
+      ],
+      "global_entries": [
+        "fleet private",
+        "  ",
+        "repeat",
+        "fleet private",
+        "unicode 界",
+        "repeat"
+      ],
+      "mode": "open"
+    },
+    {
+      "cases": [
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "alice",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (2)\n2 idle\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)",
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "bob",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (1)\n1 idle\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)",
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "query-ignored",
+          "path": "/self-audit?owner=bob&include_global=true&limit=1",
+          "response": "# self-audit\n## sessions (2)\n2 idle\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)",
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "body-ignored",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (2)\n2 idle\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)",
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "no-auth",
+          "path": "/self-audit",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-auth",
+          "path": "/self-audit?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bad-auth",
+          "path": "/self-audit",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": "bad"
+        },
+        {
+          "allow": "GET",
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method",
+          "path": "/self-audit",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "alice/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": []
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bob/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": []
+          },
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-ignored/suggestions",
+          "path": "/self-audit/suggestions?owner=bob&include_global=true&limit=1",
+          "response": {
+            "suggestions": []
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "body-ignored/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": []
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "no-auth/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-auth/suggestions",
+          "path": "/self-audit/suggestions?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bad-auth/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": "bad"
+        },
+        {
+          "allow": "GET",
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "alice/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": []
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bob/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": []
+          },
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-ignored/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts?owner=bob&include_global=true&limit=1",
+          "response": {
+            "drafts": []
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "body-ignored/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": []
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "no-auth/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-auth/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bad-auth/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": "bad"
+        },
+        {
+          "allow": "GET",
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405,
+          "token": "token-a"
+        }
+      ],
+      "global_entries": [
+        "fleet private",
+        "  ",
+        "repeat",
+        "fleet private",
+        "unicode 界",
+        "repeat"
+      ],
+      "mode": "authenticated"
+    },
+    {
+      "cases": [
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "alice",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (2)\n2 idle\n\n## problems\n### memory[<second>]: 2 reported\n- alice-friction: body truncated from 32,001 to 32,000 (x2)\n### memory[<alice>]: 2 reported\n- alice-friction: body truncated from 32,001 to 32,000 (x2)\n\n## trajectories\n(recording disabled)",
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "bob",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (1)\n1 idle\n\n## problems\n### memory[<bob>]: 2 reported\n- bob-friction: body truncated from 32,001 to 32,000 (x2)\n\n## trajectories\n(recording disabled)",
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "query-ignored",
+          "path": "/self-audit?owner=bob&include_global=true&limit=1",
+          "response": "# self-audit\n## sessions (2)\n2 idle\n\n## problems\n### memory[<second>]: 2 reported\n- alice-friction: body truncated from 32,001 to 32,000 (x2)\n### memory[<alice>]: 2 reported\n- alice-friction: body truncated from 32,001 to 32,000 (x2)\n\n## trajectories\n(recording disabled)",
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content_type": "text/plain; charset=utf-8",
+          "method": "GET",
+          "name": "body-ignored",
+          "path": "/self-audit",
+          "response": "# self-audit\n## sessions (2)\n2 idle\n\n## problems\n### memory[<second>]: 2 reported\n- alice-friction: body truncated from 32,001 to 32,000 (x2)\n### memory[<alice>]: 2 reported\n- alice-friction: body truncated from 32,001 to 32,000 (x2)\n\n## trajectories\n(recording disabled)",
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "no-auth",
+          "path": "/self-audit",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-auth",
+          "path": "/self-audit?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bad-auth",
+          "path": "/self-audit",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": "bad"
+        },
+        {
+          "allow": "GET",
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method",
+          "path": "/self-audit",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "alice/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: alice-friction: body truncated from 32,001 to 32,000",
+                "problem": "alice-friction: body truncated from 32,001 to 32,000",
+                "source": "memory[<second>]"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bob/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: bob-friction: body truncated from 32,001 to 32,000",
+                "problem": "bob-friction: body truncated from 32,001 to 32,000",
+                "source": "memory[<bob>]"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-ignored/suggestions",
+          "path": "/self-audit/suggestions?owner=bob&include_global=true&limit=1",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: alice-friction: body truncated from 32,001 to 32,000",
+                "problem": "alice-friction: body truncated from 32,001 to 32,000",
+                "source": "memory[<second>]"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "body-ignored/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "suggestions": [
+              {
+                "objective": "Find and eliminate the failure mode behind this recurring runtime problem: alice-friction: body truncated from 32,001 to 32,000",
+                "problem": "alice-friction: body truncated from 32,001 to 32,000",
+                "source": "memory[<second>]"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "no-auth/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-auth/suggestions",
+          "path": "/self-audit/suggestions?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bad-auth/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": "bad"
+        },
+        {
+          "allow": "GET",
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method/suggestions",
+          "path": "/self-audit/suggestions",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "alice/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-833504e6",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "alice-friction: body truncated from 32,001 to 32,000",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: alice-friction: body truncated from 32,001 to 32,000",
+                "source": "memory[<second>]"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bob/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-28741f5e",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "bob-friction: body truncated from 32,001 to 32,000",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: bob-friction: body truncated from 32,001 to 32,000",
+                "source": "memory[<bob>]"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-b"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-ignored/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts?owner=bob&include_global=true&limit=1",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-833504e6",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "alice-friction: body truncated from 32,001 to 32,000",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: alice-friction: body truncated from 32,001 to 32,000",
+                "source": "memory[<second>]"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "{broken",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "body-ignored/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "drafts": [
+              {
+                "expect": null,
+                "name": "ledger-833504e6",
+                "note": "a human authors the expect predicate and admits the task by editing benchmark.py; admission is a judge-side change, never automatic",
+                "problem": "alice-friction: body truncated from 32,001 to 32,000",
+                "prompt_draft": "Reproduce the workload behind this recorded friction and complete it: alice-friction: body truncated from 32,001 to 32,000",
+                "source": "memory[<second>]"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "no-auth/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "query-auth/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": ""
+        },
+        {
+          "allow": null,
+          "body": "",
+          "challenge": "Bearer",
+          "content_type": "application/json",
+          "method": "GET",
+          "name": "bad-auth/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": "bad"
+        },
+        {
+          "allow": "GET",
+          "body": "",
+          "challenge": null,
+          "content_type": "application/json",
+          "method": "POST",
+          "name": "wrong-method/bench-task-drafts",
+          "path": "/self-audit/bench-task-drafts",
+          "response": {
+            "detail": "Method Not Allowed"
+          },
+          "status": 405,
+          "token": "token-a"
+        }
+      ],
+      "global_entries": [
+        "fleet private",
+        "  ",
+        "repeat",
+        "fleet private",
+        "unicode 界",
+        "repeat"
+      ],
+      "mode": "local"
+    }
+  ]
+}

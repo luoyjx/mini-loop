@@ -6731,6 +6731,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-self-audit.json": _json_bytes(_self_audit_contracts()),
         "python-problem-log.json": _json_bytes(_problem_log_contracts()),
         "python-self-audit-manager.json": _json_bytes(_self_audit_manager_contracts()),
+        "python-self-audit-http.json": _json_bytes(_self_audit_http_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7835,6 +7836,72 @@ def _self_audit_manager_contracts() -> dict:
     with tempfile.TemporaryDirectory(prefix="go-self-audit-manager-") as scratch:
         asyncio.run(run(Path(scratch)))
     return dict(cases=cases)
+
+
+def _self_audit_http_contracts() -> dict:
+    """Actual authenticated/open report and inert curation HTTP responses."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth, NullAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+    from mini_loop.skills import SkillLoader
+    from mini_loop.user_resources import UserResourceResolver
+
+    scenarios = []
+    entries = ["fleet private", "  ", "repeat", "fleet private", "unicode 界", "repeat"]
+    with tempfile.TemporaryDirectory(prefix="go-self-audit-http-") as scratch:
+        for mode in ("open", "authenticated", "local"):
+            root = Path(scratch) / mode
+            directory = root / "skills"
+            directory.mkdir(parents=True)
+            loader = SkillLoader(directory)
+            resolver = UserResourceResolver(root / "users", loader) if mode == "local" else None
+            settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                                trajectory_enabled=False, rate_limit_per_minute=1)
+            manager = SessionManager(settings, FakeAsyncAnthropic(), skills=loader,
+                                     user_resources=resolver)
+            manager.skills.problems.extend(entries)
+            app = create_app(manager=manager, settings=settings)
+            with TestClient(app, raise_server_exceptions=False) as client:
+                app.state.auth = NullAuth() if mode == "open" else TokenAuth({"token-a": "alice", "token-b": "bob"})
+                ids = {}
+                for index, (label, owner) in enumerate((("alice", "alice"), ("second", "alice"), ("bob", "bob"))):
+                    session = manager.create(owner=owner, permission_mode="auto")
+                    session.created_at = float(index)
+                    ids[label] = session.id
+                if mode == "local":
+                    for label in ("alice", "bob"):
+                        binding = manager.get(ids[label]).agent.state["memory"]
+                        for _ in range(2):
+                            binding.write(label + "-friction", "project", "",
+                                          "界" * 32001)
+                rows = []
+                def capture(name, path, token="token-a", method="GET", body=""):
+                    response = client.request(method, path, content=body,
+                        headers={"Authorization": "Bearer " + token} if token else {})
+                    text = response.text
+                    for label, sid in ids.items():
+                        text = text.replace(sid, "<" + label + ">")
+                    value = json.loads(text) if response.headers.get("content-type") == "application/json" else text
+                    rows.append(dict(name=name, method=method, path=path, token=token,
+                                     body=body, status=response.status_code,
+                                     content_type=response.headers.get("content-type"),
+                                     challenge=response.headers.get("www-authenticate"),
+                                     allow=response.headers.get("allow"), response=value))
+                for suffix in ("", "/suggestions", "/bench-task-drafts"):
+                    path = "/self-audit" + suffix
+                    capture("alice" + suffix, path)
+                    capture("bob" + suffix, path, "token-b")
+                    capture("query-ignored" + suffix, path + "?owner=bob&include_global=true&limit=1")
+                    capture("body-ignored" + suffix, path, body="{broken")
+                    capture("no-auth" + suffix, path, "")
+                    capture("query-auth" + suffix, path + "?access_token=token-a", "")
+                    capture("bad-auth" + suffix, path, "bad")
+                    capture("wrong-method" + suffix, path, method="POST")
+                scenarios.append(dict(mode=mode, global_entries=entries, cases=rows))
+    return dict(scenarios=scenarios)
 
 
 def main() -> int:

@@ -4627,10 +4627,11 @@
         <path data-edge-from="goSession" data-edge-to="goActions" data-edge-label="state / epochs" data-edge-key="38" data-edge-id="goLiveState" data-composition-points="1180,1218;1240,1218;1240,1398;1370,1398" d="M 1180 1218 L 1232 1218 Q 1240 1218 1240 1226 L 1240 1390 Q 1240 1398 1248 1398 L 1370 1398" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goCron" data-edge-to="goManaged" data-edge-key="39" data-edge-id="goCronRestore" data-composition-points="1310,917;1220,917;1220,1011;1130,1011" d="M 1310 917 L 1228 917 Q 1220 917 1220 925 L 1220 1003 Q 1220 1011 1212 1011 L 1130 1011" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="clients" data-edge-to="goBenchmark" data-edge-label="statistics only" data-edge-key="40" data-edge-id="goBenchmarkStatistics" data-composition-points="135,332;135,471;182.5,471;182.5,610" d="M 135 332 L 135 463 Q 135 471 143 471 L 174.5 471 Q 182.5 471 182.5 479 L 182.5 610" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="goBenchmark" data-edge-to="goManaged" data-edge-key="41" data-edge-id="goBenchmarkArms" data-composition-points="305,648;325,648;325,920;810,920;810,1018;850,1018" d="M 305 648 L 317 648 Q 325 648 325 656 L 325 912 Q 325 920 333 920 L 802 920 Q 810 920 810 928 L 810 1010 Q 810 1018 818 1018 L 850 1018" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goBenchmark" data-edge-to="goManaged" data-edge-key="41" data-edge-id="goBenchmarkArms" data-composition-points="305,648;325,648;325,760;690,760;690,920;810,920;810,1018;850,1018" d="M 305 648 L 317 648 Q 325 648 325 656 L 325 752 Q 325 760 333 760 L 682 760 Q 690 760 690 768 L 690 912 Q 690 920 698 920 L 802 920 Q 810 920 810 928 L 810 1010 Q 810 1018 818 1018 L 850 1018" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goEntry" data-edge-to="goBenchmark" data-edge-key="42" data-edge-id="goBenchmarkHTTP" data-composition-points="495,876;495,940;20,940;20,648;60,648" d="M 495 876 L 495 932 Q 495 940 487 940 L 28 940 Q 20 940 20 932 L 20 656 Q 20 648 28 648 L 60 648" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="clients" data-edge-to="goSelfAudit" data-edge-key="43" data-edge-id="goSelfAuditObservations" data-composition-points="60,296;10,296;10,1058;60,1058" d="M 60 296 L 18 296 Q 10 296 10 304 L 10 1050 Q 10 1058 18 1058 L 60 1058" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goManaged" data-edge-to="goSelfAudit" data-edge-key="44" data-edge-id="goLiveSelfAudit" data-composition-points="850,1018;820,1018;820,956;315,956;315,1058;305,1058" d="M 850 1018 L 828 1018 Q 820 1018 820 1010 L 820 964 Q 820 956 812 956 L 323 956 Q 315 956 315 964 L 315 1053 Q 315 1058 310 1058 L 305 1058" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goEntry" data-edge-to="goSelfAudit" data-edge-key="45" data-edge-id="goSelfAuditHTTP" data-composition-points="330,838;290,838;290,1004;182.5,1004;182.5,1020" d="M 330 838 L 298 838 Q 290 838 290 846 L 290 996 Q 290 1004 282 1004 L 190.5 1004 Q 182.5 1004 182.5 1012 L 182.5 1020" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4967,15 +4968,15 @@
         <text data-detail="fine" x="990" y="1048" class="t-backend" font-size="7" text-anchor="middle">owners / admitted-turn evidence / pools</text>
         </g>
 
-        <g id="node-goEntry" data-node-id="goEntry" data-node-label="Go Startup / HTTP / SSE" tabindex="0" role="button" aria-label="Focus Go Startup / HTTP / SSE, HTTP / SSE / owned catalogue / memory, Go startup / HTTP admission" aria-pressed="false" data-node-kind="backend" data-node-sublabel="HTTP / SSE / owned catalogue / memory" data-node-tag="public browser / protected data" data-node-context="Go startup / HTTP admission">
-          <title>Go Startup / HTTP / SSE · HTTP / SSE / owned catalogue / memory · Go startup / HTTP admission · public browser / protected data</title>
+        <g id="node-goEntry" data-node-id="goEntry" data-node-label="Go Startup / HTTP / SSE" tabindex="0" role="button" aria-label="Focus Go Startup / HTTP / SSE, HTTP / SSE / owned resources / self-audit, Go startup / HTTP admission" aria-pressed="false" data-node-kind="backend" data-node-sublabel="HTTP / SSE / owned resources / self-audit" data-node-tag="public browser / protected data" data-node-context="Go startup / HTTP admission">
+          <title>Go Startup / HTTP / SSE · HTTP / SSE / owned resources / self-audit · Go startup / HTTP admission · public browser / protected data</title>
           <rect x="330" y="800" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="330" y="800" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(336 806) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="495" y="836" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Startup / HTTP / SSE</text>
-        <text data-detail="context" x="495" y="852" class="t-muted" font-size="9" text-anchor="middle">HTTP / SSE / owned catalogue / memory</text>
+        <text data-detail="context" x="495" y="852" class="t-muted" font-size="9" text-anchor="middle">HTTP / SSE / owned resources / self-audit</text>
         <text data-detail="fine" x="495" y="868" class="t-backend" font-size="7" text-anchor="middle">public browser / protected data</text>
         </g>
 
@@ -5003,8 +5004,8 @@
         <text data-detail="fine" x="182.5" y="678" class="t-backend" font-size="7" text-anchor="middle">operator arms / fake-only HTTP</text>
         </g>
 
-        <g id="node-goSelfAudit" data-node-id="goSelfAudit" data-node-label="Go self-audit observer" tabindex="0" role="button" aria-label="Focus Go self-audit observer, reports / suggestions / inadmissible drafts, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="reports / suggestions / inadmissible drafts" data-node-tag="live owner admission / typed snapshots; HTTP pending" data-node-context="Architecture component">
-          <title>Go self-audit observer · reports / suggestions / inadmissible drafts · Architecture component · live owner admission / typed snapshots; HTTP pending</title>
+        <g id="node-goSelfAudit" data-node-id="goSelfAudit" data-node-label="Go self-audit observer" tabindex="0" role="button" aria-label="Focus Go self-audit observer, reports / suggestions / inadmissible drafts, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="reports / suggestions / inadmissible drafts" data-node-tag="live reports / curation HTTP; model tool pending" data-node-context="Architecture component">
+          <title>Go self-audit observer · reports / suggestions / inadmissible drafts · Architecture component · live reports / curation HTTP; model tool pending</title>
           <rect x="60" y="1020" width="245" height="76" rx="6" class="c-mask"/>
           <rect x="60" y="1020" width="245" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 1026) scale(0.6875)">
@@ -5012,7 +5013,7 @@
           </g>
           <text data-detail-anchor x="182.5" y="1056" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go self-audit observer</text>
         <text data-detail="context" x="182.5" y="1072" class="t-muted" font-size="9" text-anchor="middle">reports / suggestions / inadmissible drafts</text>
-        <text data-detail="fine" x="182.5" y="1088" class="t-backend" font-size="7" text-anchor="middle">live owner admission / typed snapshots; HTTP pending</text>
+        <text data-detail="fine" x="182.5" y="1088" class="t-backend" font-size="7" text-anchor="middle">live reports / curation HTTP; model tool pending</text>
         </g>
 
         <!-- Connection labels -->
@@ -5159,6 +5160,7 @@
           <rect x="117.75" y="451" width="82" height="14" rx="3" class="c-mask"/>
           <text x="158.75" y="461" class="t-messagebus" font-size="8" text-anchor="middle">statistics only</text>
         </g>
+
 
 
 

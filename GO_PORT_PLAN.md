@@ -1,5 +1,46 @@
 # Go port plan
 
+## 2026-10-07 self-audit HTTP composition
+
+Three default GET routes now serve the actual report, typed objective suggestions
+and inadmissible benchmark drafts. Authentication scopes observation to the
+admitted principal and disables fleet inclusion; open deployments use the
+operator view. Query/body scope/limit overrides, including malformed JSON bodies,
+are ignored. The source GETs do not spend rate budget or launch/admit any work.
+Global auth/body admission still precedes handlers; query tokens stay event-only.
+
+A finite private collection mode shares owner handle admission and ledger capture
+without forcing Info, cron overview or trajectory IO for curation. Failed snapshot
+collection is not converted to an empty suggestion/draft array; those handlers
+return private plain 500s, while report sections retain class-only failures.
+Typed JSON uses the existing masking projection. Plain reports are masked before
+writes and recapped at the source Unicode limit after expansion; projection
+panics cannot fall back to raw text. This extends source self-audit masking and
+retains the native output boundary.
+
+Snapshot 97 captures 72 actual source HTTP responses across open/authenticated/
+owner-resource deployments. Only generated session IDs are replaced by labels.
+Native tests exercise no recording IO/turns/jobs, no-rate behavior before and
+after exhausted turn budget, body admission before auth, shared-memory filename
+omission, class/private fault boundaries, report caps and mask expansion.
+HTTP inventory is 37 operations/34 patterns versus source 44. The seven remaining
+improvement/team/workflow operations and self_audit model tool remain separate
+composition steps; native persistence, other gaps and G0–G7 remain open.
+
+Validation passed: focused actual-source/native route tests; full Go tests and
+race tests (`-count=1 -timeout=180s`), `go vet ./...`, all 97 contract exports
+(`--check`) and all 19 scan anchors. After all preceding handles were terminal,
+isolated Python pytest passed: 2151 tests, 28 skipped, 24 subtests, 3 dependency
+deprecation warnings in 76.16s. Export also emitted the previously observed
+BaseSubprocessTransport destructor / closed-event-loop diagnostic and two
+deprecations; exit code was zero and all snapshot bytes were current. No cleanup
+fix is claimed. `git diff --check` and README outline pass; Archify passes 9/9
+automatic checks after rerouting the benchmark arm corridor for the new HTTP
+edge. HTML is regenerated; visual inspection remains skipped after the earlier
+denial and was not retried. Python invariant/guard mutation sweeps were not rerun
+because no Python package module or guarded Python behavior changed. Overall
+coverage was not refreshed in this iteration.
+
 ## 2026-10-07 live self-audit observation
 
 SessionManager.ObserveSelfAudit now reads actual sessions, native problem holders,

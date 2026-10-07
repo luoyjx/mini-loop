@@ -2063,8 +2063,8 @@ selection as in source; authenticated routes must select owner and false.
 
 The library neither launches suggested objectives nor installs benchmark drafts.
 NoExpectation carries only null, and benchmark task construction still requires
-a reviewed judge. Live manager binding is implemented; model-tool/HTTP binding
-remains pending.
+a reviewed judge. Live manager and HTTP binding are implemented; model-tool
+binding remains pending.
 
 
 ### Exact diagnostic ledger seam
@@ -2086,4 +2086,10 @@ ObserveSelfAudit admits owner handles before IO, validates recording metadata
 before event visits and releases manager/session locks before injected callbacks.
 Existing native holders expose optional ProblemSource; stored journals still need
 an adapter. Authenticated frontends must set Owner and IncludeGlobal=false.
-No model-tool/HTTP route is installed by this observer.
+The observer itself installs no route or model tool. HTTP now binds its full
+report mode and ObserveSelfAuditProblems ledger-only mode. The latter does not
+project Info, enumerate cron jobs or read recordings; a failed ledger snapshot
+is an error instead of an empty proposal set. Authenticated HTTP always selects
+the admitted principal and false, ignores scope query overrides and spends no
+rate budget. Plain text is projected before writing and capped after masking
+expansion; JSON uses the existing typed projection. No model tool is installed.

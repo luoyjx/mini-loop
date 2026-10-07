@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
@@ -291,5 +292,37 @@ func TestSelfAuditEventObservationByteBudget(t *testing.T) {
 	}
 	if failure == nil || failure.Class != "ObservationLimitError" || budget < 0 {
 		t.Fatalf("byte budget: %d %+v", budget, failure)
+	}
+}
+
+type auditProjectionCounter struct{ calls atomic.Int32 }
+
+func (masker *auditProjectionCounter) MaskText(value string) string {
+	masker.calls.Add(1)
+	return value
+}
+func (*auditProjectionCounter) MaskApprovalInput(value protocol.ToolInput) protocol.ToolInput {
+	return value
+}
+
+func TestSelfAuditProblemsDoesNotProjectSessionInfo(t *testing.T) {
+	masker := &auditProjectionCounter{}
+	config := managerTestConfig(t.TempDir(), &FakeProvider{})
+	config.Services.Secrets = masker
+	manager := makeManager(t, config)
+	session := createManaged(t, manager, CreateSessionRequest{Owner: "alice"})
+	if _, err := session.core.todos.Update([]protocol.TodoItem{{Content: "observable content", Status: "pending", ActiveForm: "observable form"}}); err != nil {
+		t.Fatal(err)
+	}
+	owner := "alice"
+	scope := selfaudit.Scope{Owner: &owner}
+	before := masker.calls.Load()
+	observed := manager.ObserveSelfAuditProblems(scope)
+	if masker.calls.Load() != before || observed.Sessions[0].Activity != nil || observed.Trajectories != nil {
+		t.Fatal("problem collection projected session activity/info")
+	}
+	manager.ObserveSelfAudit(context.Background(), scope)
+	if masker.calls.Load() <= before {
+		t.Fatal("control report did not exercise Info projection")
 	}
 }

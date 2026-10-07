@@ -14,6 +14,23 @@ import (
 // authority; authenticated frontends must pair an owner with IncludeGlobal=false.
 // No manager/session lock spans storage IO or an injected service callback.
 func (manager *SessionManager) ObserveSelfAudit(ctx context.Context, scope selfaudit.Scope) selfaudit.Observations {
+	return manager.observeSelfAudit(ctx, scope, auditReportCollection)
+}
+
+// ObserveSelfAuditProblems reads only existing ledgers. Suggestions/drafts do not
+// inspect activity, enumerate cron jobs or read trajectory summaries/events.
+func (manager *SessionManager) ObserveSelfAuditProblems(scope selfaudit.Scope) selfaudit.Observations {
+	return manager.observeSelfAudit(context.Background(), scope, auditProblemCollection)
+}
+
+type auditCollection uint8
+
+const (
+	auditReportCollection auditCollection = iota
+	auditProblemCollection
+)
+
+func (manager *SessionManager) observeSelfAudit(ctx context.Context, scope selfaudit.Scope, collection auditCollection) selfaudit.Observations {
 	var owner *string
 	if scope.Owner != nil {
 		value := *scope.Owner
@@ -38,12 +55,18 @@ func (manager *SessionManager) ObserveSelfAudit(ctx context.Context, scope selfa
 	}
 	result := selfaudit.Observations{TotalSessions: &total, Sessions: make([]selfaudit.Session, 0, len(handles))}
 	for _, handle := range handles {
-		result.Sessions = append(result.Sessions, observeSession(handle))
+		session := observeSessionProblems(handle)
+		if collection == auditReportCollection {
+			session.Activity, session.InspectionFailure = observeActivity(handle)
+		}
+		result.Sessions = append(result.Sessions, session)
 	}
 	if scope.IncludeGlobal {
 		if scheduler := manager.cron; scheduler != nil {
 			result.Problems.Cron = observeProblemSource(scheduler)
-			result.Cron = scheduler.SelfAuditCron()
+			if collection == auditReportCollection {
+				result.Cron = scheduler.SelfAuditCron()
+			}
 		}
 		if source, ok := manager.config.Services.Trajectories.(selfaudit.ProblemSource); ok {
 			result.Problems.Trajectories = observeProblemSource(source)
@@ -67,7 +90,22 @@ func (manager *SessionManager) ObserveSelfAudit(ctx context.Context, scope selfa
 			}
 		}
 	}
-	result.Trajectories = manager.observeAuditTrajectories(ctx, owner, handles)
+	if collection == auditReportCollection {
+		result.Trajectories = manager.observeAuditTrajectories(ctx, owner, handles)
+	} else {
+		// A failed ledger collection is not an empty suggestion set. Report mode
+		// renders per-ledger failure lines; problem-only callers receive an error.
+		ledgers := []*selfaudit.Ledger{result.Problems.Cron, result.Problems.Trajectories, result.Problems.Approvals, result.Problems.Skills, result.Problems.Actions}
+		for _, session := range result.Sessions {
+			ledgers = append(ledgers, session.Problems.Registry, session.Problems.Tasks, session.Problems.Teams, session.Problems.Memory)
+		}
+		for _, ledger := range ledgers {
+			if ledger != nil && ledger.Failure != nil {
+				result.ProblemsFailure = ledger.Failure
+				break
+			}
+		}
+	}
 	return result
 }
 
@@ -80,9 +118,8 @@ func observeProblemSource(source selfaudit.ProblemSource) (result *selfaudit.Led
 	ledger := source.SelfAuditProblems()
 	return &ledger
 }
-func observeSession(handle *ManagedSession) (result selfaudit.Session) {
+func observeSessionProblems(handle *ManagedSession) (result selfaudit.Session) {
 	result = selfaudit.Session{ID: string(handle.ID()), Owner: string(handle.Owner()), CreatedAt: handle.createdAt, AgentPresent: true}
-	result.Activity, result.InspectionFailure = observeActivity(handle)
 	if gate := handle.core.gate; gate != nil {
 		ledger := observeProblemSource(gate)
 		if ledger.Failure != nil || len(ledger.Entries) > 0 {

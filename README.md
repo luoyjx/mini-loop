@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `5e0801c` plus live self-audit observation;
+reviewed **2026-10-07** (Go baseline `c6b317e` plus self-audit HTTP composition;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -451,6 +451,7 @@ flowchart LR
     Caller --> GoEntry
     Caller -. explicit typed observations .-> GoSelfAudit
     GoManaged -. owner admission before diagnostic / recording IO .-> GoSelfAudit
+    GoEntry -->|report / suggestions / drafts; admitted owner scope| GoSelfAudit
     Caller -. supplied results / transcripts .-> GoBenchmarkLibrary
     GoEntry -->|authenticated fake-only comparison / rate budget| GoBenchmarkLibrary
     GoBenchmarkLibrary -. explicit operator arm create / run / stop .-> GoManager
@@ -1265,7 +1266,7 @@ without changing capacity. Snapshots detach slices and integer storage. Approval
 and in-memory action holders now expose the optional typed SelfAuditProblems seam,
 recording every occurrence while preserving their legacy Problems() API. The live manager now collects these and native cron, trajectory, skill, task, gate
 and memory diagnostics through detached typed snapshots. Stored-journal diagnostics
-still require an optional adapter; no model tool or HTTP route is installed.
+still require an optional adapter; the model tool remains pending.
 The Go selfaudit library now renders concrete observations for session activity,
 problem ledgers/counts/churn, trajectory trends, skill-load correlation and cron
 arming. Owner filtering, global inclusion and source scan/report bounds are
@@ -1275,7 +1276,15 @@ IO or model calls. ObserveSelfAudit reads actual managed sessions and native hol
 then streams admitted recording events without manager/session locks across IO.
 Snapshot 96 compares six real Python manager/session profiles; native tests exercise
 actual JSONL, scan caps, cancellation, private fault classes and lazy task diagnostics.
-The self_audit model tool and three HTTP routes remain pending. Snapshot 94 retains
+The self_audit model tool remains pending. GET /self-audit now serves the live
+plain-text report; /self-audit/suggestions and /self-audit/bench-task-drafts serve
+typed inert proposals. Authentication pairs the admitted owner with no fleet
+ledgers; an open deployment retains its operator view. These source GETs ignore
+query/body overrides and spend no rate budget. Curation uses ledger-only collection,
+skipping Info, cron overview and recording IO. Registered-secret projection fails
+closed, and plain text is recapped after masking. Snapshot 97 compares 72 actual
+Python HTTP responses across open, authenticated and owner-resource deployments.
+Snapshot 94 retains
 26 source processing profiles. Adapters must authorize owner scope before storage
 reads, mask private output and capture failures without their private messages.
 Owned memory observation reads a binding-local ledger of explicitly attributed

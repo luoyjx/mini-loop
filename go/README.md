@@ -1948,7 +1948,7 @@ only null and contains no callable. Admitting a task still requires an explicit
 benchmark judge. Snapshot 94 pins 26 actual Python processing profiles.
 
 Live manager collection is implemented below. Model-tool installation and the
-three self-audit HTTP routes remain pending. This package accepts concrete scalar/finite observations;
+three self-audit HTTP routes are bound below. This package accepts concrete scalar/finite observations;
 it is not an arbitrary Python object interpreter or an owner-authentication layer.
 
 
@@ -1970,7 +1970,8 @@ source 50-entry retention. Their existing Problems() methods preserve their prio
 counts beyond machine integers retain exact decimal output. It does not use floats
 or retain mutable integer aliases. Snapshot 95 pins nine actual source sequences.
 Native diagnostic holders and live collection are implemented below; stored
-journals without a diagnostic seam, model-tool and HTTP binding remain pending.
+journals without a diagnostic seam and model-tool binding remain pending; HTTP
+binding is implemented below.
 
 
 ### Live self-audit collection
@@ -1996,5 +1997,30 @@ The privileged fallback Store exposes its full raw diagnostic snapshot for fleet
 views. Owner-resource fleet observation currently retains binding diagnostics,
 leaving unattributed per-resource errors as a remaining collection gap. This is a
 privacy correction to source shared-memory diagnostic delegation. No model tool
-or HTTP route is installed by this observer; these remain the next composition
-step. Suggestions launch no work and task drafts still contain only null judges.
+or HTTP route is installed by this observer itself; the HTTP binding below
+uses it, while the model tool remains pending. Suggestions launch no work and task drafts still contain only null judges.
+
+
+### Self-audit HTTP routes
+
+GET `/self-audit` returns the live bounded plain-text report. GET
+`/self-audit/suggestions` returns SelfAuditSuggestionsResponse and GET
+`/self-audit/bench-task-drafts` returns SelfAuditDraftsResponse with fixed null
+expectations. Configured auth always uses the admitted principal with fleet
+inclusion disabled; open deployments use the operator view. No query/body fields
+override those choices or the fixed default limit. These source GETs do not consume
+rate budget, and no suggestion/draft launches a turn or becomes an admitted task.
+
+`ObserveSelfAuditProblems` is the ledger-only embedding seam. It skips activity/
+Info, cron jobs and trajectory list/event IO; it never constructs another task
+board. Source-snapshot failure becomes a private 500 for curation while reports
+preserve class-only section failures. Plain report projection precedes writes,
+fails closed, and reapplies the source Unicode cap/marker after masking expansion.
+JSON responses retain the existing concrete projection.
+
+Snapshot 97 compares 72 actual Python HTTP responses with only generated session
+IDs replaced by labels. Native tests check no recording IO/launches, owner-scoped
+shared-memory omission, global auth/body caps, no-rate behavior, private failed
+projection and expanded mask caps. The handler now exposes 37 operations across
+34 patterns; model-tool binding and seven improvement/team/workflow operations
+remain open, along with the broader port and native persistence gaps.
