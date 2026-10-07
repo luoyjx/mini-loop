@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `bc18796` plus UTF-8 workflow canonical preparation;
+reviewed **2026-10-08** (Go baseline `121125f` plus workflow state/definition/artifact contracts;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1405,6 +1405,14 @@ explicit teammate labels remain their names. Native SQLite remains unimplemented
 activation and the other open migration packages remain pending. The shared bus
 self-audit omission matches actual source, as documented above.
 Team tools are off by default; task/worktree model tools retain their separate selection.
+The separate Go workflows library now supplies finite named node/run/attempt/
+verification/source states, immutable definition projections and artifact records.
+Snapshot 113 compares actual Python defaults, all state predicates, canonical
+UTF-8 digests, derived/explicit identities and normalized artifact effects. Definitions
+recompute saved hashes and separate semantic content from revision metadata. Typed
+schema/value projections retain Python integer/float identity. DAG/schema validation,
+run/attempt/outbox records, storage and execution are still pending. This library is
+not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

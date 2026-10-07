@@ -6747,6 +6747,8 @@ def _snapshot() -> dict[str, bytes]:
         "python-team-protocols.json": _json_bytes(_team_protocol_contracts()),
         "python-team-effects.json": _json_bytes(_team_effect_contracts()),
         "python-team-lifecycle.json": _json_bytes(_team_lifecycle_contracts()),
+
+        "python-workflow-models.json": _json_bytes(_workflow_model_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -9070,6 +9072,57 @@ async def _team_restart_contract() -> dict:
         finally:
             await fresh.stop()
             reopened.close()
+
+
+def _workflow_model_contracts() -> dict:
+    """Actual source model normalization, identity and all finite status predicates."""
+    import dataclasses
+    from mini_loop.workflows.models import (
+        WorkflowDefinition, NodeKind, RunStatus, NodeStatus, AttemptStatus,
+        VerificationStatus, DefinitionSource, Artifact, canonical_json, content_hash,
+    )
+    definitions = [
+        dict(name="minimal", return_from="finish"),
+        dict(name="研究", return_from="a", nodes=[dict(id="a", kind="agent")]),
+        dict(name="typed", return_from="b", source="project", source_version="v2",
+             input_schema={"type":"object","properties":{"x":{"type":"number"}}},
+             budget={"wall_time_seconds":900,"max_rounds":0,"token_budget":0},
+             policy={"allowed_tools":[]},
+             nodes=[dict(id="a",kind="map",items_from="input.items",needs=[],max_rounds=2),
+                    dict(id="b",kind="return",needs=["a"],output_schema={"type":"array"})]),
+        dict(name="identity",return_from="a",nodes=[dict(id="a",kind="verify")],
+             definition_id="explicit",revision="pinned",parent_revision="parent",
+             definition_hash={"forged":True}),
+        dict(name="float",return_from="a",budget={"wall_time_seconds":0.25},
+             nodes=[dict(id="a",kind="barrier",output_schema={})]),
+    ]
+    cases=[]
+    for recipe in definitions:
+        model=WorkflowDefinition.from_dict(recipe)
+        cases.append(dict(input=recipe, semantic=model.semantic_dict(), output=model.to_dict(),
+                          canonical=canonical_json(model.semantic_dict())))
+    values=[None,False,123,1.0,-0.0,1e-7,"中文<&\n",{"z":1,"a":[2.0,"é"]}]
+    hashes=[dict(input_json=json.dumps(value),canonical=canonical_json(value),hash=content_hash(value)) for value in values]
+    errors=[]
+    for raw in ["NaN","Infinity","-Infinity",'"\\ud800"']:
+        value=json.loads(raw)
+        try: content_hash(value)
+        except Exception as error: errors.append(dict(input_json=raw,error=type(error).__name__))
+    artifacts=[]
+    for valid in [True,False]:
+        artifact=Artifact.create(run_id="run",node_id="node",attempt_id="attempt",
+                                 value={"answer":[1.0,"中文"]},schema={"type":"object"},
+                                 verification_status=VerificationStatus.UNVERIFIED,schema_valid=valid)
+        row=dataclasses.asdict(artifact)
+        row["artifact_id"]="<artifact>";row["created_at"]=0
+        artifacts.append(row)
+    return dict(definitions=cases,hashes=hashes,errors=errors,artifacts=artifacts,
+                kinds=[state.value for state in NodeKind],
+                sources=[state.value for state in DefinitionSource],
+                verification=[state.value for state in VerificationStatus],
+                runs=[dict(value=state.value,terminal=state.is_terminal) for state in RunStatus],
+                nodes=[dict(value=state.value,terminal=state.is_terminal,satisfies=state.satisfies_dependency) for state in NodeStatus],
+                attempts=[dict(value=state.value,terminal=state.is_terminal) for state in AttemptStatus])
 
 
 if __name__ == "__main__":

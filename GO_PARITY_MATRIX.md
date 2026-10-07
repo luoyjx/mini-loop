@@ -1,5 +1,16 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow model foundation
+
+Snapshot 113 compares the actual Python workflow model constructors: five definitions,
+eight scalar/nested hash profiles, four hash failures, two artifacts and every finite
+status predicate. Native workflows ports named states, immutable definition identity
+and artifact records. UTF-8 canonical digests preserve 900 versus 900.0 and reject
+nonfinite/lone-surrogate data. Saved hashes are recomputed; revision/parent metadata
+is outside semantic identity. Native typed admission rejects unknown fields, invalid
+variants and non-object schemas. This is an uninstalled library; run/attempt/outbox
+records, DAG/schema validation, storage and scheduling remain open.
+
 ## 2026-10-08 teammate restart and managed root labels
 
 Snapshot 112 now includes an actual Python SQLite close/reopen after real teammate

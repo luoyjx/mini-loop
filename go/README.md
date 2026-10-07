@@ -2083,3 +2083,9 @@ a detached entry on APFS. This is an operator library. Native archive, verified
 loop, proposal worktree/commit composition and improvement HTTP routes are the
 next steps. These four globs cover their declared locations; acceptance callers
 must sample at each judgment window to detect intermediate tampering.
+
+### Workflow model library
+
+workflows supplies named finite states, immutable definition identity and artifact
+records. Actual Python model evidence lives in python-workflow-models.json (snapshot
+113). It has no workflow engine or manager/HTTP/model-tool activation yet.

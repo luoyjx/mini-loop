@@ -1,5 +1,58 @@
 # Go port plan
 
+## 2026-10-08 workflow state, definition and artifact foundation
+
+Baseline 121125f (strict UTF-8 canonical profile). The new uninstalled workflows
+package ports all finite node-kind/run/node/attempt/verification/source states,
+terminal and dependency predicates, named identities, budgets/policies, immutable
+WorkflowDefinition projections and concrete Artifact snapshots. Dynamic schema
+and artifact data use the existing immutable closed JSON variants, never any,
+interface{} or RawMessage in domain records. The generic strict boundary decoder
+is used only with a concrete wire record. Unknown fields and malformed declared
+variants are rejected before model construction.
+
+Canonical identity follows actual source: recursive sorted keys, compact separators,
+ensure_ascii=False and nonfinite refusal. Unicode, float/integer/negative-zero
+identity and supplied integer versus default float wall budgets survive. Derived
+wfdef/wf IDs use the first sixteen digest hex digits; explicit IDs/revisions survive;
+parent/revision/identity metadata is outside semantic content and saved hashes are
+ignored/recomputed. Schema objects are admitted without asserting semantic schema
+or DAG validity. Canonical projections are private and immutable.
+
+Artifacts retain explicit run/node/attempt IDs, content/schema hashes, verification,
+schema_valid, media type and creation time. IDs preserve source UUIDv4 prefix shape;
+random IDs and wall timestamps are normalized only in differential output. Creation
+does not establish schema validity or verification truth. No storage, dispatcher,
+manager, model tool or HTTP activation is supplied by this model slice.
+
+Snapshot 113 executes actual Python constructors for five definitions, eight hash
+profiles, four hash failures and two artifact states, plus every enum/status
+predicate. Native tests compare canonical bytes, hashes and full model projections;
+additional tests pin typed admission, saved-hash recomputation and detached views.
+This is W1A. W1B run/node-attempt/outbox records and trusted-origin adaptation,
+W2 DAG/schema validation and W3–W6 execution/storage/integration remain open.
+
+Validation: focused workflow/jsonvalue race tests and full Go test/race/vet passed;
+all 113 source snapshots current; all 19 source scanning guards anchored. The final
+UUIDv4 metadata alignment was followed by another focused workflow/jsonvalue race
+run; the final direct UTF-8 golden test was separately verified under race. The
+initial exporter attempt failed because a local dataclasses import was absent;
+after adding it, the new fixture regenerated and the full source check passed.
+Python full regression passed after the heavy Go gates completed: 2,155 passed,
+28 skipped, 24 subtests and three dependency warnings in 82.58s. The final direct
+UTF-8 golden race test overlapped that run. No Python
+package modules changed; package invariants and full mutation checks were not rerun.
+No dependencies were introduced. Full migration is still open.
+
+README architecture baseline/boundary, parity, extension and Go package docs are
+updated. Canonical runtime topology is reviewed and unchanged because this library
+is not installed. Interactive card regenerated from JSON: showcase 9/9, zero errors
+or warnings. Spec SHA256
+b6c61ea2e0c98c2fb41c9b6f13e3e4f0c3e0e5ee9e4b56283f11db639e0ea176;
+HTML SHA256 38c51cdf3545cff3be99ebd4655a6341eafabdd49b06752e9690b4104e549bf9.
+Visual review stays skipped after the prior denial, without retry/bypass.
+
+
 ## 2026-10-08 UTF-8 workflow canonical preparation
 
 Baseline bc18796. The closed JSON value now has a separate strict MarshalUTF8

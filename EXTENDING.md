@@ -2349,3 +2349,15 @@ Persisted records carry no team role/identity/runner. Restoring a teammate build
 ordinary lead in its own team, retaining recorded owner/workspace/transcript/status,
 and leaves old-group mail untouched. Snapshot 112 includes real source SQLite
 close/reopen evidence; the native injected-store comparison is not SQLite evidence.
+
+## Go workflow model seam
+
+The workflows package exposes finite named states, DecodeDefinition, CanonicalJSON,
+ContentHash and NewArtifact. Value is the existing immutable closed JSON sum; schema
+objects are admitted before semantic DAG/schema validation, which remains pending.
+Definition keeps private canonical projections; detached views cannot change its hash.
+Saved definition_hash never supplies identity or authority. Numeric type identity,
+Unicode and Python enum/status spelling are preserved. Artifact snapshots contain
+explicit IDs/hashes/verification/media/timestamp fields; creation does not validate
+a schema or establish verification truth. No service/tool/storage adapter is installed.
+Runtime records and trusted-origin adaptation are the next separate slice.
