@@ -1,5 +1,18 @@
 # Go port plan
 
+## 2026-10-08 UTF-8 workflow canonical preparation
+
+Baseline bc18796. The closed JSON value now has a separate strict MarshalUTF8
+profile for Python ensure_ascii=False compact canonical bytes. Existing ASCII
+archive renderers remain unchanged. It preserves integer/float identity and
+rejects nonfinite/lone-surrogate values recursively, including object keys.
+A direct Python golden probe and a native race test cover CJK, emoji, U+2028,
+HTML punctuation, negative zero and invalid nested values. Full Go test/race/vet
+passed during the coupled workflow model iteration. No dependencies, authority,
+activation defaults or live topology changed. README baseline was reviewed.
+The workflow model library is a subsequent commit; full G0–G7 remains open.
+
+
 ## 2026-10-08 actual teammate restart and managed root labels
 
 Baseline 3de3fab. Snapshot 112 now includes a real source SQLite close/reopen
