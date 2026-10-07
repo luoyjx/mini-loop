@@ -1,0 +1,45 @@
+{
+  "absent_from_default": true,
+  "cases": [
+    {
+      "accepted": true,
+      "input": {}
+    },
+    {
+      "accepted": false,
+      "input": {
+        "owner": "other"
+      }
+    },
+    {
+      "accepted": false,
+      "input": {
+        "include_global": true
+      }
+    },
+    {
+      "accepted": false,
+      "input": {
+        "limit": 1
+      }
+    },
+    {
+      "accepted": false,
+      "input": {
+        "unused": null
+      }
+    }
+  ],
+  "execution_mode": "exclusive",
+  "parallel_safe": false,
+  "readonly": true,
+  "risk": "read",
+  "schema": {
+    "description": "One bounded report of the runtime's own state: per-subsystem problem ledgers, session activity, recent trajectory outcomes, and scheduled work. Read-only.",
+    "input_schema": {
+      "properties": {},
+      "type": "object"
+    },
+    "name": "self_audit"
+  }
+}

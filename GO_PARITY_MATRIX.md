@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (97 generated snapshots), plus registry masking,
+the current implementation (98 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -577,3 +577,17 @@ errors, Unicode report cap and mask expansion. HTTP inventory is 37 operations/
 34 patterns versus source 44; seven improvement/team/workflow operations remain
 missing. Source shared-memory diagnostic delegation remains intentionally corrected
 as documented above, and model-tool installation remains open.
+
+## Self-audit model-input contract
+
+Snapshot 98 captures the actual installed Python tool's schema, read risk,
+readonly/exclusive traits, absence from the default registry and five keyword
+admission outcomes. The native closed input union now recognizes self_audit,
+with an empty concrete payload and detached schema. Unknown fields, including
+owner/global/limit overrides, cannot survive decoding. Canonical replay input,
+masked recording copies and provider tool-use blocks retain its discriminator.
+The schema matches source exactly; it does not install the tool. Runtime handler,
+manager visibility policy, launcher selection and child propagation remain open.
+This protocol step does not change the HTTP inventory or enable comprehensive
+features. The Python model handler's unscoped manager report must be reconciled
+with native owner authority at trusted composition, never via model arguments.

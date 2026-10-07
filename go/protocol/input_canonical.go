@@ -38,7 +38,7 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 			Message  string       `json:"message"`
 			Revision GoalRevision `json:"revision"`
 		}{v.Code, v.Message, v.Revision}, false, compact)
-	case ToolGoalStatus, ToolGoalComplete, ToolGoalResume:
+	case ToolSelfAudit, ToolGoalStatus, ToolGoalComplete, ToolGoalResume:
 		return PythonJSON(input, false, compact)
 
 	case ToolScheduleCron:

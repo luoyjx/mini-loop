@@ -2024,3 +2024,14 @@ shared-memory omission, global auth/body caps, no-rate behavior, private failed
 projection and expanded mask caps. The handler now exposes 37 operations across
 34 patterns; model-tool binding and seven improvement/team/workflow operations
 remain open, along with the broader port and native persistence gaps.
+
+### Self-audit model input
+
+protocol.SelfAuditSchema and SelfAuditToolInput describe the optional source tool.
+SelfAuditInput is an empty concrete payload; model arguments cannot request another
+owner or fleet visibility. Unknown fields and non-object values are rejected at
+the provider boundary. Canonical replay JSON, recording projection and typed
+provider tool-use blocks preserve the self_audit discriminator. Snapshot 98 pins
+the source schema and keyword contract. This does not install a runtime handler
+or add the tool to the default catalogue. Manager visibility policy and standalone
+selection remain the next composition step.

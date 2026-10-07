@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	ToolSelfAudit       ToolName = "self_audit"
 	ToolRemember        ToolName = "remember"
 	ToolRecall          ToolName = "recall"
 	ToolDecision        ToolName = "decision"
@@ -384,7 +385,7 @@ func (input ToolInput) Validate() error {
 		}
 		_, err := decisions.NewRequest(input.decision.State(), input.decision.Questions())
 		return err
-	case ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
+	case ToolSelfAudit, ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
 		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
 		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
 		return nil
@@ -454,7 +455,7 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 		return json.Marshal(input.exitPlanMode)
 	case ToolCancelCron:
 		return json.Marshal(input.cancelCron)
-	case ToolGoalStatus, ToolEnterPlanMode, ToolListCrons, ToolListTasks, ToolListWorktrees:
+	case ToolSelfAudit, ToolGoalStatus, ToolEnterPlanMode, ToolListCrons, ToolListTasks, ToolListWorktrees:
 		return []byte("{}"), nil
 	case ToolKeepWorktree, ToolEnterWorktree:
 		return json.Marshal(input.worktreeName)
@@ -505,6 +506,12 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 			return result, errors.New("goal_create requires objective")
 		}
 		result = CreateGoalToolInput(CreateGoalInput{Objective: *wire.Objective, MaxRounds: wire.MaxRounds})
+	case ToolSelfAudit:
+		var wire SelfAuditInput
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		result = SelfAuditToolInput()
 	case ToolGoalStatus:
 		var wire struct{}
 		if err := decodeToolObject(data, &wire); err != nil {

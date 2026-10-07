@@ -1,5 +1,33 @@
 # Go port plan
 
+## 2026-10-07 self-audit model-input contract
+
+This focused protocol step adds a concrete empty SelfAuditInput variant, source
+schema and constructors without activating the tool. Snapshot 98 captures actual
+Python installation metadata and five handler keyword admission cases. Native
+checks cover unknown scope fields, non-object/trailing input, canonical replay
+JSON, masked copies, provider tool-use block round trips and detached schemas.
+The default catalogue stays unchanged. Runtime handler, trusted visibility
+binding, launcher selection and child propagation are the next composition task;
+G0–G7 remains open. Python's model handler reads an unscoped manager report, so
+that visibility must be addressed explicitly at trusted runtime composition.
+README baseline was reviewed. This changes protocol contracts only, with no
+runtime topology, authority, feature-default or HTTP inventory changes; existing
+Mermaid and generated interactive map remain accurate.
+
+Validation passed: focused protocol tests, full Go and race tests
+(`-count=1 -timeout=180s`), `go vet ./...`, all 98 contract exports (`--check`)
+and all 19 source scan anchors. After all preceding process handles were terminal,
+isolated Python pytest passed: 2151 tests, 28 skipped, 24 subtests in 160.49s.
+It reported three dependency deprecations plus the previously observed ignored
+BaseSubprocessTransport destructor / closed-event-loop warning. No cleanup fix
+is claimed. Export passed with two dependency deprecations. `git diff --check`
+and README outline pass. Python package invariant/guard mutation sweeps were not
+rerun because no package module or guarded Python behavior changed. The generated
+map did not require regeneration for this protocol-only step. Overall coverage
+was not refreshed.
+
+
 ## 2026-10-07 self-audit HTTP composition
 
 Three default GET routes now serve the actual report, typed objective suggestions

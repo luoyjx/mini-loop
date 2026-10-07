@@ -6732,6 +6732,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-problem-log.json": _json_bytes(_problem_log_contracts()),
         "python-self-audit-manager.json": _json_bytes(_self_audit_manager_contracts()),
         "python-self-audit-http.json": _json_bytes(_self_audit_http_contracts()),
+        "python-self-audit-tool.json": _json_bytes(_self_audit_tool_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7902,6 +7903,36 @@ def _self_audit_http_contracts() -> dict:
                     capture("wrong-method" + suffix, path, method="POST")
                 scenarios.append(dict(mode=mode, global_entries=entries, cases=rows))
     return dict(scenarios=scenarios)
+
+
+def _self_audit_tool_contracts() -> dict:
+    """Capture the real installed tool's schema, traits and keyword boundary."""
+    import asyncio
+    from mini_loop.builtins import default_registry
+    from mini_loop.registry import ToolCall, ToolContext
+    from mini_loop.self_audit import install_self_audit
+
+    registry = default_registry()
+    absent_from_default = registry.get("self_audit") is None
+    install_self_audit(registry)
+    tool = registry.get("self_audit")
+    assert tool is not None
+    cases = []
+    with tempfile.TemporaryDirectory(prefix="mini-loop-self-audit-tool-") as scratch:
+        ctx = ToolContext(agent=None, workspace=Path(scratch), state={})
+        for value in ({}, {"owner": "other"}, {"include_global": True},
+                      {"limit": 1}, {"unused": None}):
+            try:
+                asyncio.run(tool.run(ctx, **value))
+            except TypeError:
+                accepted = False
+            else:
+                accepted = True
+            cases.append(dict(input=value, accepted=accepted))
+    return dict(schema=tool.schema, readonly=tool.readonly, risk=tool.risk,
+                parallel_safe=tool.parallel_safe,
+                execution_mode=tool.execution_mode(ToolCall("self_audit", {}, "audit")),
+                absent_from_default=absent_from_default, cases=cases)
 
 
 def main() -> int:
