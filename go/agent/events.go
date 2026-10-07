@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/verifiedloop"
 )
 
 const EventBacklog = 200
@@ -76,6 +77,9 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
+	verifiedRound      verifiedloop.RoundEvent
+	verifiedReceipt    verifiedloop.ReceiptEvent
+	verifiedCheckpoint verifiedloop.CheckpointEvent
 	memory             MemoryEvent
 	memoryCaptureError MemoryCaptureErrorEvent
 	decisionCompleted  DecisionCompletedEvent
@@ -164,6 +168,7 @@ func (event SessionEvent) Todos() ([]protocol.TodoItem, bool) {
 	return append([]protocol.TodoItem{}, event.todos...), true
 }
 func (event SessionEvent) clone() SessionEvent {
+	event.verifiedReceipt.ExitCode = clonePointer(event.verifiedReceipt.ExitCode)
 	event.memory.Consolidated = clonePointer(event.memory.Consolidated)
 	event.decisionCompleted.Usage = event.decisionCompleted.Usage.clone()
 	event.decisionModelStart = clonePointer(event.decisionModelStart)

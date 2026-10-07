@@ -22,6 +22,7 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	event.verifiedRound.Objective = mask(event.verifiedRound.Objective)
 	event.memoryCaptureError.Detail = mask(event.memoryCaptureError.Detail)
 	event.decisionCompleted.Provider = mask(event.decisionCompleted.Provider)
 	event.decisionCompleted.Model = mask(event.decisionCompleted.Model)

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `03a7c7c` plus verified-loop coordination;
+reviewed **2026-10-08** (Go baseline `0497c05` plus managed verified tasks;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoImprovement["Go improvement / verified core<br/>lineage · receipted execute / verify<br/>live GET; coordinator library only"]
+        GoImprovement["Go improvement / verified core<br/>lineage · receipted execute / verify<br/>live GET; explicit managed task API"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
@@ -451,6 +451,7 @@ flowchart LR
     Caller --> Entry
     Caller --> GoEntry
     GoEntry -->|GET lineage via manager; bound owner| GoImprovement
+    GoManaged -. explicit verified task admission .-> GoSession
     Caller -. explicit typed observations .-> GoSelfAudit
     GoManaged -. owner admission before diagnostic / recording IO .-> GoSelfAudit
     GoEntry -->|report / suggestions / drafts; admitted owner scope| GoSelfAudit
@@ -1348,8 +1349,17 @@ telemetry variants. ShellAcceptance reuses a configured shell executor, while
 WorkspaceIntegrity samples the four source verifier globs. Snapshot 104 compares
 22 actual source coordinator scenarios; native tests also run real workspace
 commands and detect tampering even when acceptance restores the instruments.
-Default managed-session/subagent/event binding and proposal POST remain pending;
-the coordinator adds no registered model tool or HTTP operation. Native revisions use signed 64-bit counters with overflow refusal,
+ManagedSession.RunVerifiedWithContext now binds one admitted cancellable turn to
+the real worker subagent, configured structured command executor and typed session
+events. Worker effects retain role/permission hooks; operator-supplied acceptance
+runs directly on the executor as in Python, without model tool approval. Optional
+instrument checks use the execution workspace. Verified events pass through the
+existing masking, stored-event, trajectory and subscription pipeline. Configured
+leases are renewed at worker/acceptance/event/return boundaries because these
+tasks do not grow the parent transcript. This is not continuous process fencing
+or OS confinement. The trusted caller owns external owner admission. Proposal
+POST and Git composition remain pending; no model tool or HTTP operation is
+added. Native revisions use signed 64-bit counters with overflow refusal,
 and canonical text must be scalar UTF-8. Receipt records are not signatures or
 proof that an acceptance command has executed.
 A verified loop must sample the fingerprint before each acceptance judgment;

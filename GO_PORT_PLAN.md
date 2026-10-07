@@ -1,5 +1,49 @@
 # Go port plan
 
+## 2026-10-08 managed verified task binding
+
+ManagedSession.RunVerifiedWithContext now owns one admitted active turn across
+the entire execute/accept/fold task. Real worker subagents retain the role/tool
+gate, owner/workspace binding and peer provenance; parent human capabilities are
+not inherited. Acceptance uses the configured structured command executor directly,
+matching the source trusted-operator path. String-only command executors are
+refused; workspace-aware executors must match the execution root. Optional
+instrument probes sample that root. Typed round/receipt/checkpoint events use
+ordinary masking, stored decoding, trajectory and subscription publication.
+The common managed-operation seam preserves ordinary run admission, cancellation,
+lease binding and terminal commitment. Parent transcripts remain parent-owned.
+
+Because verified tasks do not grow parent transcripts, configured leases are
+renewed before worker, acceptance and verified events and at the return boundary.
+Missing leases are not reacquired inside the task; uncertain renewal errors abort.
+These are explicit native embedding checks, not a heartbeat, continuous process
+fencing or proof of OS confinement. The caller still owns external owner admission.
+Existing source snapshot 104's three event variants round-trip without wire changes.
+Native tests run actual child filesystem writes and shell acceptance, inspect
+authority, deny worker writes, cancel before acceptance, refuse occupied managed
+admission, reuse cancelled sessions, and refuse foreign leases after round,
+worker-end and checkpoint events without publishing a successful terminal.
+Stored projections retain masking and detached receipt metadata.
+
+README Mermaid/boundaries and architecture specification now show explicit managed
+verified task admission. The managed-to-session connection carries the new flow;
+the generated diagram avoids a redundant crossing over the separate archive view.
+No model tool, default task policy or HTTP route is installed; HTTP remains 38/44
+operations (35 patterns). Next compose proposal Git artifacts and archive lineage,
+then proposal POST, teams/workflows, native persistence and the full G0–G7 audit.
+
+Validation passed: focused managed verified/stored-event tests; full Go tests and
+race checks (-count=1 -timeout=180s), go vet ./.... Once every Go handle finished,
+isolated Python pytest passed 2151 tests, 28 skipped and 24 subtests in 85.58s,
+with three dependency deprecations. Python runtime/exporter/scanner/guard targets
+are unchanged, so export freshness and separate Python invariant/scan/mutation
+sweeps were not rerun. Source event comparisons use the existing 104th snapshot.
+Coverage was not refreshed this iteration. README outline and git diff --check
+pass. Regenerated architecture passes all nine automated checks with zero errors/
+warnings; visual inspection remains skipped after the earlier permission denial.
+Spec SHA256: 49603aefd50082251396a5c88de10fff5b45998300d9b1e36955ba53d5fa0371.
+Artifact SHA256: 4bb0d78f743654563dbc648ff838cf704fe1b7f8e414d7a29a23a3c91835a883.
+
 ## 2026-10-08 verified-loop execute / accept / fold coordinator
 
 Service now drives execute -> pre-acceptance integrity -> actual acceptance ->

@@ -334,6 +334,36 @@ func (p *sessionPersistence) requireLease(ctx context.Context) error {
 	return nil
 }
 
+// Verified tasks run child transcripts without growing the parent's transcript.
+// Check the existing lease before their effect/event boundaries; reacquiring a
+// missing lease here could turn another owner's work into this task's authority.
+func (p *sessionPersistence) guardVerifiedLease(ctx context.Context) error {
+	if p == nil {
+		return ctx.Err()
+	}
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if p.disabled || p.lost || p.pendingRestore {
+		return ErrSessionLeaseLost
+	}
+	if p.owner == "" {
+		return ctx.Err()
+	}
+	var renewed bool
+	err := stateFault(func() error {
+		var err error
+		renewed, err = p.store.RenewLease(ctx, p.session.ID(), p.owner, p.ttl)
+		return err
+	})
+	if err != nil {
+		return err
+	}
+	if !renewed {
+		return p.loseLocked()
+	}
+	return ctx.Err()
+}
+
 func (p *sessionPersistence) bindTurn(cancel context.CancelCauseFunc) func() {
 	if p == nil {
 		return func() {}

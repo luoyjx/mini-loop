@@ -241,6 +241,12 @@ func (session *ManagedSession) TryRunWithSnapshot(ctx context.Context, prompt st
 }
 
 func (session *ManagedSession) runWithContext(ctx context.Context, prompt string, run RunContext, try bool, snapshot *SessionInfo) (output string, err error) {
+	return session.runOperation(ctx, prompt, run, try, snapshot, session.core.RunWithContext)
+}
+
+type managedOperation func(context.Context, string, RunContext) (string, error)
+
+func (session *ManagedSession) runOperation(ctx context.Context, prompt string, run RunContext, try bool, snapshot *SessionInfo, operation managedOperation) (output string, err error) {
 	if err = run.Validate(); err != nil {
 		return "", err
 	}
@@ -279,7 +285,7 @@ func (session *ManagedSession) runWithContext(ctx context.Context, prompt string
 	}
 	turnCtx, active := session.beginTurnLocked(ctx)
 	session.mu.Unlock()
-	output, err = session.runActive(turnCtx, prompt, run, active)
+	output, err = session.runActiveOperation(turnCtx, prompt, run, active, operation)
 	if snapshot != nil && err == nil {
 		*snapshot = session.Info()
 	}
@@ -296,6 +302,10 @@ func (session *ManagedSession) beginTurnLocked(ctx context.Context) (context.Con
 	return turnCtx, active
 }
 func (session *ManagedSession) runActive(turnCtx context.Context, prompt string, run RunContext, active *activeTurn) (output string, err error) {
+	return session.runActiveOperation(turnCtx, prompt, run, active, session.core.RunWithContext)
+}
+
+func (session *ManagedSession) runActiveOperation(turnCtx context.Context, prompt string, run RunContext, active *activeTurn, operation managedOperation) (output string, err error) {
 	turnCtx, cancelCause := context.WithCancelCause(turnCtx)
 	unbind := session.core.persistence.bindTurn(cancelCause)
 	defer func() { unbind(); cancelCause(nil) }()
@@ -353,7 +363,7 @@ func (session *ManagedSession) runActive(turnCtx context.Context, prompt string,
 	}()
 	session.beginTrajectory(prompt)
 	session.emitFor(run, SessionEvent{kind: EventStatus, status: StatusEvent{StatusRunning, false}})
-	return session.core.RunWithContext(turnCtx, prompt, run)
+	return operation(turnCtx, prompt, run)
 }
 func (session *ManagedSession) Cancel(ctx context.Context, reason string) (bool, error) {
 	session.mu.Lock()

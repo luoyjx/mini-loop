@@ -7,6 +7,7 @@ import (
 
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/shell"
+	"github.com/luoyjx/mini-loop/go/verifiedloop"
 )
 
 // MaxStoredEventBytes bounds one archival JSON row, independently of a provider
@@ -84,6 +85,30 @@ func storedGrant(tokens []string) GrantCandidate {
 func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent, error) {
 	event := SessionEvent{kind: kind}
 	switch kind {
+	case EventVerifiedRound:
+		v, err := storedPayload[verifiedloop.RoundEvent](data)
+		if err == nil && v.Round < 1 {
+			err = errors.New("stored verified round requires positive round")
+		}
+		event.verifiedRound = v
+		return event, err
+	case EventVerifiedReceipt:
+		v, err := storedPayload[verifiedloop.ReceiptEvent](data)
+		if err == nil {
+			_, err = verifiedloop.NewReceipt(verifiedloop.ReceiptSpec{Verdict: v.Verdict, Integrity: v.Integrity})
+			if v.Round < 1 {
+				err = errors.New("stored verified receipt requires positive round")
+			}
+		}
+		event.verifiedReceipt = v
+		return event, err
+	case EventVerifiedCheckpoint:
+		v, err := storedPayload[verifiedloop.CheckpointEvent](data)
+		if err == nil && (v.StateRevision < 0 || (v.Status != verifiedloop.TaskComplete && v.Status != verifiedloop.TaskUnverified)) {
+			err = errors.New("invalid stored verified checkpoint")
+		}
+		event.verifiedCheckpoint = v
+		return event, err
 	case EventMemoryCaptureError:
 		v, err := storedPayload[MemoryCaptureErrorEvent](data)
 		event.memoryCaptureError = v

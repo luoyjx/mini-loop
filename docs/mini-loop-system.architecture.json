@@ -321,7 +321,7 @@
         330,
         76
       ],
-      "tag": "process-local"
+      "tag": "typed turns / explicit verified tasks"
     },
     {
       "id": "goGate",
@@ -561,7 +561,7 @@
         245,
         76
       ],
-      "tag": "live GET / coordinator library only"
+      "tag": "live GET / explicit managed tasks"
     }
   ],
   "boundaries": [
@@ -1168,7 +1168,7 @@
       "id": "goManagedRun",
       "from": "goManaged",
       "to": "goSession",
-      "label": "turn / fork",
+      "label": "turn / fork / verified task",
       "fromSide": "bottom",
       "toSide": "top",
       "via": [

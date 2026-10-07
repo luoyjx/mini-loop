@@ -2157,7 +2157,24 @@ Failures and cancellation abort; callback panics become private errors, not fals
 receipts. ShellAcceptance uses the existing configured workspace, credentials,
 spill/process/sandbox policy; it does not establish OS confinement.
 WorkspaceIntegrity supplies the same four source globs, not expanded coverage.
-The embedding must bind worker role selection, owner/capability/approval admission,
-execution workspace and round/receipt/checkpoint telemetry to the ordinary session
-pipeline. Those adapters and proposal POST remain the next task. No model can
+ManagedSession.RunVerifiedWithContext binds worker role selection, execution
+workspace and round/receipt/checkpoint telemetry to the ordinary session pipeline.
+The trusted caller owns external owner admission; operator acceptance uses the
+structured executor directly as in Python, while worker calls retain tool gates.
+Proposal Git composition and POST remain the next task. No model can
 choose these effect implementations or turn its summary into a verified result.
+
+## Go managed verified task seam
+
+RunVerifiedWithContext takes a trusted RunContext and VerifiedRunOptions. A single
+managed operation owns admission, active cancellation, trajectory and terminal
+publication across all rounds. CheckInstruments enables execution-workspace
+fingerprints; false preserves the source optional probe. A string-only executor
+cannot supply exit authority and is refused. Workspace-aware executors must match
+the session execution root. Round/receipt/checkpoint events have concrete payloads,
+detached accessors and archival decoders; reading them grants no live authority.
+The parent conversation is unchanged; real worker transcripts remain child-owned.
+Configured lease renewal checks precede worker/acceptance/event effects and the
+return boundary, without reacquiring a missing lease. These checks are boundary
+checks, not a heartbeat or fencing of an already running external process. There
+is no registered model tool, HTTP route or default task policy in this API.

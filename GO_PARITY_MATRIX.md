@@ -746,3 +746,21 @@ source characters. Source-bound 64-bit/scalar text profile remains explicit.
 Runtime session/worker/approval/event binding, proposal Git/POST, native persistence
 and G0–G7 remain open; HTTP stays 38/44 (35 patterns). This is an explicit operator
 coordinator, not a registered runtime feature or a claim of live-model convergence.
+
+## Managed verified task binding
+
+RunVerifiedWithContext composes the coordinator with actual managed admission,
+cancellation, worker role/subagent derivation, structured command execution and
+typed session events. The operator acceptance command uses the bound executor
+directly, matching Python; worker tools retain role/permission/approval hooks.
+The existing snapshot 104's event payloads round-trip through the archival adapter
+without wire changes. Native integration tests run a real child write and shell
+acceptance, inspect peer authority and owner/workspace binding, deny the child
+write, cancel a parked child before acceptance, refuse concurrent managed turns,
+reuse the session after cancellation, and stop on foreign leases at round, worker
+end and checkpoint boundaries. Stored events preserve masking and typed values.
+The lease check at effect/event/return boundaries is an explicit native embedding
+guard; it is not a heartbeat or proof of process fencing. Parent transcript does
+not acquire child messages. Source live-model convergence is still untested.
+HTTP remains 38/44 (35 patterns); Git proposal composition/POST, team/workflows,
+native persistence and G0–G7 remain open.
