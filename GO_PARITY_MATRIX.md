@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (108 generated snapshots), plus registry masking,
+the current implementation (109 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -814,6 +814,26 @@ remains available after proposals. HTTP now registers 39 operations/36 patterns
 against source 44. Team/workflow route groups, native persistence and G0–G7 remain
 open; source live-model convergence is unverified.
 
+
+## Typed team/protocol inputs
+
+Snapshot 109 executes actual installed Python team tools with no manager to
+capture ten schemas, readonly/risk/exclusive traits and 74 keyword binding cases.
+Accepted source inputs retain exact sorted compact/spaced Unicode identities and
+registered-secret structural masks. Fixture input_json preserves original member
+order through the otherwise sorted snapshot envelope; this is required for masked
+key collisions. It proves the keyword/encoding contract, not team execution.
+
+Go has concrete variants/constructors/accessors for all ten tool names, object-only
+immutable metadata, detached optionals, absent/null metadata recording, false/empty
+values, recursive sorted hashing and key/value masking. Tool-use blocks round-trip
+through the existing provider/storage decoder. Native malformed-type tests add
+strict scalar/container validation, nonfinite/surrogate metadata refusal, duplicate
+last-value semantics and foreign identity/root rejection. Python's handlers do
+not enforce all schema types; Go's stricter typed boundary is explicit. The source
+metadata schema {type:object} is retained exactly and null schema controls still
+fail. Default tool count remains ten. Team tool registration/common-gate effects,
+teammate lifecycle, automatic inbox/protocol processing and scheduling are pending.
 
 ## Bounded team mailbox and owned view
 

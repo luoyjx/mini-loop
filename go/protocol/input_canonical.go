@@ -13,6 +13,8 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return "", err
 	}
 	switch input.Name() {
+	case ToolSpawnTeammate, ToolSendMessage, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:
+		return PythonJSON(teamInputProjection{input: input, sorted: true}, false, compact)
 	case ToolRemember:
 		v := input.remember
 		return PythonJSON(struct {
@@ -20,7 +22,7 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 			Description *wireOptional[string]     `json:"description,omitempty"`
 			Name        string                    `json:"name"`
 			Type        *wireOptional[MemoryType] `json:"type,omitempty"`
-		}{v.Content, optionalWire(v.Description, input.nulls.TaskDescription), v.Name, optionalWire(v.Type, input.nulls.MemoryType)}, false, compact)
+		}{v.Content, optionalWire(v.Description, input.nulls.TaskDescription), v.Name, optionalWire(v.Type, input.nulls.Type)}, false, compact)
 	case ToolRecall:
 		return PythonJSON(input, false, compact)
 	case ToolDecision:

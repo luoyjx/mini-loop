@@ -16,6 +16,40 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolSpawnTeammate:
+		input.spawnTeammate.Name = mask(input.spawnTeammate.Name)
+		input.spawnTeammate.Role = mask(input.spawnTeammate.Role)
+		input.spawnTeammate.Prompt = mask(input.spawnTeammate.Prompt)
+	case ToolSendMessage:
+		input.sendMessage.To = mask(input.sendMessage.To)
+		input.sendMessage.Content = mask(input.sendMessage.Content)
+		if input.sendMessage.Type != nil {
+			v := mask(*input.sendMessage.Type)
+			input.sendMessage.Type = &v
+		}
+		if input.sendMessage.Metadata != nil {
+			v := TeamMetadata{value: input.sendMessage.Metadata.data().MapStrings(mask)}
+			input.sendMessage.Metadata = &v
+		}
+	case ToolBroadcast:
+		input.broadcast.Content = mask(input.broadcast.Content)
+	case ToolRequestShutdown:
+		input.requestShutdown.Target = mask(input.requestShutdown.Target)
+		if input.requestShutdown.Reason != nil {
+			v := mask(*input.requestShutdown.Reason)
+			input.requestShutdown.Reason = &v
+		}
+	case ToolRequestPlan:
+		input.requestPlan.Teammate = mask(input.requestPlan.Teammate)
+		input.requestPlan.Task = mask(input.requestPlan.Task)
+	case ToolSubmitPlan:
+		input.submitPlan.Plan = mask(input.submitPlan.Plan)
+	case ToolReviewPlan:
+		input.reviewPlan.RequestID = mask(input.reviewPlan.RequestID)
+		if input.reviewPlan.Feedback != nil {
+			v := mask(*input.reviewPlan.Feedback)
+			input.reviewPlan.Feedback = &v
+		}
 	case ToolRemember:
 		input.remember.Name = mask(input.remember.Name)
 		input.remember.Content = mask(input.remember.Content)

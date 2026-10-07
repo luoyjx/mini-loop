@@ -1,5 +1,56 @@
 # Go port plan
 
+## 2026-10-08 typed team/protocol input contracts
+
+Baseline 14a0665; full G0–G7 remains open. This is the concrete input part of
+team slice 3. Next implement the typed protocol coordinator and manager-bound
+team tools through the existing execution gate, then teammate construction,
+resource/workspace inheritance, inbox delivery, lifecycle and idle/task claiming.
+All four workflow routes/runtime, MCP, native SQLite and the G7 audit remain open.
+
+All ten source tool names now have closed concrete input variants and exact source
+schemas. The empty variants retain their discriminators. Inputs have no owner,
+session/team identity or mailbox-root fields. Standard object-only metadata uses
+the shared immutable JSON value tree; no any/interface/raw domain state is added.
+Optional pointers are detached on construction/copy/access; nil metadata preserves
+absence versus explicit null for replay hashing, and empty/false remain distinct.
+Nested key sorting creates a separate projection without changing live order;
+structural masking retains source last-value behavior when masked keys collide.
+Integer precision, floating .0/negative zero, Unicode and nested array order are
+retained. Nonfinite/surrogate metadata is refused at the model-input boundary,
+while the historical mailbox keeps its declared legacy behavior.
+
+Snapshot 109 captures the actual ten installed Python tools, source traits and
+74 keyword/input cases. It invokes real handlers with no manager, so the corpus
+proves keyword binding and projections, not execution or teammate scheduling.
+input_json preserves source member order through the sorted outer fixture. Source
+registered-secret masking is compared before encoding, including key collisions.
+Native tests cover wrong types, required fields, foreign authority/root inputs,
+duplicate members, constructors/accessors and provider/tool-use storage round trips.
+Python handlers do not enforce all advertised types; Go's strict typed validation
+is an explicit migration boundary. Optional text null is rejected, metadata null
+is retained. No dependencies, tool installation, feature defaults or architecture
+flow change. README review baseline/boundary and extension/parity docs are updated;
+the unchanged canonical map is not regenerated.
+
+Validation:
+
+- Focused team/decision-schema/memory input tests passed. Initial focused failures
+  exposed missing spawn/request-plan sorted field order, an ineffective source
+  secret minimum length and input-member reordering in the fixture envelope;
+  all were corrected before final gates. A duplicate type-null tracking tag also
+  broke memory identity in the first run; one shared Type flag now preserves both.
+- `go test ./... -count=1 -timeout=180s`,
+  `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+- `export_go_contracts.py --check`: 109 files current, two dependency deprecations.
+- `verify_scans.py`: all 19 scanning guards remain anchored.
+- Final isolated `.venv/bin/python -m pytest -q`: 2,155 passed, 28 skipped,
+  24 subtests and three dependency deprecation warnings in 78.54s. The interrupted
+  earlier run and independently committed offline fixture fix are recorded below.
+- `git diff --check` and README outline passed. Coverage was not refreshed.
+- Python runtime modules/guard behavior were unchanged; invariant and mutation
+  catalogues were not rerun. No interactive-map regeneration/visual run was needed.
+
 ## 2026-10-08 offline documentation example verification
 
 Baseline 084ee79; full G0–G7 remains open. The runnable documentation test gave

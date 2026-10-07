@@ -103,7 +103,7 @@ func (input ToolInput) marshalMemoryJSON() ([]byte, error) {
 		Content     string                    `json:"content"`
 		Type        *wireOptional[MemoryType] `json:"type,omitempty"`
 		Description *wireOptional[string]     `json:"description,omitempty"`
-	}{v.Name, v.Content, optionalWire(v.Type, input.nulls.MemoryType), optionalWire(v.Description, input.nulls.TaskDescription)})
+	}{v.Name, v.Content, optionalWire(v.Type, input.nulls.Type), optionalWire(v.Description, input.nulls.TaskDescription)})
 }
 func MemorySchemas() []ToolSchema {
 	remember := SchemaProperties{"name": {Type: SchemaString}, "content": {Type: SchemaString}, "description": {Type: SchemaString}, "type": {Type: SchemaString, Enum: []string{"user", "feedback", "project", "reference"}}}

@@ -9,6 +9,16 @@ import (
 )
 
 const (
+	ToolSpawnTeammate   ToolName = "spawn_teammate"
+	ToolSendMessage     ToolName = "send_message"
+	ToolReadInbox       ToolName = "read_inbox"
+	ToolBroadcast       ToolName = "broadcast"
+	ToolListTeammates   ToolName = "list_teammates"
+	ToolRequestShutdown ToolName = "request_shutdown"
+	ToolRequestPlan     ToolName = "request_plan"
+	ToolSubmitPlan      ToolName = "submit_plan"
+	ToolReviewPlan      ToolName = "review_plan"
+	ToolListProtocols   ToolName = "list_protocols"
 	ToolSelfAudit       ToolName = "self_audit"
 	ToolRemember        ToolName = "remember"
 	ToolRecall          ToolName = "recall"
@@ -136,9 +146,16 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
-	remember RememberInput
-	recall   RecallInput
-	decision decisions.Request
+	spawnTeammate   SpawnTeammateInput
+	sendMessage     SendMessageInput
+	broadcast       BroadcastInput
+	requestShutdown RequestShutdownInput
+	requestPlan     RequestPlanInput
+	submitPlan      SubmitPlanInput
+	reviewPlan      ReviewPlanInput
+	remember        RememberInput
+	recall          RecallInput
+	decision        decisions.Request
 	// A masked recording projection is a closed JSON tree, never executable input.
 	decisionProjection *decisions.Value
 	createGoal         CreateGoalInput
@@ -328,6 +345,12 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() { result.nulls = input.nulls }()
 	switch input.name {
+	case ToolSendMessage:
+		return SendMessageToolInput(input.sendMessage)
+	case ToolRequestShutdown:
+		return RequestShutdownToolInput(input.requestShutdown)
+	case ToolReviewPlan:
+		return ReviewPlanToolInput(input.reviewPlan)
 	case ToolRemember:
 		return RememberToolInput(input.remember)
 	case ToolRecall:
@@ -375,6 +398,14 @@ func (input ToolInput) clone() (result ToolInput) {
 
 func (input ToolInput) Validate() error {
 	switch input.name {
+	case ToolSendMessage:
+		if input.sendMessage.Metadata != nil {
+			_, err := input.sendMessage.Metadata.MarshalJSON()
+			return err
+		}
+		return nil
+	case ToolSpawnTeammate, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:
+		return nil
 	case ToolRemember:
 		return nil
 	case ToolRecall:
@@ -413,6 +444,8 @@ func (input ToolInput) Validate() error {
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
 	switch input.name {
+	case ToolSpawnTeammate, ToolSendMessage, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:
+		return input.marshalTeamJSON(false)
 	case ToolRemember, ToolRecall:
 		return input.marshalMemoryJSON()
 	case ToolDecision:
@@ -486,6 +519,8 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolSpawnTeammate, ToolSendMessage, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:
+		return decodeTeamInput(name, data)
 	case ToolRemember, ToolRecall:
 		return decodeMemoryInput(name, data)
 	case ToolDecision:

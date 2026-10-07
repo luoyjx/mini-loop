@@ -1,0 +1,829 @@
+{
+  "cases": [
+    {
+      "accepted": true,
+      "canonical": "{\"name\":\"secret\",\"prompt\":\"secret\\n界\",\"role\":\"worker\"}",
+      "input_json": "{\"name\": \"secret\", \"role\": \"worker\", \"prompt\": \"secret\\n\\u754c\"}",
+      "masked_json": "{\"name\": \"hidden\", \"role\": \"worker\", \"prompt\": \"hidden\\n\\u754c\"}",
+      "name": "spawn_teammate",
+      "sorted": "{\"name\": \"secret\", \"prompt\": \"secret\\n界\", \"role\": \"worker\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"name\":\"secret\",\"owner\":\"foreign\",\"prompt\":\"secret\\n界\",\"role\":\"worker\"}",
+      "input_json": "{\"name\": \"secret\", \"role\": \"worker\", \"prompt\": \"secret\\n\\u754c\", \"owner\": \"foreign\"}",
+      "masked_json": "{\"name\": \"hidden\", \"role\": \"worker\", \"prompt\": \"hidden\\n\\u754c\", \"owner\": \"foreign\"}",
+      "name": "spawn_teammate",
+      "sorted": "{\"name\": \"secret\", \"owner\": \"foreign\", \"prompt\": \"secret\\n界\", \"role\": \"worker\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"name\":\"secret\",\"prompt\":\"secret\\n界\",\"role\":\"worker\",\"team_id\":\"foreign\"}",
+      "input_json": "{\"name\": \"secret\", \"role\": \"worker\", \"prompt\": \"secret\\n\\u754c\", \"team_id\": \"foreign\"}",
+      "masked_json": "{\"name\": \"hidden\", \"role\": \"worker\", \"prompt\": \"hidden\\n\\u754c\", \"team_id\": \"foreign\"}",
+      "name": "spawn_teammate",
+      "sorted": "{\"name\": \"secret\", \"prompt\": \"secret\\n界\", \"role\": \"worker\", \"team_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"name\":\"secret\",\"prompt\":\"secret\\n界\",\"role\":\"worker\",\"session_id\":\"foreign\"}",
+      "input_json": "{\"name\": \"secret\", \"role\": \"worker\", \"prompt\": \"secret\\n\\u754c\", \"session_id\": \"foreign\"}",
+      "masked_json": "{\"name\": \"hidden\", \"role\": \"worker\", \"prompt\": \"hidden\\n\\u754c\", \"session_id\": \"foreign\"}",
+      "name": "spawn_teammate",
+      "sorted": "{\"name\": \"secret\", \"prompt\": \"secret\\n界\", \"role\": \"worker\", \"session_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"name\":\"secret\",\"prompt\":\"secret\\n界\",\"role\":\"worker\",\"root\":\"foreign\"}",
+      "input_json": "{\"name\": \"secret\", \"role\": \"worker\", \"prompt\": \"secret\\n\\u754c\", \"root\": \"foreign\"}",
+      "masked_json": "{\"name\": \"hidden\", \"role\": \"worker\", \"prompt\": \"hidden\\n\\u754c\", \"root\": \"foreign\"}",
+      "name": "spawn_teammate",
+      "sorted": "{\"name\": \"secret\", \"prompt\": \"secret\\n界\", \"role\": \"worker\", \"root\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"prompt\":\"secret\\n界\",\"role\":\"worker\"}",
+      "input_json": "{\"role\": \"worker\", \"prompt\": \"secret\\n\\u754c\"}",
+      "masked_json": "{\"role\": \"worker\", \"prompt\": \"hidden\\n\\u754c\"}",
+      "name": "spawn_teammate",
+      "sorted": "{\"prompt\": \"secret\\n界\", \"role\": \"worker\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"name\":\"secret\",\"prompt\":\"secret\\n界\"}",
+      "input_json": "{\"name\": \"secret\", \"prompt\": \"secret\\n\\u754c\"}",
+      "masked_json": "{\"name\": \"hidden\", \"prompt\": \"hidden\\n\\u754c\"}",
+      "name": "spawn_teammate",
+      "sorted": "{\"name\": \"secret\", \"prompt\": \"secret\\n界\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"name\":\"secret\",\"role\":\"worker\"}",
+      "input_json": "{\"name\": \"secret\", \"role\": \"worker\"}",
+      "masked_json": "{\"name\": \"hidden\", \"role\": \"worker\"}",
+      "name": "spawn_teammate",
+      "sorted": "{\"name\": \"secret\", \"role\": \"worker\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"content\":\"hello\",\"to\":\"bob\"}",
+      "input_json": "{\"to\": \"bob\", \"content\": \"hello\"}",
+      "masked_json": "{\"to\": \"bob\", \"content\": \"hello\"}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"hello\", \"to\": \"bob\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"content\":\"\",\"to\":\"\"}",
+      "input_json": "{\"to\": \"\", \"content\": \"\"}",
+      "masked_json": "{\"to\": \"\", \"content\": \"\"}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"\", \"to\": \"\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"content\":\"secret\",\"to\":\"bob\",\"type\":\"\"}",
+      "input_json": "{\"to\": \"bob\", \"content\": \"secret\", \"type\": \"\"}",
+      "masked_json": "{\"to\": \"bob\", \"content\": \"hidden\", \"type\": \"\"}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"secret\", \"to\": \"bob\", \"type\": \"\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"content\":\"secret\",\"metadata\":null,\"to\":\"bob\"}",
+      "input_json": "{\"to\": \"bob\", \"content\": \"secret\", \"metadata\": null}",
+      "masked_json": "{\"to\": \"bob\", \"content\": \"hidden\", \"metadata\": null}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"secret\", \"metadata\": null, \"to\": \"bob\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"content\":\"secret\",\"metadata\":{},\"to\":\"bob\"}",
+      "input_json": "{\"to\": \"bob\", \"content\": \"secret\", \"metadata\": {}}",
+      "masked_json": "{\"to\": \"bob\", \"content\": \"hidden\", \"metadata\": {}}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"secret\", \"metadata\": {}, \"to\": \"bob\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"content\":\"\\\"secret\\\"\",\"metadata\":{\"a\":{\"a\":\"first\",\"z\":\"last\"},\"hidden\":\"new\",\"large\":9007199254740993,\"negative_zero\":-0.0,\"secret\":\"old\",\"tiny\":1e-07,\"z\":[1,1.0,true,null,{\"界\":\"secret\"}]},\"to\":\"secret\",\"type\":\"secret\"}",
+      "input_json": "{\"to\": \"secret\", \"content\": \"\\\"secret\\\"\", \"type\": \"secret\", \"metadata\": {\"z\": [1, 1.0, true, null, {\"\\u754c\": \"secret\"}], \"a\": {\"z\": \"last\", \"a\": \"first\"}, \"large\": 9007199254740993, \"negative_zero\": -0.0, \"tiny\": 1e-07, \"secret\": \"old\", \"hidden\": \"new\"}}",
+      "masked_json": "{\"to\": \"hidden\", \"content\": \"\\\"hidden\\\"\", \"type\": \"hidden\", \"metadata\": {\"z\": [1, 1.0, true, null, {\"\\u754c\": \"hidden\"}], \"a\": {\"z\": \"last\", \"a\": \"first\"}, \"large\": 9007199254740993, \"negative_zero\": -0.0, \"tiny\": 1e-07, \"hidden\": \"new\"}}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"\\\"secret\\\"\", \"metadata\": {\"a\": {\"a\": \"first\", \"z\": \"last\"}, \"hidden\": \"new\", \"large\": 9007199254740993, \"negative_zero\": -0.0, \"secret\": \"old\", \"tiny\": 1e-07, \"z\": [1, 1.0, true, null, {\"界\": \"secret\"}]}, \"to\": \"secret\", \"type\": \"secret\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"content\":\"duplicate metadata\",\"metadata\":{\"a\":3,\"b\":2},\"to\":\"bob\"}",
+      "input_json": "{\"to\": \"bob\", \"content\": \"duplicate metadata\", \"metadata\": {\"a\": 3, \"b\": 2}}",
+      "masked_json": "{\"to\": \"bob\", \"content\": \"duplicate metadata\", \"metadata\": {\"a\": 3, \"b\": 2}}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"duplicate metadata\", \"metadata\": {\"a\": 3, \"b\": 2}, \"to\": \"bob\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"content\":\"hello\",\"owner\":\"foreign\",\"to\":\"bob\"}",
+      "input_json": "{\"to\": \"bob\", \"content\": \"hello\", \"owner\": \"foreign\"}",
+      "masked_json": "{\"to\": \"bob\", \"content\": \"hello\", \"owner\": \"foreign\"}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"hello\", \"owner\": \"foreign\", \"to\": \"bob\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"content\":\"hello\",\"team_id\":\"foreign\",\"to\":\"bob\"}",
+      "input_json": "{\"to\": \"bob\", \"content\": \"hello\", \"team_id\": \"foreign\"}",
+      "masked_json": "{\"to\": \"bob\", \"content\": \"hello\", \"team_id\": \"foreign\"}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"hello\", \"team_id\": \"foreign\", \"to\": \"bob\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"content\":\"hello\",\"session_id\":\"foreign\",\"to\":\"bob\"}",
+      "input_json": "{\"to\": \"bob\", \"content\": \"hello\", \"session_id\": \"foreign\"}",
+      "masked_json": "{\"to\": \"bob\", \"content\": \"hello\", \"session_id\": \"foreign\"}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"hello\", \"session_id\": \"foreign\", \"to\": \"bob\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"content\":\"hello\",\"root\":\"foreign\",\"to\":\"bob\"}",
+      "input_json": "{\"to\": \"bob\", \"content\": \"hello\", \"root\": \"foreign\"}",
+      "masked_json": "{\"to\": \"bob\", \"content\": \"hello\", \"root\": \"foreign\"}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"hello\", \"root\": \"foreign\", \"to\": \"bob\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"content\":\"hello\"}",
+      "input_json": "{\"content\": \"hello\"}",
+      "masked_json": "{\"content\": \"hello\"}",
+      "name": "send_message",
+      "sorted": "{\"content\": \"hello\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"to\":\"bob\"}",
+      "input_json": "{\"to\": \"bob\"}",
+      "masked_json": "{\"to\": \"bob\"}",
+      "name": "send_message",
+      "sorted": "{\"to\": \"bob\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{}",
+      "input_json": "{}",
+      "masked_json": "{}",
+      "name": "read_inbox",
+      "sorted": "{}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"owner\":\"foreign\"}",
+      "input_json": "{\"owner\": \"foreign\"}",
+      "masked_json": "{\"owner\": \"foreign\"}",
+      "name": "read_inbox",
+      "sorted": "{\"owner\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"team_id\":\"foreign\"}",
+      "input_json": "{\"team_id\": \"foreign\"}",
+      "masked_json": "{\"team_id\": \"foreign\"}",
+      "name": "read_inbox",
+      "sorted": "{\"team_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"session_id\":\"foreign\"}",
+      "input_json": "{\"session_id\": \"foreign\"}",
+      "masked_json": "{\"session_id\": \"foreign\"}",
+      "name": "read_inbox",
+      "sorted": "{\"session_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"root\":\"foreign\"}",
+      "input_json": "{\"root\": \"foreign\"}",
+      "masked_json": "{\"root\": \"foreign\"}",
+      "name": "read_inbox",
+      "sorted": "{\"root\": \"foreign\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"content\":\"secret\\n界\"}",
+      "input_json": "{\"content\": \"secret\\n\\u754c\"}",
+      "masked_json": "{\"content\": \"hidden\\n\\u754c\"}",
+      "name": "broadcast",
+      "sorted": "{\"content\": \"secret\\n界\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"content\":\"\"}",
+      "input_json": "{\"content\": \"\"}",
+      "masked_json": "{\"content\": \"\"}",
+      "name": "broadcast",
+      "sorted": "{\"content\": \"\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"content\":\"secret\\n界\",\"owner\":\"foreign\"}",
+      "input_json": "{\"content\": \"secret\\n\\u754c\", \"owner\": \"foreign\"}",
+      "masked_json": "{\"content\": \"hidden\\n\\u754c\", \"owner\": \"foreign\"}",
+      "name": "broadcast",
+      "sorted": "{\"content\": \"secret\\n界\", \"owner\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"content\":\"secret\\n界\",\"team_id\":\"foreign\"}",
+      "input_json": "{\"content\": \"secret\\n\\u754c\", \"team_id\": \"foreign\"}",
+      "masked_json": "{\"content\": \"hidden\\n\\u754c\", \"team_id\": \"foreign\"}",
+      "name": "broadcast",
+      "sorted": "{\"content\": \"secret\\n界\", \"team_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"content\":\"secret\\n界\",\"session_id\":\"foreign\"}",
+      "input_json": "{\"content\": \"secret\\n\\u754c\", \"session_id\": \"foreign\"}",
+      "masked_json": "{\"content\": \"hidden\\n\\u754c\", \"session_id\": \"foreign\"}",
+      "name": "broadcast",
+      "sorted": "{\"content\": \"secret\\n界\", \"session_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"content\":\"secret\\n界\",\"root\":\"foreign\"}",
+      "input_json": "{\"content\": \"secret\\n\\u754c\", \"root\": \"foreign\"}",
+      "masked_json": "{\"content\": \"hidden\\n\\u754c\", \"root\": \"foreign\"}",
+      "name": "broadcast",
+      "sorted": "{\"content\": \"secret\\n界\", \"root\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{}",
+      "input_json": "{}",
+      "masked_json": "{}",
+      "name": "broadcast",
+      "sorted": "{}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{}",
+      "input_json": "{}",
+      "masked_json": "{}",
+      "name": "list_teammates",
+      "sorted": "{}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"owner\":\"foreign\"}",
+      "input_json": "{\"owner\": \"foreign\"}",
+      "masked_json": "{\"owner\": \"foreign\"}",
+      "name": "list_teammates",
+      "sorted": "{\"owner\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"team_id\":\"foreign\"}",
+      "input_json": "{\"team_id\": \"foreign\"}",
+      "masked_json": "{\"team_id\": \"foreign\"}",
+      "name": "list_teammates",
+      "sorted": "{\"team_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"session_id\":\"foreign\"}",
+      "input_json": "{\"session_id\": \"foreign\"}",
+      "masked_json": "{\"session_id\": \"foreign\"}",
+      "name": "list_teammates",
+      "sorted": "{\"session_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"root\":\"foreign\"}",
+      "input_json": "{\"root\": \"foreign\"}",
+      "masked_json": "{\"root\": \"foreign\"}",
+      "name": "list_teammates",
+      "sorted": "{\"root\": \"foreign\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"target\":\"secret\"}",
+      "input_json": "{\"target\": \"secret\"}",
+      "masked_json": "{\"target\": \"hidden\"}",
+      "name": "request_shutdown",
+      "sorted": "{\"target\": \"secret\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"reason\":\"\",\"target\":\"secret\"}",
+      "input_json": "{\"target\": \"secret\", \"reason\": \"\"}",
+      "masked_json": "{\"target\": \"hidden\", \"reason\": \"\"}",
+      "name": "request_shutdown",
+      "sorted": "{\"reason\": \"\", \"target\": \"secret\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"reason\":\"secret\",\"target\":\"secret\"}",
+      "input_json": "{\"target\": \"secret\", \"reason\": \"secret\"}",
+      "masked_json": "{\"target\": \"hidden\", \"reason\": \"hidden\"}",
+      "name": "request_shutdown",
+      "sorted": "{\"reason\": \"secret\", \"target\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"owner\":\"foreign\",\"target\":\"secret\"}",
+      "input_json": "{\"target\": \"secret\", \"owner\": \"foreign\"}",
+      "masked_json": "{\"target\": \"hidden\", \"owner\": \"foreign\"}",
+      "name": "request_shutdown",
+      "sorted": "{\"owner\": \"foreign\", \"target\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"target\":\"secret\",\"team_id\":\"foreign\"}",
+      "input_json": "{\"target\": \"secret\", \"team_id\": \"foreign\"}",
+      "masked_json": "{\"target\": \"hidden\", \"team_id\": \"foreign\"}",
+      "name": "request_shutdown",
+      "sorted": "{\"target\": \"secret\", \"team_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"session_id\":\"foreign\",\"target\":\"secret\"}",
+      "input_json": "{\"target\": \"secret\", \"session_id\": \"foreign\"}",
+      "masked_json": "{\"target\": \"hidden\", \"session_id\": \"foreign\"}",
+      "name": "request_shutdown",
+      "sorted": "{\"session_id\": \"foreign\", \"target\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"root\":\"foreign\",\"target\":\"secret\"}",
+      "input_json": "{\"target\": \"secret\", \"root\": \"foreign\"}",
+      "masked_json": "{\"target\": \"hidden\", \"root\": \"foreign\"}",
+      "name": "request_shutdown",
+      "sorted": "{\"root\": \"foreign\", \"target\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{}",
+      "input_json": "{}",
+      "masked_json": "{}",
+      "name": "request_shutdown",
+      "sorted": "{}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"task\":\"secret\",\"teammate\":\"secret\"}",
+      "input_json": "{\"teammate\": \"secret\", \"task\": \"secret\"}",
+      "masked_json": "{\"teammate\": \"hidden\", \"task\": \"hidden\"}",
+      "name": "request_plan",
+      "sorted": "{\"task\": \"secret\", \"teammate\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"owner\":\"foreign\",\"task\":\"secret\",\"teammate\":\"secret\"}",
+      "input_json": "{\"teammate\": \"secret\", \"task\": \"secret\", \"owner\": \"foreign\"}",
+      "masked_json": "{\"teammate\": \"hidden\", \"task\": \"hidden\", \"owner\": \"foreign\"}",
+      "name": "request_plan",
+      "sorted": "{\"owner\": \"foreign\", \"task\": \"secret\", \"teammate\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"task\":\"secret\",\"team_id\":\"foreign\",\"teammate\":\"secret\"}",
+      "input_json": "{\"teammate\": \"secret\", \"task\": \"secret\", \"team_id\": \"foreign\"}",
+      "masked_json": "{\"teammate\": \"hidden\", \"task\": \"hidden\", \"team_id\": \"foreign\"}",
+      "name": "request_plan",
+      "sorted": "{\"task\": \"secret\", \"team_id\": \"foreign\", \"teammate\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"session_id\":\"foreign\",\"task\":\"secret\",\"teammate\":\"secret\"}",
+      "input_json": "{\"teammate\": \"secret\", \"task\": \"secret\", \"session_id\": \"foreign\"}",
+      "masked_json": "{\"teammate\": \"hidden\", \"task\": \"hidden\", \"session_id\": \"foreign\"}",
+      "name": "request_plan",
+      "sorted": "{\"session_id\": \"foreign\", \"task\": \"secret\", \"teammate\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"root\":\"foreign\",\"task\":\"secret\",\"teammate\":\"secret\"}",
+      "input_json": "{\"teammate\": \"secret\", \"task\": \"secret\", \"root\": \"foreign\"}",
+      "masked_json": "{\"teammate\": \"hidden\", \"task\": \"hidden\", \"root\": \"foreign\"}",
+      "name": "request_plan",
+      "sorted": "{\"root\": \"foreign\", \"task\": \"secret\", \"teammate\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"task\":\"secret\"}",
+      "input_json": "{\"task\": \"secret\"}",
+      "masked_json": "{\"task\": \"hidden\"}",
+      "name": "request_plan",
+      "sorted": "{\"task\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"teammate\":\"secret\"}",
+      "input_json": "{\"teammate\": \"secret\"}",
+      "masked_json": "{\"teammate\": \"hidden\"}",
+      "name": "request_plan",
+      "sorted": "{\"teammate\": \"secret\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"plan\":\"secret\"}",
+      "input_json": "{\"plan\": \"secret\"}",
+      "masked_json": "{\"plan\": \"hidden\"}",
+      "name": "submit_plan",
+      "sorted": "{\"plan\": \"secret\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"plan\":\"\"}",
+      "input_json": "{\"plan\": \"\"}",
+      "masked_json": "{\"plan\": \"\"}",
+      "name": "submit_plan",
+      "sorted": "{\"plan\": \"\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"owner\":\"foreign\",\"plan\":\"secret\"}",
+      "input_json": "{\"plan\": \"secret\", \"owner\": \"foreign\"}",
+      "masked_json": "{\"plan\": \"hidden\", \"owner\": \"foreign\"}",
+      "name": "submit_plan",
+      "sorted": "{\"owner\": \"foreign\", \"plan\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"plan\":\"secret\",\"team_id\":\"foreign\"}",
+      "input_json": "{\"plan\": \"secret\", \"team_id\": \"foreign\"}",
+      "masked_json": "{\"plan\": \"hidden\", \"team_id\": \"foreign\"}",
+      "name": "submit_plan",
+      "sorted": "{\"plan\": \"secret\", \"team_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"plan\":\"secret\",\"session_id\":\"foreign\"}",
+      "input_json": "{\"plan\": \"secret\", \"session_id\": \"foreign\"}",
+      "masked_json": "{\"plan\": \"hidden\", \"session_id\": \"foreign\"}",
+      "name": "submit_plan",
+      "sorted": "{\"plan\": \"secret\", \"session_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"plan\":\"secret\",\"root\":\"foreign\"}",
+      "input_json": "{\"plan\": \"secret\", \"root\": \"foreign\"}",
+      "masked_json": "{\"plan\": \"hidden\", \"root\": \"foreign\"}",
+      "name": "submit_plan",
+      "sorted": "{\"plan\": \"secret\", \"root\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{}",
+      "input_json": "{}",
+      "masked_json": "{}",
+      "name": "submit_plan",
+      "sorted": "{}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"approve\":false,\"request_id\":\"secret\"}",
+      "input_json": "{\"request_id\": \"secret\", \"approve\": false}",
+      "masked_json": "{\"request_id\": \"hidden\", \"approve\": false}",
+      "name": "review_plan",
+      "sorted": "{\"approve\": false, \"request_id\": \"secret\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"approve\":true,\"feedback\":\"\",\"request_id\":\"secret\"}",
+      "input_json": "{\"request_id\": \"secret\", \"approve\": true, \"feedback\": \"\"}",
+      "masked_json": "{\"request_id\": \"hidden\", \"approve\": true, \"feedback\": \"\"}",
+      "name": "review_plan",
+      "sorted": "{\"approve\": true, \"feedback\": \"\", \"request_id\": \"secret\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{\"approve\":false,\"feedback\":\"secret\",\"request_id\":\"secret\"}",
+      "input_json": "{\"request_id\": \"secret\", \"approve\": false, \"feedback\": \"secret\"}",
+      "masked_json": "{\"request_id\": \"hidden\", \"approve\": false, \"feedback\": \"hidden\"}",
+      "name": "review_plan",
+      "sorted": "{\"approve\": false, \"feedback\": \"secret\", \"request_id\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"approve\":false,\"owner\":\"foreign\",\"request_id\":\"secret\"}",
+      "input_json": "{\"request_id\": \"secret\", \"approve\": false, \"owner\": \"foreign\"}",
+      "masked_json": "{\"request_id\": \"hidden\", \"approve\": false, \"owner\": \"foreign\"}",
+      "name": "review_plan",
+      "sorted": "{\"approve\": false, \"owner\": \"foreign\", \"request_id\": \"secret\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"approve\":false,\"request_id\":\"secret\",\"team_id\":\"foreign\"}",
+      "input_json": "{\"request_id\": \"secret\", \"approve\": false, \"team_id\": \"foreign\"}",
+      "masked_json": "{\"request_id\": \"hidden\", \"approve\": false, \"team_id\": \"foreign\"}",
+      "name": "review_plan",
+      "sorted": "{\"approve\": false, \"request_id\": \"secret\", \"team_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"approve\":false,\"request_id\":\"secret\",\"session_id\":\"foreign\"}",
+      "input_json": "{\"request_id\": \"secret\", \"approve\": false, \"session_id\": \"foreign\"}",
+      "masked_json": "{\"request_id\": \"hidden\", \"approve\": false, \"session_id\": \"foreign\"}",
+      "name": "review_plan",
+      "sorted": "{\"approve\": false, \"request_id\": \"secret\", \"session_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"approve\":false,\"request_id\":\"secret\",\"root\":\"foreign\"}",
+      "input_json": "{\"request_id\": \"secret\", \"approve\": false, \"root\": \"foreign\"}",
+      "masked_json": "{\"request_id\": \"hidden\", \"approve\": false, \"root\": \"foreign\"}",
+      "name": "review_plan",
+      "sorted": "{\"approve\": false, \"request_id\": \"secret\", \"root\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"approve\":false}",
+      "input_json": "{\"approve\": false}",
+      "masked_json": "{\"approve\": false}",
+      "name": "review_plan",
+      "sorted": "{\"approve\": false}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"request_id\":\"secret\"}",
+      "input_json": "{\"request_id\": \"secret\"}",
+      "masked_json": "{\"request_id\": \"hidden\"}",
+      "name": "review_plan",
+      "sorted": "{\"request_id\": \"secret\"}"
+    },
+    {
+      "accepted": true,
+      "canonical": "{}",
+      "input_json": "{}",
+      "masked_json": "{}",
+      "name": "list_protocols",
+      "sorted": "{}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"owner\":\"foreign\"}",
+      "input_json": "{\"owner\": \"foreign\"}",
+      "masked_json": "{\"owner\": \"foreign\"}",
+      "name": "list_protocols",
+      "sorted": "{\"owner\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"team_id\":\"foreign\"}",
+      "input_json": "{\"team_id\": \"foreign\"}",
+      "masked_json": "{\"team_id\": \"foreign\"}",
+      "name": "list_protocols",
+      "sorted": "{\"team_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"session_id\":\"foreign\"}",
+      "input_json": "{\"session_id\": \"foreign\"}",
+      "masked_json": "{\"session_id\": \"foreign\"}",
+      "name": "list_protocols",
+      "sorted": "{\"session_id\": \"foreign\"}"
+    },
+    {
+      "accepted": false,
+      "canonical": "{\"root\":\"foreign\"}",
+      "input_json": "{\"root\": \"foreign\"}",
+      "masked_json": "{\"root\": \"foreign\"}",
+      "name": "list_protocols",
+      "sorted": "{\"root\": \"foreign\"}"
+    }
+  ],
+  "tools": [
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec",
+      "schema": {
+        "description": "Spawn an autonomous concurrent teammate.",
+        "input_schema": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "prompt": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "role",
+            "prompt"
+          ],
+          "type": "object"
+        },
+        "name": "spawn_teammate"
+      }
+    },
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Send a typed message to a teammate.",
+        "input_schema": {
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "metadata": {
+              "type": "object"
+            },
+            "to": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "to",
+            "content"
+          ],
+          "type": "object"
+        },
+        "name": "send_message"
+      }
+    },
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "Read, route, and drain your inbox.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "read_inbox"
+      }
+    },
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Send a message to all teammates.",
+        "input_schema": {
+          "properties": {
+            "content": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "content"
+          ],
+          "type": "object"
+        },
+        "name": "broadcast"
+      }
+    },
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "List teammates in this team.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "list_teammates"
+      }
+    },
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Request a teammate shutdown with an auditable handshake.",
+        "input_schema": {
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "target"
+          ],
+          "type": "object"
+        },
+        "name": "request_shutdown"
+      }
+    },
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Ask a teammate to submit a plan for a task.",
+        "input_schema": {
+          "properties": {
+            "task": {
+              "type": "string"
+            },
+            "teammate": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "teammate",
+            "task"
+          ],
+          "type": "object"
+        },
+        "name": "request_plan"
+      }
+    },
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Submit a plan to the lead for approval.",
+        "input_schema": {
+          "properties": {
+            "plan": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "plan"
+          ],
+          "type": "object"
+        },
+        "name": "submit_plan"
+      }
+    },
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write",
+      "schema": {
+        "description": "Approve or reject a submitted teammate plan.",
+        "input_schema": {
+          "properties": {
+            "approve": {
+              "type": "boolean"
+            },
+            "feedback": {
+              "type": "string"
+            },
+            "request_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "request_id",
+            "approve"
+          ],
+          "type": "object"
+        },
+        "name": "review_plan"
+      }
+    },
+    {
+      "absent_from_default": true,
+      "execution_mode": "exclusive",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read",
+      "schema": {
+        "description": "List protocol request states.",
+        "input_schema": {
+          "properties": {},
+          "type": "object"
+        },
+        "name": "list_protocols"
+      }
+    }
+  ]
+}

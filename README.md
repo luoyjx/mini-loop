@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `084ee79` plus offline documentation-example verification;
+reviewed **2026-10-08** (Go baseline `14a0665` plus typed team/protocol input contracts;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1332,7 +1332,12 @@ cannot trigger an owned unreadable mailbox error. Python and Go reject dot path
 components before IO; lexical checks and instance locks provide neither filesystem
 confinement nor cross-process delivery transactions. Teammate spawning, protocol
 routing, idle/task scheduling, prompt identity and bus diagnostic aggregation remain
-pending. The mailbox adds no model tools or automatic inbox delivery yet.
+pending. All ten source team/protocol tools now have concrete input variants,
+source schemas, immutable metadata and sorted/masked recording projections; the
+codec rejects model-supplied identity/root fields. Snapshot 109 compares 74 actual
+source keyword bindings and JSON identities, including metadata key collisions.
+This is the input layer: the mailbox adds no installed model tools or automatic
+inbox delivery yet.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

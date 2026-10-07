@@ -6743,6 +6743,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-improvement-proposal-http.json": _json_bytes(_improvement_proposal_http_contracts()),
         "python-team-bus.json": _json_bytes(_team_bus_contracts()),
         "python-team-http.json": _json_bytes(_team_http_contracts()),
+        "python-team-tools.json": _json_bytes(_team_tool_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8600,6 +8601,72 @@ def _team_http_contracts() -> dict:
                 body = json.loads(text) if response.headers.get("content-type")=="application/json" else text
                 cases.append(dict(recipe=recipe,status=response.status_code,response=body,exists=path.exists(),messages=75 if recipe["name"] in {"peek-50","peek-again"} else None))
     return dict(cases=cases)
+
+
+def _team_tool_contracts() -> dict:
+    """Actual installed team schemas, keyword boundary and JSON identities.
+
+    Well-typed inputs follow the advertised source schema. Python handlers do
+    not enforce schema types; Go's additional type rejections are native tests.
+    No-manager tool calls inspect only the real keyword binding, not scheduling.
+    """
+    import asyncio
+    from mini_loop.builtins import default_registry
+    from mini_loop.registry import ToolCall, ToolContext, ToolRegistry
+    from mini_loop.secrets import SecretRegistry
+    from mini_loop.teams import install_teams
+
+    registry = install_teams(ToolRegistry())
+    default = default_registry()
+    secret = SecretRegistry(mask_with="hidden", min_length=1)
+    secret.register("TEAM_TEST_SECRET", "secret")
+    variants = {
+        "spawn_teammate": [dict(name="secret", role="worker", prompt="secret\n界")],
+        "send_message": [dict(to="bob",content="hello"), dict(to="",content=""),
+                         dict(to="bob",content="secret",type=""),
+                         dict(to="bob",content="secret",metadata=None),
+                         dict(to="bob",content="secret",metadata={}),
+                         dict(to="secret",content='"secret"',type="secret",metadata={
+                             "z": [1,1.0,True,None,{"界":"secret"}],
+                             "a": {"z":"last","a":"first"},
+                             "large": 9007199254740993, "negative_zero": -0.0,
+                             "tiny": 1e-7, "secret":"old", "hidden":"new"}),
+                         dict(to="bob",content="duplicate metadata",metadata={"a":3,"b":2})],
+        "read_inbox": [{}],
+        "broadcast": [dict(content="secret\n界"),dict(content="")],
+        "list_teammates": [{}],
+        "request_shutdown": [dict(target="secret"),dict(target="secret",reason=""),dict(target="secret",reason="secret")],
+        "request_plan": [dict(teammate="secret",task="secret")],
+        "submit_plan": [dict(plan="secret"),dict(plan="")],
+        "review_plan": [dict(request_id="secret",approve=False),dict(request_id="secret",approve=True,feedback=""),dict(request_id="secret",approve=False,feedback="secret")],
+        "list_protocols": [{}],
+    }
+    tools, cases = [], []
+    ctx = ToolContext(agent=None,workspace=Path("."),state={})
+    for name in registry.names():
+        tool = registry.get(name)
+        assert tool is not None
+        tools.append(dict(schema=tool.schema, readonly=tool.readonly,risk=tool.risk,
+                          parallel_safe=tool.parallel_safe,
+                          execution_mode=tool.execution_mode(ToolCall(name,{},"team")),
+                          absent_from_default=default.get(name) is None))
+        inputs = variants[name]
+        rejected = [dict(**inputs[0],owner="foreign"),dict(**inputs[0],team_id="foreign"),
+                    dict(**inputs[0],session_id="foreign"),dict(**inputs[0],root="foreign")]
+        for required in tool.input_schema.get("required",[]):
+            rejected.append({key:value for key,value in inputs[0].items() if key!=required})
+        for value in inputs + rejected:
+            try:
+                asyncio.run(tool.run(ctx,**value))
+            except TypeError:
+                accepted=False
+            else:
+                accepted=True
+            cases.append(dict(name=name,input_json=json.dumps(value),accepted=accepted,
+                              canonical=json.dumps(value,sort_keys=True,ensure_ascii=False,separators=(",",":")),
+                              sorted=json.dumps(value,sort_keys=True,ensure_ascii=False),
+                              masked_json=json.dumps(secret.mask_payload(value))))
+    return dict(tools=tools,cases=cases)
 
 
 def main() -> int:

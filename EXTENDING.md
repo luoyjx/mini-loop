@@ -2238,5 +2238,22 @@ owner lookup before IO, supplies the fixed identity and returns newest 50 messag
 HTTP GET team uses that view and the direct historical source projection. No HTTP
 body can choose another mailbox/root/identity; historical encoding failures remain
 private and leave the mailbox intact. Bare/custom runtime sessions may have no
-identity. Native team tools, teammate spawning, protocol processing, idle/task
-scheduling, prompt identity and self-audit bus aggregation remain future slices.
+identity. `protocol.TeamSchemas()` and the concrete ToolInput constructors now
+cover all ten team/protocol input variants. They encode/decode through the existing
+provider/block/storage boundary. Inputs carry member names and request IDs, never
+owner, session, team identity or mailbox root. Metadata is object-only immutable
+closed JSON; its zero value is an empty object. Optional nil metadata retains
+absent versus explicit null in recording identity, while optional text retains
+absent versus empty and rejects null. Copies/accessors detach pointer state.
+
+CanonicalJSON/SortedPythonJSON recursively sort metadata keys without changing
+live insertion order. MapToolInputStrings masks names, values and nested keys
+before escaping, with source last-value key-collision semantics. Historical
+nonfinite/surrogate values remain supported by the mailbox, but do not enter this
+standard model-input boundary. The source object-only schema remains exactly
+{type:object}, with no invented properties/additionalProperties. Python handlers
+bind keywords without enforcing their advertised scalar types; Go additionally
+rejects wrong scalar/container types as part of its declared typed boundary.
+Native tool registration/execution, teammate spawning, protocol processing,
+idle/task scheduling, prompt identity and self-audit bus aggregation remain
+future slices. These codecs install no model tools or activation defaults.
