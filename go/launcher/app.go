@@ -65,6 +65,7 @@ type Report struct {
 	MemoryTools     bool                        `json:"memory_tools"`
 	MemoryAuto      bool                        `json:"memory_auto"`
 	DecisionBackend DecisionBackend             `json:"decision_backend"`
+	SelfAuditTools  bool                        `json:"self_audit_tools"`
 	GoalTools       bool                        `json:"goal_tools"`
 	PlanModeTools   bool                        `json:"plan_mode_tools"`
 	CronTools       bool                        `json:"cron_tools"`
@@ -93,6 +94,7 @@ type Options struct {
 	DecisionTools    bool
 	DecisionProvider decisions.Provider
 	DecisionLLM      agent.DecisionLLMConfig
+	SelfAuditTools   bool
 	GoalTools        bool
 	PlanModeTools    bool
 	PlanApprover     agent.PlanApprover
@@ -119,7 +121,7 @@ func InspectWithOptions(settings config.Settings, server config.ServerSettings, 
 		backend = OwnerMemory
 	}
 	auto := options.MemoryAuto == nil || *options.MemoryAuto
-	return Report{MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
+	return Report{SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
 }
 
 type boundBashFactory struct{ timeout time.Duration }
@@ -266,10 +268,14 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 	if build.Modified {
 		label += "-modified"
 	}
+	auditView := agent.SelfAuditOperatorView
+	if auth != nil && auth.Configured() {
+		auditView = agent.SelfAuditOwnerView
+	}
 	manager, err := agent.NewSessionManager(agent.ManagerConfig{WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
-		Services: agent.ManagerServices{Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
+		Services: agent.ManagerServices{SelfAuditTools: options.SelfAuditTools, SelfAuditView: auditView, Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
 	if err != nil {
 		if transport != nil {
 			transport.CloseIdleConnections()

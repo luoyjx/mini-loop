@@ -2063,8 +2063,12 @@ selection as in source; authenticated routes must select owner and false.
 
 The library neither launches suggested objectives nor installs benchmark drafts.
 NoExpectation carries only null, and benchmark task construction still requires
-a reviewed judge. Live manager and HTTP binding are implemented; model-tool
-binding remains pending.
+a reviewed judge. Live manager, HTTP and optional model binding are implemented.
+RuntimeConfig accepts SelfAuditObserver and a finite SelfAuditView; owner view is
+the zero value. The observer must avoid acquiring the running session turn lock.
+ManagerServices.SelfAuditTools binds the manager automatically. Operator visibility
+is explicit embedding authority; authenticated frontends select owner view.
+The model has no scope arguments. Selected children retain the trusted binding.
 
 
 ### Exact diagnostic ledger seam
@@ -2092,4 +2096,5 @@ project Info, enumerate cron jobs or read recordings; a failed ledger snapshot
 is an error instead of an empty proposal set. Authenticated HTTP always selects
 the admitted principal and false, ignores scope query overrides and spends no
 rate budget. Plain text is projected before writing and capped after masking
-expansion; JSON uses the existing typed projection. No model tool is installed.
+expansion; JSON uses the existing typed projection. The separate explicit
+SelfAuditTools binding installs the model tool through the same execution gate.

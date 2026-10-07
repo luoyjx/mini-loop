@@ -7918,12 +7918,15 @@ def _self_audit_tool_contracts() -> dict:
     tool = registry.get("self_audit")
     assert tool is not None
     cases = []
+    no_manager_output = None
     with tempfile.TemporaryDirectory(prefix="mini-loop-self-audit-tool-") as scratch:
         ctx = ToolContext(agent=None, workspace=Path(scratch), state={})
         for value in ({}, {"owner": "other"}, {"include_global": True},
                       {"limit": 1}, {"unused": None}):
             try:
-                asyncio.run(tool.run(ctx, **value))
+                output = asyncio.run(tool.run(ctx, **value))
+                if not value:
+                    no_manager_output = output
             except TypeError:
                 accepted = False
             else:
@@ -7932,7 +7935,8 @@ def _self_audit_tool_contracts() -> dict:
     return dict(schema=tool.schema, readonly=tool.readonly, risk=tool.risk,
                 parallel_safe=tool.parallel_safe,
                 execution_mode=tool.execution_mode(ToolCall("self_audit", {}, "audit")),
-                absent_from_default=absent_from_default, cases=cases)
+                absent_from_default=absent_from_default, cases=cases,
+                no_manager_output=no_manager_output)
 
 
 def main() -> int:

@@ -591,3 +591,25 @@ manager visibility policy, launcher selection and child propagation remain open.
 This protocol step does not change the HTTP inventory or enable comprehensive
 features. The Python model handler's unscoped manager report must be reconciled
 with native owner authority at trusted composition, never via model arguments.
+
+## Bound self-audit model tool
+
+The optional SelfAuditTools runtime/manager flag now installs the source schema
+and read-risk/readonly/exclusive traits through the common gate. A typed observer
+and finite trusted view bind collection to the session owner by default; explicit
+operator construction preserves the source unscoped manager report. Standalone
+--self-audit-tools selects owner view under configured auth and operator view when
+open. Authenticated model-tool scope intentionally corrects Python's unscoped
+handler. The model cannot override scope. The shared manager construction map
+covers new/restored/forked runtimes; selected children inherit the bound view,
+while default role capabilities remain unchanged. Bare activated sessions retain
+the source no-manager notice. Cancellation and private panic containment surround
+collection, which does not acquire the active turn lock. Existing result hooks,
+masking and journal semantics remain in order.
+
+Snapshot 98 now includes the actual source no-manager result. Native model loops
+compare it and the source empty-manager report from snapshot 96, then verify
+owned/operator diagnostics during an active turn, default-off/selection removal,
+readonly traits, child binding, guard-before-observation, result masking and local
+HTTP-provider launcher execution under both auth modes. No HTTP inventory change;
+G0–G7, comprehensive features, persistence and other gaps remain open.

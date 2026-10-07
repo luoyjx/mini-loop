@@ -58,6 +58,8 @@ type ManagerServices struct {
 	DecisionTools             bool
 	DecisionProvider          decisions.Provider
 	DecisionLLM               DecisionLLMConfig
+	SelfAuditTools            bool
+	SelfAuditView             SelfAuditView
 	GoalTools                 bool
 	PlanModeTools             bool
 	PlanApprover              PlanApprover

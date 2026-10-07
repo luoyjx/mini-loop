@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `a46d2cf` plus self-audit model-input contracts;
+reviewed **2026-10-07** (Go baseline `9e102f4` plus bound self-audit model tool;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -452,6 +452,7 @@ flowchart LR
     Caller -. explicit typed observations .-> GoSelfAudit
     GoManaged -. owner admission before diagnostic / recording IO .-> GoSelfAudit
     GoEntry -->|report / suggestions / drafts; admitted owner scope| GoSelfAudit
+    GoSession -. optional self_audit via ToolGate; trusted view .-> GoSelfAudit
     Caller -. supplied results / transcripts .-> GoBenchmarkLibrary
     GoEntry -->|authenticated fake-only comparison / rate budget| GoBenchmarkLibrary
     GoBenchmarkLibrary -. explicit operator arm create / run / stop .-> GoManager
@@ -1266,7 +1267,7 @@ without changing capacity. Snapshots detach slices and integer storage. Approval
 and in-memory action holders now expose the optional typed SelfAuditProblems seam,
 recording every occurrence while preserving their legacy Problems() API. The live manager now collects these and native cron, trajectory, skill, task, gate
 and memory diagnostics through detached typed snapshots. Stored-journal diagnostics
-still require an optional adapter; the model tool remains pending.
+still require an optional adapter; optional model binding is described below.
 The Go selfaudit library now renders concrete observations for session activity,
 problem ledgers/counts/churn, trajectory trends, skill-load correlation and cron
 arming. Owner filtering, global inclusion and source scan/report bounds are
@@ -1276,7 +1277,7 @@ IO or model calls. ObserveSelfAudit reads actual managed sessions and native hol
 then streams admitted recording events without manager/session locks across IO.
 Snapshot 96 compares six real Python manager/session profiles; native tests exercise
 actual JSONL, scan caps, cancellation, private fault classes and lazy task diagnostics.
-The self_audit model tool remains pending. GET /self-audit now serves the live
+GET /self-audit now serves the live
 plain-text report; /self-audit/suggestions and /self-audit/bench-task-drafts serve
 typed inert proposals. Authentication pairs the admitted owner with no fleet
 ledgers; an open deployment retains its operator view. These source GETs ignore
@@ -1284,7 +1285,20 @@ query/body overrides and spend no rate budget. Curation uses ledger-only collect
 skipping Info, cron overview and recording IO. Registered-secret projection fails
 closed, and plain text is recapped after masking. Snapshot 97 compares 72 actual
 Python HTTP responses across open, authenticated and owner-resource deployments.
-Snapshot 94 retains
+Explicit SelfAuditTools installs the source read-risk/readonly/exclusive model tool
+through ToolGate. The bound observer and finite trusted SelfAuditView control
+visibility; the default owner view collects only that session owner's resources.
+An explicit operator view retains Python's unscoped report. Standalone
+`--self-audit-tools` chooses owner view under configured auth and operator view
+when open. This corrects Python model-tool fleet visibility under auth; model
+arguments cannot select another owner or global inclusion. New/restored/forked
+managed runtimes use the same construction map. Selected children inherit the
+bound view; default role capabilities do not acquire this capability. A bare
+activated runtime without an observer returns the source no-manager notice.
+Observation runs without reentering the turn lock; cancellation is retained,
+projection uses the existing tool-result boundary, and injected observer panics
+expose a fixed private failure. Source report caps apply before ordinary result
+hooks and secret projection, as with other model tools. Snapshot 94 retains
 26 source processing profiles. Adapters must authorize owner scope before storage
 reads, mask private output and capture failures without their private messages.
 Owned memory observation reads a binding-local ledger of explicitly attributed

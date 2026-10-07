@@ -38,6 +38,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	selfAudit                                         selfAuditBinding
 	taskDiagnostics                                   atomic.Pointer[tasks.Store]
 	skillDrafts                                       *userresources.DraftStore
 	skillPreview                                      *userresources.SkillPreviewer

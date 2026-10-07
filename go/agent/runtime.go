@@ -68,6 +68,9 @@ type RuntimeConfig struct {
 	DecisionTools        bool
 	DecisionProvider     decisions.Provider
 	DecisionLLM          DecisionLLMConfig
+	SelfAuditTools       bool
+	SelfAuditObserver    SelfAuditObserver
+	SelfAuditView        SelfAuditView
 	GoalTools            bool
 	PlanModeTools        bool
 	PlanApprover         PlanApprover
@@ -123,6 +126,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	selfAudit            selfAuditBinding
 	memory               *memory.ScopedStore
 	planApprover         PlanApprover
 	cron                 CronControl
@@ -177,6 +181,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolSelfAudit:
+		return handler.selfAudit.report(ctx)
 	case protocol.ToolRemember, protocol.ToolRecall:
 		return handler.executeMemory(ctx, input)
 	case protocol.ToolDecision:
@@ -263,6 +269,9 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 // questions plus deferred compaction to the implemented workspace tools.
 // Task delegates to a fresh child through the explicit subagent seam.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
+	if !config.SelfAuditView.valid() {
+		return nil, errors.New("invalid self-audit visibility")
+	}
 	if config.StateStore != nil || config.StateLeaseOwner != "" || config.StateLeaseTTL != 0 {
 		return nil, errors.New("state persistence requires NewManagedSession")
 	}
@@ -343,7 +352,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if source == nil {
 		source = skills.EmptyCatalog()
 	}
-	handler := &runtimeHandler{planApprover: config.PlanApprover, cron: config.Cron,
+	handler := &runtimeHandler{selfAudit: selfAuditBinding{config.SelfAuditObserver, config.Owner, config.SelfAuditView}, planApprover: config.PlanApprover, cron: config.Cron,
 		binding: ToolAuthority{SessionID: config.ID, OwnerID: config.Owner, Workspace: files.Root(), Mode: config.Mode},
 		todos:   &TodoManager{}, events: &sessionEvents{}, skills: source, questions: config.Questions, compression: &compressionSignal{},
 	}
@@ -408,6 +417,13 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 				definitions[i].classifier = backgroundBashClassifier{}
 			}
 		}
+	}
+	if config.SelfAuditTools {
+		definition, err := NewToolDefinitionWithSchema(protocol.SelfAuditSchema(), ToolTraits{Risk: RiskRead, Readonly: true}, handler)
+		if err != nil {
+			return nil, err
+		}
+		definitions = append(definitions, definition)
 	}
 	if config.GoalTools {
 		for _, schema := range protocol.GoalSchemas() {
@@ -530,6 +546,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	session.events.sessionID, session.events.sink = config.ID, config.EventSink
 	session.bindEventHistory()
 	handler.session = session
+	session.selfAudit = handler.selfAudit
 	session.background = handler.background
 	session.questions = questions
 	if config.Label != "" {

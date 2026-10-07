@@ -31,6 +31,7 @@
     }
   ],
   "execution_mode": "exclusive",
+  "no_manager_output": "Error: no manager in scope; self_audit runs inside a managed session",
   "parallel_safe": false,
   "readonly": true,
   "risk": "read",

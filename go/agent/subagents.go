@@ -26,6 +26,7 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	selfAudit                                      selfAuditBinding
 	memoryAuto                                     bool
 	memory                                         *memory.ScopedStore
 	ownerResources                                 *userresources.Resources
@@ -150,6 +151,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 		questions = nil
 	}
 	handler := &runtimeHandler{
+		selfAudit:    parent.selfAudit,
 		memory:       parent.memory,
 		planApprover: parent.planApprover,
 		binding:      ToolAuthority{SessionID: id, OwnerID: parent.authority.OwnerID, Workspace: parent.authority.Workspace, Mode: mode},
@@ -187,6 +189,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 			child.bash = handler.executor
 		}
 	}
+	child.selfAudit = parent.selfAudit
 	child.planApprover = parent.planApprover
 	child.ownerResources = parent.ownerResources
 	child.memory = parent.memory
@@ -263,6 +266,7 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
 	parent := SubagentParent{
+		selfAudit:        s.selfAudit,
 		memoryAuto:       s.memoryAuto,
 		memory:           s.memory,
 		ownerResources:   s.ownerResources,

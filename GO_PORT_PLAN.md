@@ -1,5 +1,53 @@
 # Go port plan
 
+## 2026-10-07 bound self-audit model tool
+
+SelfAuditTools installs the read-risk/readonly/exclusive tool through the existing
+execution gate. A typed observer and finite trusted visibility policy bind owner
+scope by default; explicit operator configuration retains the source fleet report.
+The shared manager construction map binds the actual manager for new/restored/
+forked runtimes. Selected children inherit the view without acquiring capabilities
+in default role policies. Bare activated sessions retain the source no-manager
+notice. Observer panic messages remain private; cancellation surrounds collection,
+which never reenters the active turn lock. Existing guards, journal, permissions,
+result hooks and masking remain in order. The source report cap precedes those
+normal result hooks/projection.
+
+--self-audit-tools selects the individual service; configured auth chooses owner
+view and open startup chooses operator view. This explicitly corrects the Python
+model handler's unscoped report under auth. No model argument can widen scope.
+Full feature-bundle activation, seven HTTP operations and G0–G7 remain open.
+Snapshot 98 now captures the source no-manager handler result. Native tests cover
+actual model loops, active managed reports, owner/operator diagnostics, read-only
+traits, selected/default children, guard refusal before collection, masked results
+and local HTTP provider launcher execution in open/authenticated deployments.
+The README canonical Mermaid and architecture JSON describe the bound model-tool
+flow via the gate; HTML is regenerated from that JSON.
+
+Validation passed: focused runtime/launcher/CLI tests, full Go tests and race
+checks (`-count=1 -timeout=180s`), `go vet ./...`, the separate shared coverage
+run, all 98 source contract exports (`--check`) and all 19 source scan anchors.
+After all preceding process handles were terminal, isolated Python pytest passed
+2151 tests, 28 skipped and 24 subtests in 90.47s, with three dependency deprecation
+warnings. Export reported two dependency deprecations. No earlier subprocess
+cleanup warning fix is claimed. `git diff --check` and README outline pass.
+Python package invariant/guard mutation sweeps were not rerun because no package
+module or guarded Python behavior changed. Archify passes 9/9 showcase checks,
+zero composition errors/warnings, after routing the new semantic model report
+edge from the session with an explicit via-gate label. HTML was regenerated from
+JSON; visual inspection remains skipped after the earlier denial, without retry.
+Specification SHA256: b7500581de1d3c45421f38a4577256267e9e55fac48af86838d017cd0d8281de.
+Artifact SHA256: 49694cdf167f9b49dfbdebe129cae27884b1c187732dfde515611dec4a78f35b.
+Fresh Go statement coverage uses `go test ./... -coverpkg=./... -coverprofile=<path>
+-count=1 -timeout=180s`, followed by the merged profile's statement-weighted totals.
+The profile covers this iteration's code (9e102f4 plus bound model composition):
+15926/17725 statements, 89.85% overall; agent 6170/6793 (90.83%), httpapi 1325/1479
+(89.59%), protocol 1241/1372 (90.45%), launcher 152/189 (80.42%), benchmark 406/443
+(91.65%) and selfaudit 228/231 (98.70%). New self_audit_tool.go is 16/17 (94.12%).
+The raw profile is local temporary output; these counts and the command retain
+reproducible evidence. Feature parity remains tracked independently.
+
+
 ## 2026-10-07 self-audit model-input contract
 
 This focused protocol step adds a concrete empty SelfAuditInput variant, source

@@ -4632,6 +4632,7 @@
         <path data-edge-from="clients" data-edge-to="goSelfAudit" data-edge-key="43" data-edge-id="goSelfAuditObservations" data-composition-points="60,296;10,296;10,1058;60,1058" d="M 60 296 L 18 296 Q 10 296 10 304 L 10 1050 Q 10 1058 18 1058 L 60 1058" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goManaged" data-edge-to="goSelfAudit" data-edge-key="44" data-edge-id="goLiveSelfAudit" data-composition-points="850,1018;820,1018;820,956;315,956;315,1058;305,1058" d="M 850 1018 L 828 1018 Q 820 1018 820 1010 L 820 964 Q 820 956 812 956 L 323 956 Q 315 956 315 964 L 315 1053 Q 315 1058 310 1058 L 305 1058" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goEntry" data-edge-to="goSelfAudit" data-edge-key="45" data-edge-id="goSelfAuditHTTP" data-composition-points="330,838;290,838;290,1004;182.5,1004;182.5,1020" d="M 330 838 L 298 838 Q 290 838 290 846 L 290 996 Q 290 1004 282 1004 L 190.5 1004 Q 182.5 1004 182.5 1012 L 182.5 1020" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goSession" data-edge-to="goSelfAudit" data-edge-label="self_audit via gate" data-edge-key="46" data-edge-id="goModelSelfAudit" data-composition-points="850,1218;740,1218;740,1130;182.5,1130;182.5,1096" d="M 850 1218 L 748 1218 Q 740 1218 740 1210 L 740 1138 Q 740 1130 732 1130 L 190.5 1130 Q 182.5 1130 182.5 1122 L 182.5 1096" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4831,8 +4832,8 @@
         <text data-detail="fine" x="1015" y="1248" class="t-backend" font-size="7" text-anchor="middle">process-local</text>
         </g>
 
-        <g id="node-goGate" data-node-id="goGate" data-node-label="Go ToolGate" tabindex="0" role="button" aria-label="Focus Go ToolGate, before / guard / permission / after, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="before / guard / permission / after" data-node-tag="pinned subset; deny is final" data-node-context="Independent Go port - in progress">
-          <title>Go ToolGate · before / guard / permission / after · Independent Go port - in progress · pinned subset; deny is final</title>
+        <g id="node-goGate" data-node-id="goGate" data-node-label="Go ToolGate" tabindex="0" role="button" aria-label="Focus Go ToolGate, before / guard / permission / after; self-audit read, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="before / guard / permission / after; self-audit read" data-node-tag="pinned subset; deny is final" data-node-context="Independent Go port - in progress">
+          <title>Go ToolGate · before / guard / permission / after; self-audit read · Independent Go port - in progress · pinned subset; deny is final</title>
           <rect x="1370" y="1180" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1370" y="1180" width="280" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1376 1186) scale(0.6875)">
@@ -4840,7 +4841,7 @@
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text data-detail-anchor x="1510" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go ToolGate</text>
-        <text data-detail="context" x="1510" y="1232" class="t-muted" font-size="9" text-anchor="middle">before / guard / permission / after</text>
+        <text data-detail="context" x="1510" y="1232" class="t-muted" font-size="9" text-anchor="middle">before / guard / permission / after; self-audit read</text>
         <text data-detail="fine" x="1510" y="1248" class="t-security" font-size="7" text-anchor="middle">pinned subset; deny is final</text>
         </g>
 
@@ -5004,8 +5005,8 @@
         <text data-detail="fine" x="182.5" y="678" class="t-backend" font-size="7" text-anchor="middle">operator arms / fake-only HTTP</text>
         </g>
 
-        <g id="node-goSelfAudit" data-node-id="goSelfAudit" data-node-label="Go self-audit observer" tabindex="0" role="button" aria-label="Focus Go self-audit observer, reports / suggestions / inadmissible drafts, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="reports / suggestions / inadmissible drafts" data-node-tag="live reports / curation HTTP; model tool pending" data-node-context="Architecture component">
-          <title>Go self-audit observer · reports / suggestions / inadmissible drafts · Architecture component · live reports / curation HTTP; model tool pending</title>
+        <g id="node-goSelfAudit" data-node-id="goSelfAudit" data-node-label="Go self-audit observer" tabindex="0" role="button" aria-label="Focus Go self-audit observer, reports / suggestions / inadmissible drafts, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="reports / suggestions / inadmissible drafts" data-node-tag="live HTTP / optional bound model tool" data-node-context="Architecture component">
+          <title>Go self-audit observer · reports / suggestions / inadmissible drafts · Architecture component · live HTTP / optional bound model tool</title>
           <rect x="60" y="1020" width="245" height="76" rx="6" class="c-mask"/>
           <rect x="60" y="1020" width="245" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 1026) scale(0.6875)">
@@ -5013,7 +5014,7 @@
           </g>
           <text data-detail-anchor x="182.5" y="1056" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go self-audit observer</text>
         <text data-detail="context" x="182.5" y="1072" class="t-muted" font-size="9" text-anchor="middle">reports / suggestions / inadmissible drafts</text>
-        <text data-detail="fine" x="182.5" y="1088" class="t-backend" font-size="7" text-anchor="middle">live reports / curation HTTP; model tool pending</text>
+        <text data-detail="fine" x="182.5" y="1088" class="t-backend" font-size="7" text-anchor="middle">live HTTP / optional bound model tool</text>
         </g>
 
         <!-- Connection labels -->
@@ -5165,6 +5166,10 @@
 
 
 
+        <g data-detail="context" data-edge-from="goSession" data-edge-to="goSelfAudit" data-edge-label="self_audit via gate" data-edge-key="46" data-edge-id="goModelSelfAudit">
+          <rect x="429.4" y="1100" width="101.2" height="14" rx="3" class="c-mask"/>
+          <text x="480" y="1110" class="t-messagebus" font-size="8" text-anchor="middle">self_audit via gate</text>
+        </g>
 
         <!-- Legend -->
         <g data-legend-bridge>

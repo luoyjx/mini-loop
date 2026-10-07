@@ -1970,8 +1970,8 @@ source 50-entry retention. Their existing Problems() methods preserve their prio
 counts beyond machine integers retain exact decimal output. It does not use floats
 or retain mutable integer aliases. Snapshot 95 pins nine actual source sequences.
 Native diagnostic holders and live collection are implemented below; stored
-journals without a diagnostic seam and model-tool binding remain pending; HTTP
-binding is implemented below.
+journals without a diagnostic seam remain pending; HTTP and optional model
+binding are implemented below.
 
 
 ### Live self-audit collection
@@ -1998,7 +1998,7 @@ views. Owner-resource fleet observation currently retains binding diagnostics,
 leaving unattributed per-resource errors as a remaining collection gap. This is a
 privacy correction to source shared-memory diagnostic delegation. No model tool
 or HTTP route is installed by this observer itself; the HTTP binding below
-uses it, while the model tool remains pending. Suggestions launch no work and task drafts still contain only null judges.
+and optional model binding below use it. Suggestions launch no work and task drafts still contain only null judges.
 
 
 ### Self-audit HTTP routes
@@ -2022,8 +2022,7 @@ Snapshot 97 compares 72 actual Python HTTP responses with only generated session
 IDs replaced by labels. Native tests check no recording IO/launches, owner-scoped
 shared-memory omission, global auth/body caps, no-rate behavior, private failed
 projection and expanded mask caps. The handler now exposes 37 operations across
-34 patterns; model-tool binding and seven improvement/team/workflow operations
-remain open, along with the broader port and native persistence gaps.
+34 patterns; seven improvement/team/workflow operations remain open, along with the broader port and native persistence gaps.
 
 ### Self-audit model input
 
@@ -2032,6 +2031,34 @@ SelfAuditInput is an empty concrete payload; model arguments cannot request anot
 owner or fleet visibility. Unknown fields and non-object values are rejected at
 the provider boundary. Canonical replay JSON, recording projection and typed
 provider tool-use blocks preserve the self_audit discriminator. Snapshot 98 pins
-the source schema and keyword contract. This does not install a runtime handler
-or add the tool to the default catalogue. Manager visibility policy and standalone
-selection remain the next composition step.
+the source schema and keyword contract. The protocol declarations alone do not
+activate the optional runtime binding below.
+
+### Bound self-audit model tool
+
+RuntimeConfig.SelfAuditTools installs the source read-risk, readonly, exclusive
+self_audit tool; ManagerServices.SelfAuditTools selects the same installation.
+RuntimeConfig.SelfAuditObserver is the collector seam. Manager construction binds
+its actual observer for new, forked and restored runtimes. The finite trusted
+SelfAuditView defaults to SelfAuditOwnerView; SelfAuditOperatorView requests an
+unscoped fleet report. Invalid view values fail construction. No model fields
+can alter scope. Selected children inherit the binding; default role policies
+still omit its empty source capability set. A bare activated runtime with no
+observer returns the exact source no-manager notice.
+
+`--self-audit-tools` selects the individual tool at startup. Configured auth picks
+the fixed admitted owner view; open startup retains the source operator report.
+This explicitly corrects Python's unscoped model report in authenticated deployments.
+MINILOOP_FEATURES remains unsupported until its complete bundle is implemented.
+The collector never reenters the running session turn lock. Existing gate guards,
+permissions, journal, result hooks and registered-secret projection remain in
+order. Injected observer panics return a fixed private failure; cancellation
+aborts before/after collection. The source character bound applies before normal
+result hooks/projection; hooks can deliberately replace output, as for other tools.
+
+Snapshot 98 now also captures the actual source handler's no-manager notice;
+snapshot 96 supplies the actual empty manager report. Native tests execute actual
+model tool loops, owned/operator active manager reports, readonly execution,
+selected/default children, guard refusal before observation, masked results and
+local HTTP provider startup under both authentication modes. Dump-config reports
+selection without starting runtime. No additional HTTP operations are introduced.

@@ -327,7 +327,7 @@
       "id": "goGate",
       "type": "security",
       "label": "Go ToolGate",
-      "sublabel": "before / guard / permission / after",
+      "sublabel": "before / guard / permission / after; self-audit read",
       "pos": [
         1370,
         1180
@@ -546,7 +546,7 @@
         245,
         76
       ],
-      "tag": "live reports / curation HTTP; model tool pending"
+      "tag": "live HTTP / optional bound model tool"
     }
   ],
   "boundaries": [
@@ -1347,6 +1347,34 @@
           182.5,
           1004
         ]
+      ]
+    },
+    {
+      "id": "goModelSelfAudit",
+      "from": "goSession",
+      "to": "goSelfAudit",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "bottom",
+      "route": "orthogonal-v",
+      "via": [
+        [
+          740,
+          1218
+        ],
+        [
+          740,
+          1130
+        ],
+        [
+          182.5,
+          1130
+        ]
+      ],
+      "label": "self_audit via gate",
+      "labelAt": [
+        480,
+        1110
       ]
     }
   ],

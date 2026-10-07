@@ -159,3 +159,18 @@ func TestDecisionEnvironmentDumpDoesNotStartProviders(t *testing.T) {
 		}
 	}
 }
+
+func TestSelfAuditFlagReportsSelectionWithoutStartingRuntime(t *testing.T) {
+	env := map[string]string{"MINILOOP_WORKSPACE_ROOT": filepath.Join(t.TempDir(), "ws")}
+	var out, errout bytes.Buffer
+	if code := execute(context.Background(), []string{"--self-audit-tools", "--dump-config"}, env, &out, &errout); code != 0 {
+		t.Fatal(code, errout.String())
+	}
+	var report launcher.Report
+	if err := json.Unmarshal(out.Bytes(), &report); err != nil || !report.SelfAuditTools || report.GoalTools || report.CronTools || report.BackgroundTools {
+		t.Fatal(report, err)
+	}
+	if _, err := os.Stat(env["MINILOOP_WORKSPACE_ROOT"]); !os.IsNotExist(err) {
+		t.Fatal("inspection started runtime")
+	}
+}
