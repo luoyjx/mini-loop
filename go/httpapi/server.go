@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/agent"
+	settingsconfig "github.com/luoyjx/mini-loop/go/config"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"io"
 	"net/http"
@@ -21,6 +22,9 @@ const MaxRateWindows = 4096
 const consoleCSP = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
 
 type Config struct {
+	// BenchmarkSkillsDir is the deployment catalogue path, read fresh per arm.
+	// Empty selects the compiled builtin catalogue.
+	BenchmarkSkillsDir string
 	Manager            *agent.SessionManager
 	Auth               Authenticator
 	RateLimitPerMinute int
@@ -40,19 +44,20 @@ type rateWindow struct {
 	Count  int
 }
 type Server struct {
-	manager   *agent.SessionManager
-	auth      Authenticator
-	rateLimit int
-	ping      time.Duration
-	fake      bool
-	build     string
-	now       func() time.Time
-	started   time.Time
-	mux       *http.ServeMux
-	mu        sync.Mutex
-	cache     map[cacheKey]MessageResponse
-	running   map[agent.SessionID]bool
-	windows   map[agent.OwnerID]rateWindow
+	benchmarkSkillsDir string
+	manager            *agent.SessionManager
+	auth               Authenticator
+	rateLimit          int
+	ping               time.Duration
+	fake               bool
+	build              string
+	now                func() time.Time
+	started            time.Time
+	mux                *http.ServeMux
+	mu                 sync.Mutex
+	cache              map[cacheKey]MessageResponse
+	running            map[agent.SessionID]bool
+	windows            map[agent.OwnerID]rateWindow
 }
 
 func New(config Config) (*Server, error) {
@@ -76,6 +81,10 @@ func New(config Config) (*Server, error) {
 	}
 	s := &Server{manager: config.Manager, auth: config.Auth, rateLimit: config.RateLimitPerMinute, ping: config.PingInterval, fake: config.FakeLLM, build: config.Build, now: config.Now, started: config.Now(), mux: http.NewServeMux(), cache: make(map[cacheKey]MessageResponse), running: make(map[agent.SessionID]bool), windows: make(map[agent.OwnerID]rateWindow)}
 	s.routes()
+	s.benchmarkSkillsDir = config.BenchmarkSkillsDir
+	if s.benchmarkSkillsDir == "" {
+		s.benchmarkSkillsDir = settingsconfig.BuiltinSkills
+	}
 	return s, nil
 }
 

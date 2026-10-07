@@ -1984,7 +1984,11 @@ Workspaces are retained. Runtime error diagnostic spelling remains native.
 semantics: tool caller metadata is absent. Raw FakeProvider retains client-wire
 caller=null and supports explicit dictionary/SDK simulations; real providers keep
 their existing absent/null contract. The launcher selects the object view. Model
-task drafts remain inadmissible; fake-only HTTP arm composition is still pending.
+task drafts remain inadmissible. `benchmark.RunFakeComparison` accepts a concrete
+Settings profile and delay, always owns four new fake clients, and removes its
+transient roots after all arms join. No main provider dependency is accepted.
+HTTP admission captures the app deployment skills path and reads fresh supported
+environment configuration per request; unsupported activations remain errors.
 
 * **Per session (isolated):** workspace, conversation history, `TodoManager`,
   `ctx.state`, the cloned `ToolRegistry`, the run `Lock`.

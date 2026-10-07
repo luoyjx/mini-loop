@@ -4628,6 +4628,7 @@
         <path data-edge-from="goCron" data-edge-to="goManaged" data-edge-key="39" data-edge-id="goCronRestore" data-composition-points="1310,917;1220,917;1220,1011;1130,1011" d="M 1310 917 L 1228 917 Q 1220 917 1220 925 L 1220 1003 Q 1220 1011 1212 1011 L 1130 1011" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="clients" data-edge-to="goBenchmark" data-edge-label="statistics only" data-edge-key="40" data-edge-id="goBenchmarkStatistics" data-composition-points="135,332;135,471;182.5,471;182.5,610" d="M 135 332 L 135 463 Q 135 471 143 471 L 174.5 471 Q 182.5 471 182.5 479 L 182.5 610" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goBenchmark" data-edge-to="goManaged" data-edge-key="41" data-edge-id="goBenchmarkArms" data-composition-points="305,648;325,648;325,920;810,920;810,1018;850,1018" d="M 305 648 L 317 648 Q 325 648 325 656 L 325 912 Q 325 920 333 920 L 802 920 Q 810 920 810 928 L 810 1010 Q 810 1018 818 1018 L 850 1018" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goEntry" data-edge-to="goBenchmark" data-edge-key="42" data-edge-id="goBenchmarkHTTP" data-composition-points="495,876;495,940;20,940;20,648;60,648" d="M 495 876 L 495 932 Q 495 940 487 940 L 28 940 Q 20 940 20 932 L 20 656 Q 20 648 28 648 L 60 648" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4988,16 +4989,16 @@
         <text data-detail="fine" x="1475" y="954" class="t-backend" font-size="7" text-anchor="middle">cron tools opt-in; arm is operator</text>
         </g>
 
-        <g id="node-goBenchmark" data-node-id="goBenchmark" data-node-label="Go benchmark instrument" tabindex="0" role="button" aria-label="Focus Go benchmark instrument, admitted tasks / owned arms / statistics, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="admitted tasks / owned arms / statistics" data-node-tag="operator launch; HTTP pending" data-node-context="Architecture component">
-          <title>Go benchmark instrument · admitted tasks / owned arms / statistics · Architecture component · operator launch; HTTP pending</title>
+        <g id="node-goBenchmark" data-node-id="goBenchmark" data-node-label="Go benchmark instrument" tabindex="0" role="button" aria-label="Focus Go benchmark instrument, owned fake comparison / admitted tasks / statistics, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="owned fake comparison / admitted tasks / statistics" data-node-tag="operator arms / fake-only HTTP" data-node-context="Architecture component">
+          <title>Go benchmark instrument · owned fake comparison / admitted tasks / statistics · Architecture component · operator arms / fake-only HTTP</title>
           <rect x="60" y="610" width="245" height="76" rx="6" class="c-mask"/>
           <rect x="60" y="610" width="245" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 616) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="182.5" y="646" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go benchmark instrument</text>
-        <text data-detail="context" x="182.5" y="662" class="t-muted" font-size="9" text-anchor="middle">admitted tasks / owned arms / statistics</text>
-        <text data-detail="fine" x="182.5" y="678" class="t-backend" font-size="7" text-anchor="middle">operator launch; HTTP pending</text>
+        <text data-detail="context" x="182.5" y="662" class="t-muted" font-size="9" text-anchor="middle">owned fake comparison / admitted tasks / statistics</text>
+        <text data-detail="fine" x="182.5" y="678" class="t-backend" font-size="7" text-anchor="middle">operator arms / fake-only HTTP</text>
         </g>
 
         <!-- Connection labels -->
@@ -5144,6 +5145,7 @@
           <rect x="117.75" y="451" width="82" height="14" rx="3" class="c-mask"/>
           <text x="158.75" y="461" class="t-messagebus" font-size="8" text-anchor="middle">statistics only</text>
         </g>
+
 
 
         <!-- Legend -->

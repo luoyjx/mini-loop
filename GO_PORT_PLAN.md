@@ -1,5 +1,55 @@
 # Go port plan
 
+## 2026-10-07 fake-only benchmark HTTP composition
+
+POST /benchmark now owns four fresh fake object clients, visible baseline/candidate
+and heldout baseline/candidate arms. Typed FakeReport exposes visible rows and two
+comparisons, with the exact source note and real=false. Every manager joins before
+transient a/b roots are removed on success, cancellation and construction failure.
+No main paid provider or owner snapshot enters the instrument. Explicit external
+memory/trajectory roots retain configured semantics.
+
+HTTP reads a fresh supported Settings environment profile per request, forcing
+fake/workspace/no-spill and preserving the deployment skills path captured by the
+app. Skills are loaded freshly per arm; native defaults use compiled builtin data.
+Body/query knobs, including malformed JSON, do not select paid work or workloads.
+Authentication, body cap and shared per-owner expensive-route rate budget precede
+work. Source session creation does not spend this rate budget; message/fork/steer
+do. Unsupported activated profiles fail privately and remain migration gaps.
+
+Snapshot 93 compares five actual Python HTTP profiles: default, ignored body,
+malformed JSON, real-main setting and fresh one-round environment. Only duration
+and derived duration warnings are normalized; all deterministic rows/metrics and
+comparisons remain exact. Source probes confirm four clients, 5/5/3/3 sessions and
+removed workspace roots, then explicitly join captured source managers. Native
+tests add live cancellation/construction cleanup, real main-provider isolation,
+shared rate accounting, methods, fresh skill snapshots and private config errors.
+HTTP inventory is now 34 operations/31 patterns, against 44 source OpenAPI
+operations. The ten absent operations are improvements list/proposal, self-audit
+and its suggestions/task drafts, owned team view and four workflow operations.
+G0–G7 and the full migration remain open.
+
+Validation:
+
+- Focused benchmark HTTP/source profiles, rate, projection, fresh catalogue and
+  live cancellation/construction cleanup tests passed.
+- Full `go test ./... -count=1 -timeout=180s -coverpkg=./...` with a shared
+  profile, `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+  Deduplicated statement coverage: overall **89.60%** (15334/17114), agent
+  **90.66%** (5969/6584), HTTP API **89.50%** (1287/1438), benchmark **91.65%**
+  (406/443). This is statement coverage, not migration completion.
+- Exporter `--check`: all 93 files current; `verify_scans.py`: all 19 guards
+  anchored. Python package modules and guarded mutation anchors are unchanged;
+  separate invariant/guard mutation sweeps were not rerun.
+- Architecture source regenerated with Archify and passed all 9 showcase checks
+  on the first delivery. README outline and `git diff --check` passed. Visual
+  inspection remains skipped after the earlier local-file denial; automated
+  composition checks are not visual evidence.
+- After all Go/export/scanner handles were terminal, isolated
+  `.venv/bin/python -m pytest -q` passed: **2151 passed, 28 skipped,
+  24 subtests passed, 3 dependency deprecation warnings**, in 105.21s.
+  Python coverage was not refreshed.
+
 ## 2026-10-07 owned benchmark arm execution
 
 RunArm now owns one manager, captures admitted task storage before callbacks,

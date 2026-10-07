@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `7d73ee5` plus owned benchmark arms;
+reviewed **2026-10-07** (Go baseline `6d5480b` plus fake-only benchmark HTTP composition;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -449,6 +449,7 @@ flowchart LR
     Caller --> Entry
     Caller --> GoEntry
     Caller -. supplied results / transcripts .-> GoBenchmarkLibrary
+    GoEntry -->|authenticated fake-only comparison / rate budget| GoBenchmarkLibrary
     GoBenchmarkLibrary -. explicit operator arm create / run / stop .-> GoManager
     Caller -. operator owner directory binding .-> GoFiles
     Caller -. explicit operator evaluation .-> GoDecisionLibrary
@@ -1232,7 +1233,13 @@ arm; run/judge faults score failed rows, and cancellation aborts with joined
 manager teardown. Duration covers only the run; cost/motion use the actual final
 typed transcript. Workspaces remain available for inspection. Caller-owned
 custom factories must supply isolated paths. This is explicit operator launch
-authority; `/benchmark`'s fake-only HTTP composition remains pending.
+authority. `POST /benchmark` now constructs four independent fake clients and
+owned arms, exposing visible rows and heldout comparison. It reads supported
+configuration freshly per request, retains the app deployment skills path and
+joins managers before deleting transient a/b roots. Main provider/owner snapshots
+are not inherited. Explicit external memory/trajectory paths keep their configured
+semantics. Unsupported comprehensive features, workflow, guardian, token-efficiency
+and AST activation remain errors; those runtime profiles are not claimed migrated.
 The five visible and three heldout admitted tasks now have concrete immutable
 specifications, typed trusted judge/setup callbacks and detached optional tool
 names. Prompts, 6000-line log bytes, permissive substring/existence judges and

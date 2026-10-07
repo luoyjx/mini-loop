@@ -6727,6 +6727,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-benchmark-statistics.json": _json_bytes(_benchmark_statistics_contracts()),
         "python-benchmark-tasks.json": _json_bytes(_benchmark_task_contracts()),
         "python-benchmark-arms.json": _json_bytes(_benchmark_arm_contracts()),
+        "python-benchmark-http.json": _json_bytes(_benchmark_http_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7550,6 +7551,69 @@ def _benchmark_arm_contracts() -> dict:
                     await manager.stop()
         return dict(cases=cases)
     return asyncio.run(collect())
+
+
+def _benchmark_http_contracts() -> dict:
+    """Actual fake-only HTTP arms; normalize wall timing alone."""
+    from unittest.mock import patch
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager as SourceManager
+    from mini_loop.server import create_app
+
+    cases = []
+    with tempfile.TemporaryDirectory(prefix="go-benchmark-http-") as scratch:
+        root = Path(scratch)
+        for name, raw, environment, main_fake in [
+            ("default", "", {}, True),
+            ("ignored-body", '{"real":true,"tasks":[],"model":"paid"}', {}, True),
+            ("malformed-body", "{broken", {}, True),
+            ("real-main", "", {}, False),
+            ("one-round", "", {"MINILOOP_MAX_TURNS": "1"}, True),
+        ]:
+            managers = []
+            class ObservedManager(SourceManager):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.observed = []
+                    managers.append(self)
+                def create(self, **kwargs):
+                    session = super().create(**kwargs)
+                    self.observed.append(session)
+                    return session
+            with patch.dict(os.environ, environment, clear=True):
+                settings = Settings(fake_llm=main_fake, workspace_root=root/name,
+                                    skills_dir=root/"skills", trajectory_enabled=False,
+                                    user_resources_root=None)
+                main_client = FakeAsyncAnthropic(responder=lambda kwargs: (_ for _ in ()).throw(AssertionError("main provider invoked")))
+                app = create_app(manager=SourceManager(settings, main_client))
+                with TestClient(app, raise_server_exceptions=False) as client:
+                    app.state.auth = TokenAuth({"token-a": "alice"})
+                    unauthorized = client.post("/benchmark")
+                    assert unauthorized.status_code == 401
+                    with patch("mini_loop.manager.SessionManager", ObservedManager):
+                        response = client.post("/benchmark?real=true", content=raw,
+                            headers={"Authorization": "Bearer token-a", "Content-Type": "application/json"})
+                    assert response.status_code == 200, response.text
+                    body = response.json()
+                    for row in body["baseline"] + body["candidate"]:
+                        row.pop("duration_ms")
+                    for key in ("comparison", "heldout_comparison"):
+                        body[key]["dimensions"].pop("duration_ms", None)
+                        body[key]["dimension_warnings"] = [w for w in body[key]["dimension_warnings"] if not w.startswith("duration_ms ")]
+                    assert len(managers) == 4
+                    workspace_roots = [m.settings.workspace_root for m in managers]
+                    assert all(not path.exists() for path in workspace_roots)
+                    assert len({id(m.client) for m in managers}) == 4
+                    cases.append(dict(name=name, raw=raw, environment=environment,
+                                      main_fake=main_fake, status=response.status_code,
+                                      response=body, arms=[len(m.observed) for m in managers],
+                                      cleaned=True, clients=4))
+                    for manager in managers:
+                        client.portal.call(manager.stop)
+    return dict(cases=cases)
 
 
 def main() -> int:

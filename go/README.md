@@ -1877,7 +1877,7 @@ UTF-8 become native errors. Native OS error text is not Python exception spellin
 Snapshot 91 compares eight specifications, 50 real Python judge outcomes and the
 seed digest. Native tests also cover callback faults, cancellation, immutable
 lists/whitelists and explicit empty selection. Model-generated drafts are not
-admitted judges. POST /benchmark's fake-only composition remains pending.
+admitted judges. POST /benchmark now composes these admitted tasks through four independent fake arms.
 
 ### Owned benchmark arms
 
@@ -1905,3 +1905,25 @@ the client wire reply with caller=null; dictionary/SDK simulations and actual
 provider absent/null semantics retain that view. The launcher now selects the
 object view. This distinction fixes four excess transcript-estimate tokens per
 default fake task without subtracting fabricated cost. No paid HTTP arm is exposed.
+
+
+### Fake-only benchmark HTTP
+
+`POST /benchmark` requires the normal admitted principal and shares the expensive
+route rate budget. Body/query options cannot select a paid provider, model or
+workload. `benchmark.RunFakeComparison` constructs four fresh object-view fake
+clients, two visible arms and two heldout arms. Only visible rows are returned;
+the heldout verdict supplies a separate comparison. Each arm joins its manager
+before the temporary a/b roots are removed, including cancellation/setup failure.
+The real main manager's provider and owner resources are not injected.
+
+The handler reads the supported environment profile per request, forcing fake
+transport and no spill. `httpapi.Config.BenchmarkSkillsDir` captures the deployment
+path; empty selects compiled builtin data. External catalogue files are read
+fresh for every arm. Launcher passes its actual configured skills path. Explicit
+external memory/trajectory paths retain their configured effects. Unsupported
+comprehensive features, workflows, guardian, token-efficiency and AST activation
+fail privately; native profile validation limits remain explicit differences.
+Snapshot 93 compares five actual source HTTP profiles with only nondeterministic
+durations/derived warnings omitted. This is instrument validation, not model
+quality evidence or G7 completion. Paid runs remain operator initiated.

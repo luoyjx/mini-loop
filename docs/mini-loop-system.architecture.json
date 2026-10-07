@@ -522,7 +522,7 @@
       "id": "goBenchmark",
       "type": "backend",
       "label": "Go benchmark instrument",
-      "sublabel": "admitted tasks / owned arms / statistics",
+      "sublabel": "owned fake comparison / admitted tasks / statistics",
       "pos": [
         60,
         610
@@ -531,7 +531,7 @@
         245,
         76
       ],
-      "tag": "operator launch; HTTP pending"
+      "tag": "operator arms / fake-only HTTP"
     }
   ],
   "boundaries": [
@@ -1231,6 +1231,29 @@
         [
           810,
           1018
+        ]
+      ]
+    },
+    {
+      "id": "goBenchmarkHTTP",
+      "from": "goEntry",
+      "to": "goBenchmark",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "route": "orthogonal-v",
+      "via": [
+        [
+          495,
+          940
+        ],
+        [
+          20,
+          940
+        ],
+        [
+          20,
+          648
         ]
       ]
     }
