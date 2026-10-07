@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `183b505` plus improvement archive append;
+reviewed **2026-10-07** (Go baseline `3d9a823` plus compatible archive reads;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoImprovement["Go improvement library<br/>typed instruments · lineage append<br/>library-only; proposal pipeline pending"]
+        GoImprovement["Go improvement library<br/>typed instruments · owner lineage reads<br/>library-only; proposal pipeline pending"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
@@ -450,7 +450,7 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoEntry
-    Caller -. explicit instrument checks .-> GoImprovement
+    Caller -. explicit improvement calls .-> GoImprovement
     Caller -. explicit typed observations .-> GoSelfAudit
     GoManaged -. owner admission before diagnostic / recording IO .-> GoSelfAudit
     GoEntry -->|report / suggestions / drafts; admitted owner scope| GoSelfAudit
@@ -1319,8 +1319,14 @@ The archive now appends typed lineage records to archive.jsonl, masking keys and
 values before IO. This is a best-effort index: filesystem failure still returns
 the allocated ID; the proposal branch commit remains authoritative. Snapshot 100
 compares source null/empty fields, owner/parent metadata, masking and write failures.
-Its per-instance lock does not establish cross-process fencing. Archive reading
-and owner filtering remain pending. This explicit operator library installs no
+Its per-instance lock does not establish cross-process fencing. Archive.List now
+retains unknown legacy fields and non-object rows in a closed compatibility value,
+reads newest first, and filters by a caller-bound owner before counting the limit.
+Snapshot 101 compares 27 source reads. Malformed JSON lines are skipped; UTF-8,
+integer-conversion, nesting and scoped non-object failures abort. IO errors return
+an empty index, matching source. It reads the whole file and applies no additional
+masking to old rows. The Go nesting profile permits 1000 containers; the exact
+CPython call-stack-dependent cutoff is not established. This operator library installs no
 HTTP or model feature; receipt-gated verified loop,
 proposal branch/commit flow and both improvement HTTP operations remain pending.
 A verified loop must sample the fingerprint before each acceptance judgment;

@@ -2113,6 +2113,13 @@ and ArchiveRecordOptions. ArchiveMasker masks string keys and values before the
 append lock, preserving source last-key collision behavior. Projection failures
 abort without raw fallback; filesystem failures return the allocated ID. This
 JSONL review index is best-effort, with a per-instance lock and no cross-process
-lease. Legacy reading, owner filtering, verified-loop receipts and proposal/HTTP
-composition remain pending. This operator library does not grant model tool or
+lease. List accepts ArchiveQuery with a trusted owner and optional limit, returning
+closed ArchiveValue variants that preserve arbitrary legacy fields without raw
+JSON service state. The decision parser is deliberately stricter (duplicate keys,
+finite/scalar-only values and byte/depth caps) and cannot decode this legacy index.
+Nil owner is an operator query; nil limit defaults to 200,
+while explicit zero/negative selects one. Accepted rows count after owner filtering.
+Reads take no append lock, read the whole source file, and do not remask old rows.
+IO failure yields an empty index; conversion/encoding/scoped shape failures abort.
+Verified-loop receipts and proposal/HTTP composition remain pending. This operator library does not grant model tool or
 merge authority.

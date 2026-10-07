@@ -6735,6 +6735,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-self-audit-tool.json": _json_bytes(_self_audit_tool_contracts()),
         "python-improvement-instruments.json": _json_bytes(_improvement_instrument_contracts()),
         "python-improvement-archive-append.json": _json_bytes(_improvement_archive_append_contracts()),
+        "python-improvement-archive-read.json": _json_bytes(_improvement_archive_read_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8048,6 +8049,73 @@ def _improvement_archive_append_contracts() -> dict:
             if archive.path.is_file():
                 rows = [json.loads(line) for line in archive.path.read_text(encoding="utf-8").splitlines()]
             cases.append({**recipe, "proposal_id": proposal_id, "rows": rows})
+    return {"cases": cases}
+
+
+def _improvement_archive_read_contracts() -> dict:
+    """Actual source newest-first, arbitrary legacy JSON and owner-filter failures."""
+    import hashlib
+    from mini_loop.improvement_archive import ImprovementArchive
+    cases = []
+    recipes = [
+        dict(name="unknown-fields", content='{"owner":"alice","future":{"k":[true,null,2.0]},"proposal_id":"old"}\n{"owner":"bob","rounds":"legacy"}\n{"owner":"alice","proposal_id":"new"}\n'),
+        dict(name="owner-filter", content='{"owner":"alice","id":1}\n{"owner":"bob","id":2}\n{"owner":"alice","id":3}', owner="alice", limit=1),
+        dict(name="empty-owner", content='{"owner":""}\n{}\n{"owner":null}\n{"owner":0}', owner=""),
+        dict(name="malformed", content='{"owner":"alice","id":1}\n{broken\n\n{"owner":"bob","id":2}\n{"owner":"alice","id":3}trailing'),
+        dict(name="zero-limit", content='1\n2\n3', limit=0),
+        dict(name="negative-limit", content='1\n2\n3', limit=-10),
+        dict(name="legacy-scalars", content='null\nfalse\n42\n["legacy",{"extra":true}]\n"text"'),
+        dict(name="owner-shape", content='{"owner":"alice"}\n[]', owner="alice"),
+        dict(name="owner-shape-after-match", content='[]\n{"owner":"alice"}', owner="alice"),
+        dict(name="limit-stops-before-shape", content='[]\n{"owner":"alice"}', owner="alice", limit=1),
+        dict(name="last-key-wins", content='{"owner":"bob","future":1,"owner":"alice","future":[2]}', owner="alice"),
+        dict(name="python-lines", content='1\r\n2\r3\v4\f5\x1c6\x1d7\x1e8\x859\u202810\u202911'),
+        dict(name="split-inside-string", content='{"owner":"alice","text":"line\u2028break"}'),
+        dict(name="bom-line", content='1\n\ufeff{"owner":"alice"}'),
+        dict(name="numbers", content='[-0,-0.0,9007199254740993,1e15,1e16,1e-5,1e-999,1.0000000000000001]'),
+        dict(name="nonfinite", content='[NaN,Infinity,-Infinity,1e999]'),
+        dict(name="escapes", content=r'{"text":"\u754c\ud83c\udf31\ud800x\udfff\b\f\n\r\t\u0000\u007f\\\"\/","\ud800":true}'),
+        dict(name="missing", content="", fault="missing"),
+        dict(name="archive-directory", content="", fault="archive-directory"),
+        dict(name="invalid-utf8", content="", fault="invalid-utf8", limit=1),
+        dict(name="large-row", width=30000),
+        dict(name="integer-limit", integer_digits=4301),
+        dict(name="integer-boundary", integer_digits=4300),
+        dict(name="deep-valid", depth=500),
+        dict(name="deep-error", depth=1005),
+        dict(name="default-limit", records=205),
+        dict(name="explicit-large-limit", records=205, limit=210),
+    ]
+    with tempfile.TemporaryDirectory(prefix="go-improvement-read-") as scratch:
+        for recipe in recipes:
+            root = Path(scratch) / recipe["name"]
+            archive = ImprovementArchive(root)
+            content = recipe.get("content", "")
+            if "width" in recipe:
+                content = '{"owner":"alice","body":"' + "界"*recipe["width"] + '"}'
+            if "integer_digits" in recipe:
+                content = "9"*recipe["integer_digits"]
+            if "depth" in recipe:
+                content = "["*recipe["depth"] + "0" + "]"*recipe["depth"]
+            if "records" in recipe:
+                content = "\n".join(str(index) for index in range(recipe["records"]))
+            if recipe.get("fault") != "missing":
+                root.mkdir()
+                if recipe.get("fault") == "archive-directory":
+                    archive.path.mkdir()
+                elif recipe.get("fault") == "invalid-utf8":
+                    archive.path.write_bytes(b"\xff\n1")
+                else:
+                    archive.path.write_text(content, encoding="utf-8")
+            options = {key: recipe[key] for key in ("owner", "limit") if key in recipe}
+            error = None
+            digests = []
+            try:
+                rows = archive.list(**options)
+                digests = [hashlib.sha256(json.dumps(row, ensure_ascii=True, separators=(",", ":")).encode()).hexdigest() for row in rows]
+            except (AttributeError, UnicodeDecodeError, ValueError, RecursionError) as exc:
+                error = type(exc).__name__
+            cases.append({**recipe, "error": error, "row_digests": digests})
     return {"cases": cases}
 
 

@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (100 generated snapshots), plus registry masking,
+the current implementation (101 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -635,7 +635,7 @@ conftest.py and tests/conftest.py; they do not scan every path flagged by substr
 classification or arbitrary nested verifier directories. Fingerprint sampling
 at acceptance judgment remains required in the future verified loop. This
 library installs no runtime/model/HTTP feature. HTTP inventory remains 37/44;
-archive reading, verified loop, proposal flow, both improvement operations and
+verified loop, proposal flow, both improvement operations and
 G0–G7 remain open.
 
 ## Improvement archive append
@@ -651,5 +651,27 @@ not byte-identical to Python's ASCII/spaced output. Native tests exercise concur
 complete appends, prior-row preservation, detached projection, failure before IO,
 private masking panic refusal and ID shape. Constructor performs no filesystem IO.
 The lock serializes one instance only; this index is not a transactional artifact.
-Legacy arbitrary JSONL reading, owner filtering and runtime/HTTP binding remain
-pending. HTTP inventory stays 37/44 and G0–G7 remains open.
+Legacy reading and owner filtering are now implemented as the next slice below;
+runtime/HTTP binding remains pending. HTTP inventory stays 37/44 and G0–G7 remains open.
+
+## Improvement archive compatibility reads
+
+Snapshot 101 compares 27 actual Python ImprovementArchive.list profiles: unknown
+fields, non-object rows, source newest-first order, malformed/blank lines, exact
+owner and empty owner, accepted-row limit accounting, zero/negative and default
+200 limits, duplicate-key last value with first-position order, Python Unicode
+splitlines, BOM skipping, arbitrary-width integers up to 4300 digits, rounded
+floats and nonfinite values, lone-surrogate escapes, >64 KiB rows, missing/IO
+failures, strict UTF-8 failure and 500/1005-depth samples. Canonical per-row digests
+compare complete source values, including large rows and unknown nested fields.
+Go ArchiveQuery and private-field ArchiveValue variants contain no any or raw JSON
+service state. Accessors detach slices and expose explicit text/integer/float/
+boolean variants. New proposal admission remains ProposalFields. Historical rows
+are not remasked; the source reads the whole file, with no imposed byte cap.
+Scoped non-object rows abort the whole query, like source AttributeError, unless
+the accepted-row limit was already satisfied. IO failures yield [] while UTF-8
+and conversion failures propagate. Nonfinite values survive library reads but
+MarshalJSON refuses them, matching the future standard HTTP serialization boundary.
+Go accepts 1000 nested containers; Python's precise call-stack-dependent recursion
+cutoff is not established by the 500/1005 samples. Runtime/HTTP binding remains
+pending; HTTP inventory stays 37/44 and G0–G7 remains open.

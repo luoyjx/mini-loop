@@ -552,7 +552,7 @@
       "id": "goImprovement",
       "type": "backend",
       "label": "Go improvement library",
-      "sublabel": "typed instruments / lineage append",
+      "sublabel": "instruments / owner lineage reads",
       "pos": [
         60,
         1380

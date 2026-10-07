@@ -1,5 +1,39 @@
 # Go port plan
 
+## 2026-10-07 improvement archive compatibility reads
+
+Archive.List now implements newest-first legacy JSONL reads, trusted owner
+filtering and accepted-row limits. ArchiveValue is a closed private-field union
+for null/text/integer/float/boolean/array/object data, preserving unknown fields
+and non-object legacy rows without broad Go payloads. Source snapshot 101 compares
+27 real reads using full canonical row digests; native accessors detach containers.
+The reader does not take an append lock or remask historical rows. Source IO
+failures mean []; malformed JSON lines are skipped, while encoding, integer-limit
+and owner-shape errors abort the whole query. Nonfinite numbers remain typed and
+observable but standard MarshalJSON refuses them. The whole file is read, matching
+source. Native profile accepts 1000 nested containers; exact Python stack-dependent
+recursion cutoff remains unverified beyond 500/1005 contract samples.
+Next: bind the owned GET /improvements view, port verified-loop receipts and
+acceptance execution, compose proposal Git artifacts and POST route, then continue
+teams/workflows, native persistence and the G0–G7 release audit. HTTP stays 37/44;
+no model/runtime/default feature is activated by this operator library.
+
+Validation passed: focused source/native archive checks; full Go tests and race
+checks (-count=1 -timeout=180s), go vet ./..., all 101 source contract exports and
+all 19 scan anchors. After those handles finished, isolated Python pytest passed
+2151 tests, 28 skipped and 24 subtests in 80.81s, with three dependency deprecations.
+The export check reported two deprecations and the existing child-process warning,
+but passed. Python package invariant/guard sweeps were not rerun because only the
+exporter changed, not package modules or guarded behavior. Overall statement
+coverage was not refreshed this iteration. README outline and git diff --check pass.
+Archify passes 9/9 showcase checks with zero errors/warnings; HTML is regenerated.
+Visual inspection remains skipped after the earlier denial, without retry.
+Specification SHA256: 5aa059eb4e0d44a9850b874b0263c814785bd6e8d1c2b1210ad910fab0a2d565.
+Artifact SHA256: d6c8a71e421d66fbfdbcb908c59027a44fe57791034d2a5d663abc6e50e36fa2.
+The HTTP slice must compare legacy nonfinite/lone-surrogate serialization failures
+as well as owner admission and successful lineage responses.
+
+
 ## 2026-10-07 improvement archive append
 
 This slice adds typed ProposalFields, ArchiveRecordOptions and best-effort
@@ -47,7 +81,7 @@ remain broader. Callers must sample before each acceptance judgment, since a
 restored final digest cannot reveal earlier tampering by itself.
 
 Next cohesive tasks:
-1. Add the compatibility-aware archive reader and owner-scoped read API (typed append is now implemented).
+1. Bind the owned archive read API to GET /improvements (append and compatibility reader are now implemented).
 2. Port verified-loop task/receipt/integrity transitions and acceptance execution.
 3. Bind proposal worktree/git artifact composition, verifier touch flags and archive.
 4. Bind and compare both improvement HTTP operations, then continue teams/workflows,
