@@ -1,0 +1,1422 @@
+{
+  "cases": [
+    {
+      "body": "IA==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-0",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "ew==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-1",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "Ww==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-2",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "WzEsXQ==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-3",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              3
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "WzE=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-4",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting ',' delimiter"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              2
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4IiAxfQ==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-5",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting ':' delimiter"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              5
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4Ijp9",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-6",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              5
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4Ijox",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-7",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting ',' delimiter"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              6
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4IjoxLH0=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-8",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              7
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "dHJ1ZSBmYWxzZQ==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-9",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              5
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "dHJ1",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-10",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "LQ==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-11",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "MDE=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-12",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "MS4=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-13",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "MWU=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-14",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "InVuY2xvc2Vk",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-15",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "ImJhZFxxIg==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-16",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Invalid \\escape"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              4
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "ImJhZFx1MTJ4NCI=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-17",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Invalid \\uXXXX escape"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              5
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "ImJhZAoi",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-18",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Invalid control character at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              4
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyLnlYwiOjEsfQ==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-19",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              7
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyLwn5iAIjogWzEsXX0=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-20",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              9
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "e30ge30=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-21",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              3
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4IjpbdHJ1ZSBmYWxzZV19",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-22",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting ',' delimiter"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              11
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "InRyYWlsaW5nXA==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-23",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "77u/e30=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "syntax-24",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "IA==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-0",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "ew==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-1",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "Ww==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-2",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "WzEsXQ==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-3",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              3
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "WzE=",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-4",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting ',' delimiter"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              2
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4IiAxfQ==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-5",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting ':' delimiter"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              5
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4Ijp9",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-6",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              5
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4Ijox",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-7",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting ',' delimiter"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              6
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4IjoxLH0=",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-8",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              7
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "dHJ1ZSBmYWxzZQ==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-9",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              5
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "dHJ1",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-10",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "LQ==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-11",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "MDE=",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-12",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "MS4=",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-13",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "MWU=",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-14",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "InVuY2xvc2Vk",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-15",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "ImJhZFxxIg==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-16",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Invalid \\escape"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              4
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "ImJhZFx1MTJ4NCI=",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-17",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Invalid \\uXXXX escape"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              5
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "ImJhZAoi",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-18",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Invalid control character at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              4
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyLnlYwiOjEsfQ==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-19",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              7
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyLwn5iAIjogWzEsXX0=",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-20",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting value"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              9
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "e30ge30=",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-21",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Extra data"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              3
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJ4IjpbdHJ1ZSBmYWxzZV19",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-22",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting ',' delimiter"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              11
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "InRyYWlsaW5nXA==",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-23",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Unterminated string starting at"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              0
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "77u/e30=",
+      "kind": "commit",
+      "media": "application/json",
+      "name": "syntax-24",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "digest"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "e30=",
+      "kind": "preview",
+      "media": "text/plain",
+      "name": "media-0",
+      "response": {
+        "detail": [
+          {
+            "input": "{}",
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "W10=",
+      "kind": "preview",
+      "media": "text/plain",
+      "name": "media-1",
+      "response": {
+        "detail": [
+          {
+            "input": "[]",
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "e30=",
+      "kind": "preview",
+      "media": "application/x-www-form-urlencoded",
+      "name": "media-2",
+      "response": {
+        "detail": [
+          {
+            "input": "{}",
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "e30=",
+      "kind": "preview",
+      "media": "text/json",
+      "name": "media-3",
+      "response": {
+        "detail": [
+          {
+            "input": "{}",
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "e30=",
+      "kind": "preview",
+      "media": "application/vnd.api+json",
+      "name": "media-4",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSJ9",
+      "kind": "preview",
+      "media": "application/json; charset=utf-8",
+      "name": "media-5",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSJ9",
+      "kind": "preview",
+      "media": "APPLICATION/JSON",
+      "name": "media-6",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "text": null
+    },
+    {
+      "body": "eyJuYW1lIjoic2FmZSJ9",
+      "kind": "preview",
+      "media": null,
+      "name": "media-7",
+      "response": {
+        "detail": [
+          {
+            "input": "{\"name\":\"safe\"}",
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "/w==",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "media-8",
+      "response": {
+        "detail": "There was an error parsing the body"
+      },
+      "status": 400,
+      "text": null
+    },
+    {
+      "body": "/w==",
+      "kind": "preview",
+      "media": "text/plain",
+      "name": "media-9",
+      "response": null,
+      "status": 500,
+      "text": "Internal Server Error"
+    },
+    {
+      "body": "77u/e30=",
+      "kind": "preview",
+      "media": "application/json",
+      "name": "media-10",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "IA==",
+      "kind": "preview",
+      "media": "text/plain",
+      "name": "media-11",
+      "response": {
+        "detail": [
+          {
+            "input": " ",
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    },
+    {
+      "body": "",
+      "kind": "preview",
+      "media": "text/plain",
+      "name": "media-12",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "text": null
+    }
+  ]
+}

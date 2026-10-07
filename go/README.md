@@ -1712,6 +1712,23 @@ missing errors; non-object roots use model_attributes_type. A closed six-variant
 ValidationInput exists only in HTTP diagnostics. No open payload is retained in
 session/service state. Responses use the existing masked recording projection,
 including escaped input values and extra-field keys. Snapshot 82 compares 41
-actual FastAPI responses. Malformed JSON/Unicode, extreme numeric input, content
-type and nesting-boundary parity remain open. The native diagnostic tree caps
+actual FastAPI responses. UTF-16/32, lone-surrogate, extreme numeric input and
+nesting-boundary parity remain open. Syntax/media/UTF-8 behavior is described
+below. The native diagnostic tree caps
 nesting at 256; complete FastAPI parity is not claimed for these boundaries.
+
+### Personal-skill JSON syntax and media admission
+
+Only application/json or application subtypes ending in +json parse JSON bodies,
+matching FastAPI 0.136.3's strict_content_type default. Missing or other media
+types echo a byte-string diagnostic rather than granting object semantics. Empty
+bodies still use the required-body error. A bounded syntax scanner follows the
+CPython prefix grammar and reports code-point positions through a closed
+field/position location variant. UTF-8 BOM is removed before parsing; illegal
+UTF-8 JSON returns source 400 details, while illegal non-JSON input preserves the
+source safe 500 plain response. Snapshot 83 compares 63 actual HTTP results,
+including every supported syntax failure category, multibyte positions, media
+variants and encoding admission. JSON convenience tests now send Content-Type
+explicitly; dedicated missing-header cases use actual untyped requests. Alternate
+UTF-16/32 decoding, lone surrogates, nonfinite/extreme numeric values and depth
+boundary parity remain open.

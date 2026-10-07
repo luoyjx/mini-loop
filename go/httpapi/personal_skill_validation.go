@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -140,16 +141,30 @@ const (
 	validationLong    RequestValidationCode = "string_too_long"
 	validationPattern RequestValidationCode = "string_pattern_mismatch"
 	validationExtra   RequestValidationCode = "extra_forbidden"
+	validationJSON    RequestValidationCode = "json_invalid"
 )
 
 type RequestValidationContext struct {
 	MinLength *int   `json:"min_length,omitempty"`
 	MaxLength *int   `json:"max_length,omitempty"`
 	Pattern   string `json:"pattern,omitempty"`
+	Error     string `json:"error,omitempty"`
 }
+type ValidationLocation struct {
+	field    string
+	position *int
+}
+
+func (v ValidationLocation) MarshalJSON() ([]byte, error) {
+	if v.position != nil {
+		return json.Marshal(*v.position)
+	}
+	return json.Marshal(v.field)
+}
+
 type RequestValidationDetail struct {
 	Type     RequestValidationCode     `json:"type"`
-	Location []string                  `json:"loc"`
+	Location []ValidationLocation      `json:"loc"`
 	Message  string                    `json:"msg"`
 	Input    ValidationInput           `json:"input"`
 	Context  *RequestValidationContext `json:"ctx,omitempty"`
@@ -160,9 +175,9 @@ type RequestValidationResponse struct {
 
 func personalSkillValidation(input ValidationInput, preview bool) []RequestValidationDetail {
 	issue := func(code RequestValidationCode, field, message string, value ValidationInput, ctx *RequestValidationContext) RequestValidationDetail {
-		loc := []string{"body"}
+		loc := []ValidationLocation{{field: "body"}}
 		if field != "" {
-			loc = append(loc, field)
+			loc = append(loc, ValidationLocation{field: field})
 		}
 		return RequestValidationDetail{code, loc, message, value, ctx}
 	}
@@ -235,12 +250,35 @@ func personalSkillValidation(input ValidationInput, preview bool) []RequestValid
 func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommitRequest](s *Server, w http.ResponseWriter, r *http.Request, preview bool) (T, bool) {
 	var result T
 	raw, err := io.ReadAll(r.Body)
-	if err != nil || !utf8.Valid(raw) {
-		writeJSON(s, w, 422, ErrorResponse{"invalid request body"})
+	if err != nil {
+		writeJSON(s, w, 400, ErrorResponse{"There was an error parsing the body"})
 		return result, false
 	}
 	input := ValidationInput{}
-	if len(bytes.TrimSpace(raw)) > 0 {
+	contentType := strings.ToLower(strings.TrimSpace(strings.SplitN(r.Header.Get("Content-Type"), ";", 2)[0]))
+	jsonBody := contentType == "application/json" || (strings.HasPrefix(contentType, "application/") && strings.HasSuffix(contentType, "+json"))
+	if len(raw) > 0 && !jsonBody {
+		if !utf8.Valid(raw) {
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			w.WriteHeader(500)
+			w.Write([]byte("Internal Server Error"))
+			return result, false
+		}
+		input = ValidationInput{kind: validationText, text: string(raw)}
+	} else if len(raw) > 0 {
+		raw = bytes.TrimPrefix(raw, []byte{0xef, 0xbb, 0xbf})
+		if !utf8.Valid(raw) {
+			writeJSON(s, w, 400, ErrorResponse{"There was an error parsing the body"})
+			return result, false
+		}
+		if failure := requestJSONSyntax(raw); failure != nil {
+			if failure.kind == jsonNestingLimit {
+				writeJSON(s, w, 400, ErrorResponse{"There was an error parsing the body"})
+				return result, false
+			}
+			writeJSON(s, w, 422, RequestValidationResponse{Detail: []RequestValidationDetail{{Type: validationJSON, Location: []ValidationLocation{{field: "body"}, {position: &failure.position}}, Message: "JSON decode error", Input: ValidationInput{kind: validationObject}, Context: &RequestValidationContext{Error: failure.message()}}}})
+			return result, false
+		}
 		d := json.NewDecoder(bytes.NewReader(raw))
 		d.UseNumber()
 		input, err = readValidationInput(d, 0)

@@ -310,8 +310,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `e414508` plus typed personal-skill HTTP
-validation lists; malformed JSON/Unicode boundary fidelity remains pending).
+reviewed **2026-10-07** (Go baseline `5fb24dc` plus personal-skill JSON syntax
+diagnostics and strict media admission; Unicode/number edges remain pending).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -359,7 +359,7 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned skill preview / commit · validation lists"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned skills · strict media / syntax diagnostics"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
@@ -1149,9 +1149,12 @@ typed code/message details and reviewed status. Responses use detached masked JS
 Preview creates a process-local draft; commit publishes only its reviewed digest.
 Source routes do not add rate accounting. Valid JSON request errors now preserve
 ordered Pydantic validation lists, locations, context and input through a closed
-six-variant diagnostic tree; strings and keys are masked before encoding. Malformed
-JSON/Unicode, extreme numeric input and nesting-boundary fidelity remain pending;
-previews grant no publication authority.
+six-variant diagnostic tree; strings and keys are masked before encoding. Syntax
+errors preserve source code-point positions and safe messages. Only application
+JSON media types enter parsing; missing/other media retain byte-string input.
+UTF-8 BOM and illegal UTF-8 admission match source. UTF-16/32, lone surrogates,
+extreme numbers and nesting-boundary fidelity remain pending; previews grant no
+publication authority.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

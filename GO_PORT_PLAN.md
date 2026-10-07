@@ -6014,3 +6014,34 @@ local-file access denial; automatic checks do not establish visual acceptance.
 Coverage is not refreshed. After every other validation job finished, isolated
 full Python passed: 2,151 tests, 28 skipped, 24 subtests and three existing warnings
 (94.95s). README outline and final git diff --check pass.
+
+## Implementation checkpoint — 2026-10-07 HTTP syntax and media admission
+
+Base: 5fb24dc. The personal-skill request boundary now uses a bounded CPython-style
+syntax scanner before lowering successful JSON to the existing closed diagnostic
+tree and concrete request. Typed locations support named fields or integer code-
+point positions. Syntax errors preserve json_invalid, safe source messages and
+empty-object input. Only application/json or application +json media types parse
+JSON; missing/other media preserve byte-string input. Empty bodies retain required-
+body errors. UTF-8 BOM is stripped for JSON; illegal UTF-8 JSON gets source 400,
+while illegal non-JSON input keeps the safe source plain 500 response. Snapshot
+83 compares 63 actual HTTP results across both routes, including Unicode offsets
+and media variants. Initial missing-header comparison failed, exposing FastAPI
+0.136.3's strict_content_type=True default; installed routing source confirmed it,
+and Go was corrected. The shared JSON test helper now sets its actual media type;
+dedicated absent-header cases bypass it. Python baseline is 3.11.3. UTF-16/32,
+lone-surrogate, nonfinite/extreme-number and depth boundary fidelity remain next.
+The explicit native nesting bound remains 256. G0-G7 remain open.
+
+Validation: all 63 actual parsing comparisons and existing preview/commit/request
+contracts pass. Full Go tests/race/vet pass. Exporter confirms 83 snapshots current
+and exits zero despite a transient subprocess cleanup warning; old snapshots are
+unchanged. All 19 scan guards pass. The auth selector catches two source authority
+guards (cron/shutdown), not a HTTP authentication mutation audit; no full source
+mutation sweep was run. Source runtime modules are unchanged and package invariant
+verification is not rerun. Canonical Mermaid, explanation and specification reflect
+syntax/media admission; regenerated HTML passes Archify 9/9 with zero errors/warnings.
+Visual inspection remains skipped after prior local-file access denial. Coverage is
+not refreshed. After all other jobs finished, isolated full Python passed: 2,151
+tests, 28 skipped, 24 subtests and three existing warnings (85.67s). Final README
+outline and git diff --check pass.

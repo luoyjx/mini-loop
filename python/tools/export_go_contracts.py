@@ -6717,6 +6717,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-personal-skill-requests.json": _json_bytes(_personal_skill_request_contracts()),
         "python-personal-skill-http.json": _json_bytes(_personal_skill_http_contracts()),
         "python-personal-skill-http-validation.json": _json_bytes(_personal_skill_http_validation_contracts()),
+        "python-personal-skill-http-parsing.json": _json_bytes(_personal_skill_http_parsing_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -6893,6 +6894,61 @@ def _personal_skill_http_validation_contracts() -> dict:
                 assert response.status_code == 422
                 case.update(status=response.status_code, response=response.json())
     return dict(cases=inputs)
+
+
+def _personal_skill_http_parsing_contracts() -> dict:
+    """Actual FastAPI syntax offsets and media/encoding admission results."""
+    import base64
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+
+    malformed = [" ", "{", "[", "[1,]", "[1", '{"x" 1}', '{"x":}',
+                 '{"x":1', '{"x":1,}', "true false", "tru", "-", "01",
+                 "1.", "1e", '"unclosed', '"bad\\q"', '"bad\\u12x4"',
+                 '"bad\n"', '{"界":1,}', '{"😀": [1,]}', '{} {}',
+                 '{"x":[true false]}', '"trailing\\', '\ufeff{}']
+    inputs = [(kind, f"syntax-{index}", raw.encode(), "application/json")
+              for kind in ("preview", "commit") for index, raw in enumerate(malformed)]
+    # A BOM on bytes is accepted by json.loads; the string-BOM example above also
+    # arrives as bytes, so this is a successful parse with a missing field.
+    inputs.extend(("preview", "media-" + str(index), raw, media)
+        for index, (raw, media) in enumerate([
+            (b'{}', "text/plain"), (b'[]', "text/plain"),
+            (b'{}', "application/x-www-form-urlencoded"),
+            (b'{}', "text/json"), (b'{}', "application/vnd.api+json"),
+            (b'{"name":"safe"}', "application/json; charset=utf-8"),
+            (b'{"name":"safe"}', "APPLICATION/JSON"),
+            (b'{"name":"safe"}', None),
+            (b'\xff', "application/json"), (b'\xff', "text/plain"),
+            (b'\xef\xbb\xbf{}', "application/json"),
+            (b' ', "text/plain"), (b'', "text/plain"),
+        ]))
+    rows = []
+    with tempfile.TemporaryDirectory() as scratch:
+        root = Path(scratch)
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                            skills_dir=root / "empty", user_resources_root=None,
+                            trajectory_enabled=False)
+        with TestClient(create_app(manager=SessionManager(settings, FakeAsyncAnthropic())),
+                        raise_server_exceptions=False) as client:
+            client.app.state.auth = TokenAuth({"token-a": "alice"})
+            for kind, name, raw, media in inputs:
+                headers = {"Authorization": "Bearer token-a"}
+                if media is not None:
+                    headers["Content-Type"] = media
+                suffix = "preview" if kind == "preview" else "draft/commit"
+                response = client.post("/sessions/missing/personal-skills/" + suffix,
+                                       content=raw, headers=headers)
+                json_response = "application/json" in response.headers.get("content-type", "")
+                rows.append(dict(kind=kind, name=name, body=base64.b64encode(raw).decode(),
+                    media=media, status=response.status_code,
+                    response=response.json() if json_response else None,
+                    text=None if json_response else response.text))
+    return dict(cases=rows)
 
 
 def main() -> int:
