@@ -1,5 +1,59 @@
 # Go port plan
 
+## 2026-10-07 admitted benchmark tasks and effect judges
+
+`go/benchmark` now has immutable Task specifications, explicit trusted Judge/Setup
+function types and optional detached protocol.ToolName lists. DefaultTasks returns
+five visible tasks; HeldoutTasks returns the source's three heldout tasks. NewTask
+requires a judge but preserves empty names/prompts; invalid zero tasks refuse
+explicitly. Callbacks own their closed-over state and must honor cancellation.
+Prepare/Judge propagate faults and check context before and after callbacks.
+These definitions do not admit model-generated or improvement-draft callbacks.
+
+Prompts and intentionally permissive source judges are preserved: arithmetic and
+word count are substrings, config need not contain an actual section, append-log
+only needs three splitlines, and nested-file only needs existence (a directory
+counts). Greeting applies Python Unicode lower. File reads use strict UTF-8 and
+universal newlines in the pinned environment; Python's Unicode splitlines includes
+vertical/form feeds, file/group/record separators, NEL and Unicode line/paragraph
+separators, but not the unit separator. Missing/broken/looping paths fail effects;
+read/decode faults remain errors. Native OS error text is not Python exception
+spelling. Judge callbacks are trusted host instrument code, not workspace tools
+or sandbox enforcement.
+
+Both paging setups write the exact 6000 lines/324000 bytes, overwriting prior
+content as source does. SHA256: ad1732b4a905a4fa23e59188c6dc0c02efd5f4d31870b76648fb1b1e8f8cc6e1.
+Snapshot 91 captures eight actual source specifications, 50 actual judge outcomes
+and seeded-byte size/hash/first/deep/last lines. Native tests reproduce filesystem
+recipes, including valid/broken/looping symlinks, directories, malformed UTF-8,
+Unicode separators and permissive wrong-answer/content cases. They also verify
+setup replacement, callbacks/errors/cancellation, immutable list/whitelist
+storage and absent versus explicitly empty selection.
+
+Fresh-session arm execution, actual fake-provider transcript/effect comparison,
+timing/token/motion row measurement and POST /benchmark remain pending. The next
+slice must use these tasks and real catalogue reduction, then preserve source
+setup-aborts-arm versus run/judge-fault-scored-row boundaries. HTTP remains fake
+only; paid-model evaluation stays operator initiated. Native route counts remain
+33 operations/30 patterns; broader migration and G0–G7 remain open.
+
+Validation:
+
+- Focused admitted task specification/judge/setup/callback tests passed.
+- Full `go test ./... -count=1 -timeout=180s`,
+  `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+- Contract exporter `--check`: all 91 files current. `verify_scans.py`: all 19
+  scanner guards anchored. Python package modules and mutation anchors are
+  unchanged; separate invariant and mutation sweeps were not rerun.
+- After all Go/export/scanner handles were terminal, isolated
+  `.venv/bin/python -m pytest -q` passed: **2151 passed, 28 skipped,
+  24 subtests passed, 3 dependency deprecation warnings**, in 89.23s. The prior
+  subprocess-destructor warning did not recur; no Python runtime fix is claimed.
+- `git diff --check` passed; README outline checked. Regenerated architecture
+  passed 9/9 showcase checks with zero errors/warnings. Visual inspection remains
+  skipped after the earlier local-file denial. Coverage was not refreshed; the
+  previous slice's percentages predate this added task code.
+
 ## 2026-10-07 immutable session tool selection
 
 A prerequisite for the source benchmark's read-only paging task is now available

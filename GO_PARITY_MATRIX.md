@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (forty-five generated snapshots), plus registry masking,
+the current implementation (91 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -428,6 +428,12 @@ tool selection now matches source subset order, duplicate/unknown/empty semantic
 and reduces both model schemas and actual gate handlers; forced excluded write/Bash
 calls cannot reach their handlers, and child roles inherit the reduced catalogue.
 This transient construction profile is not persisted across fork/restore.
-Native arm execution, judge/setup composition, heldout tasks and POST /benchmark
+Five visible and three heldout task specifications, trusted typed judge/setup
+callbacks and exact seeded log bytes are now implemented. Snapshot 91 compares
+eight source specs, 50 actual filesystem/text judgments and the 324000-byte log
+digest. Unicode splitlines, strict UTF-8 faults, permissive substring/existence
+behavior and symlink semantics are pinned. Nil native judges/zero tasks refuse
+explicitly; malformed arbitrary callback objects are unrepresentable.
+Native arm execution and POST /benchmark
 remain unimplemented; no route row or G7 acceptance is claimed from these
 component checks.

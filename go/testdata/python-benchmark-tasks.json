@@ -1,0 +1,515 @@
+{
+  "cases": [
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": false,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": "IsADirectoryError",
+      "final": "",
+      "hex_bytes": "",
+      "kind": "directory",
+      "passed": false,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "broken",
+      "passed": false,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "loop",
+      "passed": false,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": false,
+      "path": "config.ini",
+      "task": "edit-config"
+    },
+    {
+      "error": "IsADirectoryError",
+      "final": "",
+      "hex_bytes": "",
+      "kind": "directory",
+      "passed": false,
+      "path": "config.ini",
+      "task": "edit-config"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "broken",
+      "passed": false,
+      "path": "config.ini",
+      "task": "edit-config"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "loop",
+      "passed": false,
+      "path": "config.ini",
+      "task": "edit-config"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": false,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": "IsADirectoryError",
+      "final": "",
+      "hex_bytes": "",
+      "kind": "directory",
+      "passed": false,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "broken",
+      "passed": false,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "loop",
+      "passed": false,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": false,
+      "path": "src/app/main.txt",
+      "task": "nested-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "directory",
+      "passed": true,
+      "path": "src/app/main.txt",
+      "task": "nested-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "broken",
+      "passed": false,
+      "path": "src/app/main.txt",
+      "task": "nested-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "loop",
+      "passed": false,
+      "path": "src/app/main.txt",
+      "task": "nested-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "48454c4c4f",
+      "kind": "file",
+      "passed": true,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "7368656c6c6f776f726c64",
+      "kind": "file",
+      "passed": true,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "676f6f64627965",
+      "kind": "file",
+      "passed": false,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "68c3896c6c6f",
+      "kind": "file",
+      "passed": false,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": "UnicodeDecodeError",
+      "final": "",
+      "hex_bytes": "68656c6c6fff",
+      "kind": "file",
+      "passed": false,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "72657472696573203d2033",
+      "kind": "file",
+      "passed": true,
+      "path": "config.ini",
+      "task": "edit-config"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "72657472696573203d203378",
+      "kind": "file",
+      "passed": true,
+      "path": "config.ini",
+      "task": "edit-config"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "726574726965733d33",
+      "kind": "file",
+      "passed": false,
+      "path": "config.ini",
+      "task": "edit-config"
+    },
+    {
+      "error": "UnicodeDecodeError",
+      "final": "",
+      "hex_bytes": "ff",
+      "kind": "file",
+      "passed": false,
+      "path": "config.ini",
+      "task": "edit-config"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "file",
+      "passed": false,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "610a620a",
+      "kind": "file",
+      "passed": false,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "0a0a0a",
+      "kind": "file",
+      "passed": true,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "610d0a620d63",
+      "kind": "file",
+      "passed": true,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "610b620c63",
+      "kind": "file",
+      "passed": true,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "611c621d63",
+      "kind": "file",
+      "passed": true,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "611e62c28563",
+      "kind": "file",
+      "passed": true,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "61e280a862e280a963",
+      "kind": "file",
+      "passed": true,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "611f621f63",
+      "kind": "file",
+      "passed": false,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": "UnicodeDecodeError",
+      "final": "",
+      "hex_bytes": "ff",
+      "kind": "file",
+      "passed": false,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "77726f6e6720636f6e74656e74",
+      "kind": "file",
+      "passed": true,
+      "path": "src/app/main.txt",
+      "task": "nested-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "48454c4c4f",
+      "kind": "symlink",
+      "passed": true,
+      "path": "greeting.txt",
+      "task": "write-file"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "72657472696573203d2033",
+      "kind": "symlink",
+      "passed": true,
+      "path": "config.ini",
+      "task": "edit-config"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "0a0a0a",
+      "kind": "symlink",
+      "passed": true,
+      "path": "notes.log",
+      "task": "append-log"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "77726f6e67",
+      "kind": "symlink",
+      "passed": true,
+      "path": "src/app/main.txt",
+      "task": "nested-file"
+    },
+    {
+      "error": null,
+      "final": "12",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": true,
+      "path": "",
+      "task": "arithmetic"
+    },
+    {
+      "error": null,
+      "final": "1120",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": true,
+      "path": "",
+      "task": "arithmetic"
+    },
+    {
+      "error": null,
+      "final": "twelve",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": false,
+      "path": "",
+      "task": "arithmetic"
+    },
+    {
+      "error": null,
+      "final": "5",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": true,
+      "path": "",
+      "task": "word-count"
+    },
+    {
+      "error": null,
+      "final": "15",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": true,
+      "path": "",
+      "task": "word-count"
+    },
+    {
+      "error": null,
+      "final": "five",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": false,
+      "path": "",
+      "task": "word-count"
+    },
+    {
+      "error": null,
+      "final": "prefix token-04321 suffix",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": true,
+      "path": "",
+      "task": "page-long-log"
+    },
+    {
+      "error": null,
+      "final": "token-04320",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": false,
+      "path": "",
+      "task": "page-long-log"
+    },
+    {
+      "error": null,
+      "final": "token-04321",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": true,
+      "path": "",
+      "task": "page-long-log-readonly"
+    },
+    {
+      "error": null,
+      "final": "",
+      "hex_bytes": "",
+      "kind": "missing",
+      "passed": false,
+      "path": "",
+      "task": "page-long-log-readonly"
+    }
+  ],
+  "seed": {
+    "deep": "line-04321 value token-04321 xxxxxxxxxxxxxxxxxxxxxxxx",
+    "first": "line-00001 value token-00001 xxxxxxxxxxxxxxxxxxxxxxxx",
+    "last": "line-06000 value token-06000 xxxxxxxxxxxxxxxxxxxxxxxx",
+    "lines": 6000,
+    "sha256": "ad1732b4a905a4fa23e59188c6dc0c02efd5f4d31870b76648fb1b1e8f8cc6e1",
+    "size": 324000
+  },
+  "specs": [
+    {
+      "name": "write-file",
+      "prompt": "Create a file named greeting.txt containing the word hello.",
+      "setup": false,
+      "tool_names": null
+    },
+    {
+      "name": "arithmetic",
+      "prompt": "What is 5 + 7? Answer with the number.",
+      "setup": false,
+      "tool_names": null
+    },
+    {
+      "name": "edit-config",
+      "prompt": "Create config.ini with a [net] section containing `retries = 3`.",
+      "setup": false,
+      "tool_names": null
+    },
+    {
+      "name": "page-long-log",
+      "prompt": "data.log has 6000 numbered lines and is too large to read in one go. Report the exact token-NNNNN value that appears on line 4321.",
+      "setup": true,
+      "tool_names": null
+    },
+    {
+      "name": "page-long-log-readonly",
+      "prompt": "data.log has 6000 numbered lines and is too large to read in one go. Using the available file tools, report the exact token-NNNNN value that appears on line 4321.",
+      "setup": true,
+      "tool_names": [
+        "read_file",
+        "glob"
+      ]
+    },
+    {
+      "name": "append-log",
+      "prompt": "Create notes.log containing three lines: alpha, beta, gamma.",
+      "setup": false,
+      "tool_names": null
+    },
+    {
+      "name": "word-count",
+      "prompt": "How many words are in 'the quick brown fox jumps'? Answer with the number.",
+      "setup": false,
+      "tool_names": null
+    },
+    {
+      "name": "nested-file",
+      "prompt": "Create the file src/app/main.txt containing ok.",
+      "setup": false,
+      "tool_names": null
+    }
+  ]
+}

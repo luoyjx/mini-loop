@@ -6725,6 +6725,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-skill-catalogue-http.json": _json_bytes(_skill_catalogue_http_contracts()),
         "python-memory-http.json": _json_bytes(_memory_http_contracts()),
         "python-benchmark-statistics.json": _json_bytes(_benchmark_statistics_contracts()),
+        "python-benchmark-tasks.json": _json_bytes(_benchmark_task_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7407,6 +7408,78 @@ def _benchmark_statistics_contracts() -> dict:
         for value in (2.675, 1.225, 0.0005, -0.0005, 0.0015, 25.05, 25.15, -25.05, 1e16, 1e-300)
         for digits in (1, 3)]
     return dict(aggregates=aggregates, comparisons=comparisons, behaviors=behaviors, rounding=rounding)
+
+
+def _benchmark_task_contracts() -> dict:
+    """Actual admitted task specs, seeded bytes and filesystem/text judges."""
+    from mini_loop.benchmark import DEFAULT_TASKS, HELDOUT_TASKS
+
+    tasks = DEFAULT_TASKS + HELDOUT_TASKS
+    specs = [dict(name=t.name, prompt=t.prompt, setup=t.setup is not None,
+                  tool_names=t.tool_names) for t in tasks]
+    by_name = {t.name: t for t in tasks}
+    cases = []
+    with tempfile.TemporaryDirectory(prefix="go-benchmark-tasks-") as directory:
+        scratch = Path(directory)
+        def add(task, kind="missing", path="", text="", final="", hex_bytes=None):
+            root = scratch / str(len(cases))
+            root.mkdir()
+            if path:
+                target = root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                if kind == "file":
+                    target.write_bytes(bytes.fromhex(hex_bytes) if hex_bytes is not None else text.encode())
+                elif kind == "directory":
+                    target.mkdir()
+                elif kind == "broken":
+                    target.symlink_to("absent")
+                elif kind == "loop":
+                    target.symlink_to(target.name)
+                elif kind == "symlink":
+                    (target.parent / "actual").write_bytes(text.encode())
+                    target.symlink_to("actual")
+            try:
+                passed = bool(by_name[task].expect(root, final))
+                error = None
+            except Exception as exc:
+                passed, error = False, type(exc).__name__
+            cases.append(dict(task=task, kind=kind, path=path,
+                              hex_bytes=hex_bytes if hex_bytes is not None else text.encode().hex(),
+                              final=final, passed=passed, error=error))
+        for task, path in (("write-file", "greeting.txt"), ("edit-config", "config.ini"),
+                           ("append-log", "notes.log"), ("nested-file", "src/app/main.txt")):
+            for kind in ("missing", "directory", "broken", "loop"):
+                add(task, kind, path)
+        for text in ("HELLO", "shelloworld", "goodbye", "hÉllo"):
+            add("write-file", "file", "greeting.txt", text)
+        add("write-file", "file", "greeting.txt", hex_bytes="68656c6c6fff")
+        for text in ("retries = 3", "retries = 3x", "retries=3"):
+            add("edit-config", "file", "config.ini", text)
+        add("edit-config", "file", "config.ini", hex_bytes="ff")
+        for text in ("", "a\nb\n", "\n\n\n", "a\r\nb\rc", "a\vb\fc",
+                     "a\x1cb\x1dc", "a\x1eb\x85c", "a\u2028b\u2029c", "a\x1fb\x1fc"):
+            add("append-log", "file", "notes.log", text)
+        add("append-log", "file", "notes.log", hex_bytes="ff")
+        add("nested-file", "file", "src/app/main.txt", "wrong content")
+        for task, path, text in (("write-file", "greeting.txt", "HELLO"),
+                                 ("edit-config", "config.ini", "retries = 3"),
+                                 ("append-log", "notes.log", "\n\n\n"),
+                                 ("nested-file", "src/app/main.txt", "wrong")):
+            add(task, "symlink", path, text)
+        for task, values in (("arithmetic", ("12", "1120", "twelve")),
+                             ("word-count", ("5", "15", "five")),
+                             ("page-long-log", ("prefix token-04321 suffix", "token-04320")),
+                             ("page-long-log-readonly", ("token-04321", ""))):
+            for final in values:
+                add(task, final=final)
+        root = scratch / "seed"
+        root.mkdir()
+        DEFAULT_TASKS[3].setup(root)
+        data = (root / "data.log").read_bytes()
+        lines = data.decode().splitlines()
+        seed = dict(size=len(data), sha256=hashlib.sha256(data).hexdigest(),
+                    first=lines[0], deep=lines[4320], last=lines[-1], lines=len(lines))
+    return dict(specs=specs, cases=cases, seed=seed)
 
 
 def main() -> int:

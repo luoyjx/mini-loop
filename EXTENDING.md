@@ -1961,9 +1961,18 @@ Children inherit the reduced parent catalogue. It is a transient construction
 profile, not persisted authorization: independent creates/forks/restores use their
 current configuration. Trusted embeddings must supply durable policy separately.
 
-This is a pure operator statistics seam. It neither launches sessions nor admits
-task drafts into the judged workload. Future arm execution must retain explicit
-human-admitted task judges, setup and captured tool selections, independent
+`benchmark.DefaultTasks` and `HeldoutTasks` now return fresh admitted task lists.
+`NewTask(TaskConfig)` accepts explicit trusted Judge/Setup functions; nil judges
+are rejected, while empty names/prompts remain representable. Task specification
+and optional whitelist storage are immutable/detached; callback authors own and
+synchronize their closed-over state. Prepare/Judge propagate setup/read/decode
+faults and cancellation, without turning them into passing effects. The source's
+permissive substring/existence/line-count judges and exact long-log bytes remain
+intentional. Model output and improvement drafts cannot become these callbacks.
+
+These operator components do not launch sessions or admit task drafts into the
+judged workload. Future arm execution must retain human-admitted task judges,
+setup and captured tool selections, independent
 workspaces and fake-only HTTP composition. Native execution/HTTP integration
 remains pending.
 

@@ -1855,7 +1855,26 @@ errors including Unicode decimal exit notes; is_error alone is not the judge.
 
 Snapshot 90 compares 51 actual Python statistical/behavior/rounding outcomes.
 Native tests additionally cover finite guards, detached large integers/results and
-non-mutating decode failures. Model arms, judge fixtures/tool whitelists, heldout
-workloads, timing/cost measurement and the HTTP endpoint are still pending. No
+non-mutating decode failures. Model arms, timing/cost measurement and the HTTP
+endpoint are still pending. No
 model was called by these statistical probes. Earlier package status notes are
 chronological; this is the current component checkpoint.
+
+### Admitted benchmark tasks
+
+`benchmark.DefaultTasks()` and `HeldoutTasks()` return five visible and three
+heldout tasks with the source's exact prompts, trusted typed Judge/Setup callbacks
+and detached optional tool names. `NewTask(TaskConfig)` requires a judge; the zero
+Task refuses execution. Empty names/prompts remain representable. ToolNames returns
+names plus explicit presence: absent means the installed profile, present empty
+means no tools. Custom callbacks own their state and must honor context cancellation.
+
+Prepare creates the exact 6000-line, 324000-byte log for both paging tasks. Judge
+preserves Python substring checks, case lowering, strict UTF-8/universal newlines,
+Unicode splitlines and existence-only nested-file behavior, including directories.
+Missing/broken/looping paths fail the effect check; directory reads and invalid
+UTF-8 become native errors. Native OS error text is not Python exception spelling.
+Snapshot 91 compares eight specifications, 50 real Python judge outcomes and the
+seed digest. Native tests also cover callback faults, cancellation, immutable
+lists/whitelists and explicit empty selection. Model-generated drafts are not
+admitted judges. Fresh-session arm execution and POST /benchmark remain pending.
