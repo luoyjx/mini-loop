@@ -94,8 +94,11 @@ surrogate counterexamples are now included in snapshot 85's 90 passing compariso
 Raw/escaped surrogate handling, code-point syntax offsets, last-key retention and
 safe Unicode refusals are covered. Snapshot 86 adds 288 actual numeric HTTP
 outcomes: source double rounding, arbitrary precision integers, the pinned
-4300-digit parse limit, nonfinite refusal and last-key retention. Nesting-boundary
-fidelity remains pending.
+4300-digit parse limit, nonfinite refusal and last-key retention. Snapshot 87 adds
+144 live Uvicorn HTTP depth outcomes, compared both without and with registered
+masking (288 native comparisons). Its pinned recursion-1000 profile permits 985
+containers at parsing and 978 in echoed values; TestClient's stack has different
+thresholds. Alternate runtime-stack profiles remain unverified.
 
 `python/mini_loop/server.py` currently declares 44 routes. The default Go slice should
 start with `/healthz`, `/sessions`, session detail/deletion,
@@ -119,8 +122,8 @@ evidence. The current Go handler implements these thirty method/path operations:
 | POST | /sessions/{session_id}/mode | Current permission mode and next-round posture note |
 | POST | /sessions/{session_id}/steer | Owned idle wakeup or bounded busy steering |
 | POST | /sessions/{session_id}/fork | Completed transcript copy, fresh scratch, typed lineage and source event |
-| POST | /sessions/{session_id}/personal-skills/preview | Owned evidence preview; typed policy/validation/syntax errors and strict media; Unicode/number/depth edges pending |
-| POST | /sessions/{session_id}/personal-skills/{draft_id}/commit | Owned reviewed publication; exact cleanup; typed validation/syntax errors and strict media; Unicode/number/depth edges pending |
+| POST | /sessions/{session_id}/personal-skills/preview | Owned evidence preview; typed policy/validation/syntax errors and strict media; pinned byte, Unicode, numeric and live HTTP depth semantics; alternate stack profiles unverified |
+| POST | /sessions/{session_id}/personal-skills/{draft_id}/commit | Owned reviewed publication; exact cleanup; typed validation/syntax errors and strict media; pinned byte, Unicode, numeric and live HTTP depth semantics; alternate stack profiles unverified |
 | GET | /sessions/{session_id}/approvals | Scoped pending approvals |
 | POST | /sessions/{session_id}/approvals/{approval_id} | Bound allow/deny/answer/remember |
 | GET | /sessions/{session_id}/events | Bounded replay/live SSE; configured event-store catch-up (2,000 stored rows), owner admission before read and sequence deduplication; native SQL pending |
@@ -390,3 +393,13 @@ preview admission/lease/lifetime, publishes through the typed create-only resolv
 and discards exact identity only after success. Failure retains drafts; receipts
 activate in future sessions and preserve source status/message classification.
 HTTP preview/commit routes and final lifecycle audit remain open.
+
+### HTTP resource boundary — current checkpoint
+
+Owned preview/commit routes are implemented; their body admission now covers
+source media, byte encodings, syntax, retained Unicode and numeric values, ordered
+schema diagnostics and pinned live HTTP depth. Earlier resource paragraphs above
+record chronological implementation checkpoints and their then-open work. They
+are historical; current resource status is summarized in the matrix and HTTP
+inventory. Native SQLite, complete teams
+and other remaining groups still require their planned implementation and audit.

@@ -19,3 +19,14 @@ func TestRecordingProjectionRejectsExcessiveBytesAndNesting(t *testing.T) {
 		t.Fatal("malformed JSON accepted")
 	}
 }
+
+func TestRequestDiagnosticsKeepBoundedProjection(t *testing.T) {
+	mask := func(value string) string { return value }
+	nested := strings.Repeat("[", maxRequestDiagnosticProjectionDepth+1) + "0" + strings.Repeat("]", maxRequestDiagnosticProjectionDepth+1)
+	if _, err := MaskedRequestDiagnosticJSON(json.RawMessage(nested), mask); err == nil {
+		t.Fatal("unbounded request diagnostic nesting")
+	}
+	if _, err := MaskedRequestDiagnosticJSON(strings.Repeat("x", MaxProjectionBytes), mask); err == nil {
+		t.Fatal("unbounded request diagnostic bytes")
+	}
+}

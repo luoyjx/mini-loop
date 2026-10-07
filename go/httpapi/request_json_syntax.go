@@ -53,7 +53,8 @@ func (e requestJSONFailure) message() string {
 
 // Syntax diagnostics follow CPython JSON's prefix grammar and code-point offsets.
 // Successful values still enter the existing closed typed decoder, never a map
-// of arbitrary host values. Depth is the same explicit native diagnostic bound.
+// of arbitrary host values. Container depth follows the pinned live HTTP profile; response echo has its
+// own source budget.
 type requestJSONScanner struct {
 	data     []byte
 	position int
@@ -87,9 +88,6 @@ func (s *requestJSONScanner) space() {
 }
 func (s *requestJSONScanner) value(depth int) *requestJSONFailure {
 	s.space()
-	if depth > 256 {
-		return s.fail(jsonNestingLimit, s.position)
-	}
 	if s.position == len(s.data) {
 		return s.fail(jsonExpectedValue, s.position)
 	}
@@ -97,6 +95,9 @@ func (s *requestJSONScanner) value(depth int) *requestJSONFailure {
 	case '"':
 		return s.quoted()
 	case '{', '[':
+		if depth >= requestMaxContainerDepth {
+			return s.fail(jsonNestingLimit, s.position)
+		}
 		return s.container(depth)
 	}
 	for _, literal := range []string{"null", "true", "false", "NaN", "Infinity", "-Infinity"} {

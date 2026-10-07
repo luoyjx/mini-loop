@@ -137,6 +137,7 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 
 const MaxProjectionBytes = 16 * 1024 * 1024
 const maxProjectionDepth = 256
+const maxRequestDiagnosticProjectionDepth = 1000
 
 type projectionKind uint8
 
@@ -215,8 +216,8 @@ func (value projectionValue) MarshalJSON() ([]byte, error) {
 	}
 	return out.Bytes(), nil
 }
-func readProjection(decoder *json.Decoder, depth int, mask func(string) string) (projectionValue, error) {
-	if depth > maxProjectionDepth {
+func readProjection(decoder *json.Decoder, depth, maxDepth int, mask func(string) string) (projectionValue, error) {
+	if depth > maxDepth {
 		return projectionValue{}, errors.New("recording projection nesting limit exceeded")
 	}
 	token, err := decoder.Token()
@@ -238,7 +239,7 @@ func readProjection(decoder *json.Decoder, depth int, mask func(string) string) 
 		case '[':
 			result.kind = projectionArray
 			for decoder.More() {
-				child, err := readProjection(decoder, depth+1, mask)
+				child, err := readProjection(decoder, depth+1, maxDepth, mask)
 				if err != nil {
 					return result, err
 				}
@@ -257,7 +258,7 @@ func readProjection(decoder *json.Decoder, depth int, mask func(string) string) 
 					return result, errors.New("recording object key is not text")
 				}
 				key = mask(key)
-				child, err := readProjection(decoder, depth+1, mask)
+				child, err := readProjection(decoder, depth+1, maxDepth, mask)
 				if err != nil {
 					return result, err
 				}
@@ -289,6 +290,17 @@ func readProjection(decoder *json.Decoder, depth int, mask func(string) string) 
 // member order are retained; colliding masked keys preserve Python's last value.
 // T is supplied by a concrete boundary caller, not retained as an interface.
 func MaskedPythonJSON[T any](value T, mask func(string) string, ascii, compact bool) (string, error) {
+	return maskedPythonJSON(value, mask, ascii, compact, maxProjectionDepth)
+}
+
+// MaskedRequestDiagnosticJSON is reserved for bounded HTTP validation responses.
+// Their pinned source echo depth exceeds the ordinary recording limit. The byte
+// bound and decoded string/key masking remain identical; other sinks keep 256.
+func MaskedRequestDiagnosticJSON[T any](value T, mask func(string) string) (string, error) {
+	return maskedPythonJSON(value, mask, false, true, maxRequestDiagnosticProjectionDepth)
+}
+
+func maskedPythonJSON[T any](value T, mask func(string) string, ascii, compact bool, maxDepth int) (string, error) {
 	if mask == nil {
 		return PythonJSON(value, ascii, compact)
 	}
@@ -301,7 +313,7 @@ func MaskedPythonJSON[T any](value T, mask func(string) string, ascii, compact b
 	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.UseNumber()
-	projected, err := readProjection(decoder, 0, mask)
+	projected, err := readProjection(decoder, 0, maxDepth, mask)
 	if err != nil {
 		return "", err
 	}

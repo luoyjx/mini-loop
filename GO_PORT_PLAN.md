@@ -6133,3 +6133,33 @@ explanation and interactive specification are reviewed in this slice. Regenerate
 HTML passes all nine Archify automated checks with zero errors/warnings; visual
 inspection remains skipped after the earlier permission denial. `git diff --check`
 passes. Coverage percentages are not refreshed in this slice.
+
+## Implementation checkpoint — 2026-10-07 live HTTP request depth
+
+Base: f284b4e. Source investigation distinguished TestClient's incidental recursion
+stack (parse 980 / echo 973) from real default Uvicorn HTTP (parse 985 / echo 978),
+with CPython recursion limit 1000. Snapshot 87 records 144 live network outcomes,
+including array/object/empty nesting, discarded duplicate values and malformed
+syntax at 12 depths for both routes. Go now uses explicit container counting and
+separate retained diagnostic-input depth screening. Parsing failure remains 400;
+source echo exhaustion becomes safe plain 500; shallow syntax diagnostics remain
+422 even when the valid prefix exceeds echo depth. Discarded values do not consume
+response depth. A bounded request-only masking projection supports deep diagnostics
+without changing ordinary recording's 256-depth bound or the byte bound. The native
+fixture compares complete outcomes in unmasked and secret-registered modes (288
+comparisons), including a credential at the deepest echoed leaf. No dependencies,
+authority or feature defaults change. Other interpreter/server-stack profiles are
+unverified; the full Go migration and G0-G7 remain open.
+
+Validation: full `go test ./...`, `go test -race ./...` and `go vet ./...` pass.
+Exporter `--check` confirms all 87 snapshots; it emitted one ignored asyncio
+subprocess-transport cleanup exception (`Event loop is closed`) while still
+returning success with matching artifacts. `verify_scans.py` anchors all 19 source
+scanning guards. The ordinary projection nesting guard and new scoped byte/depth
+guards pass in the Go protocol suite. Isolated full Python suite passes: 2,151
+tests, 28 skipped, 24 subtests, three dependency deprecation warnings, 81.11 seconds.
+Python package modules and source mutation anchors are unchanged; source invariants
+and mutation verifiers were not rerun. Canonical Mermaid, explanation and JSON
+specification are reviewed; regenerated HTML passes Archify nine automated checks
+with zero errors/warnings. Visual inspection remains skipped after the earlier
+permission denial. `git diff --check` passes. Coverage percentages are not refreshed.

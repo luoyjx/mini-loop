@@ -310,8 +310,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `f45aeae` plus personal-skill numeric parsing
-and diagnostic normalization; depth edges remain pending).
+reviewed **2026-10-07** (Go baseline `f284b4e` plus personal-skill live HTTP depth
+and scoped diagnostic projection; runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -359,7 +359,7 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned skills · decoded values before admission"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned skills · typed values · bounded source-depth admission"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
@@ -1164,8 +1164,14 @@ normalizes finite doubles and negative integer zero, preserves arbitrary precisi
 integers within the pinned source 4300-digit limit, and retains an explicit
 nonfinite diagnostic variant until duplicate resolution. Surviving nonfinite values
 match source plain 500; oversized integers fail during parsing with source 400 even
-when later overwritten. Nesting-boundary fidelity remains pending; previews grant
-no publication authority.
+when later overwritten. Parsing now permits up to 985 nested containers in the
+pinned CPython/default Uvicorn HTTP profile, while echoed validation input permits
+978 before a safe source plain 500. Only retained echoed values consume that budget;
+discarded duplicate values remain eligible for admission. Request diagnostics use
+a separately bounded masking projection so deep strings and keys stay masked;
+ordinary recording retains its 256-depth limit. TestClient thresholds differ due
+to its stack, and alternate interpreter/server stacks are not claimed covered.
+Previews grant no publication authority.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

@@ -56,7 +56,7 @@ func readRequestJSONValue(raw []byte) (ValidationInput, error) {
 }
 func (r *requestJSONValueReader) value(depth int) (ValidationInput, error) {
 	r.space()
-	if depth > 256 || r.position == len(r.data) {
+	if depth > requestMaxContainerDepth || r.position == len(r.data) {
 		return ValidationInput{}, errPersonalSkillRequest
 	}
 	switch r.data[r.position] {
@@ -64,6 +64,9 @@ func (r *requestJSONValueReader) value(depth int) (ValidationInput, error) {
 		text, err := r.text()
 		return ValidationInput{kind: validationText, text: text}, err
 	case '{', '[':
+		if depth >= requestMaxContainerDepth {
+			return ValidationInput{}, errPersonalSkillRequest
+		}
 		object := r.data[r.position] == '{'
 		end := byte(']')
 		kind := validationArray

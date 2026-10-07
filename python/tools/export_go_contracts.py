@@ -6721,6 +6721,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-personal-skill-http-encoding.json": _json_bytes(_personal_skill_http_encoding_contracts()),
         "python-personal-skill-http-surrogates.json": _json_bytes(_personal_skill_http_surrogate_contracts()),
         "python-personal-skill-http-numbers.json": _json_bytes(_personal_skill_http_number_contracts()),
+        "python-personal-skill-http-depth.json": _json_bytes(_personal_skill_http_depth_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7107,6 +7108,87 @@ def _personal_skill_http_number_contracts() -> dict:
                             status=response.status_code, response=response.json() if is_json else None,
                             text=None if is_json else response.text))
     return dict(integer_digit_limit=sys.get_int_max_str_digits(), cases=rows)
+
+
+def _personal_skill_http_depth_contracts() -> dict:
+    """Real Uvicorn HTTP, not TestClient's different recursion-budget stack."""
+    import logging
+    import socket
+    import threading
+    import time
+    import httpx
+    import uvicorn
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+
+    rows = []
+    depths = [1, 255, 256, 257, 512, 972, 978, 979, 984, 985, 986, 1000]
+    with tempfile.TemporaryDirectory() as scratch:
+        root = Path(scratch)
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                            skills_dir=root / "empty", user_resources_root=None,
+                            trajectory_enabled=False)
+        app = create_app(manager=SessionManager(settings, FakeAsyncAnthropic()))
+        sock = socket.socket()
+        sock.bind(("127.0.0.1", 0))
+        endpoint = "http://127.0.0.1:" + str(sock.getsockname()[1])
+        server = uvicorn.Server(uvicorn.Config(app, log_config=None,
+                                log_level="critical", access_log=False))
+        worker = threading.Thread(target=server.run, kwargs={"sockets": [sock]}, daemon=True)
+        logger = logging.getLogger("uvicorn.error")
+        previous_level = logger.level
+        try:
+            # Expected source recursion exceptions return safe 500. Their responses
+            # are recorded below; do not dump hundreds of identical ASGI tracebacks.
+            logger.setLevel(logging.CRITICAL)
+            worker.start()
+            deadline = time.monotonic() + 5
+            while not server.started:
+                if not worker.is_alive() or time.monotonic() >= deadline:
+                    raise RuntimeError("source depth HTTP server did not start")
+                time.sleep(0.01)
+            app.state.auth = TokenAuth({"token-a": "alice"})
+            with httpx.Client(base_url=endpoint, timeout=5, headers={
+                    "Authorization": "Bearer token-a", "Content-Type": "application/json",
+                    "Connection": "close"}) as client:
+                for kind in ("preview", "commit"):
+                    field = "name" if kind == "preview" else "digest"
+                    valid = '"safe"' if kind == "preview" else '"' + "a" * 64 + '"'
+                    suffix = "preview" if kind == "preview" else "draft/commit"
+                    for depth in depths:
+                        leaf = '"depth-canary-12345"'
+                        nested = "[" * depth + leaf + "]" * depth
+                        payloads = [
+                            ("root-array", nested),
+                            ("root-object", '{"x":' * depth + leaf + "}" * depth),
+                            ("extra", '{"' + field + '":' + valid + ',"extra":' + nested + '}'),
+                            ("overwritten", '{"' + field + '":' + nested + ',"' + field + '":' + valid + '}'),
+                            ("empty", "[" * depth + "]" * depth),
+                            ("syntax", nested + ","),
+                        ]
+                        for shape, raw in payloads:
+                            response = client.post("/sessions/missing/personal-skills/" + suffix,
+                                                   content=raw)
+                            is_json = "application/json" in response.headers.get("content-type", "")
+                            # Retain boundary bytes: client-side json.loads at depth
+                            # ~980 would consume a different recursive call budget.
+                            rows.append(dict(kind=kind, name=str(depth) + "-" + shape, raw=raw,
+                                status=response.status_code,
+                                json=response.text if is_json else None,
+                                text=None if is_json else response.text))
+        finally:
+            server.should_exit = True
+            if worker.ident is not None:
+                worker.join(timeout=5)
+            sock.close()
+            logger.setLevel(previous_level)
+            if worker.is_alive():
+                raise RuntimeError("source depth HTTP server did not stop")
+    return dict(transport="uvicorn-default-http", uvicorn=uvicorn.__version__,
+                recursion_limit=sys.getrecursionlimit(), cases=rows)
 
 
 def main() -> int:

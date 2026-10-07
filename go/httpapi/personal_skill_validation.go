@@ -21,7 +21,7 @@ const (
 	validationNonfinite
 )
 
-// ValidationInput is a closed JSON projection used only in HTTP diagnostics.
+// ValidationInput is a closed input projection used only in HTTP diagnostics.
 // It never enters session state or confers ownership/publication authority.
 type ValidationInput struct {
 	kind    validationInputKind
@@ -198,9 +198,7 @@ func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommit
 	jsonBody := contentType == "application/json" || (strings.HasPrefix(contentType, "application/") && strings.HasSuffix(contentType, "+json"))
 	if len(raw) > 0 && !jsonBody {
 		if !utf8.Valid(raw) {
-			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			w.WriteHeader(500)
-			w.Write([]byte("Internal Server Error"))
+			writeRequestDiagnosticFailure(w)
 			return result, false
 		}
 		input = ValidationInput{kind: validationText, text: string(raw)}
@@ -215,7 +213,7 @@ func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommit
 				writeJSON(s, w, 400, ErrorResponse{"There was an error parsing the body"})
 				return result, false
 			}
-			writeJSON(s, w, 422, RequestValidationResponse{Detail: []RequestValidationDetail{{Type: validationJSON, Location: []ValidationLocation{{field: "body"}, {position: &failure.position}}, Message: "JSON decode error", Input: ValidationInput{kind: validationObject}, Context: &RequestValidationContext{Error: failure.message()}}}})
+			writeRequestValidation(s, w, RequestValidationResponse{Detail: []RequestValidationDetail{{Type: validationJSON, Location: []ValidationLocation{{field: "body"}, {position: &failure.position}}, Message: "JSON decode error", Input: ValidationInput{kind: validationObject}, Context: &RequestValidationContext{Error: failure.message()}}}})
 			return result, false
 		}
 		input, err = readRequestJSONValue(raw)
@@ -225,13 +223,11 @@ func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommit
 		}
 	}
 	if input.hasUnserializableValue() {
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.WriteHeader(500)
-		w.Write([]byte("Internal Server Error"))
+		writeRequestDiagnosticFailure(w)
 		return result, false
 	}
 	if details := personalSkillValidation(input, preview); len(details) > 0 {
-		writeJSON(s, w, 422, RequestValidationResponse{Detail: details})
+		writeRequestValidation(s, w, RequestValidationResponse{Detail: details})
 		return result, false
 	}
 	canonical, err := input.MarshalJSON()

@@ -1759,7 +1759,7 @@ preventing the old decoder from replacing discarded malformed Unicode. Diagnosti
 encoding independently refuses non-scalar strings/keys. Snapshot 85 compares 90
 actual HTTP outcomes, including the previous six counterexamples; native tests
 also check decoded pair, overwrite and control-escape values. Numeric semantics
-are covered by the following slice; depth boundary parity remains open.
+and pinned live HTTP depth are covered by the following slices.
 
 ### Personal-skill numeric request boundary
 
@@ -1775,5 +1775,25 @@ before ownership/model work. Discarded nonfinite values do not poison requests.
 Snapshot 86 compares 288 actual HTTP outcomes across both routes, six placements
 and 24 numeric forms, comparing complete diagnostic number spelling without float
 conversion in the test oracle. Source interpreter changes to the integer limit
-fail the fixture pin. Depth-boundary parity remains open. This does not introduce
-nonfinite values into service/session structs or add dependencies.
+fail the fixture pin. The pinned live HTTP depth profile is covered below;
+alternate runtime profiles remain unverified. This does not introduce nonfinite
+values into service/session structs or add dependencies.
+
+### Personal-skill live HTTP depth boundary
+
+Snapshot 87 uses real localhost Uvicorn HTTP with default loop/transport selection
+and CPython recursion limit 1000. It records 144 source outcomes across 12 depths,
+six shapes and both routes. In this pinned profile, parsing permits 985 containers;
+validation echo permits 978. Above the latter, source safe plain 500 is preserved;
+above the former, parsing returns source 400 even for discarded values. Syntax
+errors above the echo budget still return 422 with their small safe diagnostic.
+Array/object/empty-container counting and duplicate retention are explicit.
+TestClient's parse/echo budgets are 980/973 because its stack differs; these are
+not the standalone HTTP target. Alternate server/interpreter stacks are unverified.
+
+Go compares the entire source bodies/statuses in unmasked and registered-secret
+modes (288 comparisons), including a credential at the deepest echoed leaf. A
+separate request-diagnostic projection allows the validated deep tree and keeps
+its own depth-1000 and existing byte bounds, key/string masking, and fail-closed
+panic handling. Ordinary recording retains depth 256. Only concrete validation
+responses use the new projection; no open payload enters runtime state.
