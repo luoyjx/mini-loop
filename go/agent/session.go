@@ -39,6 +39,8 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	teamManager                                       *SessionManager
+	runtime                                           *runtimeHandler
 	teamShutdown                                      atomic.Bool
 	team                                              *teams.Identity
 	selfAudit                                         selfAuditBinding

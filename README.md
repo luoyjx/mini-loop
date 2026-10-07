@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `c014fea` plus actual source team lifecycle evidence;
+reviewed **2026-10-08** (Go baseline `cf4debb` plus automatic team inbox and owned idle/task turns;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoTeams["Go team protocols<br/>bounded mailbox / 200 handshakes<br/>owned GET; ten opt-in gate tools"]
+        GoTeams["Go team protocols<br/>bounded mailbox / 200 handshakes<br/>owned GET / injection / idle turns"]
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
@@ -371,7 +371,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index<br/>spill → snip → micro → summary · optional plan guidance"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
@@ -415,7 +415,7 @@ flowchart LR
         GoBrowser -->|authenticated API / SSE| GoTrust
         GoLaunch -. construct / stop .-> GoManager
         GoManager -. explicit typed workspace factory .-> GoWorktrees
-        GoManager -->|create / fork / restore · bind owner resources| GoManaged --> GoControls --> GoSession
+        GoManager -->|create / fork / restore · owned teammate idle turns · bind owner resources| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
         GoSession --> GoContext --> GoProvider
         GoProvider --> GoSession
@@ -452,7 +452,7 @@ flowchart LR
     Caller --> Entry
     Caller --> GoEntry
     GoEntry -->|GET lineage / POST proposal; bound owner| GoImprovement
-    GoManager -->|fixed bus / protocol table; bound identity| GoTeams
+    GoManager -->|fixed bus / protocols; owned idle loop / inbox / task claims| GoTeams
     GoEntry -->|owned team GET; peek latest 50| GoTeams
     GoManaged -. explicit verified task / proposal admission .-> GoSession
     Caller -. explicit typed observations .-> GoSelfAudit
@@ -1330,13 +1330,14 @@ HTTP outcomes plus the source custom-agent teamless projection. Native TCP tests
 prove viewing leaves all 75 messages for subsequent delivery and foreign callers
 cannot trigger an owned unreadable mailbox error. Python and Go reject dot path
 components before IO; lexical checks and instance locks provide neither filesystem
-confinement nor cross-process delivery transactions. Automatic inbox injection,
-idle/task scheduling and bus diagnostic aggregation remain pending. All ten source team/protocol tools now have concrete input variants,
+confinement nor cross-process delivery transactions. Team bus diagnostics in the
+fleet self-audit remain pending. Explicit team activation now supplies round injection
+and owned teammate idle/task scheduling, described below. All ten source team/protocol tools now have concrete input variants,
 source schemas, immutable metadata and sorted/masked recording projections; the
 codec rejects model-supplied identity/root fields. Snapshot 109 compares 74 actual
 source keyword bindings and JSON identities, including metadata key collisions.
 These codecs define the input layer. Manager-bound tool execution is described
-below; automatic inbox injection is still pending.
+below; automatic round injection follows the installed team slice.
 The Go team library also provides a native process-local protocol coordinator:
 shutdown requests/acknowledgments, task-plan requests, plan submissions/reviews,
 correlated responses and a global 200-handshake table. Resolved history is evicted
@@ -1376,10 +1377,24 @@ normal completion delivers a result to lead. Delete/stop cancel and join the wor
 before shared scratch reclamation; deleting the parent leaves the child registered,
 and bound workspaces are retained. Native tests cover these boundaries and construction
 rollback, stopped publication, readonly gating and parent-turn mutex independence.
-There is no new differential spawn snapshot: snapshots 110/111 retain their trusted
-roster scope. Team identity/runner state is process-local and not restored as a teammate.
-Full feature activation, automatic inbox injection, shutdown-driven lifecycle,
-idle/task claiming and fleet diagnostics remain open. Team tools are off by default.
+Snapshot 112 now exercises real Python spawning before 8 injector and 11 idle-loop
+recipes. It checks initial resource inheritance, exact prompts/results, named peer
+contexts, retained task effects, partial inbox errors and prepared worktree path selection.
+Round injection runs after background notifications and before custom injectors, drains
+only the bound registered inbox and emits a typed team_inbox count before rendering.
+Delegated subagents have no manager binding and cannot consume parent mail.
+The owned worker proceeds from its initial result into the source idle loop: poll,
+consume, pop sticky shutdown, react to messages, then claim the first runnable task.
+Message turns use raw historical JSON with default Python spacing; round injection
+uses cleaned indented rows. Activity resets the monotonic deadline. Claims retain the
+original task board/lifecycle root; existing named worktrees select an atomic execution
+workspace rebind, with original-root fallback when missing/invalid. Idle turns use fresh
+session_manager peer provenance without human grants. Normal timeout reports an idle
+notification; shutdown/cancellation does not. The lifetime is joined on delete/stop;
+timeout/shutdown does not unregister the handle. Poll/timeout settings reach the launcher.
+Team identity/runner state is process-local and not restored as a teammate. Full feature
+activation, fleet diagnostics and the other open migration packages remain pending.
+Team tools are off by default; task/worktree model tools retain their separate selection.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

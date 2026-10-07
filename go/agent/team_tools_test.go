@@ -339,6 +339,9 @@ func TestSelectedTeamChildRebindsGuardWithoutParentManagerAuthority(t *testing.T
 	cfg.Services.RoleToolPolicy = allRoleTools{}
 	m := makeManager(t, cfg)
 	parent := createManaged(t, m, CreateSessionRequest{Owner: "alice", ToolSelection: SelectTools(protocol.ToolSendMessage)})
+	if _, err := m.teams.Send(context.Background(), teams.SendRequest{From: parent.core.team.Key(), To: parent.core.team.Key(), Content: "parent inbox must remain private"}); err != nil {
+		t.Fatal(err)
+	}
 	if _, err := parent.core.Delegate(context.Background(), "work", RoleGeneralPurpose); err != nil {
 		t.Fatal(err)
 	}
@@ -346,7 +349,7 @@ func TestSelectedTeamChildRebindsGuardWithoutParentManagerAuthority(t *testing.T
 		t.Fatal("inherited manager authority or wrong guard", provider.output)
 	}
 	view, err := m.PeekTeam(context.Background(), "alice", parent.ID())
-	if err != nil || len(view.Inbox) != 0 {
+	if err != nil || len(view.Inbox) != 1 {
 		t.Fatal(view, err)
 	}
 }

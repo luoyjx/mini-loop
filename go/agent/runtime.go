@@ -575,6 +575,10 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	session.events.sessionID, session.events.sink = config.ID, config.EventSink
 	session.bindEventHistory()
 	handler.session = session
+	session.runtime = handler
+	if config.TeamTools {
+		session.teamManager = config.teamManager
+	}
 	if config.taskStore != nil {
 		session.taskDiagnostics.Store(config.taskStore)
 	}

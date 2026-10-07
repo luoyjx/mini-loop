@@ -54,7 +54,7 @@ func TestSpawnTeammatePinsResourcesAndRunsWithPeerProvenance(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	receiveSignal(t, child.teamRun.done)
+	receiveSignal(t, child.teamRun.initialDone)
 	if child.core.workspace != parent.core.workspace || child.core.owner != parent.core.owner || child.workspaceBound != parent.workspaceBound || child.core.skills != parent.core.skills || child.core.memory != parent.core.memory {
 		t.Fatal("parent binding/resource snapshot not inherited")
 	}
@@ -136,7 +136,7 @@ func TestSpawnTeammateNameReservationAndFailureRollback(t *testing.T) {
 		t.Fatal("factory failure ignored")
 	}
 	child := spawnMember(t, m, parent, "retry")
-	receiveSignal(t, child.teamRun.done)
+	receiveSignal(t, child.teamRun.initialDone)
 	if len(m.teamReservations) != 0 || m.creating != 0 {
 		t.Fatal("creation reservation leaked")
 	}
@@ -278,7 +278,7 @@ func TestSpawnTeammateBoundWorkspaceSurvivesLastMemberDeletion(t *testing.T) {
 	m := makeManager(t, cfg)
 	parent := createManaged(t, m, CreateSessionRequest{Owner: "alice", Workspace: &checkout})
 	child := spawnMember(t, m, parent, "worker")
-	receiveSignal(t, child.teamRun.done)
+	receiveSignal(t, child.teamRun.initialDone)
 	if !child.workspaceBound {
 		t.Fatal("bound root lost")
 	}

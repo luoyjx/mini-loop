@@ -1,5 +1,74 @@
 # Go port plan
 
+## 2026-10-08 automatic team inbox and owned idle/task turns
+
+Baseline cf4debb (actual source lifecycle corpus; raw JSON preparation c014fea);
+full G0–G7 remains open. The previous
+checkpoint implemented initial
+teammate execution. This iteration extends that same owned lifetime through source
+inbox polling, shutdown, task claims, worktree selection and timeout notification.
+
+- Explicit TeamTools supplies round injection after background results and before
+  custom injectors. It checks the live registered core before consuming its own inbox,
+  retains shutdown assignment on partial faults, emits a typed archival team_inbox
+  count before cleaned rendering and does not grant authority to message content.
+  Delegated children cannot consume parent mail. GET remains a non-consuming view.
+- After initial delivery, the owned worker polls then consumes, pops sticky shutdown,
+  runs raw inbox prompts, or claims the first runnable task. Activity resets its
+  monotonic deadline after delivery. A sleep crossing the deadline still processes
+  that poll, matching source. Timeout sends idle_notification; shutdown/cancel does not.
+- Autonomous turns use fresh named peer contexts stamped session_manager and delegated
+  by lead, without parent messages or human capabilities. Task result metadata carries
+  task_id. Claims and task tools retain the original shared board/lifecycle workspace;
+  existing worktrees select atomic execution dependency rebind, while missing/invalid
+  names fall back to the original workspace. Managed admission protects rebind plus run.
+- Delete/stop cancel and join idle-started model runs before reclamation. Timeout and
+  shutdown retain the registered session. Initial completion has its own observation
+  signal, separate from lifetime completion; existing tests now use the correct phase.
+- ManagerConfig exposes typed idle durations with 1s / 60s defaults and negative-value
+  refusal before IO. Launcher binds the existing validated environment settings. Tool
+  selection and feature defaults remain explicit; task/worktree tools remain separately
+  selected. No dependencies or vague domain/service payload types were introduced.
+
+Snapshot 112 adds 8 actual injector and 11 actual idle recipes after real Python spawn.
+Source model execution, clocks/sleeps, task effects and mailbox effects are real; the
+initial idle task is cancelled before the explicit probe. Prepared worktree directories
+exercise path selection rather than Git branch creation. IDs/paths are normalized;
+returned prompts/results, peer provenance, task snapshots and partial effects are
+compared. New shared AppendLegacyDefault preserves Python default JSON spacing, insertion
+order, ASCII escaping and historical nonfinite/surrogate values for raw idle prompts.
+Native tests additionally prove idle-run deletion joins, shutdown handle retention,
+stale pre-IO admission, delegated-child inbox isolation and idle-duration validation.
+
+Validation completed: focused team/launcher/jsonvalue race tests; full Go test with
+-coverpkg=./... statement profile, full Go race and vet; all 112 exported source
+snapshots current; 19 anchored scanning guards; three selected mailbox mutations
+caught (tail read, in-memory cap and dot segments). Full Python suite passed: 2,155
+passed, 28 skipped, 24 subtests and three dependency warnings (82.95s). The extra
+jsonvalue/teams race run overlapped the beginning of Python regression; the heavier
+full Go/export/mutation handles were terminal first. No Python package module changed;
+package invariants and the full mutation catalogue were not rerun. Final diff check
+and README outline passed. No implementation changed after these gates.
+
+Full-package merged statement coverage (deduplicated source blocks) is 18,197/20,135,
+90.37%; agent 6,716/7,401 (90.74%), httpapi 1,478/1,638 (90.23%), teams 384/401
+(95.76%), protocol 1,407/1,545 (91.07%), launcher 152/189 (80.42%). Profile path:
+/tmp/mini-loop-team-lifecycle-coverage.out. This differs from the preceding 87.1%
+package-own-test profile; it measures cross-package execution and is not a migration
+completion percentage. Python coverage was not refreshed.
+
+Architecture HTML regenerated from JSON, showcase 9/9, zero errors/warnings,
+correction_rounds 0. Spec SHA256
+0e4be6f189f38c6b272a39e075c81e585b2bc2b1120729a9d8bee925e231ee73;
+artifact SHA256 6ac1a4f69c93a9539d739f520df72ff635329a8a842a644bff5734dedddf7d77.
+Visual review remains skipped after the prior denial, without retry/bypass.
+
+Delivery is split into three commits: raw JSON profile/renderer preparation,
+actual-source lifecycle evidence, and owned lifecycle/injection runtime with its
+behavior tests. Team fleet self-audit
+aggregation, teammate restart restoration, workflows, MCP, native SQLite, remaining
+profiles and full G7 remain open. Full migration is not complete.
+
 ## 2026-10-08 actual source team lifecycle corpus
 
 Baseline c014fea. Snapshot 112 captures real Python spawning before 8 injector and

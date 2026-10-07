@@ -55,6 +55,9 @@ func (s *Session) injectMessages(ctx context.Context) error {
 	if err := s.injectBackground(ctx); err != nil {
 		return err
 	}
+	if err := s.injectTeam(ctx); err != nil {
+		return err
+	}
 	for _, injector := range s.injectors {
 		messages, err := injector.Inject(ctx, s.turnContext())
 		if err != nil {

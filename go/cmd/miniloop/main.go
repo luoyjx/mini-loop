@@ -20,7 +20,7 @@ import (
 func execute(ctx context.Context, args []string, env map[string]string, stdout, stderr io.Writer) int {
 	flags := flag.NewFlagSet("miniloop", flag.ContinueOnError)
 	flags.SetOutput(stderr)
-	teamTools := flags.Bool("team-tools", false, "enable team tools and concurrent initial teammate turns")
+	teamTools := flags.Bool("team-tools", false, "enable team tools, round inbox delivery and owned teammate idle turns")
 	memoryTools := flags.Bool("memory-tools", false, "enable the implemented Go remember and recall tools")
 	memoryAuto := flags.Bool("memory-auto", true, "enable automatic memory selection/capture when both memory tools are installed")
 	dump := flags.Bool("dump-config", false, "print redacted settings and availability without starting a listener")

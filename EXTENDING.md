@@ -1466,7 +1466,7 @@ returns that fixed bundle; changing the caller's config value cannot rebind it.
 SubagentParent and native in-process children inherit the parent's binding. Python
 in-process subagents explicitly inherit skills; native complete bundle retention
 also pins owner memory for future integrations. Source teammates inherit both,
-but Go teammate scheduling is still pending. Memory tools/hooks are not activated
+and Go teammate scheduling inherits that fixed parent bundle. Memory tools/hooks are not activated
 by carrying a bundle. The launcher always constructs shared storage at the
 configured MemoryRoot or WorkspaceRoot/.memory, then optionally constructs a
 UserResourcesRoot resolver with the same agent catalogue. Both roots are mandatory
@@ -2255,8 +2255,8 @@ standard model-input boundary. The source object-only schema remains exactly
 bind keywords without enforcing their advertised scalar types; Go additionally
 rejects wrong scalar/container types as part of its declared typed boundary.
 ManagerServices.TeamTools now binds ten team variants through the
-common gate (see below). Automatic injection, idle/task scheduling and self-audit
-bus aggregation remain future slices. These codecs
+common gate (see below). Round injection and owned idle/task scheduling are described
+below; self-audit bus aggregation remains a future slice. These codecs
 themselves install no model tools or activation defaults.
 
 ## Go team protocol coordination seam
@@ -2289,7 +2289,7 @@ of nonfinite/surrogate data. Response correlation deliberately retains source
 request-ID/type/status matching; this library does not add sender verification.
 
 ManagerServices.TeamTools (or standalone --team-tools / launcher.Options.TeamTools)
-installs ten tools independently, including initial-turn spawn_teammate. A typed private manager
+installs ten tools independently, including owned-lifetime spawn_teammate. A typed private manager
 binding executes closed ToolInput variants only after runtime owner/session/workspace
 checks. A guard before journal replay prevents stale or foreign authority from reading
 settled private projections. Members are read from immutable registered identities in
@@ -2314,7 +2314,31 @@ share the original task store and omit recursive spawn. The manager owns the ini
 run context and cancel/join handle, delivers normal results to lead and drains it before
 reclaiming shared scratch on delete/stop. Parent deletion does not cascade to members.
 Construction faults release reservations and remove unpublished persistence.
-Automatic injectors, consuming shutdown state, idle/task claims and diagnostic fleet
-aggregation remain pending. Runner/team identity is process-local, with no teammate
-restoration or default activation. The source spawn contract was inspected directly;
-existing differential fixtures still cover only trusted roster/tool/protocol effects.
+Explicit TeamTools also binds round injection after background notifications and
+before custom injectors. Consumption requires the live registered core identity;
+shutdown assignment survives partial protocol failure. Emit team_inbox count before
+rendering the cleaned message batch, including when malformed sender data then fails.
+The named event has an archival decoder; it grants no authority. Delegated children
+have no parent manager/bus binding and therefore no automatic inbox delivery.
+
+After initial delivery, the owned worker polls, consumes, clears sticky shutdown and
+runs raw historical inbox prompts or the first successfully claimed runnable task.
+Fresh idle contexts are peer_agent / agent, stamped session_manager, delegated by lead
+and named for the teammate, with no parent message or human capabilities. Deadline
+resets after result delivery; source polling may cross the deadline before processing.
+Tasks remain in the original board, and result metadata contains task_id. Existing
+worktree paths select the same atomic dependency rebind used by enter_worktree; invalid
+or missing paths fall back to the lifecycle root. Managed turn admission protects the
+rebind and run from competing turns. Cancellation joins the worker; timeout/shutdown
+leaves the handle registered. ManagerConfig.TeamIdlePoll / TeamIdleTimeout default to
+1s / 60s; negative durations are refused before filesystem effects. The launcher binds
+the already validated MINILOOP_TEAM_IDLE_POLL / MINILOOP_TEAM_IDLE_TIMEOUT settings.
+Task/worktree tool installation remains independently selected.
+
+Snapshot 112 uses actual Python spawn, model turns, injector and idle scheduling for
+8 injection and 11 idle recipes, retaining real task/mailbox effects. Prepared directories
+exercise worktree path selection; they do not claim new Git branch creation. Clock sleeps
+are real and short. IDs/paths are normalized. Native tests add owned idle-run delete joins,
+shutdown registration retention, stale injection admission and delegated-child isolation.
+Fleet diagnostics, restart teammate restoration and full default feature activation
+remain pending; the worker/team identity is process-local.

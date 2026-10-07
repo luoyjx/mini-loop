@@ -29,8 +29,9 @@ type TeamSpawnRefusal struct{ Detail string }
 func (err *TeamSpawnRefusal) Error() string { return "Error: " + err.Detail }
 
 type teammateRun struct {
-	cancel context.CancelFunc
-	done   chan struct{}
+	cancel      context.CancelFunc
+	done        chan struct{}
+	initialDone chan struct{}
 }
 
 type teammateSystemBuilder struct {
@@ -165,7 +166,7 @@ func (manager *SessionManager) SpawnTeammate(ctx context.Context, owner OwnerID,
 		return spawn, ErrSessionNotFound
 	}
 	owned, cancel := context.WithCancel(context.Background())
-	session.teamRun = &teammateRun{cancel: cancel, done: make(chan struct{})}
+	session.teamRun = &teammateRun{cancel: cancel, done: make(chan struct{}), initialDone: make(chan struct{})}
 	manager.sessions[id] = session
 	manager.order = append(manager.order, id)
 	published = true
@@ -181,14 +182,19 @@ func (manager *SessionManager) initialTeammateRun(ctx context.Context, session *
 			session.emitFor(run, SessionEvent{kind: EventError, runError: RunErrorEvent{kind: ErrorRuntime, detail: fmt.Sprintf("teammate runner panicked (%T)", fault)}})
 		}
 	}()
-	result, err := session.RunWithContext(ctx, prompt, run)
-	if ctx.Err() != nil {
-		return
-	}
+	err := func() error {
+		defer close(session.teamRun.initialDone)
+		result, err := session.RunWithContext(ctx, prompt, run)
+		if err != nil {
+			return err
+		}
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+		return manager.deliverTeammateResult(ctx, session, result, nil)
+	}()
 	if err == nil {
-		identity := session.core.team
-		kind := teams.MessageType("result")
-		_, err = manager.teamProtocols.Deliver(ctx, teams.SendRequest{From: identity.Key(), To: teams.Key(identity.Team, teams.Lead), Content: result, Type: &kind})
+		err = manager.teammateIdleLoop(ctx, session)
 	}
 	if err != nil && ctx.Err() == nil {
 		session.emitFor(run, SessionEvent{kind: EventError, runError: RunErrorEvent{kind: ErrorRuntime, detail: err.Error()}})

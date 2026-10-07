@@ -96,6 +96,7 @@ type ManagerServices struct {
 }
 
 type ManagerConfig struct {
+	TeamIdlePoll, TeamIdleTimeout     time.Duration
 	StateLeaseTTL                     time.Duration
 	WorkspaceRoot                     string
 	BindableRoots                     []string

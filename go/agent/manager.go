@@ -69,6 +69,15 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 	if config.Services.Provider == nil {
 		return nil, errors.New("session manager requires a provider")
 	}
+	if config.TeamIdlePoll < 0 || config.TeamIdleTimeout < 0 {
+		return nil, errors.New("team idle durations cannot be negative")
+	}
+	if config.TeamIdlePoll == 0 {
+		config.TeamIdlePoll = time.Second
+	}
+	if config.TeamIdleTimeout == 0 {
+		config.TeamIdleTimeout = time.Minute
+	}
 	if config.Services.StateStore == nil && config.StateLeaseTTL != 0 {
 		return nil, errors.New("state lease TTL requires a state store")
 	}

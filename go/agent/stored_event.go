@@ -165,6 +165,13 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 		v, err := storedPayload[BackgroundResultEvent](data)
 		event.backgroundResult = v
 		return event, err
+	case EventTeamInbox:
+		v, err := storedPayload[TeamInboxEvent](data)
+		if err == nil && v.Count <= 0 {
+			err = errors.New("stored team_inbox requires a positive count")
+		}
+		event.teamInbox = v
+		return event, err
 	case EventSessionForked:
 		v, err := storedPayload[SessionForkedEvent](data)
 		event.sessionForked = v
