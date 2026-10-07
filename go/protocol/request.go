@@ -128,6 +128,16 @@ func (schema *InputSchema) UnmarshalJSON(b []byte) error {
 	if e := decodeStrict(b, &wire); e != nil {
 		return e
 	}
+	var nulls struct {
+		Additional nullField `json:"additionalProperties"`
+		Properties nullField `json:"properties"`
+	}
+	if err := json.Unmarshal(b, &nulls); err != nil {
+		return err
+	}
+	if nulls.Additional || nulls.Properties {
+		return errors.New("object schema properties cannot be null")
+	}
 	out := InputSchema(wire.fields)
 	if wire.Type != nil {
 		out.Type = wire.Type.single
@@ -227,9 +237,6 @@ func (schema InputSchema) validate(depth int) error {
 				return fmt.Errorf("property %s: %w", k, e)
 			}
 		}
-	}
-	if schema.Type == SchemaObject && schema.Properties == nil && schema.Additional == nil {
-		return errors.New("object schema requires properties or explicit additional properties")
 	}
 	if schema.Items != nil {
 		if !array {

@@ -1,5 +1,24 @@
 # Go port plan
 
+## 2026-10-08 unconstrained source object schema
+
+Baseline 1abfa99; full G0–G7 remains open. Python send_message advertises
+metadata with exactly {"type":"object"}, without properties or additionalProperties.
+The Go schema validator now accepts that valid unconstrained object leaf without
+rewriting the source schema. Explicit null properties/additionalProperties remain
+invalid, including when additionalProperties=true. The existing decision schema
+null/union/bounds guards remain in force. New tests retain the exact round-trip
+schema and clone projection. This prerequisite adds no tool activation or runtime
+control/data flow, so the canonical architecture remains unchanged.
+
+Validation: focused schema/team/memory tests, full `go test ./... -count=1
+-timeout=180s`, `go test -race ./... -count=1 -timeout=180s` and `go vet ./...`
+passed on the final worktree. Isolated `.venv/bin/python -m pytest -q` passed:
+2,155 tests, 28 skipped, 24 subtests, three dependency deprecations in 78.54s.
+Source exporter check has 109 current files; 19 scan guards remain anchored.
+README outline and `git diff --check` passed. The schema prerequisite is committed
+separately from the follow-up team input and documentation test changes.
+
 ## 2026-10-08 bounded team mailbox and owned peek
 
 Baseline bb7a366; full G0–G7 remains open. The next team slices are:
