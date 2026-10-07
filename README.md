@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `18e8f05` plus shared request transport;
+reviewed **2026-10-08** (Go baseline `5ca5fb0` plus owned proposal POST;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET; explicit managed proposal API"]
+        GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
@@ -450,7 +450,7 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoEntry
-    GoEntry -->|GET lineage via manager; bound owner| GoImprovement
+    GoEntry -->|GET lineage / POST proposal; bound owner| GoImprovement
     GoManaged -. explicit verified task / proposal admission .-> GoSession
     Caller -. explicit typed observations .-> GoSelfAudit
     GoManaged -. owner admission before diagnostic / recording IO .-> GoSelfAudit
@@ -1358,7 +1358,13 @@ existing masking, stored-event, trajectory and subscription pipeline. Configured
 leases are renewed at worker/acceptance/event/return boundaries because these
 tasks do not grow the parent transcript. This is not continuous process fencing
 or OS confinement. The trusted caller owns external owner admission. Proposal
-POST remains pending. The selfimprove service now composes the verified loop with
+POST /sessions/{session_id}/propose-improvement now binds the admitted session
+owner and manager archive, refuses busy admission, and runs in the session's
+existing execution workspace. It neither creates a worktree nor spends rate
+budget, matching source; the operator prepares an isolated checkout. Snapshot 106
+compares 41 real Python HTTP admission/validation outcomes with an observed effect
+seam. Native TCP tests also execute a child write, acceptance, actual Git commit
+and owner-scoped archive read. The selfimprove service composes the verified loop with
 fixed Git status/add/commit/diff/branch commands and optional archive lineage.
 ProposeImprovementWithContext holds managed admission through the entire proposal,
 binds the session owner and emits typed improvement_proposed events. Snapshot 105

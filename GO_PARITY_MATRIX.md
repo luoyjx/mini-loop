@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (105 generated snapshots), plus registry masking,
+the current implementation (106 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -788,3 +788,26 @@ Archive IDs retain the source best-effort index contract; no merge occurs. Trust
 callers must provide isolated workspaces because source stages all changed paths.
 Proposal POST, teams/workflows, native persistence and G0–G7 remain open; HTTP
 stays 38/44 (35 patterns). Source live-model convergence remains unverified.
+
+## Owned improvement proposal POST
+
+Snapshot 106 runs actual FastAPI admission against an observed proposal effect
+seam in 41 scenarios. It compares complete responses for defaults, ignored extras
+(including nonfinite ignored data), absent/text/JSON content types, malformed/
+empty/non-object bodies, missing/type/length failures, optional parent values,
+integer/string/boolean/float max-round coercion and range errors, foreign/missing
+sessions, auth, busy state, blank command/non-Git admission and private failures.
+Source request validation precedes owner lookup; busy precedes logical service
+admission. The native manager binds its archive/session owner and atomically
+refuses busy admission. Success responses retain the source direct projection.
+Only retained diagnostic values trigger nonfinite/depth serialization failure;
+ignored fields cannot poison a valid model. Existing JSON transport profiles are
+shared; canonical service text retains the previously declared scalar profile.
+
+The route uses the existing session execution workspace, creates no worktree,
+and spends no rate budget as in source. Native tests verify real TCP -> actual
+worker write -> acceptance shell -> Git commit -> owner-scoped archive reads;
+schema/refused callers cannot reach the provider, and the message rate budget
+remains available after proposals. HTTP now registers 39 operations/36 patterns
+against source 44. Team/workflow route groups, native persistence and G0–G7 remain
+open; source live-model convergence is unverified.

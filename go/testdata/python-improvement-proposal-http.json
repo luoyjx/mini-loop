@@ -1,0 +1,1076 @@
+{
+  "cases": [
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "default",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": null,
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "again-no-rate",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": null,
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "extra-ignored",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"owner\": \"bob\", \"workspace\": \"/untrusted\", \"unknown\": NaN}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": null,
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": null,
+      "method": "POST",
+      "name": "no-content-type",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": [
+          {
+            "input": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "text/plain",
+      "method": "POST",
+      "name": "text-content",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": [
+          {
+            "input": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "empty-body",
+      "raw": "",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "malformed",
+      "raw": "{broken",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "error": "Expecting property name enclosed in double quotes"
+            },
+            "input": {},
+            "loc": [
+              "body",
+              1
+            ],
+            "msg": "JSON decode error",
+            "type": "json_invalid"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "array",
+      "raw": "[]",
+      "response": {
+        "detail": [
+          {
+            "input": [],
+            "loc": [
+              "body"
+            ],
+            "msg": "Input should be a valid dictionary or object to extract fields from",
+            "type": "model_attributes_type"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "null",
+      "raw": "null",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "missing-fields",
+      "raw": "{}",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "objective"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "acceptance_command"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "empty-fields",
+      "raw": "{\"objective\": \"\", \"acceptance_command\": \"\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "objective"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          },
+          {
+            "ctx": {
+              "min_length": 1
+            },
+            "input": "",
+            "loc": [
+              "body",
+              "acceptance_command"
+            ],
+            "msg": "String should have at least 1 character",
+            "type": "string_too_short"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "long-objective",
+      "raw": "{\"objective\": \"界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "max_length": 4000
+            },
+            "input": "界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界",
+            "loc": [
+              "body",
+              "objective"
+            ],
+            "msg": "String should have at most 4000 characters",
+            "type": "string_too_long"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "long-command",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "max_length": 1000
+            },
+            "input": "界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界",
+            "loc": [
+              "body",
+              "acceptance_command"
+            ],
+            "msg": "String should have at most 1000 characters",
+            "type": "string_too_long"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "parent-number",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"parent_id\": 4}",
+      "response": {
+        "detail": [
+          {
+            "input": 4,
+            "loc": [
+              "body",
+              "parent_id"
+            ],
+            "msg": "Input should be a valid string",
+            "type": "string_type"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "parent-null",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"parent_id\": null}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": null,
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": ""
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "parent-empty",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"parent_id\": \"\"}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": "",
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "foreign",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": "No session '<bob>'"
+      },
+      "status": 404,
+      "target": "bob",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "unknown",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": "No session 'missing'"
+      },
+      "status": 404,
+      "target": "missing",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "foreign-invalid",
+      "raw": "{}",
+      "response": {
+        "detail": [
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "objective"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          },
+          {
+            "input": {},
+            "loc": [
+              "body",
+              "acceptance_command"
+            ],
+            "msg": "Field required",
+            "type": "missing"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "bob",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "no-auth",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401,
+      "target": "alice",
+      "token": ""
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "bad-auth",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": "a bearer token is required"
+      },
+      "status": 401,
+      "target": "alice",
+      "token": "bad"
+    },
+    {
+      "action": "success",
+      "busy": true,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "busy",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": "session <alice> is running a turn"
+      },
+      "status": 409,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "real",
+      "busy": false,
+      "calls": [
+        {
+          "command": " \t",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "blank-acceptance",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \" \\t\"}",
+      "response": {
+        "detail": "an improvement needs an acceptance command; without one the auditor has nothing to verify and 'verified' would be a vibe"
+      },
+      "status": 400,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "real",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "non-git",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": "self-improvement runs only in a git checkout (worktree): a proposal must be diffable and revertible, or it is just a mutation"
+      },
+      "status": 400,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "error",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "runtime-error",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": "Internal Server Error",
+      "status": 500,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "GET",
+      "name": "wrong-method",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\"}",
+      "response": {
+        "detail": "Method Not Allowed"
+      },
+      "status": 405,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-0",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": 0}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "ge": 1
+            },
+            "input": 0,
+            "loc": [
+              "body",
+              "max_rounds"
+            ],
+            "msg": "Input should be greater than or equal to 1",
+            "type": "greater_than_equal"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-11",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": 11}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "le": 10
+            },
+            "input": 11,
+            "loc": [
+              "body",
+              "max_rounds"
+            ],
+            "msg": "Input should be less than or equal to 10",
+            "type": "less_than_equal"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 1,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-True",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": true}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": null,
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-False",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": false}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "ge": 1
+            },
+            "input": false,
+            "loc": [
+              "body",
+              "max_rounds"
+            ],
+            "msg": "Input should be greater than or equal to 1",
+            "type": "greater_than_equal"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-3.0",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": 3.0}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": null,
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-2.5",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": 2.5}",
+      "response": {
+        "detail": [
+          {
+            "input": 2.5,
+            "loc": [
+              "body",
+              "max_rounds"
+            ],
+            "msg": "Input should be a valid integer, got a number with a fractional part",
+            "type": "int_from_float"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-None",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": null}",
+      "response": {
+        "detail": [
+          {
+            "input": null,
+            "loc": [
+              "body",
+              "max_rounds"
+            ],
+            "msg": "Input should be a valid integer",
+            "type": "int_type"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 3,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-  +03  ",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": \"  +03  \"}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": null,
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 10,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-1_0",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": \"1_0\"}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": null,
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [
+        {
+          "command": "accept",
+          "maximum": 2,
+          "objective": "improve",
+          "owner": "alice",
+          "parent_id": null
+        }
+      ],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-2.00",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": \"2.00\"}",
+      "response": {
+        "branch": "proposal",
+        "diff_stat": "(no changes)",
+        "integrity": "clean",
+        "next": "review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",
+        "objective": "improve",
+        "parent_id": null,
+        "proposal_id": "<proposal>",
+        "rounds": 1,
+        "summary": "done",
+        "touches_verifiers": [],
+        "verified": true,
+        "workspace": "<workspace>"
+      },
+      "status": 200,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-2e0",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": \"2e0\"}",
+      "response": {
+        "detail": [
+          {
+            "input": "2e0",
+            "loc": [
+              "body",
+              "max_rounds"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-bad",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": \"bad\"}",
+      "response": {
+        "detail": [
+          {
+            "input": "bad",
+            "loc": [
+              "body",
+              "max_rounds"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "type": "int_parsing"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-999999999999",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": \"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\"}",
+      "response": {
+        "detail": [
+          {
+            "ctx": {
+              "le": 10
+            },
+            "input": "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
+            "loc": [
+              "body",
+              "max_rounds"
+            ],
+            "msg": "Input should be less than or equal to 10",
+            "type": "less_than_equal"
+          }
+        ]
+      },
+      "status": 422,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-inf",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": Infinity}",
+      "response": "Internal Server Error",
+      "status": 500,
+      "target": "alice",
+      "token": "token-a"
+    },
+    {
+      "action": "success",
+      "busy": false,
+      "calls": [],
+      "content_type": "application/json",
+      "method": "POST",
+      "name": "rounds-nan",
+      "raw": "{\"objective\": \"improve\", \"acceptance_command\": \"accept\", \"max_rounds\": NaN}",
+      "response": "Internal Server Error",
+      "status": 500,
+      "target": "alice",
+      "token": "token-a"
+    }
+  ]
+}

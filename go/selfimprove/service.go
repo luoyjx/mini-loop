@@ -45,6 +45,11 @@ type Config struct {
 }
 type Service struct{ config Config }
 
+// AdmissionError contains the two source operator-correctable refusal messages.
+type AdmissionError struct{ Detail string }
+
+func (e *AdmissionError) Error() string { return e.Detail }
+
 func NewService(config Config) (*Service, error) {
 	if config.Workspace == "" || config.Worker == nil || config.Commands == nil {
 		return nil, errors.New("proposal requires workspace, worker and commands")
@@ -145,14 +150,14 @@ func (s *Service) Propose(ctx context.Context, objective string, options Options
 	}
 	options.MaxRounds, options.Owner, options.ParentID = detached(options.MaxRounds), detached(options.Owner), detached(options.ParentID)
 	if pytext.Strip(options.AcceptanceCommand) == "" {
-		return Proposal{}, errors.New("an improvement needs an acceptance command; without one the auditor has nothing to verify and 'verified' would be a vibe")
+		return Proposal{}, &AdmissionError{"an improvement needs an acceptance command; without one the auditor has nothing to verify and 'verified' would be a vibe"}
 	}
 	ok, err := call(ctx, func() (bool, error) { return s.config.Repository.IsRepository(ctx, s.config.Workspace) })
 	if err != nil {
 		return Proposal{}, err
 	}
 	if !ok {
-		return Proposal{}, errors.New("self-improvement runs only in a git checkout (worktree): a proposal must be diffable and revertible, or it is just a mutation")
+		return Proposal{}, &AdmissionError{"self-improvement runs only in a git checkout (worktree): a proposal must be diffable and revertible, or it is just a mutation"}
 	}
 	loop, err := verifiedloop.NewService(verifiedloop.ServiceConfig{RunID: s.config.RunID, Worker: s.config.Worker, Acceptance: acceptance{s.config.Commands}, Probe: verifiedloop.WorkspaceIntegrity{Workspace: s.config.Workspace}, Events: s.config.VerifiedEvents})
 	if err != nil {

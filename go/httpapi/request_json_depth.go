@@ -38,7 +38,7 @@ func writeRequestDiagnosticFailure(w http.ResponseWriter) {
 // response budget. Deep discarded duplicate values cannot poison admission.
 func writeRequestValidation(s *Server, w http.ResponseWriter, value RequestValidationResponse) {
 	for _, detail := range value.Detail {
-		if detail.Input.diagnosticDepth() > requestMaxDiagnosticDepth {
+		if detail.Input.hasUnserializableValue() || detail.Input.diagnosticDepth() > requestMaxDiagnosticDepth {
 			writeRequestDiagnosticFailure(w)
 			return
 		}

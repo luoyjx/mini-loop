@@ -6740,6 +6740,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-verified-fold.json": _json_bytes(_verified_fold_contracts()),
         "python-verified-service.json": _json_bytes(_verified_service_contracts()),
         "python-improvement-proposal.json": _json_bytes(_improvement_proposal_contracts()),
+        "python-improvement-proposal-http.json": _json_bytes(_improvement_proposal_http_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8425,6 +8426,64 @@ def _improvement_proposal_contracts() -> dict:
                 error=str(exc)
         return {**recipe,"calls":calls,"events":events,"archive_rows":archive_rows,"proposal":proposal,"error":error}
     return dict(cases=asyncio.run(_gather_verified_services(cases,capture)))
+
+
+def _improvement_proposal_http_contracts() -> dict:
+    """Actual FastAPI proposal admission; effects have an explicit observed seam."""
+    from unittest.mock import patch
+    from types import SimpleNamespace
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+    from mini_loop.self_improve import propose_improvement
+    cases=[]
+    good=dict(objective="improve",acceptance_command="accept")
+    recipes=[dict(name="default"),dict(name="again-no-rate"),dict(name="extra-ignored",body={**good,"owner":"bob","workspace":"/untrusted","unknown":float("nan")}),
+        dict(name="no-content-type",content_type=None),dict(name="text-content",content_type="text/plain"),dict(name="empty-body",raw=""),
+        dict(name="malformed",raw="{broken"),dict(name="array",body=[]),dict(name="null",body=None),dict(name="missing-fields",body={}),
+        dict(name="empty-fields",body=dict(objective="",acceptance_command="")),dict(name="long-objective",body={**good,"objective":"界"*4001}),
+        dict(name="long-command",body={**good,"acceptance_command":"界"*1001}),dict(name="parent-number",body={**good,"parent_id":4}),
+        dict(name="parent-null",body={**good,"parent_id":None}),dict(name="parent-empty",body={**good,"parent_id":""}),
+        dict(name="foreign",target="bob"),dict(name="unknown",target="missing"),dict(name="foreign-invalid",target="bob",body={}),
+        dict(name="no-auth",token=""),dict(name="bad-auth",token="bad"),dict(name="busy",busy=True),
+        dict(name="blank-acceptance",body={**good,"acceptance_command":" \t"},action="real"),dict(name="non-git",action="real"),
+        dict(name="runtime-error",action="error"),dict(name="wrong-method",method="GET")]
+    for value in (0,11,True,False,3.0,2.5,None,"  +03  ","1_0","2.00","2e0","bad","9"*100,float("inf"),float("nan")):
+        recipes.append(dict(name="rounds-"+str(value)[:12],body={**good,"max_rounds":value}))
+    with tempfile.TemporaryDirectory(prefix="go-proposal-http-") as scratch:
+        settings=Settings(fake_llm=True,workspace_root=Path(scratch)/"workspaces",trajectory_enabled=False,rate_limit_per_minute=1)
+        manager=SessionManager(settings,FakeAsyncAnthropic())
+        ids={owner:manager.create(owner=owner).id for owner in ("alice","bob")}
+        app=create_app(manager=manager,settings=settings)
+        with TestClient(app,raise_server_exceptions=False) as client:
+            app.state.auth=TokenAuth({"token-a":"alice","token-b":"bob"})
+            for recipe in recipes:
+                target=recipe.get("target","alice");sid=ids.get(target,"missing")
+                session=manager.get(sid);calls=[]
+                async def observed(session,objective,*,acceptance_command,max_rounds,archive,owner,parent_id):
+                    calls.append(dict(owner=owner,objective=objective,command=acceptance_command,maximum=max_rounds,parent_id=parent_id))
+                    if recipe.get("action")=="real":
+                        return await propose_improvement(session,objective,acceptance_command=acceptance_command,max_rounds=max_rounds,archive=archive,owner=owner,parent_id=parent_id)
+                    if recipe.get("action")=="error":
+                        raise RuntimeError("credential")
+                    return dict(objective=objective,verified=True,rounds=1,summary="done",workspace="<workspace>",branch="proposal",diff_stat="(no changes)",touches_verifiers=[],integrity="clean",next="review the diff on the branch; merge only after the paired benchmark and your own read agree it is an improvement",proposal_id="<proposal>",parent_id=parent_id)
+                if recipe.get("busy"):
+                    session._running=SimpleNamespace(done=lambda:False)
+                raw=recipe.get("raw",json.dumps(recipe.get("body",good),ensure_ascii=False))
+                token=recipe.get("token","token-a");headers={"Authorization":"Bearer "+token} if token else {}
+                content_type=recipe.get("content_type","application/json")
+                if content_type is not None: headers["Content-Type"]=content_type
+                with patch("mini_loop.self_improve.propose_improvement",observed):
+                    response=client.request(recipe.get("method","POST"),f"/sessions/{sid}/propose-improvement",content=raw,headers=headers)
+                if recipe.get("busy"): session._running=None
+                text=response.text
+                for owner,value in ids.items(): text=text.replace(value,"<"+owner+">")
+                body=json.loads(text) if response.headers.get("content-type")=="application/json" else text
+                cases.append(dict(name=recipe["name"],raw=raw,token=token,target=target,method=recipe.get("method","POST"),content_type=content_type,busy=recipe.get("busy",False),action=recipe.get("action","success"),status=response.status_code,response=body,calls=calls))
+    return dict(cases=cases)
 
 
 def main() -> int:

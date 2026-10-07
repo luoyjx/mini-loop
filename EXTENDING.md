@@ -2199,4 +2199,18 @@ typed improvement_proposed event follows ordinary masking, recording and archiva
 decode; historical rows grant no authority. The trusted operator supplies an
 isolated checkout: source git add -A includes every changed path. This API never
 creates or merges a branch and adds no HTTP/model tool or default policy. The
-manager's isolated-worktree admission and proposal POST remain the next slice.
+manager now supplies the owned proposal POST as described below.
+
+## Go owned improvement proposal HTTP seam
+
+SessionManager.ProposeImprovement resolves an already admitted owner, supplies
+the manager's fixed archive and uses atomic try admission for the entire managed
+proposal. POST /sessions/{session_id}/propose-improvement validates the source
+objective/acceptance lengths and max-round coercion/bounds, ignores unknown fields,
+then performs owner lookup and busy admission. Missing/foreign sessions stay 404,
+busy stays 409, source operator-correctable admission errors stay 400 and other
+failures use a private plain 500. The body cannot choose owner, workspace or archive.
+The route spends no rate budget and does not create an isolated worktree; it runs
+in the existing session execution workspace, matching Python. The operator must
+prepare the isolated checkout before creating/binding the session. Success uses
+the source direct response projection, while events/index use their existing masks.

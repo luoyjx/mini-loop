@@ -1,5 +1,63 @@
 # Go port plan
 
+## 2026-10-08 owned improvement proposal POST
+
+Default POST /sessions/{session_id}/propose-improvement now binds admitted owner,
+manager archive and existing session execution workspace under atomic try
+admission for the complete managed proposal. Request values are concrete typed
+strings/int64/optional ProposalID; unknown owner/workspace/archive overrides are
+ignored as in source. Shared transport decoding retains closed diagnostic values;
+the request model performs source length, integer/string/boolean/float coercion,
+default and [1,10] bounds. Validation precedes owner lookup; busy precedes logical
+blank-command/non-Git admission. Operator-correctable admission errors are typed
+400s; missing/foreign targets are 404, busy is 409, other faults private plain 500.
+Retained nonfinite/deep diagnostic values fail privately; ignored data stays ignored.
+
+The earlier next-step assumption of automatic isolated-worktree/rate admission
+was checked against source and corrected: this route neither creates a worktree
+nor consumes the common rate budget. The operator supplies the isolated checkout
+through existing session creation/binding. Source stages all changed paths.
+Success returns the direct source projection, while events/index retain masks.
+Snapshot 106 captures 41 actual FastAPI outcomes with an observed proposal effect
+seam and real blank/non-Git refusals. Native TCP tests exercise actual worker file
+write, acceptance shell, Git commit, manager-owned lineage and owner-scoped GET.
+Additional cases ensure rejected callers never reach the provider and proposal
+calls preserve the message rate budget. The shared personal-skill transport
+refactor retains its existing validation behavior. Canonical service scalar text
+and native counter profile remain explicit; live-model convergence is unverified.
+
+README boundary/Mermaid and architecture specification describe live GET/POST.
+HTTP now has 39 operations across 36 patterns versus source 44. Remaining routes
+are team and workflows; native persistence and the full G0–G7 audit remain open.
+
+Validation:
+
+- `go test ./... -count=1 -timeout=180s -coverpkg=./... -coverprofile=…`
+  passed; shared statement blocks were deduplicated by source location, retaining
+  the maximum execution count. Overall: 17,047/18,911 (90.14%); agent 90.80%,
+  httpapi 90.22%, selfimprove 88.79%, verifiedloop 95.88%, improvement 96.41%.
+  These are Go statement coverage figures, not migration completion estimates.
+- `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+- `export_go_contracts.py --check`: all 106 snapshots current; two dependency
+  deprecation warnings (Starlette/httpx and the historical Anthropic model).
+- `verify_scans.py`: all 19 scanning guards anchored.
+- Isolated `.venv/bin/python -m pytest -q`: 2,151 passed, 28 skipped,
+  24 subtests passed in 153.17s; three dependency deprecation warnings and one
+  asyncio subprocess cleanup warning (`Event loop is closed`), exit 0.
+- Python package invariant/mutation sweeps were not rerun: only the contract
+  exporter changed, with no Python package or guarded runtime behavior changes.
+- Architecture regeneration: 9/9 checks, zero errors/warnings. Specification SHA
+  `37156bc2a6bad26253aebc51a06ecbc766f2bc4e35b59682a524f20072ff1130`;
+  HTML SHA `b2c9e5d091cfa01a05e41a2829600be1c8b021623c93e25f57701a408bdbdb64`.
+  Visual inspection remains skipped after the earlier tool denial.
+- Commit split: shared request transport is independent of the proposal route;
+  its staged source was checked in a temporary HEAD archive with existing Python
+  HTTP fixtures: `go test ./httpapi -count=1 -timeout=180s` passed (12.760s).
+  The initial overlay attempt could not resolve an import during vet, and the
+  first archive attempt lacked the cross-language web UI fixture; both setup
+  limitations were resolved before the successful isolated check.
+- README structure and `git diff --check` passed.
+
 ## 2026-10-08 native Git proposal and managed lineage
 
 selfimprove.Service now composes real receipted verification with fixed Git

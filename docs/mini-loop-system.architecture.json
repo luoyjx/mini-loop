@@ -561,7 +561,7 @@
         245,
         76
       ],
-      "tag": "live GET / managed proposal API"
+      "tag": "live GET / owned proposal POST"
     }
   ],
   "boundaries": [

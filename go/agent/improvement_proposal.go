@@ -33,12 +33,16 @@ type ProposalRunOptions struct {
 // ProposeImprovementWithContext holds admission across verification, Git and the
 // review index. The underlying session supplies the owner, worker and executor.
 func (session *ManagedSession) ProposeImprovementWithContext(ctx context.Context, objective string, options ProposalRunOptions, run RunContext) (selfimprove.Proposal, error) {
+	return session.proposeImprovementWithContext(ctx, objective, options, run, false)
+}
+
+func (session *ManagedSession) proposeImprovementWithContext(ctx context.Context, objective string, options ProposalRunOptions, run RunContext, try bool) (selfimprove.Proposal, error) {
 	if session == nil || session.core == nil {
 		return selfimprove.Proposal{}, errors.New("proposal session is not initialized")
 	}
 	options.MaxRounds, options.ParentID = clonePointer(options.MaxRounds), clonePointer(options.ParentID)
 	var proposal selfimprove.Proposal
-	_, err := session.runOperation(ctx, objective, run, false, nil, func(ctx context.Context, objective string, run RunContext) (string, error) {
+	_, err := session.runOperation(ctx, objective, run, try, nil, func(ctx context.Context, objective string, run RunContext) (string, error) {
 		err := session.core.withVerifiedEffects(ctx, run, func(effects sessionVerifiedEffects) error {
 			config := selfimprove.Config{Workspace: session.core.executionRoot(), RunID: verifiedloop.RunID(session.ID()), Worker: effects, Commands: effects, VerifiedEvents: effects, Events: effects}
 			if options.Archive != nil {
@@ -58,6 +62,16 @@ func (session *ManagedSession) ProposeImprovementWithContext(ctx context.Context
 		return selfimprove.Proposal{}, err
 	}
 	return proposal, nil
+}
+
+// ProposeImprovement binds the admitted owner and the manager's fixed archive.
+// It uses the existing session workspace and atomically refuses busy admission.
+func (manager *SessionManager) ProposeImprovement(ctx context.Context, owner OwnerID, id SessionID, objective, command string, maximum int64, parent *improvement.ProposalID, run RunContext) (selfimprove.Proposal, error) {
+	session, err := manager.Get(owner, id)
+	if err != nil {
+		return selfimprove.Proposal{}, err
+	}
+	return session.proposeImprovementWithContext(ctx, objective, ProposalRunOptions{AcceptanceCommand: command, MaxRounds: &maximum, Archive: manager.improvements, ParentID: parent}, run, true)
 }
 
 func (effects sessionVerifiedEffects) RunCommand(ctx context.Context, command string) (shell.Result, error) {

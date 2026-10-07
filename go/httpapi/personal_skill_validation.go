@@ -84,6 +84,8 @@ const (
 )
 
 type RequestValidationContext struct {
+	GE        *int   `json:"ge,omitempty"`
+	LE        *int   `json:"le,omitempty"`
 	MinLength *int   `json:"min_length,omitempty"`
 	MaxLength *int   `json:"max_length,omitempty"`
 	Pattern   string `json:"pattern,omitempty"`
