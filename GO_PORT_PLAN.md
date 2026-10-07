@@ -1,5 +1,15 @@
 # Go port plan
 
+## 2026-10-08 teammate composition preparation
+
+Baseline 533f824. Extract the common managed runtime composition before applying
+owner-resource resolution, so teammate creation can inherit a fixed parent bundle.
+Add named peer derivation that retains parent/delegation provenance and drops human
+capabilities. This preparation changes no installed tools, defaults or topology.
+The focused peer-context test checks authority stripping and invalid parent refusal.
+The README architecture baseline is reviewed with no topology change required.
+An isolated export of this staged Go tree passed full test, race and vet before commit.
+
 ## 2026-10-08 independent team launcher selection
 
 Baseline 7570408; full G0–G7 remains open. launcher.Options.TeamTools and standalone

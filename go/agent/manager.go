@@ -419,7 +419,7 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 
 // One composition map serves both new and restored handles. Metadata and history
 // are installed before initialization/publication by the respective consumer.
-func (manager *SessionManager) managedRuntimeConfig(ctx context.Context, id SessionID, owner OwnerID, path string, mode PermissionMode, model string, system *string, bash BashExecutor) (RuntimeConfig, error) {
+func (manager *SessionManager) baseManagedRuntimeConfig(id SessionID, owner OwnerID, path string, mode PermissionMode, model string, system *string, bash BashExecutor) RuntimeConfig {
 	services := manager.config.Services
 	defaults := manager.config.Defaults
 	builder := services.SystemBuilder
@@ -436,6 +436,12 @@ func (manager *SessionManager) managedRuntimeConfig(ctx context.Context, id Sess
 	runtime.skillDrafts = manager.skillDrafts
 	runtime.MemoryTools = services.MemoryTools
 	runtime.MemoryAuto = services.MemoryAuto
+	return runtime
+}
+
+func (manager *SessionManager) managedRuntimeConfig(ctx context.Context, id SessionID, owner OwnerID, path string, mode PermissionMode, model string, system *string, bash BashExecutor) (RuntimeConfig, error) {
+	runtime := manager.baseManagedRuntimeConfig(id, owner, path, mode, model, system, bash)
+	services := manager.config.Services
 	if resolver := services.UserResources; resolver != nil {
 		resources, err := resolver.ForOwner(ctx, userresources.OwnerID(owner))
 		if err != nil {

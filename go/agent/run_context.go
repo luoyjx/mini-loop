@@ -155,6 +155,17 @@ func (value RunContext) DerivePeerAgent(delegatedBy string) (RunContext, error) 
 	parent := value.messageID
 	return RunContext{messageID: id, origin: "peer_agent", channel: "agent", authority: AuthorityPeerAgent, stampedBy: value.stampedBy, delegatedBy: &delegatedBy, parentMessageID: &parent}, nil
 }
+
+// DeriveNamedPeerAgent retains provenance while dropping human capabilities.
+// The actor is a manager-established teammate, never a model-supplied owner.
+func (value RunContext) DeriveNamedPeerAgent(delegatedBy string, actor ActorID) (RunContext, error) {
+	peer, err := value.DerivePeerAgent(delegatedBy)
+	if err != nil {
+		return RunContext{}, err
+	}
+	peer.actorID = &actor
+	return peer, nil
+}
 func (value RunContext) WithNewMessage(approved []RunCapability) (RunContext, error) {
 	if err := value.Validate(); err != nil {
 		return RunContext{}, err
