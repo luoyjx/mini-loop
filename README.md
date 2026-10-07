@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `6d5480b` plus fake-only benchmark HTTP composition;
+reviewed **2026-10-07** (Go baseline `9d27582` plus typed self-audit observations;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,6 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
+        GoSelfAudit["Go self-audit snapshot library<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission"]
@@ -448,6 +449,7 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoEntry
+    Caller -. explicit typed observations .-> GoSelfAudit
     Caller -. supplied results / transcripts .-> GoBenchmarkLibrary
     GoEntry -->|authenticated fake-only comparison / rate budget| GoBenchmarkLibrary
     GoBenchmarkLibrary -. explicit operator arm create / run / stop .-> GoManager
@@ -1255,6 +1257,16 @@ diagnostic spelling. All eight default-fake task effects/final texts/metrics mat
 The launcher uses `FakeProvider.ObjectView()` to reproduce Python fake-object
 transcript serialization, omitting caller metadata while preserving the raw
 client wire view and real-provider absent/null distinctions. Empty history costs zero.
+The Go selfaudit library now renders concrete observations for session activity,
+problem ledgers/counts/churn, trajectory trends, skill-load correlation and cron
+arming. Owner filtering, global inclusion and source scan/report bounds are
+explicit. Suggestions remain strings for human review; benchmark drafts contain
+only a fixed null expectation and cannot become admitted tasks. It performs no
+IO or model calls. The live manager observer, self_audit model tool and three
+HTTP routes remain pending. Snapshot 94 compares actual Python processing over
+26 controlled observable runtime profiles; this is core evidence, not live Go
+collection or route evidence. Adapters must authorize owner scope before storage
+reads, mask private output and capture failures without their private messages.
 Personal-skill previews are process-local; a committed `SKILL.md` is durable,
 never replaces an existing skill, and appears only in future session snapshots.
 

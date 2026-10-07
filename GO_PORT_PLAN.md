@@ -1,5 +1,51 @@
 # Go port plan
 
+## 2026-10-07 typed self-audit observation core
+
+Concrete observations now support the full report processing core, typed
+objectives and structurally inadmissible benchmark drafts. Source ordering,
+owner filtering, bounded owner totals, global inclusion, problem counts/churn,
+trajectory/skill scan limits, cron IDs and 8000-character report cap are retained.
+Python whitespace and 300-character post-cap deduplication feed source SHA-256
+draft names. Draft expectations encode/decode only null; no callable is stored.
+No file/model/benchmark work is launched from these suggestions.
+
+Snapshot 94 compares 26 actual Python processing profiles over controlled
+observable manager/store seams, including scopes, missing fields, Unicode, scan
+and report limits, safe failure classes and correlation. No output normalization
+is applied. Native tests also prove snapshots remain unchanged and benchmark
+constructors reject drafts lacking a reviewed judge. This is snapshot processing
+evidence; live manager observation, self_audit model tool and three HTTP routes
+remain pending. Source parity evidence covers scalar/finite observation profiles; arbitrary
+malformed Python namespace objects are not modeled. The existing HTTP inventory stays
+34 operations/31 patterns. G0–G7 and the complete migration remain open.
+
+Validation:
+
+- All 26 source profiles passed exact report/objective/draft comparisons, input
+  immutability and native task-admission refusal. Null-only draft decoding passed.
+  Focused selfaudit statement coverage is **98.7%**; overall Go/Python coverage
+  was not refreshed.
+- Full `go test ./... -count=1 -timeout=180s`, full
+  `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+- Exporter `--check`: all 94 files current; `verify_scans.py`: all 19 guards
+  anchored. Python package modules and guarded mutation anchors are unchanged;
+  separate invariant/guard mutation sweeps were not rerun.
+- Initial full fixture generation emitted legacy child-watcher/closed-loop
+  destructor diagnostics but exited zero. Subsequent complete exporter checks
+  passed with only the two existing dependency/model deprecation warnings.
+  No Python subprocess cleanup repair is claimed.
+- README baseline/outline and `git diff --check` passed. Architecture source was
+  regenerated with Archify and passed all 9 showcase checks on first delivery.
+  Visual inspection remains skipped after the earlier local-file denial; those
+  automated checks are not visual evidence. A doc-append variable mistake was
+  repaired from the verified clean base, retaining only new owned sections.
+- After every Go/export/scanner handle was terminal, isolated
+  `.venv/bin/python -m pytest -q` passed: **2151 passed, 28 skipped,
+  24 subtests passed, 4 warnings**, in 95.65s. Three are dependency deprecations;
+  one is PytestUnraisableExceptionWarning from BaseSubprocessTransport destruction
+  with an already closed event loop. That existing cleanup warning remains unfixed.
+
 ## 2026-10-07 fake-only benchmark HTTP composition
 
 POST /benchmark now owns four fresh fake object clients, visible baseline/candidate

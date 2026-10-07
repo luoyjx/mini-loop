@@ -532,6 +532,21 @@
         76
       ],
       "tag": "operator arms / fake-only HTTP"
+    },
+    {
+      "id": "goSelfAudit",
+      "type": "backend",
+      "label": "Go self-audit core",
+      "sublabel": "reports / suggestions / inadmissible drafts",
+      "pos": [
+        60,
+        1020
+      ],
+      "size": [
+        245,
+        76
+      ],
+      "tag": "typed snapshot library; HTTP pending"
     }
   ],
   "boundaries": [
@@ -1254,6 +1269,25 @@
         [
           20,
           648
+        ]
+      ]
+    },
+    {
+      "id": "goSelfAuditObservations",
+      "from": "clients",
+      "to": "goSelfAudit",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "left",
+      "route": "orthogonal-v",
+      "via": [
+        [
+          10,
+          296
+        ],
+        [
+          10,
+          1058
         ]
       ]
     }

@@ -1927,3 +1927,26 @@ fail privately; native profile validation limits remain explicit differences.
 Snapshot 93 compares five actual source HTTP profiles with only nondeterministic
 durations/derived warnings omitted. This is instrument validation, not model
 quality evidence or G7 completion. Paid runs remain operator initiated.
+
+
+### Typed self-audit observations
+
+`selfaudit.BuildReport(Observations, Scope)` renders activity, problems, trajectory
+trends, skill-load correlation and optionally fleet cron authorization. Explicit
+owner selection narrows session/recording data; authenticated callers must pair
+that owner with IncludeGlobal=false. The adapter must authorize before storage IO.
+The pure library reads no files and launches no model/cron/benchmark work.
+Failures retain a class, without private exception content. Input snapshots remain
+unchanged. Source session/trajectory/event bounds and 8000-character report cap
+apply, including owner totals capped at 100 and the explicit truncation marker.
+
+`SuggestObjectives` and `SuggestBenchTasks` return typed human-review data over
+last-three ledger entries, with Python whitespace/300-character deduplication and
+source SHA-256 draft names. Pass MaxSuggestions for the default eight; nonpositive
+limits clamp to one as source. A draft holds NoExpectation, which encodes/decodes
+only null and contains no callable. Admitting a task still requires an explicit
+benchmark judge. Snapshot 94 pins 26 actual Python processing profiles.
+
+Live manager collection, model-tool installation and the three self-audit HTTP
+routes remain pending. This package accepts concrete scalar/finite observations;
+it is not an arbitrary Python object interpreter or an owner-authentication layer.

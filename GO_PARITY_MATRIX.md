@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (93 generated snapshots), plus registry masking,
+the current implementation (94 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -455,3 +455,29 @@ failures. The handler now has 34 operations/31 patterns. Source create is not
 rate-limited; benchmark shares the message/fork/steer expensive-route budget.
 Unsupported activated runtime profiles remain explicit failures, not parity.
 No G7 acceptance or migration completion is claimed.
+
+
+## Typed self-audit observation core
+
+`go/selfaudit` renders explicit observation snapshots for the five source report
+sections, with typed optional fields and safe failure classes. Activity uses the
+100 most recent sessions; owner totals preserve the source's bounded count.
+Problems retain ledger ordering/counts/churn; trends use 50 global summaries or
+10 per recent owned session (at most 20 sessions/50 summaries). Skill usage scans
+200 tool-use events per summary and labels correlation. Cron exposes sorted
+disarmed IDs only when global inclusion is selected. Reports cap at 8000 Unicode
+characters with the source truncation marker.
+
+Suggestions inspect the last three distinct entries per source, strip Python
+whitespace, cap at 300 characters and deduplicate after truncation. Limits clamp
+to at least one; the default is eight. Draft names use the source SHA-256 prefix
+and ledger- name. Expect is a concrete null-only type, never a callable; native
+benchmark.NewTask still rejects a draft without a human-authored judge.
+Snapshot 94 compares 26 actual source processing profiles, including scope,
+empty/missing seams, Unicode/deduplication, scan/report caps and independent
+collection/inspection/event failures. No report fields or timings are normalized.
+Native tests also refuse non-null draft expectations and check input immutability.
+This remains an explicit snapshot library: live manager collection, runtime tool
+installation and three HTTP routes remain pending. It does not synthesize empty
+reports for unimplemented services. Source parity evidence covers scalar UTF-8 and finite numeric observation
+profiles; arbitrary malformed Python namespace values are not claimed covered. No HTTP inventory/G7 acceptance is added by these core checks.

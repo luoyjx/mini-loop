@@ -6728,6 +6728,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-benchmark-tasks.json": _json_bytes(_benchmark_task_contracts()),
         "python-benchmark-arms.json": _json_bytes(_benchmark_arm_contracts()),
         "python-benchmark-http.json": _json_bytes(_benchmark_http_contracts()),
+        "python-self-audit.json": _json_bytes(_self_audit_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7613,6 +7614,133 @@ def _benchmark_http_contracts() -> dict:
                                       cleaned=True, clients=4))
                     for manager in managers:
                         client.portal.call(manager.stop)
+    return dict(cases=cases)
+
+
+def _self_audit_contracts() -> dict:
+    """Actual source report/suggestions over explicit observable runtime seams."""
+    from types import SimpleNamespace as NS
+    from mini_loop.self_audit import build_report, suggest_objectives, suggest_bench_tasks
+    from mini_loop.problems import ProblemLog
+
+    def ledger(entries, limit=50):
+        log = ProblemLog(limit=limit)
+        log.extend(entries)
+        return dict(entries=list(log), summary=log.summary(), total=log.total(),
+                    churning=log.churning())
+    def session(sid, owner, created, activity="idle", problems=None):
+        return dict(id=sid, owner=owner, created_at=created, activity=activity,
+                    agent_present=True, problems=problems or {})
+    records = [dict(id="slow-a", status="complete", partial=False, duration_ms=1250.0,
+                    tool_uses=[dict(name="load_skill", skill="界"), dict(name="read_file")]),
+               dict(id="slow-z", status="error", partial=True, duration_ms=1250.0,
+                    tool_uses=[dict(name="load_skill", skill="界"), dict(name="load_skill")]),
+               dict(id="fast", status="interrupted", partial=False, duration_ms=50.0,
+                    tool_uses=[dict(name="load_skill", skill="safe")])]
+    mixed = dict(sessions=[session("old", "alice", 1, "idle", dict(memory=ledger(["same", "old friction"]))),
+                          session("new", "bob", 2, "running", dict(tasks=ledger(["bob private", "same"]))),
+                          session("mid", "alice", 1.5, "waiting", dict(registry=ledger(["same", "last", "repeat", "repeat"])))],
+                 problems=dict(cron=ledger(["global private", "same"]),
+                               actions=ledger(["a", "b", "c", "a", "b", "c"],2)),
+                 trajectories={}, cron=dict(jobs=["z", "a", "c"], armed=["c"]))
+    mixed["trajectories"] = {"global": records, "by_session": {"old": [records[0]], "mid": [records[2]], "new": [records[1]]}, "has_events": True}
+    cases=[]
+    def capture(name, observation, owner=None, include_global=True, limit=8):
+        def fail(class_name):
+            def raise_error(*args, **kwargs):
+                raise {"ValueError": ValueError, "RuntimeError": RuntimeError, "OSError": OSError}[class_name]("private failure content")
+            return raise_error
+        def log(data):
+            class ObservedLog(list):
+                def summary(self):
+                    if data.get("failure"): return fail(data["failure"]["class"])()
+                    return data.get("summary", list(self))
+                def total(self): return data.get("total", len(self.summary()))
+                def churning(self): return data.get("churning", False)
+            return ObservedLog(data["entries"])
+        manager=NS()
+        live=[]
+        for row in observation.get("sessions", []):
+            state={}; agent=NS(tools=NS()) if row.get("agent_present") else None
+            if agent is not None:
+                for key, data in row.get("problems", {}).items():
+                    if key=="registry": agent.tools.problems=log(data)
+                    else: state[key]=NS(problems=log(data))
+                agent.state=state
+            info=fail(row["inspection_failure"]["class"]) if row.get("inspection_failure") else lambda row=row: dict(activity=row["activity"]) if "activity" in row else {}
+            live.append(NS(id=row["id"], owner=row["owner"], created_at=row["created_at"], agent=agent, info=info))
+        manager.list=fail(observation["sessions_failure"]["class"]) if observation.get("sessions_failure") else lambda: live
+        for key, data in observation.get("problems", {}).items(): setattr(manager,key,NS(problems=log(data)))
+        store=observation.get("trajectories")
+        if store is not None:
+            def summaries(*, session_id=None, limit=50):
+                if store.get("trends_failure"): return fail(store["trends_failure"]["class"])()
+                rows=store.get("global", []) if session_id is None else store.get("by_session", {}).get(session_id, [])
+                return [dict(id=r["id"], status=r.get("status", "unknown"), partial=r.get("partial",False), **({"duration_ms":r["duration_ms"]} if "duration_ms" in r else {})) for r in rows[:limit]]
+            def events(tid, *, types, limit):
+                if store.get("usage_failure"): return fail(store["usage_failure"]["class"])()
+                all_rows=store.get("global", [])+sum(store.get("by_session", {}).values(), [])
+                row=next(r for r in all_rows if r["id"]==tid)
+                if row.get("event_failure"): return fail(row["event_failure"]["class"])()
+                return [dict(type="tool_use", name=e["name"], input=dict(name=e["skill"]) if "skill" in e else {}) for e in row.get("tool_uses", [])[:limit]]
+            manager.trajectories=NS(list=summaries)
+            if store.get("has_events"): manager.trajectories.iter_events=events
+            if "trajectories" in observation.get("problems", {}): manager.trajectories.problems=log(observation["problems"]["trajectories"])
+        cron=observation.get("cron", {})
+        if cron.get("failure"):
+            class BrokenCron:
+                @property
+                def jobs(self): return fail(cron["failure"]["class"])()
+            manager.cron=BrokenCron()
+            if "cron" in observation.get("problems", {}): manager.cron.problems=log(observation["problems"]["cron"])
+        else:
+            old=getattr(manager,"cron",NS())
+            old.jobs=dict.fromkeys(cron.get("jobs", [])); old._armed=set(cron.get("armed", [])); manager.cron=old
+        if observation.get("problems_failure"):
+            class BrokenProblemSource:
+                @property
+                def problems(self): return fail(observation["problems_failure"]["class"])()
+            manager.skills=BrokenProblemSource()
+        report=build_report(manager, owner=owner, include_global=include_global)
+        def suggestions(function):
+            try: return function(manager,owner=owner,limit=limit), None
+            except Exception as error: return None,type(error).__name__
+        objectives,objectives_error=suggestions(suggest_objectives)
+        drafts,drafts_error=suggestions(suggest_bench_tasks)
+        cases.append(dict(name=name, observation=observation, owner=owner,
+                          include_global=include_global, limit=limit, report=report,
+                          objectives=objectives, objectives_error=objectives_error,
+                          drafts=drafts, drafts_error=drafts_error))
+    import copy
+    capture("empty",dict(sessions=[],problems={},cron={}))
+    capture("mixed",mixed)
+    capture("unscoped-no-globals",mixed,include_global=False)
+    capture("alice",mixed,"alice",False)
+    capture("bob",mixed,"bob",False)
+    capture("unknown-owner",mixed,"nobody",False)
+    capture("explicit-owner-global",mixed,"alice",True)
+    for limit in (-3,0,1,2): capture("limit-"+str(limit),mixed,limit=limit)
+    chars=dict(sessions=[],problems=dict(skills=ledger(["\x1c ", "\x1f界  "+"界"*350,"界"*300,"é","界"*300])),cron={})
+    capture("unicode-dedup-after-cap",chars)
+    capped=dict(sessions=[],problems=dict(actions=ledger(["界"*9000])),cron={})
+    capture("report-cap",capped)
+    many=dict(sessions=[session("s"+str(i),"alice" if i%2 else "bob",i,"odd" if i%2 else "even") for i in range(240)],problems={},cron={})
+    capture("session-cap-global",many)
+    capture("session-cap-owner",many,"alice",False)
+    fault=copy.deepcopy(mixed);fault["sessions"][0]["inspection_failure"]=dict(**{"class":"RuntimeError"});fault["problems"]["cron"]["failure"]=dict(**{"class":"ValueError"});fault["cron"]["failure"]=dict(**{"class":"OSError"})
+    capture("independent-failures",fault)
+    capture("sessions-unreadable",dict(sessions=[],sessions_failure=dict(**{"class":"RuntimeError"}),problems={},cron={}))
+    fault=copy.deepcopy(mixed);fault["trajectories"]["trends_failure"]=dict(**{"class":"OSError"});fault["trajectories"]["usage_failure"]=dict(**{"class":"OSError"});capture("trajectory-failure",fault)
+    fault=copy.deepcopy(mixed);fault["trajectories"]["global"][0]["event_failure"]=dict(**{"class":"ValueError"});capture("event-failure",fault)
+    many=copy.deepcopy(mixed);rows=[dict(id="r%03d"%i,status="complete",tool_uses=[]) for i in range(60)];many["trajectories"]["global"]=rows;many["trajectories"]["by_session"]={"old":rows,"mid":rows,"new":rows};capture("trajectory-event-caps",many);capture("trajectory-owner-caps",many,"alice",False)
+    shape=dict(sessions=[dict(id="no-agent",owner="anonymous",created_at=1,agent_present=False,problems=dict(registry=ledger(["excluded"]))),dict(id="unknown-activity",owner="anonymous",created_at=2,agent_present=True,problems={})],problems={key:ledger([key]) for key in ("cron","trajectories","approvals","skills","actions")},trajectories={"global":[],"by_session":{},"has_events":False},cron={})
+    shape["problems"]["skills"]["summary"]=[]
+    capture("all-ledgers-missing-seams",shape)
+    capture("problem-source-failure",dict(sessions=[],problems={},problems_failure={"class":"OSError"},cron={}))
+    capture("owner-collection-failure",dict(sessions=[],sessions_failure={"class":"RuntimeError"},problems={},trajectories={"global":records,"by_session":{},"has_events":True},cron={}),"alice",False)
+    owner_cap=dict(sessions=[session("s"+str(i),"alice",i) for i in range(21)],problems={},trajectories={"global":[],"by_session":{"s"+str(i):[dict(id="r"+str(i),status="complete",tool_uses=[dict(name="load_skill",skill="excluded" if i==0 else "visible")])] for i in range(21)},"has_events":True},cron={})
+    capture("recent-owned-session-cap",owner_cap,"alice",False)
+    budget=copy.deepcopy(mixed);budget["trajectories"]["global"][0]["tool_uses"]=[dict(name="read_file")]*200+[dict(name="load_skill",skill="beyond-budget")];capture("event-scan-budget",budget)
     return dict(cases=cases)
 
 

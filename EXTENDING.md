@@ -2047,3 +2047,20 @@ consume parent control queues. Steer is synchronous and parks even when idle;
 SubmitSteering additionally wakes an idle owned turn. Manager shutdown/deletion
 joins that active holder. Neither control text nor posture wrappers grant human
 or workflow authority. See `go/README.md` for queue and persistence boundaries.
+
+
+### Go self-audit observation seam
+
+The separate selfaudit package consumes concrete Observations for sessions, fixed
+global/session ledger slots, prefiltered trajectory tool-use observations and
+cron snapshots. Collection remains adapter-owned. Summaries/total counts and
+failures are optional explicit fields; missing and empty remain distinct.
+Failures expose only their class. Global and per-session recordings retain the
+store ordering; owner report selection uses only BySession. Authorize before
+collecting files, mask output at the recording/HTTP boundary and capture an
+immutable snapshot before rendering. Global inclusion is separate from owner
+selection as in source; authenticated routes must select owner and false.
+
+The library neither launches suggested objectives nor installs benchmark drafts.
+NoExpectation carries only null, and benchmark task construction still requires
+a reviewed judge. Live manager/model-tool/HTTP binding remains pending.

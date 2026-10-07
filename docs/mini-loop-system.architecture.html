@@ -4629,6 +4629,7 @@
         <path data-edge-from="clients" data-edge-to="goBenchmark" data-edge-label="statistics only" data-edge-key="40" data-edge-id="goBenchmarkStatistics" data-composition-points="135,332;135,471;182.5,471;182.5,610" d="M 135 332 L 135 463 Q 135 471 143 471 L 174.5 471 Q 182.5 471 182.5 479 L 182.5 610" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goBenchmark" data-edge-to="goManaged" data-edge-key="41" data-edge-id="goBenchmarkArms" data-composition-points="305,648;325,648;325,920;810,920;810,1018;850,1018" d="M 305 648 L 317 648 Q 325 648 325 656 L 325 912 Q 325 920 333 920 L 802 920 Q 810 920 810 928 L 810 1010 Q 810 1018 818 1018 L 850 1018" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goEntry" data-edge-to="goBenchmark" data-edge-key="42" data-edge-id="goBenchmarkHTTP" data-composition-points="495,876;495,940;20,940;20,648;60,648" d="M 495 876 L 495 932 Q 495 940 487 940 L 28 940 Q 20 940 20 932 L 20 656 Q 20 648 28 648 L 60 648" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="clients" data-edge-to="goSelfAudit" data-edge-key="43" data-edge-id="goSelfAuditObservations" data-composition-points="60,296;10,296;10,1058;60,1058" d="M 60 296 L 18 296 Q 10 296 10 304 L 10 1050 Q 10 1058 18 1058 L 60 1058" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -5001,6 +5002,18 @@
         <text data-detail="fine" x="182.5" y="678" class="t-backend" font-size="7" text-anchor="middle">operator arms / fake-only HTTP</text>
         </g>
 
+        <g id="node-goSelfAudit" data-node-id="goSelfAudit" data-node-label="Go self-audit core" tabindex="0" role="button" aria-label="Focus Go self-audit core, reports / suggestions / inadmissible drafts, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="reports / suggestions / inadmissible drafts" data-node-tag="typed snapshot library; HTTP pending" data-node-context="Architecture component">
+          <title>Go self-audit core · reports / suggestions / inadmissible drafts · Architecture component · typed snapshot library; HTTP pending</title>
+          <rect x="60" y="1020" width="245" height="76" rx="6" class="c-mask"/>
+          <rect x="60" y="1020" width="245" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 1026) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-detail-anchor x="182.5" y="1056" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go self-audit core</text>
+        <text data-detail="context" x="182.5" y="1072" class="t-muted" font-size="9" text-anchor="middle">reports / suggestions / inadmissible drafts</text>
+        <text data-detail="fine" x="182.5" y="1088" class="t-backend" font-size="7" text-anchor="middle">typed snapshot library; HTTP pending</text>
+        </g>
+
         <!-- Connection labels -->
         <g data-detail="context" data-edge-from="clients" data-edge-to="entry" data-edge-label="request" data-edge-key="0" data-edge-id="request">
           <rect x="248.2" y="276" width="43.6" height="14" rx="3" class="c-mask"/>
@@ -5145,6 +5158,7 @@
           <rect x="117.75" y="451" width="82" height="14" rx="3" class="c-mask"/>
           <text x="158.75" y="461" class="t-messagebus" font-size="8" text-anchor="middle">statistics only</text>
         </g>
+
 
 
 
