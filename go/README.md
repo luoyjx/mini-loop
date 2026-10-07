@@ -1817,3 +1817,18 @@ The registered-secret projection is the existing native HTTP safety extension;
 source catalogue comparisons are otherwise exact. No tool/default/owner authority
 is activated by this read. Memory/team/workflow and other remaining routes still
 require their planned slices; this does not close G3 or the full migration.
+
+
+### Owned memory HTTP views
+
+The manager constructs WorkspaceRoot/.memory when Services.Memory is nil, even
+with owner-local resources selected. Owner-local storage takes precedence at
+runtime binding. GET /sessions/{session_id}/memory returns typed metadata;
+GET /sessions/{session_id}/memory/{name} returns the exact stored body. Both
+require the admitted owner and use the existing masked HTTP projection. Existing
+sessions see subsequent writes through their fixed scoped store; tools remain
+explicitly selected. Snapshot 89 compares 45 actual source responses across shared,
+local and anonymous deployments, including auth, quoting and encoded slashes.
+Native tests additionally cover detached views, wrong binding/cancellation,
+registered-secret masking and safe filesystem failure. A removed root produces
+native safe plain 500 whereas Python's glob yields an empty list.

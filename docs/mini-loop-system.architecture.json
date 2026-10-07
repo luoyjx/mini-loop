@@ -492,7 +492,7 @@
       "id": "goEntry",
       "type": "backend",
       "label": "Go Startup / HTTP / SSE",
-      "sublabel": "HTTP / SSE / skills / owned catalogue",
+      "sublabel": "HTTP / SSE / owned catalogue / memory",
       "pos": [
         330,
         800
@@ -1246,7 +1246,7 @@
         "Todo reminder counters survive user turns; durable steering, restore and remaining context integrations remain open",
         "Typed events replay 200 records; live queues shed oldest at 2,000; sinks receive masked detached records",
         "Transcript rewrites open event epochs; bounded HTTP SSE replay exists, durable cursor gap recovery remains pending",
-        "Go HTTP handler admits one principal, twenty-eight route operations and masked JSON/SSE data; optional UI APIs and full posture remain open",
+        "Go HTTP handler admits one principal, thirty-three route operations and masked JSON/SSE data. Owned memory reads use the fixed scoped binding and expose latest records; tools remain explicitly selected. Optional UI APIs and full posture remain open",
         "Managed control queues inject bounded steering and operator posture before context budgeting; permission mode is read after before/guard hooks",
         "HTTP idle steering publishes an owned background turn; manager deletion/shutdown joins it, children never drain parent controls",
         "Fork copies completed paired history into fresh scratch; typed lineage and source events are process-local, configured state injection flushes fork history before publication; native SQLite remains pending",

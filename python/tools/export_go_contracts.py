@@ -6723,6 +6723,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-personal-skill-http-numbers.json": _json_bytes(_personal_skill_http_number_contracts()),
         "python-personal-skill-http-depth.json": _json_bytes(_personal_skill_http_depth_contracts()),
         "python-skill-catalogue-http.json": _json_bytes(_skill_catalogue_http_contracts()),
+        "python-memory-http.json": _json_bytes(_memory_http_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7263,6 +7264,68 @@ def _skill_catalogue_http_contracts() -> dict:
                 assert fork.status_code == 200, fork.text
                 ids["fork"] = fork.json()["id"]
                 capture("fork-after", "fork", actor)
+            scenarios.append(dict(mode=mode, cases=rows))
+    return dict(scenarios=scenarios)
+
+
+def _memory_http_contracts() -> dict:
+    """Actual owned metadata/body reads, mutable views and route decoding."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth, NullAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.memory import memory_store_for
+    from mini_loop.server import create_app
+    from mini_loop.skills import SkillLoader
+    from mini_loop.user_resources import UserResourceResolver
+
+    scenarios = []
+    with tempfile.TemporaryDirectory() as scratch:
+        for mode in ("shared", "local", "anonymous"):
+            root = Path(scratch) / mode
+            loader = SkillLoader(root / "skills")
+            resolver = UserResourceResolver(root / "users", loader) if mode == "local" else None
+            settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                                trajectory_enabled=False, user_resources_root=None)
+            manager = SessionManager(settings, FakeAsyncAnthropic(), skills=loader, user_resources=resolver)
+            app = create_app(manager=manager)
+            with TestClient(app, raise_server_exceptions=False) as client:
+                app.state.auth = NullAuth() if mode == "anonymous" else TokenAuth({"token-a": "alice", "token-b": "bob"})
+                actor, other = ("", "") if mode == "anonymous" else ("token-a", "token-b")
+                ids = {"missing": "missing"}
+                for label, token in (("alice", actor), ("second", actor), ("bob", other)):
+                    response = client.post("/sessions", json={}, headers={"Authorization": "Bearer " + token} if token else {})
+                    assert response.status_code == 200, response.text
+                    ids[label] = response.json()["id"]
+                rows = []
+                def capture(name, target, suffix, token, update=False):
+                    response = client.get("/sessions/" + ids[target] + "/memory" + suffix,
+                        headers={"Authorization": "Bearer " + token} if token else {})
+                    value = response.text
+                    for label, sid in ids.items():
+                        if label != "missing":
+                            value = value.replace(sid, "<" + label + ">")
+                    rows.append(dict(name=name, target=target, suffix=suffix, token=token,
+                                     update=update, status=response.status_code, response=json.loads(value)))
+                capture("empty", "alice", "", actor)
+                for label in ("alice", "bob"):
+                    owner = "anonymous" if mode == "anonymous" else label
+                    memory_store_for(manager.get(ids[label]).agent).write("界", "project", owner + " description", owner + " private body", origin="imported")
+                if resolver is not None:
+                    manager.memory.write("fallback", "project", "shared only", "must not leak", owner="alice")
+                for suffix in ("", "/%E7%95%8C"):
+                    capture("alice" + suffix, "alice", suffix, actor)
+                    capture("same-owner" + suffix, "second", suffix, actor)
+                    capture("bob" + suffix, "bob", suffix, other)
+                    capture("foreign" + suffix, "alice", suffix, other)
+                capture("no-auth", "alice", "", "")
+                capture("query-auth", "alice", "?access_token=token-a", "")
+                capture("missing-session", "missing", "/%E7%95%8C", actor)
+                capture("missing-name", "alice", "/quote%27%22%5C%E7%95%8C", actor)
+                capture("encoded-slash", "alice", "/a%2Fb", actor)
+                memory_store_for(manager.get(ids["alice"]).agent).write("界", "feedback", "updated", "latest body")
+                capture("updated", "second", "/%E7%95%8C", actor, update=True)
             scenarios.append(dict(mode=mode, cases=rows))
     return dict(scenarios=scenarios)
 

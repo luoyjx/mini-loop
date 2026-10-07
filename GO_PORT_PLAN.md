@@ -1,5 +1,42 @@
 # Go port plan
 
+## 2026-10-07 owned memory HTTP views
+
+Two cohesive delivery slices cover default embedded-manager storage and the
+owned list/body view. `ManagedSession.MemoryRecords` retains the runtime's fixed
+scoped binding, rejects missing/foreign bindings and returns detached current
+records. The HTTP adapter requires the admitted owner before reading and exposes
+concrete metadata/body types through the existing masked projection. Reading
+does not install tools or resolve another resource bundle. Mutable memory writes
+remain visible to existing same-owner sessions.
+
+Snapshot 89 compares 45 actual Python HTTP responses across shared, owner-local
+and anonymous deployments: empty lists, metadata/body, owner isolation, query
+credential rejection, missing sessions/names, Unicode/quote/backslash names,
+encoded slashes and later writes. Native tests additionally exercise cancellation,
+corrupt bindings, detached records, secret masking and safe backing-store errors.
+A removed native root yields safe plain 500; Python's glob produces an empty list.
+The native inventory now has 33 method/path operations across 30 patterns; other
+route groups, native SQLite and the overall G0–G7 migration remain open.
+
+Validation for both delivery slices:
+
+- Focused manager memory/fork/resource-cleanup and HTTP memory regressions passed.
+- `go test -coverprofile=/tmp/mini-loop-commit-coverage.out ./...`,
+  `go test -race ./...` and `go vet ./...` passed.
+- `go test -coverpkg=./... -coverprofile=/tmp/mini-loop-commit-shared-coverage.out ./...`
+  passed. Deduplicated statement blocks: overall 14866/16617 (**89.46%**),
+  agent 5941/6558 (**90.59%**), HTTP API 1256/1410 (**89.08%**).
+- Contract exporter `--check`: all 89 files current. `verify_scans.py`: 19
+  scanning guards anchored. README outline checked; generated architecture passed
+  9/9 automated checks. Visual inspection remains skipped after the earlier denial.
+- The first isolated Python run was interrupted and is not counted as a pass.
+  A fresh complete `.venv/bin/python -m pytest -q -o faulthandler_timeout=60`
+  passed: **2151 passed, 28 skipped, 24 subtests passed, 3 dependency warnings**
+  in 79.75s. The option adds stack diagnostics, without changing test assertions.
+- Python package-module invariants and mutation anchors were unchanged; their
+  separate verifier sweeps were not rerun. Python coverage was not refreshed.
+
 ## 2026-10-07 embedded manager memory binding
 
 Nil `ManagerServices.Memory` now constructs `WorkspaceRoot/.memory` with the

@@ -129,6 +129,8 @@ evidence. The current Go handler implements these thirty-one method/path operati
 | POST | /sessions/{session_id}/personal-skills/preview | Owned evidence preview; typed policy/validation/syntax errors and strict media; pinned byte, Unicode, numeric and live HTTP depth semantics; alternate stack profiles unverified |
 | POST | /sessions/{session_id}/personal-skills/{draft_id}/commit | Owned reviewed publication; exact cleanup; typed validation/syntax errors and strict media; pinned byte, Unicode, numeric and live HTTP depth semantics; alternate stack profiles unverified |
 | GET | /sessions/{session_id}/skills | Owned retained model-facing catalogue; typed masked description response; publication affects future sessions/forks |
+| GET | /sessions/{session_id}/memory | Owned latest metadata from the fixed scoped store; typed masked response |
+| GET | /sessions/{session_id}/memory/{name} | Owned exact-name body; source missing-name quoting and encoded-slash refusal |
 | GET | /sessions/{session_id}/approvals | Scoped pending approvals |
 | POST | /sessions/{session_id}/approvals/{approval_id} | Bound allow/deny/answer/remember |
 | GET | /sessions/{session_id}/events | Bounded replay/live SSE; configured event-store catch-up (2,000 stored rows), owner admission before read and sequence deduplication; native SQL pending |

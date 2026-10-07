@@ -310,8 +310,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `7197c2c` plus default embedded-manager
-memory binding; remaining route groups and runtime-profile differences remain explicit).
+reviewed **2026-10-07** (Go baseline `82410f0` plus owned memory HTTP views;
+remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -359,7 +359,7 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / drafts · typed admission"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
@@ -1194,6 +1194,15 @@ installs remember/recall, and `--memory-auto=false` disables their automatic
 selection/capture. Both roots must construct successfully, including the shared
 root with owner-local resources selected. Pure configuration inspection does not
 construct them.
+
+Owned memory GET routes read the session's fixed owner binding. The list exposes
+only name/type/description/origin; the body route returns name/type/description/body. Memory
+writes remain visible to existing same-owner sessions, unlike pinned skill
+catalogues. Neither read refreshes owner resource bindings or enables model tools.
+Native backing-store failures return a safe plain 500; a removed root differs from
+Python's empty glob result. Snapshot 89 compares 45 actual Python HTTP outcomes
+across shared, owner-local and anonymous modes; native tests add output masking
+and failure containment.
 
 SQLite durability applies only when a real `StateStore` is configured; the
 default server keeps the documented `Null*` boundaries. Owner skills and
