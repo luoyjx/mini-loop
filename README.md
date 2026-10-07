@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `3c83a34` plus exact problem-log diagnostics;
+reviewed **2026-10-07** (Go baseline `5e0801c` plus live self-audit observation;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoSelfAudit["Go self-audit snapshot library<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
+        GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission"]
@@ -450,6 +450,7 @@ flowchart LR
     Caller --> Entry
     Caller --> GoEntry
     Caller -. explicit typed observations .-> GoSelfAudit
+    GoManaged -. owner admission before diagnostic / recording IO .-> GoSelfAudit
     Caller -. supplied results / transcripts .-> GoBenchmarkLibrary
     GoEntry -->|authenticated fake-only comparison / rate budget| GoBenchmarkLibrary
     GoBenchmarkLibrary -. explicit operator arm create / run / stop .-> GoManager
@@ -1262,19 +1263,28 @@ integer occurrence/lifetime/eviction counters. Repeats retain their original
 position; returning evicted messages restart retained counts. Clear resets counts
 without changing capacity. Snapshots detach slices and integer storage. Approval
 and in-memory action holders now expose the optional typed SelfAuditProblems seam,
-recording every occurrence while preserving their legacy Problems() API. This
-prepares live observation; no new manager collector, model tool or HTTP route is
-installed. Existing stored journals and other holder adapters remain separate.
+recording every occurrence while preserving their legacy Problems() API. The live manager now collects these and native cron, trajectory, skill, task, gate
+and memory diagnostics through detached typed snapshots. Stored-journal diagnostics
+still require an optional adapter; no model tool or HTTP route is installed.
 The Go selfaudit library now renders concrete observations for session activity,
 problem ledgers/counts/churn, trajectory trends, skill-load correlation and cron
 arming. Owner filtering, global inclusion and source scan/report bounds are
 explicit. Suggestions remain strings for human review; benchmark drafts contain
 only a fixed null expectation and cannot become admitted tasks. It performs no
-IO or model calls. The live manager observer, self_audit model tool and three
-HTTP routes remain pending. Snapshot 94 compares actual Python processing over
-26 controlled observable runtime profiles; this is core evidence, not live Go
-collection or route evidence. Adapters must authorize owner scope before storage
+IO or model calls. ObserveSelfAudit reads actual managed sessions and native holders,
+then streams admitted recording events without manager/session locks across IO.
+Snapshot 96 compares six real Python manager/session profiles; native tests exercise
+actual JSONL, scan caps, cancellation, private fault classes and lazy task diagnostics.
+The self_audit model tool and three HTTP routes remain pending. Snapshot 94 retains
+26 source processing profiles. Adapters must authorize owner scope before storage
 reads, mask private output and capture failures without their private messages.
+Owned memory observation reads a binding-local ledger of explicitly attributed
+write/replacement diagnostics. Unreadable shared filenames stay in privileged raw
+store diagnostics. Separate bindings do not aggregate each other; owner resource
+fleet views currently retain attributed binding diagnostics, so unattributed
+per-resource store errors remain a documented collection gap. The observer adds a
+64 MiB total event-byte budget, reported by class if exceeded, alongside source
+100-session/50-recording/200-event limits.
 Personal-skill previews are process-local; a committed `SKILL.md` is durable,
 never replaces an existing skill, and appears only in future session snapshots.
 

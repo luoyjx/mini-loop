@@ -13,6 +13,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/skills"
+	"github.com/luoyjx/mini-loop/go/tasks"
 	"github.com/luoyjx/mini-loop/go/userresources"
 	workspacepkg "github.com/luoyjx/mini-loop/go/workspace"
 )
@@ -37,6 +38,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	taskDiagnostics                                   atomic.Pointer[tasks.Store]
 	skillDrafts                                       *userresources.DraftStore
 	skillPreview                                      *userresources.SkillPreviewer
 	memoryAuto                                        bool

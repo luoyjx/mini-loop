@@ -139,6 +139,9 @@ func BuildReport(observations Observations, scope Scope) string {
 		out = section(out, "sessions", unreadable(observations.SessionsFailure))
 	} else {
 		total := len(observations.Sessions)
+		if observations.TotalSessions != nil {
+			total = *observations.TotalSessions
+		}
 		if scope.Owner != nil {
 			total = len(sessions)
 		}

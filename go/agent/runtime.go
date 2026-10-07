@@ -199,6 +199,7 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 				return "", err
 			}
 		}
+		handler.session.taskDiagnostics.Store(handler.taskStore)
 		return handler.executeTaskBoard(input)
 	case protocol.ToolTask:
 		value, _ := input.Task()

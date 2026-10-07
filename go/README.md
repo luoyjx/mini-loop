@@ -1947,8 +1947,8 @@ limits clamp to one as source. A draft holds NoExpectation, which encodes/decode
 only null and contains no callable. Admitting a task still requires an explicit
 benchmark judge. Snapshot 94 pins 26 actual Python processing profiles.
 
-Live manager collection, model-tool installation and the three self-audit HTTP
-routes remain pending. This package accepts concrete scalar/finite observations;
+Live manager collection is implemented below. Model-tool installation and the
+three self-audit HTTP routes remain pending. This package accepts concrete scalar/finite observations;
 it is not an arbitrary Python object interpreter or an owner-authentication layer.
 
 
@@ -1969,5 +1969,32 @@ source 50-entry retention. Their existing Problems() methods preserve their prio
 100-entry/deduplication contracts. Ledger.Total uses problems.Counter, so supplied
 counts beyond machine integers retain exact decimal output. It does not use floats
 or retain mutable integer aliases. Snapshot 95 pins nine actual source sequences.
-Live manager collection, other diagnostic holders/stored journals, model-tool
-installation and HTTP binding remain pending.
+Native diagnostic holders and live collection are implemented below; stored
+journals without a diagnostic seam, model-tool and HTTP binding remain pending.
+
+
+### Live self-audit collection
+
+`SessionManager.ObserveSelfAudit(ctx, scope)` returns concrete observations for the
+existing pure report/suggestion/draft processors. Embedding callers establish
+authority; authenticated frontends must pair Owner with IncludeGlobal=false.
+It admits owner handles before IO, bounds actual session inspection to 100, keeps
+fleet totals, and never holds manager/session locks during injected callbacks.
+Native holders implement optional ProblemSource; cron snapshots read jobs/arming
+together. Task observation uses the runtime's existing atomic store reference.
+
+Recordings are admitted by session and recorded owner before event reads. Source
+50-recording, recent-20-owned-session, 10-per-session and 200-tool-use limits apply;
+other tools consume the event budget too. Transient wire decoding additionally
+has a total 64 MiB budget. Faults retain class only, and event faults preserve
+trajectory trends. Snapshot 96 compares six actual Python manager constructions,
+while native tests exercise real JSONL, bounded reads, cancellation and concurrency.
+
+A memory binding reports its explicitly attributed write/replacement diagnostics.
+Unreadable shared filenames stay fleet-only; a new binding starts its own ledger.
+The privileged fallback Store exposes its full raw diagnostic snapshot for fleet
+views. Owner-resource fleet observation currently retains binding diagnostics,
+leaving unattributed per-resource errors as a remaining collection gap. This is a
+privacy correction to source shared-memory diagnostic delegation. No model tool
+or HTTP route is installed by this observer; these remain the next composition
+step. Suggestions launch no work and task drafts still contain only null judges.

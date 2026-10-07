@@ -4630,6 +4630,7 @@
         <path data-edge-from="goBenchmark" data-edge-to="goManaged" data-edge-key="41" data-edge-id="goBenchmarkArms" data-composition-points="305,648;325,648;325,920;810,920;810,1018;850,1018" d="M 305 648 L 317 648 Q 325 648 325 656 L 325 912 Q 325 920 333 920 L 802 920 Q 810 920 810 928 L 810 1010 Q 810 1018 818 1018 L 850 1018" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goEntry" data-edge-to="goBenchmark" data-edge-key="42" data-edge-id="goBenchmarkHTTP" data-composition-points="495,876;495,940;20,940;20,648;60,648" d="M 495 876 L 495 932 Q 495 940 487 940 L 28 940 Q 20 940 20 932 L 20 656 Q 20 648 28 648 L 60 648" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="clients" data-edge-to="goSelfAudit" data-edge-key="43" data-edge-id="goSelfAuditObservations" data-composition-points="60,296;10,296;10,1058;60,1058" d="M 60 296 L 18 296 Q 10 296 10 304 L 10 1050 Q 10 1058 18 1058 L 60 1058" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goManaged" data-edge-to="goSelfAudit" data-edge-key="44" data-edge-id="goLiveSelfAudit" data-composition-points="850,1018;820,1018;820,956;315,956;315,1058;305,1058" d="M 850 1018 L 828 1018 Q 820 1018 820 1010 L 820 964 Q 820 956 812 956 L 323 956 Q 315 956 315 964 L 315 1053 Q 315 1058 310 1058 L 305 1058" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4954,15 +4955,15 @@
         <text data-detail="fine" x="495" y="1608" class="t-database" font-size="7" text-anchor="middle">workspace files</text>
         </g>
 
-        <g id="node-goManaged" data-node-id="goManaged" data-node-label="Go SessionManager" tabindex="0" role="button" aria-label="Focus Go SessionManager, owner snapshots / default scoped memory / cleanup, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="owner snapshots / default scoped memory / cleanup" data-node-tag="owners / admitted-turn evidence / pools" data-node-context="Independent Go port - in progress">
-          <title>Go SessionManager · owner snapshots / default scoped memory / cleanup · Independent Go port - in progress · owners / admitted-turn evidence / pools</title>
+        <g id="node-goManaged" data-node-id="goManaged" data-node-label="Go SessionManager" tabindex="0" role="button" aria-label="Focus Go SessionManager, owner snapshots / memory / self-audit / cleanup, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="owner snapshots / memory / self-audit / cleanup" data-node-tag="owners / admitted-turn evidence / pools" data-node-context="Independent Go port - in progress">
+          <title>Go SessionManager · owner snapshots / memory / self-audit / cleanup · Independent Go port - in progress · owners / admitted-turn evidence / pools</title>
           <rect x="850" y="980" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="850" y="980" width="280" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(856 986) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="990" y="1016" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go SessionManager</text>
-        <text data-detail="context" x="990" y="1032" class="t-muted" font-size="9" text-anchor="middle">owner snapshots / default scoped memory / cleanup</text>
+        <text data-detail="context" x="990" y="1032" class="t-muted" font-size="9" text-anchor="middle">owner snapshots / memory / self-audit / cleanup</text>
         <text data-detail="fine" x="990" y="1048" class="t-backend" font-size="7" text-anchor="middle">owners / admitted-turn evidence / pools</text>
         </g>
 
@@ -5002,16 +5003,16 @@
         <text data-detail="fine" x="182.5" y="678" class="t-backend" font-size="7" text-anchor="middle">operator arms / fake-only HTTP</text>
         </g>
 
-        <g id="node-goSelfAudit" data-node-id="goSelfAudit" data-node-label="Go self-audit core" tabindex="0" role="button" aria-label="Focus Go self-audit core, reports / suggestions / inadmissible drafts, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="reports / suggestions / inadmissible drafts" data-node-tag="snapshot lib / broker-journal seam; HTTP pending" data-node-context="Architecture component">
-          <title>Go self-audit core · reports / suggestions / inadmissible drafts · Architecture component · snapshot lib / broker-journal seam; HTTP pending</title>
+        <g id="node-goSelfAudit" data-node-id="goSelfAudit" data-node-label="Go self-audit observer" tabindex="0" role="button" aria-label="Focus Go self-audit observer, reports / suggestions / inadmissible drafts, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="reports / suggestions / inadmissible drafts" data-node-tag="live owner admission / typed snapshots; HTTP pending" data-node-context="Architecture component">
+          <title>Go self-audit observer · reports / suggestions / inadmissible drafts · Architecture component · live owner admission / typed snapshots; HTTP pending</title>
           <rect x="60" y="1020" width="245" height="76" rx="6" class="c-mask"/>
           <rect x="60" y="1020" width="245" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(66 1026) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-detail-anchor x="182.5" y="1056" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go self-audit core</text>
+          <text data-detail-anchor x="182.5" y="1056" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go self-audit observer</text>
         <text data-detail="context" x="182.5" y="1072" class="t-muted" font-size="9" text-anchor="middle">reports / suggestions / inadmissible drafts</text>
-        <text data-detail="fine" x="182.5" y="1088" class="t-backend" font-size="7" text-anchor="middle">snapshot lib / broker-journal seam; HTTP pending</text>
+        <text data-detail="fine" x="182.5" y="1088" class="t-backend" font-size="7" text-anchor="middle">live owner admission / typed snapshots; HTTP pending</text>
         </g>
 
         <!-- Connection labels -->
@@ -5158,6 +5159,7 @@
           <rect x="117.75" y="451" width="82" height="14" rx="3" class="c-mask"/>
           <text x="158.75" y="461" class="t-messagebus" font-size="8" text-anchor="middle">statistics only</text>
         </g>
+
 
 
 

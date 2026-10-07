@@ -11,6 +11,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/luoyjx/mini-loop/go/internal/pytext"
+	"github.com/luoyjx/mini-loop/go/problems"
 	"github.com/luoyjx/mini-loop/go/workspace"
 )
 
@@ -23,13 +24,14 @@ type parsedFile struct {
 // Store owns a serialized process-local cache. File transactions and replacement
 // of multiple memories are not cross-process transactions.
 type Store struct {
-	root      string
-	masker    Masker
-	permit    chan struct{}
-	lifecycle chan struct{}
-	dirty     bool
-	parsed    map[string]parsedFile
-	problems  []Problem
+	root               string
+	masker             Masker
+	permit             chan struct{}
+	lifecycle          chan struct{}
+	dirty              bool
+	parsed             map[string]parsedFile
+	problems           []Problem
+	problemOccurrences problems.Log
 }
 
 func NewStore(ctx context.Context, root string, masker Masker) (*Store, error) {
@@ -62,6 +64,7 @@ func (store *Store) acquire(ctx context.Context) error {
 }
 func (store *Store) release() { store.permit <- struct{}{} }
 func (store *Store) report(message string) {
+	appendDiagnostic(&store.problemOccurrences, message)
 	for i := range store.problems {
 		if store.problems[i].Message == message {
 			store.problems[i].Count++
@@ -124,9 +127,9 @@ func (store *Store) Write(ctx context.Context, owner OwnerID, input Input) (stri
 		return "", err
 	}
 	defer store.release()
-	return store.write(ctx, owner, input)
+	return store.write(ctx, owner, input, nil)
 }
-func (store *Store) write(ctx context.Context, owner OwnerID, input Input) (string, error) {
+func (store *Store) write(ctx context.Context, owner OwnerID, input Input, attributed *problems.Log) (string, error) {
 	for _, field := range []string{input.Name, input.Description, input.Body, string(owner), string(input.Type), string(input.Origin)} {
 		if !utf8.ValidString(field) {
 			return "", errors.New("memory fields must be valid UTF-8")
@@ -151,7 +154,11 @@ func (store *Store) write(ctx context.Context, owner OwnerID, input Input) (stri
 	body := input.Body
 	runes := []rune(body)
 	if len(runes) > MaxBody {
-		store.report(fmt.Sprintf("%s: body truncated from %s to 32,000", normalized, grouped(len(runes))))
+		message := fmt.Sprintf("%s: body truncated from %s to 32,000", normalized, grouped(len(runes)))
+		store.report(message)
+		if attributed != nil {
+			appendDiagnostic(attributed, message)
+		}
 		body = string(runes[:MaxBody]) + "\n[memory truncated]"
 	}
 	text := fmt.Sprintf("---\nname: %s\ndescription: %s\ntype: %s\nscope: user\nowner_key: %s\nowner: %s\norigin: %s\n---\n\n%s\n", name, description, kind, hash(string(owner)), ownerDisplay, origin(input.Origin, Explicit), body)
@@ -376,6 +383,9 @@ func (store *Store) Search(ctx context.Context, owner *OwnerID, query string, li
 	return items, nil
 }
 func (store *Store) ReplaceAll(ctx context.Context, owner *OwnerID, memories []Input, defaultOrigin Origin) error {
+	return store.replaceAll(ctx, owner, memories, defaultOrigin, nil)
+}
+func (store *Store) replaceAll(ctx context.Context, owner *OwnerID, memories []Input, defaultOrigin Origin, attributed *problems.Log) error {
 	if err := store.acquire(ctx); err != nil {
 		return err
 	}
@@ -409,7 +419,7 @@ func (store *Store) ReplaceAll(ctx context.Context, owner *OwnerID, memories []I
 	}
 	for _, input := range memories {
 		input.Origin = origin(input.Origin, origin(defaultOrigin, Imported))
-		if _, err := store.write(ctx, replacementOwner, input); err != nil {
+		if _, err := store.write(ctx, replacementOwner, input, attributed); err != nil {
 			return err
 		}
 	}

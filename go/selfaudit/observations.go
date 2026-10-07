@@ -79,6 +79,8 @@ type Cron struct {
 	Failure *Failure `json:"failure,omitempty"`
 }
 type Observations struct {
+	// TotalSessions preserves fleet size without inspecting every handle. Ignored for owner views.
+	TotalSessions   *int          `json:"total_sessions,omitempty"`
 	Sessions        []Session     `json:"sessions"`
 	SessionsFailure *Failure      `json:"sessions_failure,omitempty"`
 	Problems        GlobalLedgers `json:"problems"`

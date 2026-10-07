@@ -6730,6 +6730,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-benchmark-http.json": _json_bytes(_benchmark_http_contracts()),
         "python-self-audit.json": _json_bytes(_self_audit_contracts()),
         "python-problem-log.json": _json_bytes(_problem_log_contracts()),
+        "python-self-audit-manager.json": _json_bytes(_self_audit_manager_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7791,6 +7792,48 @@ def _problem_log_contracts() -> dict:
                 summary=log.summary(), error=error,
             ))
         cases.append(dict(name=name, limit=limit, steps=steps))
+    return dict(cases=cases)
+
+
+def _self_audit_manager_contracts() -> dict:
+    """Actual manager/session construction and activity/owner scan projections."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.self_audit import build_report
+
+    mixed = [dict(owner="alice", created=1.0, status="idle"),
+             dict(owner="bob", created=3.0, status="error"),
+             dict(owner="alice", created=2.0, status="running")]
+    capped = [dict(owner="alice", created=float(i), status="idle") for i in range(105)]
+    cases = []
+
+    async def capture(root, name, rows, owner=None, include_global=True):
+        settings = Settings(workspace_root=root / name, trajectory_enabled=False)
+        manager = SessionManager(settings, FakeAsyncAnthropic())
+        try:
+            for row in rows:
+                session = manager.create(owner=row["owner"], permission_mode="auto")
+                session.created_at = row["created"]
+                session.status = row["status"]
+            cases.append(dict(name=name, sessions=rows, owner=owner,
+                              include_global=include_global,
+                              report=build_report(manager, owner=owner,
+                                                  include_global=include_global)))
+        finally:
+            await manager.stop()
+
+    async def run(root):
+        await capture(root, "empty", [])
+        await capture(root, "fleet", mixed)
+        await capture(root, "owned", mixed, "alice", False)
+        await capture(root, "unknown-owner", mixed, "nobody", False)
+        await capture(root, "fleet-cap", capped)
+        await capture(root, "owner-cap", capped, "alice", False)
+
+    with tempfile.TemporaryDirectory(prefix="go-self-audit-manager-") as scratch:
+        asyncio.run(run(Path(scratch)))
     return dict(cases=cases)
 
 

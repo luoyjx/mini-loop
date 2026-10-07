@@ -2063,7 +2063,8 @@ selection as in source; authenticated routes must select owner and false.
 
 The library neither launches suggested objectives nor installs benchmark drafts.
 NoExpectation carries only null, and benchmark task construction still requires
-a reviewed judge. Live manager/model-tool/HTTP binding remains pending.
+a reviewed judge. Live manager binding is implemented; model-tool/HTTP binding
+remains pending.
 
 
 ### Exact diagnostic ledger seam
@@ -2078,6 +2079,11 @@ JSON integers with decimal report formatting; Counter.BigInt gives a detached co
 Live collectors must establish owner scope before IO. The source ScopedMemory
 proxy delegates problems to its backing store through __getattr__; shared stores
 can therefore mix tenants' diagnostic filenames. That accessor alone is not
-owner attribution. The native collector must resolve this boundary before adding
-shared memory to authenticated reports. Other diagnostic/store adapters remain
-pending; no fake empty report is installed by this primitive.
+owner attribution. Native ScopedStore exposes only explicitly attributed
+write/replacement diagnostics from that binding. Unattributed filenames stay in
+privileged raw-store diagnostics; binding ledgers do not aggregate one another.
+ObserveSelfAudit admits owner handles before IO, validates recording metadata
+before event visits and releases manager/session locks before injected callbacks.
+Existing native holders expose optional ProblemSource; stored journals still need
+an adapter. Authenticated frontends must set Owner and IncludeGlobal=false.
+No model-tool/HTTP route is installed by this observer.

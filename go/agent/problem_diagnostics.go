@@ -32,3 +32,9 @@ func (journal *InMemoryActionJournal) SelfAuditProblems() selfaudit.Ledger {
 	defer journal.mu.Unlock()
 	return problemObservation(journal.problemOccurrences)
 }
+
+func (gate *ToolGate) SelfAuditProblems() selfaudit.Ledger {
+	gate.mu.Lock()
+	defer gate.mu.Unlock()
+	return problemObservation(gate.problemOccurrences)
+}

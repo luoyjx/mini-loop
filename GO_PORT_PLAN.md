@@ -1,5 +1,47 @@
 # Go port plan
 
+## 2026-10-07 live self-audit observation
+
+SessionManager.ObserveSelfAudit now reads actual sessions, native problem holders,
+cron jobs/arming and streamed recording tool-use events into the existing concrete
+processing core. Owner handle admission precedes injected service IO; only the
+recent 100 handles are inspected and fleet totals are preserved without broad Info
+projection. Owner observations never contain the other owners' fleet total. Native
+cron, trajectory, skill, task and gate adapters join approval/action snapshots.
+Task observation uses the already-created runtime Store through an atomic pointer;
+it does not initialize a task board. No manager/session lock spans IO/callbacks.
+
+Source recording budgets apply before body IO (50 global, recent 20 owned sessions
+with 10 each, cap 50, 200 tool-use events). Returned owner/session metadata is
+checked. Transient known wire decoding adds a total 64 MiB budget and visible
+ObservationLimitError. Callback panics and errors become private class-only
+failures; event failures preserve successful trajectory trends.
+
+Memory raw stores now count exact diagnostic occurrences. Bound views keep only
+known-owner write/replacement occurrences, bounded separately per binding. Raw
+unreadable filenames cannot establish ownership and remain privileged fleet data.
+This intentionally corrects source ScopedMemory delegation; separate bindings do
+not aggregate one another. Unattributed per-owner-resource store errors in fleet
+views and native machine-counter overflow limits remain explicit gaps.
+
+Snapshot 96 compares six actual Python managers/sessions: empty, mixed activity,
+owner filtering, unknown owner, fleet and owned 100-session caps. No normalization.
+Native tests read real runtime JSONL and exercise read admission/budgets, private
+faults/panics, cancellation, concurrent snapshots, lazy task diagnostics and memory
+isolation. Model-tool installation, three HTTP routes, stored-journal diagnostic
+adapters and the broader G0–G7 migration remain open. HTTP stays 34 ops/31 patterns.
+
+Validation passed: focused actual-source/native observer tests, full Go tests and
+race tests (`-count=1 -timeout=180s`), `go vet ./...`, all 96 contract exports
+(`--check`) and all 19 scan anchors. After every preceding process finished,
+isolated Python pytest passed: 2151 tests, 28 skipped, 24 subtests, 3 dependency
+deprecation warnings in 88.77s. `git diff --check` and README outline pass. Archify
+passes 9/9 automatic checks after repairing the added edge's corridor; HTML is
+regenerated. Visual inspection remains skipped after the earlier denial and was
+not retried. Python invariant/guard mutation sweeps were not rerun because no
+Python package module or guarded Python behavior changed. Overall coverage was
+not refreshed in this iteration.
+
 ## 2026-10-07 exact problem ledger and diagnostic snapshots
 
 Live self-audit collection exposed a prerequisite: approval and in-memory action

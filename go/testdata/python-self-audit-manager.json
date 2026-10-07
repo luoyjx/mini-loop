@@ -1,0 +1,1146 @@
+{
+  "cases": [
+    {
+      "include_global": true,
+      "name": "empty",
+      "owner": null,
+      "report": "# self-audit\n## sessions (0)\n(nothing)\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+      "sessions": []
+    },
+    {
+      "include_global": true,
+      "name": "fleet",
+      "owner": null,
+      "report": "# self-audit\n## sessions (3)\n1 error\n1 idle\n1 running\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+      "sessions": [
+        {
+          "created": 1.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 3.0,
+          "owner": "bob",
+          "status": "error"
+        },
+        {
+          "created": 2.0,
+          "owner": "alice",
+          "status": "running"
+        }
+      ]
+    },
+    {
+      "include_global": false,
+      "name": "owned",
+      "owner": "alice",
+      "report": "# self-audit\n## sessions (2)\n1 idle\n1 running\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)",
+      "sessions": [
+        {
+          "created": 1.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 3.0,
+          "owner": "bob",
+          "status": "error"
+        },
+        {
+          "created": 2.0,
+          "owner": "alice",
+          "status": "running"
+        }
+      ]
+    },
+    {
+      "include_global": false,
+      "name": "unknown-owner",
+      "owner": "nobody",
+      "report": "# self-audit\n## sessions (0)\n(nothing)\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)",
+      "sessions": [
+        {
+          "created": 1.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 3.0,
+          "owner": "bob",
+          "status": "error"
+        },
+        {
+          "created": 2.0,
+          "owner": "alice",
+          "status": "running"
+        }
+      ]
+    },
+    {
+      "include_global": true,
+      "name": "fleet-cap",
+      "owner": null,
+      "report": "# self-audit\n## sessions (105)\n100 idle\n(distribution over the 100 most recent of 105 sessions)\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+      "sessions": [
+        {
+          "created": 0.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 1.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 2.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 3.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 4.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 5.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 6.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 7.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 8.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 9.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 10.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 11.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 12.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 13.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 14.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 15.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 16.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 17.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 18.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 19.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 20.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 21.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 22.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 23.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 24.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 25.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 26.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 27.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 28.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 29.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 30.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 31.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 32.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 33.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 34.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 35.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 36.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 37.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 38.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 39.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 40.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 41.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 42.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 43.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 44.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 45.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 46.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 47.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 48.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 49.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 50.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 51.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 52.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 53.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 54.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 55.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 56.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 57.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 58.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 59.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 60.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 61.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 62.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 63.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 64.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 65.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 66.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 67.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 68.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 69.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 70.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 71.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 72.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 73.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 74.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 75.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 76.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 77.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 78.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 79.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 80.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 81.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 82.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 83.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 84.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 85.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 86.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 87.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 88.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 89.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 90.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 91.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 92.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 93.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 94.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 95.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 96.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 97.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 98.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 99.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 100.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 101.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 102.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 103.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 104.0,
+          "owner": "alice",
+          "status": "idle"
+        }
+      ]
+    },
+    {
+      "include_global": false,
+      "name": "owner-cap",
+      "owner": "alice",
+      "report": "# self-audit\n## sessions (100)\n100 idle\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)",
+      "sessions": [
+        {
+          "created": 0.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 1.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 2.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 3.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 4.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 5.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 6.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 7.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 8.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 9.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 10.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 11.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 12.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 13.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 14.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 15.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 16.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 17.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 18.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 19.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 20.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 21.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 22.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 23.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 24.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 25.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 26.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 27.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 28.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 29.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 30.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 31.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 32.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 33.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 34.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 35.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 36.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 37.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 38.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 39.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 40.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 41.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 42.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 43.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 44.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 45.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 46.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 47.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 48.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 49.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 50.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 51.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 52.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 53.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 54.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 55.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 56.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 57.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 58.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 59.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 60.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 61.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 62.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 63.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 64.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 65.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 66.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 67.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 68.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 69.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 70.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 71.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 72.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 73.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 74.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 75.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 76.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 77.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 78.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 79.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 80.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 81.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 82.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 83.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 84.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 85.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 86.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 87.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 88.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 89.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 90.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 91.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 92.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 93.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 94.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 95.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 96.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 97.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 98.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 99.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 100.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 101.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 102.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 103.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 104.0,
+          "owner": "alice",
+          "status": "idle"
+        }
+      ]
+    }
+  ]
+}

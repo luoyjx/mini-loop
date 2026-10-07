@@ -3,19 +3,22 @@ package memory
 import (
 	"context"
 	"errors"
+
+	"github.com/luoyjx/mini-loop/go/problems"
 )
 
 // ScopedStore exposes no owner override. Replacement always uses the bound owner.
 type ScopedStore struct {
-	store *Store
-	owner OwnerID
+	store       *Store
+	owner       OwnerID
+	diagnostics problems.Log
 }
 
 func Bind(store *Store, owner OwnerID) (*ScopedStore, error) {
 	if store == nil {
 		return nil, errors.New("memory store is required")
 	}
-	return &ScopedStore{store, owner}, nil
+	return &ScopedStore{store: store, owner: owner}, nil
 }
 func (s *ScopedStore) Owner() OwnerID { return s.owner }
 
@@ -40,7 +43,11 @@ func (s *ScopedStore) WithLifecycle(ctx context.Context, run func() error) error
 }
 
 func (s *ScopedStore) Write(ctx context.Context, input Input) (string, error) {
-	return s.store.Write(ctx, s.owner, input)
+	if err := s.store.acquire(ctx); err != nil {
+		return "", err
+	}
+	defer s.store.release()
+	return s.store.write(ctx, s.owner, input, &s.diagnostics)
 }
 func (s *ScopedStore) List(ctx context.Context) ([]Record, error) { return s.store.List(ctx, &s.owner) }
 func (s *ScopedStore) Index(ctx context.Context) (string, error)  { return s.store.Index(ctx, &s.owner) }
@@ -48,5 +55,5 @@ func (s *ScopedStore) Search(ctx context.Context, query string, limit int) ([]Re
 	return s.store.Search(ctx, &s.owner, query, limit)
 }
 func (s *ScopedStore) ReplaceAll(ctx context.Context, memories []Input, origin Origin) error {
-	return s.store.ReplaceAll(ctx, &s.owner, memories, origin)
+	return s.store.replaceAll(ctx, &s.owner, memories, origin, &s.diagnostics)
 }

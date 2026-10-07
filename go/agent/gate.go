@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+
+	"github.com/luoyjx/mini-loop/go/problems"
 	"sync"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
@@ -97,17 +99,18 @@ type GateHooks struct {
 }
 
 type ToolGate struct {
-	modeSource permissionModeSource
-	catalog    *ToolCatalog
-	policy     *PermissionPolicy
-	before     []BeforeHook
-	guards     []GuardHook
-	after      []AfterHook
-	observers  []ResultObserver
-	mu         sync.Mutex
-	problems   []string
-	journal    ActionJournal
-	secrets    TextMasker
+	modeSource         permissionModeSource
+	catalog            *ToolCatalog
+	policy             *PermissionPolicy
+	before             []BeforeHook
+	guards             []GuardHook
+	after              []AfterHook
+	observers          []ResultObserver
+	mu                 sync.Mutex
+	problems           []string
+	problemOccurrences *problems.Log
+	journal            ActionJournal
+	secrets            TextMasker
 }
 
 const maxGateProblems = 100
@@ -147,6 +150,7 @@ func (gate *ToolGate) Problems() []string {
 func (gate *ToolGate) recordProblem(problem string) {
 	gate.mu.Lock()
 	defer gate.mu.Unlock()
+	recordProblemOccurrence(&gate.problemOccurrences, problem)
 	if len(gate.problems) == maxGateProblems {
 		copy(gate.problems, gate.problems[1:])
 		gate.problems[len(gate.problems)-1] = problem

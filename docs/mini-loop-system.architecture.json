@@ -477,7 +477,7 @@
       "id": "goManaged",
       "type": "backend",
       "label": "Go SessionManager",
-      "sublabel": "owner snapshots / default scoped memory / cleanup",
+      "sublabel": "owner snapshots / memory / self-audit / cleanup",
       "pos": [
         850,
         980
@@ -536,7 +536,7 @@
     {
       "id": "goSelfAudit",
       "type": "backend",
-      "label": "Go self-audit core",
+      "label": "Go self-audit observer",
       "sublabel": "reports / suggestions / inadmissible drafts",
       "pos": [
         60,
@@ -546,7 +546,7 @@
         245,
         76
       ],
-      "tag": "snapshot lib / broker-journal seam; HTTP pending"
+      "tag": "live owner admission / typed snapshots; HTTP pending"
     }
   ],
   "boundaries": [
@@ -1287,6 +1287,33 @@
         ],
         [
           10,
+          1058
+        ]
+      ]
+    },
+    {
+      "id": "goLiveSelfAudit",
+      "from": "goManaged",
+      "to": "goSelfAudit",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "right",
+      "route": "orthogonal-v",
+      "via": [
+        [
+          820,
+          1018
+        ],
+        [
+          820,
+          956
+        ],
+        [
+          315,
+          956
+        ],
+        [
+          315,
           1058
         ]
       ]

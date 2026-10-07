@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (95 generated snapshots), plus registry masking,
+the current implementation (96 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -477,8 +477,8 @@ Snapshot 94 compares 26 actual source processing profiles, including scope,
 empty/missing seams, Unicode/deduplication, scan/report caps and independent
 collection/inspection/event failures. No report fields or timings are normalized.
 Native tests also refuse non-null draft expectations and check input immutability.
-This remains an explicit snapshot library: live manager collection, runtime tool
-installation and three HTTP routes remain pending. It does not synthesize empty
+Snapshot 94 proves the processing library; manager collection is now implemented
+as described below. Runtime tool installation and three HTTP routes remain pending. It does not synthesize empty
 reports for unimplemented services. Source parity evidence covers scalar UTF-8 and finite numeric observation
 profiles; arbitrary malformed Python namespace values are not claimed covered. No HTTP inventory/G7 acceptance is added by these core checks.
 
@@ -503,5 +503,42 @@ SelfAuditProblems. ApprovalBroker and InMemoryActionJournal record every diagnos
 occurrence before their legacy deduplication; existing Problems() remains unchanged.
 Native tests trigger repeated real reviewer faults and result shedding, checking
 counted snapshots, private panic omission, old API behavior and replay authority.
-Live manager collection, other holder/store adapters, model tool and the three
-HTTP routes remain pending; inventory stays 34 operations/31 patterns.
+Manager collection and native holder adapters are now implemented below. Stored
+journals without a diagnostic seam, model tool and the three HTTP routes remain
+pending; inventory stays 34 operations/31 patterns.
+
+
+## Live self-audit observation
+
+SessionManager.ObserveSelfAudit captures owner-admitted handles before any injected
+service IO, sorts actual immutable creation times and inspects at most 100 handles.
+TotalSessions retains fleet size without inspecting older handles and is scoped
+to the bounded owned set in owner observations. No manager/session lock spans IO.
+Native cron, trajectory, skill, task, approval, action and gate holders supply
+detached typed ProblemSource ledgers; task diagnostics use the already-created
+runtime store through an atomic pointer, never initializing a second board. Cron
+jobs and arming are read atomically without retaining prompts or targets.
+
+Fleet recordings use list(50); owner reads query only admitted recent 20 sessions
+with per-session list(10), cap 50 before event IO, verify returned session/owner
+metadata and request tool_use events with a 200-event budget. All other tool uses
+consume that budget. A total 64 MiB event-byte budget bounds wire decoding and
+returns ObservationLimitError; raw JSON is transient ingress only. List/event
+faults and panics retain class-only failures; event faults preserve trend results.
+
+Memory raw stores retain exact full diagnostics. Fixed-owner bindings retain only
+known-owner write/replacement diagnostics in separate bounded logs. Unreadable
+shared files cannot establish an owner and are fleet-only. This intentionally
+corrects source ScopedMemory's shared problems delegation; bindings do not share
+observations merely because they have the same owner. Unattributed errors from
+per-owner resource stores are not yet available in fleet collection. Existing
+cron/trajectory/skill/task counters retain their native machine-sized storage;
+the adapter does not claim to remove those overflow limits.
+
+Snapshot 96 constructs actual Python SessionManager/AgentSession instances for six
+empty, mixed activity/owner, unknown-owner and 100-session cap profiles. Reports
+match exactly with no normalization. Native tests cover actual JSONL turns, owner
+admission before event IO, 20/10/50/200 budgets, cancellation, panic/error isolation,
+concurrent snapshots, lazy task faults and unattributed-memory filename omission.
+No HTTP inventory acceptance is added; model-tool/HTTP binding and other migration
+rows, including stored persistence/teams/workflows, remain open.
