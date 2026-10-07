@@ -1,5 +1,24 @@
 # Go port plan
 
+## 2026-10-08 offline documentation example verification
+
+Baseline 084ee79; full G0–G7 remains open. The runnable documentation test gave
+its preamble fake settings/client, but the README composition example reloads
+settings and builds a new client. Host environment could therefore select the
+real provider during a supposedly offline suite. The test now pins
+MINILOOP_FAKE_LLM=1 and MINILOOP_FAKE_DELAY=0 with monkeypatch before executing
+runnable blocks. It still executes the documented production construction seams;
+illustrative blocks keep their existing skips. Runtime behavior is unchanged.
+
+A first full suite was interrupted after checking the live process and finding
+the documented-example working directory and an unpinned provider selection.
+Its eventual interrupted output had 2,148 passed, 28 skipped and exit 2 in 334.91s;
+it is not a successful gate. After fixing the fixture, the focused documentation
+suite passed (15/12 in 0.35s) and a new isolated full suite passed: 2,155 tests,
+28 skipped, 24 subtests, three dependency deprecations in 78.54s. The original
+process was confirmed terminal before the new run. This test correction is
+committed independently. README baseline/validation prose and diff check passed.
+
 ## 2026-10-08 unconstrained source object schema
 
 Baseline 1abfa99; full G0–G7 remains open. Python send_message advertises

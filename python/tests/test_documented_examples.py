@@ -133,6 +133,10 @@ def test_a_documented_example_still_works(tmp_path, monkeypatch, doc, index, cod
     if placeholders:
         pytest.skip(f"illustrative: stands in for {sorted(placeholders)}")
 
+    # Runnable examples may reload Settings and build their own client. Keep
+    # that real construction seam offline even when the host has credentials.
+    monkeypatch.setenv("MINILOOP_FAKE_LLM", "1")
+    monkeypatch.setenv("MINILOOP_FAKE_DELAY", "0")
     monkeypatch.chdir(tmp_path)
     namespace = _preamble(tmp_path)
     namespace["__name__"] = "__doc_example__"

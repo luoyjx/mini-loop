@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `1abfa99` plus source unconstrained-object schemas;
+reviewed **2026-10-08** (Go baseline `084ee79` plus offline documentation-example verification;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1464,7 +1464,9 @@ integration; it does not enable workflows on the default FastAPI server.
 
 ## Validation
 
-The default test suite is offline and deterministic:
+The default test suite is offline and deterministic. Runnable documentation
+examples select the fake provider inside their test fixture, including examples
+that reload settings and construct their own client:
 
 ```sh
 .venv/bin/python -m pytest -q
