@@ -362,3 +362,10 @@ lease requirement and strict ledger supply are implemented. Readonly can preview
 Native before/during request lease loss maps to safe 409; turns retain idle status
 and count, with separate private cancellation/join on deletion/stop. This join
 extends source turn-only cleanup. Commit/publication HTTP routes remain open.
+
+Manager reviewed commit (2026-10-07): snapshot 79 compares six actual source
+owner/readonly/digest/publication/retention/idempotency cases. Commit now shares
+preview admission/lease/lifetime, publishes through the typed create-only resolver
+and discards exact identity only after success. Failure retains drafts; receipts
+activate in future sessions and preserve source status/message classification.
+HTTP preview/commit routes and final lifecycle audit remain open.

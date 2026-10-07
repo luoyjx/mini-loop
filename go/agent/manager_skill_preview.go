@@ -21,22 +21,51 @@ const (
 
 // PersonalSkillError contains only stable public policy facts.
 type PersonalSkillError struct {
-	code   PersonalSkillCode
-	status int
+	code    PersonalSkillCode
+	status  int
+	message string
 }
 
-func (e *PersonalSkillError) Error() string           { return strings.ReplaceAll(string(e.code), "_", " ") }
+func (e *PersonalSkillError) Error() string {
+	if e.message != "" {
+		return e.message
+	}
+	return strings.ReplaceAll(string(e.code), "_", " ")
+}
 func (e *PersonalSkillError) Code() PersonalSkillCode { return e.code }
 func (e *PersonalSkillError) StatusCode() int         { return e.status }
 func skillPolicyError(code PersonalSkillCode, status int) error {
-	return &PersonalSkillError{code, status}
+	return &PersonalSkillError{code: code, status: status}
 }
 
-// A preview owns admission without becoming a conversation turn. Operator turn
-// cancellation/status remain unchanged; Delete/Stop explicitly join this work.
-type skillPreviewOperation struct {
-	cancel context.CancelCauseFunc
-	done   chan struct{}
+// A skill operation owns admission without becoming a conversation turn.
+// Delete/Stop join its lifetime; publication success has a separate commit point.
+type personalSkillOperation struct {
+	ctx     context.Context
+	session *ManagedSession
+	cancel  context.CancelCauseFunc
+	done    chan struct{}
+	unbind  func()
+}
+
+func (operation *personalSkillOperation) finish() {
+	operation.unbind()
+	operation.cancel(nil)
+	session := operation.session
+	session.mu.Lock()
+	session.skillOperation = nil
+	close(operation.done)
+	session.mu.Unlock()
+	session.admission <- struct{}{}
+}
+func (operation *personalSkillOperation) failure(err error) error {
+	if errors.Is(context.Cause(operation.ctx), ErrSessionLeaseLost) || errors.Is(err, ErrSessionLeaseLost) {
+		return skillPolicyError(SkillLeaseLost, 409)
+	}
+	if operation.ctx.Err() != nil {
+		return operation.ctx.Err()
+	}
+	return err
 }
 
 func (manager *SessionManager) personalSkillTarget(owner OwnerID, id SessionID) (*ManagedSession, error) {
@@ -56,73 +85,69 @@ func (manager *SessionManager) personalSkillTarget(owner OwnerID, id SessionID) 
 	return session, nil
 }
 
-// PreviewPersonalSkill is an owner-scoped operator operation. It supplies the
-// admitted-turn ledger even when empty and grants no publication permission.
-func (manager *SessionManager) PreviewPersonalSkill(ctx context.Context, owner OwnerID, id SessionID, name, focus string) (preview userresources.DraftPreview, err error) {
+func (manager *SessionManager) startPersonalSkillOperation(ctx context.Context, owner OwnerID, id SessionID) (*personalSkillOperation, error) {
 	session, err := manager.personalSkillTarget(owner, id)
 	if err != nil {
-		return preview, err
+		return nil, err
 	}
 	select {
 	case <-ctx.Done():
-		return preview, ctx.Err()
+		return nil, ctx.Err()
 	case <-session.admission:
 	}
-	defer func() { session.admission <- struct{}{} }()
 	if err = ctx.Err(); err != nil {
-		return preview, err
+		session.admission <- struct{}{}
+		return nil, err
 	}
 	manager.mu.Lock()
 	session.mu.Lock()
 	if manager.sessions[id] != session || !session.accepting {
 		session.mu.Unlock()
 		manager.mu.Unlock()
-		return preview, skillPolicyError(SkillSessionNotFound, 404)
+		session.admission <- struct{}{}
+		return nil, skillPolicyError(SkillSessionNotFound, 404)
 	}
 	operationCtx, cancel := context.WithCancelCause(ctx)
-	operation := &skillPreviewOperation{cancel: cancel, done: make(chan struct{})}
-	session.skillPreviewOperation = operation
+	operation := &personalSkillOperation{ctx: operationCtx, session: session, cancel: cancel, done: make(chan struct{})}
+	session.skillOperation = operation
 	session.mu.Unlock()
 	manager.mu.Unlock()
-	unbind := session.core.persistence.bindTurn(cancel)
-	var draft userresources.Draft
-	defer func() {
-		if errors.Is(context.Cause(operationCtx), ErrSessionLeaseLost) || errors.Is(err, ErrSessionLeaseLost) {
-			err = skillPolicyError(SkillLeaseLost, 409)
-		} else if operationCtx.Err() != nil {
-			err = operationCtx.Err()
-		}
-		if err != nil {
-			manager.skillDrafts.DiscardCommitted(draft)
-			preview = userresources.DraftPreview{}
-		}
-		unbind()
-		cancel(nil)
-		session.mu.Lock()
-		session.skillPreviewOperation = nil
-		close(operation.done)
-		session.mu.Unlock()
-	}()
+	operation.unbind = session.core.persistence.bindTurn(cancel)
 	if err = session.core.persistence.requireLease(operationCtx); err != nil {
-		return preview, err
+		err = operation.failure(err)
+		operation.finish()
+		return nil, err
 	}
-	session.core.mu.Lock()
-	defer session.core.mu.Unlock()
-	draft, err = session.core.previewPersonalSkillLocked(operationCtx, name, focus, &session.skillCapture)
-	if err == nil {
-		preview = draft.Preview()
-	}
-	return preview, err
+	return operation, nil
 }
 
-func (session *ManagedSession) hasSkillPreview() bool {
+// PreviewPersonalSkill supplies the admitted ledger even when empty.
+func (manager *SessionManager) PreviewPersonalSkill(ctx context.Context, owner OwnerID, id SessionID, name, focus string) (preview userresources.DraftPreview, err error) {
+	operation, err := manager.startPersonalSkillOperation(ctx, owner, id)
+	if err != nil {
+		return preview, err
+	}
+	defer operation.finish()
+	session := operation.session
+	session.core.mu.Lock()
+	defer session.core.mu.Unlock()
+	draft, err := session.core.previewPersonalSkillLocked(operation.ctx, name, focus, &session.skillCapture)
+	err = operation.failure(err)
+	if err != nil {
+		manager.skillDrafts.DiscardCommitted(draft)
+		return preview, err
+	}
+	return draft.Preview(), nil
+}
+
+func (session *ManagedSession) hasPersonalSkillOperation() bool {
 	session.mu.Lock()
 	defer session.mu.Unlock()
-	return session.skillPreviewOperation != nil
+	return session.skillOperation != nil
 }
-func (session *ManagedSession) drainSkillPreview(grace time.Duration) {
+func (session *ManagedSession) drainPersonalSkillOperation(grace time.Duration) {
 	session.mu.Lock()
-	operation := session.skillPreviewOperation
+	operation := session.skillOperation
 	session.mu.Unlock()
 	if operation == nil {
 		return

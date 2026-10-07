@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `ec7c2a1` plus owned Manager skill preview).
+reviewed **2026-10-07** (Go baseline `6b3770d` plus reviewed Manager skill publication).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -401,7 +401,7 @@ flowchart LR
         GoCronRunner -->|fresh untrusted serialized turn| GoManaged
         GoCronRunner -. stable identity lookup / restore .-> GoManager
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
-        GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · no publication flow"]
+        GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · operator create-only publication"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
@@ -423,7 +423,7 @@ flowchart LR
         GoTraceCLI --> GoTraceView
         GoSession -->|parallel groups / barriers| GoGate --> GoBash
         GoGate --> GoFiles
-        GoManager -. owner / admission / lease / preview .-> GoDraftLibrary
+        GoManager -. owner / admission / lease / preview + commit .-> GoDraftLibrary
         GoSession -. standalone non-live preview .-> GoDraftLibrary
         GoSession -. writable auto-memory lifecycle .-> GoFiles
         GoGate --> GoResources
@@ -1136,8 +1136,13 @@ publication configuration and rechecks accepting identity after admission. It
 requires the lease and always supplies the capture ledger, including empty state.
 Previews retain idle turn status and count; a separate private lifetime is cancelled
 and joined by deletion/stop, including lease-acquisition waiting. This native
-join is additional to Python’s currently turn-only cleanup. Commit and HTTP
-publication routes remain pending; previews grant no publication authority.
+join is additional to Python’s currently turn-only cleanup. CommitPersonalSkill
+now rejects readonly before peeking at the owner/session/digest-bound draft.
+It publishes through the existing create-only resolver, returns next_session
+activation, then discards only the exact draft. Publication failure retains the
+draft; expiry/cancellation after durable success cannot rewrite the receipt.
+Existing live snapshots remain unchanged. HTTP preview/commit routes remain
+pending; previews grant no publication authority.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

@@ -119,7 +119,7 @@ func TestManagerSkillPreviewDeleteAndStopJoin(t *testing.T) {
 			if err := <-result; !errors.Is(err, context.Canceled) {
 				t.Fatal(err)
 			}
-			if session.hasSkillPreview() {
+			if session.hasPersonalSkillOperation() {
 				t.Fatal("preview lifetime retained")
 			}
 		})
@@ -249,7 +249,7 @@ func TestManagerSkillPreviewMidRequestLeaseLoss(t *testing.T) {
 	store.mu.Unlock()
 	_, err := manager.PreviewPersonalSkill(context.Background(), "alice", session.ID(), "recipe", "")
 	requireSkillPolicy(t, err, SkillLeaseLost, 409)
-	if session.hasSkillPreview() {
+	if session.hasPersonalSkillOperation() {
 		t.Fatal("lost lease retained operation")
 	}
 }

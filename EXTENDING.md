@@ -1411,7 +1411,7 @@ propagate. Closed JSON Value maps are transient boundary projections, not retain
 service state. Model adapters must extract text blocks and preserve source normal
 model recovery/telemetry with non-live history/meter ownership, empty tools and
 personal_skill_preview purpose. Managed callers must hold admission/lease and
-supply a ledger; this library enforces no session/HTTP authority itself. Those
+supply a ledger; this library enforces no session/HTTP authority itself. The
 manager preview binding is described below; commit and HTTP routes remain pending.
 Standalone Session.PreviewPersonalSkill now serializes with the core turn gate
 and binds owner/session from runtime configuration. Its native adapter calls
@@ -1432,7 +1432,15 @@ session_lease_lost/409. A separate preview lifetime does not change run status,
 count or operator turn-cancel behavior. StopAccepting cancels it; deletion/stop
 join it before closing services, releasing leases or reclaiming workspace.
 That join extends the source turn-only cleanup. Context cancellation discards
-any exact retained draft before returning failure. Commit/HTTP routes remain open.
+any exact retained draft before returning failure. CommitPersonalSkill now shares the same admission/lease/lifetime seam. Readonly
+refusal precedes Peek; source reviewed fields publish through Resolver.PublishSkill.
+A typed receipt binds session/draft/canonical digest, user source, body digest,
+optional warning, idempotency and next_session activation. Reviewed publication
+errors retain code/message with source 409/422/500 status; unknown faults/panics
+use publication_failed/500 without host text. Failures retain drafts. Durable
+success discards only the exact Peek identity and bypasses cancellation/TTL
+checks after the commit point. Existing snapshots remain immutable; future
+sessions resolve the new catalogue. HTTP routes remain open.
 
 ### Go trusted session resource binding
 

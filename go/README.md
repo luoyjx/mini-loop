@@ -1666,3 +1666,12 @@ private preview lifetime retains idle turn status/count and turn-cancel behavior
 Go explicitly cancels and joins it on deletion/stop, adding to source turn-only
 cleanup. Lease loss maps to a safe 409 before and during requests. Commit and
 HTTP routes remain pending; no publication permission or model tool is added.
+
+### Reviewed manager skill commit
+
+CommitPersonalSkill shares owned admission/lease/lifetime with preview, checks
+readonly, peeks exact authority/digest, publishes create-only fields and discards
+only after success. The typed receipt activates in next_session; existing live
+resources remain pinned. Failure retains the draft, and durable success survives
+TTL/cancellation after the file commit. Snapshot 79 compares six actual source
+commit/retention outcomes. No model tool is added; HTTP routes remain pending.

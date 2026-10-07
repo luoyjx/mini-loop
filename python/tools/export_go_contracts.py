@@ -6437,6 +6437,55 @@ def _manager_skill_preview_contracts(scratch: Path) -> dict:
     return dict(cases=asyncio.run(run()))
 
 
+def _manager_skill_commit_contracts(scratch: Path) -> dict:
+    """Actual manager reviewed-draft publication and retention ordering."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.skills import SkillLoader
+    from mini_loop.skill_capture import PersonalSkillError
+    from mini_loop.user_resources import UserResourceResolver
+
+    async def scenario(name):
+        root = scratch / name
+        root.mkdir(parents=True)
+        skills = SkillLoader(root / "empty")
+        resolver = UserResourceResolver(root / "users", skills)
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                            skills_dir=root / "empty", user_resources_root=None)
+        manager = SessionManager(settings, FakeAsyncAnthropic(), user_resources=resolver)
+        session = manager.create(owner="alice", permission_mode="readonly" if name == "readonly" else "interactive")
+        fields = dict(name="recipe", description="recipe", body="procedure")
+        if name in ("conflict", "idempotent"):
+            resolver.publish_skill("alice", {**fields, "body": "different" if name == "conflict" else "procedure"})
+        draft = manager.personal_skill_drafts.add(owner="alice", session_id=session.id,
+            **fields, evidence_indexes=[0], coverage="authenticated_turns", omitted=0)
+        owner = "foreign" if name == "foreign" else "alice"
+        digest = "wrong" if name == "wrong-digest" else draft.digest
+        expected = dict(error="", status=0, idempotent=False, activation="", source="")
+        try:
+            result = await manager.commit_personal_skill(session.id, owner, draft.draft_id, digest)
+        except PersonalSkillError as error:
+            expected.update(error=error.code, status=error.status_code)
+        else:
+            expected.update(idempotent=result["idempotent"], activation=result["activation"], source=result["source"])
+        try:
+            manager.personal_skill_drafts.peek(draft.draft_id, owner="alice", session_id=session.id)
+        except PersonalSkillError:
+            retained = False
+        else:
+            retained = True
+        finally:
+            await manager.stop()
+        return dict(name=name, expected=expected, retained=retained)
+
+    async def run():
+        return [await scenario(name) for name in
+                ("foreign", "readonly", "wrong-digest", "valid", "conflict", "idempotent")]
+    return dict(cases=asyncio.run(run()))
+
+
 def _snapshot() -> dict[str, bytes]:
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
@@ -6570,6 +6619,7 @@ def _snapshot() -> dict[str, bytes]:
         native_skill_preview_contracts = _native_skill_preview_contracts(Path(scratch) / "native-skill-preview")
         manager_skill_draft_contracts = _manager_skill_draft_contracts(Path(scratch) / "manager-skill-drafts")
         manager_skill_preview_contracts = _manager_skill_preview_contracts(Path(scratch) / "manager-skill-preview")
+        manager_skill_commit_contracts = _manager_skill_commit_contracts(Path(scratch) / "manager-skill-commit")
         transcript_contracts = _transcript_contracts(Path(scratch) / "transcript")
 
     methods = {"get", "post", "put", "patch", "delete"}
@@ -6663,6 +6713,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-native-skill-preview.json": _json_bytes(native_skill_preview_contracts),
         "python-manager-skill-drafts.json": _json_bytes(manager_skill_draft_contracts),
         "python-manager-skill-preview.json": _json_bytes(manager_skill_preview_contracts),
+        "python-manager-skill-commit.json": _json_bytes(manager_skill_commit_contracts),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
