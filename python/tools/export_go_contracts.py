@@ -6734,6 +6734,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-self-audit-http.json": _json_bytes(_self_audit_http_contracts()),
         "python-self-audit-tool.json": _json_bytes(_self_audit_tool_contracts()),
         "python-improvement-instruments.json": _json_bytes(_improvement_instrument_contracts()),
+        "python-improvement-archive-append.json": _json_bytes(_improvement_archive_append_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8001,6 +8002,53 @@ def _improvement_instrument_contracts() -> dict:
         rows.append(dict(name="nul-root", files=[], nul=True,
                          fingerprint=verifier_fingerprint(Path(scratch) / "\0")))
     return dict(touches=touches, fingerprints=rows)
+
+
+def _improvement_archive_append_contracts() -> dict:
+    """Observe actual source append, masking and best-effort filesystem behavior."""
+    from unittest.mock import patch
+    from types import SimpleNamespace
+    from mini_loop.improvement_archive import ImprovementArchive
+    from mini_loop.secrets import SecretRegistry
+
+    cases = []
+    recipes = [
+        dict(name="missing", proposal={}),
+        dict(name="filled", proposal=dict(objective="修复\n<&>", verified=True,
+             rounds=3, branch="proposal/main", workspace="/workspace", diff_stat="a | 2 +",
+             touches_verifiers=["tools/verify_guard.py"], integrity="clean",
+             summary="omitted", next="omitted", future="omitted"), owner="alice", parent_id="imp_parent"),
+        dict(name="empty", proposal=dict(objective="", verified=False, rounds=0, branch="",
+             workspace="", diff_stat="", touches_verifiers=[], integrity="suspect"), owner=""),
+        dict(name="masked-values", proposal=dict(objective="token-secret", touches_verifiers=["token-secret"]),
+             owner="token-secret", parent_id="token-secret", secrets=["token-secret", "001122334455"]),
+        dict(name="masked-key-collision", proposal=dict(objective="later-value"), owner="earlier-value",
+             secrets=["owner", "objective"]),
+        dict(name="root-file", proposal={}, fault="root-file"),
+        dict(name="archive-directory", proposal={}, fault="archive-directory"),
+    ]
+    with tempfile.TemporaryDirectory(prefix="go-improvement-archive-") as scratch:
+        for recipe in recipes:
+            root = Path(scratch) / recipe["name"]
+            if recipe.get("fault") == "root-file":
+                root.write_text("occupied", encoding="utf-8")
+            elif recipe.get("fault") == "archive-directory":
+                (root / "archive.jsonl").mkdir(parents=True)
+            registry = None
+            if recipe.get("secrets"):
+                registry = SecretRegistry(mask_with="[MASK]", min_length=1)
+                for index, secret in enumerate(recipe["secrets"]):
+                    registry.register(f"KEY_{index}", secret)
+            archive = ImprovementArchive(root, secrets=registry)
+            options = {key: recipe[key] for key in ("owner", "parent_id") if key in recipe}
+            with patch("mini_loop.improvement_archive.uuid.uuid4", return_value=SimpleNamespace(hex="00112233445566778899aabbccddeeff")), \
+                 patch("mini_loop.improvement_archive.time.time", return_value=1700000000.125):
+                proposal_id = archive.record(recipe["proposal"], **options)
+            rows = []
+            if archive.path.is_file():
+                rows = [json.loads(line) for line in archive.path.read_text(encoding="utf-8").splitlines()]
+            cases.append({**recipe, "proposal_id": proposal_id, "rows": rows})
+    return {"cases": cases}
 
 
 def main() -> int:

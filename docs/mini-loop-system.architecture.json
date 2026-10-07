@@ -551,8 +551,8 @@
     {
       "id": "goImprovement",
       "type": "backend",
-      "label": "Go improvement instruments",
-      "sublabel": "typed digest / verifier path classification",
+      "label": "Go improvement library",
+      "sublabel": "typed instruments / lineage append",
       "pos": [
         60,
         1380

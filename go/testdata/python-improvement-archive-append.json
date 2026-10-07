@@ -1,0 +1,170 @@
+{
+  "cases": [
+    {
+      "name": "missing",
+      "proposal": {},
+      "proposal_id": "imp_001122334455",
+      "rows": [
+        {
+          "branch": null,
+          "created_at": 1700000000.125,
+          "diff_stat": null,
+          "integrity": null,
+          "objective": null,
+          "owner": "anonymous",
+          "parent_id": null,
+          "proposal_id": "imp_001122334455",
+          "rounds": null,
+          "touches_verifiers": null,
+          "verified": null,
+          "workspace": null
+        }
+      ]
+    },
+    {
+      "name": "filled",
+      "owner": "alice",
+      "parent_id": "imp_parent",
+      "proposal": {
+        "branch": "proposal/main",
+        "diff_stat": "a | 2 +",
+        "future": "omitted",
+        "integrity": "clean",
+        "next": "omitted",
+        "objective": "修复\n<&>",
+        "rounds": 3,
+        "summary": "omitted",
+        "touches_verifiers": [
+          "tools/verify_guard.py"
+        ],
+        "verified": true,
+        "workspace": "/workspace"
+      },
+      "proposal_id": "imp_001122334455",
+      "rows": [
+        {
+          "branch": "proposal/main",
+          "created_at": 1700000000.125,
+          "diff_stat": "a | 2 +",
+          "integrity": "clean",
+          "objective": "修复\n<&>",
+          "owner": "alice",
+          "parent_id": "imp_parent",
+          "proposal_id": "imp_001122334455",
+          "rounds": 3,
+          "touches_verifiers": [
+            "tools/verify_guard.py"
+          ],
+          "verified": true,
+          "workspace": "/workspace"
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "owner": "",
+      "proposal": {
+        "branch": "",
+        "diff_stat": "",
+        "integrity": "suspect",
+        "objective": "",
+        "rounds": 0,
+        "touches_verifiers": [],
+        "verified": false,
+        "workspace": ""
+      },
+      "proposal_id": "imp_001122334455",
+      "rows": [
+        {
+          "branch": "",
+          "created_at": 1700000000.125,
+          "diff_stat": "",
+          "integrity": "suspect",
+          "objective": "",
+          "owner": "",
+          "parent_id": null,
+          "proposal_id": "imp_001122334455",
+          "rounds": 0,
+          "touches_verifiers": [],
+          "verified": false,
+          "workspace": ""
+        }
+      ]
+    },
+    {
+      "name": "masked-values",
+      "owner": "token-secret",
+      "parent_id": "token-secret",
+      "proposal": {
+        "objective": "token-secret",
+        "touches_verifiers": [
+          "token-secret"
+        ]
+      },
+      "proposal_id": "imp_001122334455",
+      "rows": [
+        {
+          "branch": null,
+          "created_at": 1700000000.125,
+          "diff_stat": null,
+          "integrity": null,
+          "objective": "[MASK]",
+          "owner": "[MASK]",
+          "parent_id": "[MASK]",
+          "proposal_id": "imp_[MASK]",
+          "rounds": null,
+          "touches_verifiers": [
+            "[MASK]"
+          ],
+          "verified": null,
+          "workspace": null
+        }
+      ],
+      "secrets": [
+        "token-secret",
+        "001122334455"
+      ]
+    },
+    {
+      "name": "masked-key-collision",
+      "owner": "earlier-value",
+      "proposal": {
+        "objective": "later-value"
+      },
+      "proposal_id": "imp_001122334455",
+      "rows": [
+        {
+          "[MASK]": "later-value",
+          "branch": null,
+          "created_at": 1700000000.125,
+          "diff_stat": null,
+          "integrity": null,
+          "parent_id": null,
+          "proposal_id": "imp_001122334455",
+          "rounds": null,
+          "touches_verifiers": null,
+          "verified": null,
+          "workspace": null
+        }
+      ],
+      "secrets": [
+        "owner",
+        "objective"
+      ]
+    },
+    {
+      "fault": "root-file",
+      "name": "root-file",
+      "proposal": {},
+      "proposal_id": "imp_001122334455",
+      "rows": []
+    },
+    {
+      "fault": "archive-directory",
+      "name": "archive-directory",
+      "proposal": {},
+      "proposal_id": "imp_001122334455",
+      "rows": []
+    }
+  ]
+}

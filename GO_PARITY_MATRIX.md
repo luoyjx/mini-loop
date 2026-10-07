@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (99 generated snapshots), plus registry masking,
+the current implementation (100 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -635,5 +635,21 @@ conftest.py and tests/conftest.py; they do not scan every path flagged by substr
 classification or arbitrary nested verifier directories. Fingerprint sampling
 at acceptance judgment remains required in the future verified loop. This
 library installs no runtime/model/HTTP feature. HTTP inventory remains 37/44;
-native archive, verified loop, proposal flow, both improvement operations and
+archive reading, verified loop, proposal flow, both improvement operations and
 G0–G7 remain open.
+
+## Improvement archive append
+
+Snapshot 100 runs the actual Python ImprovementArchive.record with fixed UUID
+and clock: missing/null fields, populated Unicode fields, false/zero/empty values,
+explicit empty and default anonymous owners, parent lineage, secret masking of
+values and keys with last-key collisions, and best-effort root/open failures.
+Go Record preserves the twelve-field JSON schema and allocated raw ID even if
+its stored value is masked. ProposalFields admits the known producer schema;
+summary/next/unknown inputs are omitted. JSON formatting is semantically compatible,
+not byte-identical to Python's ASCII/spaced output. Native tests exercise concurrent
+complete appends, prior-row preservation, detached projection, failure before IO,
+private masking panic refusal and ID shape. Constructor performs no filesystem IO.
+The lock serializes one instance only; this index is not a transactional artifact.
+Legacy arbitrary JSONL reading, owner filtering and runtime/HTTP binding remain
+pending. HTTP inventory stays 37/44 and G0–G7 remains open.

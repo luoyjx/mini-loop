@@ -2108,5 +2108,11 @@ It hashes only the four source root-relative glob selections, in source order;
 substring-based touch flags have a broader scope. Read failures have a stable
 marker; stat permission and other enumeration IO failures remain errors. The
 private filesystem seam exists for fault verification, not as an injected runtime
-service. Archive, verified-loop receipts and proposal/HTTP composition remain
-pending. This operator library does not grant model tool or merge authority.
+service. NewArchive performs no startup IO; Record accepts concrete ProposalFields
+and ArchiveRecordOptions. ArchiveMasker masks string keys and values before the
+append lock, preserving source last-key collision behavior. Projection failures
+abort without raw fallback; filesystem failures return the allocated ID. This
+JSONL review index is best-effort, with a per-instance lock and no cross-process
+lease. Legacy reading, owner filtering, verified-loop receipts and proposal/HTTP
+composition remain pending. This operator library does not grant model tool or
+merge authority.

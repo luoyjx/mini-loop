@@ -1,5 +1,38 @@
 # Go port plan
 
+## 2026-10-07 improvement archive append
+
+This slice adds typed ProposalFields, ArchiveRecordOptions and best-effort
+archive.jsonl append with owner/parent metadata and a concrete proposal ID.
+Snapshot 100 captures seven actual Python append recipes. Masking includes keys,
+values and verifier lists, preserving last-key collisions; projection failures
+abort without raw fallback. Filesystem failures return the allocated raw ID,
+matching the source index contract. The branch commit remains authoritative.
+Native tests cover concurrent complete rows, append preservation, detached input
+projection, masking before the IO lock, private panic refusal and entropy failure.
+The constructor performs no IO; the mutex has only per-instance authority.
+Legacy arbitrary JSONL reading and owner narrowing remain the next small task;
+verified-loop receipts, proposal Git composition, both HTTP operations and G0–G7
+remain open. No runtime/default/HTTP feature is activated. README Mermaid and
+architecture JSON reflect the added operator append seam; HTML is regenerated.
+
+Validation passed: focused improvement tests; full Go tests and race tests
+(-count=1 -timeout=180s), go vet ./..., all 100 source contract exports and all
+19 scan anchors. After those handles finished, isolated Python pytest passed
+2151 tests, 28 skipped and 24 subtests in 101.76s. Its four warnings include
+three dependency deprecations and the existing subprocess destructor/closed-loop
+warning; this slice does not fix that warning. Export also reported dependency
+deprecations and a child-process returncode warning, but its check passed.
+Merged Go statement coverage was refreshed with -coverpkg=./...: 16047/17856
+(89.87%); improvement 122/131 (93.13%); archive.go 73/81 (90.12%).
+README outline and git diff --check pass. Python package invariant/guard sweeps
+were skipped because only the exporter changed, not package modules or guards.
+Archify passes 9/9 showcase checks, zero errors/warnings; HTML is regenerated.
+Visual inspection remains skipped after the earlier denial, without retry.
+Specification SHA256: 713639d05d114e34c0350d6a9f4b45f6ed2f1fbbe78e0a520d43689845d33d77.
+Artifact SHA256: 2fb63445096ea10a8ec98d56b94f408563256cd83e9220d3f902e59d825f3df4.
+
+
 ## 2026-10-07 improvement acceptance-instrument checks
 
 The proposal route requires native archive and verified-loop composition. This
@@ -14,7 +47,7 @@ remain broader. Callers must sample before each acceptance judgment, since a
 restored final digest cannot reveal earlier tampering by itself.
 
 Next cohesive tasks:
-1. Add the typed append-only proposal lineage archive and owner-scoped read API.
+1. Add the compatibility-aware archive reader and owner-scoped read API (typed append is now implemented).
 2. Port verified-loop task/receipt/integrity transitions and acceptance execution.
 3. Bind proposal worktree/git artifact composition, verifier touch flags and archive.
 4. Bind and compare both improvement HTTP operations, then continue teams/workflows,

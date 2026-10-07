@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `f99804f` plus improvement acceptance-instrument checks;
+reviewed **2026-10-07** (Go baseline `183b505` plus improvement archive append;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoImprovement["Go improvement instrument checks<br/>typed fingerprint · verifier path classification<br/>library-only; proposal pipeline pending"]
+        GoImprovement["Go improvement library<br/>typed instruments · lineage append<br/>library-only; proposal pipeline pending"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
@@ -1315,7 +1315,13 @@ computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable
 read marker. Substring touch classification has a broader scope than those globs.
 Snapshot 99 compares actual source classification and ten filesystem digests.
-This is an explicit operator library; native archive, receipt-gated verified loop,
+The archive now appends typed lineage records to archive.jsonl, masking keys and
+values before IO. This is a best-effort index: filesystem failure still returns
+the allocated ID; the proposal branch commit remains authoritative. Snapshot 100
+compares source null/empty fields, owner/parent metadata, masking and write failures.
+Its per-instance lock does not establish cross-process fencing. Archive reading
+and owner filtering remain pending. This explicit operator library installs no
+HTTP or model feature; receipt-gated verified loop,
 proposal branch/commit flow and both improvement HTTP operations remain pending.
 A verified loop must sample the fingerprint before each acceptance judgment;
 computing or restoring a digest alone does not establish verified completion.
