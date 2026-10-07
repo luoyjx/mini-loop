@@ -1,5 +1,49 @@
 # Go port plan
 
+## 2026-10-08 native Git proposal and managed lineage
+
+selfimprove.Service now composes real receipted verification with fixed Git
+status/add/commit/diff/branch commands and optional archive lineage. Git-only and
+nonblank acceptance admission match source. Unverified attempts still create
+reviewable commits. Failed add/commit names the working-tree change rather than
+someone else's HEAD~1; a failed add still attempts the fixed commit as in source.
+Verifier touch flags retain source order/repeats/rename parsing and Unicode
+splitlines. Proposal metadata distinguishes absent archive from attached lineage
+with a null parent; archive/event values are detached before callbacks.
+
+Snapshot 105 executes actual Python proposal composition and its actual verified
+coordinator in 17 scenarios, comparing full proposals, command/event ordering,
+archive producer fields and proposed-event payloads. Native temporary checkouts
+prove actual branch commits, clean status, fixed commit message, diff stats,
+owner-scoped lineage and unverified-but-committed artifacts. Callback exceptions/
+panics and cancellation abort without manufacturing a successful result.
+
+ManagedSession.ProposeImprovementWithContext holds one admission across verified
+worker effects, Git, archive and typed improvement_proposed publication. It binds
+the session owner/root/executor, keeps ordinary worker gates and uses verified
+lease checks at command/archive/event/return boundaries. Tests run a real child
+write and commit; event projections mask credentials and detach lineage pointers.
+A parked Git-status test refuses a competing turn and cancels before stage/commit.
+The shared verified-effects turn scope preserves the previous managed verified
+API. Source stages all changed paths, so the operator must supply an isolated
+checkout. This API does not create/merge branches and installs no HTTP/model tool.
+HTTP remains 38/44 operations (35 patterns). Next bind the manager's isolated
+worktree/owner/rate admission and POST, then teams/workflows/native persistence
+and the full G0–G7 audit. Live-model convergence remains unverified.
+
+Validation passed: focused proposal/managed verified/stored-event tests; full Go
+tests and race checks (-count=1 -timeout=180s), go vet ./..., all 105 contract
+exports and 19 scan anchors. After every preceding handle finished, isolated
+Python pytest passed 2151 tests, 28 skipped and 24 subtests in 79.51s, with three
+dependency deprecations. Export reported two dependency deprecations. Python
+package invariant/mutation sweeps were not rerun because only the exporter
+changed, not package modules or guarded Python behavior. Coverage was not refreshed.
+README outline and git diff --check pass. Regenerated architecture passes all nine
+automated checks with zero errors/warnings; visual inspection remains skipped
+after the earlier permission denial.
+Spec SHA256: b280ca043e8cc1436c1d46213517947849c92f4320d7acec8853bdec01af7cde.
+Artifact SHA256: d78cd1a3eb0757a4d06f02fdb41ab7c9f8555283f0e82eff1a9915a0bc29b49c.
+
 ## 2026-10-08 managed verified task binding
 
 ManagedSession.RunVerifiedWithContext now owns one admitted active turn across

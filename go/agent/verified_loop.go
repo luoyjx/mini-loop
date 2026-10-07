@@ -102,9 +102,29 @@ func (effects sessionVerifiedEffects) EmitVerifiedEvent(ctx context.Context, eve
 }
 
 func (s *Session) runVerified(ctx context.Context, request string, options VerifiedRunOptions, run RunContext) (verifiedloop.TaskOutcome, error) {
+	var outcome verifiedloop.TaskOutcome
+	err := s.withVerifiedEffects(ctx, run, func(effects sessionVerifiedEffects) error {
+		config := verifiedloop.ServiceConfig{RunID: verifiedloop.RunID(s.id), Worker: effects, Acceptance: effects, Events: effects}
+		if options.CheckInstruments {
+			config.Probe = verifiedloop.WorkspaceIntegrity{Workspace: s.executionRoot()}
+		}
+		service, err := verifiedloop.NewService(config)
+		if err != nil {
+			return err
+		}
+		outcome, err = service.RunTask(ctx, request, verifiedloop.TaskOptions{AcceptanceCommand: options.AcceptanceCommand, MaxRounds: options.MaxRounds})
+		return err
+	})
+	if err != nil {
+		return verifiedloop.TaskOutcome{}, err
+	}
+	return outcome, nil
+}
+
+func (s *Session) withVerifiedEffects(ctx context.Context, run RunContext, operation func(sessionVerifiedEffects) error) error {
 	select {
 	case <-ctx.Done():
-		return verifiedloop.TaskOutcome{}, ctx.Err()
+		return ctx.Err()
 	case <-s.turn:
 	}
 	defer func() { s.turn <- struct{}{} }()
@@ -112,34 +132,23 @@ func (s *Session) runVerified(ctx context.Context, request string, options Verif
 	defer s.mu.Unlock()
 	defer s.publishLive()
 	if err := ctx.Err(); err != nil {
-		return verifiedloop.TaskOutcome{}, err
+		return err
 	}
 	// Never infer a process exit code from rendered prose or a string executor.
 	executor, ok := s.bash.(BashResultExecutor)
 	if !ok {
-		return verifiedloop.TaskOutcome{}, errors.New("verified acceptance requires structured command results")
+		return errors.New("verified acceptance requires structured command results")
 	}
 	if bound, ok := s.bash.(interface{ Workspace() string }); ok && bound.Workspace() != s.executionRoot() {
-		return verifiedloop.TaskOutcome{}, errors.New("verified command executor is bound to a different workspace")
+		return errors.New("verified command executor is bound to a different workspace")
 	}
 	s.currentRun = run.clone()
 	s.events.setScope(EventScope{s.label, s.depth, run.clone()})
 	defer func() { s.currentRun = RunContext{} }()
 	effects := sessionVerifiedEffects{s, run.clone(), executor}
-	config := verifiedloop.ServiceConfig{RunID: verifiedloop.RunID(s.id), Worker: effects, Acceptance: effects, Events: effects}
-	if options.CheckInstruments {
-		config.Probe = verifiedloop.WorkspaceIntegrity{Workspace: s.executionRoot()}
-	}
-	service, err := verifiedloop.NewService(config)
-	if err != nil {
-		return verifiedloop.TaskOutcome{}, err
-	}
-	outcome, err := service.RunTask(ctx, request, verifiedloop.TaskOptions{AcceptanceCommand: options.AcceptanceCommand, MaxRounds: options.MaxRounds})
+	err := operation(effects)
 	if err == nil {
 		err = effects.guard(ctx)
 	}
-	if err != nil {
-		return verifiedloop.TaskOutcome{}, err
-	}
-	return outcome, nil
+	return err
 }

@@ -6739,6 +6739,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-improvement-http-read.json": _json_bytes(_improvement_http_read_contracts()),
         "python-verified-fold.json": _json_bytes(_verified_fold_contracts()),
         "python-verified-service.json": _json_bytes(_verified_service_contracts()),
+        "python-improvement-proposal.json": _json_bytes(_improvement_proposal_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8353,6 +8354,77 @@ def _verified_service_contracts() -> dict:
 
 async def _gather_verified_services(cases, capture):
     return [await capture(case) for case in cases]
+
+
+def _improvement_proposal_contracts() -> dict:
+    """Actual source proposal composition, including its real verified coordinator."""
+    import asyncio
+    from types import SimpleNamespace
+    from unittest.mock import patch
+    from mini_loop.self_improve import propose_improvement
+    from mini_loop.tools import CommandResult
+    cases = [
+        dict(name="commit", status=" M code.py\n"),
+        dict(name="no-change", status=""),
+        dict(name="unverified-still-commits", status="?? new.py\n", acceptance_exit=1),
+        dict(name="add-failed-still-attempts-commit", status=" M code.py\n", add_exit=3),
+        dict(name="commit-failed", status="?? new.py\n", commit_exit=1),
+        dict(name="nil-commit-exit", status=" M code.py\n", commit_exit=None),
+        dict(name="touches-renames-and-order", status=" M tools/verify_a.py\nR  old -> .github/workflows/new.yml\n?? conftest.py\n?? conftest.py\n", archive=True, parent="imp_parent", owner="tenant"),
+        dict(name="unicode-lines", status="?? tools/verify_界.py\u0085?? conftest.py\r\nX\n", objective="界🌱"*300, archive=True),
+        dict(name="archive-null-parent", status="", archive=True),
+        dict(name="parent-without-archive", status="", parent="imp_parent"),
+        dict(name="zero-rounds", status="", maximum=0),
+        dict(name="blank-command", command="\u2003\t"),
+        dict(name="not-git", repository=False),
+        dict(name="status-error", failure="git status --porcelain -uall"),
+        dict(name="commit-error", status=" M code.py\n", failure="git commit -m 'self-improvement proposal' --no-verify"),
+        dict(name="archive-error", status="", archive=True, failure="archive"),
+        dict(name="event-error", status="", failure="event"),
+    ]
+    async def capture(recipe):
+        calls=[]; events=[]; archive_rows=[]
+        failure=recipe.get("failure")
+        async def emit(event):
+            calls.append(event["type"])
+        async def worker(objective, role):
+            assert role=="worker"
+            calls.append("worker")
+            return "worker-summary"
+        def command(text):
+            calls.append(text)
+            if failure==text:
+                raise RuntimeError(text+" failed")
+            rows={
+                recipe.get("command","accept"):dict(exit_code=recipe.get("acceptance_exit",0)),
+                "git status --porcelain -uall":dict(stdout=recipe.get("status","")),
+                "git add -A":dict(exit_code=recipe.get("add_exit",0)),
+                "git commit -m 'self-improvement proposal' --no-verify":dict(exit_code=recipe.get("commit_exit",0)),
+                "git diff --stat HEAD~1 HEAD":dict(stdout=" code.py | 1 +\n"),
+                "git rev-parse --abbrev-ref HEAD":dict(stdout=" proposal-branch\n"),
+            }
+            return CommandResult(**{**dict(stdout="",stderr="",exit_code=0,timed_out=False,overflowed=False,duration_ms=0),**rows[text]})
+        def record(proposal, *, owner, parent_id):
+            calls.append("archive")
+            if failure=="archive":
+                raise RuntimeError("archive failed")
+            row={key:proposal[key] for key in ("objective","verified","rounds","branch","workspace","diff_stat","touches_verifiers","integrity")}
+            archive_rows.append(dict(fields=row,owner=owner,parent_id=parent_id))
+            return "imp_fixture"
+        async def send(kind, **payload):
+            calls.append(kind)
+            if failure=="event":
+                raise RuntimeError("event failed")
+            events.append(payload)
+        session=SimpleNamespace(id="proposal-run",emit=emit,agent=SimpleNamespace(workspace="<workspace>",_run_subagent=worker,_send=send,toolset=SimpleNamespace(run_bash_result=command)))
+        proposal=None;error=None
+        with patch("mini_loop.self_improve.is_git_repo",return_value=recipe.get("repository",True)), patch("mini_loop.self_improve.verifier_fingerprint",return_value="unchanged"):
+            try:
+                proposal=await propose_improvement(session,recipe.get("objective","improve code"),acceptance_command=recipe.get("command","accept"),max_rounds=recipe.get("maximum",1),archive=SimpleNamespace(record=record) if recipe.get("archive") else None,owner=recipe.get("owner","anonymous"),parent_id=recipe.get("parent"))
+            except (RuntimeError,ValueError) as exc:
+                error=str(exc)
+        return {**recipe,"calls":calls,"events":events,"archive_rows":archive_rows,"proposal":proposal,"error":error}
+    return dict(cases=asyncio.run(_gather_verified_services(cases,capture)))
 
 
 def main() -> int:

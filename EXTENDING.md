@@ -2178,3 +2178,25 @@ Configured lease renewal checks precede worker/acceptance/event effects and the
 return boundary, without reacquiring a missing lease. These checks are boundary
 checks, not a heartbeat or fencing of an already running external process. There
 is no registered model tool, HTTP route or default task policy in this API.
+
+## Go improvement proposal seam
+
+selfimprove.Service composes a trusted worker, structured command runner, repository
+checker and optional typed verified/proposal event sinks and archive recorder.
+GitRepository uses the source 30-second git rev-parse exit check; ShellCommands
+uses the caller-configured executor. Acceptance instruments are always sampled
+from the configured workspace. Empty acceptance/non-Git workspaces are refused.
+Git command strings are fixed; objectives never enter a command string. Failed
+add or commit retains an explicit working-tree diff fallback. Unverified attempts
+are still committed for review. Proposal.Lineage distinguishes absent archive
+metadata from an attached archive with a null parent in the flat JSON projection.
+Recorder fields, lineage options and proposed-event slices are detached.
+
+ManagedSession.ProposeImprovementWithContext binds the actual session worker,
+execution root, command executor and owner under one admitted cancellable turn.
+Git, archive and event boundaries use the existing verified lease checks. The
+typed improvement_proposed event follows ordinary masking, recording and archival
+decode; historical rows grant no authority. The trusted operator supplies an
+isolated checkout: source git add -A includes every changed path. This API never
+creates or merges a branch and adds no HTTP/model tool or default policy. The
+manager's isolated-worktree admission and proposal POST remain the next slice.

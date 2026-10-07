@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (104 generated snapshots), plus registry masking,
+the current implementation (105 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -764,3 +764,27 @@ guard; it is not a heartbeat or proof of process fencing. Parent transcript does
 not acquire child messages. Source live-model convergence is still untested.
 HTTP remains 38/44 (35 patterns); Git proposal composition/POST, team/workflows,
 native persistence and G0–G7 remain open.
+
+## Git proposal composition and managed lineage
+
+Snapshot 105 executes actual Python propose_improvement and its actual verified
+coordinator across 17 scenarios: successful/unchanged/unverified proposals,
+failed add with a subsequent commit attempt, failed/nil-exit commit fallback,
+ordered/repeated/renamed verifier paths, Unicode splitlines/truncation, archive
+owner/parent/null-parent, parent without archive, zero rounds, blank acceptance,
+non-Git refusal and command/archive/event exceptions. Full proposals, command/
+event order, archive producer fields and improvement_proposed payloads match.
+Git diff/branch stdout remains source-consumed without an added exit policy.
+Fixed Git command text is retained; model objectives are not interpolated.
+
+Native selfimprove.Service supplies typed proposal/event/lineage values, private
+callback panic refusal, context cancellation and real Git/structured-shell adapters.
+Real temporary checkout tests verify branch commits, clean status, commit message,
+diff stats and owner-scoped lineage, including unverified-but-committed attempts.
+Managed ProposeImprovementWithContext holds admission across verification, Git and
+archive, uses the session owner, and preserves worker gates and event projections.
+Cancellation at Git status refuses competing turns and stops before stage/commit.
+Archive IDs retain the source best-effort index contract; no merge occurs. Trusted
+callers must provide isolated workspaces because source stages all changed paths.
+Proposal POST, teams/workflows, native persistence and G0–G7 remain open; HTTP
+stays 38/44 (35 patterns). Source live-model convergence remains unverified.

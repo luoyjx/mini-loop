@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/selfimprove"
 	"github.com/luoyjx/mini-loop/go/verifiedloop"
 )
 
@@ -77,46 +78,47 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
-	verifiedRound      verifiedloop.RoundEvent
-	verifiedReceipt    verifiedloop.ReceiptEvent
-	verifiedCheckpoint verifiedloop.CheckpointEvent
-	memory             MemoryEvent
-	memoryCaptureError MemoryCaptureErrorEvent
-	decisionCompleted  DecisionCompletedEvent
-	decisionFailed     DecisionFailedEvent
-	decisionModelStart *DecisionModelStartEvent
-	decisionModelEnd   *DecisionModelEndEvent
-	goalChange         GoalChangeEvent
-	planMode           PlanModeEvent
-	backgroundResult   BackgroundResultEvent
-	trajectory         TrajectoryLifecycle
-	sessionForked      SessionForkedEvent
-	steeringDelivered  SteeringDeliveredEvent
-	postureUpdate      PostureUpdateEvent
-	kind               SessionEventKind
-	stop               ProviderStopEvent
-	todos              []protocol.TodoItem
-	compact            CompactionEvent
-	subagent           SubagentEvent
-	runError           RunErrorEvent
-	approval           ApprovalEvent
-	stuck              StuckEvent
-	modelStart         ModelStartEvent
-	modelEnd           ModelEndEvent
-	assistantText      AssistantTextEvent
-	delta              AssistantDeltaEvent
-	streamStart        StreamStartEvent
-	toolUse            ToolUseEvent
-	toolResult         ToolResultEvent
-	toolCatalog        ToolCatalogEvent
-	systemPrompt       SystemPromptEvent
-	capabilityPlan     CapabilityPlanEvent
-	activity           ActivityUpdateEvent
-	reconcile          ReconcileEvent
-	status             StatusEvent
-	done               DoneEvent
-	cancelled          CancelledEvent
-	recovery           RecoveryEvent
+	improvementProposed selfimprove.ProposedEvent
+	verifiedRound       verifiedloop.RoundEvent
+	verifiedReceipt     verifiedloop.ReceiptEvent
+	verifiedCheckpoint  verifiedloop.CheckpointEvent
+	memory              MemoryEvent
+	memoryCaptureError  MemoryCaptureErrorEvent
+	decisionCompleted   DecisionCompletedEvent
+	decisionFailed      DecisionFailedEvent
+	decisionModelStart  *DecisionModelStartEvent
+	decisionModelEnd    *DecisionModelEndEvent
+	goalChange          GoalChangeEvent
+	planMode            PlanModeEvent
+	backgroundResult    BackgroundResultEvent
+	trajectory          TrajectoryLifecycle
+	sessionForked       SessionForkedEvent
+	steeringDelivered   SteeringDeliveredEvent
+	postureUpdate       PostureUpdateEvent
+	kind                SessionEventKind
+	stop                ProviderStopEvent
+	todos               []protocol.TodoItem
+	compact             CompactionEvent
+	subagent            SubagentEvent
+	runError            RunErrorEvent
+	approval            ApprovalEvent
+	stuck               StuckEvent
+	modelStart          ModelStartEvent
+	modelEnd            ModelEndEvent
+	assistantText       AssistantTextEvent
+	delta               AssistantDeltaEvent
+	streamStart         StreamStartEvent
+	toolUse             ToolUseEvent
+	toolResult          ToolResultEvent
+	toolCatalog         ToolCatalogEvent
+	systemPrompt        SystemPromptEvent
+	capabilityPlan      CapabilityPlanEvent
+	activity            ActivityUpdateEvent
+	reconcile           ReconcileEvent
+	status              StatusEvent
+	done                DoneEvent
+	cancelled           CancelledEvent
+	recovery            RecoveryEvent
 }
 
 func (event SessionEvent) Stuck() (StuckEvent, bool) {
@@ -168,6 +170,7 @@ func (event SessionEvent) Todos() ([]protocol.TodoItem, bool) {
 	return append([]protocol.TodoItem{}, event.todos...), true
 }
 func (event SessionEvent) clone() SessionEvent {
+	event.improvementProposed = cloneProposed(event.improvementProposed)
 	event.verifiedReceipt.ExitCode = clonePointer(event.verifiedReceipt.ExitCode)
 	event.memory.Consolidated = clonePointer(event.memory.Consolidated)
 	event.decisionCompleted.Usage = event.decisionCompleted.Usage.clone()

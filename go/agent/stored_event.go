@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/selfimprove"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/verifiedloop"
 )
@@ -85,6 +86,10 @@ func storedGrant(tokens []string) GrantCandidate {
 func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent, error) {
 	event := SessionEvent{kind: kind}
 	switch kind {
+	case EventImprovementProposed:
+		v, err := storedPayload[selfimprove.ProposedEvent](data)
+		event.improvementProposed = cloneProposed(v)
+		return event, err
 	case EventVerifiedRound:
 		v, err := storedPayload[verifiedloop.RoundEvent](data)
 		if err == nil && v.Round < 1 {

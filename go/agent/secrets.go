@@ -2,6 +2,7 @@ package agent
 
 import (
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/improvement"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"sort"
 )
@@ -22,6 +23,20 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	event.improvementProposed.Objective = mask(event.improvementProposed.Objective)
+	event.improvementProposed.Branch = mask(event.improvementProposed.Branch)
+	event.improvementProposed.DiffStat = mask(event.improvementProposed.DiffStat)
+	for i := range event.improvementProposed.TouchesVerifiers {
+		event.improvementProposed.TouchesVerifiers[i] = mask(event.improvementProposed.TouchesVerifiers[i])
+	}
+	if event.improvementProposed.ProposalID != nil {
+		v := improvement.ProposalID(mask(string(*event.improvementProposed.ProposalID)))
+		event.improvementProposed.ProposalID = &v
+	}
+	if event.improvementProposed.ParentID != nil {
+		v := improvement.ProposalID(mask(string(*event.improvementProposed.ParentID)))
+		event.improvementProposed.ParentID = &v
+	}
 	event.verifiedRound.Objective = mask(event.verifiedRound.Objective)
 	event.memoryCaptureError.Detail = mask(event.memoryCaptureError.Detail)
 	event.decisionCompleted.Provider = mask(event.decisionCompleted.Provider)

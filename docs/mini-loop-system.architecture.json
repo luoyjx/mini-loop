@@ -321,7 +321,7 @@
         330,
         76
       ],
-      "tag": "typed turns / explicit verified tasks"
+      "tag": "typed turns / explicit verified proposals"
     },
     {
       "id": "goGate",
@@ -552,7 +552,7 @@
       "id": "goImprovement",
       "type": "backend",
       "label": "Go archive / verified core",
-      "sublabel": "lineage / receipted execute / verify",
+      "sublabel": "lineage / verified Git proposals",
       "pos": [
         60,
         720
@@ -561,7 +561,7 @@
         245,
         76
       ],
-      "tag": "live GET / explicit managed tasks"
+      "tag": "live GET / managed proposal API"
     }
   ],
   "boundaries": [
@@ -1168,7 +1168,7 @@
       "id": "goManagedRun",
       "from": "goManaged",
       "to": "goSession",
-      "label": "turn / fork / verified task",
+      "label": "turn / fork / verified proposal",
       "fromSide": "bottom",
       "toSide": "top",
       "via": [
