@@ -6749,6 +6749,8 @@ def _snapshot() -> dict[str, bytes]:
         "python-team-lifecycle.json": _json_bytes(_team_lifecycle_contracts()),
 
         "python-workflow-models.json": _json_bytes(_workflow_model_contracts()),
+
+        "python-workflow-validation.json": _json_bytes(_workflow_validation_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -9123,6 +9125,83 @@ def _workflow_model_contracts() -> dict:
                 runs=[dict(value=state.value,terminal=state.is_terminal) for state in RunStatus],
                 nodes=[dict(value=state.value,terminal=state.is_terminal,satisfies=state.satisfies_dependency) for state in NodeStatus],
                 attempts=[dict(value=state.value,terminal=state.is_terminal) for state in AttemptStatus])
+
+
+def _workflow_validation_contracts() -> dict:
+    """Actual definition/schema/value validators, including refusal order."""
+    import copy
+    import dataclasses
+    from mini_loop.workflows.models import WorkflowDefinition, WorkflowNode, NodeAttempt
+    from mini_loop.workflows.validation import validate_definition, validate_schema_definition, validate_json_value
+    from mini_loop.workflows.artifacts import ArtifactSubmission, artifact_from_submission, verification_status_from_value
+
+    def result(call):
+        try: call(); return dict(error="",detail="")
+        except Exception as error: return dict(error=type(error).__name__,detail=str(error))
+    base=dict(name="wf",return_from="a",nodes=[dict(id="a",kind="agent")])
+    recipes=[("valid",{}),("version",dict(schema_version=2)),("name",dict(name="中文")),
+             ("empty",dict(nodes=[])),("concurrency-low",dict(budget={"max_concurrent_agents":0})),
+             ("concurrency-high",dict(budget={"max_concurrent_agents":5})),
+             ("agents-low",dict(budget={"max_agents":0})),("agents-high",dict(budget={"max_agents":33})),
+             ("rounds",dict(budget={"max_rounds":0})),("wall",dict(budget={"wall_time_seconds":0})),
+             ("tokens",dict(budget={"token_budget":0})),("no-tools",dict(policy={"allowed_tools":[]})),
+             ("duplicate-tools",dict(policy={"allowed_tools":["glob","glob"]})),
+             ("mutating-tools",dict(policy={"allowed_tools":["bash","write_file"]})),
+             ("tool-subset",dict(policy={"allowed_tools":["glob"]})),
+             ("profile",dict(policy={"agent_profile":"writer"})),
+             ("input-schema",dict(input_schema={"$ref":"other"})),
+             ("output-schema",dict(output_schema={"type":"bogus"})),
+             ("property-order",dict(input_schema={"properties":{"z":{"type":"bogus"},"a":{"type":"bogus"}}})),
+             ("return-missing",dict(return_from="absent")),
+             ("return-schema",dict(output_schema={"type":"array"})),
+             ("order",dict(schema_version=0,name="!",nodes=[])),
+             ("schema-equality",dict(output_schema={"const":1},nodes=[dict(id="a",kind="agent",output_schema={"const":True})])),
+             ("dag",dict(return_from="c",nodes=[dict(id="a",kind="agent"),dict(id="b",kind="verify",needs=["a"]),dict(id="c",kind="reduce",needs=["a","b"])]))]
+    for name,patch in [("invalid-id",dict(id="0bad")),("unsupported-kind",dict(kind="map")),
+                       ("node-rounds",dict(max_rounds=0)),("node-budget",dict(max_rounds=5)),
+                       ("items",dict(items_from="a.rows")),("node-schema",dict(output_schema={"minItems":1})),
+                       ("duplicate-needs",dict(needs=["x","x"])),("unknown-needs",dict(needs=["x"])),
+                       ("self-needs",dict(needs=["a"]))]:
+        node=copy.deepcopy(base["nodes"][0]);node.update(patch);recipes.append((name,dict(nodes=[node])))
+    recipes.extend([("duplicate-id",dict(nodes=[dict(id="a",kind="agent"),dict(id="a",kind="reduce")])),
+                    ("too-many",dict(budget={"max_agents":1},nodes=[dict(id="a",kind="agent"),dict(id="b",kind="agent")])),
+                    ("cycle",dict(nodes=[dict(id="a",kind="agent",needs=["b"]),dict(id="b",kind="agent",needs=["a"])]))])
+    definitions=[]
+    for name,patch in recipes:
+        recipe=copy.deepcopy(base);recipe.update(patch)
+        definitions.append(dict(name=name,input_json=json.dumps(recipe),**result(lambda:validate_definition(WorkflowDefinition.from_dict(recipe)))))
+    schemas=[{}, {"type":["string","null"]},{"type":[]},{"type":"bad"},{"type":[{}]},
+             {"required":None},{"required":[1]},{"properties":[]},{"properties":{"x":False}},
+             {"items":None},{"enum":{}},{"additionalProperties":{}},{"title":0},{"description":False},
+             {"z":0,"$ref":"x"},{"type":None},{"enum":[]},{"items":{"type":"integer"}}]
+    schema_cases=[dict(schema_json=json.dumps(schema),**result(lambda:validate_schema_definition(schema))) for schema in schemas]
+    values=[({},None),({"enum":[True]},1),({"const":1},True),({"type":"integer"},1.0),
+            ({"type":"number"},False),({"type":["string","null"]},3),({},float("nan")),
+            ({"type":"object","required":["x","x"]},{}),
+            ({"additionalProperties":False,"properties":{"a":{}}},{"z":1,"b":2}),
+            ({"properties":{"x":{"items":{"type":"integer"}}}},{"x":[1,False]}),
+            ({"enum":[{"a":1.0}]},{"a":True}),({"const":9007199254740993},9007199254740992.0),
+            ({"enum":[1,2]},3),({}, {"ignored":float("nan")}),
+            ({"required":["x"]},"nonobject"),({"items":{"type":"boolean"}},[True,False]),
+            ({"type":"number"},float("inf")),({"properties":{"x":{"type":"number"}}},{"x":float("nan")}),
+            (json.loads('{"enum":[NaN]}'),json.loads('NaN')),
+            (json.loads('{"const":NaN}'),json.loads('NaN')),
+            (json.loads('{"const":{"x":NaN}}'),json.loads('{"x":NaN}'))]
+    value_cases=[dict(schema_json=json.dumps(schema),value_json=json.dumps(value),**result(lambda:validate_json_value(schema,value))) for schema,value in values]
+    submissions=[]
+    attempt=NodeAttempt(attempt_id="attempt",run_id="run",node_id="bound",attempt=1,agent_id="worker",spawn_index=0)
+    node=WorkflowNode(id="schema-source",kind="agent",output_schema={"type":"object","required":["ok"]})
+    for kind,value in [("structured",{"ok":True}),("wrong-tool",{"ok":True}),("unstructured",{"ok":True}),("invalid-value",{})]:
+        submission=ArtifactSubmission(value,tool_name="other" if kind=="wrong-tool" else "return_artifact") if kind!="unstructured" else value
+        captured=[]
+        def execute():
+            artifact=artifact_from_submission(submission,attempt=attempt,node=node)
+            row=dataclasses.asdict(artifact);row["artifact_id"]="<artifact>";row["created_at"]=0;captured.append(row)
+        outcome=result(execute)
+        submissions.append(dict(kind=kind,value_json=json.dumps(value),schema_json=json.dumps(node.output_schema),output=captured,**outcome))
+    verification=[None,{}, {"status":"verified"},{"status":"refuted"},{"status":"not_applicable"},{"status":"unverified"},{"status":[]},{"status":False},{"status":"unknown"}]
+    return dict(definitions=definitions,schemas=schema_cases,values=value_cases,submissions=submissions,
+                verification=[dict(value_json=json.dumps(value),status=verification_status_from_value(value).value) for value in verification])
 
 
 if __name__ == "__main__":

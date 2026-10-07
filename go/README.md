@@ -2089,3 +2089,8 @@ must sample at each judgment window to detect intermediate tampering.
 workflows supplies named finite states, immutable definition identity and artifact
 records. Actual Python model evidence lives in python-workflow-models.json (snapshot
 113). It has no workflow engine or manager/HTTP/model-tool activation yet.
+
+ValidateDefinition, ValidateSchema and ValidateValue now port the actual source DAG,
+budget/tool policy and JSON Schema subset. ArtifactFromSubmission binds structured
+completion to explicit controller IDs; it does not authorize launch or verify truth.
+Snapshot 114 pins exact refusal ordering and structured artifact outcomes.

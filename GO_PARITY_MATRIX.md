@@ -1,5 +1,19 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow DAG/schema and structured artifact validation
+
+Snapshot 114 executes actual source definition/schema/value validators and artifact
+submission functions: 36/18/21/4/9 recipes for definitions, schemas, values,
+submissions and verification input. Go matches exact error classes/details, first
+refusal ordering, immutable validation and successful bound artifact projections.
+Definitions preserve property insertion order via raw JSON recipe strings. The
+validator admits only AGENT/VERIFY/REDUCE and exactly read_file/glob under the
+workflow-readonly profile; launch authority is separately service-owned. Python
+bool/numeric equality and decoded-JSON NaN membership/container behavior are
+retained. Only visited float values are checked for finiteness during validation;
+artifact hashing independently rejects nonfinite data anywhere. Arbitrary Python
+live-object identity is not modeled. Runtime records/storage/engine remain open.
+
 ## 2026-10-08 workflow model foundation
 
 Snapshot 113 compares the actual Python workflow model constructors: five definitions,

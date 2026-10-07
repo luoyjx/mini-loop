@@ -1,0 +1,528 @@
+{
+  "definitions": [
+    {
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "valid"
+    },
+    {
+      "detail": "unsupported workflow schema_version 2",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"schema_version\": 2}",
+      "name": "version"
+    },
+    {
+      "detail": "workflow name is invalid",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"\\u4e2d\\u6587\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "name"
+    },
+    {
+      "detail": "workflow must contain at least one node",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": []}",
+      "name": "empty"
+    },
+    {
+      "detail": "max_concurrent_agents must be between 1 and 4",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_concurrent_agents\": 0}}",
+      "name": "concurrency-low"
+    },
+    {
+      "detail": "max_concurrent_agents must be between 1 and 4",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_concurrent_agents\": 5}}",
+      "name": "concurrency-high"
+    },
+    {
+      "detail": "max_agents must be between 1 and 32",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_agents\": 0}}",
+      "name": "agents-low"
+    },
+    {
+      "detail": "max_agents must be between 1 and 32",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_agents\": 33}}",
+      "name": "agents-high"
+    },
+    {
+      "detail": "max_rounds must be positive",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_rounds\": 0}}",
+      "name": "rounds"
+    },
+    {
+      "detail": "wall_time_seconds must be positive",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"wall_time_seconds\": 0}}",
+      "name": "wall"
+    },
+    {
+      "detail": "token_budget is not implemented by the MVP",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"token_budget\": 0}}",
+      "name": "tokens"
+    },
+    {
+      "detail": "allowed_tools must not be empty",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"policy\": {\"allowed_tools\": []}}",
+      "name": "no-tools"
+    },
+    {
+      "detail": "allowed_tools must not contain duplicates",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"policy\": {\"allowed_tools\": [\"glob\", \"glob\"]}}",
+      "name": "duplicate-tools"
+    },
+    {
+      "detail": "workflow tools are not read-only: ['bash', 'write_file']",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"policy\": {\"allowed_tools\": [\"bash\", \"write_file\"]}}",
+      "name": "mutating-tools"
+    },
+    {
+      "detail": "MVP allowed_tools must be exactly read_file and glob",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"policy\": {\"allowed_tools\": [\"glob\"]}}",
+      "name": "tool-subset"
+    },
+    {
+      "detail": "agent_profile must be workflow-readonly",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"policy\": {\"agent_profile\": \"writer\"}}",
+      "name": "profile"
+    },
+    {
+      "detail": "input_schema contains unsupported schema keywords: ['$ref']",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"input_schema\": {\"$ref\": \"other\"}}",
+      "name": "input-schema"
+    },
+    {
+      "detail": "output_schema.type is unsupported",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"output_schema\": {\"type\": \"bogus\"}}",
+      "name": "output-schema"
+    },
+    {
+      "detail": "input_schema.properties.z.type is unsupported",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"input_schema\": {\"properties\": {\"z\": {\"type\": \"bogus\"}, \"a\": {\"type\": \"bogus\"}}}}",
+      "name": "property-order"
+    },
+    {
+      "detail": "return_from references an unknown node",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"absent\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "return-missing"
+    },
+    {
+      "detail": "return node output_schema must match workflow output_schema",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"output_schema\": {\"type\": \"array\"}}",
+      "name": "return-schema"
+    },
+    {
+      "detail": "unsupported workflow schema_version 0",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"!\", \"return_from\": \"a\", \"nodes\": [], \"schema_version\": 0}",
+      "name": "order"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"output_schema\": {\"const\": true}}], \"output_schema\": {\"const\": 1}}",
+      "name": "schema-equality"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"c\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}, {\"id\": \"b\", \"kind\": \"verify\", \"needs\": [\"a\"]}, {\"id\": \"c\", \"kind\": \"reduce\", \"needs\": [\"a\", \"b\"]}]}",
+      "name": "dag"
+    },
+    {
+      "detail": "invalid node id '0bad'",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"0bad\", \"kind\": \"agent\"}]}",
+      "name": "invalid-id"
+    },
+    {
+      "detail": "node kind map is not implemented by the MVP engine",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"map\"}]}",
+      "name": "unsupported-kind"
+    },
+    {
+      "detail": "a.max_rounds",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"max_rounds\": 0}]}",
+      "name": "node-rounds"
+    },
+    {
+      "detail": "a.max_rounds exceeds workflow budget",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"max_rounds\": 5}]}",
+      "name": "node-budget"
+    },
+    {
+      "detail": "a.items_from is not implemented",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"items_from\": \"a.rows\"}]}",
+      "name": "items"
+    },
+    {
+      "detail": "nodes.a.output_schema contains unsupported schema keywords: ['minItems']",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"output_schema\": {\"minItems\": 1}}]}",
+      "name": "node-schema"
+    },
+    {
+      "detail": "a has duplicate needs",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [\"x\", \"x\"]}]}",
+      "name": "duplicate-needs"
+    },
+    {
+      "detail": "a needs unknown node x",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [\"x\"]}]}",
+      "name": "unknown-needs"
+    },
+    {
+      "detail": "a cannot depend on itself",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [\"a\"]}]}",
+      "name": "self-needs"
+    },
+    {
+      "detail": "duplicate node id a",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}, {\"id\": \"a\", \"kind\": \"reduce\"}]}",
+      "name": "duplicate-id"
+    },
+    {
+      "detail": "definition has more nodes than max_agents",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}, {\"id\": \"b\", \"kind\": \"agent\"}], \"budget\": {\"max_agents\": 1}}",
+      "name": "too-many"
+    },
+    {
+      "detail": "workflow graph must be acyclic",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [\"b\"]}, {\"id\": \"b\", \"kind\": \"agent\", \"needs\": [\"a\"]}]}",
+      "name": "cycle"
+    }
+  ],
+  "schemas": [
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{}"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"type\": [\"string\", \"null\"]}"
+    },
+    {
+      "detail": "$schema.type is unsupported",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"type\": []}"
+    },
+    {
+      "detail": "$schema.type is unsupported",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"type\": \"bad\"}"
+    },
+    {
+      "detail": "unhashable type: 'dict'",
+      "error": "TypeError",
+      "schema_json": "{\"type\": [{}]}"
+    },
+    {
+      "detail": "$schema.required must be a string array",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"required\": null}"
+    },
+    {
+      "detail": "$schema.required must be a string array",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"required\": [1]}"
+    },
+    {
+      "detail": "$schema.properties must be an object",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"properties\": []}"
+    },
+    {
+      "detail": "$schema.properties.x must be an object",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"properties\": {\"x\": false}}"
+    },
+    {
+      "detail": "$schema.items must be an object",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"items\": null}"
+    },
+    {
+      "detail": "$schema.enum must be an array",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"enum\": {}}"
+    },
+    {
+      "detail": "$schema.additionalProperties must be a boolean",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"additionalProperties\": {}}"
+    },
+    {
+      "detail": "$schema.title must be a string",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"title\": 0}"
+    },
+    {
+      "detail": "$schema.description must be a string",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"description\": false}"
+    },
+    {
+      "detail": "$schema contains unsupported schema keywords: ['$ref', 'z']",
+      "error": "WorkflowValidationError",
+      "schema_json": "{\"z\": 0, \"$ref\": \"x\"}"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"type\": null}"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"enum\": []}"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"items\": {\"type\": \"integer\"}}"
+    }
+  ],
+  "submissions": [
+    {
+      "detail": "",
+      "error": "",
+      "kind": "structured",
+      "output": [
+        {
+          "artifact_id": "<artifact>",
+          "attempt_id": "attempt",
+          "content_hash": "artifact:4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+          "created_at": 0,
+          "media_type": "application/json",
+          "node_id": "bound",
+          "run_id": "run",
+          "schema_hash": "schema:17248cc301c32af29f64978a7469d298a791720ddf93728275bc8471066b1c93",
+          "schema_valid": true,
+          "value": {
+            "ok": true
+          },
+          "verification_status": "not_applicable"
+        }
+      ],
+      "schema_json": "{\"type\": \"object\", \"required\": [\"ok\"]}",
+      "value_json": "{\"ok\": true}"
+    },
+    {
+      "detail": "unexpected structured artifact tool",
+      "error": "ArtifactValidationError",
+      "kind": "wrong-tool",
+      "output": [],
+      "schema_json": "{\"type\": \"object\", \"required\": [\"ok\"]}",
+      "value_json": "{\"ok\": true}"
+    },
+    {
+      "detail": "worker must finish through the synthetic return_artifact tool",
+      "error": "ArtifactValidationError",
+      "kind": "unstructured",
+      "output": [],
+      "schema_json": "{\"type\": \"object\", \"required\": [\"ok\"]}",
+      "value_json": "{\"ok\": true}"
+    },
+    {
+      "detail": "$ is missing required keys: ['ok']",
+      "error": "ArtifactValidationError",
+      "kind": "invalid-value",
+      "output": [],
+      "schema_json": "{\"type\": \"object\", \"required\": [\"ok\"]}",
+      "value_json": "{}"
+    }
+  ],
+  "values": [
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{}",
+      "value_json": "null"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"enum\": [true]}",
+      "value_json": "1"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"const\": 1}",
+      "value_json": "true"
+    },
+    {
+      "detail": "$ must have type integer",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"type\": \"integer\"}",
+      "value_json": "1.0"
+    },
+    {
+      "detail": "$ must have type number",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"type\": \"number\"}",
+      "value_json": "false"
+    },
+    {
+      "detail": "$ must have type string | null",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"type\": [\"string\", \"null\"]}",
+      "value_json": "3"
+    },
+    {
+      "detail": "$ must be finite",
+      "error": "ArtifactValidationError",
+      "schema_json": "{}",
+      "value_json": "NaN"
+    },
+    {
+      "detail": "$ is missing required keys: ['x', 'x']",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"type\": \"object\", \"required\": [\"x\", \"x\"]}",
+      "value_json": "{}"
+    },
+    {
+      "detail": "$ has unknown keys: ['b', 'z']",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"additionalProperties\": false, \"properties\": {\"a\": {}}}",
+      "value_json": "{\"z\": 1, \"b\": 2}"
+    },
+    {
+      "detail": "$.x[1] must have type integer",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"properties\": {\"x\": {\"items\": {\"type\": \"integer\"}}}}",
+      "value_json": "{\"x\": [1, false]}"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"enum\": [{\"a\": 1.0}]}",
+      "value_json": "{\"a\": true}"
+    },
+    {
+      "detail": "$ does not match const",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"const\": 9007199254740993}",
+      "value_json": "9007199254740992.0"
+    },
+    {
+      "detail": "$ is not one of the allowed enum values",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"enum\": [1, 2]}",
+      "value_json": "3"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{}",
+      "value_json": "{\"ignored\": NaN}"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"required\": [\"x\"]}",
+      "value_json": "\"nonobject\""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"items\": {\"type\": \"boolean\"}}",
+      "value_json": "[true, false]"
+    },
+    {
+      "detail": "$ must be finite",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"type\": \"number\"}",
+      "value_json": "Infinity"
+    },
+    {
+      "detail": "$.x must be finite",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"properties\": {\"x\": {\"type\": \"number\"}}}",
+      "value_json": "{\"x\": NaN}"
+    },
+    {
+      "detail": "$ must be finite",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"enum\": [NaN]}",
+      "value_json": "NaN"
+    },
+    {
+      "detail": "$ does not match const",
+      "error": "ArtifactValidationError",
+      "schema_json": "{\"const\": NaN}",
+      "value_json": "NaN"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "schema_json": "{\"const\": {\"x\": NaN}}",
+      "value_json": "{\"x\": NaN}"
+    }
+  ],
+  "verification": [
+    {
+      "status": "unverified",
+      "value_json": "null"
+    },
+    {
+      "status": "unverified",
+      "value_json": "{}"
+    },
+    {
+      "status": "verified",
+      "value_json": "{\"status\": \"verified\"}"
+    },
+    {
+      "status": "refuted",
+      "value_json": "{\"status\": \"refuted\"}"
+    },
+    {
+      "status": "not_applicable",
+      "value_json": "{\"status\": \"not_applicable\"}"
+    },
+    {
+      "status": "unverified",
+      "value_json": "{\"status\": \"unverified\"}"
+    },
+    {
+      "status": "unverified",
+      "value_json": "{\"status\": []}"
+    },
+    {
+      "status": "unverified",
+      "value_json": "{\"status\": false}"
+    },
+    {
+      "status": "unverified",
+      "value_json": "{\"status\": \"unknown\"}"
+    }
+  ]
+}

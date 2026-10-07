@@ -2354,10 +2354,16 @@ close/reopen evidence; the native injected-store comparison is not SQLite eviden
 
 The workflows package exposes finite named states, DecodeDefinition, CanonicalJSON,
 ContentHash and NewArtifact. Value is the existing immutable closed JSON sum; schema
-objects are admitted before semantic DAG/schema validation, which remains pending.
+objects are admitted before explicit ValidateSchema/ValidateValue/ValidateDefinition.
 Definition keeps private canonical projections; detached views cannot change its hash.
 Saved definition_hash never supplies identity or authority. Numeric type identity,
 Unicode and Python enum/status spelling are preserved. Artifact snapshots contain
 explicit IDs/hashes/verification/media/timestamp fields; creation does not validate
 a schema or establish verification truth. No service/tool/storage adapter is installed.
+Validation preserves source error order and its limited schema subset, including
+Python enum/const equality versus strict numeric type admission. Validation does not
+grant launch authority; origin checks remain service-owned. ArtifactFromSubmission
+requires a structured return_artifact result, then validates against the controller's
+schema and binds the controller's run/node/attempt IDs. VerificationFromValue falls
+back to unverified for malformed/missing status. It does not invent verification.
 Runtime records and trusted-origin adaptation are the next separate slice.

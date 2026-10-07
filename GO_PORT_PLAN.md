@@ -1,5 +1,65 @@
 # Go port plan
 
+## 2026-10-08 workflow DAG/schema and artifact submission validation
+
+Baseline d0c4656. The workflow model library now ports the source definition
+validator, its JSON Schema subset and structured artifact completion functions.
+Named ValidationKind/ValidationError distinguish WorkflowValidationError,
+ArtifactValidationError and the source TypeError branch. Definition validation
+retains source refusal order across version/name/node admission, hard budgets,
+exact read_file/glob policy and workflow-readonly profile, input/output schemas,
+node IDs/kinds/rounds/items, return schema, needs and DAG acyclicity. Only the
+source MVP AGENT/VERIFY/REDUCE nodes are admitted for execution definitions.
+Validation does not authorize launch or mutate the immutable definition.
+
+Schema validation supports only type/properties/required/items/enum/const/
+additionalProperties/title/description, with recursive property order and exact
+paths/messages. Value validation preserves missing/extra-key ordering, array
+indices, numeric-versus-boolean admission, finite-float checks and Python
+bool/int/float equality for enum/const. Exact big-integer/float comparison uses
+rationals rather than rounding integers to float. Python JSON decoder NaN
+constant identity is retained for membership and container comparison; scalar
+const equality remains false. Arbitrary live Python object identity is outside
+the closed JSON projection. Only visited floats are validated; ignored extra
+fields are not recursively scanned, matching source. Artifact hashing remains
+the independent recursive nonfinite refusal boundary.
+
+ArtifactSubmission is immutable. ArtifactFromSubmission rejects missing or
+wrong-tool completion, validates the controller schema, then creates an artifact
+using explicit controller-owned run/node/attempt IDs. Worker payload cannot choose
+binding identities. VerificationFromValue preserves known statuses and otherwise
+returns unverified; it does not establish verification truth. No manager/model/HTTP
+workflow installation, execution, authority grant or storage behavior was added.
+
+Snapshot 114 executes actual source validators/functions: 36 definition/DAG,
+18 schema, 21 value, four submission and nine verification recipes. Definition
+inputs are raw JSON strings so generated fixture sorting cannot reorder schema
+properties and change the first refusal. Native tests compare exact classes and
+details, unchanged definition identities and full successful artifact projections.
+
+Validation: focused workflow race and full Go test/race/vet passed. The full
+Go gates were repeated after making submission fields immutable; no implementation
+changed afterward. All 114 source snapshots current; all 19 scanning guards
+anchored. Python full regression passed after the heavier Go gates finished:
+2,155 passed, 28 skipped, 24 subtests, three dependency warnings in 70.74s.
+No Python package modules or source mutation anchors changed; package invariants
+and mutation catalogue were not rerun. No dependencies introduced. Diff check
+and README outline passed.
+
+README architecture baseline/canonical runtime topology reviewed: this remains
+an uninstalled library, so active diagram flows are unchanged. Boundary, extension,
+parity and Go package documentation are updated; the interactive card was regenerated
+from JSON with showcase 9/9, zero errors/warnings. Spec SHA256
+6cd3fb2c2f7d08ea34317cb9296aaa70908e31c0e51524f0c9418d7ff2011ecc;
+HTML SHA256 eb519ebf78e862893668b40019e146525d5ae8c32219373fafdae8854f38dafb.
+Visual inspection remains skipped after prior denial, without retry/bypass.
+
+Next W1B ports run/node/attempt/outbox records and trusted-origin adaptation,
+then W3 ports the actual source InMemoryWorkflowStore CAS/claim/outbox lifecycle.
+The source workflow store is process-local; no durable workflow backend or
+restart-resume claim is inferred from session SQLite. W4–W6 runtime/integration,
+MCP, native session SQLite, remaining profiles and full G7 remain open.
+
 ## 2026-10-08 workflow state, definition and artifact foundation
 
 Baseline 121125f (strict UTF-8 canonical profile). The new uninstalled workflows

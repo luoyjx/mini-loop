@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `121125f` plus workflow state/definition/artifact contracts;
+reviewed **2026-10-08** (Go baseline `d0c4656` plus workflow DAG/schema and artifact submission validation;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1410,8 +1410,13 @@ verification/source states, immutable definition projections and artifact record
 Snapshot 113 compares actual Python defaults, all state predicates, canonical
 UTF-8 digests, derived/explicit identities and normalized artifact effects. Definitions
 recompute saved hashes and separate semantic content from revision metadata. Typed
-schema/value projections retain Python integer/float identity. DAG/schema validation,
-run/attempt/outbox records, storage and execution are still pending. This library is
+schema/value projections retain Python integer/float identity. Snapshot 114 now compares
+36 definition/DAG, 18 schema, 21 value, four submission and nine verification recipes.
+Native validators preserve refusal order, read-only tool budgets, the three supported
+engine node kinds, DAG acyclicity and the source JSON Schema subset. Numeric schema
+admission excludes booleans; enum/const use Python equality. Structured artifact
+completion binds the controller's attempt IDs and validates its schema before creation.
+Run/attempt/outbox records, storage and execution are still pending. This library is
 not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
