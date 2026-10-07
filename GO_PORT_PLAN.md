@@ -1,5 +1,15 @@
 # Go port plan
 
+## 2026-10-08 standalone team-tool help boundary
+
+Baseline 968e8ee. Update --team-tools help to advertise team tools and concurrent
+initial teammate turns. Runtime selection/defaults are unchanged from that commit;
+automatic inbox injection and idle/task lifetime remain open. README architecture
+baseline was reviewed; no topology change is required. The full Go test/race/vet,
+contracts/scans, selected mutation and isolated Python gates recorded in the next
+checkpoint included this CLI code. The separate CLI test run also passed before
+this small documentation/help commit. Coverage is the measured checkpoint below.
+
 ## 2026-10-08 owned initial teammate execution
 
 Baseline 01cd8dc (common composition / named peer preparation); full G0–G7 remains
