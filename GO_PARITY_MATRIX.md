@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (111 generated snapshots), plus registry masking,
+the current implementation (112 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -841,6 +841,15 @@ gate. Default HTTP GET remains non-consuming. Native initial member construction
 resource inheritance and prompt identity are implemented as described below. Automatic
 inbox injection, consuming sticky shutdown state, idle/task claims and diagnostics
 remain open with the other G0–G7 packages.
+
+## Actual source team lifecycle corpus
+
+Snapshot 112 captures actual Python spawning, then 8 injector and 11 idle recipes.
+Model turns, mailbox/task effects and clocks/sleeps use the real source path. Prepared
+worktree directories exercise selection rather than Git branch creation. Initial
+resource sharing, exact prompts/results, fresh peer provenance and partial effects are
+retained with normalized IDs/paths. This corpus alone does not prove Go idle/injection
+binding; native differential consumption is the following implementation checkpoint.
 
 ## Managed team tool effects
 

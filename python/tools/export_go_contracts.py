@@ -6746,6 +6746,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-team-tools.json": _json_bytes(_team_tool_contracts()),
         "python-team-protocols.json": _json_bytes(_team_protocol_contracts()),
         "python-team-effects.json": _json_bytes(_team_effect_contracts()),
+        "python-team-lifecycle.json": _json_bytes(_team_lifecycle_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8903,6 +8904,106 @@ def _team_effect_contracts() -> dict:
                     rows.append(row)
             results.append(dict(name=recipe["name"],unconfigured=recipe.get("unconfigured",False),members=members,steps=rows))
     return dict(cases=results)
+
+
+def _team_lifecycle_contracts() -> dict:
+    """Actual spawn, injector and idle turns, with real task/mailbox effects.
+
+    The initially created idle task is cancelled before each explicit probe. Idle
+    probes use the real source loop and short real sleeps; no clock/run stub replaces
+    scheduling or model execution. Worktree path selection uses a real manager with
+    prepared directories, not newly created Git branches. IDs/workspaces are normalized.
+    """
+    import asyncio
+    from dataclasses import asdict
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text
+    from mini_loop.manager import SessionManager
+    from mini_loop.tasks import Task
+    from mini_loop.teams import team_injector
+    from mini_loop.worktrees import WorktreeManager
+
+    injectors = [
+        dict(name="empty", rows=[]),
+        dict(name="legacy", rows=[{"from":"team/peer","to":"team/bob","content":"quote \" 界", "type":"", "metadata":{"z":[1,1.0,None],"a":True},"ts":1.5,"unknown":"keep"}, {"content":"missing fields"}, {"from":"x/name","type":"message","metadata":{},"content":[float("nan"),"\ud800"]}]),
+        dict(name="unconfigured", rows=[{"from":"peer","content":"retained"}], unconfigured=True),
+        dict(name="teamless", rows=[{"from":"peer","content":"retained"}], teamless=True),
+        dict(name="bad-sender", rows=[{"from":7,"content":"bad"}]),
+        dict(name="shutdown", rows=[{"from":"team/lead","type":"shutdown_request","metadata":{"request_id":"request"},"content":"stop"}]),
+        dict(name="partial-shutdown", rows=[{"from":"team/lead","type":"shutdown_request","metadata":{"request_id":"request"}}, {"type":"shutdown_request","metadata":[]}]),
+        dict(name="overflow", rows=[{"from":"team/peer","content":str(i)} for i in range(101)]),
+    ]
+    idle = [
+        dict(name="timeout", rows=[], tasks=[]),
+        dict(name="inbox", rows=[{"from":"team/peer","to":"team/bob","content":"hello 界","type":"message","metadata":{"first":1,"next":[True,None]},"ts":1.5,"unknown":"kept"}], tasks=[]),
+        dict(name="shutdown-priority", rows=[{"from":"team/lead","type":"shutdown_request","metadata":{"request_id":"request"}}], tasks=[dict(id="task_a",subject="should remain pending")]),
+        dict(name="sticky-shutdown", rows=[{"from":"team/peer","content":"discarded"}], tasks=[], shutdown_before=True),
+        dict(name="task", rows=[], tasks=[dict(id="task_a",subject="work 界",description="details")]),
+        dict(name="inbox-before-task", rows=[{"from":"team/peer","content":"first"}], tasks=[dict(id="task_a",subject="second")]),
+        dict(name="blocked", rows=[], tasks=[dict(id="task_a",subject="blocked",blockedBy=["missing"])]),
+        dict(name="worktree", rows=[], tasks=[dict(id="task_a",subject="branch",worktree="checkout")], worktree_exists=True),
+        dict(name="missing-worktree", rows=[], tasks=[dict(id="task_a",subject="fallback",worktree="checkout")]),
+        dict(name="invalid-worktree", rows=[], tasks=[dict(id="task_a",subject="fallback",worktree="../escape")]),
+        dict(name="poll-crosses-deadline", rows=[{"from":"team/peer","content":"delivered after sleep"}],tasks=[],poll_ms=20,timeout_ms=1),
+    ]
+
+    async def scenario(recipe, is_idle):
+        with tempfile.TemporaryDirectory(prefix="go-team-lifecycle-") as scratch:
+            settings=Settings(fake_llm=True, workspace_root=Path(scratch)/"ws", trajectory_enabled=False, team_idle_poll=recipe.get("poll_ms",2)/1000, team_idle_timeout=recipe.get("timeout_ms",100)/1000)
+            manager=SessionManager(settings,FakeAsyncAnthropic(lambda _: ([text("done")],"end_turn"),thinking=False),injectors=[])
+            lead=manager.create(owner="alice")
+            result=await manager.spawn_teammate(lead.id,"bob","research","hello")
+            child=manager._sessions[manager._teammates[lead.id]["bob"]]
+            await child.spawn_task
+            child.lifecycle_task.cancel()
+            await asyncio.gather(child.lifecycle_task,return_exceptions=True)
+            manager.bus.read(lead.id+"/lead")
+            initial=dict(shared_workspace=child.workspace==lead.workspace, shared_skills=child.agent.skills is lead.agent.skills, shared_memory=child.agent.state["memory"] is lead.agent.state["memory"], owner=child.owner, mode=child.permission_mode, role=child.agent.state["role"], recursive_spawn=child.agent.tools.get("spawn_teammate") is not None, result=result.replace(child.id,"<session>"))
+            rows=recipe["rows"]
+            path=manager.bus._path(lead.id+"/bob")
+            path.parent.mkdir(parents=True,exist_ok=True)
+            path.write_text("".join(json.dumps(row)+"\n" for row in rows))
+            def normalize(value):
+                return value.replace(str(child.workspace.resolve()),"<workspace>").replace(str(child.workspace),"<workspace>").replace(str((Path(scratch)/"repo"/".worktrees"/"checkout").resolve()),"<worktree>").replace(str(Path(scratch)/"repo"/".worktrees"/"checkout"),"<worktree>").replace(lead.id,"team")
+            observation=dict(name=recipe["name"],rows_json=[json.dumps(row) for row in rows],initial=initial)
+            if not is_idle:
+                if recipe.get("unconfigured"): child.agent.state["manager"]=None
+                if recipe.get("teamless"): child.agent.state["team_id"]=None
+                observation.update(unconfigured=recipe.get("unconfigured",False),teamless=recipe.get("teamless",False),output=[],error="")
+                start=child._seq
+                try:
+                    observation["output"]=[normalize(message["content"]) for message in await team_injector(child.agent)]
+                except Exception as error:
+                    observation["error"]=type(error).__name__
+                observation["counts"]=[event["count"] for event in child._backlog if event["seq"]>start and event["type"]=="team_inbox"]
+                observation["shutdown"]=bool(child.agent.state.get("shutdown_requested",False))
+                observation["remaining"]=len(manager.bus.peek(lead.id+"/bob"))
+                observation["raw"]=json.dumps(rows,default=str)
+            else:
+                board=child.agent.state["tasks"]
+                for row in recipe["tasks"]: board.save(Task(**row))
+                manager.worktrees=WorktreeManager(Path(scratch)/"repo")
+                if recipe.get("worktree_exists"): manager.worktrees.path_for("checkout").mkdir(parents=True)
+                child.agent.state["shutdown_requested"]=recipe.get("shutdown_before",False)
+                prompts,contexts,workspaces=[],[],[]
+                original=child.run
+                async def observe_run(prompt, **kwargs):
+                    prompts.append(normalize(prompt))
+                    context=kwargs["run_context"].as_dict()
+                    context["message_id"]="<message>"
+                    contexts.append(context)
+                    workspaces.append(normalize(str(child.agent.workspace)))
+                    return await original(prompt,**kwargs)
+                child.run=observe_run
+                await manager._teammate_idle_loop(child)
+                observation.update(poll_ms=recipe.get("poll_ms",2),timeout_ms=recipe.get("timeout_ms",100),tasks=recipe["tasks"],worktree_exists=recipe.get("worktree_exists",False),shutdown_before=recipe.get("shutdown_before",False),prompts=prompts,contexts=contexts,workspaces=workspaces,final_tasks=[asdict(task) for task in board.list()],shutdown=bool(child.agent.state.get("shutdown_requested",False)))
+            observation["outgoing"]=[dict(content=row["content"],type=row["type"],metadata=row["metadata"]) for row in manager.bus.read(lead.id+"/lead")]
+            await manager.stop()
+            return observation
+
+    async def capture():
+        return dict(injectors=[await scenario(case,False) for case in injectors],idle=[await scenario(case,True) for case in idle])
+    return asyncio.run(capture())
 
 
 if __name__ == "__main__":

@@ -1,5 +1,16 @@
 # Go port plan
 
+## 2026-10-08 actual source team lifecycle corpus
+
+Baseline c014fea. Snapshot 112 captures real Python spawning before 8 injector and
+11 idle recipes, with real model/mailbox/task effects and short real sleeps. Prepared
+worktree directories test path selection; no Git branch creation is claimed. Initial
+resource sharing, exact prompts/results, autonomous peer contexts, task effects,
+partial faults and shutdown priority are retained; IDs/paths are normalized.
+This source evidence adds no Go runtime activation or topology change. Native binding
+and differential consumption are delivered in the next checkpoint. Export --check
+reports all 112 snapshots current; scans and the full Python regression passed.
+
 ## 2026-10-08 raw Python JSON prompt preparation
 
 Baseline e67ae85. Add the closed-value AppendLegacyDefault profile for Python's

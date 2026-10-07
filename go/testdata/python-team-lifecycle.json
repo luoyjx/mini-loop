@@ -1,0 +1,976 @@
+{
+  "idle": [
+    {
+      "contexts": [],
+      "final_tasks": [],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "timeout",
+      "outgoing": [
+        {
+          "content": "Idle timeout reached; teammate shut down.",
+          "metadata": {},
+          "type": "idle_notification"
+        }
+      ],
+      "poll_ms": 2,
+      "prompts": [],
+      "rows_json": [],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [],
+      "timeout_ms": 100,
+      "workspaces": [],
+      "worktree_exists": false
+    },
+    {
+      "contexts": [
+        {
+          "actor_id": "bob",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "<message>",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "session_manager"
+        }
+      ],
+      "final_tasks": [],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "inbox",
+      "outgoing": [
+        {
+          "content": "done",
+          "metadata": {},
+          "type": "result"
+        },
+        {
+          "content": "Idle timeout reached; teammate shut down.",
+          "metadata": {},
+          "type": "idle_notification"
+        }
+      ],
+      "poll_ms": 2,
+      "prompts": [
+        "<team_inbox>\n[{\"from\": \"team/peer\", \"to\": \"team/bob\", \"content\": \"hello \\u754c\", \"type\": \"message\", \"metadata\": {\"first\": 1, \"next\": [true, null]}, \"ts\": 1.5, \"unknown\": \"kept\"}]\n</team_inbox>"
+      ],
+      "rows_json": [
+        "{\"from\": \"team/peer\", \"to\": \"team/bob\", \"content\": \"hello \\u754c\", \"type\": \"message\", \"metadata\": {\"first\": 1, \"next\": [true, null]}, \"ts\": 1.5, \"unknown\": \"kept\"}"
+      ],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [],
+      "timeout_ms": 100,
+      "workspaces": [
+        "<workspace>"
+      ],
+      "worktree_exists": false
+    },
+    {
+      "contexts": [],
+      "final_tasks": [
+        {
+          "blockedBy": [],
+          "description": "",
+          "id": "task_a",
+          "owner": null,
+          "status": "pending",
+          "subject": "should remain pending",
+          "worktree": null
+        }
+      ],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "shutdown-priority",
+      "outgoing": [
+        {
+          "content": "Shutdown approved.",
+          "metadata": {
+            "approve": true,
+            "request_id": "request"
+          },
+          "type": "shutdown_response"
+        }
+      ],
+      "poll_ms": 2,
+      "prompts": [],
+      "rows_json": [
+        "{\"from\": \"team/lead\", \"type\": \"shutdown_request\", \"metadata\": {\"request_id\": \"request\"}}"
+      ],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [
+        {
+          "id": "task_a",
+          "subject": "should remain pending"
+        }
+      ],
+      "timeout_ms": 100,
+      "workspaces": [],
+      "worktree_exists": false
+    },
+    {
+      "contexts": [],
+      "final_tasks": [],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "sticky-shutdown",
+      "outgoing": [],
+      "poll_ms": 2,
+      "prompts": [],
+      "rows_json": [
+        "{\"from\": \"team/peer\", \"content\": \"discarded\"}"
+      ],
+      "shutdown": false,
+      "shutdown_before": true,
+      "tasks": [],
+      "timeout_ms": 100,
+      "workspaces": [],
+      "worktree_exists": false
+    },
+    {
+      "contexts": [
+        {
+          "actor_id": "bob",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "<message>",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "session_manager"
+        }
+      ],
+      "final_tasks": [
+        {
+          "blockedBy": [],
+          "description": "details",
+          "id": "task_a",
+          "owner": "bob",
+          "status": "in_progress",
+          "subject": "work 界",
+          "worktree": null
+        }
+      ],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "task",
+      "outgoing": [
+        {
+          "content": "done",
+          "metadata": {
+            "task_id": "task_a"
+          },
+          "type": "result"
+        },
+        {
+          "content": "Idle timeout reached; teammate shut down.",
+          "metadata": {},
+          "type": "idle_notification"
+        }
+      ],
+      "poll_ms": 2,
+      "prompts": [
+        "You autonomously claimed task_a: work 界\ndetails\nComplete the work, then call complete_task for task_a."
+      ],
+      "rows_json": [],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [
+        {
+          "description": "details",
+          "id": "task_a",
+          "subject": "work 界"
+        }
+      ],
+      "timeout_ms": 100,
+      "workspaces": [
+        "<workspace>"
+      ],
+      "worktree_exists": false
+    },
+    {
+      "contexts": [
+        {
+          "actor_id": "bob",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "<message>",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "session_manager"
+        },
+        {
+          "actor_id": "bob",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "<message>",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "session_manager"
+        }
+      ],
+      "final_tasks": [
+        {
+          "blockedBy": [],
+          "description": "",
+          "id": "task_a",
+          "owner": "bob",
+          "status": "in_progress",
+          "subject": "second",
+          "worktree": null
+        }
+      ],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "inbox-before-task",
+      "outgoing": [
+        {
+          "content": "done",
+          "metadata": {},
+          "type": "result"
+        },
+        {
+          "content": "done",
+          "metadata": {
+            "task_id": "task_a"
+          },
+          "type": "result"
+        },
+        {
+          "content": "Idle timeout reached; teammate shut down.",
+          "metadata": {},
+          "type": "idle_notification"
+        }
+      ],
+      "poll_ms": 2,
+      "prompts": [
+        "<team_inbox>\n[{\"from\": \"team/peer\", \"content\": \"first\"}]\n</team_inbox>",
+        "You autonomously claimed task_a: second\n\nComplete the work, then call complete_task for task_a."
+      ],
+      "rows_json": [
+        "{\"from\": \"team/peer\", \"content\": \"first\"}"
+      ],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [
+        {
+          "id": "task_a",
+          "subject": "second"
+        }
+      ],
+      "timeout_ms": 100,
+      "workspaces": [
+        "<workspace>",
+        "<workspace>"
+      ],
+      "worktree_exists": false
+    },
+    {
+      "contexts": [],
+      "final_tasks": [
+        {
+          "blockedBy": [
+            "missing"
+          ],
+          "description": "",
+          "id": "task_a",
+          "owner": null,
+          "status": "pending",
+          "subject": "blocked",
+          "worktree": null
+        }
+      ],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "blocked",
+      "outgoing": [
+        {
+          "content": "Idle timeout reached; teammate shut down.",
+          "metadata": {},
+          "type": "idle_notification"
+        }
+      ],
+      "poll_ms": 2,
+      "prompts": [],
+      "rows_json": [],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [
+        {
+          "blockedBy": [
+            "missing"
+          ],
+          "id": "task_a",
+          "subject": "blocked"
+        }
+      ],
+      "timeout_ms": 100,
+      "workspaces": [],
+      "worktree_exists": false
+    },
+    {
+      "contexts": [
+        {
+          "actor_id": "bob",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "<message>",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "session_manager"
+        }
+      ],
+      "final_tasks": [
+        {
+          "blockedBy": [],
+          "description": "",
+          "id": "task_a",
+          "owner": "bob",
+          "status": "in_progress",
+          "subject": "branch",
+          "worktree": "checkout"
+        }
+      ],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "worktree",
+      "outgoing": [
+        {
+          "content": "done",
+          "metadata": {
+            "task_id": "task_a"
+          },
+          "type": "result"
+        },
+        {
+          "content": "Idle timeout reached; teammate shut down.",
+          "metadata": {},
+          "type": "idle_notification"
+        }
+      ],
+      "poll_ms": 2,
+      "prompts": [
+        "You autonomously claimed task_a: branch\n\nComplete the work, then call complete_task for task_a."
+      ],
+      "rows_json": [],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [
+        {
+          "id": "task_a",
+          "subject": "branch",
+          "worktree": "checkout"
+        }
+      ],
+      "timeout_ms": 100,
+      "workspaces": [
+        "<worktree>"
+      ],
+      "worktree_exists": true
+    },
+    {
+      "contexts": [
+        {
+          "actor_id": "bob",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "<message>",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "session_manager"
+        }
+      ],
+      "final_tasks": [
+        {
+          "blockedBy": [],
+          "description": "",
+          "id": "task_a",
+          "owner": "bob",
+          "status": "in_progress",
+          "subject": "fallback",
+          "worktree": "checkout"
+        }
+      ],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "missing-worktree",
+      "outgoing": [
+        {
+          "content": "done",
+          "metadata": {
+            "task_id": "task_a"
+          },
+          "type": "result"
+        },
+        {
+          "content": "Idle timeout reached; teammate shut down.",
+          "metadata": {},
+          "type": "idle_notification"
+        }
+      ],
+      "poll_ms": 2,
+      "prompts": [
+        "You autonomously claimed task_a: fallback\n\nComplete the work, then call complete_task for task_a."
+      ],
+      "rows_json": [],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [
+        {
+          "id": "task_a",
+          "subject": "fallback",
+          "worktree": "checkout"
+        }
+      ],
+      "timeout_ms": 100,
+      "workspaces": [
+        "<workspace>"
+      ],
+      "worktree_exists": false
+    },
+    {
+      "contexts": [
+        {
+          "actor_id": "bob",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "<message>",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "session_manager"
+        }
+      ],
+      "final_tasks": [
+        {
+          "blockedBy": [],
+          "description": "",
+          "id": "task_a",
+          "owner": "bob",
+          "status": "in_progress",
+          "subject": "fallback",
+          "worktree": "../escape"
+        }
+      ],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "invalid-worktree",
+      "outgoing": [
+        {
+          "content": "done",
+          "metadata": {
+            "task_id": "task_a"
+          },
+          "type": "result"
+        },
+        {
+          "content": "Idle timeout reached; teammate shut down.",
+          "metadata": {},
+          "type": "idle_notification"
+        }
+      ],
+      "poll_ms": 2,
+      "prompts": [
+        "You autonomously claimed task_a: fallback\n\nComplete the work, then call complete_task for task_a."
+      ],
+      "rows_json": [],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [
+        {
+          "id": "task_a",
+          "subject": "fallback",
+          "worktree": "../escape"
+        }
+      ],
+      "timeout_ms": 100,
+      "workspaces": [
+        "<workspace>"
+      ],
+      "worktree_exists": false
+    },
+    {
+      "contexts": [
+        {
+          "actor_id": "bob",
+          "approved_capabilities": [],
+          "authority": "peer_agent",
+          "channel": "agent",
+          "delegated_by": "lead",
+          "message_id": "<message>",
+          "origin": "peer_agent",
+          "parent_message_id": null,
+          "stamped_by": "session_manager"
+        }
+      ],
+      "final_tasks": [],
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "poll-crosses-deadline",
+      "outgoing": [
+        {
+          "content": "done",
+          "metadata": {},
+          "type": "result"
+        },
+        {
+          "content": "Idle timeout reached; teammate shut down.",
+          "metadata": {},
+          "type": "idle_notification"
+        }
+      ],
+      "poll_ms": 20,
+      "prompts": [
+        "<team_inbox>\n[{\"from\": \"team/peer\", \"content\": \"delivered after sleep\"}]\n</team_inbox>"
+      ],
+      "rows_json": [
+        "{\"from\": \"team/peer\", \"content\": \"delivered after sleep\"}"
+      ],
+      "shutdown": false,
+      "shutdown_before": false,
+      "tasks": [],
+      "timeout_ms": 1,
+      "workspaces": [
+        "<workspace>"
+      ],
+      "worktree_exists": false
+    }
+  ],
+  "injectors": [
+    {
+      "counts": [],
+      "error": "",
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "empty",
+      "outgoing": [],
+      "output": [],
+      "raw": "[]",
+      "remaining": 0,
+      "rows_json": [],
+      "shutdown": false,
+      "teamless": false,
+      "unconfigured": false
+    },
+    {
+      "counts": [
+        3
+      ],
+      "error": "",
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "legacy",
+      "outgoing": [],
+      "output": [
+        "<team_inbox>\n[\n  {\n    \"from\": \"peer\",\n    \"type\": \"\",\n    \"content\": \"quote \\\" \\u754c\",\n    \"metadata\": {\n      \"z\": [\n        1,\n        1.0,\n        null\n      ],\n      \"a\": true\n    }\n  },\n  {\n    \"from\": \"\",\n    \"type\": \"message\",\n    \"content\": \"missing fields\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"name\",\n    \"type\": \"message\",\n    \"content\": [\n      NaN,\n      \"\\ud800\"\n    ],\n    \"metadata\": {}\n  }\n]\n</team_inbox>"
+      ],
+      "raw": "[{\"from\": \"team/peer\", \"to\": \"team/bob\", \"content\": \"quote \\\" \\u754c\", \"type\": \"\", \"metadata\": {\"z\": [1, 1.0, null], \"a\": true}, \"ts\": 1.5, \"unknown\": \"keep\"}, {\"content\": \"missing fields\"}, {\"from\": \"x/name\", \"type\": \"message\", \"metadata\": {}, \"content\": [NaN, \"\\ud800\"]}]",
+      "remaining": 0,
+      "rows_json": [
+        "{\"from\": \"team/peer\", \"to\": \"team/bob\", \"content\": \"quote \\\" \\u754c\", \"type\": \"\", \"metadata\": {\"z\": [1, 1.0, null], \"a\": true}, \"ts\": 1.5, \"unknown\": \"keep\"}",
+        "{\"content\": \"missing fields\"}",
+        "{\"from\": \"x/name\", \"type\": \"message\", \"metadata\": {}, \"content\": [NaN, \"\\ud800\"]}"
+      ],
+      "shutdown": false,
+      "teamless": false,
+      "unconfigured": false
+    },
+    {
+      "counts": [],
+      "error": "",
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "unconfigured",
+      "outgoing": [],
+      "output": [],
+      "raw": "[{\"from\": \"peer\", \"content\": \"retained\"}]",
+      "remaining": 1,
+      "rows_json": [
+        "{\"from\": \"peer\", \"content\": \"retained\"}"
+      ],
+      "shutdown": false,
+      "teamless": false,
+      "unconfigured": true
+    },
+    {
+      "counts": [],
+      "error": "",
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "teamless",
+      "outgoing": [],
+      "output": [],
+      "raw": "[{\"from\": \"peer\", \"content\": \"retained\"}]",
+      "remaining": 1,
+      "rows_json": [
+        "{\"from\": \"peer\", \"content\": \"retained\"}"
+      ],
+      "shutdown": false,
+      "teamless": true,
+      "unconfigured": false
+    },
+    {
+      "counts": [
+        1
+      ],
+      "error": "AttributeError",
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "bad-sender",
+      "outgoing": [],
+      "output": [],
+      "raw": "[{\"from\": 7, \"content\": \"bad\"}]",
+      "remaining": 0,
+      "rows_json": [
+        "{\"from\": 7, \"content\": \"bad\"}"
+      ],
+      "shutdown": false,
+      "teamless": false,
+      "unconfigured": false
+    },
+    {
+      "counts": [
+        1
+      ],
+      "error": "",
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "shutdown",
+      "outgoing": [
+        {
+          "content": "Shutdown approved.",
+          "metadata": {
+            "approve": true,
+            "request_id": "request"
+          },
+          "type": "shutdown_response"
+        }
+      ],
+      "output": [
+        "<team_inbox>\n[\n  {\n    \"from\": \"lead\",\n    \"type\": \"shutdown_request\",\n    \"content\": \"stop\",\n    \"metadata\": {\n      \"request_id\": \"request\"\n    }\n  }\n]\n</team_inbox>"
+      ],
+      "raw": "[{\"from\": \"team/lead\", \"type\": \"shutdown_request\", \"metadata\": {\"request_id\": \"request\"}, \"content\": \"stop\"}]",
+      "remaining": 0,
+      "rows_json": [
+        "{\"from\": \"team/lead\", \"type\": \"shutdown_request\", \"metadata\": {\"request_id\": \"request\"}, \"content\": \"stop\"}"
+      ],
+      "shutdown": true,
+      "teamless": false,
+      "unconfigured": false
+    },
+    {
+      "counts": [],
+      "error": "AttributeError",
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "partial-shutdown",
+      "outgoing": [
+        {
+          "content": "Shutdown approved.",
+          "metadata": {
+            "approve": true,
+            "request_id": "request"
+          },
+          "type": "shutdown_response"
+        }
+      ],
+      "output": [],
+      "raw": "[{\"from\": \"team/lead\", \"type\": \"shutdown_request\", \"metadata\": {\"request_id\": \"request\"}}, {\"type\": \"shutdown_request\", \"metadata\": []}]",
+      "remaining": 0,
+      "rows_json": [
+        "{\"from\": \"team/lead\", \"type\": \"shutdown_request\", \"metadata\": {\"request_id\": \"request\"}}",
+        "{\"type\": \"shutdown_request\", \"metadata\": []}"
+      ],
+      "shutdown": true,
+      "teamless": false,
+      "unconfigured": false
+    },
+    {
+      "counts": [
+        100
+      ],
+      "error": "",
+      "initial": {
+        "mode": "interactive",
+        "owner": "alice",
+        "recursive_spawn": false,
+        "result": "Spawned teammate 'bob' (session <session>); running concurrently.",
+        "role": "research",
+        "shared_memory": true,
+        "shared_skills": true,
+        "shared_workspace": true
+      },
+      "name": "overflow",
+      "outgoing": [],
+      "output": [
+        "<team_inbox>\n[\n  {\n    \"from\": \"mailbox\",\n    \"type\": \"notice\",\n    \"content\": \"[inbox overflow: 2 older messages were dropped unread. Ask senders to resend anything critical.]\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"2\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"3\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"4\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"5\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"6\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"7\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"8\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"9\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"10\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"11\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"12\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"13\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"14\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"15\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"16\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"17\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"18\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"19\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"20\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"21\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"22\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"23\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"24\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"25\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"26\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"27\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"28\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"29\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"30\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"31\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"32\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"33\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"34\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"35\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"36\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"37\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"38\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"39\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"40\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"41\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"42\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"43\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"44\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"45\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"46\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"47\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"48\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"49\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"50\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"51\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"52\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"53\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"54\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"55\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"56\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"57\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"58\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"59\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"60\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"61\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"62\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"63\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"64\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"65\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"66\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"67\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"68\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"69\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"70\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"71\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"72\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"73\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"74\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"75\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"76\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"77\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"78\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"79\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"80\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"81\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"82\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"83\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"84\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"85\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"86\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"87\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"88\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"89\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"90\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"91\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"92\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"93\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"94\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"95\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"96\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"97\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"98\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"99\",\n    \"metadata\": {}\n  },\n  {\n    \"from\": \"peer\",\n    \"type\": \"message\",\n    \"content\": \"100\",\n    \"metadata\": {}\n  }\n]\n</team_inbox>"
+      ],
+      "raw": "[{\"from\": \"team/peer\", \"content\": \"0\"}, {\"from\": \"team/peer\", \"content\": \"1\"}, {\"from\": \"team/peer\", \"content\": \"2\"}, {\"from\": \"team/peer\", \"content\": \"3\"}, {\"from\": \"team/peer\", \"content\": \"4\"}, {\"from\": \"team/peer\", \"content\": \"5\"}, {\"from\": \"team/peer\", \"content\": \"6\"}, {\"from\": \"team/peer\", \"content\": \"7\"}, {\"from\": \"team/peer\", \"content\": \"8\"}, {\"from\": \"team/peer\", \"content\": \"9\"}, {\"from\": \"team/peer\", \"content\": \"10\"}, {\"from\": \"team/peer\", \"content\": \"11\"}, {\"from\": \"team/peer\", \"content\": \"12\"}, {\"from\": \"team/peer\", \"content\": \"13\"}, {\"from\": \"team/peer\", \"content\": \"14\"}, {\"from\": \"team/peer\", \"content\": \"15\"}, {\"from\": \"team/peer\", \"content\": \"16\"}, {\"from\": \"team/peer\", \"content\": \"17\"}, {\"from\": \"team/peer\", \"content\": \"18\"}, {\"from\": \"team/peer\", \"content\": \"19\"}, {\"from\": \"team/peer\", \"content\": \"20\"}, {\"from\": \"team/peer\", \"content\": \"21\"}, {\"from\": \"team/peer\", \"content\": \"22\"}, {\"from\": \"team/peer\", \"content\": \"23\"}, {\"from\": \"team/peer\", \"content\": \"24\"}, {\"from\": \"team/peer\", \"content\": \"25\"}, {\"from\": \"team/peer\", \"content\": \"26\"}, {\"from\": \"team/peer\", \"content\": \"27\"}, {\"from\": \"team/peer\", \"content\": \"28\"}, {\"from\": \"team/peer\", \"content\": \"29\"}, {\"from\": \"team/peer\", \"content\": \"30\"}, {\"from\": \"team/peer\", \"content\": \"31\"}, {\"from\": \"team/peer\", \"content\": \"32\"}, {\"from\": \"team/peer\", \"content\": \"33\"}, {\"from\": \"team/peer\", \"content\": \"34\"}, {\"from\": \"team/peer\", \"content\": \"35\"}, {\"from\": \"team/peer\", \"content\": \"36\"}, {\"from\": \"team/peer\", \"content\": \"37\"}, {\"from\": \"team/peer\", \"content\": \"38\"}, {\"from\": \"team/peer\", \"content\": \"39\"}, {\"from\": \"team/peer\", \"content\": \"40\"}, {\"from\": \"team/peer\", \"content\": \"41\"}, {\"from\": \"team/peer\", \"content\": \"42\"}, {\"from\": \"team/peer\", \"content\": \"43\"}, {\"from\": \"team/peer\", \"content\": \"44\"}, {\"from\": \"team/peer\", \"content\": \"45\"}, {\"from\": \"team/peer\", \"content\": \"46\"}, {\"from\": \"team/peer\", \"content\": \"47\"}, {\"from\": \"team/peer\", \"content\": \"48\"}, {\"from\": \"team/peer\", \"content\": \"49\"}, {\"from\": \"team/peer\", \"content\": \"50\"}, {\"from\": \"team/peer\", \"content\": \"51\"}, {\"from\": \"team/peer\", \"content\": \"52\"}, {\"from\": \"team/peer\", \"content\": \"53\"}, {\"from\": \"team/peer\", \"content\": \"54\"}, {\"from\": \"team/peer\", \"content\": \"55\"}, {\"from\": \"team/peer\", \"content\": \"56\"}, {\"from\": \"team/peer\", \"content\": \"57\"}, {\"from\": \"team/peer\", \"content\": \"58\"}, {\"from\": \"team/peer\", \"content\": \"59\"}, {\"from\": \"team/peer\", \"content\": \"60\"}, {\"from\": \"team/peer\", \"content\": \"61\"}, {\"from\": \"team/peer\", \"content\": \"62\"}, {\"from\": \"team/peer\", \"content\": \"63\"}, {\"from\": \"team/peer\", \"content\": \"64\"}, {\"from\": \"team/peer\", \"content\": \"65\"}, {\"from\": \"team/peer\", \"content\": \"66\"}, {\"from\": \"team/peer\", \"content\": \"67\"}, {\"from\": \"team/peer\", \"content\": \"68\"}, {\"from\": \"team/peer\", \"content\": \"69\"}, {\"from\": \"team/peer\", \"content\": \"70\"}, {\"from\": \"team/peer\", \"content\": \"71\"}, {\"from\": \"team/peer\", \"content\": \"72\"}, {\"from\": \"team/peer\", \"content\": \"73\"}, {\"from\": \"team/peer\", \"content\": \"74\"}, {\"from\": \"team/peer\", \"content\": \"75\"}, {\"from\": \"team/peer\", \"content\": \"76\"}, {\"from\": \"team/peer\", \"content\": \"77\"}, {\"from\": \"team/peer\", \"content\": \"78\"}, {\"from\": \"team/peer\", \"content\": \"79\"}, {\"from\": \"team/peer\", \"content\": \"80\"}, {\"from\": \"team/peer\", \"content\": \"81\"}, {\"from\": \"team/peer\", \"content\": \"82\"}, {\"from\": \"team/peer\", \"content\": \"83\"}, {\"from\": \"team/peer\", \"content\": \"84\"}, {\"from\": \"team/peer\", \"content\": \"85\"}, {\"from\": \"team/peer\", \"content\": \"86\"}, {\"from\": \"team/peer\", \"content\": \"87\"}, {\"from\": \"team/peer\", \"content\": \"88\"}, {\"from\": \"team/peer\", \"content\": \"89\"}, {\"from\": \"team/peer\", \"content\": \"90\"}, {\"from\": \"team/peer\", \"content\": \"91\"}, {\"from\": \"team/peer\", \"content\": \"92\"}, {\"from\": \"team/peer\", \"content\": \"93\"}, {\"from\": \"team/peer\", \"content\": \"94\"}, {\"from\": \"team/peer\", \"content\": \"95\"}, {\"from\": \"team/peer\", \"content\": \"96\"}, {\"from\": \"team/peer\", \"content\": \"97\"}, {\"from\": \"team/peer\", \"content\": \"98\"}, {\"from\": \"team/peer\", \"content\": \"99\"}, {\"from\": \"team/peer\", \"content\": \"100\"}]",
+      "remaining": 0,
+      "rows_json": [
+        "{\"from\": \"team/peer\", \"content\": \"0\"}",
+        "{\"from\": \"team/peer\", \"content\": \"1\"}",
+        "{\"from\": \"team/peer\", \"content\": \"2\"}",
+        "{\"from\": \"team/peer\", \"content\": \"3\"}",
+        "{\"from\": \"team/peer\", \"content\": \"4\"}",
+        "{\"from\": \"team/peer\", \"content\": \"5\"}",
+        "{\"from\": \"team/peer\", \"content\": \"6\"}",
+        "{\"from\": \"team/peer\", \"content\": \"7\"}",
+        "{\"from\": \"team/peer\", \"content\": \"8\"}",
+        "{\"from\": \"team/peer\", \"content\": \"9\"}",
+        "{\"from\": \"team/peer\", \"content\": \"10\"}",
+        "{\"from\": \"team/peer\", \"content\": \"11\"}",
+        "{\"from\": \"team/peer\", \"content\": \"12\"}",
+        "{\"from\": \"team/peer\", \"content\": \"13\"}",
+        "{\"from\": \"team/peer\", \"content\": \"14\"}",
+        "{\"from\": \"team/peer\", \"content\": \"15\"}",
+        "{\"from\": \"team/peer\", \"content\": \"16\"}",
+        "{\"from\": \"team/peer\", \"content\": \"17\"}",
+        "{\"from\": \"team/peer\", \"content\": \"18\"}",
+        "{\"from\": \"team/peer\", \"content\": \"19\"}",
+        "{\"from\": \"team/peer\", \"content\": \"20\"}",
+        "{\"from\": \"team/peer\", \"content\": \"21\"}",
+        "{\"from\": \"team/peer\", \"content\": \"22\"}",
+        "{\"from\": \"team/peer\", \"content\": \"23\"}",
+        "{\"from\": \"team/peer\", \"content\": \"24\"}",
+        "{\"from\": \"team/peer\", \"content\": \"25\"}",
+        "{\"from\": \"team/peer\", \"content\": \"26\"}",
+        "{\"from\": \"team/peer\", \"content\": \"27\"}",
+        "{\"from\": \"team/peer\", \"content\": \"28\"}",
+        "{\"from\": \"team/peer\", \"content\": \"29\"}",
+        "{\"from\": \"team/peer\", \"content\": \"30\"}",
+        "{\"from\": \"team/peer\", \"content\": \"31\"}",
+        "{\"from\": \"team/peer\", \"content\": \"32\"}",
+        "{\"from\": \"team/peer\", \"content\": \"33\"}",
+        "{\"from\": \"team/peer\", \"content\": \"34\"}",
+        "{\"from\": \"team/peer\", \"content\": \"35\"}",
+        "{\"from\": \"team/peer\", \"content\": \"36\"}",
+        "{\"from\": \"team/peer\", \"content\": \"37\"}",
+        "{\"from\": \"team/peer\", \"content\": \"38\"}",
+        "{\"from\": \"team/peer\", \"content\": \"39\"}",
+        "{\"from\": \"team/peer\", \"content\": \"40\"}",
+        "{\"from\": \"team/peer\", \"content\": \"41\"}",
+        "{\"from\": \"team/peer\", \"content\": \"42\"}",
+        "{\"from\": \"team/peer\", \"content\": \"43\"}",
+        "{\"from\": \"team/peer\", \"content\": \"44\"}",
+        "{\"from\": \"team/peer\", \"content\": \"45\"}",
+        "{\"from\": \"team/peer\", \"content\": \"46\"}",
+        "{\"from\": \"team/peer\", \"content\": \"47\"}",
+        "{\"from\": \"team/peer\", \"content\": \"48\"}",
+        "{\"from\": \"team/peer\", \"content\": \"49\"}",
+        "{\"from\": \"team/peer\", \"content\": \"50\"}",
+        "{\"from\": \"team/peer\", \"content\": \"51\"}",
+        "{\"from\": \"team/peer\", \"content\": \"52\"}",
+        "{\"from\": \"team/peer\", \"content\": \"53\"}",
+        "{\"from\": \"team/peer\", \"content\": \"54\"}",
+        "{\"from\": \"team/peer\", \"content\": \"55\"}",
+        "{\"from\": \"team/peer\", \"content\": \"56\"}",
+        "{\"from\": \"team/peer\", \"content\": \"57\"}",
+        "{\"from\": \"team/peer\", \"content\": \"58\"}",
+        "{\"from\": \"team/peer\", \"content\": \"59\"}",
+        "{\"from\": \"team/peer\", \"content\": \"60\"}",
+        "{\"from\": \"team/peer\", \"content\": \"61\"}",
+        "{\"from\": \"team/peer\", \"content\": \"62\"}",
+        "{\"from\": \"team/peer\", \"content\": \"63\"}",
+        "{\"from\": \"team/peer\", \"content\": \"64\"}",
+        "{\"from\": \"team/peer\", \"content\": \"65\"}",
+        "{\"from\": \"team/peer\", \"content\": \"66\"}",
+        "{\"from\": \"team/peer\", \"content\": \"67\"}",
+        "{\"from\": \"team/peer\", \"content\": \"68\"}",
+        "{\"from\": \"team/peer\", \"content\": \"69\"}",
+        "{\"from\": \"team/peer\", \"content\": \"70\"}",
+        "{\"from\": \"team/peer\", \"content\": \"71\"}",
+        "{\"from\": \"team/peer\", \"content\": \"72\"}",
+        "{\"from\": \"team/peer\", \"content\": \"73\"}",
+        "{\"from\": \"team/peer\", \"content\": \"74\"}",
+        "{\"from\": \"team/peer\", \"content\": \"75\"}",
+        "{\"from\": \"team/peer\", \"content\": \"76\"}",
+        "{\"from\": \"team/peer\", \"content\": \"77\"}",
+        "{\"from\": \"team/peer\", \"content\": \"78\"}",
+        "{\"from\": \"team/peer\", \"content\": \"79\"}",
+        "{\"from\": \"team/peer\", \"content\": \"80\"}",
+        "{\"from\": \"team/peer\", \"content\": \"81\"}",
+        "{\"from\": \"team/peer\", \"content\": \"82\"}",
+        "{\"from\": \"team/peer\", \"content\": \"83\"}",
+        "{\"from\": \"team/peer\", \"content\": \"84\"}",
+        "{\"from\": \"team/peer\", \"content\": \"85\"}",
+        "{\"from\": \"team/peer\", \"content\": \"86\"}",
+        "{\"from\": \"team/peer\", \"content\": \"87\"}",
+        "{\"from\": \"team/peer\", \"content\": \"88\"}",
+        "{\"from\": \"team/peer\", \"content\": \"89\"}",
+        "{\"from\": \"team/peer\", \"content\": \"90\"}",
+        "{\"from\": \"team/peer\", \"content\": \"91\"}",
+        "{\"from\": \"team/peer\", \"content\": \"92\"}",
+        "{\"from\": \"team/peer\", \"content\": \"93\"}",
+        "{\"from\": \"team/peer\", \"content\": \"94\"}",
+        "{\"from\": \"team/peer\", \"content\": \"95\"}",
+        "{\"from\": \"team/peer\", \"content\": \"96\"}",
+        "{\"from\": \"team/peer\", \"content\": \"97\"}",
+        "{\"from\": \"team/peer\", \"content\": \"98\"}",
+        "{\"from\": \"team/peer\", \"content\": \"99\"}",
+        "{\"from\": \"team/peer\", \"content\": \"100\"}"
+      ],
+      "shutdown": false,
+      "teamless": false,
+      "unconfigured": false
+    }
+  ]
+}
