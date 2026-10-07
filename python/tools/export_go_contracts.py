@@ -6744,6 +6744,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-team-bus.json": _json_bytes(_team_bus_contracts()),
         "python-team-http.json": _json_bytes(_team_http_contracts()),
         "python-team-tools.json": _json_bytes(_team_tool_contracts()),
+        "python-team-protocols.json": _json_bytes(_team_protocol_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8667,6 +8668,127 @@ def _team_tool_contracts() -> dict:
                               sorted=json.dumps(value,sort_keys=True,ensure_ascii=False),
                               masked_json=json.dumps(secret.mask_payload(value))))
     return dict(tools=tools,cases=cases)
+
+
+def _team_protocol_contracts() -> dict:
+    """Actual manager handshakes/delivery over real sessions and fixed mailboxes.
+
+    Roster construction is an explicit trusted fixture seam, not spawn evidence.
+    Only request UUIDs and wall timestamps are fixed; methods and bus are real.
+    """
+    from dataclasses import asdict
+    from types import SimpleNamespace
+    from unittest.mock import patch
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.teams import ProtocolState, _render_messages
+    import mini_loop.manager as manager_module
+
+    recipes = [
+        dict(name="plan-review",operations=[dict(action="submit",content="Plan 界"),dict(action="peek"),dict(action="consume"),dict(action="review",team="other",request=1,approve=True),dict(action="review",request=1,approve=True),dict(action="consume",member="bob"),dict(action="review",request=1,approve=False)]),
+        dict(name="shutdown",operations=[dict(action="shutdown"),dict(action="peek",member="bob"),dict(action="consume",member="bob"),dict(action="consume"),dict(action="consume",member="bob")]),
+        dict(name="without-agent",operations=[dict(action="shutdown",member="no-agent"),dict(action="consume",member="no-agent"),dict(action="consume")]),
+        dict(name="missing-targets",operations=[dict(action="shutdown",member="missing"),dict(action="request_plan",member="missing"),dict(action="submit",member="lead"),dict(action="review",request=1,approve=True)]),
+        dict(name="instruction-refusal",operations=[dict(action="request_plan",content="界",repeat=16000),dict(action="peek",member="bob")]),
+        dict(name="plan-truncation",operations=[dict(action="submit",content="界",repeat=16001),dict(action="consume")]),
+        dict(name="shutdown-truncation",operations=[dict(action="shutdown",content="😀",repeat=16001),dict(action="consume",member="bob"),dict(action="consume")]),
+        dict(name="review-truncation",operations=[dict(action="submit",content="plan"),dict(action="review",request=1,approve=False,content="界",repeat=16001),dict(action="consume",member="bob")]),
+        dict(name="request-plan",operations=[dict(action="request_plan",content="build it"),dict(action="consume",member="bob")]),
+        dict(name="shutdown-not-plan",operations=[dict(action="shutdown"),dict(action="review",request=1,approve=True)]),
+        dict(name="correlation-only",operations=[dict(action="submit",content="plan"),dict(action="inject",message={"from":"other/spoof","type":"plan_approval_response","content":{"z":[True,None,"界"],"a":1},"metadata":{"approve":"yes"}},request=1),dict(action="consume"),dict(action="review",request=1,approve=True)]),
+        dict(name="wrong-type",operations=[dict(action="submit",content="plan"),dict(action="inject",message={"type":"shutdown_response","content":"wrong","metadata":{"approve":True}},request=1),dict(action="consume")]),
+        dict(name="false-approval",operations=[dict(action="submit",content="plan"),dict(action="inject",message={"type":"plan_approval_response","content":None,"metadata":{"approve":[]}},request=1),dict(action="consume")]),
+        dict(name="nan-approval",operations=[dict(action="submit",content="plan"),dict(action="inject",message={"type":"plan_approval_response","content":float("inf"),"metadata":{"approve":float("nan")}},request=1),dict(action="consume")]),
+        dict(name="legacy-render",operations=[dict(action="inject",message={"from":"t/name","content":{"text":"\ud800","n":float("nan")},"metadata":{"extra":True}}),dict(action="consume")]),
+        dict(name="partial-fault",operations=[dict(action="shutdown"),dict(action="inject",member="bob",message={"metadata":None}),dict(action="consume",member="bob"),dict(action="consume")]),
+        dict(name="unhashable-id",operations=[dict(action="inject",message={"metadata":{"request_id":[]}}),dict(action="consume"),dict(action="consume")]),
+        dict(name="render-fault",operations=[dict(action="inject",message={"from":None,"metadata":{}}),dict(action="consume")]),
+        dict(name="bad-recipient",operations=[dict(action="shutdown",member="."),dict(action="consume",member=".")]),
+        dict(name="unicode-recipient",operations=[dict(action="shutdown",member="\U0001fae8")]),
+        dict(name="publication-before-fault",operations=[dict(action="block",member="bob"),dict(action="shutdown"),dict(action="peek",member="bob")]),
+        dict(name="resolved-before-fault",operations=[dict(action="submit",content="plan"),dict(action="block",member="bob"),dict(action="review",request=1,approve=True,content="feedback")]),
+        dict(name="prune-resolved-first",memory=True,operations=[dict(action="batch",count=5),dict(action="batch",count=205,resolve=True)]),
+        dict(name="prune-all-pending",memory=True,operations=[dict(action="batch",count=220)]),
+    ]
+    values = [None, False, True, 0, 1, -1, -0.0, 1e-7, "", "no", [], [False], {},
+              {"quote'": "\n", "surrogate": "\ud800", "unicode15": "\U0001fae8"}, float("nan"), float("inf")]
+    operations=[]
+    for index,value in enumerate(values,1):
+        operations.extend([dict(action="submit",content="value plan"),
+                           dict(action="inject",request=index,message={"type":"plan_approval_response","content":value,"metadata":{"approve":value}}),
+                           dict(action="consume")])
+    recipes.append(dict(name="closed-value-responses",operations=operations))
+    def encoded(value):
+        return json.dumps(value,ensure_ascii=True,separators=(",",":"))
+    def digest(value):
+        return hashlib.sha256(value.encode("utf-8",errors="surrogatepass")).hexdigest()
+    cases=[]
+    for recipe in recipes:
+        with tempfile.TemporaryDirectory(prefix="go-team-protocol-") as scratch:
+            manager=SessionManager(Settings(fake_llm=True,workspace_root=Path(scratch)/"ws",trajectory_enabled=False),FakeAsyncAnthropic())
+            children={name:manager.create(owner="alice") for name in ("bob","no-agent",".","\U0001fae8")}
+            children["no-agent"].agent=None
+            manager._teammates["team"]={name:child.id for name,child in children.items()}
+            if recipe.get("memory"):
+                from mini_loop.teams import MessageBus
+                manager.bus=MessageBus()
+            counter=0
+            def uuid():
+                nonlocal counter
+                counter+=1
+                return SimpleNamespace(hex=f"{counter:010x}"+"0"*22)
+            def state(*args,**kwargs):
+                return ProtocolState(*args,created_at=1000.0,**kwargs)
+            steps=[]
+            with patch("mini_loop.manager.uuid.uuid4",side_effect=uuid),patch.object(manager_module,"ProtocolState",side_effect=state),patch("mini_loop.teams.time.time",return_value=1000.0):
+                for operation in recipe["operations"]:
+                    op=dict(operation)
+                    if "message" in op: op["message_json"]=encoded(op.pop("message"))
+                    step=dict(operation=op)
+                    member=operation.get("member","bob" if operation["action"] in {"submit","shutdown","request_plan","block"} else "lead")
+                    team=operation.get("team","team")
+                    content=operation.get("content","")*operation.get("repeat",1)
+                    rid=f"req_{operation.get('request',0):010x}"
+                    child=children.get(member)
+                    if child and child.agent: child.agent.state.pop("shutdown_requested",None)
+                    try:
+                        action=operation["action"]
+                        if action=="submit": output=manager.submit_plan(team,member,content)
+                        elif action=="shutdown": output=manager.request_shutdown(team,member,content)
+                        elif action=="request_plan": output=manager.request_plan(team,member,content)
+                        elif action=="review": output=manager.review_plan(team,rid,operation["approve"],content)
+                        elif action in {"peek","consume"}:
+                            rows=manager.peek_team_inbox(team,member) if action=="peek" else manager.consume_team_inbox(team,member)
+                            output=dict(messages=rows,shutdown_requested=bool(child and child.agent and child.agent.state.get("shutdown_requested",False)))
+                            step["render_hash"]=digest(_render_messages(rows))
+                        elif action=="inject":
+                            message=json.loads(op["message_json"])
+                            if operation.get("request"): message.setdefault("metadata",{})["request_id"]=rid
+                            key=team+"/"+member
+                            if recipe.get("memory"): manager.bus.inboxes.setdefault(key,[]).append(message)
+                            else:
+                                path=manager.bus._path(key);path.parent.mkdir(parents=True,exist_ok=True)
+                                with path.open("a") as file:file.write(encoded(message)+"\n")
+                            output="injected"
+                        elif action=="block":
+                            path=manager.bus._path(team+"/"+member);path.parent.mkdir(parents=True,exist_ok=True);path.mkdir();output="blocked"
+                        elif action=="batch":
+                            output=[]
+                            for i in range(operation["count"]):
+                                request=manager.submit_plan(team,"bob",f"plan-{i}")
+                                output.append(request)
+                                if operation.get("resolve"):output.append(manager.review_plan(team,request,True,""))
+                        step["result_hash"]=digest(encoded(output))
+                    except Exception as error:
+                        step["error"]=type(error).__name__
+                    step["shutdown_requested"]=bool(child and child.agent and child.agent.state.get("shutdown_requested",False))
+                    step["states_hash"]=digest(json.dumps([asdict(s) for s in manager.protocols.values()],indent=2))
+                    step["state_count"]=len(manager.protocols)
+                    step["problems"]=[str(value).replace(str(manager.bus.root),"<root>") if manager.bus.root else str(value) for value in manager.bus.problems]
+                    steps.append(step)
+            cases.append(dict(name=recipe["name"],memory=recipe.get("memory",False),steps=steps))
+    return dict(cases=cases)
 
 
 def main() -> int:

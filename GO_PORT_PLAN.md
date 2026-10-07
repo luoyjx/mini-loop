@@ -1,5 +1,57 @@
 # Go port plan
 
+## 2026-10-08 native operator team protocol coordinator
+
+Baseline c55439b; full G0–G7 remains open. The native teams library now coordinates
+shutdown requests/acks, task-plan requests, plan submissions/reviews and correlated
+responses through a concrete trusted MemberDirectory and a detached insertion-ordered
+protocol view. Its process-local table holds 200 requests, evicting resolved history
+before pending requests. Reports truncate at the source preview boundary; oversized
+instructions are refused. Publication/resolution precedes IO. Consume drains first;
+a later malformed row can retain earlier effects and a shutdown outcome even on error.
+Callers must apply that sticky outcome. Correlation preserves the source request-ID,
+type and status checks; it adds no sender authentication or transactional outbox.
+
+Snapshot 110 adds 25 actual Python manager recipes and 117 operations. Fixed clocks
+and IDs make exact result/render hashes comparable. Fixture roster construction uses
+real source sessions and bus IO but does not prove teammate spawning or scheduling.
+Cases cover empty/no-agent/missing members, review ordering and foreign teams,
+truncation/refusal, historical nonfinite/surrogate JSON, spoofed sender correlation,
+partial drain failures, filesystem faults before/after state publication, eviction,
+and response truthiness/string rendering. Native tests also cover cancellation,
+invalid directory states, entropy failure, ID collisions, detached snapshots and
+concurrent reviews. No new dependencies or loosely typed domain state are added.
+
+README canonical Mermaid and boundary, EXTENDING, parity matrix and architecture
+specification/generated HTML now identify the coordinator as an operator library.
+The default manager still binds only its bus and owned nonconsuming GET. Next slices:
+managed teammate roster/construction with resource/workspace inheritance and owner
+lifecycle; team tools through the common execution gate; automatic inbox injection,
+idle/task claiming, prompt identity and diagnostic aggregation/cancellation joins.
+All four workflow routes/runtime, MCP, native SQLite driver/crash cases, remaining
+provider/context profiles and the full G7 release audit remain open.
+
+Final validation (all process handles terminal):
+
+- Focused teams/jsonvalue/pytext tests passed. Full `go test ./... -count=1
+  -timeout=180s`, `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+- `export_go_contracts.py --check`: all 110 files current (two dependency warnings).
+  `export_go_unicode.py --check`: pinned Unicode 14.0.0 tables current.
+- `verify_scans.py`: all 19 scanning guards anchored. `verify_guards.py -k protocols-`:
+  both protocols-never-pruned and protocols-evict-live-pending mutations caught.
+  The full mutation catalogue was not rerun.
+- Final isolated `.venv/bin/python -m pytest -q`: 2,155 passed, 28 skipped,
+  24 subtests, four warnings, 129.16s. Three dependency deprecations and one ignored
+  subprocess transport destructor/event-loop-closed warning in
+  test_owner_map_bound.py::test_the_owner_map_stays_bounded_across_many_deletes.
+- Architecture delivery: 9/9 automated checks, zero errors/warnings. Spec SHA256
+  10e2997e5c991756aec8f8ab4a420912673735b60f4d5c154d05f1fb845a6e40;
+  generated artifact SHA256
+  00cac2493c4783cbcc327a2692408f597cd18b62e562b5435f58123bc3e9f9a3.
+  Visual inspection remains skipped after the earlier denial; no bypass was tried.
+- `git diff --check` and README outline passed before staging. Coverage was not
+  refreshed. Python runtime package modules were unchanged; invariants were not rerun.
+
 ## 2026-10-08 closed Python value projections and printable tables
 
 Baseline 2a0b5c7; full G0–G7 remains open. This prerequisite provides immutable

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `2a0b5c7` plus closed Python value projections and printable tables;
+reviewed **2026-10-08** (Go baseline `c55439b` plus native team protocol coordinator;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoTeams["Go team mailbox<br/>bounded JSONL / memory · structural masking<br/>owned non-consuming GET; scheduling pending"]
+        GoTeams["Go team library<br/>bounded mailbox / operator protocols<br/>owned GET; runtime tools pending"]
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
@@ -1330,18 +1330,30 @@ HTTP outcomes plus the source custom-agent teamless projection. Native TCP tests
 prove viewing leaves all 75 messages for subsequent delivery and foreign callers
 cannot trigger an owned unreadable mailbox error. Python and Go reject dot path
 components before IO; lexical checks and instance locks provide neither filesystem
-confinement nor cross-process delivery transactions. Teammate spawning, protocol
-routing, idle/task scheduling, prompt identity and bus diagnostic aggregation remain
+confinement nor cross-process delivery transactions. Teammate spawning, managed
+protocol routing, idle/task scheduling, prompt identity and bus diagnostic aggregation remain
 pending. All ten source team/protocol tools now have concrete input variants,
 source schemas, immutable metadata and sorted/masked recording projections; the
 codec rejects model-supplied identity/root fields. Snapshot 109 compares 74 actual
 source keyword bindings and JSON identities, including metadata key collisions.
 This is the input layer: the mailbox adds no installed model tools or automatic
 inbox delivery yet.
-The shared Go closed JSON value tree now provides Python truthiness, str/repr,
-legacy ASCII indent rendering and surrogatepass code-point prefixes. Printable
-characters use generated Python Unicode 14.0.0 tables rather than Go's newer
-database. These are projection helpers; runtime tool defaults are unchanged.
+The Go team library also provides a native process-local protocol coordinator:
+shutdown requests/acknowledgments, task-plan requests, plan submissions/reviews,
+correlated responses and a global 200-handshake table. Resolved history is evicted
+before live pending requests. Reports retain a truncated preview while oversized
+instructions are refused. State publication/resolution precedes delivery; filesystem
+failure may leave the table changed, and a malformed row may fail after the inbox
+has drained and earlier shutdown acknowledgments have been sent. These are source
+semantics, not an outbox transaction. Snapshot 110 compares 25 actual Python manager
+recipes and 117 operations with fixed time/UUIDs and a trusted roster construction
+fixture. Member sessions and bus IO are real; spawning is not claimed by that seam.
+Correlation retains the source request-ID/type/status rule, without adding sender
+verification. Closed JSON response truthiness, Python str/repr and ASCII indent
+rendering preserve historical data. Printable characters are pinned to Python's
+Unicode 14.0.0, including characters assigned later in Go's database. The coordinator
+is currently an operator library; the default manager still binds only its bus/peek,
+and manager roster, common-gate tools, injectors and teammate lifecycle remain open.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

@@ -2257,3 +2257,36 @@ rejects wrong scalar/container types as part of its declared typed boundary.
 Native tool registration/execution, teammate spawning, protocol processing,
 idle/task scheduling, prompt identity and self-audit bus aggregation remain
 future slices. These codecs install no model tools or activation defaults.
+
+## Go team protocol coordination seam
+
+`teams.NewCoordinator(CoordinatorConfig{Bus, Members})` requires an established
+bus and takes a trusted MemberDirectory. Member returns the explicit missing,
+without-agent or ready variant; nil directory means no teammate. Calls to the
+directory occur outside the protocol lock and the callback must be concurrency
+safe. Bus masking callbacks must not reenter either bus or coordinator operations.
+This is an operator seam with no HTTP/model identity authority; a future adapter
+must derive team/member from the owned managed session rather than model arguments.
+
+RequestShutdown checks member existence, inserts a pending shutdown and delivers
+its reason/default notice. RequestPlan sends a full instruction directly and refuses
+oversize rather than truncating it. SubmitPlan rejects lead and retains the original
+plan in a pending approval record. ReviewPlan checks ID/type/status/team in source
+order, resolves it before sending the response and retains original feedback.
+Deliver preserves a code-point preview of long reports, then records bus refusals.
+The table is process-local and globally capped at 200: resolved oldest-first, then
+oldest pending only when required. Snapshot/TeamProtocols return detached records.
+
+Consume drains before processing, correlates responses and automatically sends
+shutdown acknowledgments for ready teammates. It returns a named ConsumedInbox
+with Messages and a ShutdownRequested assignment flag. The caller owns the sticky
+session shutdown state and must preserve a true flag even with a later error.
+Malformed historical metadata/request IDs may fail after earlier transitions/acks;
+failed batches are not replayed or put back. Rendering uses source ASCII indentation
+and historical closed values; standard HTTP encoding retains its existing refusal
+of nonfinite/surrogate data. Response correlation deliberately retains source
+request-ID/type/status matching; this library does not add sender verification.
+
+Member lifecycle, roster/owner binding, common-gate tool registration/execution,
+team injectors, prompt identity, idle/task claims and diagnostic fleet aggregation
+remain pending. No background runner or automatic activation is introduced here.

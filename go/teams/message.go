@@ -8,13 +8,14 @@ type MailboxKey string
 type MessageType string
 
 const (
-	MessageText             MessageType = "message"
-	MessageBroadcast        MessageType = "broadcast"
-	MessageNotice           MessageType = "notice"
-	MessageShutdownRequest  MessageType = "shutdown_request"
-	MessageShutdownResponse MessageType = "shutdown_response"
-	MessagePlanRequest      MessageType = "plan_request"
-	MessagePlanResponse     MessageType = "plan_approval_response"
+	MessagePlanApprovalRequest MessageType = "plan_approval_request"
+	MessageText                MessageType = "message"
+	MessageBroadcast           MessageType = "broadcast"
+	MessageNotice              MessageType = "notice"
+	MessageShutdownRequest     MessageType = "shutdown_request"
+	MessageShutdownResponse    MessageType = "shutdown_response"
+	MessagePlanRequest         MessageType = "plan_request"
+	MessagePlanResponse        MessageType = "plan_approval_response"
 )
 
 type Identity struct {

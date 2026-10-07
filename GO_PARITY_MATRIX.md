@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (109 generated snapshots), plus registry masking,
+the current implementation (110 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -814,6 +814,32 @@ remains available after proposals. HTTP now registers 39 operations/36 patterns
 against source 44. Team/workflow route groups, native persistence and G0–G7 remain
 open; source live-model convergence is unverified.
 
+
+## Native team protocol coordinator
+
+Snapshot 110 compares 25 actual manager recipes/117 operations over real member
+sessions and mailbox IO. A trusted construction fixture installs their roster;
+this is not native/source spawn or lifecycle evidence. UUIDs and wall timestamps
+are fixed; actual methods perform handshake publication, delivery, consumption,
+response matching, review and pruning. Compact result hashes and exact indentation
+state/render hashes retain full untruncated plans/feedback, original row order,
+Unicode, nonfinite/surrogate values and source exception/ledger outcomes.
+
+Go implements both handshake types, explicit status/member variants, a global
+200-entry table, detached snapshots and source resolved-before-pending eviction.
+RequestPlan refuses long instructions; result delivery truncates by Python code
+points and records refusals. Publication/resolution happens before IO; failed
+writes retain state. Consuming clears first, can partially acknowledge/resolve
+before malformed-row failure, and returns the shutdown assignment outcome even on
+error. Response matching retains source request ID/type/status correlation, including
+the cross-sender source profile. Source type/truthiness/str projections are tested
+for sixteen closed values. Unicode printable tables now pin Python 14.0.0, correcting
+a proven Go-newer Unicode mismatch in nested response repr/diagnostics.
+
+The coordinator is a native operator library, not a managed/team-tool adapter.
+Default HTTP GET remains non-consuming. Manager roster/inheritance, common-gate
+effects, spawning, inbox injection, sticky shutdown lifecycle, idle/task claims,
+prompt identity and diagnostics are pending alongside the other G0–G7 packages.
 
 ## Typed team/protocol inputs
 

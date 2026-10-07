@@ -1,0 +1,1489 @@
+{
+  "cases": [
+    {
+      "memory": false,
+      "name": "plan-review",
+      "steps": [
+        {
+          "operation": {
+            "action": "submit",
+            "content": "Plan 界"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "d71b17d41b52c69c105850f60903bc1eb4c5bb89527cca19d7cd3dd601049a5a"
+        },
+        {
+          "operation": {
+            "action": "peek"
+          },
+          "problems": [],
+          "render_hash": "cd8e0dbb98cb6602e00e018cc5c6289de64708134f957c9c09a663ff842a59f9",
+          "result_hash": "86b1e2318c796294032879168a3c9d31151a4112ee3d091ebbb8e83142365a9b",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "d71b17d41b52c69c105850f60903bc1eb4c5bb89527cca19d7cd3dd601049a5a"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "cd8e0dbb98cb6602e00e018cc5c6289de64708134f957c9c09a663ff842a59f9",
+          "result_hash": "86b1e2318c796294032879168a3c9d31151a4112ee3d091ebbb8e83142365a9b",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "d71b17d41b52c69c105850f60903bc1eb4c5bb89527cca19d7cd3dd601049a5a"
+        },
+        {
+          "operation": {
+            "action": "review",
+            "approve": true,
+            "request": 1,
+            "team": "other"
+          },
+          "problems": [],
+          "result_hash": "88abf6c0af78cd969e28337c7cdfefe0283007b0b2ff1bbcfa86e5349213c7c8",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "d71b17d41b52c69c105850f60903bc1eb4c5bb89527cca19d7cd3dd601049a5a"
+        },
+        {
+          "operation": {
+            "action": "review",
+            "approve": true,
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "a619152d80fd1397b8576eb56d86b2766ed04d25e3bd64537f5cf9f23cc1f1e8",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "027a7a326fb5f327643b06891da4e2d9e53c9dc50883f61bbc96f0a455e5da7b"
+        },
+        {
+          "operation": {
+            "action": "consume",
+            "member": "bob"
+          },
+          "problems": [],
+          "render_hash": "91c784463a6a38ddf10ab5b4ba4f6dc1a716ccc7ee5aa47d53327872c14f5f73",
+          "result_hash": "6f74a542d8314d0e7261d6be7d12397eb0986b67da10fc7df8180a4b157ad952",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "027a7a326fb5f327643b06891da4e2d9e53c9dc50883f61bbc96f0a455e5da7b"
+        },
+        {
+          "operation": {
+            "action": "review",
+            "approve": false,
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "56526be111fb3c2dcc3a2682b5b73d98d4354433656200232355473a637ac5c6",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "027a7a326fb5f327643b06891da4e2d9e53c9dc50883f61bbc96f0a455e5da7b"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "shutdown",
+      "steps": [
+        {
+          "operation": {
+            "action": "shutdown"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        },
+        {
+          "operation": {
+            "action": "peek",
+            "member": "bob"
+          },
+          "problems": [],
+          "render_hash": "61602c8d66b97c5ee7c8e8e591214e782460c26d7331a76639efdf9e929a9b7d",
+          "result_hash": "95c2a7430ff4342b98d3b8567c9cc568a2e620a251b4a36f949398d0604a4d64",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        },
+        {
+          "operation": {
+            "action": "consume",
+            "member": "bob"
+          },
+          "problems": [],
+          "render_hash": "61602c8d66b97c5ee7c8e8e591214e782460c26d7331a76639efdf9e929a9b7d",
+          "result_hash": "18382cbb5f8fb60d8c3b053ed6a45ee4e3b4d72743024822b4e5b8c8607ccea4",
+          "shutdown_requested": true,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "1cb9c64c25f322e457da5a4bd9303e84f64b080df1aeaafbef5aab15993e9355",
+          "result_hash": "d8768d6703a9e97c4933ecfbb9bf5b85702a7bab8b36607a5822d30cbd09a6b0",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "fb1e0bed4ef5c0fc2388d38c0f6010d57b610b01ac666d23324cdcfb92a3cfe0"
+        },
+        {
+          "operation": {
+            "action": "consume",
+            "member": "bob"
+          },
+          "problems": [],
+          "render_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "result_hash": "a01073ff4dcd1a0189a54c0cf23aae772ecba79dc8a7bb8f537eb95dcdea4268",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "fb1e0bed4ef5c0fc2388d38c0f6010d57b610b01ac666d23324cdcfb92a3cfe0"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "without-agent",
+      "steps": [
+        {
+          "operation": {
+            "action": "shutdown",
+            "member": "no-agent"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "9116fd70a35e267fd925bbbbc4f96ebb06713a3ab133152636c2b6f981dbe9a8"
+        },
+        {
+          "operation": {
+            "action": "consume",
+            "member": "no-agent"
+          },
+          "problems": [],
+          "render_hash": "61602c8d66b97c5ee7c8e8e591214e782460c26d7331a76639efdf9e929a9b7d",
+          "result_hash": "48dd8150aa89a1c9e8b3ba4431f689e9919936b2dcba545d9c8f29ca69e97f4e",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "9116fd70a35e267fd925bbbbc4f96ebb06713a3ab133152636c2b6f981dbe9a8"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "result_hash": "a01073ff4dcd1a0189a54c0cf23aae772ecba79dc8a7bb8f537eb95dcdea4268",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "9116fd70a35e267fd925bbbbc4f96ebb06713a3ab133152636c2b6f981dbe9a8"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "missing-targets",
+      "steps": [
+        {
+          "operation": {
+            "action": "shutdown",
+            "member": "missing"
+          },
+          "problems": [],
+          "result_hash": "c829809a512f34d2a820659efd01ffaceca3a9abc4ac133f0e87e7560adfec37",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "operation": {
+            "action": "request_plan",
+            "member": "missing"
+          },
+          "problems": [],
+          "result_hash": "c829809a512f34d2a820659efd01ffaceca3a9abc4ac133f0e87e7560adfec37",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "member": "lead"
+          },
+          "problems": [],
+          "result_hash": "e09d6d4034739c6408afc6904c78bc350847bd79948169749a36b88b128dfff7",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "operation": {
+            "action": "review",
+            "approve": true,
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "1652ccb91c1fa7ded2a896a2337700fe80ff94bf528e2df29d88353c725958f5",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "instruction-refusal",
+      "steps": [
+        {
+          "operation": {
+            "action": "request_plan",
+            "content": "界",
+            "repeat": 16000
+          },
+          "problems": [],
+          "result_hash": "ce7562d21f3e8a5dda70a591882676d41b7e8b32591311c346e32799a2657b0c",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "operation": {
+            "action": "peek",
+            "member": "bob"
+          },
+          "problems": [],
+          "render_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "result_hash": "a01073ff4dcd1a0189a54c0cf23aae772ecba79dc8a7bb8f537eb95dcdea4268",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "plan-truncation",
+      "steps": [
+        {
+          "operation": {
+            "action": "submit",
+            "content": "界",
+            "repeat": 16001
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "a018d521201de67354ec60c20c174895417c901936240f51a28036aed4a95fde"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "60e15bb22c7d92f71d0709775f6a2864368265bbefad97c0e1387e88cafd6265",
+          "result_hash": "215279740388f5f01208067b05c86fe76362a01baa66322eccb187b8a4da3f52",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "a018d521201de67354ec60c20c174895417c901936240f51a28036aed4a95fde"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "shutdown-truncation",
+      "steps": [
+        {
+          "operation": {
+            "action": "shutdown",
+            "content": "😀",
+            "repeat": 16001
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "076fa80c5b9b022eeedd70cb58f2cca10d06ee1041d75ee914530c794a695d4e"
+        },
+        {
+          "operation": {
+            "action": "consume",
+            "member": "bob"
+          },
+          "problems": [],
+          "render_hash": "8bb34124f9d6b5102bb586e3ba5c9be3cf11859e0b187c1c473bc5ff22c63454",
+          "result_hash": "99c02ac4894b836a57433e8fccd81ed55a05fadfa54091095ca9489c9ff8bff4",
+          "shutdown_requested": true,
+          "state_count": 1,
+          "states_hash": "076fa80c5b9b022eeedd70cb58f2cca10d06ee1041d75ee914530c794a695d4e"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "1cb9c64c25f322e457da5a4bd9303e84f64b080df1aeaafbef5aab15993e9355",
+          "result_hash": "d8768d6703a9e97c4933ecfbb9bf5b85702a7bab8b36607a5822d30cbd09a6b0",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "8da9b98aa96dd13d77ec86f73ccd37e17211f63493bf4f5d0d03fb154b342c49"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "review-truncation",
+      "steps": [
+        {
+          "operation": {
+            "action": "submit",
+            "content": "plan"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "review",
+            "approve": false,
+            "content": "界",
+            "repeat": 16001,
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "c162a35817a2224d13c18b1eeb953b54822a4c795a378051cf5da39793fc4e2f",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "aec717044cf7f9877f0a4ecb204c4a29d488ca2bd056d544e0a7f89086bad71e"
+        },
+        {
+          "operation": {
+            "action": "consume",
+            "member": "bob"
+          },
+          "problems": [],
+          "render_hash": "14a22abc487c363d312fd6473ce42315b306e76fd0cc976c01d8c40d28496737",
+          "result_hash": "b0c66d8578088965f3a9e1bf1dd4dcca5880a2bf0f19eef35af227f5142cd3b6",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "aec717044cf7f9877f0a4ecb204c4a29d488ca2bd056d544e0a7f89086bad71e"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "request-plan",
+      "steps": [
+        {
+          "operation": {
+            "action": "request_plan",
+            "content": "build it"
+          },
+          "problems": [],
+          "result_hash": "135639f30535767e84f451c171f63ffa8d778fc8116d0e573726b46a94974eee",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "operation": {
+            "action": "consume",
+            "member": "bob"
+          },
+          "problems": [],
+          "render_hash": "9ac4aa3b5c266e07c8bdf7675d543f73320654263bdffd76b69e5d40a406c6c8",
+          "result_hash": "82c4f8b75861581b505ca47aa2be289556cc51552c31cfc088223038ab71b7c5",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "shutdown-not-plan",
+      "steps": [
+        {
+          "operation": {
+            "action": "shutdown"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        },
+        {
+          "operation": {
+            "action": "review",
+            "approve": true,
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "1652ccb91c1fa7ded2a896a2337700fe80ff94bf528e2df29d88353c725958f5",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "correlation-only",
+      "steps": [
+        {
+          "operation": {
+            "action": "submit",
+            "content": "plan"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"from\":\"other/spoof\",\"type\":\"plan_approval_response\",\"content\":{\"z\":[true,null,\"\\u754c\"],\"a\":1},\"metadata\":{\"approve\":\"yes\"}}",
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "a3fd22b6016e4af05b445fe439a5326764ff05cd6fdc83f46a5f77b41514f3ba",
+          "result_hash": "4c8cf7d23bf02d3a0c7986c3871daffce7d6c361ddf8242e38f9843292140fc9",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "0024fc45f06352ac7c463d2134649d2ba36424e11c098ad426691078e68ca6c2"
+        },
+        {
+          "operation": {
+            "action": "review",
+            "approve": true,
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "56526be111fb3c2dcc3a2682b5b73d98d4354433656200232355473a637ac5c6",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "0024fc45f06352ac7c463d2134649d2ba36424e11c098ad426691078e68ca6c2"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "wrong-type",
+      "steps": [
+        {
+          "operation": {
+            "action": "submit",
+            "content": "plan"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"shutdown_response\",\"content\":\"wrong\",\"metadata\":{\"approve\":true}}",
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "c48122fe472d41b834797c4d34853a1190931445800cfea3d39d626a51b51984",
+          "result_hash": "81ef987b626ea32559724fa081a7c1cab2f249db6995f7e3a5823bba075f3bf8",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "false-approval",
+      "steps": [
+        {
+          "operation": {
+            "action": "submit",
+            "content": "plan"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":null,\"metadata\":{\"approve\":[]}}",
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "ef8585932ff116164a44671a50aaa99e8ede42263c30c5158aa1248c9bc31b05",
+          "result_hash": "6519df94ac0de3b148d7a3a6537d8d1f256011c919ed0b144ec12f5cea2c370d",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "fd22c705ff9ee6a113ddff0d9c6be90260b8a0450fe00a7a62ac9d20267e0531"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "nan-approval",
+      "steps": [
+        {
+          "operation": {
+            "action": "submit",
+            "content": "plan"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":Infinity,\"metadata\":{\"approve\":NaN}}",
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "a13a44c849ab97338ede7ecedbf3fb78de4a02c672ff5ee76775440dbcd4a1e7",
+          "result_hash": "882e662d2f4127e6ec312bd6a2bd6ac913ec69a379b4205af8623e9eab0a00a6",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "e1acbf6ab2a73b5de485dd191cd65decfbf348a029ad5189d143df755dd61b98"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "legacy-render",
+      "steps": [
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"from\":\"t/name\",\"content\":{\"text\":\"\\ud800\",\"n\":NaN},\"metadata\":{\"extra\":true}}"
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "8b2ee0b4b965954c0b16d15a427b63d99aa7b15eb14234e25a46a76b9aedc6be",
+          "result_hash": "cf3b5f8d74f16f87cdbfa671d2badc093a40ae5ef1e1fe24a16e8bb98dbd838c",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "partial-fault",
+      "steps": [
+        {
+          "operation": {
+            "action": "shutdown"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "member": "bob",
+            "message_json": "{\"metadata\":null}"
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        },
+        {
+          "error": "AttributeError",
+          "operation": {
+            "action": "consume",
+            "member": "bob"
+          },
+          "problems": [],
+          "shutdown_requested": true,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "1cb9c64c25f322e457da5a4bd9303e84f64b080df1aeaafbef5aab15993e9355",
+          "result_hash": "d8768d6703a9e97c4933ecfbb9bf5b85702a7bab8b36607a5822d30cbd09a6b0",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "fb1e0bed4ef5c0fc2388d38c0f6010d57b610b01ac666d23324cdcfb92a3cfe0"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "unhashable-id",
+      "steps": [
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"metadata\":{\"request_id\":[]}}"
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "error": "TypeError",
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "result_hash": "a01073ff4dcd1a0189a54c0cf23aae772ecba79dc8a7bb8f537eb95dcdea4268",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "render-fault",
+      "steps": [
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"from\":null,\"metadata\":{}}"
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "error": "AttributeError",
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "bad-recipient",
+      "steps": [
+        {
+          "operation": {
+            "action": "shutdown",
+            "member": "."
+          },
+          "problems": [
+            "delivery to 'team/.' failed: Error: mailbox keys must be '<safe-team>/<safe-name>'"
+          ],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "63c02da802a6802e9521c421ee95ab5c7153cd22fd729b240727dcb55b667fa7"
+        },
+        {
+          "operation": {
+            "action": "consume",
+            "member": "."
+          },
+          "problems": [
+            "delivery to 'team/.' failed: Error: mailbox keys must be '<safe-team>/<safe-name>'",
+            "read('team/.') refused: mailbox keys must be '<safe-team>/<safe-name>'"
+          ],
+          "render_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "result_hash": "a01073ff4dcd1a0189a54c0cf23aae772ecba79dc8a7bb8f537eb95dcdea4268",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "63c02da802a6802e9521c421ee95ab5c7153cd22fd729b240727dcb55b667fa7"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "unicode-recipient",
+      "steps": [
+        {
+          "operation": {
+            "action": "shutdown",
+            "member": "🫨"
+          },
+          "problems": [
+            "delivery to 'team/\\U0001fae8' failed: Error: mailbox keys must be '<safe-team>/<safe-name>'"
+          ],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "d89fe1471ff2cfbe52a03adb1905cbb59a6d5318bc1ba49da7204165191d5b98"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "publication-before-fault",
+      "steps": [
+        {
+          "operation": {
+            "action": "block",
+            "member": "bob"
+          },
+          "problems": [],
+          "result_hash": "7b92de7d08814ff2863dbd0239cdcb3cd107364ebf588b5d95693527f066f106",
+          "shutdown_requested": false,
+          "state_count": 0,
+          "states_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "error": "IsADirectoryError",
+          "operation": {
+            "action": "shutdown"
+          },
+          "problems": [],
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        },
+        {
+          "error": "IsADirectoryError",
+          "operation": {
+            "action": "peek",
+            "member": "bob"
+          },
+          "problems": [],
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "df14dc46c8513138dba79ebfc239c0adeec0b35d8508aba0d8cb7699b5da601f"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "resolved-before-fault",
+      "steps": [
+        {
+          "operation": {
+            "action": "submit",
+            "content": "plan"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "operation": {
+            "action": "block",
+            "member": "bob"
+          },
+          "problems": [],
+          "result_hash": "7b92de7d08814ff2863dbd0239cdcb3cd107364ebf588b5d95693527f066f106",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "c2a92da618d2ece1593eac487c2c82e3912329f59bfcbd0f2b2cb644f50000f6"
+        },
+        {
+          "error": "IsADirectoryError",
+          "operation": {
+            "action": "review",
+            "approve": true,
+            "content": "feedback",
+            "request": 1
+          },
+          "problems": [],
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "968d67ae24e15549c96445b776a6332859be22243179324cae44506d790d3779"
+        }
+      ]
+    },
+    {
+      "memory": true,
+      "name": "prune-resolved-first",
+      "steps": [
+        {
+          "operation": {
+            "action": "batch",
+            "count": 5
+          },
+          "problems": [],
+          "result_hash": "d5e37f0f2df3e17cfd9ac742359cd3935e74fe32ff31d8fa92b122448273a4e3",
+          "shutdown_requested": false,
+          "state_count": 5,
+          "states_hash": "235491f8f30937727bc2e69bd8e5d748f3952d2538af970b470d32f2af4f3c04"
+        },
+        {
+          "operation": {
+            "action": "batch",
+            "count": 205,
+            "resolve": true
+          },
+          "problems": [],
+          "result_hash": "dcce66416fda3c6343e9e603572c5144693a38f56e3845cb7ae44060587e2342",
+          "shutdown_requested": false,
+          "state_count": 200,
+          "states_hash": "68b97ddf8b0d00821c8ddfc39539db3909e83d9dc2ed6e9fd011dd1db83d5154"
+        }
+      ]
+    },
+    {
+      "memory": true,
+      "name": "prune-all-pending",
+      "steps": [
+        {
+          "operation": {
+            "action": "batch",
+            "count": 220
+          },
+          "problems": [],
+          "result_hash": "a6f72fd16cc209d40366962a408b62e4f79306cd011f1505ca6c11e3ab31af44",
+          "shutdown_requested": false,
+          "state_count": 200,
+          "states_hash": "80611fe2f2ae98077f1f42936f1d852387777e05ffc1cbe5ae815c00cc584464"
+        }
+      ]
+    },
+    {
+      "memory": false,
+      "name": "closed-value-responses",
+      "steps": [
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "7ccfb951fb81679eeb7c438258399034d91e4fbaf60193ca3acee4226edb1aae",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "5732931d0c925ac645a7886e136cd68ba1a5d707fe8ae156f3d10166088b3c98"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":null,\"metadata\":{\"approve\":null}}",
+            "request": 1
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "5732931d0c925ac645a7886e136cd68ba1a5d707fe8ae156f3d10166088b3c98"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "5bf264ad28f2ac58e0fd486df0390336682202bc2e8a42a11f3476fbe5126142",
+          "result_hash": "c75412de559dacce37757f1268a72afe67e6188dca9018df4f9f15b09ad7949e",
+          "shutdown_requested": false,
+          "state_count": 1,
+          "states_hash": "5fba0d8aae1bd1300652cce7d440e8b6a4a8c592f738c863803bdb59c884e398"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "eb9ce15908f89857058abcef72c0410e7b55e38be82f8fb488f53897186fbf7a",
+          "shutdown_requested": false,
+          "state_count": 2,
+          "states_hash": "59b4fce084587f365ccccf5de131bbe848aed380b805bac1c2b67cafd38f945d"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":false,\"metadata\":{\"approve\":false}}",
+            "request": 2
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 2,
+          "states_hash": "59b4fce084587f365ccccf5de131bbe848aed380b805bac1c2b67cafd38f945d"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "796334223022df3d88a5afc8abed9cdcfd57d6e2211c811368237572074c9292",
+          "result_hash": "c1b78368954e11d9c89537c89c5531e4ae38f4489e042cc6e399515676363c28",
+          "shutdown_requested": false,
+          "state_count": 2,
+          "states_hash": "23c250b223a7920d3877f97299e4a4fb6919d95f2cd3ae6511d7d83a76349016"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "ca36bd6016ec83690afdd43d78e3e247f120dd187df38e903f5fc333bdeb3b9e",
+          "shutdown_requested": false,
+          "state_count": 3,
+          "states_hash": "3e178d4ecbed70a64ea06659a954f0412ca3598a32e6e06c460d88a9df498134"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":true,\"metadata\":{\"approve\":true}}",
+            "request": 3
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 3,
+          "states_hash": "3e178d4ecbed70a64ea06659a954f0412ca3598a32e6e06c460d88a9df498134"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "3fa0745a985b709c412cd9ff4d6394158f9b42b6194c0c922112f06dbc4fcad3",
+          "result_hash": "71a191546121dfdb50d1e3688d895fbc1245cc8a430a9421cecea3740ed0f231",
+          "shutdown_requested": false,
+          "state_count": 3,
+          "states_hash": "1842aa080e2f1aaccc91e48fd12d2c144c465fbad23cf51addc8ddd15516ce14"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "51ea1ba84a56cdf8e589a0efeb568fb0e4094d0f7173f0356209437f856fa797",
+          "shutdown_requested": false,
+          "state_count": 4,
+          "states_hash": "fa1c3003b35bcaded19684c01058a43fbc01ac3c4cbab16349d4ad4bffa3c399"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":0,\"metadata\":{\"approve\":0}}",
+            "request": 4
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 4,
+          "states_hash": "fa1c3003b35bcaded19684c01058a43fbc01ac3c4cbab16349d4ad4bffa3c399"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "fdaf04ea1202683c700da7d8a8a1e9af394f1c741813baa803fb61ea11060d7d",
+          "result_hash": "8253776d71e073332a68266644e25013898c0a668ebe76e54d50240670bf0b84",
+          "shutdown_requested": false,
+          "state_count": 4,
+          "states_hash": "af41dddb87e64f8edc70c8745eaa44c6f40830f7919f5f800e5b4be74602ad5d"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "1370fb51b44dc227207b5784b8097b19f18df4d00849d71de1064901db768c1a",
+          "shutdown_requested": false,
+          "state_count": 5,
+          "states_hash": "cdb48e355519a580282fc088256b80e710f7d536a7496239e0665a49682efe25"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":1,\"metadata\":{\"approve\":1}}",
+            "request": 5
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 5,
+          "states_hash": "cdb48e355519a580282fc088256b80e710f7d536a7496239e0665a49682efe25"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "149731f74671d5ffc9f42068f7e89fc27296e8b9be09e992b13a3f2adb6ffe5d",
+          "result_hash": "662ad14a171f05eabc40c6d0f55e158de2d798c447304a59144927e6a7caea2b",
+          "shutdown_requested": false,
+          "state_count": 5,
+          "states_hash": "f3c8cc9359698f081ba97e20fc627cf4f42d609b9be65e1bfd385690a4e209db"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "edac208e42a15d30c834087cddfbc82f5a740e38c46186de71dee3594a1f3d61",
+          "shutdown_requested": false,
+          "state_count": 6,
+          "states_hash": "eeab35d4b185d47d2fbb59bef9977ca7441388e2af963f2276c1c888b5c3e8b8"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":-1,\"metadata\":{\"approve\":-1}}",
+            "request": 6
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 6,
+          "states_hash": "eeab35d4b185d47d2fbb59bef9977ca7441388e2af963f2276c1c888b5c3e8b8"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "48d7b55757e922573049f75e9b11514da9d34112230c75a25874bf4ff500a285",
+          "result_hash": "ee911fe592ce12d3845727d651cceeda135c2f8b9989c42618eb341285d498a4",
+          "shutdown_requested": false,
+          "state_count": 6,
+          "states_hash": "eafbcb42fc6f03978faec55d7859e71e1800fac716d9b3ad42f90ba0510436ad"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "c006f096b079cf576ea077cb467e8a83da3b367f00b4998eddb7e4f13108d1b7",
+          "shutdown_requested": false,
+          "state_count": 7,
+          "states_hash": "7d37bd156d3d8b5b13335385dea281d4df6b1abeaecfbe1b5f78355869c1d5f5"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":-0.0,\"metadata\":{\"approve\":-0.0}}",
+            "request": 7
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 7,
+          "states_hash": "7d37bd156d3d8b5b13335385dea281d4df6b1abeaecfbe1b5f78355869c1d5f5"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "a0973fe6c9b9c6a539504da6ffadaefd8e6575f09c2f5395c14303777e17b3e4",
+          "result_hash": "c2bbc23f782044ec0295b48f1f62f027e8783f839fbadee8d70a79364ed7988b",
+          "shutdown_requested": false,
+          "state_count": 7,
+          "states_hash": "65e58b226d50cdec8061ade801aede8cbb244576cdd1c17f2b13b957ac40a4d4"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "b155eaab668683759991e600f0f4daf0652d4f77acd83dfe69b12bff0b77d31a",
+          "shutdown_requested": false,
+          "state_count": 8,
+          "states_hash": "fb0da138c416de157738885bc1fcb4e299bed1bd61903c3c8698f0cefcef8379"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":1e-07,\"metadata\":{\"approve\":1e-07}}",
+            "request": 8
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 8,
+          "states_hash": "fb0da138c416de157738885bc1fcb4e299bed1bd61903c3c8698f0cefcef8379"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "af22b20ff0c37580204fc20003828e4dc1afe2b5c83a0361cecbabcb73422bb6",
+          "result_hash": "93b63b77333da23db7c1413185ea099b581ee536f3da58560e41f8c75eb2815e",
+          "shutdown_requested": false,
+          "state_count": 8,
+          "states_hash": "206fbd910832b8f3c3d98407269106c08f391fff9c358f9f1e0d65274a5d3e0e"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "7e33424c59e67a44dd04101a84c4a88df78c36858022a180d4b936ee4918b24b",
+          "shutdown_requested": false,
+          "state_count": 9,
+          "states_hash": "65429b5ab7dcd116728945fa14067e933e633b0094b94e2ff26e9fd93c836bc8"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":\"\",\"metadata\":{\"approve\":\"\"}}",
+            "request": 9
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 9,
+          "states_hash": "65429b5ab7dcd116728945fa14067e933e633b0094b94e2ff26e9fd93c836bc8"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "60e8a6d5073190392b032882f61ee3919f2bcf356a840a323c4f49b53af0c726",
+          "result_hash": "c7d60bc09ede2af052fc178637d0bf56bc55ab3ca0559bf11b05204b3beea753",
+          "shutdown_requested": false,
+          "state_count": 9,
+          "states_hash": "fd233a89fdb6edbf6b3c392c19a8649f2ace00668a706140a9cedb7ba3e52370"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "9bb166966be65ca6d3ce0856120d0331deabf3e66c307ad7d4649e992acf59df",
+          "shutdown_requested": false,
+          "state_count": 10,
+          "states_hash": "e6a8cae60efc92cbf7c9438ee54ba2c176bff0e6f69a0f1066f9a68b99a26dbb"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":\"no\",\"metadata\":{\"approve\":\"no\"}}",
+            "request": 10
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 10,
+          "states_hash": "e6a8cae60efc92cbf7c9438ee54ba2c176bff0e6f69a0f1066f9a68b99a26dbb"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "43fafc385c25ccaee3fe053cee7da93245cc207b1d46e103345eddb99f36e43c",
+          "result_hash": "5b91d93c8a7ae5c059ba11bae5a5341241f20de0d49c5bf7ed0df6588bbff877",
+          "shutdown_requested": false,
+          "state_count": 10,
+          "states_hash": "08c8d7e1e917da84ed05939753541355ab1f4ae2a669ef7bef2e3e8b5090d79d"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "9c25eadd27443cd96ffb7890bcaf09e4cbd65e7a516341db8f33393ddaedaa0d",
+          "shutdown_requested": false,
+          "state_count": 11,
+          "states_hash": "69145bfe6392c265258e771779295df04643c4d0e458ca5abaf76d9340b6485c"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":[],\"metadata\":{\"approve\":[]}}",
+            "request": 11
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 11,
+          "states_hash": "69145bfe6392c265258e771779295df04643c4d0e458ca5abaf76d9340b6485c"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "81fdcd7082d0201a2be7ea24aec6721c2391e85e6261c3624f506a7bb2fc6ca8",
+          "result_hash": "c4e9a68a8d8c0f7f684ae259fa09702d360eb6f5348fc6d05dff5bce2fccb013",
+          "shutdown_requested": false,
+          "state_count": 11,
+          "states_hash": "f64cb034de5409d5aed21a36ad25858eb789052740a40dafd05242668e713ab5"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "f9ff6457d88762c5caa09325c30063f86a15289b595f6ff5e2b57fc4f7559d34",
+          "shutdown_requested": false,
+          "state_count": 12,
+          "states_hash": "111bae791f784762ab4689db4390bef71644130a37ccf4ee038ce293dfff51ef"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":[false],\"metadata\":{\"approve\":[false]}}",
+            "request": 12
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 12,
+          "states_hash": "111bae791f784762ab4689db4390bef71644130a37ccf4ee038ce293dfff51ef"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "d19e9daf0118196978795947eefc94f594a8a07359b1933e5412e131ed67d04d",
+          "result_hash": "72ab6a3087d037510190790c899385bb290ecfe8e8bdaa2864b24a76ed57a21d",
+          "shutdown_requested": false,
+          "state_count": 12,
+          "states_hash": "711bdc086199bf4578fa48c3924eed9637f2d1d02063a055a13536f5de8d9e5f"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "18b37b89426391c7b2451801f14911d120b00009bec075e9075669214eb2ed9b",
+          "shutdown_requested": false,
+          "state_count": 13,
+          "states_hash": "9defbf1690af8b8caf5aa67709340c7e0eb5b051b63ac3c6b13914470b08c546"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":{},\"metadata\":{\"approve\":{}}}",
+            "request": 13
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 13,
+          "states_hash": "9defbf1690af8b8caf5aa67709340c7e0eb5b051b63ac3c6b13914470b08c546"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "c2f73454e943a4af5e490cdb185be94fa297d1187c82d56bf26a02a8366e84a8",
+          "result_hash": "28b524aeed3135ce56883ee6587aaeea56937bee1301d6ea18ffba6d4b205f91",
+          "shutdown_requested": false,
+          "state_count": 13,
+          "states_hash": "0820bfcae32695dbb9bce9b8a8c61fecb725b547c09eefe0b7e3c049adb29444"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "3832c28b1247e52b86dada4fff97880694c4671737be03785d75bf511d5d2a9f",
+          "shutdown_requested": false,
+          "state_count": 14,
+          "states_hash": "2a91a8cdd29a9dca25466dbb56de4e73abd5fc6caa2c7f6252f5c5819530973b"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":{\"quote'\":\"\\n\",\"surrogate\":\"\\ud800\",\"unicode15\":\"\\ud83e\\udee8\"},\"metadata\":{\"approve\":{\"quote'\":\"\\n\",\"surrogate\":\"\\ud800\",\"unicode15\":\"\\ud83e\\udee8\"}}}",
+            "request": 14
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 14,
+          "states_hash": "2a91a8cdd29a9dca25466dbb56de4e73abd5fc6caa2c7f6252f5c5819530973b"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "8ed7935a7faeff42adf70bd6df70bf02e009483d6c30a0f940a9efd3b7cd301a",
+          "result_hash": "98fb0bcbf782cc797b861593885ccc875c8e8d7cca252c9145ba3fb8a724098d",
+          "shutdown_requested": false,
+          "state_count": 14,
+          "states_hash": "be311fa0bcbee0a24326fa36de612f589af2e279ccb5c93148caa21e22a67f67"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "a20cc6766d318e4435defd7822a670859221959e6bd2c27389e0fd5eeba553a8",
+          "shutdown_requested": false,
+          "state_count": 15,
+          "states_hash": "4abd281c2513d985b7c55ad404039ea732c6f8fd2d4c2968628bffb9e2a220aa"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":NaN,\"metadata\":{\"approve\":NaN}}",
+            "request": 15
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 15,
+          "states_hash": "4abd281c2513d985b7c55ad404039ea732c6f8fd2d4c2968628bffb9e2a220aa"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "ac393e05c16931eb84821aff26e73983cb0f6e1452478e7a4b5fa71a9f8379c2",
+          "result_hash": "23d4b288b1b80265f1c0a4aeeec7503ee9c9488dabcc9fa8fbc19a5c1593ae50",
+          "shutdown_requested": false,
+          "state_count": 15,
+          "states_hash": "ef82429c2d2bc9c3ef329b7fbb5702761787d8cb7be068ed449decb24086a17f"
+        },
+        {
+          "operation": {
+            "action": "submit",
+            "content": "value plan"
+          },
+          "problems": [],
+          "result_hash": "57665c65f13a44b14317c83cc3fea4e33c24dd889ddd63541fa3cc973a961d0b",
+          "shutdown_requested": false,
+          "state_count": 16,
+          "states_hash": "a37d71bffa13a0a0c34345660ff92e8ed0ef8e50434a893eb3b14d178c5c45d1"
+        },
+        {
+          "operation": {
+            "action": "inject",
+            "message_json": "{\"type\":\"plan_approval_response\",\"content\":Infinity,\"metadata\":{\"approve\":Infinity}}",
+            "request": 16
+          },
+          "problems": [],
+          "result_hash": "3784d5991e4609377709830811d4875208b2b130157cad1832ac6fd3c85bb8d8",
+          "shutdown_requested": false,
+          "state_count": 16,
+          "states_hash": "a37d71bffa13a0a0c34345660ff92e8ed0ef8e50434a893eb3b14d178c5c45d1"
+        },
+        {
+          "operation": {
+            "action": "consume"
+          },
+          "problems": [],
+          "render_hash": "4f989dcf7ef17e17c6227e5f86e5cd743cd3ecf243df935ca2bdb56008df414d",
+          "result_hash": "c8f0051eaa88de5cd9b8efa708d4bfe302f68f60841af485a23f09a3d407844c",
+          "shutdown_requested": false,
+          "state_count": 16,
+          "states_hash": "b1f8dc2411d67980f9e5b047c35396b58258ce04fa9e411f1e913d28e58be40b"
+        }
+      ]
+    }
+  ]
+}
