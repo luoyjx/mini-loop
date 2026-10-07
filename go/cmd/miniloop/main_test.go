@@ -174,3 +174,23 @@ func TestSelfAuditFlagReportsSelectionWithoutStartingRuntime(t *testing.T) {
 		t.Fatal("inspection started runtime")
 	}
 }
+
+func TestTeamFlagReportsSelectionWithoutStartingRuntime(t *testing.T) {
+	var out, errout bytes.Buffer
+	env := map[string]string{"MINILOOP_FEATURES": "1"}
+	if code := execute(context.Background(), []string{"--team-tools", "--dump-config"}, env, &out, &errout); code != 0 {
+		t.Fatal(code, errout.String())
+	}
+	var report launcher.Report
+	if err := json.Unmarshal(out.Bytes(), &report); err != nil || !report.TeamTools || report.CronTools || report.BackgroundTools || len(report.Unsupported) != 1 {
+		t.Fatal(report, err)
+	}
+	out.Reset()
+	errout.Reset()
+	if code := execute(context.Background(), []string{"--dump-config"}, nil, &out, &errout); code != 0 {
+		t.Fatal(code, errout.String())
+	}
+	if err := json.Unmarshal(out.Bytes(), &report); err != nil || report.TeamTools {
+		t.Fatal(report, err)
+	}
+}

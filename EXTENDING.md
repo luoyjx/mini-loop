@@ -2288,7 +2288,8 @@ and historical closed values; standard HTTP encoding retains its existing refusa
 of nonfinite/surrogate data. Response correlation deliberately retains source
 request-ID/type/status matching; this library does not add sender verification.
 
-ManagerServices.TeamTools installs nine tools independently; spawn_teammate is omitted. A typed private manager
+ManagerServices.TeamTools (or standalone --team-tools / launcher.Options.TeamTools)
+installs nine tools independently; spawn_teammate is omitted. A typed private manager
 binding executes closed ToolInput variants only after runtime owner/session/workspace
 checks. A guard before journal replay prevents stale or foreign authority from reading
 settled private projections. Members are read from immutable registered identities in

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `6eaab05` plus manager-bound team protocol tools;
+reviewed **2026-10-08** (Go baseline `7570408` plus explicit team launcher selection;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1353,7 +1353,7 @@ verification. Closed JSON response truthiness, Python str/repr and ASCII indent
 rendering preserve historical data. Printable characters are pinned to Python's
 Unicode 14.0.0, including characters assigned later in Go's database. The coordinator
 is now owned by the manager alongside its bus. Nine team mailbox/protocol tools
-are independently enabled by ManagerServices.TeamTools;
+are independently enabled by ManagerServices.TeamTools or standalone --team-tools;
 spawn_teammate remains absent until native construction/lifecycle is implemented.
 The fixed session identity supplies sender/team/root; model arguments cannot select
 them. Source roster checks, broadcast refusal counts, lead-only shutdown/plan/review,
@@ -1365,7 +1365,9 @@ assignments remain sticky even after partial consume faults. Selected delegated
 children inherit tool schemas with their own guard but no parent manager/bus state,
 matching the source unconfigured-child boundary. Snapshot 111 compares eleven real
 installed-handler recipes; native tests add gate rewrite/mask/replay, owner scope,
-readonly acknowledgment, selection/forks and child authority isolation. Full feature activation, teammate roster construction/resource inheritance, spawning,
+readonly acknowledgment, selection/forks and child authority isolation. A real HTTP
+model round verifies tool publication/send/read and repeated non-consuming GET.
+Full feature activation, teammate roster construction/resource inheritance, spawning,
 automatic inbox injection, shutdown lifecycle, idle/task claiming, prompt identity and
 fleet diagnostics remain open. Team tools are off by default.
 The separate Go improvement library now classifies touched verifier paths and

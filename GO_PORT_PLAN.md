@@ -1,5 +1,37 @@
 # Go port plan
 
+## 2026-10-08 independent team launcher selection
+
+Baseline 7570408; full G0–G7 remains open. launcher.Options.TeamTools and standalone
+--team-tools independently select the nine implemented mailbox/protocol tools.
+The redacted availability report includes team_tools. Selection is off by default;
+MINILOOP_FEATURES still refuses comprehensive activation, and spawn_teammate remains
+absent. This launcher adapter does not supply a teammate construction/lifecycle path.
+README review baseline, extension/parity boundary and architecture specification /
+generated artifact are updated in this separate delivery.
+
+CLI tests prove explicit/off reports without starting providers/listeners. A real
+local HTTP server uses the direct provider boundary for send_message/read_inbox tool
+rounds, observes all nine schemas (no spawn), checks tool results and transcript
+completion, proves repeated GET team retains the message, and sees an empty inbox
+only after the model read. Server stop joins the manager. Initial test adapter faults
+(decoded provider messages as internal protocol objects and read-only teams.Message
+as an HTTP decoder) were fixed by using only the provider fields being observed and
+a concrete inbound HTTP projection; runtime serialization was unchanged.
+
+The combined final gates recorded below include this launcher code: focused team /
+launcher / CLI tests, full Go test/race/vet, all 111 source snapshots, 19 scanner
+guards, three selected relevant mutations, and isolated Python 2,155 passed / 28
+skipped / 24 subtests / three dependency warnings (71.73s). No implementation changed
+after these gates. Final doc diff/README outline passed before staging. Coverage
+not refreshed; native spawning/inheritance, injection/shutdown/idle lifetime, workflow
+routes/runtime, MCP, native SQLite, remaining profiles and full G7 remain open.
+
+Architecture delivery passed 9/9 automated checks with zero errors/warnings:
+spec SHA256 b9460c8debc34927c8b7b5b4b8ac4f11614c668e869d5e067e1d22e13bb4aef2;
+artifact SHA256 4893298faadc059adf04ad72c8a94d3ce70b4bfd3748cd5750166897cfa3f198.
+Visual inspection remains skipped after the previous denial; no retry/bypass.
+
 ## 2026-10-08 manager-bound team mailbox/protocol tools
 
 Baseline 6eaab05; full G0–G7 remains open. SessionManager now owns the native

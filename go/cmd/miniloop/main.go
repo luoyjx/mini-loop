@@ -20,6 +20,7 @@ import (
 func execute(ctx context.Context, args []string, env map[string]string, stdout, stderr io.Writer) int {
 	flags := flag.NewFlagSet("miniloop", flag.ContinueOnError)
 	flags.SetOutput(stderr)
+	teamTools := flags.Bool("team-tools", false, "enable team mailbox/protocol tools; teammate spawning remains unavailable")
 	memoryTools := flags.Bool("memory-tools", false, "enable the implemented Go remember and recall tools")
 	memoryAuto := flags.Bool("memory-auto", true, "enable automatic memory selection/capture when both memory tools are installed")
 	dump := flags.Bool("dump-config", false, "print redacted settings and availability without starting a listener")
@@ -35,7 +36,7 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 		return 2
 	}
 	if flags.NArg() != 0 {
-		fmt.Fprintln(stderr, "miniloop accepts --dump-config, --memory-tools, --memory-auto, --background-tools, --cron-tools, --plan-mode-tools, --goal-tools and --self-audit-tools flags")
+		fmt.Fprintln(stderr, "miniloop accepts --dump-config, --team-tools, --memory-tools, --memory-auto, --background-tools, --cron-tools, --plan-mode-tools, --goal-tools and --self-audit-tools flags")
 		return 2
 	}
 	fail := func(err error) int { fmt.Fprintln(stderr, err); return 1 }
@@ -51,7 +52,7 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 	if err != nil {
 		return fail(err)
 	}
-	options := launcher.Options{SelfAuditTools: *selfAuditTools, MemoryTools: *memoryTools, MemoryAuto: memoryAuto, GoalTools: *goalTools, PlanModeTools: *planModeTools, CronTools: *cronTools, BackgroundTools: *background}
+	options := launcher.Options{TeamTools: *teamTools, SelfAuditTools: *selfAuditTools, MemoryTools: *memoryTools, MemoryAuto: memoryAuto, GoalTools: *goalTools, PlanModeTools: *planModeTools, CronTools: *cronTools, BackgroundTools: *background}
 	if *dump {
 		encoder := json.NewEncoder(stdout)
 		encoder.SetIndent("", "  ")

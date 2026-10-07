@@ -856,8 +856,9 @@ Nine exact source schemas and risk/readonly/parallel traits are installed only w
 TeamTools; source read_inbox is read-only despite effects. Native gates additionally
 prove rewrite/masking/replay, foreign/stale replay admission, live readonly modes,
 selection, fresh-team forks and delegated-child unavailable state with rebound guards.
-ManagerServices.TeamTools selects this slice independently; MINILOOP_FEATURES
-remains unsupported. Standalone flag selection is the next separate delivery.
+Standalone --team-tools selects this slice independently; MINILOOP_FEATURES remains
+unsupported. A real HTTP/direct-provider round publishes nine tools, sends and reads
+through the gate and proves repeated GET leaves messages available for delivery.
 spawn_teammate is deliberately absent until construction and owned lifecycle exist.
 
 ## Typed team/protocol inputs
