@@ -1,5 +1,21 @@
 # Go port plan
 
+## 2026-10-08 Python mailbox path components
+
+Source review for the Go team port found that the allowed-name regex admitted
+standalone dot path components. MessageBus now refuses those before any filesystem
+access; ordinary dotted names retain their behavior. Four regression cases cover
+send, peek/read refusal and absence of filesystem effects. The named mutation
+removes the predicate and is caught. Trusted-root symlinks remain outside this
+lexical boundary. Native mailbox and owned team view continue in separate commits.
+
+Validation: 66 focused tests passed; full isolated Python suite 2,155 passed,
+28 skipped, 24 subtests passed, three dependency deprecation warnings in 146.79s.
+verify_invariants: 77 modules; verify_scans: 19 anchored guards. Both selected
+verify_guards runs (mailbox-dot-segment-escape and team-peek-consumes-the-inbox)
+passed; the complete mutation catalogue was not rerun.
+
+
 ## 2026-10-08 owned improvement proposal POST
 
 Default POST /sessions/{session_id}/propose-improvement now binds admitted owner,

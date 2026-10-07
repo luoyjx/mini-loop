@@ -16,10 +16,22 @@ eternally empty inbox), and empty content is legal.
 """
 
 from mini_loop.teams import MessageBus, team_key
+import pytest
 
 
 def _k(name):
     return team_key("t1", name)
+
+
+@pytest.mark.parametrize("key", ["../lead", "./lead", "t1/..", "t1/."])
+def test_mailbox_dot_segments_cannot_escape_the_team_root(tmp_path, key):
+    root = tmp_path / "teams"
+    bus = MessageBus(root)
+    assert bus.send("t1/lead", key, "private").startswith("Error:")
+    assert bus.peek(key) == []
+    assert bus.read(key) == []
+    assert not list(tmp_path.rglob("*.jsonl"))
+    assert not root.exists(), "refusal must precede directory creation"
 
 
 def test_an_overflowed_delivery_tells_the_recipient(tmp_path):

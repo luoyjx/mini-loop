@@ -3343,6 +3343,14 @@ MUTATIONS = [
         "round-250 probe blocked the UI pane on",
     ),
     Mutation(
+        "mailbox-dot-segment-escape", 251, "mini_loop/teams.py",
+        'not separator or team_id in {".", ".."} or name in {".", ".."}',
+        'not separator',
+        "tests/test_teams_census.py::test_mailbox_dot_segments_cannot_escape_the_team_root",
+        "dot segments are path navigation, not mailbox identities; reject them "
+        "before any mailbox filesystem access",
+    ),
+    Mutation(
         "activity-hides-awaiting-approval", 232, "mini_loop/session.py",
         '                if broker.list(self.id):\n'
         '                    return "awaiting_approval"',

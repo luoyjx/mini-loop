@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `5ca5fb0` plus owned proposal POST;
+reviewed **2026-10-08** (Go baseline `bb7a366` plus Python mailbox path validation;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1311,6 +1311,9 @@ fleet views currently retain attributed binding diagnostics, so unattributed
 per-resource store errors remain a documented collection gap. The observer adds a
 64 MiB total event-byte budget, reported by class if exceeded, alongside source
 100-session/50-recording/200-event limits.
+Python team mailbox keys reject standalone dot components before filesystem
+access; ordinary dotted identifiers remain valid. The configured root stays
+operator-owned.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

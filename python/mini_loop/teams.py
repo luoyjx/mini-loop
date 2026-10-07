@@ -51,7 +51,8 @@ class MessageBus:
 
     def _path(self, key: str) -> Path:
         team_id, separator, name = key.partition("/")
-        if (not separator or not re.fullmatch(r"[A-Za-z0-9._-]{1,64}", team_id)
+        if (not separator or team_id in {".", ".."} or name in {".", ".."}
+                or not re.fullmatch(r"[A-Za-z0-9._-]{1,64}", team_id)
                 or not re.fullmatch(r"[A-Za-z0-9._-]{1,64}", name)):
             raise ValueError("mailbox keys must be '<safe-team>/<safe-name>'")
         assert self.root is not None

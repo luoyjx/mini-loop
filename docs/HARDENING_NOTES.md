@@ -7752,3 +7752,15 @@ deferred items -- every function surface has a UI carrier; workflows
 stays out by the consume-existing-APIs principle until it grows an
 HTTP surface. The hourly loop has nothing left to build; recommending
 retirement to the operator.
+
+
+### Go migration — mailbox dot components
+
+The team-key regex admitted `../lead`: `..` matched the allowed alphabet and the
+resulting Path escaped the configured mailbox root. The Python and native Go
+buses now refuse both dot components before filesystem effects. Four Python
+regressions assert send refusal, empty peek/read, no JSONL and no root creation;
+`mailbox-dot-segment-escape` removes this predicate and must fail those tests.
+The Go source corpus retains these refusal outcomes. Ordinary dotted names stay
+valid. Trusted-root symlinks and cross-process delivery remain separate boundaries;
+this lexical fix is not a host filesystem sandbox.
