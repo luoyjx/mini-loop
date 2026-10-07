@@ -1157,8 +1157,10 @@ one trusted owner with `memory.Bind`; ScopedStore exposes only owner-sensitive
 methods without an override parameter or automatic delegation. Optional Masker
 has one typed MaskText operation and can use the existing secrets.Registry. Raw
 Store all-owner views/replacement remain operator operations. The owner Resolver supplies resource bundles;
-runtime extraction/tool activation remains pending. Do not inject the raw
-store into an owner-facing handler.
+managed runtimes bind that owner's store ahead of the shared fallback. Nil
+ManagerServices.Memory creates WorkspaceRoot/.memory during construction, even
+with a resolver selected; failed shared-root construction is fatal. Memory tools
+remain explicitly selected. Do not inject the raw store into an owner-facing handler.
 
 ### Go owner resource snapshots
 

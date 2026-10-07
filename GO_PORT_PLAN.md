@@ -1,5 +1,15 @@
 # Go port plan
 
+## 2026-10-07 embedded manager memory binding
+
+Nil `ManagerServices.Memory` now constructs `WorkspaceRoot/.memory` with the
+configured masker, matching Python manager construction. The shared root must
+construct even with owner-local resources selected. Runtime binding retains owner
+isolation and resolver precedence; storage alone enables neither tools nor capture.
+Focused regression tests cover default storage, isolated owners, unchanged tool
+selection and a blocked shared root with and without an owner resolver.
+
+
 ## Outcome
 
 Keep the existing Python implementation runnable in `python/` and build a

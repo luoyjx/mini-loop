@@ -13,6 +13,44 @@ import (
 	"github.com/luoyjx/mini-loop/go/userresources"
 )
 
+func TestManagerDefaultMemoryBindingAndStartupFailure(t *testing.T) {
+	ctx := context.Background()
+	root := t.TempDir()
+	manager := makeManager(t, managerTestConfig(root, &FakeProvider{}))
+	if info, err := os.Stat(filepath.Join(root, ".memory")); err != nil || !info.IsDir() {
+		t.Fatal("default memory root missing", err)
+	}
+	alice := createManaged(t, manager, CreateSessionRequest{Owner: "alice"})
+	bob := createManaged(t, manager, CreateSessionRequest{Owner: "bob"})
+	if _, err := alice.core.memory.Write(ctx, memory.Input{Name: "private", Body: "alice fact"}); err != nil {
+		t.Fatal(err)
+	}
+	if records, err := bob.core.memory.List(ctx); err != nil || len(records) != 0 {
+		t.Fatal("default shared memory leaked across owners", records, err)
+	}
+	for _, tool := range []protocol.ToolName{protocol.ToolRemember, protocol.ToolRecall} {
+		if _, ok := alice.core.gate.catalog.Lookup(tool); ok {
+			t.Fatal("storage activated a memory tool", tool)
+		}
+	}
+	if alice.core.automaticMemoryEnabled() {
+		t.Fatal("storage activated automatic memory")
+	}
+	blocked := t.TempDir()
+	if err := os.WriteFile(filepath.Join(blocked, ".memory"), []byte("blocked"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	for _, local := range []bool{false, true} {
+		cfg := managerTestConfig(blocked, &FakeProvider{})
+		if local {
+			cfg.Services.UserResources = ownerResourceResolver(t, t.TempDir(), skills.EmptyCatalog())
+		}
+		if _, err := NewSessionManager(cfg); err == nil {
+			t.Fatal("manager accepted blocked default memory root", local)
+		}
+	}
+}
+
 func TestManagerSharedMemorySurvivesForkAndRestoration(t *testing.T) {
 	for _, scheduled := range []bool{false, true} {
 		name := "ordinary"

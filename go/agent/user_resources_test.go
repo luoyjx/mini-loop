@@ -209,10 +209,8 @@ func TestFailedOwnerResolutionDoesNotPublishHandleOrRetainScratch(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, entry := range entries {
-		if entry.IsDir() {
-			t.Fatal("failed construction retained scratch", entry.Name())
-		}
+	if len(entries) != 1 || entries[0].Name() != ".memory" || !entries[0].IsDir() {
+		t.Fatal("failed construction retained scratch", entries)
 	}
 	entries, err = os.ReadDir(victim)
 	if err != nil || len(entries) != 0 {

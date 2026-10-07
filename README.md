@@ -310,8 +310,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `a1c9c1b` plus the owned session skill-catalogue
-HTTP view; remaining route groups and runtime-profile differences remain explicit).
+reviewed **2026-10-07** (Go baseline `7197c2c` plus default embedded-manager
+memory binding; remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -363,7 +363,7 @@ flowchart LR
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
-        GoManager["Go SessionManager<br/>owner lookup · resource snapshots / scoped shared memory<br/>workspace policy · delete / stop drain"]
+        GoManager["Go SessionManager<br/>owner lookup · resource snapshots / default scoped memory<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
@@ -1181,7 +1181,10 @@ snapshot after publication; new independent sessions and forks resolve the curre
 owner bundle. Other owners cannot observe it; open deployments retain their single
 anonymous principal. Custom catalogue exceptions return safe plain 500.
 
-Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
+Go embedding can supply `ManagerServices.Memory` as one shared Markdown store;
+when nil, manager construction creates `<workspace root>/.memory` with its configured
+secret masker. An unavailable shared root fails construction, including when an
+owner resource resolver is selected.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before
 runtime publication; an explicit owner resource resolver takes precedence. This
 binding alone does not install memory tools. Standalone startup constructs shared

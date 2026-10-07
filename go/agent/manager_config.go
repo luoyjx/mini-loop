@@ -49,6 +49,7 @@ type BashFactory interface {
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
 	// Memory is the shared fallback when no owner resource resolver is configured.
+	// Nil creates WorkspaceRoot/.memory during manager construction.
 	// Managed runtimes always receive an owner-bound view of this store.
 	Memory                    *memory.Store
 	MemoryAuto                *bool

@@ -171,6 +171,12 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 	if err = os.MkdirAll(root, 0700); err != nil {
 		return nil, err
 	}
+	if services.Memory == nil {
+		services.Memory, err = memory.NewStore(context.Background(), filepath.Join(root, ".memory"), services.Secrets)
+		if err != nil {
+			return nil, err
+		}
+	}
 	manager := &SessionManager{restoreTurn: make(chan struct{}, 1), config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
 	manager.skillDrafts, err = userresources.NewDraftStore(userresources.DefaultDraftStoreConfig())
 	if err != nil {

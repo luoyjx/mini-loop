@@ -477,7 +477,7 @@
       "id": "goManaged",
       "type": "backend",
       "label": "Go SessionManager",
-      "sublabel": "handles / owner snapshots / factory / cleanup",
+      "sublabel": "owner snapshots / default scoped memory / cleanup",
       "pos": [
         850,
         980

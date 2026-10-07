@@ -268,7 +268,7 @@ func TestForkPublishesInitializedHistoryAndShutdownJoinsCreation(t *testing.T) {
 		}
 	}
 	entries, err := os.ReadDir(config.WorkspaceRoot)
-	if err != nil || len(entries) != 1 {
+	if err != nil || len(entries) != 2 || entries[0].Name() != ".memory" || entries[1].Name() != string(s.ID()) || !entries[0].IsDir() || !entries[1].IsDir() {
 		t.Fatal("unpublished scratch leaked", err, entries)
 	}
 }
@@ -341,7 +341,7 @@ func TestForkConstructionFailureReleasesSourceAdmissionAndReportsNoEvent(t *test
 		}
 	}
 	entries, err := os.ReadDir(config.WorkspaceRoot)
-	if err != nil || len(entries) != 1 {
+	if err != nil || len(entries) != 2 || entries[0].Name() != ".memory" || entries[1].Name() != string(source.ID()) || !entries[0].IsDir() || !entries[1].IsDir() {
 		t.Fatal("scratch leaked", err)
 	}
 }
