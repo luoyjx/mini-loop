@@ -423,6 +423,11 @@ integer/float median identity, duplicate task pairing/all-row totals, ordered
 warnings, zero-base deltas and identical read windows are explicit. Nonfinite
 native arithmetic refuses with a typed error; malformed arbitrary source rows are
 not representable by the concrete native result struct. The JSON integer limit
-is pinned to Python's current 4300 digits. Native arm execution, judge/setup/tool
-selection, heldout tasks and POST /benchmark remain unimplemented; no route row
-or G7 acceptance is claimed from these pure statistics probes.
+is pinned to Python's current 4300 digits. An immutable runtime/manager-create
+tool selection now matches source subset order, duplicate/unknown/empty semantics
+and reduces both model schemas and actual gate handlers; forced excluded write/Bash
+calls cannot reach their handlers, and child roles inherit the reduced catalogue.
+This transient construction profile is not persisted across fork/restore.
+Native arm execution, judge/setup composition, heldout tasks and POST /benchmark
+remain unimplemented; no route row or G7 acceptance is claimed from these
+component checks.

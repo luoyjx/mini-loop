@@ -371,6 +371,7 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 	if err != nil {
 		return nil, err
 	}
+	runtime.ToolSelection = request.ToolSelection
 	session, err = newManagedSession(runtime, true)
 	if err != nil {
 		return nil, err

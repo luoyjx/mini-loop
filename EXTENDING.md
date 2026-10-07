@@ -1951,10 +1951,21 @@ and nonfinite arithmetic returns ErrMetric. Duplicate task rows preserve source
 last-row pairing with all-row totals. Effect regressions always override wins;
 dimension warnings inform an operator without changing that verdict.
 
+`agent.SelectTools(names...)` creates a detached immutable ToolSelection for
+`RuntimeConfig.ToolSelection` or `CreateSessionRequest.ToolSelection`. Its zero
+value retains installed tools; calling it with no names removes every tool.
+Unknown names and duplicates are ignored, retaining registry order. Reduction
+happens before the gate is built, so advertised schemas and executable handlers
+agree; permissions and optional feature flags retain their independent meaning.
+Children inherit the reduced parent catalogue. It is a transient construction
+profile, not persisted authorization: independent creates/forks/restores use their
+current configuration. Trusted embeddings must supply durable policy separately.
+
 This is a pure operator statistics seam. It neither launches sessions nor admits
 task drafts into the judged workload. Future arm execution must retain explicit
-human-admitted task judges, setup and tool whitelists, independent workspaces and
-fake-only HTTP composition. Native execution/HTTP integration remains pending.
+human-admitted task judges, setup and captured tool selections, independent
+workspaces and fake-only HTTP composition. Native execution/HTTP integration
+remains pending.
 
 * **Per session (isolated):** workspace, conversation history, `TodoManager`,
   `ctx.state`, the cloned `ToolRegistry`, the run `Lock`.

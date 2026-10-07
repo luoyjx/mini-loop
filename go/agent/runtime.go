@@ -57,6 +57,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	// ToolSelection narrows the installed catalogue before the gate is built.
+	ToolSelection ToolSelection
 	// Manager-owned process-local drafts; standalone sessions leave this nil.
 	skillDrafts          *userresources.DraftStore
 	MemoryTools          bool
@@ -483,7 +485,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 			definitions = append(definitions, definition)
 		}
 	}
-	catalog, err := NewToolCatalog(definitions...)
+	catalog, err := NewToolCatalog(config.ToolSelection.filter(definitions)...)
 	if err != nil {
 		return nil, err
 	}

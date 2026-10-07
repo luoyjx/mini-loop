@@ -1,5 +1,56 @@
 # Go port plan
 
+## 2026-10-07 immutable session tool selection
+
+A prerequisite for the source benchmark's read-only paging task is now available
+through `agent.SelectTools`, `RuntimeConfig.ToolSelection` and
+`CreateSessionRequest.ToolSelection`. The named value has private immutable state:
+constructor input is detached, the zero value retains all installed definitions,
+and an explicit empty selection removes all tools. Unknown/duplicate names are
+ignored, retaining source registry order. Filtering precedes the single gate's
+construction, so model schemas and actual execution share the selected catalogue.
+Names do not enable optional features or change permission modes.
+
+The source evidence is `ToolRegistry.subset` and `benchmark.run_arm`'s admitted
+`BenchTask.tool_names` reduction. Four live source probes confirmed reversed
+selection order with duplicates/unknown names, empty selection, unknown-only
+selection and write-only selection; parent registry order remained unchanged.
+Native tests verify the default ten-tool profile, unavailable optional-tool names,
+unknown/duplicate/empty/order semantics, unchanged modes, input detachment before
+manager factory callbacks, independent sessions and actual advertised schemas.
+Hostile write/Bash requests are refused through the gate in auto mode, while read
+still succeeds. Explicit empty profiles refuse all forced calls and leave the
+workspace untouched. An Explore child inherits the selected parent catalogue.
+
+This is a transient construction profile, matching source runtime subset behavior;
+independent creates, forks and restored handles retain their current configuration.
+It is not a persisted authority policy or a host sandbox. Benchmark task definitions,
+judges/setup, fresh-session arm execution, heldout work and POST /benchmark remain
+pending; native routes stay at 33 operations/30 patterns and G0–G7 remain open.
+
+Validation:
+
+- Focused tool-selection/runtime/manager/child regressions passed.
+- Full `go test ./... -count=1 -timeout=180s -coverpkg=./...` with a shared
+  profile, `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+  Deduplicated statement coverage: overall **89.57%** (15108/16868), agent
+  **90.62%** (5954/6570), HTTP API **89.29%** (1259/1410), benchmark **94.14%**
+  (225/239). These percentages measure tested statements, not migration completion.
+- Contract exporter `--check`: all 90 files current. Python modules, exporters,
+  scanner inventories and mutation anchors are unchanged; separate invariant,
+  scan and mutation verifier sweeps were not rerun.
+- After every Go/export job was terminal, isolated `.venv/bin/python -m pytest -q`
+  passed: **2151 passed, 28 skipped, 24 subtests passed**, in 112.92s. Four warnings:
+  three dependency deprecations and a subprocess transport destructor observing
+  an already-closed event loop, reported during
+  `test_the_owner_map_stays_bounded_across_many_deletes`.
+  The latter source-suite warning is unresolved by this Go-only slice.
+  Python coverage was not refreshed.
+- `git diff --check` passed; README outline checked. Regenerated architecture
+  passed all 9 showcase checks with zero errors/warnings. Visual inspection
+  remains skipped after the earlier local-file denial; automated acceptance is
+  not visual evidence.
+
 ## 2026-10-07 typed benchmark statistics
 
 `go/benchmark` now implements the source aggregation, paired comparison and

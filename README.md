@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `b805ccd` plus typed benchmark statistics;
+reviewed **2026-10-07** (Go baseline `1f7d3fc` plus immutable tool selection;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -377,7 +377,7 @@ flowchart LR
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>injected backend; SQLite pending"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam"]
-        GoGate["ToolGate<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
+        GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
@@ -1218,8 +1218,15 @@ Passes require a strict majority; medians retain integer/float identity. Any tas
 regression wins over improvements; ordered performance warnings do not change the
 verdict. Transcript metrics count identical read windows as waste and preserve
 source rendered-error vocabulary. Snapshot 90 compares 51 actual Python outcomes.
-Native model-arm execution, judge/setup/tool-whitelist composition, heldout tasks
-and `/benchmark` remain pending; this library grants no launch authority.
+`agent.SelectTools` now pins an optional immutable whitelist before runtime gate
+construction; the same subset supplies model schemas and executable handlers.
+The zero value retains installed tools; an explicit empty selection removes all.
+Unknown names cannot activate optional features, and permission modes stay intact.
+Selection belongs to one construction: independent sessions, forks and restored
+handles use their configured profile, without restoring this transient selection.
+It is not a persisted policy or host sandbox. Child role policies narrow the
+selected parent catalogue. Native model-arm execution, judge/setup composition,
+heldout tasks and `/benchmark` remain pending; this library grants no launch authority.
 Personal-skill previews are process-local; a committed `SKILL.md` is durable,
 never replaces an existing skill, and appears only in future session snapshots.
 

@@ -105,6 +105,7 @@ type ManagerConfig struct {
 }
 
 type CreateSessionRequest struct {
+	ToolSelection  ToolSelection
 	Owner          OwnerID
 	Model          *string
 	PermissionMode PermissionMode
