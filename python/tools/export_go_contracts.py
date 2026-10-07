@@ -7825,7 +7825,7 @@ def _self_audit_manager_contracts() -> dict:
     capped = [dict(owner="alice", created=float(i), status="idle") for i in range(105)]
     cases = []
 
-    async def capture(root, name, rows, owner=None, include_global=True):
+    async def capture(root, name, rows, owner=None, include_global=True, bus_fault=False):
         settings = Settings(workspace_root=root / name, trajectory_enabled=False)
         manager = SessionManager(settings, FakeAsyncAnthropic())
         try:
@@ -7833,10 +7833,24 @@ def _self_audit_manager_contracts() -> dict:
                 session = manager.create(owner=row["owner"], permission_mode="auto")
                 session.created_at = row["created"]
                 session.status = row["status"]
+            if bus_fault:
+                # Actual manager binds the shared mailbox as state['bus'], not
+                # the state['teams'] slot scanned by _problem_sources. Retain
+                # a real unread message while a bad key records a bus problem.
+                mailbox = f"{session.id}/lead"
+                manager.bus.send(mailbox, mailbox, "pending private mail")
+                manager.bus.read("invalid")
+                assert manager.bus.problems
+                assert "teams" not in session.agent.state
+            report = build_report(manager, owner=owner, include_global=include_global)
             cases.append(dict(name=name, sessions=rows, owner=owner,
                               include_global=include_global,
-                              report=build_report(manager, owner=owner,
-                                                  include_global=include_global)))
+                              bus_fault=bus_fault,
+                              report=report))
+            if bus_fault:
+                assert len(manager.bus.peek(mailbox)) == 1
+                assert "teams[" not in report
+                assert "pending private mail" not in report
         finally:
             await manager.stop()
 
@@ -7847,6 +7861,8 @@ def _self_audit_manager_contracts() -> dict:
         await capture(root, "unknown-owner", mixed, "nobody", False)
         await capture(root, "fleet-cap", capped)
         await capture(root, "owner-cap", capped, "alice", False)
+        await capture(root, "fleet-shared-bus-fault", mixed, bus_fault=True)
+        await capture(root, "owned-shared-bus-fault", mixed, "alice", False, bus_fault=True)
 
     with tempfile.TemporaryDirectory(prefix="go-self-audit-manager-") as scratch:
         asyncio.run(run(Path(scratch)))

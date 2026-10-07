@@ -1,5 +1,42 @@
 # Go port plan
 
+## 2026-10-08 actual shared-team diagnostic boundary
+
+Baseline 80cae9d. Rechecking the next planned fleet-diagnostics slice against real
+source found an inaccurate parity assumption: SessionManager binds its shared
+mailbox as agent.state[bus], while self_audit._problem_sources scans state[teams].
+The actual source manager therefore omits shared bus problems from both fleet and
+owner reports. Adding shared aggregation would enhance source behavior, rather
+than close a Go parity gap; do not expose a shared cross-owner ledger through a
+per-session observation merely to fill that slot.
+
+The existing actual-manager snapshot now has eight recipes, including fleet and
+owner cases that record a real invalid-key bus problem and retain unread mail.
+Native differential tests compare the exact reports, require a real bus ledger
+entry and verify observation leaves the message pending. No runtime behavior,
+type schema, activation default or dependency changed. The existing typed Teams
+observation slot remains available to explicit library callers.
+
+The README baseline and boundary, parity matrix and generated architecture card
+are corrected. The canonical diagram topology is unchanged. Architecture delivery
+passed showcase 9/9 with zero errors/warnings; specification SHA256
+172ab109362746a5180113c3a67e5329402baa9465fe2592a2c7d5bb24bc7e61,
+HTML SHA256 4e573e863366b28a9c7c44d33bd0ed5c857805d2730f7546c2c84433dc720fb4.
+Visual review remains skipped after the prior denial, without retry or bypass.
+
+Validation: focused actual-manager Go race test passed after fixture regeneration;
+112 source snapshots current; all 19 source scanning guards anchored. Python full
+regression passed: 2,155 passed, 28 skipped, 24 subtests and three dependency
+warnings (84.59s); focused Go race, source check and scanning guards overlapped
+the beginning of that run. Final diff check and README outline passed.
+Full Go/race/vet and mutation checks are not repeated for
+this test/evidence/documentation-only change. No package modules changed.
+
+Next investigate actual-source teammate restart effects before designing native
+restoration: persisted records do not include teammate identity, and source builds
+fresh lead state without restarting a teammate runner. Workflows, MCP, native
+SQLite, remaining runtime profiles and full G7 remain open; the full goal is active.
+
 ## 2026-10-08 automatic team inbox and owned idle/task turns
 
 Baseline cf4debb (actual source lifecycle corpus; raw JSON preparation c014fea);

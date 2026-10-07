@@ -14,6 +14,7 @@ import (
 
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/selfaudit"
+	"github.com/luoyjx/mini-loop/go/teams"
 )
 
 type auditRecordingStore struct {
@@ -158,6 +159,7 @@ func TestActualSourceManagerSelfAudit(t *testing.T) {
 			Name          string
 			Owner         *string
 			IncludeGlobal bool `json:"include_global"`
+			BusFault      bool `json:"bus_fault"`
 			Sessions      []struct {
 				Owner   string
 				Created float64
@@ -176,15 +178,34 @@ func TestActualSourceManagerSelfAudit(t *testing.T) {
 	for _, row := range fixture.Cases {
 		t.Run(row.Name, func(t *testing.T) {
 			manager := makeManager(t, managerTestConfig(t.TempDir(), &FakeProvider{}))
+			var mailbox teams.MailboxKey
 			for _, input := range row.Sessions {
 				session := createManaged(t, manager, CreateSessionRequest{Owner: OwnerID(input.Owner)})
 				session.createdAt = input.Created
 				session.status = input.Status
+				mailbox = session.core.team.Key()
+			}
+			if row.BusFault {
+				if _, err := manager.teams.Send(context.Background(), teams.SendRequest{From: mailbox, To: mailbox, Content: "pending private mail"}); err != nil {
+					t.Fatal(err)
+				}
+				if _, err := manager.teams.Read(context.Background(), "invalid"); err != nil {
+					t.Fatal(err)
+				}
+				if len(manager.teams.Problems().Messages()) == 0 {
+					t.Fatal("probe did not record an actual shared bus problem")
+				}
 			}
 			scope := selfaudit.Scope{Owner: row.Owner, IncludeGlobal: row.IncludeGlobal}
 			got := selfaudit.BuildReport(manager.ObserveSelfAudit(context.Background(), scope), scope)
 			if got != row.Report {
 				t.Fatalf("report\ngot %s\nwant %s", got, row.Report)
+			}
+			if row.BusFault {
+				messages, err := manager.teams.Peek(context.Background(), mailbox)
+				if err != nil || len(messages) != 1 {
+					t.Fatalf("audit consumed pending mailbox: %v, %v", messages, err)
+				}
 			}
 		})
 	}

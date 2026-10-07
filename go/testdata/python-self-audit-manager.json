@@ -1,6 +1,7 @@
 {
   "cases": [
     {
+      "bus_fault": false,
       "include_global": true,
       "name": "empty",
       "owner": null,
@@ -8,6 +9,7 @@
       "sessions": []
     },
     {
+      "bus_fault": false,
       "include_global": true,
       "name": "fleet",
       "owner": null,
@@ -31,6 +33,7 @@
       ]
     },
     {
+      "bus_fault": false,
       "include_global": false,
       "name": "owned",
       "owner": "alice",
@@ -54,6 +57,7 @@
       ]
     },
     {
+      "bus_fault": false,
       "include_global": false,
       "name": "unknown-owner",
       "owner": "nobody",
@@ -77,6 +81,7 @@
       ]
     },
     {
+      "bus_fault": false,
       "include_global": true,
       "name": "fleet-cap",
       "owner": null,
@@ -610,6 +615,7 @@
       ]
     },
     {
+      "bus_fault": false,
       "include_global": false,
       "name": "owner-cap",
       "owner": "alice",
@@ -1139,6 +1145,54 @@
           "created": 104.0,
           "owner": "alice",
           "status": "idle"
+        }
+      ]
+    },
+    {
+      "bus_fault": true,
+      "include_global": true,
+      "name": "fleet-shared-bus-fault",
+      "owner": null,
+      "report": "# self-audit\n## sessions (3)\n1 error\n1 idle\n1 running\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)\n\n## cron\n0 scheduled, 0 disarmed",
+      "sessions": [
+        {
+          "created": 1.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 3.0,
+          "owner": "bob",
+          "status": "error"
+        },
+        {
+          "created": 2.0,
+          "owner": "alice",
+          "status": "running"
+        }
+      ]
+    },
+    {
+      "bus_fault": true,
+      "include_global": false,
+      "name": "owned-shared-bus-fault",
+      "owner": "alice",
+      "report": "# self-audit\n## sessions (2)\n1 idle\n1 running\n\n## problems\n(nothing)\n\n## trajectories\n(recording disabled)",
+      "sessions": [
+        {
+          "created": 1.0,
+          "owner": "alice",
+          "status": "idle"
+        },
+        {
+          "created": 3.0,
+          "owner": "bob",
+          "status": "error"
+        },
+        {
+          "created": 2.0,
+          "owner": "alice",
+          "status": "running"
         }
       ]
     }

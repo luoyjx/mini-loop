@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `cf4debb` plus automatic team inbox and owned idle/task turns;
+reviewed **2026-10-08** (Go baseline `80cae9d` plus actual shared-team diagnostic evidence;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1330,8 +1330,12 @@ HTTP outcomes plus the source custom-agent teamless projection. Native TCP tests
 prove viewing leaves all 75 messages for subsequent delivery and foreign callers
 cannot trigger an owned unreadable mailbox error. Python and Go reject dot path
 components before IO; lexical checks and instance locks provide neither filesystem
-confinement nor cross-process delivery transactions. Team bus diagnostics in the
-fleet self-audit remain pending. Explicit team activation now supplies round injection
+confinement nor cross-process delivery transactions. Actual Python manager state
+binds the shared mailbox as `bus`, while self-audit
+scans a distinct `teams` slot. Shared bus problems therefore do not enter either
+actual manager's fleet or owner report. Differential probes preserve unread mail;
+adding fleet bus aggregation would be a source enhancement, not missing parity.
+Explicit team activation now supplies round injection
 and owned teammate idle/task scheduling, described below. All ten source team/protocol tools now have concrete input variants,
 source schemas, immutable metadata and sorted/masked recording projections; the
 codec rejects model-supplied identity/root fields. Snapshot 109 compares 74 actual
@@ -1393,7 +1397,8 @@ session_manager peer provenance without human grants. Normal timeout reports an 
 notification; shutdown/cancellation does not. The lifetime is joined on delete/stop;
 timeout/shutdown does not unregister the handle. Poll/timeout settings reach the launcher.
 Team identity/runner state is process-local and not restored as a teammate. Full feature
-activation, fleet diagnostics and the other open migration packages remain pending.
+activation and the other open migration packages remain pending. The shared bus
+self-audit omission matches actual source, as documented above.
 Team tools are off by default; task/worktree model tools retain their separate selection.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
