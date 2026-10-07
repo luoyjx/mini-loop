@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `93ef09a` plus owned improvement HTTP reads;
+reviewed **2026-10-08** (Go baseline `028ea81` plus pure receipted verification folds;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoImprovement["Go improvement library<br/>typed instruments · owner lineage reads<br/>manager archive · live GET; proposal pipeline pending"]
+        GoImprovement["Go improvement / verified core<br/>lineage · typed receipt folds<br/>live GET; fold library only"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
@@ -1335,6 +1335,17 @@ GET ignores owner/limit/body overrides and spends no rate budget. Nonfinite and
 lone-surrogate response values fail before response bytes are written. The
 receipt-gated verified loop, proposal branch/commit flow and POST improvement
 operation remain pending; HTTP inventory is now 38/44 operations (35 patterns).
+The separate verifiedloop package now supplies detached task/checkpoint/receipt
+values, five closed patch-operation variants and a pure atomic ApplyPatch.
+Only a same-contract, complete, clean receipt covering the requirement permits
+verified status; stale CAS and every supporting foreign receipt are refused.
+Snapshot 103 compares 32 actual source folds and byte-identical hash/canonical
+identities. Task hash intentionally excludes source surface/persistence metadata.
+Duplicate checkpoint IDs keep source first-lookup/last-fold semantics. These are
+explicit library transitions; no executor, acceptance command or session service
+is installed. Native revisions use signed 64-bit counters with overflow refusal,
+and canonical text must be scalar UTF-8. Receipt records are not signatures or
+proof that an acceptance command has executed.
 A verified loop must sample the fingerprint before each acceptance judgment;
 computing or restoring a digest alone does not establish verified completion.
 Personal-skill previews are process-local; a committed `SKILL.md` is durable,

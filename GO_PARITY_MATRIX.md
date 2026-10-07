@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (102 generated snapshots), plus registry masking,
+the current implementation (103 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -699,3 +699,25 @@ tests also verify request byte admission, GET rate neutrality, cancellation, no
 provider/session work and constructor absence. Inventory is now 38 operations/
 35 patterns versus source 44. Six POST-improvement/team/workflow operations, native
 persistence and G0–G7 remain open.
+
+## Pure verified-loop contracts and folds
+
+Snapshot 103 compares 32 actual verified_loop.py folds and refusals: empty patch
+revision increments, pending/blocked/untrusted changes, nine verdict/integrity
+pairs with matching/nonmatching coverage, one usable receipt among others, stale
+CAS, contract revision mismatch, unused foreign receipts, unknown status and
+missing IDs, typed artifacts/facts, duplicate blocker first removal, atomic refusal,
+and duplicate/extra checkpoint requirements. Hash and canonical identities match
+source byte-for-byte, including sorted keys, spaced JSON, Unicode/HTML characters
+and tuple projections. Hash deliberately excludes allowed surfaces, persistence
+and contamination rules; it is not a signature. Source permits extra checkpoint
+IDs and duplicate state IDs; first StatusOf and last-value fold behavior survive.
+
+Go TaskContract/Checkpoint/Receipt/RoundPlan retain private snapshots with detached
+constructors/accessors. Five Operation constructors form a closed union, replacing
+open patch tuples. Native tests also prove replay, input/result detachment, source
+defaults, Unicode whitespace refusal, invalid constructors and no revision wrap.
+Native revisions are signed 64-bit, and canonical identity refuses non-scalar
+UTF-8 text; arbitrary-width counters/non-scalar Python canonical text are outside
+this native profile. ApplyPatch is pure; executor, acceptance command, integrity
+probe and session service remain pending. HTTP stays 38/44 and G0–G7 remains open.

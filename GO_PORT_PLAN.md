@@ -1,5 +1,42 @@
 # Go port plan
 
+## 2026-10-08 pure receipted verification folds
+
+This slice ports verified_loop.py as the standalone verifiedloop package. Named
+IDs, signed revisions and status/verdict/integrity variants replace string tuples;
+TaskContract/Checkpoint/Receipt/RoundPlan hold private detached snapshots. Five
+closed patch operation constructors carry only their named typed payloads. The
+pure ApplyPatch refuses stale CAS, revision mismatch, every foreign supporting
+receipt and receipt-free verified status, applying operations atomically.
+Source snapshot 103 captures 32 real folds/refusals and complete byte-identical
+contract hashes and canonical checkpoints, including Unicode, duplicate state
+IDs, extra state IDs, typed artifacts/facts, blocker multiplicity and all receipt
+verdict/integrity combinations. Source first lookup versus last duplicate fold
+and metadata-excluded hash behavior remain explicit. Native tests prove detachment,
+replay, constructor/default rules, Unicode whitespace and overflow refusal.
+Native counters are signed 64-bit; canonical identity admits scalar UTF-8. The
+source arbitrary-width/non-scalar profile is not claimed. Receipt data is not a
+signature or evidence of an executed acceptance command by itself.
+Next port VerifiedLoopService execute/accept/fold composition, integrity sampling
+before each acceptance run, timeout/feedback/round exhaustion and typed telemetry.
+Then bind real session worker/acceptance effects, compose proposal Git artifacts
+and POST, continue teams/workflows/native persistence and the full G0–G7 audit.
+No runtime/model feature is activated; HTTP inventory stays 38/44 (35 patterns).
+
+Validation passed: focused verifiedloop source/native checks; full Go tests and
+race checks (-count=1 -timeout=180s), go vet ./..., all 103 contract exports and
+all 19 scan anchors. After those handles finished, isolated Python pytest passed
+2151 tests, 28 skipped and 24 subtests in 107.97s, with three dependency deprecations.
+Export reported two dependency deprecations and the existing child-process warning,
+but passed. Python package invariant/guard sweeps were not rerun because only the
+exporter changed, not package modules or guarded Python behavior. Overall coverage
+was not refreshed this iteration. README outline and git diff --check pass.
+Archify passes 9/9 showcase checks with zero errors/warnings; HTML is regenerated.
+Visual inspection remains skipped after the earlier denial, without retry.
+Specification SHA256: c66040e13d0f708d454515736296f6898bf09edfc953b9aaa4d4358c66f73fb8.
+Artifact SHA256: 8ceb5a62c1a204fd5c3d93ff4b25570c9c6fd0a39dcf4ace9c82b2e76ee9a64c.
+
+
 ## 2026-10-07 owned improvement lineage HTTP
 
 Default GET /improvements now reads the manager-owned .improvements archive.

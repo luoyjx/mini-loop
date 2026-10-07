@@ -6737,6 +6737,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-improvement-archive-append.json": _json_bytes(_improvement_archive_append_contracts()),
         "python-improvement-archive-read.json": _json_bytes(_improvement_archive_read_contracts()),
         "python-improvement-http-read.json": _json_bytes(_improvement_http_read_contracts()),
+        "python-verified-fold.json": _json_bytes(_verified_fold_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8202,6 +8203,68 @@ def _improvement_http_read_contracts() -> dict:
                         captured[-1]["response_rows"] = len(value["proposals"])
             scenarios.append(dict(mode=mode, startup_archive_exists=startup_archive_exists, cases=captured))
     return dict(scenarios=scenarios)
+
+
+def _verified_fold_contracts() -> dict:
+    """Actual pure receipt-authorized folds and byte-for-byte canonical identities."""
+    from dataclasses import asdict
+    from mini_loop.verified_loop import (RequirementV1, TaskContractV1, VerifiedCheckpointV1,
+        ArtifactV1, FactV1, AuditReceiptV1, StatePatchV1, apply_patch)
+    contract = TaskContractV1(run_id="run-界", revision=1, original_request_hash="original",
+        requirements=(RequirementV1("tests", "the suite <&> is green"),
+                      RequirementV1("docs", "docs cover the flag", blocking=False)),
+        allowed_surfaces=("README",), persistence_boundary="workspace", contamination_rules=("clean",))
+    checkpoint = VerifiedCheckpointV1(contract_revision=1, state_revision=0,
+        requirements=(("tests", "pending"), ("docs", "pending")), blockers=("duplicate", "duplicate"))
+    recipes = [dict(name="empty", operations=[]),
+        dict(name="nonverified-statuses", operations=[dict(kind="status", id="tests", status="blocked"),dict(kind="status", id="docs", status="untrusted")]),
+        dict(name="bare-verified", operations=[dict(kind="status", id="tests", status="verified")]),
+        dict(name="stale", base=-1, operations=[]),
+        dict(name="revision-mismatch", contract_revision=2, operations=[]),
+        dict(name="unknown-status", operations=[dict(kind="status", id="tests", status="done")]),
+        dict(name="missing-requirement", operations=[dict(kind="status", id="missing", status="pending")]),
+        dict(name="missing-blocker", operations=[dict(kind="clear_blocker", blocker="missing")]),
+        dict(name="atomic-refusal", operations=[dict(kind="add_blocker", blocker="new"),dict(kind="status", id="tests", status="verified")]),
+        dict(name="typed-artifacts-facts", operations=[dict(kind="artifact", artifact=dict(digest="digest", producer="worker", evidence_refs=["e1","界"])),dict(kind="fact", fact=dict(source="command", content="facts <&>", freshness="current", trust="untrusted")),dict(kind="clear_blocker",blocker="duplicate"),dict(kind="add_blocker",blocker="new")]),
+        dict(name="foreign-unused-receipt", operations=[], receipts=[dict(contract_hash="foreign", verdict="complete", integrity="clean", coverage=["tests"])]),
+        dict(name="duplicate-state", duplicate=True, operations=[dict(kind="status",id="docs",status="blocked")]),
+        dict(name="checkpoint-extra-id", extra=True, operations=[dict(kind="status",id="extra",status="verified")],receipts=[dict(verdict="complete",integrity="clean",coverage=["extra"])]),
+    ]
+    for verdict in ("complete", "incomplete", "blocked"):
+        for integrity in ("clean", "suspect", "violation"):
+            for coverage in (["tests"], ["docs"]):
+                recipes.append(dict(name=f"receipt-{verdict}-{integrity}-"+coverage[0],
+                    operations=[dict(kind="status", id="tests", status="verified")],
+                    receipts=[dict(verdict=verdict, integrity=integrity, coverage=coverage)]))
+    recipes.append(dict(name="one-covering-receipt", operations=[dict(kind="status",id="tests",status="verified")],receipts=[dict(verdict="incomplete",integrity="suspect",coverage=["tests"]),dict(verdict="complete",integrity="clean",coverage=["tests"])]))
+    cases = []
+    for recipe in recipes:
+        pairs = list(checkpoint.requirements)
+        if recipe.get("duplicate"):
+            pairs = [("tests","pending"),("docs","pending"),("tests","blocked")]
+        if recipe.get("extra"):
+            pairs.append(("extra","pending"))
+        state = VerifiedCheckpointV1(contract_revision=recipe.get("contract_revision",1), state_revision=0,
+            requirements=tuple(pairs), blockers=checkpoint.blockers)
+        operations=[]
+        for op in recipe["operations"]:
+            if op["kind"]=="status":operations.append(("set_requirement_status",op["id"],op["status"]))
+            elif op["kind"]=="artifact":operations.append(("add_artifact",ArtifactV1(**op["artifact"])))
+            elif op["kind"]=="fact":operations.append(("add_fact",FactV1(**op["fact"])))
+            else:operations.append((op["kind"],op["blocker"]))
+        receipts=[AuditReceiptV1(contract_hash=row.get("contract_hash",contract.contract_hash), round_id=f"round-{i}",
+            verdict=row["verdict"],integrity=row["integrity"],coverage=tuple(row["coverage"]), evidence_refs=("exit:0",),verifier_ids=("command",)) for i,row in enumerate(recipe.get("receipts",[]))]
+        outcome=None;error=None
+        try:
+            outcome=apply_patch(contract,state,StatePatchV1(recipe.get("base",0),tuple(operations),tuple(receipts))).canonical()
+        except ValueError as exc:
+            error=str(exc)
+        state_spec=dict(contract_revision=state.contract_revision,state_revision=state.state_revision,
+            requirements=[dict(id=rid,status=status) for rid,status in state.requirements],artifacts=[],facts=[],blockers=list(state.blockers))
+        cases.append(dict(name=recipe["name"],checkpoint=state_spec,base=recipe.get("base",0),
+            operations=recipe["operations"],receipts=[asdict(r) for r in receipts],canonical=outcome,error=error,
+            initial_canonical=state.canonical(),statuses=[state.status_of("tests"),state.status_of("missing")]))
+    return dict(contract=asdict(contract),contract_hash=contract.contract_hash,cases=cases)
 
 
 def main() -> int:

@@ -1,0 +1,1669 @@
+{
+  "cases": [
+    {
+      "base": 0,
+      "canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 1}",
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": null,
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "empty",
+      "operations": [],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"blocked\"], [\"docs\", \"untrusted\"]], \"state_revision\": 1}",
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": null,
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "nonverified-statuses",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "blocked"
+        },
+        {
+          "id": "docs",
+          "kind": "status",
+          "status": "untrusted"
+        }
+      ],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "bare-verified",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": -1,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "patch targets revision -1 but the checkpoint is at 0; propose against the current state (CAS, authority rule 2)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "stale",
+      "operations": [],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 2,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "checkpoint and contract revisions disagree",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 2, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "revision-mismatch",
+      "operations": [],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "unknown requirement status 'done'",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "unknown-status",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "done"
+        }
+      ],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "no requirement 'missing' in the contract state",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "missing-requirement",
+      "operations": [
+        {
+          "id": "missing",
+          "kind": "status",
+          "status": "pending"
+        }
+      ],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "cannot clear a blocker that is not present: 'missing'",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "missing-blocker",
+      "operations": [
+        {
+          "blocker": "missing",
+          "kind": "clear_blocker"
+        }
+      ],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "atomic-refusal",
+      "operations": [
+        {
+          "blocker": "new",
+          "kind": "add_blocker"
+        },
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": "{\"artifacts\": [[\"digest\", \"worker\", [\"e1\", \"界\"]]], \"blockers\": [\"duplicate\", \"new\"], \"contract_revision\": 1, \"facts\": [[\"command\", \"facts <&>\", \"current\", \"untrusted\"]], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 1}",
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": null,
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "typed-artifacts-facts",
+      "operations": [
+        {
+          "artifact": {
+            "digest": "digest",
+            "evidence_refs": [
+              "e1",
+              "界"
+            ],
+            "producer": "worker"
+          },
+          "kind": "artifact"
+        },
+        {
+          "fact": {
+            "content": "facts <&>",
+            "freshness": "current",
+            "source": "command",
+            "trust": "untrusted"
+          },
+          "kind": "fact"
+        },
+        {
+          "blocker": "duplicate",
+          "kind": "clear_blocker"
+        },
+        {
+          "blocker": "new",
+          "kind": "add_blocker"
+        }
+      ],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "a supporting receipt was issued against a different contract",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "foreign-unused-receipt",
+      "operations": [],
+      "receipts": [
+        {
+          "contract_hash": "foreign",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "clean",
+          "round_id": "round-0",
+          "verdict": "complete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"blocked\"], [\"docs\", \"blocked\"]], \"state_revision\": 1}",
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          },
+          {
+            "id": "tests",
+            "status": "blocked"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": null,
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"], [\"tests\", \"blocked\"]], \"state_revision\": 0}",
+      "name": "duplicate-state",
+      "operations": [
+        {
+          "id": "docs",
+          "kind": "status",
+          "status": "blocked"
+        }
+      ],
+      "receipts": [],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"], [\"extra\", \"verified\"]], \"state_revision\": 1}",
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          },
+          {
+            "id": "extra",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": null,
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"], [\"extra\", \"pending\"]], \"state_revision\": 0}",
+      "name": "checkpoint-extra-id",
+      "operations": [
+        {
+          "id": "extra",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "extra"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "clean",
+          "round_id": "round-0",
+          "verdict": "complete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"verified\"], [\"docs\", \"pending\"]], \"state_revision\": 1}",
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": null,
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-complete-clean-tests",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "clean",
+          "round_id": "round-0",
+          "verdict": "complete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-complete-clean-docs",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "docs"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "clean",
+          "round_id": "round-0",
+          "verdict": "complete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-complete-suspect-tests",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "suspect",
+          "round_id": "round-0",
+          "verdict": "complete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-complete-suspect-docs",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "docs"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "suspect",
+          "round_id": "round-0",
+          "verdict": "complete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-complete-violation-tests",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "violation",
+          "round_id": "round-0",
+          "verdict": "complete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-complete-violation-docs",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "docs"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "violation",
+          "round_id": "round-0",
+          "verdict": "complete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-incomplete-clean-tests",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "clean",
+          "round_id": "round-0",
+          "verdict": "incomplete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-incomplete-clean-docs",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "docs"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "clean",
+          "round_id": "round-0",
+          "verdict": "incomplete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-incomplete-suspect-tests",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "suspect",
+          "round_id": "round-0",
+          "verdict": "incomplete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-incomplete-suspect-docs",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "docs"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "suspect",
+          "round_id": "round-0",
+          "verdict": "incomplete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-incomplete-violation-tests",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "violation",
+          "round_id": "round-0",
+          "verdict": "incomplete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-incomplete-violation-docs",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "docs"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "violation",
+          "round_id": "round-0",
+          "verdict": "incomplete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-blocked-clean-tests",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "clean",
+          "round_id": "round-0",
+          "verdict": "blocked",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-blocked-clean-docs",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "docs"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "clean",
+          "round_id": "round-0",
+          "verdict": "blocked",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-blocked-suspect-tests",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "suspect",
+          "round_id": "round-0",
+          "verdict": "blocked",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-blocked-suspect-docs",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "docs"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "suspect",
+          "round_id": "round-0",
+          "verdict": "blocked",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-blocked-violation-tests",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "violation",
+          "round_id": "round-0",
+          "verdict": "blocked",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": null,
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": "requirement 'tests' may only become verified through a clean complete receipt covering it (authority rule 6)",
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "receipt-blocked-violation-docs",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "docs"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "violation",
+          "round_id": "round-0",
+          "verdict": "blocked",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    },
+    {
+      "base": 0,
+      "canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"verified\"], [\"docs\", \"pending\"]], \"state_revision\": 1}",
+      "checkpoint": {
+        "artifacts": [],
+        "blockers": [
+          "duplicate",
+          "duplicate"
+        ],
+        "contract_revision": 1,
+        "facts": [],
+        "requirements": [
+          {
+            "id": "tests",
+            "status": "pending"
+          },
+          {
+            "id": "docs",
+            "status": "pending"
+          }
+        ],
+        "state_revision": 0
+      },
+      "error": null,
+      "initial_canonical": "{\"artifacts\": [], \"blockers\": [\"duplicate\", \"duplicate\"], \"contract_revision\": 1, \"facts\": [], \"requirements\": [[\"tests\", \"pending\"], [\"docs\", \"pending\"]], \"state_revision\": 0}",
+      "name": "one-covering-receipt",
+      "operations": [
+        {
+          "id": "tests",
+          "kind": "status",
+          "status": "verified"
+        }
+      ],
+      "receipts": [
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "suspect",
+          "round_id": "round-0",
+          "verdict": "incomplete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        },
+        {
+          "contract_hash": "6838783860c5249d",
+          "coverage": [
+            "tests"
+          ],
+          "evidence_refs": [
+            "exit:0"
+          ],
+          "integrity": "clean",
+          "round_id": "round-1",
+          "verdict": "complete",
+          "verifier_ids": [
+            "command"
+          ],
+          "workspace_diff_digest": ""
+        }
+      ],
+      "statuses": [
+        "pending",
+        null
+      ]
+    }
+  ],
+  "contract": {
+    "allowed_surfaces": [
+      "README"
+    ],
+    "contamination_rules": [
+      "clean"
+    ],
+    "original_request_hash": "original",
+    "persistence_boundary": "workspace",
+    "requirements": [
+      {
+        "acceptance": "",
+        "authority": "deterministic",
+        "blocking": true,
+        "id": "tests",
+        "text": "the suite <&> is green"
+      },
+      {
+        "acceptance": "",
+        "authority": "deterministic",
+        "blocking": false,
+        "id": "docs",
+        "text": "docs cover the flag"
+      }
+    ],
+    "revision": 1,
+    "run_id": "run-界"
+  },
+  "contract_hash": "6838783860c5249d"
+}

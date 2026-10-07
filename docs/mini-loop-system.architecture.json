@@ -551,8 +551,8 @@
     {
       "id": "goImprovement",
       "type": "backend",
-      "label": "Go improvement library",
-      "sublabel": "instruments / owner lineage reads",
+      "label": "Go archive / verified core",
+      "sublabel": "lineage / typed receipt folds",
       "pos": [
         60,
         720
@@ -561,7 +561,7 @@
         245,
         76
       ],
-      "tag": "manager archive / live GET; proposal pending"
+      "tag": "live GET / fold library only"
     }
   ],
   "boundaries": [

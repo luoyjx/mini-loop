@@ -2128,3 +2128,19 @@ It returns historical records without remasking and spends no rate budget. Full
 JSON serialization finishes before headers; lone-surrogate/nonfinite values and
 read faults produce source private plain 500s. Verified-loop receipts and proposal
 POST composition remain pending. Archive APIs grant no model tool or merge authority.
+
+## Go verified-loop contract seam
+
+verifiedloop supplies TaskSpec/CheckpointSpec/ReceiptSpec/RoundPlanSpec constructors
+that retain detached private snapshots, named IDs/revisions/statuses and five
+closed Operation variants. ApplyPatch checks CAS, contract revision and every
+receipt hash before applying operations atomically. Verified status needs a clean,
+complete receipt covering that specific state requirement. Empty patches still
+increment revision; duplicate checkpoint rows collapse like source dictionaries.
+NewPatch detaches artifact evidence, operations and receipt slices. Accessors
+return copies; text canonicalization and contract hashing are deterministic.
+Hash excludes source surfaces/persistence/contamination metadata, so a receipt is
+not an authorization signature. The eventual service must generate receipts from
+actual acceptance effects and sample integrity before every judgment, then bind
+the pure fold to the ordinary session/subagent/execution pipeline. This library
+activates no runtime tool, verifier execution, persistence or completion policy.
