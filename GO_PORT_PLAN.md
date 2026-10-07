@@ -1,5 +1,57 @@
 # Go port plan
 
+## 2026-10-08 actual teammate restart and managed root labels
+
+Baseline 3de3fab. Snapshot 112 now includes a real source SQLite close/reopen
+after manager spawning and a completed initial model turn. Owner, workspace,
+run count and transcript survive, but team ID becomes the restored session's
+own ID, member/label become lead/main, role/task binding and roster disappear,
+and no teammate lifetime is restarted. The old team mailbox remains unread;
+the restored handle's own lead inbox is empty. Recorded running status survives
+without an attached worker. Full teammate identity recovery would extend Python
+source behavior, rather than close a Go parity gap.
+
+The native differential test uses the existing typed injected test backend and
+compares that actual source projection after manager stop/reconstruction. It
+proves adapter behavior, not SQL durability or a native process restart. Native
+SQLite is still open. Both fixtures use default-off team tools; operator spawning
+is exercised directly. Existing selected-tool/idle behavior has separate evidence.
+
+The test exposed managed Go root labels using session IDs instead of source main.
+The shared create/fork/restore composition now supplies main; named teammates
+continue overriding their label. Event labels and delegated-by metadata follow
+that source label, without changing session IDs, ownership, grants or admission.
+The runtime correction and its source/native evidence belong in one small commit.
+
+Validation: full Go test and vet passed; the additional focused restart race test
+passed after simplifying its concrete projection; full Go race passed. All
+112 source snapshots current, all 19 scanning guards anchored; Python full suite
+passed 2,155 tests, 28 skipped, 24 subtests, three dependency warnings in 73.48s.
+Source checking/scanning, focused Go and full Go tests overlapped Python regression;
+full Go race started after Python completed. No Python package module changed, so
+package invariants were not rerun. No guarded behavior changed; mutations were not
+rerun. Final diff check and README outline passed.
+
+README canonical topology is reviewed and unchanged; the boundary explanation,
+extension seam, parity matrix and generated architecture card record the corrected
+provenance and restart effects. Archify delivery passed showcase 9/9, zero errors
+or warnings. Specification SHA256
+cc99cae5c9c3223b2ccd8e45b45ebd42b0cafe81ef0c065093ecb4766fb6729a;
+HTML SHA256 e5d0bf083d13ed7e121ba970f16b9a3177c94f19f45a29b2e87e34b98d16fe50.
+Visual inspection remains skipped after the prior denial, without retry/bypass.
+
+Next workflow migration slices, following the actual source modules:
+
+- W1: closed identifiers/states/records and source canonical digests (models.py).
+- W2: DAG/schema/artifact validation and exact refusals (validation.py/artifacts.py).
+- W3: typed storage, claims and outbox transitions with recovery evidence (store.py).
+- W4: attempt/runner/engine dispatch, cancellation and outcome transitions.
+- W5: explicit service/tools/HTTP/manager bindings with retained authority gates.
+- W6: real-source differential and restart/concurrency/effect acceptance gates.
+
+Do not install a partial workflow service by default. Workflows, MCP, native SQLite,
+remaining runtime profiles and full G7 remain open. The full migration goal is active.
+
 ## 2026-10-08 actual shared-team diagnostic boundary
 
 Baseline 80cae9d. Rechecking the next planned fleet-diagnostics slice against real

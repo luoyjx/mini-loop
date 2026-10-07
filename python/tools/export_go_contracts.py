@@ -9018,8 +9018,58 @@ def _team_lifecycle_contracts() -> dict:
             return observation
 
     async def capture():
-        return dict(injectors=[await scenario(case,False) for case in injectors],idle=[await scenario(case,True) for case in idle])
+        return dict(injectors=[await scenario(case,False) for case in injectors],idle=[await scenario(case,True) for case in idle],restart=await _team_restart_contract())
     return asyncio.run(capture())
+
+
+async def _team_restart_contract() -> dict:
+    """Real source SQLite close/reopen after an owned initial teammate turn."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text
+    from mini_loop.manager import SessionManager
+    from mini_loop.storage import SQLiteStateStore
+
+    with tempfile.TemporaryDirectory(prefix="go-team-restart-") as scratch:
+        root = Path(scratch)
+        settings = Settings(workspace_root=root / "ws", trajectory_enabled=False,
+                            team_idle_poll=3600, team_idle_timeout=7200)
+        store = SQLiteStateStore(root / "state.db")
+        client = FakeAsyncAnthropic(lambda _: ([text("done")], "end_turn"), thinking=False)
+        manager = SessionManager(settings, client, state_store=store, injectors=[])
+        try:
+            lead = manager.create(owner="alice")
+            await manager.spawn_teammate(lead.id, "bob", "research", "hello")
+            child = manager.teammate_session(lead.id, "bob")
+            await child.spawn_task
+            manager.bus.send(lead.id + "/lead", lead.id + "/bob", "pending old-team mail")
+            child_id, parent_id, workspace = child.id, lead.id, child.workspace
+        finally:
+            await manager.stop()
+            store.close()
+        reopened = SQLiteStateStore(root / "state.db")
+        fresh = SessionManager(settings, client, state_store=reopened, injectors=[])
+        try:
+            restored = fresh.restore_sessions()
+            child = fresh.get(child_id)
+            state = child.agent.state
+            return dict(
+                restored_count=len(restored), owner=child.owner,
+                same_workspace=child.workspace == workspace,
+                own_team=state["team_id"] == child_id, name=state["agent_name"],
+                label=child.agent.label, mode=child.permission_mode,
+                role_present="role" in state, tasks_present="tasks" in state,
+                recursive_spawn=child.agent.tools.get("spawn_teammate") is not None,
+                runner_present=hasattr(child, "lifecycle_task"),
+                old_roster_present=fresh.teammate_session(parent_id, "bob") is not None,
+                old_inbox_count=len(fresh.bus.peek(parent_id + "/bob")),
+                new_inbox_count=len(fresh.peek_team_inbox(child_id, "lead")),
+                status=child.status, run_count=child.run_count,
+                history=child.agent.messages,
+            )
+        finally:
+            await fresh.stop()
+            reopened.close()
 
 
 if __name__ == "__main__":

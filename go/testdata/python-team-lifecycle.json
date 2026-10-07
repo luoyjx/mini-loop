@@ -972,5 +972,38 @@
       "teamless": false,
       "unconfigured": false
     }
-  ]
+  ],
+  "restart": {
+    "history": [
+      {
+        "content": "hello",
+        "role": "user"
+      },
+      {
+        "content": [
+          {
+            "text": "done",
+            "type": "text"
+          }
+        ],
+        "role": "assistant"
+      }
+    ],
+    "label": "main",
+    "mode": "interactive",
+    "name": "lead",
+    "new_inbox_count": 0,
+    "old_inbox_count": 1,
+    "old_roster_present": false,
+    "own_team": true,
+    "owner": "alice",
+    "recursive_spawn": false,
+    "restored_count": 2,
+    "role_present": false,
+    "run_count": 1,
+    "runner_present": false,
+    "same_workspace": true,
+    "status": "running",
+    "tasks_present": false
+  }
 }

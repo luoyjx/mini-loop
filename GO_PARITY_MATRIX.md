@@ -1,5 +1,17 @@
 # Python to Go parity matrix
 
+## 2026-10-08 teammate restart and managed root labels
+
+Snapshot 112 now includes an actual Python SQLite close/reopen after real teammate
+spawn and initial model execution. The restored handle is an ordinary lead in its
+own team: owner, workspace and transcript survive, while role, roster and runner
+do not. Old teammate mail remains in the old group and the new inbox is empty.
+Persisted running status is retained without active work. Native injected-store
+reconstruction matches these effects; it does not prove native SQLite durability.
+The differential test found and corrected managed root labels from session ID to
+source main, including create/fork/restore composition. Teammate names still override
+the label. Complete team identity recovery would extend source behavior.
+
 ## 2026-10-08 actual shared-team diagnostic boundary
 
 The actual Python manager binds its shared mailbox at state[bus]; self-audit

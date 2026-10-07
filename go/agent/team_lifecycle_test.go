@@ -25,6 +25,104 @@ type lifecycleOutgoing struct {
 	Metadata teams.Data `json:"metadata"`
 }
 
+type teamRestartCase struct {
+	RestoredCount    int `json:"restored_count"`
+	Owner            OwnerID
+	SameWorkspace    bool `json:"same_workspace"`
+	OwnTeam          bool `json:"own_team"`
+	Name             teams.MemberName
+	Label            string
+	Mode             PermissionMode
+	RolePresent      bool `json:"role_present"`
+	TasksPresent     bool `json:"tasks_present"`
+	RecursiveSpawn   bool `json:"recursive_spawn"`
+	RunnerPresent    bool `json:"runner_present"`
+	OldRosterPresent bool `json:"old_roster_present"`
+	OldInboxCount    int  `json:"old_inbox_count"`
+	NewInboxCount    int  `json:"new_inbox_count"`
+	Status           SessionStatus
+	RunCount         int `json:"run_count"`
+	History          []protocol.Message
+}
+
+func TestTeamRestoreMatchesActualSourceSQLiteReconstruction(t *testing.T) {
+	var fixture struct{ Restart teamRestartCase }
+	data, err := os.ReadFile(filepath.Join("..", "testdata", "python-team-lifecycle.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(data, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	want := fixture.Restart
+	if want.RestoredCount == 0 {
+		t.Fatal("missing actual-source restart evidence")
+	}
+	// Native backing proves adapter reconstruction only, not native SQL or physical restart.
+	store := newRuntimeStateStore()
+	provider := stateProviderFunc(func(context.Context, protocol.ModelRequest) (protocol.ModelReply, error) {
+		return fakeReply([]protocol.Block{protocol.NewTextBlock("done")}, protocol.StopEndTurn), nil
+	})
+	cfg := managerTestConfig(t.TempDir(), provider)
+	cfg.Services.StateStore = store
+	cfg.TeamIdlePoll, cfg.TeamIdleTimeout = time.Hour, 2*time.Hour
+	manager := makeManager(t, cfg)
+	lead := createManaged(t, manager, CreateSessionRequest{Owner: "alice"})
+	spawn, err := manager.SpawnTeammate(context.Background(), "alice", lead.ID(), SpawnTeammateRequest{Name: "bob", Role: "research", Prompt: "hello"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	child, err := manager.Get("alice", spawn.Session)
+	if err != nil {
+		t.Fatal(err)
+	}
+	receiveSignal(t, child.teamRun.initialDone)
+	oldIdentity, oldWorkspace := *child.core.team, child.core.workspace
+	if _, err := manager.teams.Send(context.Background(), teams.SendRequest{From: lead.core.team.Key(), To: oldIdentity.Key(), Content: "pending old-team mail"}); err != nil {
+		t.Fatal(err)
+	}
+	if err := manager.Stop(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	fresh := makeManager(t, cfg)
+	restored, err := fresh.RestoreSessions(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	child, err = fresh.Get("alice", spawn.Session)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, recursive := child.core.gate.catalog.Lookup(protocol.ToolSpawnTeammate)
+	roster := (managerTeamDirectory{fresh}).Member(oldIdentity) != teams.MemberMissing
+	_, hasRole := child.core.systemBuilder.(teammateSystemBuilder)
+	equalRestoreMessages(t, child.Messages(), want.History)
+	oldMail, err := fresh.teams.Peek(context.Background(), oldIdentity.Key())
+	if err != nil {
+		t.Fatal(err)
+	}
+	newMail, err := fresh.PeekTeam(context.Background(), "alice", child.ID())
+	if err != nil {
+		t.Fatal(err)
+	}
+	info := child.Info()
+	got := teamRestartCase{
+		RestoredCount: len(restored), Owner: child.Owner(),
+		SameWorkspace: child.core.workspace == oldWorkspace,
+		OwnTeam:       child.core.team.Team == teams.TeamID(child.ID()),
+		Name:          child.core.team.Name, Label: child.core.label, Mode: child.core.permissionMode(),
+		RolePresent: hasRole, TasksPresent: child.core.taskDiagnostics.Load() != nil,
+		RecursiveSpawn: recursive, RunnerPresent: child.teamRun != nil, OldRosterPresent: roster,
+		OldInboxCount: len(oldMail), NewInboxCount: len(newMail.Inbox),
+		Status: info.Status, RunCount: info.RunCount,
+	}
+	// History is compared separately using its protocol representation above.
+	want.History = nil
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("restored teammate projection differs: got %+v, want %+v", got, want)
+	}
+}
+
 type teamIdleBlockingProvider struct {
 	initial atomic.Bool
 	blocked *drainingManagerProvider

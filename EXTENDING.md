@@ -2342,3 +2342,10 @@ are real and short. IDs/paths are normalized. Native tests add owned idle-run de
 shutdown registration retention, stale injection admission and delegated-child isolation.
 Fleet diagnostics, restart teammate restoration and full default feature activation
 remain pending; the worker/team identity is process-local.
+
+Managed root composition supplies the source label `main` for create/fork/restore;
+named teammates override it. Low-level runtime callers can still select a label.
+Persisted records carry no team role/identity/runner. Restoring a teammate builds an
+ordinary lead in its own team, retaining recorded owner/workspace/transcript/status,
+and leaves old-group mail untouched. Snapshot 112 includes real source SQLite
+close/reopen evidence; the native injected-store comparison is not SQLite evidence.

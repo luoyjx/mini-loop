@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `80cae9d` plus actual shared-team diagnostic evidence;
+reviewed **2026-10-08** (Go baseline `3de3fab` plus actual teammate restart evidence and managed main labels;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1396,7 +1396,12 @@ workspace rebind, with original-root fallback when missing/invalid. Idle turns u
 session_manager peer provenance without human grants. Normal timeout reports an idle
 notification; shutdown/cancellation does not. The lifetime is joined on delete/stop;
 timeout/shutdown does not unregister the handle. Poll/timeout settings reach the launcher.
-Team identity/runner state is process-local and not restored as a teammate. Full feature
+Team identity/runner state is process-local and not restored as a teammate. An actual
+Python SQLite close/reopen recipe and native injected-store reconstruction verify
+ordinary lead identity, retained owner/workspace/history and old unread teammate mail
+without a restarted runner or recovered roster. Persisted running status can remain
+without active work. Manager roots and restored handles use the source label `main`;
+explicit teammate labels remain their names. Native SQLite remains unimplemented. Full feature
 activation and the other open migration packages remain pending. The shared bus
 self-audit omission matches actual source, as documented above.
 Team tools are off by default; task/worktree model tools retain their separate selection.
