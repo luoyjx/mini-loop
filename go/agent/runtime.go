@@ -58,6 +58,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	teamMember  bool
+	taskStore   *tasks.Store
 	TeamTools   bool
 	teamManager *SessionManager
 	team        *teams.Identity
@@ -186,8 +188,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
-	case protocol.ToolSendMessage, protocol.ToolReadInbox, protocol.ToolBroadcast, protocol.ToolListTeammates, protocol.ToolRequestShutdown, protocol.ToolRequestPlan, protocol.ToolSubmitPlan, protocol.ToolReviewPlan, protocol.ToolListProtocols:
-		return handler.executeTeam(ctx, input)
+	case protocol.ToolSpawnTeammate, protocol.ToolSendMessage, protocol.ToolReadInbox, protocol.ToolBroadcast, protocol.ToolListTeammates, protocol.ToolRequestShutdown, protocol.ToolRequestPlan, protocol.ToolSubmitPlan, protocol.ToolReviewPlan, protocol.ToolListProtocols:
+		return handler.executeTeam(ctx, authority, input)
 	case protocol.ToolSelfAudit:
 		return handler.selfAudit.report(ctx)
 	case protocol.ToolRemember, protocol.ToolRecall:
@@ -377,10 +379,11 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
 	handler.teamManager = config.teamManager
+	handler.taskStore = config.taskStore
 	if config.TeamTools {
 		for _, schema := range protocol.TeamSchemas() {
-			// Concurrent teammate construction/lifecycle is a separate slice.
-			if schema.Name == protocol.ToolSpawnTeammate {
+			// Autonomous teammates cannot recursively spawn more teammates.
+			if schema.Name == protocol.ToolSpawnTeammate && config.teamMember {
 				continue
 			}
 			definition, err := NewToolDefinitionWithSchema(schema, teamTraits(schema.Name), handler)
@@ -572,6 +575,9 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	session.events.sessionID, session.events.sink = config.ID, config.EventSink
 	session.bindEventHistory()
 	handler.session = session
+	if config.taskStore != nil {
+		session.taskDiagnostics.Store(config.taskStore)
+	}
 	session.selfAudit = handler.selfAudit
 	session.background = handler.background
 	session.questions = questions

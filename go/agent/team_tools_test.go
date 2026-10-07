@@ -191,12 +191,6 @@ func TestTeamCatalogMatchesSourceTraitsAndExplicitSelection(t *testing.T) {
 	}
 	for _, row := range fixture.Tools {
 		def, ok := s.core.gate.catalog.Lookup(row.Schema.Name)
-		if row.Schema.Name == protocol.ToolSpawnTeammate {
-			if ok {
-				t.Fatal("unimplemented spawn installed")
-			}
-			continue
-		}
 		if !ok || def.Risk() != row.Risk || def.Readonly() != row.Readonly || def.ParallelSafe() != row.ParallelSafe {
 			t.Fatal(row, def)
 		}
@@ -207,7 +201,7 @@ func TestTeamCatalogMatchesSourceTraitsAndExplicitSelection(t *testing.T) {
 		}
 	}
 	selected := createManaged(t, m, CreateSessionRequest{Owner: "alice", ToolSelection: SelectTools(protocol.ToolReadInbox, protocol.ToolSpawnTeammate)})
-	if names := selected.core.gate.CatalogNames(); len(names) != 1 || names[0] != protocol.ToolReadInbox {
+	if names := selected.core.gate.CatalogNames(); len(names) != 2 {
 		t.Fatal(names)
 	}
 	fork, err := m.Fork(context.Background(), "alice", s.ID())

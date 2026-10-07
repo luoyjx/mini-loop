@@ -33,6 +33,7 @@ const (
 // transcripts or leases; state is restored through the injected store consumer.
 // Public lookups require an already established owner identity.
 type SessionManager struct {
+	teamReservations               map[teams.Identity]bool
 	teamProtocols                  *teams.Coordinator
 	teams                          *teams.Bus
 	improvements                   *improvement.Archive
@@ -185,7 +186,7 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 			return nil, err
 		}
 	}
-	manager := &SessionManager{restoreTurn: make(chan struct{}, 1), config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
+	manager := &SessionManager{teamReservations: make(map[teams.Identity]bool), restoreTurn: make(chan struct{}, 1), config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
 	teamRoot := filepath.Join(root, ".teams")
 	manager.teams = teams.New(teams.Config{Root: &teamRoot, Masker: services.Secrets})
 	manager.teamProtocols, err = teams.NewCoordinator(teams.CoordinatorConfig{Bus: manager.teams, Members: managerTeamDirectory{manager}})
@@ -567,7 +568,7 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 			manager.reclaimUnusedWorkspace(id, session.core.workspace)
 		}
 	}
-	if session.Info().Busy || session.hasPersonalSkillOperation() || session.core.backgroundInitialized() {
+	if session.teamRun != nil || session.Info().Busy || session.hasPersonalSkillOperation() || session.core.backgroundInitialized() {
 		go cleanup()
 	} else {
 		cleanup()
@@ -643,6 +644,10 @@ func (manager *SessionManager) drainSession(session *ManagedSession, reason stri
 		}
 	}()
 	defer session.drainPersonalSkillOperation(grace)
+	if run := session.teamRun; run != nil {
+		run.cancel()
+		<-run.done
+	}
 	session.mu.Lock()
 	active := session.active
 	session.mu.Unlock()

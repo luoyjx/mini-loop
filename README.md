@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `533f824` plus teammate composition preparation;
+reviewed **2026-10-08** (Go baseline `01cd8dc` plus owned initial teammate execution;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoTeams["Go team protocols<br/>bounded mailbox / 200 handshakes<br/>owned GET; nine opt-in gate tools"]
+        GoTeams["Go team protocols<br/>bounded mailbox / 200 handshakes<br/>owned GET; ten opt-in gate tools"]
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
@@ -1330,9 +1330,8 @@ HTTP outcomes plus the source custom-agent teamless projection. Native TCP tests
 prove viewing leaves all 75 messages for subsequent delivery and foreign callers
 cannot trigger an owned unreadable mailbox error. Python and Go reject dot path
 components before IO; lexical checks and instance locks provide neither filesystem
-confinement nor cross-process delivery transactions. Teammate spawning, automatic
-inbox injection, idle/task scheduling, prompt identity and bus diagnostic aggregation
-remain pending. All ten source team/protocol tools now have concrete input variants,
+confinement nor cross-process delivery transactions. Automatic inbox injection,
+idle/task scheduling and bus diagnostic aggregation remain pending. All ten source team/protocol tools now have concrete input variants,
 source schemas, immutable metadata and sorted/masked recording projections; the
 codec rejects model-supplied identity/root fields. Snapshot 109 compares 74 actual
 source keyword bindings and JSON identities, including metadata key collisions.
@@ -1352,9 +1351,9 @@ Correlation retains the source request-ID/type/status rule, without adding sende
 verification. Closed JSON response truthiness, Python str/repr and ASCII indent
 rendering preserve historical data. Printable characters are pinned to Python's
 Unicode 14.0.0, including characters assigned later in Go's database. The coordinator
-is now owned by the manager alongside its bus. Nine team mailbox/protocol tools
-are independently enabled by ManagerServices.TeamTools or standalone --team-tools;
-spawn_teammate remains absent until native construction/lifecycle is implemented.
+is now owned by the manager alongside its bus. Ten team tools are independently
+enabled by ManagerServices.TeamTools or standalone --team-tools, including
+spawn_teammate for an owned concurrent initial turn.
 The fixed session identity supplies sender/team/root; model arguments cannot select
 them. Source roster checks, broadcast refusal counts, lead-only shutdown/plan/review,
 and exact inbox/protocol notices use the same gate and declared source traits.
@@ -1367,9 +1366,20 @@ matching the source unconfigured-child boundary. Snapshot 111 compares eleven re
 installed-handler recipes; native tests add gate rewrite/mask/replay, owner scope,
 readonly acknowledgment, selection/forks and child authority isolation. A real HTTP
 model round verifies tool publication/send/read and repeated non-consuming GET.
-Full feature activation, teammate roster construction/resource inheritance, spawning,
-automatic inbox injection, shutdown lifecycle, idle/task claiming, prompt identity and
-fleet diagnostics remain open. Team tools are off by default.
+Native SpawnTeammate publishes a fresh owner-bound member in the parent's original
+lifecycle workspace, inheriting the fixed skill/memory bundle without another resource
+resolution. It uses the manager model/system builder and interactive permission mode,
+with a teammate prompt prefix and named peer provenance that drops human capabilities.
+The child shares the original task board and omits recursive spawn. Name reservations
+prevent concurrent duplicates. Its initial run is independent of the spawning request;
+normal completion delivers a result to lead. Delete/stop cancel and join the worker
+before shared scratch reclamation; deleting the parent leaves the child registered,
+and bound workspaces are retained. Native tests cover these boundaries and construction
+rollback, stopped publication, readonly gating and parent-turn mutex independence.
+There is no new differential spawn snapshot: snapshots 110/111 retain their trusted
+roster scope. Team identity/runner state is process-local and not restored as a teammate.
+Full feature activation, automatic inbox injection, shutdown-driven lifecycle,
+idle/task claiming and fleet diagnostics remain open. Team tools are off by default.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

@@ -65,16 +65,13 @@ func TestExplicitTeamLauncherExecutesModelToolsAndPreservesOwnedPeek(t *testing.
 	schemas := <-observed
 	count := 0
 	for _, schema := range schemas {
-		if schema.Name == protocol.ToolSpawnTeammate {
-			t.Fatal("spawn falsely advertised")
-		}
 		for _, expected := range protocol.TeamSchemas() {
 			if expected.Name == schema.Name {
 				count++
 			}
 		}
 	}
-	if count != 9 {
+	if count != 10 {
 		t.Fatal("team catalog", count)
 	}
 	for i := 0; i < 2; i++ {

@@ -2254,9 +2254,9 @@ standard model-input boundary. The source object-only schema remains exactly
 {type:object}, with no invented properties/additionalProperties. Python handlers
 bind keywords without enforcing their advertised scalar types; Go additionally
 rejects wrong scalar/container types as part of its declared typed boundary.
-ManagerServices.TeamTools now binds nine mailbox/protocol variants through the
-common gate (see below). Teammate spawning, automatic injection, idle/task scheduling,
-prompt identity and self-audit bus aggregation remain future slices. These codecs
+ManagerServices.TeamTools now binds ten team variants through the
+common gate (see below). Automatic injection, idle/task scheduling and self-audit
+bus aggregation remain future slices. These codecs
 themselves install no model tools or activation defaults.
 
 ## Go team protocol coordination seam
@@ -2289,7 +2289,7 @@ of nonfinite/surrogate data. Response correlation deliberately retains source
 request-ID/type/status matching; this library does not add sender verification.
 
 ManagerServices.TeamTools (or standalone --team-tools / launcher.Options.TeamTools)
-installs nine tools independently; spawn_teammate is omitted. A typed private manager
+installs ten tools independently, including initial-turn spawn_teammate. A typed private manager
 binding executes closed ToolInput variants only after runtime owner/session/workspace
 checks. A guard before journal replay prevents stale or foreign authority from reading
 settled private projections. Members are read from immutable registered identities in
@@ -2305,6 +2305,16 @@ existing gate. Selection can only reduce installed tools; forks bind a fresh lea
 team. Delegated subagents inherit selected tools but have a fresh guard and no parent
 manager/bus binding. Bare TeamTools sessions return source unavailable notices.
 Source handler fixtures establish trusted rosters before execution; they do not prove
-spawn/inheritance or lifecycle. Automatic injectors, consuming shutdown state, managed
-member construction, prompt identity, idle/task claims and diagnostic fleet aggregation
-remain pending; no background teammate runner or default activation is introduced.
+spawn/inheritance or lifecycle. Native SessionManager.SpawnTeammate requires an admitted
+owner/parent and reserves names before construction. It inherits the original workspace,
+bound-workspace retention flag and fixed skills/memory/owner resources, while rebuilding
+the manager-default model/system and interactive permission mode. The teammate prefix
+wraps the base system builder; named peer context drops human capabilities. Children
+share the original task store and omit recursive spawn. The manager owns the initial
+run context and cancel/join handle, delivers normal results to lead and drains it before
+reclaiming shared scratch on delete/stop. Parent deletion does not cascade to members.
+Construction faults release reservations and remove unpublished persistence.
+Automatic injectors, consuming shutdown state, idle/task claims and diagnostic fleet
+aggregation remain pending. Runner/team identity is process-local, with no teammate
+restoration or default activation. The source spawn contract was inspected directly;
+existing differential fixtures still cover only trusted roster/tool/protocol effects.

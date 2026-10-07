@@ -1,5 +1,60 @@
 # Go port plan
 
+## 2026-10-08 owned initial teammate execution
+
+Baseline 01cd8dc (common composition / named peer preparation); full G0–G7 remains
+open. Native teammate creation and its initial
+concurrent turn are implemented. This checkpoint does not claim the source idle loop,
+automatic inbox injection, shutdown-driven lifetime or autonomous task/worktree claims.
+
+The inspected Python manager.py spawn_teammate / _initial_teammate_run contract
+inherits the parent's owner, original workspace, workspace retention, skills and memory
+without resolving current user resources. The child rebuilds the manager model/system
+builder and interactive permission mode, prefixes teammate coordination guidance,
+derives named peer provenance without human capabilities, shares the original task
+board and removes recursive spawn. Normal initial completion delivers its result to
+lead. Parent deletion leaves the child registered; bound roots are retained.
+
+Go exposes typed SpawnTeammateRequest / SpawnedTeammate / TeamSpawnRefusal, reserves
+member names before construction and tracks creation through manager shutdown. Failed
+construction releases reservations and unpublished persistence. The initial worker
+has a manager-owned cancellation context and join handle, independent of the spawning
+request. Delete/stop close admission, cancel and join before scratch reclamation.
+The existing common runtime composition is reused while bypassing resource resolution.
+Ten exact source schemas/traits now install with explicit TeamTools / --team-tools;
+teammates omit spawn. A private binding guard and existing exec permission gate still
+apply. No dependencies were added; full feature activation remains unsupported.
+
+Native tests prove fixed parent resource binding even with a different current resolver,
+fresh model/system/mode, named peer actor/delegation/capability dropping, result delivery,
+concurrent duplicate refusal, failed-factory retry, stop-during-construction rejection,
+parent-delete retention, stop/delete joins, bound-root retention, readonly rejection and
+no reacquisition of the parent's active core turn mutex. Existing source snapshots
+remain 111; no new differential spawn evidence is claimed. Snapshots 110/111 retain
+their trusted roster scope. Team identity/runner is process-local and is not restored
+as a teammate.
+
+Validation: focused team/launcher/CLI tests; full Go test with statement coverage,
+full Go race and vet; all 111 exported source snapshots; 19 anchored scanning guards;
+the selected delivery-drops-oversized-work mutation caught; isolated Python 2,155 passed,
+28 skipped, 24 subtests passed and three dependency warnings (73.17s). No Python package
+modules changed; invariants were not rerun. The complete mutation catalogue was not run.
+The named-peer test added after the full Go run passed with the focused team race run.
+Go statement coverage is 87.1% overall, agent 89.6%, httpapi 90.1% and teams 95.5%;
+this is test statement coverage, not a migration-completion percentage. The profile
+was generated at /tmp/mini-loop-team-spawn-coverage.out. Python coverage was not refreshed.
+
+Architecture delivery: docs/mini-loop-system.architecture.html regenerated from the
+JSON specification; showcase 9/9, zero errors/warnings, correction_rounds 0.
+Specification SHA256 78857e41f2f39e138f0920f1d00dfd298939f5c45f63a5c479e4aa5fe921c5b5;
+artifact SHA256 6c1d867190b89aa2f35a0a5c50e9a210681525cf2c208a27a20bca1afe2677b2.
+Visual review remains skipped after the prior denial; no retry or bypass.
+
+Delivery is split into common composition/provenance preparation, owned teammate
+runtime with tests and architecture, and the standalone CLI help boundary. Stage only
+task-owned paths. Automatic inbox injection, idle/shutdown/task lifetime, workflows,
+MCP, native SQLite and full G7 remain open.
+
 ## 2026-10-08 teammate composition preparation
 
 Baseline 533f824. Extract the common managed runtime composition before applying

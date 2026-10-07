@@ -115,6 +115,7 @@ type activeTurn struct {
 // Its underlying core is private: children use Session directly and do not
 // fabricate outer session status/done events.
 type ManagedSession struct {
+	teamRun        *teammateRun
 	skillOperation *personalSkillOperation
 	skillCapture   userresources.CaptureLedger
 	build          string
@@ -188,6 +189,9 @@ func (session *ManagedSession) StopAccepting(reason string) {
 	defer session.mu.Unlock()
 	session.accepting = false
 	session.closedReason = reason
+	if run := session.teamRun; run != nil {
+		run.cancel()
+	}
 	if operation := session.skillOperation; operation != nil {
 		operation.cancel(context.Canceled)
 	}

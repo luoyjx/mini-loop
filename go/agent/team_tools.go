@@ -19,7 +19,7 @@ type teamAuthorityGuard struct{ handler *runtimeHandler }
 
 func (g teamAuthorityGuard) GuardTool(ctx context.Context, authority ToolAuthority, call ToolCall) (string, bool, error) {
 	switch call.Name() {
-	case protocol.ToolSendMessage, protocol.ToolReadInbox, protocol.ToolBroadcast, protocol.ToolListTeammates, protocol.ToolRequestShutdown, protocol.ToolRequestPlan, protocol.ToolSubmitPlan, protocol.ToolReviewPlan, protocol.ToolListProtocols:
+	case protocol.ToolSpawnTeammate, protocol.ToolSendMessage, protocol.ToolReadInbox, protocol.ToolBroadcast, protocol.ToolListTeammates, protocol.ToolRequestShutdown, protocol.ToolRequestPlan, protocol.ToolSubmitPlan, protocol.ToolReviewPlan, protocol.ToolListProtocols:
 	default:
 		return "", false, nil
 	}
@@ -75,6 +75,8 @@ func (manager *SessionManager) teamNames(team teams.TeamID) []teams.MemberName {
 
 func teamTraits(name protocol.ToolName) ToolTraits {
 	switch name {
+	case protocol.ToolSpawnTeammate:
+		return ToolTraits{Risk: RiskExec}
 	case protocol.ToolReadInbox, protocol.ToolListTeammates, protocol.ToolListProtocols:
 		// Source declares read_inbox read-only despite consuming and routing acks.
 		return ToolTraits{Risk: RiskRead, Readonly: true}
@@ -83,9 +85,12 @@ func teamTraits(name protocol.ToolName) ToolTraits {
 	}
 }
 
-func (h *runtimeHandler) executeTeam(ctx context.Context, input protocol.ToolInput) (string, error) {
+func (h *runtimeHandler) executeTeam(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, error) {
 	manager := h.teamManager
 	if manager == nil {
+		if input.Name() == protocol.ToolSpawnTeammate {
+			return "Error: teams not available (no manager)", nil
+		}
 		if input.Name() == protocol.ToolSendMessage || input.Name() == protocol.ToolReadInbox {
 			return "Error: message bus not available", nil
 		}
@@ -105,6 +110,17 @@ func (h *runtimeHandler) executeTeam(ctx context.Context, input protocol.ToolInp
 		return "", errors.New("managed session has no team identity")
 	}
 	switch input.Name() {
+	case protocol.ToolSpawnTeammate:
+		v, _ := input.SpawnTeammate()
+		spawn, err := manager.SpawnTeammate(ctx, h.binding.OwnerID, h.binding.SessionID, SpawnTeammateRequest{Name: teams.MemberName(v.Name), Role: v.Role, Prompt: v.Prompt, RunContext: authority.RunContext})
+		var refusal *TeamSpawnRefusal
+		if errors.As(err, &refusal) {
+			return refusal.Error(), nil
+		}
+		if err != nil {
+			return "", err
+		}
+		return spawn.Render(), nil
 	case protocol.ToolSendMessage:
 		v, _ := input.SendMessage()
 		names := manager.teamNames(identity.Team)
