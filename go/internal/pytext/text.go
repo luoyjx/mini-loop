@@ -30,7 +30,7 @@ func Repr(value string) string {
 			out.WriteString("\\r")
 		case r == '\t':
 			out.WriteString("\\t")
-		case !unicode.IsPrint(r):
+		case !Printable(r):
 			if r <= 0xff {
 				fmt.Fprintf(&out, "\\x%02x", r)
 			} else if r <= 0xffff {

@@ -1,5 +1,27 @@
 # Go port plan
 
+## 2026-10-08 closed Python value projections and printable tables
+
+Baseline 2a0b5c7; full G0–G7 remains open. This prerequisite provides immutable
+closed JSON truthiness, Python str/repr, legacy ASCII indent rendering and
+surrogatepass code-point prefixes. No any/interface/raw domain state or dependency
+is added. The existing Unicode generator now emits Python 14.0.0 printable ranges;
+Go's newer assigned characters must remain escaped under the source profile.
+A differential failure on Unicode 15 U+1FAE8 exposed and verified this distinction.
+README architecture review baseline and projection boundary are updated; these
+helpers change no ownership, routing, tool installation or feature defaults.
+
+Focused jsonvalue/pytext tests passed. Final combined worktree gates passed:
+`go test ./... -count=1 -timeout=180s`,
+`go test -race ./... -count=1 -timeout=180s`, `go vet ./...`, and
+`export_go_unicode.py --check` (Unicode 14.0.0). The independently isolated final
+Python suite passed: 2,155 passed, 28 skipped, 24 subtests, four warnings in 129.16s.
+Three warnings are dependency deprecations; the fourth is an ignored subprocess
+transport destructor reporting an already closed event loop in the owner-map test.
+No Python runtime module changed. Coverage was not refreshed. Final diff whitespace
+and README outline checks are required before each commit. Team coordinator work
+is delivered separately, with its own source snapshots and architecture boundary.
+
 ## 2026-10-08 typed team/protocol input contracts
 
 Baseline 14a0665; full G0–G7 remains open. This is the concrete input part of

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `14a0665` plus typed team/protocol input contracts;
+reviewed **2026-10-08** (Go baseline `2a0b5c7` plus closed Python value projections and printable tables;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1338,6 +1338,10 @@ codec rejects model-supplied identity/root fields. Snapshot 109 compares 74 actu
 source keyword bindings and JSON identities, including metadata key collisions.
 This is the input layer: the mailbox adds no installed model tools or automatic
 inbox delivery yet.
+The shared Go closed JSON value tree now provides Python truthiness, str/repr,
+legacy ASCII indent rendering and surrogatepass code-point prefixes. Printable
+characters use generated Python Unicode 14.0.0 tables rather than Go's newer
+database. These are projection helpers; runtime tool defaults are unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable
