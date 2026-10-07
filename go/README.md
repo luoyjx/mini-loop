@@ -1309,8 +1309,9 @@ Refresh and verify the embedded inputs from the repository root:
 
 Core create/message/SSE/control/approval/trajectory flows have implemented APIs.
 The Cron pane uses the implemented list/schedule/cancel/arm APIs; the Goal view
-uses the owned read endpoint without arming. Optional
-Team/Workflows/Skills/Memory/Improve/Benchmark/Self-audit
+uses the owned read endpoint without arming. Owned skill catalogue, preview/commit
+and memory reads are also implemented. Optional
+Team/Workflows/Improve/Benchmark/Self-audit
 panels still need Go services and currently display the source error states.
 Serving the full interface is not complete UI feature parity. Snapshot 32 compares
 16 Python HTTP outcomes and exact source assets; 37 real JS interaction regressions
@@ -1832,3 +1833,29 @@ local and anonymous deployments, including auth, quoting and encoded slashes.
 Native tests additionally cover detached views, wrong binding/cancellation,
 registered-secret masking and safe filesystem failure. A removed root produces
 native safe plain 500 whereas Python's glob yields an empty list.
+
+
+### Typed benchmark statistics
+
+`benchmark.AggregateRuns`, `Compare` and `BehavioralMetrics` are operator functions
+on concrete task results and typed transcripts. Six explicit optional measurement
+fields use an immutable closed `Number`: exact integers, finite doubles or booleans
+(the source accepts bool as a number). BigInteger construction/access detach values;
+JSON integer digits are pinned at the current Python 4300-digit limit. Nonfinite
+arithmetic returns a typed error instead of retaining NaN/Infinity.
+
+Aggregation preserves first-seen tasks/arms, strict-majority votes, rounded pass
+rates, first nonempty error and numeric medians over supplied rows. Comparison
+pairs the last row per task but totals every row, refuses unequal task sets, and
+lets any regression override wins. Performance warnings follow six-dimension
+order, use Python decimal rounding and require a rounded delta strictly above 25%.
+Their presence does not change the effect verdict. Motion counts identical path/
+offset/limit windows, with absent/null distinct from explicit zero, and rendered
+errors including Unicode decimal exit notes; is_error alone is not the judge.
+
+Snapshot 90 compares 51 actual Python statistical/behavior/rounding outcomes.
+Native tests additionally cover finite guards, detached large integers/results and
+non-mutating decode failures. Model arms, judge fixtures/tool whitelists, heldout
+workloads, timing/cost measurement and the HTTP endpoint are still pending. No
+model was called by these statistical probes. Earlier package status notes are
+chronological; this is the current component checkpoint.

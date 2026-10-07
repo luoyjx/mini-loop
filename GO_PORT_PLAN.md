@@ -1,5 +1,63 @@
 # Go port plan
 
+## 2026-10-07 typed benchmark statistics
+
+`go/benchmark` now implements the source aggregation, paired comparison and
+transcript-motion component with concrete TaskResult/AggregateResult/Comparison
+types and six explicit optional measurements. Number is an immutable closed
+exact-integer/finite-double/boolean union. Integer constructors/accessors detach
+big.Int values; the source interpreter's current 4300-digit JSON limit is pinned.
+There is no any, open interface or retained raw JSON in this component's state.
+
+Source behavior preserved: first-seen task order/arm, every supplied row as a
+vote, strict majority (a tie fails), rounded pass rate, first nonempty error,
+integer/float/bool median identity, exact mixed-number ordering and integer
+midpoints beyond signed64. Comparison pairs the last row by task while totals
+include all rows; task sets must match. Any regression overrides wins. Ordered
+dimension warnings require a rounded delta strictly above 25%, and never change
+the effect verdict. Missing/zero-base dimensions and signed-zero truthiness match.
+Behavior counts assistant messages/tool calls, identical read windows and source
+rendered failures, including Unicode decimal exit suffixes. is_error alone is not
+the judge. Python decimal rounding uses the exact IEEE-754 value and ties to even.
+
+Snapshot 90 compares 51 actual source outcomes: ten aggregations, fifteen paired
+comparisons (including mismatches), six typed-transcript motion cases and twenty
+rounding cases. Native tests add immutable/detached numeric and result state,
+non-mutating failed decode, exact totals beyond signed64, finite arithmetic and
+integer serialization limits. Nonfinite/overflowing float results refuse with a
+typed native error; malformed arbitrary Python rows cannot enter concrete native
+results. These pure probes do not execute models or judge task effects.
+
+Next benchmark slices:
+
+1. Port admitted visible/heldout tasks and their actual filesystem/final-text
+   judges, setup functions and per-task tool whitelists.
+2. Implement fresh-session arm execution with typed setup/expect seams, isolated
+   configuration/workspaces, transcript token/motion measurement and explicit
+   setup/provider/judge fault behavior. Compare actual source arm transcripts and
+   effects using the stateful native fake provider.
+3. Implement POST /benchmark's rate-limited, fake-only two-arm/default-plus-heldout
+   composition and typed response. Source real-budget evaluation stays an
+   operator terminal act; do not implicitly expose it through HTTP.
+4. Continue teams, workflows, audit/improvement, native SQLite and the broader
+   G0–G7 migration/release audit. This statistical component closes none of those
+   remaining runtime/HTTP requirements.
+
+Validation:
+
+- Focused benchmark regressions, `go test ./...`, `go test -race ./...` and
+  `go vet ./...` passed.
+- Contract exporter `--check`: all 90 files current; `verify_scans.py`: all 19
+  scanning guards anchored. Separate Python package invariant/mutation sweeps
+  were not rerun because their modules and anchors are unchanged.
+- After every Go/export/scanner job was terminal, isolated
+  `.venv/bin/python -m pytest -q` passed: **2151 passed, 28 skipped,
+  24 subtests passed, 3 dependency warnings**, in 99.62s.
+- `git diff --check` passed. README outline checked; regenerated architecture
+  passed 9/9 automated checks after correcting the new operator edge's endpoint
+  sides. Visual inspection remains skipped after the earlier local-file denial.
+  Coverage was not refreshed in this slice.
+
 ## 2026-10-07 owned memory HTTP views
 
 Two cohesive delivery slices cover default embedded-manager storage and the
@@ -147,7 +205,7 @@ Record its parity evidence and remaining gaps before checking it off.
       and remaining sink masking remain)
 - [ ] G3 HTTP/SSE (process-local fleet manager, owner-scoped library lookup,
       workspace policy and draining delete/stop implemented; token/anonymous auth,
-      twenty-eight HTTP method/path operations, mode/steering, completed-boundary fork and process-local SSE implemented;
+      thirty-three HTTP method/path operations, owned skills/memory views, mode/steering, completed-boundary fork and process-local SSE implemented;
       typed settings, standalone HTTP launcher, embedded default skills and private spill store implemented;
       per-run file recording and owner-scoped read/export implemented;
       typed HTML ledger, offline traceview CLI and filtered record visitor implemented;
@@ -159,7 +217,7 @@ Record its parity evidence and remaining gaps before checking it off.
       default Agent recovery, explicit operator Jev HTTP library, isolated complete-only decision queries, configurable coalescing and stateful signed fake clients
       implemented; advanced variants/options and live-provider audit remain)
 - [ ] G5 persistence (per-run JSONL evidence, concrete state consumer contracts and archival event decoder implemented; actual Python SQLite and AgentSession probes captured; configured live state injection, request guards, epochs, masking and confirmed lease-loss cancellation implemented; injected-store manager restoration, lease-gated approval expiry and crash-tail repair implemented; scheduled stable-ID restore, cron resolution, injected-store bounded SSE catch-up, transcript epoch reads and disarmed goal fold implemented; Go SQLite backend/restart evidence remain)
-- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; scoped extraction/consolidation and contained memory capture at the actual source endpoints implemented; shared manager memory fallback with exact owner binding and launcher root/tool/auto selection and explicit typed owner/session-bound draft storage and source-compatible pure skill evidence projections and trusted completed-turn evidence capture and typed source candidate parsing and typed preview business flow implemented; standalone native model binding and manager-owned draft pool injection implemented; owned manager preview and reviewed commit implemented; routes remain; other groups remain; source Git-aware cleanup is absent)
+- [ ] G6 optional features (typed persistent task graph, five explicit library tools and owned Tasks HTTP view implemented; operator worktree lifecycle/task binding, explicit typed managed factory with source directory deletion, and five gated model tools with serialized workspace rebinding implemented; typed operator background service with merged byte capture/retention/orphan records implemented; explicit native-session background tools/Bash dispatch/completion injection/interruption markers and prepared execution rebind implemented; manager delete/stop joins and explicit standalone selection implemented; selected child activation with qualified IDs, independent queues and retained lifetime cleanup implemented; explicit typed cron operator parsing/controls/persistence/claims/disarmed restore and cancellable ticker/run ownership implemented; manager-owned cron with fresh untrusted turns, owner-scoped operations, delete/stop joins and standalone startup implemented; three closed cron model tools, four owned operator HTTP operations and explicit standalone selection implemented; explicit plan-mode tools/reviewer/prompt integration and log-folded restoration implemented; five explicit goal tools, CAS snapshots, bounded default stop consumer and disarmed restoration implemented; canonical user skills, exact private owner directories and explicit layered agent/user catalogues implemented as libraries; typed Markdown owner memory storage implemented as an explicit library; immutable owner resource snapshots, anchored create-only files and detached pre-commit catalogues implemented as libraries; operator create-only user publication implemented; explicit trusted manager/runtime resource snapshots and optional owner-bound remember/recall tools, automatic selection and change-only context index implemented; scoped extraction/consolidation and contained memory capture at the actual source endpoints implemented; shared manager memory fallback with exact owner binding and launcher root/tool/auto selection and explicit typed owner/session-bound draft storage and source-compatible pure skill evidence projections and trusted completed-turn evidence capture and typed source candidate parsing and typed preview business flow implemented; standalone native model binding and manager-owned draft pool injection implemented; owned manager preview, reviewed commit and owned preview/commit/catalogue/memory routes implemented; typed benchmark statistics and transcript motion metrics implemented; native benchmark arm execution and other groups remain; source Git-aware cleanup is absent)
 - [ ] G7 differential and release audit
 
 ### Next decision slices

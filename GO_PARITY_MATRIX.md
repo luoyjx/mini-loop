@@ -410,3 +410,19 @@ record chronological implementation checkpoints and their then-open work. They
 are historical; current resource status is summarized in the matrix and HTTP
 inventory. Native SQLite, complete teams
 and other remaining groups still require their planned implementation and audit.
+
+
+## Benchmark statistics progress — 2026-10-07
+
+The native benchmark result/measurement types, median aggregation, strict pass
+votes, paired conservative verdict and transcript motion metrics are implemented
+as an operator library. Snapshot 90 compares 10 actual source aggregations,
+15 paired comparisons (including task-set errors), six typed-transcript metric
+cases and 20 decimal-rounding cases. Exact large integers, bool-as-number,
+integer/float median identity, duplicate task pairing/all-row totals, ordered
+warnings, zero-base deltas and identical read windows are explicit. Nonfinite
+native arithmetic refuses with a typed error; malformed arbitrary source rows are
+not representable by the concrete native result struct. The JSON integer limit
+is pinned to Python's current 4300 digits. Native arm execution, judge/setup/tool
+selection, heldout tasks and POST /benchmark remain unimplemented; no route row
+or G7 acceptance is claimed from these pure statistics probes.

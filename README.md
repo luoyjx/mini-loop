@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `82410f0` plus owned memory HTTP views;
+reviewed **2026-10-07** (Go baseline `b805ccd` plus typed benchmark statistics;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,6 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
+        GoBenchmarkLibrary["Go benchmark statistics library<br/>typed results · exact numbers · median votes<br/>motion metrics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
@@ -447,6 +448,7 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoEntry
+    Caller -. supplied results / transcripts .-> GoBenchmarkLibrary
     Caller -. operator owner directory binding .-> GoFiles
     Caller -. explicit operator evaluation .-> GoDecisionLibrary
     Caller -. explicit library selection .-> GoWorktrees
@@ -1037,8 +1039,9 @@ Both browser documents use embedded copies of the Python source HTML/CSS/JS.
 source checkout, external assets or static directory mount is needed at runtime.
 The UI's existing core session/turn/approval/control/trajectory flows consume the
 typed Go APIs. Cron list/schedule/cancel/arm APIs and the owned Goal read endpoint
-are also implemented. Optional Team/Workflows/Skills/Memory/Improve/Benchmark and
-Self-audit APIs remain unimplemented, so those panes currently show source error
+are also implemented, alongside owned skill catalogue, preview/commit and memory
+reads. Optional Team/Workflows/Improve/Benchmark and Self-audit APIs remain
+unimplemented, so those panes currently show source error
 states. Serving the complete source shell is not full UI feature parity.
 `go/tasks` is a named file-backed task graph under each workspace's `.tasks`.
 Explicit `RuntimeConfig.TaskTools` / `ManagerServices.TaskTools` install five tools
@@ -1207,6 +1210,16 @@ and failure containment.
 SQLite durability applies only when a real `StateStore` is configured; the
 default server keeps the documented `Null*` boundaries. Owner skills and
 Markdown memory are digest-resolved files, not SQLite tenant isolation.
+
+The native `go/benchmark` operator library aggregates supplied task results and
+compares paired arms. Six explicit measurement fields use exact integers, finite
+doubles or source-compatible booleans, with detached storage and optional values.
+Passes require a strict majority; medians retain integer/float identity. Any task
+regression wins over improvements; ordered performance warnings do not change the
+verdict. Transcript metrics count identical read windows as waste and preserve
+source rendered-error vocabulary. Snapshot 90 compares 51 actual Python outcomes.
+Native model-arm execution, judge/setup/tool-whitelist composition, heldout tasks
+and `/benchmark` remain pending; this library grants no launch authority.
 Personal-skill previews are process-local; a committed `SKILL.md` is durable,
 never replaces an existing skill, and appears only in future session snapshots.
 

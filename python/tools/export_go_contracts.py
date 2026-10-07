@@ -6724,6 +6724,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-personal-skill-http-depth.json": _json_bytes(_personal_skill_http_depth_contracts()),
         "python-skill-catalogue-http.json": _json_bytes(_skill_catalogue_http_contracts()),
         "python-memory-http.json": _json_bytes(_memory_http_contracts()),
+        "python-benchmark-statistics.json": _json_bytes(_benchmark_statistics_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7328,6 +7329,84 @@ def _memory_http_contracts() -> dict:
                 capture("updated", "second", "/%E7%95%8C", actor, update=True)
             scenarios.append(dict(mode=mode, cases=rows))
     return dict(scenarios=scenarios)
+
+
+def _benchmark_statistics_contracts() -> dict:
+    """Actual aggregation/verdict/behavior functions, without running model arms."""
+    from mini_loop.benchmark import aggregate_runs, compare, _behavioral_metrics
+
+    def row(task="task", passed=True, arm="arm", **dimensions):
+        return dict(arm=arm, task=task, passed=passed, error=None, **dimensions)
+    aggregates = []
+    recipes = {
+        "empty": [],
+        "single": [[row(duration_ms=1.0, rounds=2)]],
+        "even-tie": [[row(passed=True, rounds=1)], [row(passed=False, rounds=4)]],
+        "majority-first-error": [[row(passed=True, rounds=10)],
+            [dict(row(passed=False, rounds=2), error="first fault")],
+            [dict(row(passed=True, rounds=7), error="later fault")]],
+        "first-seen-order": [[row("z", arm="first"), row("界")],
+            [row("z", arm="second"), row("a"), row("z", passed=False)]],
+        "sparse": [[row(rounds=None, duration_ms=-0.0)], [row(rounds=3, duration_ms=2.5)], [row()]],
+        "large-integer-even": [[row(rounds=9223372036854775807)], [row(rounds=9223372036854775806)]],
+        "mixed-exact-order": [[row(rounds=9007199254740993)], [row(rounds=9007199254740992.0)], [row(rounds=9007199254740992)]],
+        "boolean-measurements": [[row(rounds=True, tool_calls=False)], [row(rounds=False, tool_calls=True)], [row(rounds=True)]],
+        "beyond-int64": [[row(rounds=10**40+1)], [row(rounds=10**40+3)]],
+    }
+    for name, runs in recipes.items():
+        aggregates.append(dict(name=name, runs=runs, result=aggregate_runs(runs)))
+    comparisons = []
+    pairs = {
+        "empty": ([], []),
+        "equal": ([row("b"), row("a")], [row("a"), row("b")]),
+        "regression-beats-win": ([row("loss"), row("win", False)], [row("win"), row("loss", False)]),
+        "win": ([row(passed=False)], [row()]),
+        "different-tasks": ([row("a")], [row("b")]),
+        "different-count": ([row("a")], []),
+        "duplicates": ([row(passed=False), row()], [row(passed=False), row(passed=False)]),
+        "zero-base": ([row(rounds=0)], [row(rounds=5)]),
+        "nonpositive": ([row(rounds=-1)], [row(rounds=0)]),
+        "strict-threshold": ([row(rounds=100)], [row(rounds=125)]),
+        "rounded-threshold": ([row(duration_ms=100.0)], [row(duration_ms=125.049)]),
+        "all-dimensions": ([row(duration_ms=10.0, context_tokens_estimate=100,
+             rounds=2, tool_calls=4, tool_errors=1, repeated_reads=1)],
+            [row(duration_ms=15.0, context_tokens_estimate=130, rounds=3,
+             tool_calls=5, tool_errors=2, repeated_reads=0)]),
+        "signed-zero": ([row(duration_ms=-0.0)], [row(duration_ms=0.0)]),
+        "mixed-sums": ([row(rounds=1), row(rounds=2.0)], [row(rounds=4.0), row(rounds=-1)]),
+        "large-sum-and-boolean": ([row(rounds=9223372036854775807), row(rounds=1, tool_errors=True)],
+            [row(rounds=9223372036854775807), row(rounds=2, tool_errors=False)]),
+    }
+    for name, (baseline, candidate) in pairs.items():
+        try:
+            result, error = compare(baseline, candidate), None
+        except ValueError as exc:
+            result, error = None, str(exc)
+        comparisons.append(dict(name=name, baseline=baseline, candidate=candidate, result=result, error=error))
+    def read(id, **window):
+        return dict(type="tool_use", id=id, name="read_file", input=dict(path="log", **window))
+    def output(id, text, **extra):
+        return dict(type="tool_result", tool_use_id=id, content=text, **extra)
+    transcripts = {
+        "empty": [],
+        "plain": [dict(role="user", content="question"), dict(role="assistant", content="answer")],
+        "windows": [dict(role="assistant", content=[read("1"), read("2", offset=None, limit=None),
+            read("3", offset=0), read("4", offset=1), read("5", offset=1),
+            read("6", offset=1, limit=2), read("7", offset=1, limit=3)])],
+        "rendered-errors": [dict(role="user", content=[output(str(i), text)
+            for i, text in enumerate(("Error: failure", "\u3000Unknown tool x", "command (exit 2)\n",
+                "command (exit 1٢)\u3000", "command (exit 0)", "command (exit 01)",
+                "command (exit 2) more", "no failure", "command (exit ٢)"))])],
+        "flag-is-not-judge": [dict(role="user", content=[output("1", "okay", is_error=True)])],
+        "roles": [dict(role="user", content=[read("1")]), dict(role="assistant", content=[
+            dict(type="tool_use", id="2", name="bash", input=dict(command="echo yes")), output("3", "Error happened")])],
+    }
+    behaviors = [dict(name=name, messages=messages, result=_behavioral_metrics(messages))
+                 for name, messages in transcripts.items()]
+    rounding = [dict(value=value, digits=digits, result=round(value, digits))
+        for value in (2.675, 1.225, 0.0005, -0.0005, 0.0015, 25.05, 25.15, -25.05, 1e16, 1e-300)
+        for digits in (1, 3)]
+    return dict(aggregates=aggregates, comparisons=comparisons, behaviors=behaviors, rounding=rounding)
 
 
 def main() -> int:
