@@ -27,6 +27,7 @@ func (s *Server) register(path string, handlers map[string]http.HandlerFunc) {
 	})
 }
 func (s *Server) routes() {
+	s.register("/sessions/{session_id}/skills", map[string]http.HandlerFunc{"GET": s.skillCatalogue})
 	s.register("/sessions/{session_id}/personal-skills/preview", map[string]http.HandlerFunc{"POST": s.previewPersonalSkill})
 	s.register("/sessions/{session_id}/personal-skills/{draft_id}/commit", map[string]http.HandlerFunc{"POST": s.commitPersonalSkill})
 	s.register("/sessions/{session_id}/goal", map[string]http.HandlerFunc{"GET": s.goal})

@@ -310,8 +310,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `f284b4e` plus personal-skill live HTTP depth
-and scoped diagnostic projection; runtime-profile differences remain explicit).
+reviewed **2026-10-07** (Go baseline `a1c9c1b` plus the owned session skill-catalogue
+HTTP view; remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -359,7 +359,7 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned skills · typed values · bounded source-depth admission"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / drafts · typed admission"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
@@ -1172,6 +1172,14 @@ a separately bounded masking projection so deep strings and keys stay masked;
 ordinary recording retains its 256-depth limit. TestClient thresholds differ due
 to its stack, and alternate interpreter/server stacks are not claimed covered.
 Previews grant no publication authority.
+
+The owned `GET /sessions/{session_id}/skills` route now returns the exact description
+source retained by that session's model requests, through a concrete session/catalogue
+response and the existing registered-secret projection. Reads do not load skill
+bodies or refresh the owner's publication cache. Existing sessions retain their
+snapshot after publication; new independent sessions and forks resolve the current
+owner bundle. Other owners cannot observe it; open deployments retain their single
+anonymous principal. Custom catalogue exceptions return safe plain 500.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

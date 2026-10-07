@@ -1797,3 +1797,23 @@ separate request-diagnostic projection allows the validated deep tree and keeps
 its own depth-1000 and existing byte bounds, key/string masking, and fail-closed
 panic handling. Ordinary recording retains depth 256. Only concrete validation
 responses use the new projection; no open payload enters runtime state.
+
+### Owned skill catalogue HTTP view
+
+`GET /sessions/{session_id}/skills` authenticates once and requires the admitted
+owner before reading descriptions. `ManagedSession.SkillCatalogue` reads the same
+fixed source used by model requests, and `SkillCatalogueResponse` contains only
+session ID and catalogue text. It never loads skill bodies or resolves a fresh
+owner snapshot on behalf of an existing session. Future independent sessions and
+forks see newly published owner skills; existing sessions keep their bindings.
+Open deployments retain one anonymous principal. Shared custom skill sources must
+obey ManagerServices' existing concurrency contract.
+
+Snapshot 88 compares 48 actual Python HTTP outcomes across empty/shared/layered/
+anonymous configurations, including denied query credentials and foreign reads.
+Additional native tests pin admission before source access, registered-secret
+masking of descriptions, no body loads and safe plain 500 on custom source panic.
+The registered-secret projection is the existing native HTTP safety extension;
+source catalogue comparisons are otherwise exact. No tool/default/owner authority
+is activated by this read. Memory/team/workflow and other remaining routes still
+require their planned slices; this does not close G3 or the full migration.

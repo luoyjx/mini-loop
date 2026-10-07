@@ -6163,3 +6163,35 @@ and mutation verifiers were not rerun. Canonical Mermaid, explanation and JSON
 specification are reviewed; regenerated HTML passes Archify nine automated checks
 with zero errors/warnings. Visual inspection remains skipped after the earlier
 permission denial. `git diff --check` passes. Coverage percentages are not refreshed.
+
+## Implementation checkpoint — 2026-10-07 owned skill catalogue HTTP
+
+Base: a1c9c1b. Added the missing owned GET /sessions/{session_id}/skills endpoint
+through a narrow ManagedSession.SkillCatalogue read and concrete session/catalogue
+response. Authentication and owner admission precede catalogue access; neither
+skill loading nor resolver refresh runs during GET. Existing sessions retain their
+model-facing description source after publication; newly created independent
+sessions and forks bind the current owner bundle. Open deployments keep the same
+anonymous principal. Custom source exceptions fail with safe plain 500, while the
+existing native registered-secret projection masks successful descriptions.
+Snapshot 88 compares 48 actual source outcomes across four configurations. Native
+counter-based tests verify denied callers cannot touch the catalogue, bodies are
+not loaded, description credentials are masked, and custom panics reveal no host
+content. No dependency, feature default or publication authority changes. Remaining
+memory/team/workflow routes and other planned groups are still open; G0-G7 remain
+unchecked.
+
+Validation: full `go test ./...`, `go test -race ./...` and `go vet ./...` pass.
+Exporter `--check` confirms all 88 snapshots; `verify_scans.py` anchors all 19 source
+scanning guards. Isolated full `.venv/bin/python -m pytest -q` passes: 2,151 tests,
+28 skipped, 24 subtests, 110.95 seconds. Four warnings include three dependency
+deprecations and one asyncio subprocess-transport cleanup warning (`Event loop is
+closed`) surfaced in the unchanged owner-map-bound test; no test fails. Python
+package modules and mutation anchors are unchanged, so source invariants and
+mutation verification were not rerun. The existing browser loadSkills function
+calls the added URL and consumes catalogue; this is static source evidence.
+Canonical Mermaid, explanation and specification are reviewed; regenerated HTML
+passes all nine Archify automated checks with zero errors/warnings. Visual
+inspection remains skipped after the earlier permission denial. Actual native
+route registration counts 31 method/path operations across 28 path patterns.
+`git diff --check` passes. Coverage percentages were not refreshed.

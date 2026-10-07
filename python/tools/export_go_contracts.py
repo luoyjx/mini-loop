@@ -6722,6 +6722,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-personal-skill-http-surrogates.json": _json_bytes(_personal_skill_http_surrogate_contracts()),
         "python-personal-skill-http-numbers.json": _json_bytes(_personal_skill_http_number_contracts()),
         "python-personal-skill-http-depth.json": _json_bytes(_personal_skill_http_depth_contracts()),
+        "python-skill-catalogue-http.json": _json_bytes(_skill_catalogue_http_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7189,6 +7190,81 @@ def _personal_skill_http_depth_contracts() -> dict:
                 raise RuntimeError("source depth HTTP server did not stop")
     return dict(transport="uvicorn-default-http", uvicorn=uvicorn.__version__,
                 recursion_limit=sys.getrecursionlimit(), cases=rows)
+
+
+def _skill_catalogue_http_contracts() -> dict:
+    """Actual owner-admitted descriptions and future-only publication visibility."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth, NullAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+    from mini_loop.skills import SkillLoader
+    from mini_loop.user_resources import UserResourceResolver, canonical_user_skill
+
+    scenarios = []
+    with tempfile.TemporaryDirectory() as scratch:
+        for mode in ("empty", "legacy", "layered", "anonymous"):
+            root = Path(scratch) / mode
+            agent_dir = root / "agent"
+            agent_dir.mkdir(parents=True)
+            if mode != "empty":
+                path = agent_dir / "first" / "SKILL.md"
+                path.parent.mkdir()
+                path.write_text(canonical_user_skill("first", "Agent first 界", "private agent body"), encoding="utf-8")
+            loader = SkillLoader(agent_dir)
+            resolver = UserResourceResolver(root / "users", loader) if mode == "layered" else None
+            if resolver is not None:
+                for owner in ("alice", "bob"):
+                    resolver.publish_skill(owner, dict(name="first", description=owner + " private catalogue", body=owner + " private body"))
+            settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                                skills_dir=agent_dir, trajectory_enabled=False, user_resources_root=None)
+            manager = SessionManager(settings, FakeAsyncAnthropic(), skills=loader, user_resources=resolver)
+            app = create_app(manager=manager)
+            with TestClient(app, raise_server_exceptions=False) as client:
+                app.state.auth = NullAuth() if mode == "anonymous" else TokenAuth({"token-a": "alice", "token-b": "bob"})
+                ids = {}
+                def create(label, token):
+                    response = client.post("/sessions", json={}, headers={"Authorization": "Bearer " + token} if token else {})
+                    assert response.status_code == 200, response.text
+                    ids[label] = response.json()["id"]
+                actor = "" if mode == "anonymous" else "token-a"
+                create("alice", actor)
+                create("second", actor)
+                create("bob", "" if mode == "anonymous" else "token-b")
+                ids["missing"] = "missing"
+                rows = []
+                def capture(name, target, token, query=""):
+                    response = client.get("/sessions/" + ids[target] + "/skills" + query,
+                        headers={"Authorization": "Bearer " + token} if token else {})
+                    value = response.text
+                    for label, sid in ids.items():
+                        if label != "missing":
+                            value = value.replace(sid, "<" + label + ">")
+                    rows.append(dict(name=name, target=target, token=token, query=query,
+                                     status=response.status_code, response=json.loads(value)))
+                capture("missing-credentials", "alice", "")
+                capture("query-token", "alice", "", "?access_token=token-a")
+                capture("other-owner", "alice", "" if mode == "anonymous" else "token-b")
+                capture("missing-session", "missing", actor)
+                capture("alice-before", "alice", actor)
+                capture("second-before", "second", actor)
+                capture("bob-before", "bob", "" if mode == "anonymous" else "token-b")
+                if resolver is not None:
+                    resolver.publish_skill("alice", dict(name="later", description="Later publication", body="not a live replacement"))
+                capture("alice-after", "alice", actor)
+                capture("second-after", "second", actor)
+                create("fresh", actor)
+                capture("fresh-after", "fresh", actor)
+                capture("bob-after", "bob", "" if mode == "anonymous" else "token-b")
+                fork = client.post("/sessions/" + ids["alice"] + "/fork", json={},
+                    headers={"Authorization": "Bearer " + actor} if actor else {})
+                assert fork.status_code == 200, fork.text
+                ids["fork"] = fork.json()["id"]
+                capture("fork-after", "fork", actor)
+            scenarios.append(dict(mode=mode, cases=rows))
+    return dict(scenarios=scenarios)
 
 
 def main() -> int:

@@ -1,0 +1,539 @@
+{
+  "scenarios": [
+    {
+      "cases": [
+        {
+          "name": "missing-credentials",
+          "query": "",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "query-token",
+          "query": "?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "other-owner",
+          "query": "",
+          "response": {
+            "detail": "No session '<alice>'"
+          },
+          "status": 404,
+          "target": "alice",
+          "token": "token-b"
+        },
+        {
+          "name": "missing-session",
+          "query": "",
+          "response": {
+            "detail": "No session 'missing'"
+          },
+          "status": 404,
+          "target": "missing",
+          "token": "token-a"
+        },
+        {
+          "name": "alice-before",
+          "query": "",
+          "response": {
+            "catalogue": "(no skills available)",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": "token-a"
+        },
+        {
+          "name": "second-before",
+          "query": "",
+          "response": {
+            "catalogue": "(no skills available)",
+            "session": "<second>"
+          },
+          "status": 200,
+          "target": "second",
+          "token": "token-a"
+        },
+        {
+          "name": "bob-before",
+          "query": "",
+          "response": {
+            "catalogue": "(no skills available)",
+            "session": "<bob>"
+          },
+          "status": 200,
+          "target": "bob",
+          "token": "token-b"
+        },
+        {
+          "name": "alice-after",
+          "query": "",
+          "response": {
+            "catalogue": "(no skills available)",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": "token-a"
+        },
+        {
+          "name": "second-after",
+          "query": "",
+          "response": {
+            "catalogue": "(no skills available)",
+            "session": "<second>"
+          },
+          "status": 200,
+          "target": "second",
+          "token": "token-a"
+        },
+        {
+          "name": "fresh-after",
+          "query": "",
+          "response": {
+            "catalogue": "(no skills available)",
+            "session": "<fresh>"
+          },
+          "status": 200,
+          "target": "fresh",
+          "token": "token-a"
+        },
+        {
+          "name": "bob-after",
+          "query": "",
+          "response": {
+            "catalogue": "(no skills available)",
+            "session": "<bob>"
+          },
+          "status": 200,
+          "target": "bob",
+          "token": "token-b"
+        },
+        {
+          "name": "fork-after",
+          "query": "",
+          "response": {
+            "catalogue": "(no skills available)",
+            "session": "<fork>"
+          },
+          "status": 200,
+          "target": "fork",
+          "token": "token-a"
+        }
+      ],
+      "mode": "empty"
+    },
+    {
+      "cases": [
+        {
+          "name": "missing-credentials",
+          "query": "",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "query-token",
+          "query": "?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "other-owner",
+          "query": "",
+          "response": {
+            "detail": "No session '<alice>'"
+          },
+          "status": 404,
+          "target": "alice",
+          "token": "token-b"
+        },
+        {
+          "name": "missing-session",
+          "query": "",
+          "response": {
+            "detail": "No session 'missing'"
+          },
+          "status": 404,
+          "target": "missing",
+          "token": "token-a"
+        },
+        {
+          "name": "alice-before",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": "token-a"
+        },
+        {
+          "name": "second-before",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<second>"
+          },
+          "status": 200,
+          "target": "second",
+          "token": "token-a"
+        },
+        {
+          "name": "bob-before",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<bob>"
+          },
+          "status": 200,
+          "target": "bob",
+          "token": "token-b"
+        },
+        {
+          "name": "alice-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": "token-a"
+        },
+        {
+          "name": "second-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<second>"
+          },
+          "status": 200,
+          "target": "second",
+          "token": "token-a"
+        },
+        {
+          "name": "fresh-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<fresh>"
+          },
+          "status": 200,
+          "target": "fresh",
+          "token": "token-a"
+        },
+        {
+          "name": "bob-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<bob>"
+          },
+          "status": 200,
+          "target": "bob",
+          "token": "token-b"
+        },
+        {
+          "name": "fork-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<fork>"
+          },
+          "status": 200,
+          "target": "fork",
+          "token": "token-a"
+        }
+      ],
+      "mode": "legacy"
+    },
+    {
+      "cases": [
+        {
+          "name": "missing-credentials",
+          "query": "",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "query-token",
+          "query": "?access_token=token-a",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "other-owner",
+          "query": "",
+          "response": {
+            "detail": "No session '<alice>'"
+          },
+          "status": 404,
+          "target": "alice",
+          "token": "token-b"
+        },
+        {
+          "name": "missing-session",
+          "query": "",
+          "response": {
+            "detail": "No session 'missing'"
+          },
+          "status": 404,
+          "target": "missing",
+          "token": "token-a"
+        },
+        {
+          "name": "alice-before",
+          "query": "",
+          "response": {
+            "catalogue": "Agent-provided skills:\n  - agent:first [digest=7e299b099c65fc4c]: Agent first 界\nUser-scoped skills:\n  - user:first [digest=8920b1fca16d2660]: alice private catalogue",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": "token-a"
+        },
+        {
+          "name": "second-before",
+          "query": "",
+          "response": {
+            "catalogue": "Agent-provided skills:\n  - agent:first [digest=7e299b099c65fc4c]: Agent first 界\nUser-scoped skills:\n  - user:first [digest=8920b1fca16d2660]: alice private catalogue",
+            "session": "<second>"
+          },
+          "status": 200,
+          "target": "second",
+          "token": "token-a"
+        },
+        {
+          "name": "bob-before",
+          "query": "",
+          "response": {
+            "catalogue": "Agent-provided skills:\n  - agent:first [digest=7e299b099c65fc4c]: Agent first 界\nUser-scoped skills:\n  - user:first [digest=d1dfca71c450e99b]: bob private catalogue",
+            "session": "<bob>"
+          },
+          "status": 200,
+          "target": "bob",
+          "token": "token-b"
+        },
+        {
+          "name": "alice-after",
+          "query": "",
+          "response": {
+            "catalogue": "Agent-provided skills:\n  - agent:first [digest=7e299b099c65fc4c]: Agent first 界\nUser-scoped skills:\n  - user:first [digest=8920b1fca16d2660]: alice private catalogue",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": "token-a"
+        },
+        {
+          "name": "second-after",
+          "query": "",
+          "response": {
+            "catalogue": "Agent-provided skills:\n  - agent:first [digest=7e299b099c65fc4c]: Agent first 界\nUser-scoped skills:\n  - user:first [digest=8920b1fca16d2660]: alice private catalogue",
+            "session": "<second>"
+          },
+          "status": 200,
+          "target": "second",
+          "token": "token-a"
+        },
+        {
+          "name": "fresh-after",
+          "query": "",
+          "response": {
+            "catalogue": "Agent-provided skills:\n  - agent:first [digest=7e299b099c65fc4c]: Agent first 界\nUser-scoped skills:\n  - user:first [digest=8920b1fca16d2660]: alice private catalogue\n  - user:later [digest=785c47517e6b729e]: Later publication",
+            "session": "<fresh>"
+          },
+          "status": 200,
+          "target": "fresh",
+          "token": "token-a"
+        },
+        {
+          "name": "bob-after",
+          "query": "",
+          "response": {
+            "catalogue": "Agent-provided skills:\n  - agent:first [digest=7e299b099c65fc4c]: Agent first 界\nUser-scoped skills:\n  - user:first [digest=d1dfca71c450e99b]: bob private catalogue",
+            "session": "<bob>"
+          },
+          "status": 200,
+          "target": "bob",
+          "token": "token-b"
+        },
+        {
+          "name": "fork-after",
+          "query": "",
+          "response": {
+            "catalogue": "Agent-provided skills:\n  - agent:first [digest=7e299b099c65fc4c]: Agent first 界\nUser-scoped skills:\n  - user:first [digest=8920b1fca16d2660]: alice private catalogue\n  - user:later [digest=785c47517e6b729e]: Later publication",
+            "session": "<fork>"
+          },
+          "status": 200,
+          "target": "fork",
+          "token": "token-a"
+        }
+      ],
+      "mode": "layered"
+    },
+    {
+      "cases": [
+        {
+          "name": "missing-credentials",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "query-token",
+          "query": "?access_token=token-a",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "other-owner",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "missing-session",
+          "query": "",
+          "response": {
+            "detail": "No session 'missing'"
+          },
+          "status": 404,
+          "target": "missing",
+          "token": ""
+        },
+        {
+          "name": "alice-before",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "second-before",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<second>"
+          },
+          "status": 200,
+          "target": "second",
+          "token": ""
+        },
+        {
+          "name": "bob-before",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<bob>"
+          },
+          "status": 200,
+          "target": "bob",
+          "token": ""
+        },
+        {
+          "name": "alice-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<alice>"
+          },
+          "status": 200,
+          "target": "alice",
+          "token": ""
+        },
+        {
+          "name": "second-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<second>"
+          },
+          "status": 200,
+          "target": "second",
+          "token": ""
+        },
+        {
+          "name": "fresh-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<fresh>"
+          },
+          "status": 200,
+          "target": "fresh",
+          "token": ""
+        },
+        {
+          "name": "bob-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<bob>"
+          },
+          "status": 200,
+          "target": "bob",
+          "token": ""
+        },
+        {
+          "name": "fork-after",
+          "query": "",
+          "response": {
+            "catalogue": "  - first: Agent first 界",
+            "session": "<fork>"
+          },
+          "status": 200,
+          "target": "fork",
+          "token": ""
+        }
+      ],
+      "mode": "anonymous"
+    }
+  ]
+}
