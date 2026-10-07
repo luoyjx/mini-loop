@@ -14,6 +14,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/tasks"
+	"github.com/luoyjx/mini-loop/go/teams"
 	"github.com/luoyjx/mini-loop/go/userresources"
 	workspacepkg "github.com/luoyjx/mini-loop/go/workspace"
 )
@@ -38,6 +39,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	team                                              *teams.Identity
 	selfAudit                                         selfAuditBinding
 	taskDiagnostics                                   atomic.Pointer[tasks.Store]
 	skillDrafts                                       *userresources.DraftStore

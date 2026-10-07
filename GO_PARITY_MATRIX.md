@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (106 generated snapshots), plus registry masking,
+the current implementation (108 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -111,7 +111,7 @@ start with `/healthz`, `/sessions`, session detail/deletion,
 `/ui`. Optional route groups cover skills/memory, workflows, cron, tasks/team,
 improvement, audit, and benchmark. Every route requires a response/error/event
 fixture before its row can be marked covered; route presence alone is weak
-evidence. The current Go handler implements these thirty-eight method/path operations:
+evidence. The current Go handler implements these forty method/path operations:
 
 | Method | Path | Current boundary |
 |---|---|---|
@@ -144,7 +144,9 @@ evidence. The current Go handler implements these thirty-eight method/path opera
 | POST | /sessions/{session_id}/cron/{job_id}/arm | Operator-only process authorization for restored jobs |
 | GET | /sessions/{session_id}/goal | Owned detached goal/arming/plan facts; no HTTP arming or mutation |
 | GET | /improvements | Manager-rooted newest-first lineage; auth-bound owner, open operator view, source legacy data and private serialization failures |
+| POST | /sessions/{session_id}/propose-improvement | Owner-bound verified proposal in existing checkout; source typed validation and busy/logical/private failures |
 | GET | /sessions/{session_id}/tasks | Fresh workspace board after owner admission; non-consuming structured rows |
+| GET | /sessions/{session_id}/team | Bound lead identity, manager-rooted non-consuming newest 50; historical data preserved and private encoding failures |
 | GET | /sessions/{session_id}/trajectories | Live owned session recording list |
 | GET | /trajectories | Recorded-owner filtered file summaries |
 | GET | /trajectories/{trajectory_id} | Owned JSON document; eight-MiB source cap |
@@ -811,3 +813,33 @@ schema/refused callers cannot reach the provider, and the message rate budget
 remains available after proposals. HTTP now registers 39 operations/36 patterns
 against source 44. Team/workflow route groups, native persistence and G0–G7 remain
 open; source live-model convergence is unverified.
+
+
+## Bounded team mailbox and owned view
+
+Snapshots 107/108 cover the actual MessageBus and default team route. The bus
+compares 32 memory/file recipes with exact result strings, ordered historical
+rows, persisted-byte hashes, file existence and problem ledgers. These include
+send size boundaries, queue shedding, 99-message overflow delivery plus notice,
+injected legacy memory overflow, repeated peek, malformed/non-object records,
+Unicode line separators, duplicate keys, integer parse limits, strict versus
+seek-boundary UTF-8, nonfinite/surrogate values, masking before escaping, extension
+fields and safe-name refusal. Both runtimes now reject dot path components;
+Python's former regex accepted path navigation. A mutation guard pins this fix.
+The shared immutable Python JSON value implementation retains the archive API.
+
+The default manager gives every created/restored session its own lead identity;
+a fork creates another one-member team. GET team admits owner before file reads,
+peeks at most 100 and returns newest 50, spends no rate budget and adds no second
+mask to historical rows. Eleven actual HTTP source outcomes compare in native
+handlers; the custom-agent teamless outcome compares the nil-identity response
+projection and has a native manager unit test. Real TCP viewing preserves all
+75 delivered messages, and unreadable foreign data still returns 404 before IO.
+Locks serialize one bus instance, not multiple processes; the trusted root is not
+a filesystem sandbox. Source recursion boundaries depend on call stack; this
+shared parser retains the declared 1000-container compatibility profile.
+
+HTTP now has 40 operations/37 patterns against source 44; four workflow routes
+remain. Teammate construction/lifecycle, lead/member model tools, inbox/protocol
+injection, autonomous task/idle loops, prompt identity, source diagnostics binding,
+MCP, native SQLite and the full G0–G7 release audit remain open.

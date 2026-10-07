@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `97bf9b1` plus shared Python JSONL values;
+reviewed **2026-10-08** (Go baseline `fe3e96a` plus bounded team mailboxes / owned peek;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,6 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
+        GoTeams["Go team mailbox<br/>bounded JSONL / memory · structural masking<br/>owned non-consuming GET; scheduling pending"]
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
@@ -451,6 +452,8 @@ flowchart LR
     Caller --> Entry
     Caller --> GoEntry
     GoEntry -->|GET lineage / POST proposal; bound owner| GoImprovement
+    GoManager -->|fixed mailbox root; bound lead identity| GoTeams
+    GoEntry -->|owned team GET; peek latest 50| GoTeams
     GoManaged -. explicit verified task / proposal admission .-> GoSession
     Caller -. explicit typed observations .-> GoSelfAudit
     GoManaged -. owner admission before diagnostic / recording IO .-> GoSelfAudit
@@ -1311,12 +1314,25 @@ fleet views currently retain attributed binding diagnostics, so unattributed
 per-resource store errors remain a documented collection gap. The observer adds a
 64 MiB total event-byte budget, reported by class if exceeded, alongside source
 100-session/50-recording/200-event limits.
-Python team mailbox keys reject standalone dot components before filesystem
-access; ordinary dotted identifiers remain valid. The configured root stays
-operator-owned.
-The improvement archive shares its immutable Python JSONL parser through
-go/internal/jsonvalue, retaining the public archive types and historical-value
-behavior without new activation.
+The Go team bus now implements the source in-memory and JSONL mailboxes with
+16,000-character messages, 100-message queues/delivery and a 2,009,600-byte tail
+read. A consume reports loss with the source notice and ledger; peek neither drains
+nor reports malformed rows on behalf of a future reader. Persisted masking acts
+on keys and values before ASCII JSON escaping; in-memory messages retain source
+unmasked behavior. Historical rows use the same immutable closed Python JSON
+variants as the improvement archive, including distinct integers/floats and
+observable nonfinite/surrogate values that cannot enter a standard HTTP response.
+Managed sessions bind team=id/name=lead during creation and restoration; forks
+bind their own identity. GET /sessions/{session_id}/team checks owner before IO,
+returns the latest 50 and performs no second historical-data mask or rate spending.
+Snapshot 107 compares 32 source mailbox recipes; snapshot 108 compares 11 actual
+HTTP outcomes plus the source custom-agent teamless projection. Native TCP tests
+prove viewing leaves all 75 messages for subsequent delivery and foreign callers
+cannot trigger an owned unreadable mailbox error. Python and Go reject dot path
+components before IO; lexical checks and instance locks provide neither filesystem
+confinement nor cross-process delivery transactions. Teammate spawning, protocol
+routing, idle/task scheduling, prompt identity and bus diagnostic aggregation remain
+pending. The mailbox adds no model tools or automatic inbox delivery yet.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

@@ -1,5 +1,74 @@
 # Go port plan
 
+## 2026-10-08 bounded team mailbox and owned peek
+
+Baseline bb7a366; full G0–G7 remains open. The next team slices are:
+
+1. Shared immutable Python JSONL values and native bounded mailbox (this slice).
+2. Bound lead identity and owner-scoped non-consuming GET team (this slice).
+3. Concrete team/protocol tool variants through the common execution gate.
+4. Teammate resource/workspace inheritance, lifecycle and protocol inbox delivery.
+5. Idle/task claiming, prompt identity, diagnostic binding and cancellation joins.
+
+Then continue all four workflow routes and their native runtime, MCP, native SQLite,
+remaining provider/context profiles and the full differential/performance audit.
+
+MessageBus contracts now have 32 actual source recipes: both backends, 16,000
+code-point send bound, 100-message memory shedding and delivery bounds, byte-tail
+loading, peek/drain distinction, source loss notice/ledger, malformed rows and
+Unicode separators, nonfinite/surrogate historical data, integer parse limits,
+structural masking and persisted bytes. A 1-GiB sparse native mailbox test verifies
+tail loading rather than whole-file buffering. Native concurrency tests serialize
+send/peek/read within one instance; no cross-process queue transaction is claimed.
+The immutable Python JSON parser/renderer moves to go/internal/jsonvalue and keeps
+the improvement archive API through aliases; no arbitrary Go values enter state.
+Source-owned metadata and legacy extensions remain explicit closed JSON variants.
+
+Source path regex incorrectly accepted '.'/'..' components; both runtimes now
+refuse them before IO, with four Python regressions and a named mutation guard.
+Other allowed dotted identifiers retain source behavior; this is lexical validation,
+not root/symlink confinement. No new dependency is introduced.
+
+Managed sessions bind team=id/name=lead before publication, including state-store
+restoration; a fork binds a fresh identity. PeekTeam checks ownership before IO,
+uses the fixed manager bus and returns newest 50. Source HTTP corpus has eleven
+handler outcomes plus one custom-agent teamless response projection. Native TCP
+checks leave 75 messages available to delivery after repeated viewing; a foreign
+caller sees 404 for an unreadable owned mailbox. Viewing starts no model work,
+consumes no rate budget, performs no second historical-data mask and never drains.
+Bus diagnostics are available on the library but not yet aggregated in self-audit.
+Teammate/protocol/autonomy/model-tool/prompt paths remain explicitly pending.
+
+Snapshot count 108. HTTP now has 40 operations/37 patterns versus source 44.
+README Mermaid/boundaries and interactive architecture source are updated.
+
+Validation:
+
+- Focused native team/mailbox tests and 66 Python team/content/UI tests passed.
+- Final `go test ./... -count=1 -timeout=180s -coverpkg=./... -coverprofile=…`,
+  `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+  Vet initially rejected unkeyed literals of an aliased external Field; defining
+  the native named Field and explicitly converting it resolved that finding.
+- Shared statement coverage deduplicates locations and retains maximum execution
+  counts: overall 17,316/19,207 (90.15%); teams 180/193 (93.26%); shared jsonvalue
+  295/307 (96.09%); agent 6,346/6,986 (90.84%); HTTP 1,477/1,638 (90.17%).
+  Package boundaries changed for archive parsing; the archive package alone is
+  159/174 (91.38%). Coverage is not migration completion.
+- Source exporter `--check`: 108 files current, two dependency deprecations.
+- `verify_invariants.py`: 77 modules; `verify_scans.py`: 19 guards anchored.
+- `verify_guards.py -k mailbox-dot-segment-escape` and
+  `verify_guards.py -k team-peek-consumes-the-inbox`: both mutations caught.
+  The full mutation catalogue was not rerun; these are selected guard checks.
+- Isolated `.venv/bin/python -m pytest -q`: 2,155 passed, 28 skipped,
+  24 subtests passed, three dependency deprecation warnings in 146.79s.
+- Architecture regeneration passed 9/9 with zero errors/warnings after routing
+  corrections. Spec SHA `350acd432f80180e9133914df2d08ef9076ec45342c40d951bbe3ce575e683a1`;
+  artifact SHA `d37e0c94f2937940352fadda5c3f2a74434709b360166bea5168f31a098c0539`.
+  Visual inspection remains skipped following the earlier tool denial.
+- README outline and `git diff --check` passed.
+
+
+
 ## 2026-10-08 shared Python JSONL value parser
 
 Baseline 97bf9b1. Historical improvement rows now use go/internal/jsonvalue's
@@ -13,7 +82,6 @@ Validation: independent improvement/httpapi tests passed immediately after the
 extraction; final combined Go full test/coverage, full race and vet gates passed.
 Existing source archive fixtures retain coverage. Full Python regression suite
 also passed (2,155 tests, 28 skipped, 24 subtests). Runtime topology is unchanged.
-
 
 ## 2026-10-08 Python mailbox path components
 
@@ -29,7 +97,6 @@ Validation: 66 focused tests passed; full isolated Python suite 2,155 passed,
 verify_invariants: 77 modules; verify_scans: 19 anchored guards. Both selected
 verify_guards runs (mailbox-dot-segment-escape and team-peek-consumes-the-inbox)
 passed; the complete mutation catalogue was not rerun.
-
 
 ## 2026-10-08 owned improvement proposal POST
 

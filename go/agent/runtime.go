@@ -13,6 +13,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/spill"
 	"github.com/luoyjx/mini-loop/go/tasks"
+	"github.com/luoyjx/mini-loop/go/teams"
 	"github.com/luoyjx/mini-loop/go/userresources"
 	"github.com/luoyjx/mini-loop/go/workspace"
 	"github.com/luoyjx/mini-loop/go/worktrees"
@@ -57,6 +58,7 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	team *teams.Identity
 	// ToolSelection narrows the installed catalogue before the gate is built.
 	ToolSelection ToolSelection
 	// Manager-owned process-local drafts; standalone sessions leave this nil.
@@ -518,6 +520,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if config.Recovery != nil {
 		session.recovery = config.Recovery
 	}
+	session.team = clonePointer(config.team)
 	session.planApprover = config.PlanApprover
 	session.skillDrafts = config.skillDrafts
 	session.ownerResources = resources

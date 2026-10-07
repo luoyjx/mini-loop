@@ -2214,3 +2214,29 @@ The route spends no rate budget and does not create an isolated worktree; it run
 in the existing session execution workspace, matching Python. The operator must
 prepare the isolated checkout before creating/binding the session. Success uses
 the source direct response projection, while events/index use their existing masks.
+
+
+## Go team mailbox and owned-view seam
+
+`teams.New(teams.Config{Root, Masker})` selects a concrete in-memory bus when
+Root is nil or persisted JSONL when it is established. Send takes SendRequest
+with typed mailbox identities, content, optional MessageType (nil means message,
+explicit empty stays empty), object-only Metadata and closed Field extensions.
+Reserved Python parameter names are not extension fields. SendResult separates
+sent/refused text from filesystem/callback faults. Read consumes and owns malformed
+row/overflow reports; Peek does not consume. Problems returns a detached bounded
+ledger. Returned Message data is immutable, preserves historical fields and grants
+no authority. Disk masking traverses structure before escaping; in-memory storage
+retains source unmasked semantics. Applications own the trusted root and callback
+synchronization; masking callbacks must not reenter the same bus. Native
+directories/files use private 0700/0600 modes. Instance serialization is not a
+cross-process transaction.
+
+SessionManager binds `.teams` and team=id/name=lead independently of model-tool
+activation, including restoration and forks. PeekTeam(ctx, owner, id) performs
+owner lookup before IO, supplies the fixed identity and returns newest 50 messages.
+HTTP GET team uses that view and the direct historical source projection. No HTTP
+body can choose another mailbox/root/identity; historical encoding failures remain
+private and leave the mailbox intact. Bare/custom runtime sessions may have no
+identity. Native team tools, teammate spawning, protocol processing, idle/task
+scheduling, prompt identity and self-audit bus aggregation remain future slices.

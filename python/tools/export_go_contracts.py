@@ -6741,6 +6741,8 @@ def _snapshot() -> dict[str, bytes]:
         "python-verified-service.json": _json_bytes(_verified_service_contracts()),
         "python-improvement-proposal.json": _json_bytes(_improvement_proposal_contracts()),
         "python-improvement-proposal-http.json": _json_bytes(_improvement_proposal_http_contracts()),
+        "python-team-bus.json": _json_bytes(_team_bus_contracts()),
+        "python-team-http.json": _json_bytes(_team_http_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8483,6 +8485,120 @@ def _improvement_proposal_http_contracts() -> dict:
                 for owner,value in ids.items(): text=text.replace(value,"<"+owner+">")
                 body=json.loads(text) if response.headers.get("content-type")=="application/json" else text
                 cases.append(dict(name=recipe["name"],raw=raw,token=token,target=target,method=recipe.get("method","POST"),content_type=content_type,busy=recipe.get("busy",False),action=recipe.get("action","success"),status=response.status_code,response=body,calls=calls))
+    return dict(cases=cases)
+
+
+def _team_bus_contracts() -> dict:
+    """Actual MessageBus send/peek/read, including historical JSONL records."""
+    from unittest.mock import patch
+    from mini_loop.teams import MessageBus
+    from mini_loop.secrets import SecretRegistry
+
+    secret = 'credential-界-"-\\-value'
+    normal = dict(action="send", to="team/bob", content="hello")
+    recipes = [
+        dict(name="memory-default", memory=True, operations=[normal, dict(action="peek"), dict(action="peek"), dict(action="read"), dict(action="read")]),
+        dict(name="disk-default", operations=[normal, dict(action="peek"), dict(action="peek"), dict(action="read"), dict(action="read")]),
+        dict(name="memory-cap", memory=True, count=150),
+        dict(name="memory-injected-overflow", memory=True, injected=500),
+        dict(name="disk-overflow", count=150),
+        dict(name="disk-exact-cap", count=100),
+        dict(name="content-limit", operations=[dict(action="send", content="界", repeat=16000), dict(action="read")]),
+        dict(name="content-over-limit", operations=[dict(action="send", content="界", repeat=16001), dict(action="read")]),
+        dict(name="empty-content-type", operations=[dict(action="send", content="", type=""), dict(action="read")]),
+        dict(name="memory-free-key", memory=True, operations=[dict(action="send", to="arbitrary", content="ok"), dict(action="read", to="arbitrary")]),
+        dict(name="nested-masking", mask=True, operations=[dict(action="send", content=secret, metadata={secret:[secret, {"private":secret}, True, 3]}, extra={"extra":secret}), dict(action="peek"), dict(action="read")]),
+        dict(name="memory-not-masked", memory=True, mask=True, operations=[dict(action="send", content=secret), dict(action="read")]),
+        dict(name="extra-overrides", operations=[dict(action="send", content="checked", metadata={"request_id":"req_1","approve":True}, extra={"from":"team/other","ts":3,"type":"custom"}), dict(action="read")]),
+        dict(name="malformed-and-nonobjects", preload='{"content":"first"}\nnot json\n\n[]\n4\nnull\n{"content":"last","metadata":null,"extra":{"a":1}}\n'),
+        dict(name="unicode-line-breaks", preload='{"content":"a"}\r\n{"content":"b"}\r{"content":"c"}\u2028{"content":"d"}\n'),
+        dict(name="duplicate-keys", preload='{"a":1,"b":2,"a":3,"from":"team/a","content":"dup"}\n'),
+        dict(name="nonfinite-surrogates", preload='{"content":"\\ud800","metadata":{"nan":NaN,"inf":Infinity,"over":1e400,"minus":-Infinity}}\n'),
+        dict(name="integer-limit", preload='{"n":'+"9"*4301+'}\n'),
+        dict(name="bad-utf8", preload_hex="7bff7d0a"),
+        dict(name="empty-file", preload=""),
+        dict(name="tail-bounded", padding=MessageBus.MAX_READ_BYTES+100, preload='{"content":"last1"}\n{"content":"last2"}\n'),
+        dict(name="tail-no-newline", padding=MessageBus.MAX_READ_BYTES+100, preload=""),
+    ]
+    for key in ("../lead", "./lead", "team/..", "team/.", "../../etc/passwd", "team/", "team/a/b", "界/bob", "x"*65+"/bob"):
+        recipes.append(dict(name="key-"+key, operations=[dict(action="send", to=key, content="private"), dict(action="peek", to=key), dict(action="read", to=key)]))
+    recipes.append(dict(name="dot-names-legal", operations=[dict(action="send",to=".team/.bob",content="ok"),dict(action="read",to=".team/.bob")]))
+    cases = []
+    for recipe in recipes:
+        with tempfile.TemporaryDirectory(prefix="go-team-bus-") as scratch:
+            root = Path(scratch)/"teams"
+            bus = MessageBus(None if recipe.get("memory") else root,
+                             secrets=SecretRegistry.from_environ(environ={"P_API_KEY":secret}) if recipe.get("mask") else None)
+            path = root/"team/inboxes/bob.jsonl"
+            if recipe.get("injected"):
+                bus.inboxes["team/bob"] = [{"from":"s","to":"team/bob","content":f"m{i:03d}"} for i in range(recipe["injected"])]
+            if "preload" in recipe or "preload_hex" in recipe:
+                path.parent.mkdir(parents=True)
+                data = bytes.fromhex(recipe["preload_hex"]) if "preload_hex" in recipe else recipe["preload"].encode()
+                path.write_bytes(b"x"*recipe.get("padding",0)+data)
+            operations = recipe.get("operations", [dict(action="send", content=f"m{i:03d}") for i in range(recipe.get("count",0))] + [dict(action="peek"), dict(action="read"), dict(action="read")])
+            steps = []
+            with patch("mini_loop.teams.time.time", return_value=1000.0):
+                for operation in operations:
+                    key = operation.get("to", "team/bob")
+                    encoded_operation = dict(operation)
+                    for field in ("metadata", "extra"):
+                        if field in encoded_operation:
+                            encoded_operation[field+"_json"] = json.dumps(encoded_operation.pop(field),ensure_ascii=True,separators=(",",":"))
+                    step = dict(operation=encoded_operation)
+                    try:
+                        if operation["action"] == "send":
+                            kwargs = dict(operation.get("extra",{}))
+                            result = bus.send("team/lead", key, operation.get("content","")*operation.get("repeat",1), operation.get("type","message"), operation.get("metadata"), **kwargs)
+                            step["text"] = result
+                        else:
+                            result = getattr(bus,operation["action"])(key)
+                            step["rows"] = [json.dumps(row,ensure_ascii=True,separators=(",",":")) for row in result]
+                    except Exception as error:
+                        step["error"] = type(error).__name__
+                    step["problems"] = [str(value).replace(str(root),"<root>") for value in bus.problems]
+                    if not recipe.get("memory"):
+                        step["exists"] = path.exists()
+                        step["disk_hash"] = hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() and path.stat().st_size < 10000 else None
+                    steps.append(step)
+            cases.append(dict(recipe={key:value for key,value in recipe.items() if key!="operations"},steps=steps))
+    return dict(secret=secret,cases=cases)
+
+
+def _team_http_contracts() -> dict:
+    """Actual default team identity and non-consuming owned HTTP projection."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+    cases = []
+    with tempfile.TemporaryDirectory(prefix="go-team-http-") as scratch:
+        settings = Settings(fake_llm=True,workspace_root=Path(scratch)/"workspaces",trajectory_enabled=False,rate_limit_per_minute=1)
+        manager = SessionManager(settings,FakeAsyncAnthropic())
+        ids = {owner:manager.create(owner=owner).id for owner in ("alice","bob")}
+        app = create_app(manager=manager,settings=settings)
+        with TestClient(app,raise_server_exceptions=False) as client:
+            app.state.auth=TokenAuth({"token-a":"alice","token-b":"bob"})
+            sid = ids["alice"]
+            path = manager.bus._path(sid+"/lead")
+            for recipe in (dict(name="default"),dict(name="foreign",target="bob"),dict(name="unknown",target="missing"),dict(name="no-auth",token=""),dict(name="bad-auth",token="bad"),dict(name="peek-50",rows=75),dict(name="peek-again"),dict(name="nonfinite",preload='{"content":"bad","n":NaN}\n'),dict(name="surrogate",preload='{"content":"\\ud800"}\n'),dict(name="bad-encoding",preload_hex="ff"),dict(name="teamless",teamless=True),dict(name="wrong-method",method="POST")):
+                if "rows" in recipe:
+                    path.parent.mkdir(parents=True,exist_ok=True)
+                    path.write_text("".join(json.dumps(dict(content=f"m{i:03d}",metadata={},extra=[1,True]))+"\n" for i in range(recipe["rows"])))
+                if "preload" in recipe or "preload_hex" in recipe:
+                    path.write_bytes(bytes.fromhex(recipe["preload_hex"]) if "preload_hex" in recipe else recipe["preload"].encode())
+                agent = manager.get(sid).agent
+                team = agent.state.pop("team_id",None) if recipe.get("teamless") else None
+                token = recipe.get("token","token-a")
+                target = recipe.get("target","alice")
+                response = client.request(recipe.get("method","GET"),f"/sessions/{ids.get(target,'missing')}/team",headers={"Authorization":"Bearer "+token} if token else {})
+                if recipe.get("teamless"): agent.state["team_id"]=team
+                text = response.text
+                for owner,value in ids.items(): text=text.replace(value,"<"+owner+">")
+                body = json.loads(text) if response.headers.get("content-type")=="application/json" else text
+                cases.append(dict(recipe=recipe,status=response.status_code,response=body,exists=path.exists(),messages=75 if recipe["name"] in {"peek-50","peek-again"} else None))
     return dict(cases=cases)
 
 
