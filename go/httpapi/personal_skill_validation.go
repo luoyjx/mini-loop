@@ -1,7 +1,6 @@
 package httpapi
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -41,6 +40,9 @@ func (v ValidationInput) MarshalJSON() ([]byte, error) {
 	case validationNull:
 		return []byte("null"), nil
 	case validationText:
+		if !utf8.ValidString(v.text) {
+			return nil, errPersonalSkillRequest
+		}
 		return json.Marshal(v.text)
 	case validationNumber:
 		return json.Marshal(v.number)
@@ -52,6 +54,9 @@ func (v ValidationInput) MarshalJSON() ([]byte, error) {
 		// Raw bytes remain local to serialization, never retained in diagnostics.
 		fields := make(map[string]json.RawMessage, len(v.members))
 		for _, m := range v.members {
+			if !utf8.ValidString(m.key) {
+				return nil, errPersonalSkillRequest
+			}
 			raw, err := m.value.MarshalJSON()
 			if err != nil {
 				return nil, err
@@ -61,73 +66,6 @@ func (v ValidationInput) MarshalJSON() ([]byte, error) {
 		return json.Marshal(fields)
 	default:
 		return nil, errPersonalSkillRequest
-	}
-}
-
-func readValidationInput(d *json.Decoder, depth int) (ValidationInput, error) {
-	if depth > 256 {
-		return ValidationInput{}, errPersonalSkillRequest
-	}
-	token, err := d.Token()
-	if err != nil {
-		return ValidationInput{}, err
-	}
-	switch v := token.(type) {
-	case nil:
-		return ValidationInput{}, nil
-	case string:
-		return ValidationInput{kind: validationText, text: v}, nil
-	case bool:
-		return ValidationInput{kind: validationBool, boolean: v}, nil
-	case json.Number:
-		return ValidationInput{kind: validationNumber, number: v}, nil
-	case json.Delim:
-		result := ValidationInput{}
-		positions := make(map[string]int)
-		switch v {
-		case '[':
-			result.kind = validationArray
-			result.items = []ValidationInput{}
-		case '{':
-			result.kind = validationObject
-		default:
-			return result, errPersonalSkillRequest
-		}
-		for d.More() {
-			key := ""
-			if v == '{' {
-				k, e := d.Token()
-				if e != nil {
-					return result, e
-				}
-				var ok bool
-				key, ok = k.(string)
-				if !ok {
-					return result, errPersonalSkillRequest
-				}
-			}
-			item, e := readValidationInput(d, depth+1)
-			if e != nil {
-				return result, e
-			}
-			if v == '[' {
-				result.items = append(result.items, item)
-			} else {
-				if index, found := positions[key]; found {
-					result.members[index].value = item
-				} else {
-					positions[key] = len(result.members)
-					result.members = append(result.members, validationMember{key, item})
-				}
-			}
-		}
-		end, e := d.Token()
-		if e != nil || (v == '[' && end != json.Delim(']')) || (v == '{' && end != json.Delim('}')) {
-			return result, errPersonalSkillRequest
-		}
-		return result, nil
-	default:
-		return ValidationInput{}, errPersonalSkillRequest
 	}
 }
 
@@ -279,27 +217,28 @@ func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommit
 			writeJSON(s, w, 422, RequestValidationResponse{Detail: []RequestValidationDetail{{Type: validationJSON, Location: []ValidationLocation{{field: "body"}, {position: &failure.position}}, Message: "JSON decode error", Input: ValidationInput{kind: validationObject}, Context: &RequestValidationContext{Error: failure.message()}}}})
 			return result, false
 		}
-		d := json.NewDecoder(bytes.NewReader(raw))
-		d.UseNumber()
-		input, err = readValidationInput(d, 0)
-		if err == nil {
-			_, err = d.Token()
-			if err == io.EOF {
-				err = nil
-			} else {
-				err = errPersonalSkillRequest
-			}
-		}
+		input, err = readRequestJSONValue(raw)
 		if err != nil {
 			writeJSON(s, w, 422, ErrorResponse{"invalid request body"})
 			return result, false
 		}
 	}
+	if input.hasSurrogate() {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.WriteHeader(500)
+		w.Write([]byte("Internal Server Error"))
+		return result, false
+	}
 	if details := personalSkillValidation(input, preview); len(details) > 0 {
 		writeJSON(s, w, 422, RequestValidationResponse{Detail: details})
 		return result, false
 	}
-	if err := json.Unmarshal(raw, &result); err != nil {
+	canonical, err := input.MarshalJSON()
+	if err != nil {
+		writeJSON(s, w, 500, ErrorResponse{"response encoding failed"})
+		return result, false
+	}
+	if err := json.Unmarshal(canonical, &result); err != nil {
 		writeJSON(s, w, 422, ErrorResponse{"invalid request body"})
 		return result, false
 	}

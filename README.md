@@ -310,8 +310,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `55d02a0` plus personal-skill JSON UTF-8/16/32
-scalar decoding; surrogate/number edges remain pending).
+reviewed **2026-10-07** (Go baseline `76c6906` plus personal-skill surrogatepass
+and duplicate-key Unicode handling; number/depth edges remain pending).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -359,7 +359,7 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned skills · media / syntax / UTF decoding"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned skills · decoded Unicode before admission"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
@@ -1154,10 +1154,13 @@ errors preserve source code-point positions and safe messages. Only application
 JSON media types enter parsing; missing/other media retain byte-string input.
 Byte detection now follows source BOM precedence and NUL heuristics for scalar
 UTF-8/16/32 JSON, independently of charset parameters. Invalid units/truncation
-refuse before syntax processing. Lone surrogates remain an explicit mismatch:
-source surrogatepass may reach a 500 response, while native decoding currently
-returns 400. Extreme numbers and nesting-boundary fidelity also remain pending;
-previews grant no publication authority.
+refuse before syntax processing. Source surrogatepass code points remain transient
+boundary data through syntax processing and exact duplicate-key overwrites.
+Escaped pairs become scalars; raw UTF-32 pairs remain separate code points. Active
+non-scalars match the safe source plain 500 response, while malformed documents
+retain their syntax errors. Scalar-only normalized data enters concrete requests;
+no replacement character substitutes for rejected Unicode. Extreme numbers and
+nesting-boundary fidelity remain pending; previews grant no publication authority.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

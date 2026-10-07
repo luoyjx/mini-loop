@@ -3,7 +3,6 @@ package httpapi
 import (
 	"bytes"
 	"regexp"
-	"unicode/utf8"
 )
 
 type requestJSONFailureKind uint8
@@ -73,7 +72,7 @@ func requestJSONSyntax(raw []byte) *requestJSONFailure {
 	return nil
 }
 func (s *requestJSONScanner) fail(kind requestJSONFailureKind, position int) *requestJSONFailure {
-	return &requestJSONFailure{kind, utf8.RuneCount(s.data[:position])}
+	return &requestJSONFailure{kind, requestRuneCount(s.data[:position])}
 }
 func (s *requestJSONScanner) space() {
 	for s.position < len(s.data) {

@@ -6073,3 +6073,34 @@ is not refreshed. After all other jobs finished, isolated full Python passed:
 2,151 tests, 28 skipped, 24 subtests and three existing warnings (82.73s).
 README outline and final git diff --check pass. The six pending surrogate cases
 are source evidence, not passing native parity checks.
+
+## Implementation checkpoint — 2026-10-07 surrogatepass request boundary
+
+Base: 76c6906. Request byte decoding now preserves non-scalar source code points
+as transient surrogatepass bytes rather than refusing or replacing them. Syntax
+positions count each as one code point. A closed typed value reader preserves raw
+strings/keys, merges escaped pairs and resolves duplicate keys before screening.
+Raw UTF-32/UTF-8 pairs remain separate, matching source codecs. Surviving non-scalars
+produce source plain 500 before ownership/model operations; malformed JSON retains
+source syntax errors. Overwritten malformed values do not poison the final tree.
+Only scalar normalized data is marshaled into concrete requests, avoiding silent
+replacement by encoding/json. Diagnostic serialization also refuses non-scalar
+strings and keys. Snapshot 85 compares 90 actual source outcomes, promoting the six
+previous counterexamples and adding raw/escaped pairs, syntax, distinct keys and
+nested duplicate retention across both routes and three encodings. Native decoded-
+value tests cover scalar pair/control escapes and both discarded-value forms.
+No dependency, ownership or publication defaults change. Nonfinite/extreme-number
+and depth-boundary fidelity remain next; G0-G7 remain open.
+
+Validation: full `go test ./...`, `go test -race ./...` and `go vet ./...`
+pass. Exporter `--check` confirms all 85 source snapshots; scanning verification
+anchors all 19 guards. Isolated full Python suite passes: 2,151 tests, 28 skipped,
+24 subtests, three dependency deprecation warnings, 82.97 seconds. Source runtime
+modules are unchanged; package invariants and source mutation checks were not
+rerun. Canonical Mermaid, explanation and specification are reviewed for Unicode
+admission; generated HTML passes Archify's nine automated checks with no warnings
+or errors. Visual inspection remains skipped after the earlier permission denial.
+Fresh full `go test ./... -count=1 -timeout=180s -coverpkg=./...` passes.
+Deduplicating shared profile blocks gives Go statement coverage **89.41%**
+(**14,752 / 16,499**). This measures executed statements, not migration
+completion. Python coverage is not refreshed.

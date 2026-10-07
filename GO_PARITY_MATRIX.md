@@ -89,10 +89,11 @@ FastAPI validation lists with ordered errors, locations, context and input echo.
 Snapshot 83 adds 63 actual syntax/media/UTF-8 responses, including code-point
 offsets, strict missing Content-Type, application +json, UTF-8 BOM and illegal
 encoding. Snapshot 84 adds 88 scalar UTF-8/16/32 HTTP outcomes with BOM/NUL byte
-detection, source Unicode offsets and invalid unit handling. Six source surrogate
-responses are separately retained as pending counterexamples (source 500/native
-400), and are excluded from the 88 passing comparisons. Surrogatepass, extreme
-numbers and nesting-boundary fidelity remain pending.
+detection, source Unicode offsets and invalid unit handling. Its six historical
+surrogate counterexamples are now included in snapshot 85's 90 passing comparisons.
+Raw/escaped surrogate handling, code-point syntax offsets, last-key retention and
+safe Unicode refusals are covered. Extreme numbers and nesting-boundary fidelity
+remain pending.
 
 `python/mini_loop/server.py` currently declares 44 routes. The default Go slice should
 start with `/healthz`, `/sessions`, session detail/deletion,

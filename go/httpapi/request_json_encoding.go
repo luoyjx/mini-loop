@@ -19,7 +19,6 @@ const (
 )
 
 var errRequestJSONEncoding = errors.New("invalid JSON request encoding")
-var errRequestJSONSurrogate = errors.New("JSON surrogate representation is not yet supported")
 
 // BOM precedence and the initial NUL heuristic match json.detect_encoding.
 // Charset parameters do not override byte detection in the source request path.
@@ -64,8 +63,12 @@ func decodeRequestJSONEncoding(raw []byte) ([]byte, error) {
 	encoding, skip := detectRequestJSONEncoding(raw)
 	raw = raw[skip:]
 	if encoding == requestUTF8 {
-		if !utf8.Valid(raw) {
-			return nil, errRequestJSONEncoding
+		for remaining := raw; len(remaining) > 0; {
+			_, size, ok := requestRune(remaining)
+			if !ok {
+				return nil, errRequestJSONEncoding
+			}
+			remaining = remaining[size:]
 		}
 		return raw, nil
 	}
@@ -98,29 +101,20 @@ func decodeRequestJSONEncoding(raw []byte) ([]byte, error) {
 				code = binary.BigEndian.Uint16(raw[index:])
 			}
 			value = rune(code)
-			if value >= 0xd800 && value <= 0xdbff {
-				if index+2 >= len(raw) {
-					return nil, errRequestJSONSurrogate
-				}
+			if value >= 0xd800 && value <= 0xdbff && index+2 < len(raw) {
 				var low uint16
 				if encoding == requestUTF16LE {
 					low = binary.LittleEndian.Uint16(raw[index+2:])
 				} else {
 					low = binary.BigEndian.Uint16(raw[index+2:])
 				}
-				if low < 0xdc00 || low > 0xdfff {
-					return nil, errRequestJSONSurrogate
+				if low >= 0xdc00 && low <= 0xdfff {
+					value = utf16.DecodeRune(value, rune(low))
+					index += 2
 				}
-				value = utf16.DecodeRune(value, rune(low))
-				index += 2
 			}
 		}
-		// Preserve an explicit unresolved source-surrogate boundary instead of
-		// silently replacing a code point before validation or evidence capture.
-		if value >= 0xd800 && value <= 0xdfff {
-			return nil, errRequestJSONSurrogate
-		}
-		decoded = utf8.AppendRune(decoded, value)
+		decoded = appendRequestRune(decoded, value)
 	}
 	return decoded, nil
 }

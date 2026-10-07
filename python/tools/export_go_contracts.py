@@ -6719,6 +6719,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-personal-skill-http-validation.json": _json_bytes(_personal_skill_http_validation_contracts()),
         "python-personal-skill-http-parsing.json": _json_bytes(_personal_skill_http_parsing_contracts()),
         "python-personal-skill-http-encoding.json": _json_bytes(_personal_skill_http_encoding_contracts()),
+        "python-personal-skill-http-surrogates.json": _json_bytes(_personal_skill_http_surrogate_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7007,6 +7008,57 @@ def _personal_skill_http_encoding_contracts() -> dict:
                         response=response.json() if json_response else None,
                         text=None if json_response else response.text))
     return dict(cases=rows, pending_surrogates=unresolved)
+
+
+def _personal_skill_http_surrogate_contracts() -> dict:
+    """Actual surrogatepass, JSON escape pairing and final-key retention."""
+    import base64
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+
+    rows = _personal_skill_http_encoding_contracts()["pending_surrogates"]
+    payloads = [
+        ("escaped-focus", '{"name":"safe","focus":"\\ud800"}'),
+        ("escaped-name", '{"name":"\\ud800"}'),
+        ("escaped-root", '"\\udc00"'),
+        ("escaped-pair", '{"name":"safe","focus":"\\ud800\\udc00"}'),
+        ("escaped-overwritten", '{"name":"safe","focus":"\\ud800","focus":"okay"}'),
+        ("nested-overwritten", '{"name":"safe","extra":{"x":"\\ud800","x":"okay"}}'),
+        ("key", '{"name":"safe","\\ud800":0}'),
+        ("different-keys", '{"name":"safe","\\ud800":0,"\ufffd":1}'),
+        ("raw-focus", '{"name":"safe","focus":"\ud800"}'),
+        ("raw-pair", '{"name":"safe","focus":"\ud800\udc00"}'),
+        ("raw-overwritten", '{"name":"safe","focus":"\ud800","focus":"okay"}'),
+        ("raw-syntax", '{"name":"safe","focus":"\ud800",}'),
+        ("raw-outside-string", '[ \ud800 ]'),
+        ("raw-unterminated", '"\ud800'),
+    ]
+    with tempfile.TemporaryDirectory() as scratch:
+        root = Path(scratch)
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                            skills_dir=root / "empty", user_resources_root=None,
+                            trajectory_enabled=False)
+        with TestClient(create_app(manager=SessionManager(settings, FakeAsyncAnthropic())),
+                        raise_server_exceptions=False) as client:
+            client.app.state.auth = TokenAuth({"token-a": "alice"})
+            for kind in ("preview", "commit"):
+                for encoding in ("utf-8", "utf-16", "utf-32"):
+                    for name, payload in payloads:
+                        raw = payload.encode(encoding, "surrogatepass")
+                        suffix = "preview" if kind == "preview" else "draft/commit"
+                        response = client.post("/sessions/missing/personal-skills/" + suffix,
+                            content=raw, headers={"Authorization": "Bearer token-a",
+                                                 "Content-Type": "application/json"})
+                        json_response = "application/json" in response.headers.get("content-type", "")
+                        rows.append(dict(kind=kind, name=encoding + "-" + name,
+                            body=base64.b64encode(raw).decode(), status=response.status_code,
+                            response=response.json() if json_response else None,
+                            text=None if json_response else response.text))
+    return dict(cases=rows)
 
 
 def main() -> int:

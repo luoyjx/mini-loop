@@ -1741,8 +1741,22 @@ the two-byte special case. Named encodings and explicit endian reads lower scala
 UTF-16/32 data into UTF-8 before existing syntax/schema validation. Valid surrogate
 pairs in UTF-16 become one scalar; truncated units and out-of-range UTF-32 refuse.
 Declared charset does not override detection, matching the source. Snapshot 84
-compares 88 actual HTTP results across ten byte forms and both routes. Six source
-surrogatepass counterexamples are separately recorded, not counted as covered:
-the source returns 500 while native decoding currently returns 400. Isolated
-surrogates are explicitly refused, without silent replacement. This unresolved
-representation boundary and nonfinite/extreme numbers/depth remain next.
+compares 88 actual HTTP results across ten byte forms and both routes. Its six
+surrogate counterexamples are historical and now covered by the next slice.
+
+### Personal-skill surrogatepass boundary
+
+Byte decoding now preserves Python surrogatepass code points without substitution.
+A closed value reader lowers valid syntax directly into the diagnostic tree,
+combining escaped UTF-16 pairs but preserving raw UTF-32/UTF-8 pairs as separate
+source code points. Duplicate keys retain their final value and original position
+before Unicode screening; discarded malformed values do not poison requests.
+Syntax positions count raw non-scalars as one source code point. Active non-scalars
+in retained strings or keys produce the safe source plain 500 response, before
+owner lookup or model execution. Malformed documents still produce their source
+syntax errors. Only scalar, normalized tree data is encoded into concrete requests,
+preventing the old decoder from replacing discarded malformed Unicode. Diagnostic
+encoding independently refuses non-scalar strings/keys. Snapshot 85 compares 90
+actual HTTP outcomes, including the previous six counterexamples; native tests
+also check decoded pair, overwrite and control-escape values. Nonfinite/extreme
+numbers and depth boundary parity remain open.
