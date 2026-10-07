@@ -6104,3 +6104,32 @@ Fresh full `go test ./... -count=1 -timeout=180s -coverpkg=./...` passes.
 Deduplicating shared profile blocks gives Go statement coverage **89.41%**
 (**14,752 / 16,499**). This measures executed statements, not migration
 completion. Python coverage is not refreshed.
+
+## Implementation checkpoint — 2026-10-07 numeric request boundary
+
+Base: f45aeae. The transient HTTP diagnostic tree now includes an explicit
+nonfinite variant alongside its six JSON variants. Finite floating numbers are
+normalized through double parsing and Python-style decimal formatting; integer
+values remain exact, with -0 normalized to 0. A pinned 4300-digit integer check
+runs inside syntax parsing, preserving source failure ordering even before later
+malformed tokens or duplicate overwrites. Final retained nonfinite values return
+source plain 500; discarded ones permit normal schema/ownership admission. No
+nonfinite value enters service requests or runtime state. Snapshot 86 compares
+288 actual source outcomes (24 forms, six placements, both routes), including
+underflow, overflow, double rounding, exact large integers and digit-limit edges.
+The test compares exact numeric lexemes and pins the source interpreter limit.
+No dependencies or feature defaults change. Depth-boundary fidelity remains next;
+G0-G7 remain open.
+
+Validation: `go test ./...`, `go test -race ./...` and `go vet ./...` pass.
+Exporter `--check` confirms all 86 snapshots, and `verify_scans.py` anchors all
+19 source scanning guards. Isolated full `.venv/bin/python -m pytest -q` passes:
+2,151 tests, 28 skipped, 24 subtests, 98.21 seconds. Four warnings include three
+dependency deprecations and one asyncio subprocess-transport cleanup warning
+(`Event loop is closed`) in the unchanged background-parity test; no test fails.
+Python package modules and mutation anchors are unchanged; package invariants and
+source mutation verification were not rerun. README canonical Mermaid, boundary
+explanation and interactive specification are reviewed in this slice. Regenerated
+HTML passes all nine Archify automated checks with zero errors/warnings; visual
+inspection remains skipped after the earlier permission denial. `git diff --check`
+passes. Coverage percentages are not refreshed in this slice.

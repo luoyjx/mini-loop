@@ -1758,5 +1758,22 @@ syntax errors. Only scalar, normalized tree data is encoded into concrete reques
 preventing the old decoder from replacing discarded malformed Unicode. Diagnostic
 encoding independently refuses non-scalar strings/keys. Snapshot 85 compares 90
 actual HTTP outcomes, including the previous six counterexamples; native tests
-also check decoded pair, overwrite and control-escape values. Nonfinite/extreme
-numbers and depth boundary parity remain open.
+also check decoded pair, overwrite and control-escape values. Numeric semantics
+are covered by the following slice; depth boundary parity remains open.
+
+### Personal-skill numeric request boundary
+
+Finite floating-point JSON input now normalizes through IEEE-754 double parsing
+and source-compatible shortest decimal formatting, including signed zero,
+underflow and precision loss. Integer spelling remains arbitrary precision up to
+the pinned CPython default 4300-digit limit; negative integer zero becomes zero.
+The syntax scanner enforces that limit at the point the number is parsed, including
+values later overwritten and numbers followed by malformed syntax. Nonfinite
+literals and floating overflow enter an explicit closed diagnostic variant; after
+last-key retention, any remaining nonfinite value produces safe source plain 500
+before ownership/model work. Discarded nonfinite values do not poison requests.
+Snapshot 86 compares 288 actual HTTP outcomes across both routes, six placements
+and 24 numeric forms, comparing complete diagnostic number spelling without float
+conversion in the test oracle. Source interpreter changes to the integer limit
+fail the fixture pin. Depth-boundary parity remains open. This does not introduce
+nonfinite values into service/session structs or add dependencies.

@@ -18,6 +18,7 @@ const (
 	jsonInvalidUnicodeEscape
 	jsonInvalidControl
 	jsonNestingLimit
+	jsonIntegerLimit
 )
 
 type requestJSONFailure struct {
@@ -105,6 +106,9 @@ func (s *requestJSONScanner) value(depth int) *requestJSONFailure {
 		}
 	}
 	if match := requestJSONNumber.FindIndex(s.data[s.position:]); match != nil {
+		if requestIntegerTooLong(s.data[s.position : s.position+match[1]]) {
+			return s.fail(jsonIntegerLimit, s.position)
+		}
 		s.position += match[1]
 		return nil
 	}

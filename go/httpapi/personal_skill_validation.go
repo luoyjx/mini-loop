@@ -18,6 +18,7 @@ const (
 	validationBool
 	validationArray
 	validationObject
+	validationNonfinite
 )
 
 // ValidationInput is a closed JSON projection used only in HTTP diagnostics.
@@ -210,7 +211,7 @@ func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommit
 			return result, false
 		}
 		if failure := requestJSONSyntax(raw); failure != nil {
-			if failure.kind == jsonNestingLimit {
+			if failure.kind == jsonNestingLimit || failure.kind == jsonIntegerLimit {
 				writeJSON(s, w, 400, ErrorResponse{"There was an error parsing the body"})
 				return result, false
 			}
@@ -223,7 +224,7 @@ func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommit
 			return result, false
 		}
 	}
-	if input.hasSurrogate() {
+	if input.hasUnserializableValue() {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(500)
 		w.Write([]byte("Internal Server Error"))

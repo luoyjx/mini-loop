@@ -6720,6 +6720,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-personal-skill-http-parsing.json": _json_bytes(_personal_skill_http_parsing_contracts()),
         "python-personal-skill-http-encoding.json": _json_bytes(_personal_skill_http_encoding_contracts()),
         "python-personal-skill-http-surrogates.json": _json_bytes(_personal_skill_http_surrogate_contracts()),
+        "python-personal-skill-http-numbers.json": _json_bytes(_personal_skill_http_number_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7059,6 +7060,53 @@ def _personal_skill_http_surrogate_contracts() -> dict:
                             response=response.json() if json_response else None,
                             text=None if json_response else response.text))
     return dict(cases=rows)
+
+
+def _personal_skill_http_number_contracts() -> dict:
+    """Actual float rounding, nonfinite retention and decimal-integer refusal."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+
+    numbers = ["NaN", "Infinity", "-Infinity", "1e999", "-1e999", "0", "-0",
+               "-0.0", "1.0", "1e-999", "-1e-999", "1.0000000000000001",
+               "9007199254740993", "9007199254740993.0", "1e15", "1e16",
+               "1e-4", "1e-5", "5e-324", "9" * 4300, "9" * 4301,
+               "9" * 4301 + ".0", "1e" + "9" * 1000, "1e-" + "9" * 1000]
+    rows = []
+    with tempfile.TemporaryDirectory() as scratch:
+        root = Path(scratch)
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                            skills_dir=root / "empty", user_resources_root=None,
+                            trajectory_enabled=False)
+        with TestClient(create_app(manager=SessionManager(settings, FakeAsyncAnthropic())),
+                        raise_server_exceptions=False) as client:
+            client.app.state.auth = TokenAuth({"token-a": "alice"})
+            for kind in ("preview", "commit"):
+                field = "name" if kind == "preview" else "digest"
+                valid = '"safe"' if kind == "preview" else '"' + "a" * 64 + '"'
+                suffix = "preview" if kind == "preview" else "draft/commit"
+                for index, number in enumerate(numbers):
+                    payloads = [
+                        ("root", number),
+                        ("field", '{"' + field + '":' + number + '}'),
+                        ("extra", '{"' + field + '":' + valid + ',"extra":' + number + '}'),
+                        ("nested", '{"' + field + '":' + valid + ',"extra":[' + number + ']}'),
+                        ("overwritten", '{"' + field + '":' + number + ',"' + field + '":' + valid + '}'),
+                        ("syntax", '[' + number + ',]'),
+                    ]
+                    for shape, raw in payloads:
+                        response = client.post("/sessions/missing/personal-skills/" + suffix,
+                            content=raw, headers={"Authorization": "Bearer token-a",
+                                                 "Content-Type": "application/json"})
+                        is_json = "application/json" in response.headers.get("content-type", "")
+                        rows.append(dict(kind=kind, name=str(index) + "-" + shape, raw=raw,
+                            status=response.status_code, response=response.json() if is_json else None,
+                            text=None if is_json else response.text))
+    return dict(integer_digit_limit=sys.get_int_max_str_digits(), cases=rows)
 
 
 def main() -> int:

@@ -92,8 +92,10 @@ encoding. Snapshot 84 adds 88 scalar UTF-8/16/32 HTTP outcomes with BOM/NUL byte
 detection, source Unicode offsets and invalid unit handling. Its six historical
 surrogate counterexamples are now included in snapshot 85's 90 passing comparisons.
 Raw/escaped surrogate handling, code-point syntax offsets, last-key retention and
-safe Unicode refusals are covered. Extreme numbers and nesting-boundary fidelity
-remain pending.
+safe Unicode refusals are covered. Snapshot 86 adds 288 actual numeric HTTP
+outcomes: source double rounding, arbitrary precision integers, the pinned
+4300-digit parse limit, nonfinite refusal and last-key retention. Nesting-boundary
+fidelity remains pending.
 
 `python/mini_loop/server.py` currently declares 44 routes. The default Go slice should
 start with `/healthz`, `/sessions`, session detail/deletion,

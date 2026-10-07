@@ -2,7 +2,6 @@ package httpapi
 
 import (
 	"bytes"
-	"encoding/json"
 	"strconv"
 	"unicode/utf16"
 	"unicode/utf8"
@@ -126,9 +125,12 @@ func (r *requestJSONValueReader) value(depth int) (ValidationInput, error) {
 			r.position++
 		}
 	}
-	for _, literal := range []string{"null", "true", "false"} {
+	for _, literal := range []string{"null", "true", "false", "NaN", "Infinity", "-Infinity"} {
 		if bytes.HasPrefix(r.data[r.position:], []byte(literal)) {
 			r.position += len(literal)
+			if literal == "NaN" || literal == "Infinity" || literal == "-Infinity" {
+				return ValidationInput{kind: validationNonfinite}, nil
+			}
 			if literal == "null" {
 				return ValidationInput{}, nil
 			}
@@ -136,9 +138,9 @@ func (r *requestJSONValueReader) value(depth int) (ValidationInput, error) {
 		}
 	}
 	if match := requestJSONNumber.FindIndex(r.data[r.position:]); match != nil {
-		number := json.Number(string(r.data[r.position : r.position+match[1]]))
+		number, err := readRequestJSONNumber(string(r.data[r.position : r.position+match[1]]))
 		r.position += match[1]
-		return ValidationInput{kind: validationNumber, number: number}, nil
+		return number, err
 	}
 	return ValidationInput{}, errPersonalSkillRequest
 }
@@ -218,17 +220,20 @@ func (r *requestJSONValueReader) text() (string, error) {
 	}
 	return "", errPersonalSkillRequest
 }
-func (v ValidationInput) hasSurrogate() bool {
+func (v ValidationInput) hasUnserializableValue() bool {
+	if v.kind == validationNonfinite {
+		return true
+	}
 	if v.kind == validationText {
 		return !utf8.ValidString(v.text)
 	}
 	for _, item := range v.items {
-		if item.hasSurrogate() {
+		if item.hasUnserializableValue() {
 			return true
 		}
 	}
 	for _, member := range v.members {
-		if !utf8.ValidString(member.key) || member.value.hasSurrogate() {
+		if !utf8.ValidString(member.key) || member.value.hasUnserializableValue() {
 			return true
 		}
 	}
