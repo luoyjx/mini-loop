@@ -19,6 +19,16 @@ func RenderMessages(messages []Message) (string, error) {
 	out, err := jsonvalue.AppendLegacyIndent(Array(cleaned...))
 	return string(out), err
 }
+
+// RenderRawMessages is the idle-run prompt, distinct from cleaned round injection.
+func RenderRawMessages(messages []Message) (string, error) {
+	rows := make([]Data, len(messages))
+	for i, message := range messages {
+		rows[i] = message.Data()
+	}
+	out, err := jsonvalue.AppendLegacyDefault(Array(rows...))
+	return string(out), err
+}
 func RenderProtocols(states []ProtocolState) (string, error) {
 	rows := make([]Data, 0, len(states))
 	for _, state := range states {

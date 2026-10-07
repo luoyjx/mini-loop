@@ -128,6 +128,41 @@ func TextPrefix(text string, count int) string {
 // AppendLegacyIndent matches json.dumps(indent=2), retaining member order and
 // ASCII escaping, including historical nonfinite/surrogate values.
 func AppendLegacyIndent(v Value) ([]byte, error) { return appendIndented(nil, v, 0) }
+
+// AppendLegacyDefault matches json.dumps with its default spaced separators.
+// Historical values retain insertion order, ASCII escapes and legacy scalars.
+func AppendLegacyDefault(v Value) ([]byte, error) { return appendDefault(nil, v) }
+
+func appendDefault(out []byte, v Value) ([]byte, error) {
+	if v.kind != Array && v.kind != Object {
+		return appendValue(out, v, true)
+	}
+	open, close := byte('['), byte(']')
+	count := len(v.items)
+	if v.kind == Object {
+		open, close, count = '{', '}', len(v.members)
+	}
+	out = append(out, open)
+	for i := 0; i < count; i++ {
+		if i > 0 {
+			out = append(out, ", "...)
+		}
+		var child Value
+		if v.kind == Array {
+			child = v.items[i]
+		} else {
+			out = appendText(out, v.members[i].name)
+			out = append(out, ": "...)
+			child = v.members[i].value
+		}
+		var err error
+		out, err = appendDefault(out, child)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return append(out, close), nil
+}
 func appendIndented(out []byte, v Value, depth int) ([]byte, error) {
 	if v.kind != Array && v.kind != Object {
 		return appendValue(out, v, true)

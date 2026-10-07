@@ -2,6 +2,24 @@ package jsonvalue
 
 import "testing"
 
+func TestLegacyDefaultJSONMatchesPythonSpacingAndHistoricalScalars(t *testing.T) {
+	for _, example := range []struct{ input, output string }{
+		{`[]`, `[]`}, {`{}`, `{}`},
+		{`[1,{"text":"界","n":NaN,"s":"\ud800"}]`, `[1, {"text": "\u754c", "n": NaN, "s": "\ud800"}]`},
+		{`{"z":[true,false,null,1.0],"a":{"x":Infinity,"y":-Infinity}}`, `{"z": [true, false, null, 1.0], "a": {"x": Infinity, "y": -Infinity}}`},
+		{`"quote \" π"`, `"quote \" \u03c0"`},
+	} {
+		value, err := Decode(example.input)
+		if err != nil {
+			t.Fatal(err)
+		}
+		out, err := AppendLegacyDefault(value)
+		if err != nil || string(out) != example.output {
+			t.Fatal(string(out), example.output, err)
+		}
+	}
+}
+
 func TestClosedPythonTruthAndContentProjection(t *testing.T) {
 	for _, row := range []struct {
 		json, text string

@@ -1,5 +1,16 @@
 # Go port plan
 
+## 2026-10-08 raw Python JSON prompt preparation
+
+Baseline e67ae85. Add the closed-value AppendLegacyDefault profile for Python's
+spaced default separators, preserving insertion order, ASCII escapes and historical
+nonfinite/surrogate scalars. The team library exposes a raw historical message renderer
+for idle prompts, separate from cleaned round injection. This preparation changes
+no installed tools, defaults or topology. The README architecture baseline is reviewed.
+Full Go test/race/vet passed with these functions; the additional direct JSON profile
+examples passed the focused jsonvalue/teams race run. The next checkpoint records the
+actual source lifecycle corpus and runtime binding. No dependencies were added.
+
 ## 2026-10-08 standalone team-tool help boundary
 
 Baseline 968e8ee. Update --team-tools help to advertise team tools and concurrent
