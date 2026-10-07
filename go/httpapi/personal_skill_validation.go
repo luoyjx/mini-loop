@@ -188,6 +188,34 @@ func personalSkillValidation(input ValidationInput, preview bool) []RequestValid
 
 func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommitRequest](s *Server, w http.ResponseWriter, r *http.Request, preview bool) (T, bool) {
 	var result T
+	input, ok := decodeRequestBody(s, w, r)
+	if !ok {
+		return result, false
+	}
+	if input.hasUnserializableValue() {
+		writeRequestDiagnosticFailure(w)
+		return result, false
+	}
+	if details := personalSkillValidation(input, preview); len(details) > 0 {
+		writeRequestValidation(s, w, RequestValidationResponse{Detail: details})
+		return result, false
+	}
+	canonical, err := input.MarshalJSON()
+	if err != nil {
+		writeJSON(s, w, 500, ErrorResponse{"response encoding failed"})
+		return result, false
+	}
+	if err := json.Unmarshal(canonical, &result); err != nil {
+		writeJSON(s, w, 422, ErrorResponse{"invalid request body"})
+		return result, false
+	}
+	return result, true
+}
+
+// Shared transport decoding returns a closed diagnostic value, before each
+// request model decides which fields are retained or ignored.
+func decodeRequestBody(s *Server, w http.ResponseWriter, r *http.Request) (ValidationInput, bool) {
+	var result ValidationInput
 	raw, err := io.ReadAll(r.Body)
 	if err != nil {
 		writeJSON(s, w, 400, ErrorResponse{"There was an error parsing the body"})
@@ -222,22 +250,5 @@ func decodePersonalSkillBody[T PersonalSkillPreviewRequest | PersonalSkillCommit
 			return result, false
 		}
 	}
-	if input.hasUnserializableValue() {
-		writeRequestDiagnosticFailure(w)
-		return result, false
-	}
-	if details := personalSkillValidation(input, preview); len(details) > 0 {
-		writeRequestValidation(s, w, RequestValidationResponse{Detail: details})
-		return result, false
-	}
-	canonical, err := input.MarshalJSON()
-	if err != nil {
-		writeJSON(s, w, 500, ErrorResponse{"response encoding failed"})
-		return result, false
-	}
-	if err := json.Unmarshal(canonical, &result); err != nil {
-		writeJSON(s, w, 422, ErrorResponse{"invalid request body"})
-		return result, false
-	}
-	return result, true
+	return input, true
 }
