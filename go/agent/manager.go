@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/cron"
+	"github.com/luoyjx/mini-loop/go/improvement"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/userresources"
@@ -31,6 +32,7 @@ const (
 // transcripts or leases; state is restored through the injected store consumer.
 // Public lookups require an already established owner identity.
 type SessionManager struct {
+	improvements                   *improvement.Archive
 	skillDrafts                    *userresources.DraftStore
 	restoreLifetime                context.Context
 	restoreCancel                  context.CancelFunc
@@ -181,6 +183,7 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		}
 	}
 	manager := &SessionManager{restoreTurn: make(chan struct{}, 1), config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
+	manager.improvements = improvement.NewArchive(filepath.Join(root, ".improvements"), services.Secrets)
 	manager.skillDrafts, err = userresources.NewDraftStore(userresources.DefaultDraftStoreConfig())
 	if err != nil {
 		return nil, err

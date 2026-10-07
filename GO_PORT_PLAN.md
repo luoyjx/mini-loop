@@ -1,5 +1,43 @@
 # Go port plan
 
+## 2026-10-07 owned improvement lineage HTTP
+
+Default GET /improvements now reads the manager-owned .improvements archive.
+Configured authentication binds the admitted owner; an open deployment reads
+the fleet. Query/body overrides are ignored, the default 200 accepted-row limit
+is fixed, and GET spends no rate budget. Source snapshot 102 compares 46 actual
+HTTP responses, including historical secret retention, unknown/scalar legacy
+rows, owner/query/method admission, empty/IO results, and private serialization
+failures. The 200-row profile uses a full response digest for compact fixtures.
+The constructor performs no archive IO; the private archive is rooted at the
+manager workspace, independent of bound/factory session workspaces.
+ArchiveValue preserves lone-surrogate text in read accessors, but standard JSON
+serialization now refuses it, like the source UTF-8 HTTP response boundary.
+Nonfinite/read/scoped shape errors also become plain private 500s before headers.
+Native HTTP tests exercise byte admission, rate neutrality and zero model/session
+work. README Mermaid, boundary text and architecture JSON describe the live GET
+through the manager; generated HTML is refreshed. Inventory is now 38 operations/
+35 patterns versus source 44. Next implement the receipt-gated verified loop,
+then proposal Git composition and POST; continue teams/workflows, native
+persistence and the complete G0–G7 release audit.
+
+Validation passed: focused archive/manager/HTTP tests; full Go tests and race
+checks (-count=1 -timeout=180s), go vet ./..., all 102 source contract exports and
+all 19 scan anchors. After those handles finished, isolated Python pytest passed
+2151 tests, 28 skipped and 24 subtests in 78.55s, with three dependency deprecations.
+Export reported two dependency deprecations. Python package invariant/guard sweeps
+were not rerun because only the exporter changed, not package modules or guarded
+Python behavior. Overall statement coverage was not refreshed this iteration.
+A current route/OpenAPI comparison confirms 38 operations/35 patterns versus 44,
+with exactly POST propose-improvement, GET team and four workflow operations absent.
+README outline and git diff --check pass. Archify passes 9/9 showcase checks with
+zero errors/warnings; HTML is regenerated. Visual inspection remains skipped
+after the earlier denial, without retry. Exact source recursion profiles at both
+archive parse and HTTP response traversal remain release-audit work.
+Specification SHA256: 98a5a2626cb1d29fafd26d210eabcd3b3ece3a5879f08bd6308af4f03967a6ce.
+Artifact SHA256: 59483e044641eb4a4e4a263e89a5a72e6c988d35165549524c8b65c370c74c8d.
+
+
 ## 2026-10-07 improvement archive compatibility reads
 
 Archive.List now implements newest-first legacy JSONL reads, trusted owner
@@ -81,7 +119,7 @@ remain broader. Callers must sample before each acceptance judgment, since a
 restored final digest cannot reveal earlier tampering by itself.
 
 Next cohesive tasks:
-1. Bind the owned archive read API to GET /improvements (append and compatibility reader are now implemented).
+1. Port verified-loop receipts and acceptance execution (archive append/read and GET are now implemented).
 2. Port verified-loop task/receipt/integrity transitions and acceptance execution.
 3. Bind proposal worktree/git artifact composition, verifier touch flags and archive.
 4. Bind and compare both improvement HTTP operations, then continue teams/workflows,

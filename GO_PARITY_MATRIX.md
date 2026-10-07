@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (101 generated snapshots), plus registry masking,
+the current implementation (102 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -111,7 +111,7 @@ start with `/healthz`, `/sessions`, session detail/deletion,
 `/ui`. Optional route groups cover skills/memory, workflows, cron, tasks/team,
 improvement, audit, and benchmark. Every route requires a response/error/event
 fixture before its row can be marked covered; route presence alone is weak
-evidence. The current Go handler implements these thirty-seven method/path operations:
+evidence. The current Go handler implements these thirty-eight method/path operations:
 
 | Method | Path | Current boundary |
 |---|---|---|
@@ -143,6 +143,7 @@ evidence. The current Go handler implements these thirty-seven method/path opera
 | DELETE | /sessions/{session_id}/cron/{job_id} | Owned cancel; foreign job reads like missing |
 | POST | /sessions/{session_id}/cron/{job_id}/arm | Operator-only process authorization for restored jobs |
 | GET | /sessions/{session_id}/goal | Owned detached goal/arming/plan facts; no HTTP arming or mutation |
+| GET | /improvements | Manager-rooted newest-first lineage; auth-bound owner, open operator view, source legacy data and private serialization failures |
 | GET | /sessions/{session_id}/tasks | Fresh workspace board after owner admission; non-consuming structured rows |
 | GET | /sessions/{session_id}/trajectories | Live owned session recording list |
 | GET | /trajectories | Recorded-owner filtered file summaries |
@@ -675,3 +676,26 @@ MarshalJSON refuses them, matching the future standard HTTP serialization bounda
 Go accepts 1000 nested containers; Python's precise call-stack-dependent recursion
 cutoff is not established by the 500/1005 samples. Runtime/HTTP binding remains
 pending; HTTP inventory stays 37/44 and G0–G7 remains open.
+
+## Improvement lineage HTTP reads
+
+Snapshot 102 compares 46 actual source responses across open and authenticated
+deployments: alice/bob/fleet lineage, query/body overrides ignored, missing/bad/
+query-only credentials, wrong methods, malformed line skipping, missing/directory
+IO results, invalid UTF-8, arbitrary legacy scalar rows, owner type mismatches,
+duplicate owner keys, nonfinite/lone-surrogate response failures and filtering
+foreign malformed-response values before serialization. Finite float/bigint values
+and source default 200 rows also match. The cap fixture retains a complete response
+digest rather than expanding 400 repetitive rows. Historical strings are returned
+without remasking, including a value registered in the current secret registry.
+
+Manager construction owns a fixed .improvements archive without startup archive
+IO. ListImprovements takes a trusted optional OwnerID; HTTP derives it solely from
+Authenticator.Configured and the admitted principal. Serialization finishes before
+headers; read and response faults use the source private plain-text 500. Typed
+ArchiveValue still retains lone surrogates through read accessors, but MarshalJSON
+now refuses them as well as nonfinite numbers at the source HTTP boundary. Native
+tests also verify request byte admission, GET rate neutrality, cancellation, no
+provider/session work and constructor absence. Inventory is now 38 operations/
+35 patterns versus source 44. Six POST-improvement/team/workflow operations, native
+persistence and G0–G7 remain open.

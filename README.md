@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `3d9a823` plus compatible archive reads;
+reviewed **2026-10-07** (Go baseline `93ef09a` plus owned improvement HTTP reads;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoImprovement["Go improvement library<br/>typed instruments · owner lineage reads<br/>library-only; proposal pipeline pending"]
+        GoImprovement["Go improvement library<br/>typed instruments · owner lineage reads<br/>manager archive · live GET; proposal pipeline pending"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
@@ -450,7 +450,7 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoEntry
-    Caller -. explicit improvement calls .-> GoImprovement
+    GoEntry -->|GET lineage via manager; bound owner| GoImprovement
     Caller -. explicit typed observations .-> GoSelfAudit
     GoManaged -. owner admission before diagnostic / recording IO .-> GoSelfAudit
     GoEntry -->|report / suggestions / drafts; admitted owner scope| GoSelfAudit
@@ -1326,9 +1326,15 @@ Snapshot 101 compares 27 source reads. Malformed JSON lines are skipped; UTF-8,
 integer-conversion, nesting and scoped non-object failures abort. IO errors return
 an empty index, matching source. It reads the whole file and applies no additional
 masking to old rows. The Go nesting profile permits 1000 containers; the exact
-CPython call-stack-dependent cutoff is not established. This operator library installs no
-HTTP or model feature; receipt-gated verified loop,
-proposal branch/commit flow and both improvement HTTP operations remain pending.
+CPython call-stack-dependent cutoff is not established. The manager now owns the
+archive at workspace_root/.improvements without creating its directory at startup.
+Default GET /improvements binds the authenticated owner, or uses an operator-wide
+view on an open deployment. Snapshot 102 compares 46 source HTTP responses,
+including historical secret retention, empty/IO results and private plain 500s.
+GET ignores owner/limit/body overrides and spends no rate budget. Nonfinite and
+lone-surrogate response values fail before response bytes are written. The
+receipt-gated verified loop, proposal branch/commit flow and POST improvement
+operation remain pending; HTTP inventory is now 38/44 operations (35 patterns).
 A verified loop must sample the fingerprint before each acceptance judgment;
 computing or restoring a digest alone does not establish verified completion.
 Personal-skill previews are process-local; a committed `SKILL.md` is durable,

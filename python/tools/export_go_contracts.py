@@ -6736,6 +6736,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-improvement-instruments.json": _json_bytes(_improvement_instrument_contracts()),
         "python-improvement-archive-append.json": _json_bytes(_improvement_archive_append_contracts()),
         "python-improvement-archive-read.json": _json_bytes(_improvement_archive_read_contracts()),
+        "python-improvement-http-read.json": _json_bytes(_improvement_http_read_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8117,6 +8118,90 @@ def _improvement_archive_read_contracts() -> dict:
                 error = type(exc).__name__
             cases.append({**recipe, "error": error, "row_digests": digests})
     return {"cases": cases}
+
+
+def _improvement_http_read_contracts() -> dict:
+    """Actual source owner admission and complete legacy lineage HTTP responses."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth, NullAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+    from mini_loop.secrets import SecretRegistry
+
+    ordinary = '{"owner":"alice","proposal_id":"first","future":{"unicode":"界🌱","token":"archive-secret-123"}}\n{"owner":"bob","proposal_id":"second"}\n{"owner":"alice","proposal_id":"third"}\n'
+    recipes = [
+        dict(name="alice", content=ordinary),
+        dict(name="bob", content=ordinary, token="token-b"),
+        dict(name="query-ignored", content=ordinary, path="/improvements?owner=bob&limit=1&include_global=true"),
+        dict(name="body-ignored", content=ordinary, body="{broken"),
+        dict(name="no-auth", content=ordinary, token=""),
+        dict(name="bad-auth", content=ordinary, token="bad"),
+        dict(name="query-auth", content=ordinary, token="", path="/improvements?access_token=token-a"),
+        dict(name="wrong-method", content=ordinary, method="POST"),
+        dict(name="malformed", content=ordinary+'{broken\n'),
+        dict(name="empty", content=""),
+        dict(name="missing", fault="missing"),
+        dict(name="directory", fault="directory"),
+        dict(name="invalid-utf8", fault="invalid-utf8"),
+        dict(name="legacy-scalars", content='null\n[1,"legacy"]\nfalse'),
+        dict(name="owner-type", content='{"owner":true}\n{"owner":null}\n{}'),
+        dict(name="duplicate-owner", content='{"owner":"bob","owner":"alice","objective":"last"}'),
+        dict(name="nonfinite", content='{"owner":"alice","future":[NaN,Infinity,1e999]}'),
+        dict(name="foreign-nonfinite", content='{"owner":"bob","future":NaN}'),
+        dict(name="surrogate-value", content=r'{"owner":"alice","future":"\ud800"}'),
+        dict(name="surrogate-key", content=r'{"owner":"alice","\udfff":"legacy"}'),
+        dict(name="foreign-surrogate", content=r'{"owner":"bob","future":"\ud800"}'),
+        dict(name="finite-and-bigint", content='{"owner":"alice","future":[-0.0,9007199254740993,1e-5,1e15]}'),
+        dict(name="default-cap", records=205),
+    ]
+    scenarios = []
+    with tempfile.TemporaryDirectory(prefix="go-improvement-http-") as scratch:
+        for mode in ("open", "authenticated"):
+            root = Path(scratch)/mode
+            settings = Settings(fake_llm=True, workspace_root=root, trajectory_enabled=False,
+                                rate_limit_per_minute=1)
+            secrets = SecretRegistry()
+            secrets.register("ARCHIVE_TOKEN", "archive-secret-123")
+            manager = SessionManager(settings, FakeAsyncAnthropic(), secrets=secrets)
+            startup_archive_exists = manager.improvements.root.exists()
+            app = create_app(manager=manager, settings=settings)
+            captured = []
+            with TestClient(app, raise_server_exceptions=False) as client:
+                app.state.auth = NullAuth() if mode=="open" else TokenAuth({"token-a":"alice","token-b":"bob"})
+                for recipe in recipes:
+                    path = manager.improvements.path
+                    if path.is_file():
+                        path.unlink()
+                    elif path.is_dir():
+                        path.rmdir()
+                    path.parent.mkdir(exist_ok=True)
+                    content = recipe.get("content", "")
+                    if "records" in recipe:
+                        content = "\n".join(json.dumps({"owner":"alice", "index":index}) for index in range(recipe["records"]))
+                    fault = recipe.get("fault")
+                    if fault=="directory":
+                        path.mkdir()
+                    elif fault=="invalid-utf8":
+                        path.write_bytes(b"\xff")
+                    elif fault!="missing":
+                        path.write_text(content, encoding="utf-8")
+                    token = recipe.get("token", "token-a")
+                    response = client.request(recipe.get("method", "GET"), recipe.get("path", "/improvements"),
+                        content=recipe.get("body", ""), headers={"Authorization":"Bearer "+token} if token else {})
+                    value = response.json() if response.headers.get("content-type")=="application/json" else response.text
+                    captured.append({**recipe, "status":response.status_code,
+                        "content_type":response.headers.get("content-type"),
+                        "challenge":response.headers.get("www-authenticate"),
+                        "allow":response.headers.get("allow"), "response":value})
+                    if "records" in recipe:
+                        import hashlib
+                        captured[-1].pop("response")
+                        captured[-1]["response_digest"] = hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+                        captured[-1]["response_rows"] = len(value["proposals"])
+            scenarios.append(dict(mode=mode, startup_archive_exists=startup_archive_exists, cases=captured))
+    return dict(scenarios=scenarios)
 
 
 def main() -> int:

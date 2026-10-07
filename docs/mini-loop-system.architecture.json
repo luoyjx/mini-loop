@@ -555,13 +555,13 @@
       "sublabel": "instruments / owner lineage reads",
       "pos": [
         60,
-        1380
+        720
       ],
       "size": [
         245,
         76
       ],
-      "tag": "library-only; proposal pipeline pending"
+      "tag": "manager archive / live GET; proposal pending"
     }
   ],
   "boundaries": [
@@ -1393,21 +1393,25 @@
       ]
     },
     {
-      "id": "goImprovementInstruments",
-      "from": "clients",
+      "id": "goImprovementHTTP",
+      "from": "goEntry",
       "to": "goImprovement",
       "variant": "dashed",
-      "fromSide": "left",
+      "fromSide": "bottom",
       "toSide": "left",
       "route": "orthogonal-v",
       "via": [
         [
-          10,
-          296
+          495,
+          940
         ],
         [
-          10,
-          1418
+          20,
+          940
+        ],
+        [
+          20,
+          758
         ]
       ]
     }

@@ -27,6 +27,7 @@ func (s *Server) register(path string, handlers map[string]http.HandlerFunc) {
 	})
 }
 func (s *Server) routes() {
+	s.register("/improvements", map[string]http.HandlerFunc{"GET": s.improvements})
 	s.register("/self-audit", map[string]http.HandlerFunc{"GET": s.selfAuditReport})
 	s.register("/self-audit/suggestions", map[string]http.HandlerFunc{"GET": s.selfAuditSuggestions})
 	s.register("/self-audit/bench-task-drafts", map[string]http.HandlerFunc{"GET": s.selfAuditDrafts})

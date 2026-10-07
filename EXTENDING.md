@@ -2121,5 +2121,10 @@ Nil owner is an operator query; nil limit defaults to 200,
 while explicit zero/negative selects one. Accepted rows count after owner filtering.
 Reads take no append lock, read the whole source file, and do not remask old rows.
 IO failure yields an empty index; conversion/encoding/scoped shape failures abort.
-Verified-loop receipts and proposal/HTTP composition remain pending. This operator library does not grant model tool or
-merge authority.
+SessionManager owns the fixed workspace_root/.improvements archive without startup
+archive IO. ListImprovements accepts a trusted optional OwnerID; default GET binds
+the authenticated principal or an open operator view, ignoring query overrides.
+It returns historical records without remasking and spends no rate budget. Full
+JSON serialization finishes before headers; lone-surrogate/nonfinite values and
+read faults produce source private plain 500s. Verified-loop receipts and proposal
+POST composition remain pending. Archive APIs grant no model tool or merge authority.

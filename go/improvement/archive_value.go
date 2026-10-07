@@ -77,22 +77,27 @@ const archiveContainerLimit = 1000
 var errArchiveSyntax = errors.New("invalid archive JSON")
 var ErrArchiveInteger = errors.New("archive integer exceeds the source 4300-digit limit")
 var ErrArchiveDepth = errors.New("archive JSON exceeds the nesting limit")
+var ErrArchiveSurrogate = errors.New("archive text contains a non-scalar Unicode value")
 var ErrArchiveNonfinite = errors.New("archive value cannot be serialized as finite JSON")
 
 // MarshalJSON preserves legacy data and source member order. Nonfinite floats
 // remain observable through Float but cannot enter a standard HTTP JSON response.
+// Lone-surrogate text remains readable but also fails the source UTF-8 HTTP boundary.
 func (v ArchiveValue) MarshalJSON() ([]byte, error) { return appendArchiveValue(nil, v, false) }
-func appendArchiveValue(out []byte, v ArchiveValue, allowNonfinite bool) ([]byte, error) {
+func appendArchiveValue(out []byte, v ArchiveValue, allowLegacy bool) ([]byte, error) {
 	switch v.kind {
 	case ArchiveNull:
 		return append(out, "null"...), nil
 	case ArchiveText:
+		if !allowLegacy && archiveSurrogateText(v.text) {
+			return nil, ErrArchiveSurrogate
+		}
 		return appendArchiveText(out, v.text), nil
 	case ArchiveInteger:
 		return append(out, v.text...), nil
 	case ArchiveFloat:
 		if math.IsNaN(v.number) || math.IsInf(v.number, 0) {
-			if !allowNonfinite {
+			if !allowLegacy {
 				return nil, ErrArchiveNonfinite
 			}
 			s := "NaN"
@@ -122,7 +127,7 @@ func appendArchiveValue(out []byte, v ArchiveValue, allowNonfinite bool) ([]byte
 				out = append(out, ',')
 			}
 			var err error
-			out, err = appendArchiveValue(out, item, allowNonfinite)
+			out, err = appendArchiveValue(out, item, allowLegacy)
 			if err != nil {
 				return nil, err
 			}
@@ -134,10 +139,13 @@ func appendArchiveValue(out []byte, v ArchiveValue, allowNonfinite bool) ([]byte
 			if i > 0 {
 				out = append(out, ',')
 			}
+			if !allowLegacy && archiveSurrogateText(m.name) {
+				return nil, ErrArchiveSurrogate
+			}
 			out = appendArchiveText(out, m.name)
 			out = append(out, ':')
 			var err error
-			out, err = appendArchiveValue(out, m.value, allowNonfinite)
+			out, err = appendArchiveValue(out, m.value, allowLegacy)
 			if err != nil {
 				return nil, err
 			}
@@ -155,6 +163,16 @@ func archiveRune(raw string) (rune, int) {
 		return rune(raw[0]&15)<<12 | rune(raw[1]&63)<<6 | rune(raw[2]&63), 3
 	}
 	return utf8.DecodeRuneInString(raw)
+}
+func archiveSurrogateText(text string) bool {
+	for len(text) > 0 {
+		r, n := archiveRune(text)
+		if r >= 0xd800 && r <= 0xdfff {
+			return true
+		}
+		text = text[n:]
+	}
+	return false
 }
 func appendArchiveRune(out []byte, r rune) []byte {
 	if r >= 0xd800 && r <= 0xdfff {
