@@ -48,6 +48,7 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	TeamTools bool
 	// Memory is the shared fallback when no owner resource resolver is configured.
 	// Nil creates WorkspaceRoot/.memory during manager construction.
 	// Managed runtimes always receive an owner-bound view of this store.

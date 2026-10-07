@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `c55439b` plus native team protocol coordinator;
+reviewed **2026-10-08** (Go baseline `6eaab05` plus manager-bound team protocol tools;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,7 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
-        GoTeams["Go team library<br/>bounded mailbox / operator protocols<br/>owned GET; runtime tools pending"]
+        GoTeams["Go team protocols<br/>bounded mailbox / 200 handshakes<br/>owned GET; nine opt-in gate tools"]
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
@@ -408,7 +408,7 @@ flowchart LR
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · operator create-only publication"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
-        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
+        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
         GoEntry -->|public static documents| GoBrowser
@@ -452,7 +452,7 @@ flowchart LR
     Caller --> Entry
     Caller --> GoEntry
     GoEntry -->|GET lineage / POST proposal; bound owner| GoImprovement
-    GoManager -->|fixed mailbox root; bound lead identity| GoTeams
+    GoManager -->|fixed bus / protocol table; bound identity| GoTeams
     GoEntry -->|owned team GET; peek latest 50| GoTeams
     GoManaged -. explicit verified task / proposal admission .-> GoSession
     Caller -. explicit typed observations .-> GoSelfAudit
@@ -1330,14 +1330,14 @@ HTTP outcomes plus the source custom-agent teamless projection. Native TCP tests
 prove viewing leaves all 75 messages for subsequent delivery and foreign callers
 cannot trigger an owned unreadable mailbox error. Python and Go reject dot path
 components before IO; lexical checks and instance locks provide neither filesystem
-confinement nor cross-process delivery transactions. Teammate spawning, managed
-protocol routing, idle/task scheduling, prompt identity and bus diagnostic aggregation remain
-pending. All ten source team/protocol tools now have concrete input variants,
+confinement nor cross-process delivery transactions. Teammate spawning, automatic
+inbox injection, idle/task scheduling, prompt identity and bus diagnostic aggregation
+remain pending. All ten source team/protocol tools now have concrete input variants,
 source schemas, immutable metadata and sorted/masked recording projections; the
 codec rejects model-supplied identity/root fields. Snapshot 109 compares 74 actual
 source keyword bindings and JSON identities, including metadata key collisions.
-This is the input layer: the mailbox adds no installed model tools or automatic
-inbox delivery yet.
+These codecs define the input layer. Manager-bound tool execution is described
+below; automatic inbox injection is still pending.
 The Go team library also provides a native process-local protocol coordinator:
 shutdown requests/acknowledgments, task-plan requests, plan submissions/reviews,
 correlated responses and a global 200-handshake table. Resolved history is evicted
@@ -1352,8 +1352,22 @@ Correlation retains the source request-ID/type/status rule, without adding sende
 verification. Closed JSON response truthiness, Python str/repr and ASCII indent
 rendering preserve historical data. Printable characters are pinned to Python's
 Unicode 14.0.0, including characters assigned later in Go's database. The coordinator
-is currently an operator library; the default manager still binds only its bus/peek,
-and manager roster, common-gate tools, injectors and teammate lifecycle remain open.
+is now owned by the manager alongside its bus. Nine team mailbox/protocol tools
+are independently enabled by ManagerServices.TeamTools;
+spawn_teammate remains absent until native construction/lifecycle is implemented.
+The fixed session identity supplies sender/team/root; model arguments cannot select
+them. Source roster checks, broadcast refusal counts, lead-only shutdown/plan/review,
+and exact inbox/protocol notices use the same gate and declared source traits.
+read_inbox remains source read-risk/read-only despite draining and sending acks.
+A private binding guard precedes journal replay as well as new effects; foreign,
+deleted and stopped bindings cannot recover private inbox results. Accepted shutdown
+assignments remain sticky even after partial consume faults. Selected delegated
+children inherit tool schemas with their own guard but no parent manager/bus state,
+matching the source unconfigured-child boundary. Snapshot 111 compares eleven real
+installed-handler recipes; native tests add gate rewrite/mask/replay, owner scope,
+readonly acknowledgment, selection/forks and child authority isolation. Full feature activation, teammate roster construction/resource inheritance, spawning,
+automatic inbox injection, shutdown lifecycle, idle/task claiming, prompt identity and
+fleet diagnostics remain open. Team tools are off by default.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

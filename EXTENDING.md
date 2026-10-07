@@ -2254,9 +2254,10 @@ standard model-input boundary. The source object-only schema remains exactly
 {type:object}, with no invented properties/additionalProperties. Python handlers
 bind keywords without enforcing their advertised scalar types; Go additionally
 rejects wrong scalar/container types as part of its declared typed boundary.
-Native tool registration/execution, teammate spawning, protocol processing,
-idle/task scheduling, prompt identity and self-audit bus aggregation remain
-future slices. These codecs install no model tools or activation defaults.
+ManagerServices.TeamTools now binds nine mailbox/protocol variants through the
+common gate (see below). Teammate spawning, automatic injection, idle/task scheduling,
+prompt identity and self-audit bus aggregation remain future slices. These codecs
+themselves install no model tools or activation defaults.
 
 ## Go team protocol coordination seam
 
@@ -2265,8 +2266,8 @@ bus and takes a trusted MemberDirectory. Member returns the explicit missing,
 without-agent or ready variant; nil directory means no teammate. Calls to the
 directory occur outside the protocol lock and the callback must be concurrency
 safe. Bus masking callbacks must not reenter either bus or coordinator operations.
-This is an operator seam with no HTTP/model identity authority; a future adapter
-must derive team/member from the owned managed session rather than model arguments.
+This operator seam grants no HTTP/model identity authority. SessionManager owns its
+coordinator, deriving team/member from the registered owned session for model tools.
 
 RequestShutdown checks member existence, inserts a pending shutdown and delivers
 its reason/default notice. RequestPlan sends a full instruction directly and refuses
@@ -2287,6 +2288,22 @@ and historical closed values; standard HTTP encoding retains its existing refusa
 of nonfinite/surrogate data. Response correlation deliberately retains source
 request-ID/type/status matching; this library does not add sender verification.
 
-Member lifecycle, roster/owner binding, common-gate tool registration/execution,
-team injectors, prompt identity, idle/task claims and diagnostic fleet aggregation
-remain pending. No background runner or automatic activation is introduced here.
+ManagerServices.TeamTools installs nine tools independently; spawn_teammate is omitted. A typed private manager
+binding executes closed ToolInput variants only after runtime owner/session/workspace
+checks. A guard before journal replay prevents stale or foreign authority from reading
+settled private projections. Members are read from immutable registered identities in
+manager order; only trusted construction can establish a teammate. Shutdown/plan/review
+are lead-only; send validates the roster plus lead, and broadcast preserves source
+recipient order/refusal summaries. The directory callback runs outside coordinator
+locks. Standard metadata becomes immutable bus fields without reordering.
+
+ReadInbox drains/renders, applies a sticky atomic shutdown assignment even on partial
+failure, and preserves the source read-risk/read-only trait despite automatic acks.
+Tool results, masking, hook order, permission checks and action settlement use the
+existing gate. Selection can only reduce installed tools; forks bind a fresh lead
+team. Delegated subagents inherit selected tools but have a fresh guard and no parent
+manager/bus binding. Bare TeamTools sessions return source unavailable notices.
+Source handler fixtures establish trusted rosters before execution; they do not prove
+spawn/inheritance or lifecycle. Automatic injectors, consuming shutdown state, managed
+member construction, prompt identity, idle/task claims and diagnostic fleet aggregation
+remain pending; no background teammate runner or default activation is introduced.

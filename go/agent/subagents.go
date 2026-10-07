@@ -169,7 +169,16 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	if err != nil {
 		return "", err
 	}
-	gate, err := NewToolGate(catalog, parent.policy, parent.hooks)
+	hooks := parent.hooks
+	hooks.Guards = append([]GuardHook(nil), parent.hooks.Guards...)
+	for i, guard := range hooks.Guards {
+		if _, bound := guard.(teamAuthorityGuard); bound {
+			// Source delegated children inherit tools, but no manager/bus state.
+			// They require their own identity guard, never the parent's binding.
+			hooks.Guards[i] = teamAuthorityGuard{handler}
+		}
+	}
+	gate, err := NewToolGate(catalog, parent.policy, hooks)
 	if err != nil {
 		return "", err
 	}

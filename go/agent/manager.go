@@ -33,6 +33,7 @@ const (
 // transcripts or leases; state is restored through the injected store consumer.
 // Public lookups require an already established owner identity.
 type SessionManager struct {
+	teamProtocols                  *teams.Coordinator
 	teams                          *teams.Bus
 	improvements                   *improvement.Archive
 	skillDrafts                    *userresources.DraftStore
@@ -187,6 +188,10 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 	manager := &SessionManager{restoreTurn: make(chan struct{}, 1), config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
 	teamRoot := filepath.Join(root, ".teams")
 	manager.teams = teams.New(teams.Config{Root: &teamRoot, Masker: services.Secrets})
+	manager.teamProtocols, err = teams.NewCoordinator(teams.CoordinatorConfig{Bus: manager.teams, Members: managerTeamDirectory{manager}})
+	if err != nil {
+		return nil, err
+	}
 	manager.improvements = improvement.NewArchive(filepath.Join(root, ".improvements"), services.Secrets)
 	manager.skillDrafts, err = userresources.NewDraftStore(userresources.DefaultDraftStoreConfig())
 	if err != nil {
@@ -423,6 +428,8 @@ func (manager *SessionManager) managedRuntimeConfig(ctx context.Context, id Sess
 	}
 	runtime := RuntimeConfig{DecisionTools: services.DecisionTools, DecisionProvider: services.DecisionProvider, DecisionLLM: services.DecisionLLM, GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
 	runtime.team = &teams.Identity{Team: teams.TeamID(id), Name: "lead"}
+	runtime.TeamTools = services.TeamTools
+	runtime.teamManager = manager
 	runtime.SelfAuditTools = services.SelfAuditTools
 	runtime.SelfAuditObserver = manager
 	runtime.SelfAuditView = services.SelfAuditView

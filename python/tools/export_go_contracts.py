@@ -6745,6 +6745,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-team-http.json": _json_bytes(_team_http_contracts()),
         "python-team-tools.json": _json_bytes(_team_tool_contracts()),
         "python-team-protocols.json": _json_bytes(_team_protocol_contracts()),
+        "python-team-effects.json": _json_bytes(_team_effect_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -8811,6 +8812,97 @@ def main() -> int:
         (TARGET / name).write_bytes(body)
         print(f"wrote {TARGET / name} ({len(body)} bytes)")
     return 0
+
+
+
+def _team_effect_contracts() -> dict:
+    """Real installed team handlers over real manager sessions and bus IO.
+
+    The trusted roster fixture is explicit; spawning/lifecycle is not exercised.
+    Request IDs and timestamps are normalized only in displayed output.
+    """
+    import asyncio
+    import re
+    from types import SimpleNamespace
+    from unittest.mock import patch
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.manager import SessionManager
+    from mini_loop.registry import ToolContext, ToolRegistry
+    from mini_loop.teams import install_teams
+
+    def op(name, actor="lead", **value):
+        return dict(name=name, actor=actor, input=value)
+
+    tools = [op("send_message",to="lead",content="hi"),op("read_inbox"),
+             op("broadcast",content="hi"),op("list_teammates"),
+             op("request_shutdown",target="bob"),op("request_plan",teammate="bob",task="work"),
+             op("submit_plan",plan="plan"),op("review_plan",request_id="missing",approve=True),
+             op("list_protocols")]
+    cases = [
+        dict(name="unconfigured",unconfigured=True,operations=tools),
+        dict(name="empty",members=[],operations=[op("list_teammates"),op("read_inbox"),op("list_protocols"),op("broadcast",content="hello"),op("request_shutdown",target="bob"),op("request_plan",teammate="bob",task="work"),op("submit_plan",plan="plan"),op("review_plan",request_id="missing",approve=True)]),
+        dict(name="routing",operations=[op("list_teammates"),op("send_message",to="bob",content="hi 界",type="",metadata={"z":[1,1.0,None],"a":{"first":True}}),op("read_inbox",actor="bob"),op("read_inbox",actor="bob"),op("send_message",actor="bob",to="lead",content="answer"),op("read_inbox")]),
+        dict(name="recipients",operations=[op("send_message",to="foreign/lead",content="no"),op("send_message",to="quote'\n",content="no"),op("send_message",to="\U0001fae8",content="no"),op("read_inbox")]),
+        dict(name="broadcast",operations=[op("broadcast",content="hello"),op("read_inbox",actor="bob"),op("read_inbox",actor="charlie"),op("read_inbox"),op("broadcast",actor="bob",content="peer broadcast"),op("read_inbox",actor="bob"),op("read_inbox",actor="charlie"),op("read_inbox")]),
+        dict(name="broadcast-refusal",members=["bob","charlie","d","e","f"],operations=[dict(op("broadcast",content="界"),repeat=16001),op("read_inbox",actor="bob"),dict(op("send_message",to="bob",content="界"),repeat=16001)]),
+        dict(name="lead-only",operations=[op("request_shutdown",actor="bob",target="charlie"),op("request_plan",actor="bob",teammate="charlie",task="work"),op("review_plan",actor="bob",request_id="missing",approve=True),op("list_protocols",actor="bob")]),
+        dict(name="plan",operations=[op("request_plan",teammate="bob",task="work"),op("read_inbox",actor="bob"),op("submit_plan",actor="bob",plan="Plan 界"),op("list_protocols"),op("read_inbox"),op("review_plan",request_id="<request1>",approve=False,feedback="revise"),op("read_inbox",actor="bob"),op("list_protocols",actor="bob"),op("review_plan",request_id="<request1>",approve=True)]),
+        dict(name="shutdown",operations=[op("request_shutdown",target="bob"),op("read_inbox",actor="bob"),op("read_inbox"),op("list_protocols"),op("read_inbox",actor="bob")]),
+        dict(name="shutdown-partial-fault",operations=[op("request_shutdown",target="bob"),dict(action="inject",actor="bob",row={"metadata":None}),op("read_inbox",actor="bob"),op("read_inbox"),op("list_protocols")]),
+        dict(name="metadata-defaults",operations=[op("send_message",to="bob",content="absent"),op("send_message",to="bob",content="null",metadata=None),op("send_message",to="bob",content="empty",metadata={}),op("read_inbox",actor="bob")]),
+    ]
+    registry=install_teams(ToolRegistry())
+    results=[]
+    for recipe in cases:
+        with tempfile.TemporaryDirectory(prefix="go-team-effects-") as scratch:
+            manager=SessionManager(Settings(fake_llm=True,workspace_root=Path(scratch)/"ws",trajectory_enabled=False),FakeAsyncAnthropic())
+            lead=manager.create(owner="alice")
+            members=recipe.get("members",["bob","charlie"])
+            sessions={"lead":lead,**{name:manager.create(owner="alice") for name in members}}
+            manager._teammates["team"]={name:sessions[name].id for name in members}
+            for name,session in sessions.items():
+                session.agent.state.update(team_id="team",agent_name=name)
+            counter=0
+            def uuid():
+                nonlocal counter
+                counter+=1
+                return SimpleNamespace(hex=f"{counter:010x}"+"0"*22)
+            aliases={}
+            def normalize(text):
+                text=re.sub(r'("created_at": )[^,\n]+',r'\g<1>0.0',text)
+                for rid,alias in aliases.items(): text=text.replace(rid,alias)
+                return text
+            rows=[]
+            with patch("mini_loop.manager.uuid.uuid4",side_effect=uuid):
+                for step in recipe["operations"]:
+                    name=step.get("actor","lead")
+                    if step.get("action")=="inject":
+                        path=manager.bus._path("team/"+name)
+                        with path.open("a") as file: file.write(json.dumps(step["row"])+"\n")
+                        rows.append(dict(action="inject",actor=name,row_json=json.dumps(step["row"])))
+                        continue
+                    value=dict(step["input"])
+                    if step.get("repeat"): value["content"]*=step["repeat"]
+                    for key,text in list(value.items()):
+                        if isinstance(text,str):
+                            for rid,alias in aliases.items(): text=text.replace(alias,rid)
+                            value[key]=text
+                    state={} if recipe.get("unconfigured") else sessions[name].agent.state
+                    ctx=ToolContext(agent=None,workspace=Path(scratch),state=state)
+                    row=dict(name=step["name"],actor=name,input_json=json.dumps(step["input"]),repeat=step.get("repeat",1))
+                    try:
+                        output=asyncio.run(registry.get(step["name"]).run(ctx,**value))
+                        for rid in manager.protocols:
+                            if rid not in aliases: aliases[rid]=f"<request{len(aliases)+1}>"
+                        row["output"]=normalize(output)
+                    except Exception as error:
+                        row["error"]=type(error).__name__
+                    row["shutdown_requested"]=bool(sessions[name].agent.state.get("shutdown_requested",False))
+                    row["state_count"]=len(manager.protocols)
+                    rows.append(row)
+            results.append(dict(name=recipe["name"],unconfigured=recipe.get("unconfigured",False),members=members,steps=rows))
+    return dict(cases=results)
 
 
 if __name__ == "__main__":

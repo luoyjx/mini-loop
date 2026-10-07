@@ -1,5 +1,69 @@
 # Go port plan
 
+## 2026-10-08 manager-bound team mailbox/protocol tools
+
+Baseline 6eaab05; full G0–G7 remains open. SessionManager now owns the native
+protocol coordinator alongside its fixed bus. ManagerServices.TeamTools explicitly
+installs nine closed mailbox/protocol variants through the existing execution gate;
+spawn_teammate is absent until native construction/lifecycle is implemented. Source
+schemas and read/write/readonly/parallel traits are retained. In particular read_inbox
+is source read-risk/read-only despite draining and automatically sending shutdown acks.
+
+Runtime-owned identity supplies team/sender/root. Send validates current roster plus
+lead, broadcast skips self and preserves source count/first-three refusal summaries,
+and shutdown/request-plan/review are lead-only. Directory views derive from immutable
+registered session identities in manager order, outside coordinator locks. This is
+not native roster construction or spawning evidence. Consume stores the sticky atomic
+shutdown assignment even on a later partial error; consuming it in the owned teammate
+lifecycle is still pending. Exact empty-inbox/protocol notices and legacy rendering use
+the library, while masks, results, permissions and action settlements use the common gate.
+
+A private owner/session/workspace and current-registration guard runs before journal
+replay as well as new effects, closing the replay bypass that handler-only checks would
+leave. Foreign/deleted/stopped handles cannot retrieve settled private inbox projections.
+Selected delegated children rebind the built-in guard to their fresh handler and do not
+inherit manager/bus state, matching actual source child construction. Selection reduces
+installed tools only; forks keep activation with a fresh lead team. Default activation
+is unchanged. No loosely typed domain state or dependency is added.
+
+Snapshot 111 adds eleven actual installed Python handler recipes / 65 steps over real
+sessions and mailbox IO. An explicit trusted roster fixture precedes execution; only
+displayed request IDs and created_at are normalized. Routed/empty/unconfigured messages,
+Unicode recipient diagnostics, broadcast/refusal, lead checks, review/ack, partial drain
+and nil/empty metadata are compared. Native tests also cover schema/trait identity,
+rewrite/masking/replay, foreign/stale authority, readonly acks, selection/forks and a
+real selected-child model turn. Initial failures were test adapter mistakes (mailbox
+inboxes path, message decoding API and permission-mode method), corrected before gates.
+
+Next deliveries: standalone flag selection; native teammate construction with immutable
+resource/workspace/owner inheritance and owned initial-run cancellation/join; automatic
+inbox injection/shutdown consumption, idle/task claims, prompt identity and diagnostic
+aggregation. The four workflow routes/runtime, MCP, native SQLite driver/crash cases,
+remaining provider/context profiles and full G7 differential/performance/release audit
+remain open. The overall migration is not complete.
+
+Final combined worktree validation (all process handles terminal):
+
+- Focused agent/launcher/CLI team tests passed. `go test ./... -count=1 -timeout=180s`,
+  `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+- `export_go_contracts.py --check`: all 111 files current, two dependency deprecations.
+  `verify_scans.py`: all 19 scanning guards anchored.
+- Three selected source mutations were caught: broadcast-ignores-refusals,
+  shutdown-authorization-dropped, message-to-a-ghost-teammate-silently-lost.
+  They validate source guards; native replay/owner admission is proved by Go tests.
+  The full mutation catalogue was not rerun.
+- Final isolated `.venv/bin/python -m pytest -q`: 2,155 passed, 28 skipped,
+  24 subtests and three dependency deprecation warnings in 71.73s.
+- Architecture delivery: 9/9 automated checks, zero errors/warnings. Spec SHA256
+  d31524056e27a736e2fe5e9b1f2cac2bfc6a78dad67dc4aa726a95b38f505f46;
+  artifact SHA256 fb4a2bb3ee2eadc6c5858aec7b845bf086843e89ee5f810da07f76edb51d6c45.
+  A redundant direct gate edge initially crossed existing routes; the final map uses
+  its existing bound-resources path and manager binding with explicit team labels/cards.
+  Visual inspection remains skipped after the earlier denial, with no retry/bypass.
+- `git diff --check` and README outline checked before staging. Coverage not refreshed.
+  Python package modules and Unicode tables are unchanged; invariants/Unicode check
+  were not rerun. No code change followed the successful final gates.
+
 ## 2026-10-08 native operator team protocol coordinator
 
 Baseline c55439b; full G0–G7 remains open. The native teams library now coordinates

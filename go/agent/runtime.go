@@ -58,7 +58,9 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	team *teams.Identity
+	TeamTools   bool
+	teamManager *SessionManager
+	team        *teams.Identity
 	// ToolSelection narrows the installed catalogue before the gate is built.
 	ToolSelection ToolSelection
 	// Manager-owned process-local drafts; standalone sessions leave this nil.
@@ -128,6 +130,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	teamManager          *SessionManager
 	selfAudit            selfAuditBinding
 	memory               *memory.ScopedStore
 	planApprover         PlanApprover
@@ -183,6 +186,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolSendMessage, protocol.ToolReadInbox, protocol.ToolBroadcast, protocol.ToolListTeammates, protocol.ToolRequestShutdown, protocol.ToolRequestPlan, protocol.ToolSubmitPlan, protocol.ToolReviewPlan, protocol.ToolListProtocols:
+		return handler.executeTeam(ctx, input)
 	case protocol.ToolSelfAudit:
 		return handler.selfAudit.report(ctx)
 	case protocol.ToolRemember, protocol.ToolRecall:
@@ -371,6 +376,20 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		handler.questions = surface
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
+	handler.teamManager = config.teamManager
+	if config.TeamTools {
+		for _, schema := range protocol.TeamSchemas() {
+			// Concurrent teammate construction/lifecycle is a separate slice.
+			if schema.Name == protocol.ToolSpawnTeammate {
+				continue
+			}
+			definition, err := NewToolDefinitionWithSchema(schema, teamTraits(schema.Name), handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
+		}
+	}
 	handler.memory = config.Memory
 	if config.MemoryTools {
 		for _, schema := range protocol.MemorySchemas() {
@@ -508,7 +527,11 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
-	gate, err := NewJournaledToolGate(catalog, DefaultPermissionPolicy(approver), config.Hooks, config.ActionJournal)
+	hooks := config.Hooks
+	if config.TeamTools {
+		hooks.Guards = append([]GuardHook{teamAuthorityGuard{handler}}, hooks.Guards...)
+	}
+	gate, err := NewJournaledToolGate(catalog, DefaultPermissionPolicy(approver), hooks, config.ActionJournal)
 	if err != nil {
 		return nil, err
 	}
