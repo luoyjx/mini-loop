@@ -1,5 +1,20 @@
 # Go port plan
 
+## 2026-10-08 shared Python JSONL value parser
+
+Baseline 97bf9b1. Historical improvement rows now use go/internal/jsonvalue's
+immutable closed variants: null/text/integer/float/boolean/array/object. The
+archive keeps its exported names and errors through aliases. Parsing, duplicate
+key ordering, legacy escaping and strict HTTP serialization retain their prior
+behavior; this is code sharing for the forthcoming team mailbox, not activation.
+No dependencies or open Go domain objects are added.
+
+Validation: independent improvement/httpapi tests passed immediately after the
+extraction; final combined Go full test/coverage, full race and vet gates passed.
+Existing source archive fixtures retain coverage. Full Python regression suite
+also passed (2,155 tests, 28 skipped, 24 subtests). Runtime topology is unchanged.
+
+
 ## 2026-10-08 Python mailbox path components
 
 Source review for the Go team port found that the allowed-name regex admitted

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `bb7a366` plus Python mailbox path validation;
+reviewed **2026-10-08** (Go baseline `97bf9b1` plus shared Python JSONL values;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1314,6 +1314,9 @@ per-resource store errors remain a documented collection gap. The observer adds 
 Python team mailbox keys reject standalone dot components before filesystem
 access; ordinary dotted identifiers remain valid. The configured root stays
 operator-owned.
+The improvement archive shares its immutable Python JSONL parser through
+go/internal/jsonvalue, retaining the public archive types and historical-value
+behavior without new activation.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable
