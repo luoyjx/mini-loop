@@ -6733,6 +6733,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-self-audit-manager.json": _json_bytes(_self_audit_manager_contracts()),
         "python-self-audit-http.json": _json_bytes(_self_audit_http_contracts()),
         "python-self-audit-tool.json": _json_bytes(_self_audit_tool_contracts()),
+        "python-improvement-instruments.json": _json_bytes(_improvement_instrument_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -7937,6 +7938,69 @@ def _self_audit_tool_contracts() -> dict:
                 execution_mode=tool.execution_mode(ToolCall("self_audit", {}, "audit")),
                 absent_from_default=absent_from_default, cases=cases,
                 no_manager_output=no_manager_output)
+
+
+def _improvement_instrument_contracts() -> dict:
+    """Observe the actual proposal acceptance-instrument classifier/digest."""
+    from unittest.mock import patch
+    from mini_loop.self_improve import verifier_touches, verifier_fingerprint
+
+    path_sets = [[], ["mini_loop/agent.py", "tools/verify_guards.py",
+                      ".github/workflows/ci.yml", "tests/conftest.py", "docs/README.md"],
+                 ["prefix/tools/verify_any", "tools/VERIFY_x", "CONFTEst.py",
+                  "my_conftest.py.bak", "x.github/workflows/y", "tools/verify_any",
+                  "tools/verify_any", "tests\\conftest.py"]]
+    touches = [dict(paths=paths, touched=verifier_touches(paths)) for paths in path_sets]
+    scenarios = [
+        ("empty", []),
+        ("single", [dict(path="tools/verify_one.py", text="print('ok')\n")]),
+        ("changed-bytes", [dict(path="tools/verify_one.py", text="print('changed')\n")]),
+        ("renamed", [dict(path="tools/verify_other.py", text="print('ok')\n")]),
+        ("all-patterns", [dict(path="tools/verify_z", text="z"), dict(path="tools/verify_a", text="a"),
+                          dict(path=".github/workflows/ci.yml", text="ci"),
+                          dict(path=".github/workflows/.hidden", text="hidden"),
+                          dict(path="conftest.py", text="root"),
+                          dict(path="tests/conftest.py", text="nested"),
+                          dict(path="other/conftest.py", text="ignored"),
+                          dict(path="tools/verify_dir/child", text="ignored"),
+                          dict(path=".github/workflows/nested/child", text="ignored")]),
+        ("unicode-and-binary", [dict(path="tools/verify_界", text="界\n"),
+                                dict(path="tools/verify_é", hex="00ff800a"),
+                                dict(path=".github/workflows/Ω", text="Ω")]),
+        ("symlinks", [dict(path="notes.txt", text="target"),
+                      dict(path="tools/verify_link", target="../notes.txt"),
+                      dict(path="tools/verify_broken", target="../missing"),
+                      dict(path="tools/verify_loop", target="verify_loop"),
+                      dict(path="conftest.py/child", text="directory ignored")]),
+        ("read-fault", [dict(path="tools/verify_one.py", text="private", unreadable=True)]),
+    ]
+    rows = []
+    with tempfile.TemporaryDirectory(prefix="go-improvement-instruments-") as scratch:
+        for name, files in scenarios:
+            root = Path(scratch) / (name + "[literal]*?")
+            root.mkdir()
+            for item in files:
+                path = root / item["path"]
+                path.parent.mkdir(parents=True, exist_ok=True)
+                if "target" in item:
+                    path.symlink_to(item["target"])
+                else:
+                    path.write_bytes(bytes.fromhex(item["hex"]) if "hex" in item else item["text"].encode())
+            read_bytes = Path.read_bytes
+            unreadable = {str(root / item["path"]) for item in files if item.get("unreadable")}
+            def read(path):
+                if str(path) in unreadable:
+                    raise PermissionError("private filesystem error")
+                return read_bytes(path)
+            with patch.object(Path, "read_bytes", read):
+                fingerprint = verifier_fingerprint(root)
+            rows.append(dict(name=name, files=files, fingerprint=fingerprint))
+        missing = Path(scratch) / "missing"
+        rows.append(dict(name="missing-root", files=[], missing=True,
+                         fingerprint=verifier_fingerprint(missing)))
+        rows.append(dict(name="nul-root", files=[], nul=True,
+                         fingerprint=verifier_fingerprint(Path(scratch) / "\0")))
+    return dict(touches=touches, fingerprints=rows)
 
 
 def main() -> int:

@@ -1,5 +1,41 @@
 # Go port plan
 
+## 2026-10-07 improvement acceptance-instrument checks
+
+The proposal route requires native archive and verified-loop composition. This
+first prerequisite ports the source verifier path classifier and filesystem
+fingerprint, using a fixed 16-byte InstrumentFingerprint instead of broad payloads.
+Snapshot 99 captures three classifier profiles and ten actual source digests.
+Native tests cover actual filesystem recipes, changed/restored contents, symlinks,
+Unicode/binary bytes, literal workspace metacharacters, read-failure markers,
+stat/scan fault distinctions and malformed-name refusal via a detached APFS entry.
+The four source globs retain their ordering and coverage; substring touch flags
+remain broader. Callers must sample before each acceptance judgment, since a
+restored final digest cannot reveal earlier tampering by itself.
+
+Next cohesive tasks:
+1. Add the typed append-only proposal lineage archive and owner-scoped read API.
+2. Port verified-loop task/receipt/integrity transitions and acceptance execution.
+3. Bind proposal worktree/git artifact composition, verifier touch flags and archive.
+4. Bind and compare both improvement HTTP operations, then continue teams/workflows,
+   native persistence and the G0–G7 release audit.
+
+This explicit library changes no runtime feature default or HTTP inventory
+(37 operations versus source 44). README canonical Mermaid and architecture JSON
+now show the operator-only instrument library; HTML is regenerated.
+Validation passed: focused source/native filesystem checks; full Go tests and
+race tests (`-count=1 -timeout=180s`), `go vet ./...`, all 99 contract exports
+(`--check`) and all 19 scan anchors. After all preceding handles were terminal,
+isolated Python pytest passed 2151 tests, 28 skipped and 24 subtests in 86.53s,
+with three dependency deprecations. Export reported two dependency deprecations.
+`git diff --check` and README outline pass. Python package invariant/guard mutation
+sweeps were not rerun because no package module or guarded Python behavior changed.
+Archify passes 9/9 showcase checks with zero errors/warnings; HTML is regenerated.
+Visual inspection remains skipped after the earlier denial, without retry.
+Specification SHA256: 12d49686f19841a0d4df7789b8474b14d51806fc2341ceb7ad5a918313fd022a.
+Artifact SHA256: d5ecf56415c28b86d75c14dad051e7d7adbe4aa8d4dba738058a79b4f2c15929. Overall coverage not refreshed this iteration.
+
+
 ## 2026-10-07 bound self-audit model tool
 
 SelfAuditTools installs the read-risk/readonly/exclusive tool through the existing

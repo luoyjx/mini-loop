@@ -547,6 +547,21 @@
         76
       ],
       "tag": "live HTTP / optional bound model tool"
+    },
+    {
+      "id": "goImprovement",
+      "type": "backend",
+      "label": "Go improvement instruments",
+      "sublabel": "typed digest / verifier path classification",
+      "pos": [
+        60,
+        1380
+      ],
+      "size": [
+        245,
+        76
+      ],
+      "tag": "library-only; proposal pipeline pending"
     }
   ],
   "boundaries": [
@@ -1375,6 +1390,25 @@
       "labelAt": [
         480,
         1110
+      ]
+    },
+    {
+      "id": "goImprovementInstruments",
+      "from": "clients",
+      "to": "goImprovement",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "left",
+      "route": "orthogonal-v",
+      "via": [
+        [
+          10,
+          296
+        ],
+        [
+          10,
+          1418
+        ]
       ]
     }
   ],

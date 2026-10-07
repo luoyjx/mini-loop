@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `9e102f4` plus bound self-audit model tool;
+reviewed **2026-10-07** (Go baseline `f99804f` plus improvement acceptance-instrument checks;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -358,6 +358,7 @@ flowchart LR
     end
 
     subgraph GoPort["Independent Go port · in progress"]
+        GoImprovement["Go improvement instrument checks<br/>typed fingerprint · verifier path classification<br/>library-only; proposal pipeline pending"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
@@ -449,6 +450,7 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoEntry
+    Caller -. explicit instrument checks .-> GoImprovement
     Caller -. explicit typed observations .-> GoSelfAudit
     GoManaged -. owner admission before diagnostic / recording IO .-> GoSelfAudit
     GoEntry -->|report / suggestions / drafts; admitted owner scope| GoSelfAudit
@@ -1308,6 +1310,15 @@ fleet views currently retain attributed binding diagnostics, so unattributed
 per-resource store errors remain a documented collection gap. The observer adds a
 64 MiB total event-byte budget, reported by class if exceeded, alongside source
 100-session/50-recording/200-event limits.
+The separate Go improvement library now classifies touched verifier paths and
+computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
+source root-relative globs, their ordering, file-symlink behavior and unreadable
+read marker. Substring touch classification has a broader scope than those globs.
+Snapshot 99 compares actual source classification and ten filesystem digests.
+This is an explicit operator library; native archive, receipt-gated verified loop,
+proposal branch/commit flow and both improvement HTTP operations remain pending.
+A verified loop must sample the fingerprint before each acceptance judgment;
+computing or restoring a digest alone does not establish verified completion.
 Personal-skill previews are process-local; a committed `SKILL.md` is durable,
 never replaces an existing skill, and appears only in future session snapshots.
 

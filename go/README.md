@@ -2062,3 +2062,24 @@ model tool loops, owned/operator active manager reports, readonly execution,
 selected/default children, guard refusal before observation, masked results and
 local HTTP provider startup under both authentication modes. Dump-config reports
 selection without starting runtime. No additional HTTP operations are introduced.
+
+### Improvement acceptance instruments
+
+improvement.VerifierTouches classifies changed paths by the source substrings,
+retaining case, order and duplicates. VerifierFingerprint(workspace) computes a
+comparable InstrumentFingerprint [16]byte with a fixed 32-hex JSON/text projection.
+The four source globs are tools/verify_*, .github/workflows/*, conftest.py and
+tests/conftest.py, sorted independently in that order. Only regular files count;
+file symlinks are followed. Relative paths and full bytes enter SHA-256 without
+separators; the first 16 bytes are retained. Failed reads hash <unreadable>, while
+stat permission errors and non-permission scan IO failures abort. Missing roots
+produce the empty digest. Literal workspace metacharacters are supported.
+
+Snapshot 99 pins three source classifier profiles and ten source filesystem
+fingerprints. Native tests verify actual filesystem recipes, Unicode/binary and
+symlink behavior, typed projection, changed/restored instrument contents, detached
+classification and explicit IO faults. Malformed path encoding is exercised with
+a detached entry on APFS. This is an operator library. Native archive, verified
+loop, proposal worktree/commit composition and improvement HTTP routes are the
+next steps. These four globs cover their declared locations; acceptance callers
+must sample at each judgment window to detect intermediate tampering.

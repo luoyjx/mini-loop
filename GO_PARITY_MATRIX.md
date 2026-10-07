@@ -15,7 +15,7 @@ digests, glob searches and filename matching, todo transitions, textual question
 outputs, deployment skill catalogue contracts, request/context contracts, role
 selection, run provenance, child loops, action identities, transitions and
 actual replay paths, grant candidates and parked/reviewer approval outcomes from
-the current implementation (98 generated snapshots), plus registry masking,
+the current implementation (99 generated snapshots), plus registry masking,
 environment selection and typed recording projections, plus real foreground commands
 and command-result rendering recipes. The loop snapshot adds cache wire/token
 projections, stuck signals/hashes and actual nudge/halt paths. The lifecycle
@@ -613,3 +613,27 @@ owned/operator diagnostics during an active turn, default-off/selection removal,
 readonly traits, child binding, guard-before-observation, result masking and local
 HTTP-provider launcher execution under both auth modes. No HTTP inventory change;
 G0–G7, comprehensive features, persistence and other gaps remain open.
+
+## Improvement acceptance-instrument checks
+
+Snapshot 99 captures three actual source classifier profiles and ten actual
+fingerprints: empty/missing/NUL roots, changed bytes, renaming, all four globs,
+Unicode/binary data, hidden files, directory omission, file/broken/looping symlinks
+and source read-failure marker. Go improvement.VerifierTouches preserves case,
+order, duplicates and substring rules. VerifierFingerprint returns a concrete
+comparable 16-byte value with the source 32-hex JSON/text projection. It hashes
+relative paths and full bytes without separators, preserving pattern order and
+sorting within each glob. Literal workspace metacharacters remain literal.
+Permission errors in glob enumeration are ignored, stat permission errors abort,
+absent/loop paths are skipped and failed reads contribute <unreadable>. Other
+scan IO failures abort. Native tests exercise mutation/restoration, detached touch
+results and explicit filesystem faults; malformed filename encoding is tested via
+a detached entry because APFS refuses creating such filenames.
+
+These root-relative globs cover only tools/verify_*, .github/workflows/*,
+conftest.py and tests/conftest.py; they do not scan every path flagged by substring
+classification or arbitrary nested verifier directories. Fingerprint sampling
+at acceptance judgment remains required in the future verified loop. This
+library installs no runtime/model/HTTP feature. HTTP inventory remains 37/44;
+native archive, verified loop, proposal flow, both improvement operations and
+G0–G7 remain open.

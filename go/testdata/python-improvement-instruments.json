@@ -1,0 +1,188 @@
+{
+  "fingerprints": [
+    {
+      "files": [],
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb924",
+      "name": "empty"
+    },
+    {
+      "files": [
+        {
+          "path": "tools/verify_one.py",
+          "text": "print('ok')\n"
+        }
+      ],
+      "fingerprint": "2fa59bc02612929996254ae3e9efbca7",
+      "name": "single"
+    },
+    {
+      "files": [
+        {
+          "path": "tools/verify_one.py",
+          "text": "print('changed')\n"
+        }
+      ],
+      "fingerprint": "ab1b183608203ed00a24dec34ea02e8e",
+      "name": "changed-bytes"
+    },
+    {
+      "files": [
+        {
+          "path": "tools/verify_other.py",
+          "text": "print('ok')\n"
+        }
+      ],
+      "fingerprint": "c95b0ab66286d1db515c7b70deb5187d",
+      "name": "renamed"
+    },
+    {
+      "files": [
+        {
+          "path": "tools/verify_z",
+          "text": "z"
+        },
+        {
+          "path": "tools/verify_a",
+          "text": "a"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "text": "ci"
+        },
+        {
+          "path": ".github/workflows/.hidden",
+          "text": "hidden"
+        },
+        {
+          "path": "conftest.py",
+          "text": "root"
+        },
+        {
+          "path": "tests/conftest.py",
+          "text": "nested"
+        },
+        {
+          "path": "other/conftest.py",
+          "text": "ignored"
+        },
+        {
+          "path": "tools/verify_dir/child",
+          "text": "ignored"
+        },
+        {
+          "path": ".github/workflows/nested/child",
+          "text": "ignored"
+        }
+      ],
+      "fingerprint": "85e253f38b14efcc71d9dad746b81a98",
+      "name": "all-patterns"
+    },
+    {
+      "files": [
+        {
+          "path": "tools/verify_界",
+          "text": "界\n"
+        },
+        {
+          "hex": "00ff800a",
+          "path": "tools/verify_é"
+        },
+        {
+          "path": ".github/workflows/Ω",
+          "text": "Ω"
+        }
+      ],
+      "fingerprint": "9bce2918d3c91734a79fbf2be96159e0",
+      "name": "unicode-and-binary"
+    },
+    {
+      "files": [
+        {
+          "path": "notes.txt",
+          "text": "target"
+        },
+        {
+          "path": "tools/verify_link",
+          "target": "../notes.txt"
+        },
+        {
+          "path": "tools/verify_broken",
+          "target": "../missing"
+        },
+        {
+          "path": "tools/verify_loop",
+          "target": "verify_loop"
+        },
+        {
+          "path": "conftest.py/child",
+          "text": "directory ignored"
+        }
+      ],
+      "fingerprint": "be8311734c8f87397d2b6bbabb82cadf",
+      "name": "symlinks"
+    },
+    {
+      "files": [
+        {
+          "path": "tools/verify_one.py",
+          "text": "private",
+          "unreadable": true
+        }
+      ],
+      "fingerprint": "d7eeb6081d7e1f1fa2d2ef1d4276a9b5",
+      "name": "read-fault"
+    },
+    {
+      "files": [],
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb924",
+      "missing": true,
+      "name": "missing-root"
+    },
+    {
+      "files": [],
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb924",
+      "name": "nul-root",
+      "nul": true
+    }
+  ],
+  "touches": [
+    {
+      "paths": [],
+      "touched": []
+    },
+    {
+      "paths": [
+        "mini_loop/agent.py",
+        "tools/verify_guards.py",
+        ".github/workflows/ci.yml",
+        "tests/conftest.py",
+        "docs/README.md"
+      ],
+      "touched": [
+        "tools/verify_guards.py",
+        ".github/workflows/ci.yml",
+        "tests/conftest.py"
+      ]
+    },
+    {
+      "paths": [
+        "prefix/tools/verify_any",
+        "tools/VERIFY_x",
+        "CONFTEst.py",
+        "my_conftest.py.bak",
+        "x.github/workflows/y",
+        "tools/verify_any",
+        "tools/verify_any",
+        "tests\\conftest.py"
+      ],
+      "touched": [
+        "prefix/tools/verify_any",
+        "my_conftest.py.bak",
+        "x.github/workflows/y",
+        "tools/verify_any",
+        "tools/verify_any",
+        "tests\\conftest.py"
+      ]
+    }
+  ]
+}

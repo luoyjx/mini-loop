@@ -2098,3 +2098,15 @@ the admitted principal and false, ignores scope query overrides and spends no
 rate budget. Plain text is projected before writing and capped after masking
 expansion; JSON uses the existing typed projection. The separate explicit
 SelfAuditTools binding installs the model tool through the same execution gate.
+
+## Go improvement acceptance-instrument seam
+
+The improvement package supplies the source path classifier and a fixed-size,
+comparable InstrumentFingerprint. A future verified loop must capture its baseline
+before execution and sample again immediately before each acceptance judgment.
+It hashes only the four source root-relative glob selections, in source order;
+substring-based touch flags have a broader scope. Read failures have a stable
+marker; stat permission and other enumeration IO failures remain errors. The
+private filesystem seam exists for fault verification, not as an injected runtime
+service. Archive, verified-loop receipts and proposal/HTTP composition remain
+pending. This operator library does not grant model tool or merge authority.
