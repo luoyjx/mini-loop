@@ -6715,6 +6715,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-manager-skill-preview.json": _json_bytes(manager_skill_preview_contracts),
         "python-manager-skill-commit.json": _json_bytes(manager_skill_commit_contracts),
         "python-personal-skill-requests.json": _json_bytes(_personal_skill_request_contracts()),
+        "python-personal-skill-http.json": _json_bytes(_personal_skill_http_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -6788,6 +6789,70 @@ def _personal_skill_request_contracts() -> dict:
         cases.append(dict(kind=kind, name="duplicate-last-wins", raw=raw,
                           accepted=True, result=model.model_validate_json(raw).model_dump()))
     return dict(cases=cases)
+
+
+def _personal_skill_http_contracts() -> dict:
+    """Actual authenticated HTTP capture, reviewed preview and publication."""
+    from fastapi.testclient import TestClient
+    from mini_loop.auth import TokenAuth
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, FakeMessage, FakeUsage, text
+    from mini_loop.manager import SessionManager
+    from mini_loop.server import create_app
+    from mini_loop.skills import SkillLoader
+    from mini_loop.user_resources import UserResourceResolver
+
+    with tempfile.TemporaryDirectory() as scratch:
+        root = Path(scratch)
+        resolver = UserResourceResolver(root / "users", SkillLoader(root / "empty"))
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces",
+                            skills_dir=root / "empty", user_resources_root=None,
+                            trajectory_enabled=False)
+        manager = SessionManager(settings, FakeAsyncAnthropic(), user_resources=resolver)
+        app = create_app(manager=manager)
+        with TestClient(app) as client:
+            app.state.auth = TokenAuth({"token-a": "alice", "token-b": "bob"})
+            headers = {"Authorization": "Bearer token-a"}
+            sid = client.post("/sessions", headers=headers, json={}).json()["id"]
+            second = client.post("/sessions", headers=headers, json={}).json()["id"]
+            async def create(messages, **kwargs):
+                value = json.dumps(dict(schema="mini-loop.personal-skill-draft/v1",
+                    decision="create", description="recipe", body="procedure", evidence_indexes=[0])) if kwargs.get("purpose") == "personal_skill_preview" else "done"
+                return FakeMessage([text(value)], "end_turn", FakeUsage(1, 1))
+            manager.get(sid).agent._create = create
+            rows = []
+            def record(name, path, body, token="token-a"):
+                response = client.post(path, json=body,
+                    headers={"Authorization": "Bearer " + token} if token else {})
+                value = response.json()
+                if response.status_code == 200:
+                    for key in ("draft_id", "session", "created_at", "expires_at"):
+                        value.pop(key, None)
+                else:
+                    value = json.loads(json.dumps(value).replace(sid, "<session>"))
+                rows.append(dict(name=name, status=response.status_code, response=value))
+                return response.json()
+            preview_path = f"/sessions/{sid}/personal-skills/preview"
+            record("unauthenticated", preview_path, {"name": "recipe"}, token="")
+            record("query-token-refused", preview_path + "?access_token=token-a", {"name": "recipe"}, token="")
+            record("foreign-preview", preview_path, {"name": "recipe"}, token="token-b")
+            record("empty-evidence", preview_path, {"name": "recipe"})
+            assert client.post(f"/sessions/{sid}/messages", headers=headers,
+                               json={"message": "human evidence"}).status_code == 200
+            draft = record("preview", preview_path, {"name": "recipe"})
+            commit_path = f"/sessions/{sid}/personal-skills/{draft['draft_id']}/commit"
+            reviewed = {"digest": draft["digest"]}
+            assert client.post(f"/sessions/{sid}/mode", headers=headers,
+                               json={"mode": "readonly"}).status_code == 200
+            record("readonly", commit_path, reviewed)
+            assert client.post(f"/sessions/{sid}/mode", headers=headers,
+                               json={"mode": "interactive"}).status_code == 200
+            record("wrong-digest", commit_path, {"digest": "0" * 64})
+            record("cross-session", f"/sessions/{second}/personal-skills/{draft['draft_id']}/commit", reviewed)
+            record("foreign-commit", commit_path, reviewed, token="token-b")
+            record("commit", commit_path, reviewed)
+            record("consumed", commit_path, reviewed)
+    return dict(cases=rows)
 
 
 def main() -> int:

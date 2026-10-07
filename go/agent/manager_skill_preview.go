@@ -30,6 +30,20 @@ func (e *PersonalSkillError) Error() string {
 	if e.message != "" {
 		return e.message
 	}
+	switch e.code {
+	case SkillAuthenticatedOwnerRequired:
+		return "personal skill publication requires an authenticated owner"
+	case SkillDisabled:
+		return "personal skill publication is not enabled"
+	case SkillSessionNotReady:
+		return "session agent is not ready"
+	case SkillLeaseLost:
+		return "session lease was lost"
+	case SkillReadonlySession:
+		return "readonly sessions cannot publish personal skills"
+	case SkillPublicationFailed:
+		return "personal skill publication failed"
+	}
 	return strings.ReplaceAll(string(e.code), "_", " ")
 }
 func (e *PersonalSkillError) Code() PersonalSkillCode { return e.code }

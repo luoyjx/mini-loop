@@ -5954,3 +5954,34 @@ the canonical map. Coverage is not refreshed. After all Go/exporter/scanner jobs
 finished, isolated full Python validation passed: 2,151 tests, 28 skipped,
 24 subtests and three existing deprecation warnings (97.61s). README outline
 and final git diff --check pass.
+
+## Implementation checkpoint — 2026-10-07 owned personal-skill HTTP routes
+
+Base: 0b20cf3. Both POST routes inherit bounded ingress and one authenticated
+principal, decode concrete request values before ownership, require the owned
+session and call Manager with the request context. Source routes do not spend
+rate budget. Typed policy/draft failures preserve safe source status/code/message
+through masked JSON; host faults receive a fixed safe native failure. Actual HTTP
+comparison exposed prior policy message differences; owner/configuration/not-ready,
+lease, readonly and publication-failure messages now match source strings.
+Snapshot 81 compares eleven actual source HTTP responses after a real authenticated
+message turn: authentication/query-token refusal, foreign ownership, empty ledger,
+public preview, readonly, wrong digest, cross-session, reviewed receipt and consumed
+draft. IDs/timestamps are checked separately; deterministic digests and all other
+response fields compare exactly. Rejected commits precede successful reuse of the
+same draft. Method admission and invalid-request-before-ownership/disabled behavior
+have native tests. Complete Pydantic request-validation lists and malformed Unicode
+boundary handling remain next; generic 422 decoding is not full FastAPI parity.
+G0-G7 remain open. Dependencies and opt-in publication defaults are unchanged.
+
+Validation: focused HTTP source comparison and full Go tests/race/vet pass;
+additional final native request/method tests are verified normally and with race.
+Exporter confirms 81 snapshots current; all 19 scan guards and eight selected
+source skill mutation guards pass (not a full mutation sweep). Source package
+modules are unchanged; package invariant verifier is not rerun. Canonical Mermaid,
+boundary explanation and architecture specification are updated; generated HTML
+passes Archify 9/9 checks with zero errors/warnings. Visual review remains skipped
+after prior local-file access denial; automated checks do not establish visual
+acceptance. Coverage is not refreshed. After all other validation jobs finished,
+isolated full Python passed: 2,151 tests, 28 skipped, 24 subtests and three existing
+deprecation warnings (92.48s). Final README outline and git diff --check pass.

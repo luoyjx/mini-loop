@@ -82,8 +82,10 @@ Personal-skill request boundary (2026-10-07): snapshot 80 compares 43 actual
 Pydantic preview/commit validation outcomes and normalized values with the native
 typed decoders. Unknown fields, exact keys, null/type rejection, source patterns,
 Unicode code-point limits and duplicate-key normalization are covered. This is
-request decoding evidence only; the two routes and their validation/error
-envelopes remain pending, including malformed Unicode boundary handling.
+request decoding evidence. Snapshot 81 adds 11 actual HTTP outcomes for both
+routes, including authenticated capture, preview/receipt fields, policy/draft
+errors, and failure retention followed by success. Detailed Pydantic validation
+envelopes and malformed Unicode boundary handling remain pending.
 
 `python/mini_loop/server.py` currently declares 44 routes. The default Go slice should
 start with `/healthz`, `/sessions`, session detail/deletion,
@@ -92,7 +94,7 @@ start with `/healthz`, `/sessions`, session detail/deletion,
 `/ui`. Optional route groups cover skills/memory, workflows, cron, tasks/team,
 improvement, audit, and benchmark. Every route requires a response/error/event
 fixture before its row can be marked covered; route presence alone is weak
-evidence. The current Go handler implements these twenty-eight method/path operations:
+evidence. The current Go handler implements these thirty method/path operations:
 
 | Method | Path | Current boundary |
 |---|---|---|
@@ -107,6 +109,8 @@ evidence. The current Go handler implements these twenty-eight method/path opera
 | POST | /sessions/{session_id}/mode | Current permission mode and next-round posture note |
 | POST | /sessions/{session_id}/steer | Owned idle wakeup or bounded busy steering |
 | POST | /sessions/{session_id}/fork | Completed transcript copy, fresh scratch, typed lineage and source event |
+| POST | /sessions/{session_id}/personal-skills/preview | Owned authenticated evidence preview; typed service errors; validation-list envelope pending |
+| POST | /sessions/{session_id}/personal-skills/{draft_id}/commit | Owned digest-bound publication; exact success cleanup; validation-list envelope pending |
 | GET | /sessions/{session_id}/approvals | Scoped pending approvals |
 | POST | /sessions/{session_id}/approvals/{approval_id} | Bound allow/deny/answer/remember |
 | GET | /sessions/{session_id}/events | Bounded replay/live SSE; configured event-store catch-up (2,000 stored rows), owner admission before read and sequence deduplication; native SQL pending |

@@ -310,8 +310,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-07** (Go baseline `3260abc` plus typed personal-skill request
-validation; personal-skill HTTP routing remains pending).
+reviewed **2026-10-07** (Go baseline `0b20cf3` plus owned personal-skill HTTP
+preview and publication routes; detailed validation envelopes remain pending).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -359,7 +359,7 @@ flowchart LR
 
     subgraph GoPort["Independent Go port · in progress"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned skill preview / reviewed publication"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
@@ -545,8 +545,8 @@ owner directory keys hash exact trusted identifiers without trimming or folding.
 An explicit DirectoryResolver now pins the configured physical root, creates
 private 0700 digest/skills/memory directories, refuses pre-planted child links and
 caches immutable exact-owner bindings. It is an operator filesystem library,
-aggregated with filesystem backends in the interactive map. Launcher/configuration
-and authenticated capture/publication routes remain pending.
+aggregated with filesystem backends in the interactive map. Optional launcher
+configuration and authenticated capture/publication are implemented below.
 `skills.NewLayeredCatalog` now provides explicit agent/user provenance, collision
 refusal, a shared prompt budget and source-owned serve-time verification; it is
 available through explicit owner-bound RuntimeConfig and ManagerServices snapshots.
@@ -604,8 +604,8 @@ and health checks, fresh disk collision checks, bounded no-follow idempotent
 verification, prepared receipts/catalogues and create-only files. Successful
 publication replaces only the resolver cache for future resolutions, preserving
 live snapshots and the bound memory service. It remains an operator library.
-Typed process-local draft storage is available separately. Model
-preview, admitted-turn projection and HTTP skill routes remain pending; launcher
+Typed process-local draft storage, model preview, admitted-turn projection and
+owned HTTP skill routes are implemented below; launcher
 memory roots and independent selection are implemented. Custom maskers without a typed registration surface fail closed.
 
 `go/background` is an explicit operator library; native runtime sessions can
@@ -1142,8 +1142,14 @@ now rejects readonly before peeking at the owner/session/digest-bound draft.
 It publishes through the existing create-only resolver, returns next_session
 activation, then discards only the exact draft. Publication failure retains the
 draft; expiry/cancellation after durable success cannot rewrite the receipt.
-Existing live snapshots remain unchanged. HTTP preview/commit routes remain
-pending; previews grant no publication authority.
+Existing live snapshots remain unchanged. HTTP preview/commit routes now inherit
+one authenticated principal and bounded ingress, decode closed request values and
+require owned sessions before manager admission. Service policy/draft errors keep
+typed code/message details and reviewed status. Responses use detached masked JSON.
+Preview creates a process-local draft; commit publishes only its reviewed digest.
+Source routes do not add rate accounting. Full Pydantic validation-list envelopes
+and malformed Unicode boundary handling remain pending; previews grant no
+publication authority.
 
 Go embedding can supply `ManagerServices.Memory` as one shared Markdown store.
 Create, fork and ordinary/scheduled restoration bind the admitted owner before

@@ -1664,8 +1664,8 @@ Snapshot 78 compares eight actual source manager policy/preview outcomes, includ
 readonly previews and refusal of legacy history when the ledger is empty. The
 private preview lifetime retains idle turn status/count and turn-cancel behavior.
 Go explicitly cancels and joins it on deletion/stop, adding to source turn-only
-cleanup. Lease loss maps to a safe 409 before and during requests. Commit and
-HTTP routes remain pending; no publication permission or model tool is added.
+cleanup. Lease loss maps to a safe 409 before and during requests. Reviewed commit
+and HTTP routes are described below; no publication model tool is added.
 
 ### Reviewed manager skill commit
 
@@ -1674,7 +1674,7 @@ readonly, peeks exact authority/digest, publishes create-only fields and discard
 only after success. The typed receipt activates in next_session; existing live
 resources remain pinned. Failure retains the draft, and durable success survives
 TTL/cancellation after the file commit. Snapshot 79 compares six actual source
-commit/retention outcomes. No model tool is added; HTTP routes remain pending.
+commit/retention outcomes. No model tool is added; HTTP routes are described below.
 
 ### Typed personal-skill HTTP requests
 
@@ -1685,5 +1685,20 @@ counts Unicode code points rather than UTF-8 bytes, defaults only when absent,
 and rejects explicit null. Duplicate JSON keys follow source last-value-wins
 behavior. Failed decoding preserves the existing receiver. Snapshot 80 compares
 43 actual Pydantic acceptance and normalized-value cases. These request types
-are not yet registered as routes; HTTP validation-error envelopes and malformed
-Unicode handling require separate route-boundary evidence.
+now feed the preview/commit routes; complete HTTP validation-error envelopes and
+malformed Unicode handling require separate route-boundary evidence.
+
+### Owned personal-skill HTTP routes
+
+The two POST routes reuse the one admitted principal, require its live session,
+then call Manager preview/commit with the request context. They add no model
+publication authority and no rate accounting, matching the source route flow.
+Typed policy/draft errors keep source status, code and message through masked
+JSON projection. Unknown host faults return a safe native failure without host
+text. Snapshot 81 compares 11 actual HTTP responses, with authentic message
+capture, public preview and receipt fields, readonly/wrong-digest/cross-session
+refusals, successful publication and exact draft consumption. Dynamic IDs and
+timestamps are checked independently, then excluded from source comparison.
+Failure cases retain the same draft for eventual commit. Complete request-error
+validation lists and malformed Unicode handling remain open; existing generic
+422 decoding responses are not claimed as full FastAPI parity.
