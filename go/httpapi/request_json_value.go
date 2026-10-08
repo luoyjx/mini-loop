@@ -132,7 +132,7 @@ func (r *requestJSONValueReader) value(depth int) (ValidationInput, error) {
 		if bytes.HasPrefix(r.data[r.position:], []byte(literal)) {
 			r.position += len(literal)
 			if literal == "NaN" || literal == "Infinity" || literal == "-Infinity" {
-				return ValidationInput{kind: validationNonfinite}, nil
+				return ValidationInput{kind: validationNonfinite, text: literal}, nil
 			}
 			if literal == "null" {
 				return ValidationInput{}, nil

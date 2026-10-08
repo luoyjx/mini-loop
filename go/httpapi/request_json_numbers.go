@@ -37,7 +37,7 @@ func readRequestJSONNumber(raw string) (ValidationInput, error) {
 	}
 	f, err := strconv.ParseFloat(raw, 64)
 	if math.IsInf(f, 0) {
-		return ValidationInput{kind: validationNonfinite}, nil
+		return ValidationInput{kind: validationNonfinite, text: raw}, nil
 	}
 	if err != nil {
 		return ValidationInput{}, err

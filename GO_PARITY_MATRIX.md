@@ -1,5 +1,56 @@
 # Python to Go parity matrix
 
+## 2026-10-08 authenticated workflow HTTP launch
+
+Baseline 06a9584. POST /sessions/{session_id}/workflows now admits a required
+closed request object and delegates definition/args validation and execution to
+the optional manager-owned service. The four Source workflow HTTP operations are
+installed as native routes. Request-model validation follows definition, args and
+action_id order before owner lookup, after ingress authentication. Omitted args
+become an empty object; nullable/empty action_id selects a fresh wfhttp_ identity;
+unknown request fields are ignored, including nonserializable legacy extra values.
+Retained JSON fields lower into the existing immutable closed Value sum, preserving
+integer/float and legacy scalar identity. Diagnostic values never confer authority.
+
+An authenticated deployment and admitted session owner are required before stamping
+explicit_human authority. The narrowly named trusted constructor stamps only
+workflow.launch, caller actor, http channel and mini_loop.server. Message identity
+is msg_ plus action_id, so retries bind the same immutable journal identity. General
+HTTP messages retain their existing untrusted authority. The service owns launch,
+replay conflicts, worker execution and publication; HTTP launch_turn remains Source
+zero. Permission/journal/lookup/validation failures map to 403/409/404/400, with
+Source's 500-character truncation for known 400 diagnostics; unexpected errors stay
+private. Default manager/launcher workflows remain disabled.
+
+The differential race test compares all 44 actual FastAPI fixture cases, including
+exact request-model errors, disabled/open-deployment/foreign-owner refusals, launch
+provenance, same action replay, changed payload or parent conflicts, ignored legacy
+extra fields, operator cancellation and terminal replay/list. Additional native tests
+execute real FreshWorkflowRunner artifacts and verify generated identities for
+omitted/null/empty action_id. The existing typed runtime/core/journal tests retain
+worker readonly/capability, ownership, cancellation and pruning boundaries.
+This does not establish exhaustive malformed nested definition, legacy retained
+scalar, transport or archival parity. Those profiles remain part of G7 work.
+
+Final gates passed: focused HTTP/definition/admission race suite; full go test ./...
+and go test -race ./... (-count=1 -timeout=180s); go vet ./...; all 131 Source
+exports current; all 19 scan guards anchored; full Python regression with
+2,155 passed, 28 skipped, 24 subtests and three dependency warnings in 82.26s.
+README outline and git diff --check passed. Python invariant/guard sweeps were
+not rerun because no Python runtime package or guarded Source behavior changed.
+No dependencies or ambiguous Go business types were introduced. Coverage was
+not refreshed; 90.23% (20,742/22,989) belongs to 136cd53.
+
+README baseline, canonical Mermaid/boundary explanation and generated interactive
+map now describe authenticated HTTP launch. Archify passed all 9 showcase checks
+with zero errors/warnings. Specification SHA256:
+0adf7cbfb0b8257939714d41eaa9b348e4c2a0b9dd0d7f74e01accccdb3b3e2b;
+HTML SHA256 c5a786a03bae0440ac20c5e005e87301768447d4147ac31bc4d21ca8c70765aa.
+Visual review remains skipped after prior access denial. Launcher activation, six
+reserved event projections, open-payload archival fidelity, MCP, native session
+SQLite, remaining profiles and full G7 remain pending. The complete port stays open.
+
+
 ## 2026-10-08 workflow HTTP Source contracts and constructor diagnostics
 
 Baseline 136cd53. Source snapshot 131 records 44 actual FastAPI workflow HTTP
@@ -931,7 +982,11 @@ start with `/healthz`, `/sessions`, session detail/deletion,
 `/ui`. Optional route groups cover skills/memory, workflows, cron, tasks/team,
 improvement, audit, and benchmark. Every route requires a response/error/event
 fixture before its row can be marked covered; route presence alone is weak
-evidence. The current Go handler implements these forty method/path operations:
+evidence. The current Go handler registers all 44 Source method/path operations across
+40 patterns (Go /{$} implements the exact Source / root). Registration does not
+establish complete response, error, persistence or G7 parity. Snapshot 131 adds
+44 real workflow HTTP comparisons; launcher activation and additional malformed
+profiles remain pending. The implemented boundary inventory is:
 
 | Method | Path | Current boundary |
 |---|---|---|
@@ -959,6 +1014,9 @@ evidence. The current Go handler implements these forty method/path operations:
 | POST | /sessions/{session_id}/approvals/{approval_id} | Bound allow/deny/answer/remember |
 | GET | /sessions/{session_id}/events | Bounded replay/live SSE; configured event-store catch-up (2,000 stored rows), owner admission before read and sequence deduplication; native SQL pending |
 | GET | /sessions/{session_id}/transcript | Owned configured-store epoch reads; concrete persisted messages, historical/gap/crash-tail views and pinned query validation; Null-store 404 remains |
+| GET, POST | /sessions/{session_id}/workflows | Owned list plus authenticated explicit-human launch; stable action/message identity and journal replay; defaults remain off |
+| GET | /sessions/{session_id}/workflows/{run_id} | Scoped typed run detail; missing/foreign run indistinguishable |
+| POST | /sessions/{session_id}/workflows/{run_id}/cancel | Ownership reduces capability; required reason model before lookup; owned worker settlement |
 | GET, POST | /sessions/{session_id}/cron | Owned structured jobs and schedule; fresh process authorization |
 | DELETE | /sessions/{session_id}/cron/{job_id} | Owned cancel; foreign job reads like missing |
 | POST | /sessions/{session_id}/cron/{job_id}/arm | Operator-only process authorization for restored jobs |

@@ -92,6 +92,21 @@ func ExplicitHumanRunContext(config HumanRunConfig) (RunContext, error) {
 	value.approved = normalizeRunCapabilities(config.ApprovedCapabilities)
 	return value.clone(), nil
 }
+
+// WorkflowHTTPRunContext is for an admitted human HTTP action, never model text.
+// The HTTP adapter must establish authenticated deployment and session ownership.
+// Stable message identity lets the action journal recognize a client retry.
+func WorkflowHTTPRunContext(actor ActorID, action ActionID) (RunContext, error) {
+	if actor == "" || action == "" {
+		return RunContext{}, errors.New("workflow HTTP actor and action must be non-empty")
+	}
+	value, err := ExplicitHumanRunContext(HumanRunConfig{ActorID: &actor, Channel: "http", StampedBy: "mini_loop.server", ApprovedCapabilities: []RunCapability{CapabilityWorkflowLaunch}})
+	if err != nil {
+		return RunContext{}, err
+	}
+	value.messageID = MessageID("msg_" + string(action))
+	return value, nil
+}
 func normalizeRunCapabilities(values []RunCapability) []RunCapability {
 	result := append([]RunCapability{}, values...)
 	slices.Sort(result)

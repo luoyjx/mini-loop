@@ -27,7 +27,7 @@ func (s *Server) register(path string, handlers map[string]http.HandlerFunc) {
 	})
 }
 func (s *Server) routes() {
-	s.register("/sessions/{session_id}/workflows", map[string]http.HandlerFunc{"GET": s.listWorkflows})
+	s.register("/sessions/{session_id}/workflows", map[string]http.HandlerFunc{"GET": s.listWorkflows, "POST": s.launchWorkflow})
 	s.register("/sessions/{session_id}/workflows/{run_id}", map[string]http.HandlerFunc{"GET": s.workflowDetail})
 	s.register("/sessions/{session_id}/workflows/{run_id}/cancel", map[string]http.HandlerFunc{"POST": s.cancelWorkflow})
 	s.register("/sessions/{session_id}/team", map[string]http.HandlerFunc{"GET": s.sessionTeam})

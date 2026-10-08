@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `136cd53` plus workflow constructor diagnostics and HTTP Source contracts,
+Runtime review baseline: `06a9584` plus authenticated workflow HTTP launch,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -409,7 +409,7 @@ flowchart LR
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · operator create-only publication"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
-        GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join<br/>typed session events · scoped summaries · owned HTTP reads / cancel"]
+        GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join<br/>typed session events · scoped summaries<br/>authenticated HTTP launch · owned reads / cancel"]
         GoGate -. explicit-human workflow tools .-> GoWorkflow
         GoWorkflow -. events / summaries / later-turn results .-> GoSession
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
@@ -1598,7 +1598,11 @@ The Go HTTP workflow list, detail and cancel routes resolve the admitted session
 owner before accessing the optional manager-owned service. Cancellation reduces
 capability and requires ownership without minting human launch authority. Required
 cancel-body validation precedes session lookup; ingress authentication remains first.
-The dedicated HTTP launch route and launcher activation remain pending.
+The Go workflow HTTP launch route requires an authenticated deployment and an owned
+parent, then stamps only workflow.launch with explicit_human authority. Its action_id
+derives a stable msg_ identity for journal replay; absent/null/empty actions receive
+a fresh wfhttp_ identity. General HTTP messages retain untrusted authority.
+Workflow execution remains optional and launcher activation is still pending.
 
 Open the [interactive architecture](docs/mini-loop-system.architecture.html) for
 guided request, tool, and orchestration views. Its source is

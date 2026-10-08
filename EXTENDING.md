@@ -2635,3 +2635,19 @@ that append observable. The Source untrusted-artifact-data wrapper conveys data 
 grants no capability. Standalone runtimes, Fresh workers and delegated/autonomous
 children have no automatic manager delivery. This path is process-local and is not
 a durable append/ack transaction. Snapshot 130 compares actual Python managed turns.
+
+## Go workflow HTTP admission
+
+POST session workflows validates the closed request object before owner lookup,
+then requires the optional service and authenticated deployment. WorkflowHTTPRunContext
+is a trusted caller constructor: the adapter establishes deployment authentication
+and ownership before calling it. Only workflow.launch is approved. Actor, channel,
+stamp and stable msg_ action identity are captured; body fields and saved provenance
+cannot reconstruct or widen live authority. General HTTP messages remain untrusted.
+
+The service retains definition admission, policy checks, typed journal identity,
+worker ownership and terminal publication. HTTP uses Source launch_turn zero, not
+a parent-model turn counter. Unknown request fields are ignored. Retained JSON data
+lowers into immutable closed Value; request diagnostics never enter service authority.
+Known permission/conflict/lookup/validation failures retain HTTP categories; nested
+malformed-definition and retained legacy-scalar profiles still need broader G7 proof.
