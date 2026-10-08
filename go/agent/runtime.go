@@ -58,11 +58,13 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	teamMember  bool
-	taskStore   *tasks.Store
-	TeamTools   bool
-	teamManager *SessionManager
-	team        *teams.Identity
+	WorkflowTools   bool
+	WorkflowService *WorkflowService
+	teamMember      bool
+	taskStore       *tasks.Store
+	TeamTools       bool
+	teamManager     *SessionManager
+	team            *teams.Identity
 	// ToolSelection narrows the installed catalogue before the gate is built.
 	ToolSelection ToolSelection
 	// Manager-owned process-local drafts; standalone sessions leave this nil.
@@ -132,6 +134,8 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	workflows            *WorkflowService
+	workflowParent       *ManagedSession
 	teamManager          *SessionManager
 	selfAudit            selfAuditBinding
 	memory               *memory.ScopedStore
@@ -188,6 +192,8 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolWorkflow, protocol.ToolWorkflowStatus, protocol.ToolWorkflowCancel:
+		return handler.executeWorkflow(ctx, authority, input)
 	case protocol.ToolSpawnTeammate, protocol.ToolSendMessage, protocol.ToolReadInbox, protocol.ToolBroadcast, protocol.ToolListTeammates, protocol.ToolRequestShutdown, protocol.ToolRequestPlan, protocol.ToolSubmitPlan, protocol.ToolReviewPlan, protocol.ToolListProtocols:
 		return handler.executeTeam(ctx, authority, input)
 	case protocol.ToolSelfAudit:
@@ -278,6 +284,10 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 // questions plus deferred compaction to the implemented workspace tools.
 // Task delegates to a fresh child through the explicit subagent seam.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
+	if config.WorkflowService != nil {
+		config.WorkflowTools = true
+		config.ActionJournal = config.WorkflowService.config.Journal
+	}
 	if !config.SelfAuditView.valid() {
 		return nil, errors.New("invalid self-audit visibility")
 	}
@@ -378,6 +388,16 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		handler.questions = surface
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
+	handler.workflows = config.WorkflowService
+	if config.WorkflowTools {
+		for _, schema := range protocol.WorkflowToolSchemas() {
+			definition, err := NewToolDefinitionWithSchema(schema, workflowToolTraits(schema.Name), handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
+		}
+	}
 	handler.teamManager = config.teamManager
 	handler.taskStore = config.taskStore
 	if config.TeamTools {
@@ -531,6 +551,9 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		return nil, err
 	}
 	hooks := config.Hooks
+	if config.WorkflowTools {
+		hooks.Guards = append([]GuardHook{workflowAuthorityGuard{handler}}, hooks.Guards...)
+	}
 	if config.TeamTools {
 		hooks.Guards = append([]GuardHook{teamAuthorityGuard{handler}}, hooks.Guards...)
 	}

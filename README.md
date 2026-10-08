@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `9454a06` plus the native owned workflow service,
+Runtime review baseline: `def5cec` plus optional bound workflow model tools,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -409,7 +409,7 @@ flowchart LR
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · operator create-only publication"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
-        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
+        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
         GoEntry -->|public static documents| GoBrowser
@@ -1495,7 +1495,15 @@ cancel and join workers; caller timeout leaves background cleanup owned. Active
 tasks pin graphs until terminal publication finishes. Observer failures are bounded
 and do not change execution results. The service is an explicit operator library;
 manager/model/HTTP installation, SSE/archive integration and automatic parent
-notification append remain pending. The canonical runtime topology is unchanged.
+notification append remain pending. Snapshot 127 now compares 21 actual Python
+workflow tool handler profiles and exact risk/readonly/barrier traits. Explicit
+RuntimeConfig.WorkflowService activates the three tools and binds its own journal;
+WorkflowTools alone exposes the source unavailable-service boundary. Managed
+launch captures the real parent turn and original model input. Trusted launch/manage
+capabilities and immutable identity/workspace guards run before cached results.
+Tools retain sorted spaced UTF-8 JSON, source session filtering and cancel reason.
+The GoResources node includes this explicit runtime surface; fleet/HTTP/default
+activation and automatic notifications are still pending.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

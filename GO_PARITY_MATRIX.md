@@ -1,5 +1,57 @@
 # Python to Go parity matrix
 
+## 2026-10-08 bound workflow model tools
+
+Baseline def5cec. W6A installs concrete Workflow/WorkflowStatus/WorkflowCancel
+handlers through explicit RuntimeConfig selection. Supplying WorkflowService enables
+these tools and shares its action journal; an unrelated runtime journal is superseded.
+WorkflowTools without a service preserves the source unavailable-service boundary.
+Defaults remain off; catalogue filtering can reduce but cannot enable the surface.
+NewManagedSession binds the actual parent handle and captures runCount for launches;
+bare Session launch is refused. Original typed definition/args remain the action input.
+
+Launch/manage require private trusted human per-message capabilities. Immutable
+owner/session/workspace and capability guards precede journal replay; handler checks
+repeat admission before effects. This native replay fence is an explicit extension
+protecting private cached results, not an inference from direct source handler tests.
+All three tools are ordering barriers: launch exec, cancel write, status readonly read.
+Live permission mode still applies. Status/cancel use the bound session filter;
+cancel joins workers with source reason "cancelled by trusted parent". Replies retain
+source sorted, spaced UTF-8 JSON, including Unicode values and integer/float identity.
+
+Snapshot 127 compares 21 actual Python tool handler profiles and installed traits.
+The source uses real WorkflowService/engine/store/journal and replaces only worker
+execution. Profiles cover normal launch/status/cancel, isolated launch/manage grants,
+untrusted or absent context, missing action/call/managed parent/service and foreign
+status/cancel. Launch input hashes retain forged metadata separately from normalized
+definitions. Native tests cover a real managed model turn launching a blocked worker,
+tool cancellation/join, original journal effects, injected journal precedence,
+same-turn notification suppression, replay equality and foreign/capability fencing,
+readonly cancellation refusal, default absence, bare launch and catalogue reduction.
+The new Python fixture helper is separate from the general exporter for maintenance.
+
+Validation: focused native workflow race tests, full Go tests/race/vet passed;
+all 127 source exports are current and all 19 scan guards remain anchored.
+Full Python regression passed: 2,155 passed, 28 skipped, 24 subtests in 73.68s;
+three dependency deprecation warnings. It ran after the Go gates to avoid timing
+assertion interference.
+No Python package module or guarded runtime changed, so package invariant/guard
+sweeps were not rerun. No dependencies or ambiguous Go domain types were added.
+git diff --check and README outline passed. The canonical Resources node now includes
+optional workflow bindings; its interactive specification was regenerated with Archify
+9/9 showcase checks, zero errors/warnings. Specification SHA256:
+32e91adc254b291c29077f954740787c178caef40bb441df15f717d52b4cb052;
+HTML SHA256 50d514b2b38e03b9a928c5970e382ca166d4083223fdaf7a5cb8c6d876c3770b.
+Visual inspection remains skipped after prior access denial. Coverage was not refreshed
+this slice; 90.20% (20,359/22,572) belongs to def5cec and is not the current profile.
+
+Next W6B binds optional manager construction and owned lifecycle to the service,
+including parent resolution, deletion/shutdown joins and readonly teammate isolation.
+W6C adds automatic later-turn notification injection and typed events/summary/HTTP
+projections. MCP, native session SQLite, remaining profiles and full G7 remain open;
+the full Python-to-Go port is unfinished. Runtime operators still own the service lifetime.
+
+
 ## 2026-10-08 owned workflow service
 
 Baseline 9454a06. W5B3 adds agent.WorkflowService as an explicit operator library.

@@ -2274,8 +2274,9 @@ Snapshot 123 compares 33 real Python service/injector profiles, exact/over ASCII
 multibyte bounds, first/later turn rules, fallback, foreign filtering, release/ack,
 append failure and a 51-notice overflow. Race tests cover concurrent unique delivery,
 coherent detached status during engine execution and pruning parallel bookkeeping.
-Owned launch/journal/context/task service, wall-time/events and manager/tools/HTTP
-installation remain pending. No native workflow persistence is delivered.
+The owned launch/journal/context/task service and runtime tools are described below.
+Fleet/HTTP installation and automatic injection remain pending; no native workflow
+persistence is delivered.
 
 ## Dynamic workflow definition admission
 
@@ -2286,8 +2287,8 @@ and checks process caps in source order. AdmittedDefinition returns immutable
 Definition and PolicySnapshotHash. It does not authorize launch or bind an action.
 Snapshot 124 compares 20 real Python service recipes, including typed definitions,
 forged metadata, exact/fractional limits, refusal ordering and policy hashes. Native
-unknown-field refusal uses the existing strict decoder diagnostic. Live launch,
-action-journal binding and owned task lifecycle remain the next service work.
+unknown-field refusal uses the existing strict decoder diagnostic. The owned service
+and bound runtime tools below compose admission with live launch and action binding.
 
 ## Typed workflow tool and action contracts
 
@@ -2301,7 +2302,7 @@ eight input/action identities, 20 advertised-shape refusals, three schemas and 1
 actual Python memory/SQLite journal profiles. Native injected-store effects are
 compared to SQLite source, without claiming a native SQLite implementation.
 Background launch/wait/cancel/events are implemented by the owned service below;
-manager/tool activation remains pending.
+Explicit runtime tools are described below; manager activation remains pending.
 
 
 ## Owned workflow service
@@ -2327,5 +2328,24 @@ conflicting payload, observer failure and ordered admission refusals. Native rac
 tests additionally cover concurrent replay/cancel, cleanup after caller timeout,
 publication retention, deleted parents, context isolation, actual fresh workers
 and bounded detached observer errors. Native callbacks must cooperate; duration
-limits are explicitly validated. Manager/tools/HTTP, SSE/archive integration and
+limits are explicitly validated. Manager/HTTP, SSE/archive integration and
 automatic notification append remain pending. No native SQLite backend is added.
+
+
+## Bound workflow model tools
+
+Pass WorkflowService in RuntimeConfig to NewManagedSession for explicit model
+Workflow/WorkflowStatus/WorkflowCancel tools. The service's journal is shared with
+ToolGate; original input, current parent turn and one bound run identity are retained.
+Tools require private trusted human per-message launch/manage capabilities, remain
+ordering barriers, and preserve exec/read/write permission risks. Native guards
+check bound identity/workspace and capabilities before cached journal results.
+Source handler profiles preserve refusal ordering, foreign-session hiding and
+sorted spaced UTF-8 replies. ToolSelection can reduce the installed surface.
+
+Defaults stay disabled; WorkflowTools without a service preserves its unavailability
+refusal. Bare Session cannot launch. The operator owns the injected service lifetime.
+Snapshot 127 covers 21 actual Python tool handler profiles plus traits; native tests
+cover a real managed model launch/cancel, readonly backstop, raw journal binding,
+matching service journal selection, same-turn notification suppression and replay
+fences. Manager/HTTP composition and automatic notifications remain pending.

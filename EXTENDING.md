@@ -2472,8 +2472,8 @@ preserve numeric enum/const across model requests and archival ToolSchema reads.
 Normal exit without a structured result raises source RuntimeError. Parent cancellation
 must be joined by the engine/service before resource reclamation. LastWorker is a
 synchronized detached diagnostic and does not grant authority. The owned
-WorkflowService below composes this runner. Launch/manage tools, HTTP and manager
-installation remain pending.
+WorkflowService below composes this runner. Optional runtime tools are described
+below; HTTP and manager installation remain pending.
 
 workflows.NewServiceViews owns the status/summary and notification projection layer.
 Status reads run/node/artifact state under one store lock and detaches optional fields.
@@ -2507,9 +2507,9 @@ than prematurely lowering DefinitionAdmission's normalized view into the journal
 WorkflowReferenceInput uses WorkflowRunID shared with workflows.RunID and the
 agent action record alias. The closed ToolInput variants support exact canonical
 and spaced Python JSON, archival round trips and recursive recording masks.
-WorkflowToolSchemas returns detached source schemas only; handlers and manager
-installation remain future composition. The owned service below performs trusted
-origin/capability checks.
+WorkflowToolSchemas returns detached source schemas; bound runtime handlers below
+consume them. Manager installation remains separate composition. Optional bound runtime tools below
+perform trusted origin/capability checks.
 Optional tools are absent from DefaultToolNames. The decoder enforces the advertised
 outer object shape; it does not validate the definition DAG or argument schema.
 ActionJournal.Begin hashes the original input and AttachWorkflow binds one run
@@ -2549,5 +2549,27 @@ duration_ms, without tool inputs or outputs. Observer errors retain at most 100
 and result enqueue events are once per live service. Outbox enqueue retains source
 run/kind deduplication, including the store's three-field completion payload.
 Native wall times must fit a positive Go duration. These process-local mechanisms
-are not durable recovery or exactly-once delivery. Manager/tool/HTTP installation,
+are not durable recovery or exactly-once delivery. Manager/HTTP installation,
 SSE/archive projection and automatic parent append are separate pending work.
+
+
+### Go bound workflow model tools
+
+RuntimeConfig.WorkflowService explicitly enables Workflow/WorkflowStatus/
+WorkflowCancel and supplies that service's journal to the ToolGate. A conflicting
+runtime ActionJournal is superseded, matching source injected-service composition.
+WorkflowTools alone advertises tools whose missing service is a runtime refusal;
+all defaults stay off. ToolSelection can narrow this surface but cannot enable it.
+NewManagedSession binds the actual parent handle so launch records its runCount.
+Bare Session launch is refused. Owner/session/workspace guards and trusted per-
+message launch/manage capability checks run before journal replay and again at the
+handler boundary; this explicit native replay fence protects private cached results.
+
+Launch is exec risk, cancel write risk, status readonly read risk, and all three
+are ordering barriers. Permission mode still applies. A launch retains original
+WorkflowInput for Begin/AttachWorkflow and requires a journaled ToolCall. Status
+and cancel use the bound session filter; cancel joins with reason "cancelled by
+trusted parent". Responses preserve source sorted, spaced UTF-8 JSON. Custom
+service resolution/event sinks remain operator seams. Runtime construction does
+not own the injected service's shutdown. Fleet manager binding/delete/shutdown,
+automatic notification injection and HTTP/SSE/archive integration remain pending.

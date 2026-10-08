@@ -6487,6 +6487,7 @@ def _manager_skill_commit_contracts(scratch: Path) -> dict:
 
 
 def _snapshot() -> dict[str, bytes]:
+    from tools.workflow_tool_contracts import workflow_bound_tool_contracts
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
         # composition root too, before importing the module.
@@ -6763,6 +6764,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-admission.json": _json_bytes(_workflow_admission_contracts()),
         "python-workflow-tools.json": _json_bytes(_workflow_tool_contracts(Path(scratch))),
         "python-workflow-service.json": _json_bytes(_workflow_service_contracts()),
+        "python-workflow-bound-tools.json": _json_bytes(workflow_bound_tool_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

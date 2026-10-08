@@ -156,6 +156,7 @@ func newManagedSession(config RuntimeConfig, deferState bool) (*ManagedSession, 
 	core.gate.modeSource = core.control
 	session := &ManagedSession{core: core, admission: make(chan struct{}, 1), accepting: true, status: StatusIdle, createdAt: float64(time.Now().UnixMicro()) / 1e6, approvals: config.Approvals, workspaceBound: config.Workspace != ""}
 	session.admission <- struct{}{}
+	core.runtime.workflowParent = session
 	run := &trajectoryRun{store: config.Trajectories, masker: config.Secrets}
 	if config.Trajectories != nil {
 		run.fail(trajectoryFault(func() error { var err error; run.count, err = config.Trajectories.Count(config.ID); return err }))

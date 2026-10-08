@@ -1,0 +1,549 @@
+{
+  "rows": [
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "",
+      "error": "",
+      "input_hash": "72159dca9cf01191cfdb28ec0aa0ba3a6f20a18a7c4842f48f6a26d5108043a6",
+      "name": "launch",
+      "output": "{\"definition_revision\": \"wfdef_adf83349003bfd76\", \"error\": null, \"estimated_size\": \"small\", \"reused\": false, \"run_id\": \"<run>\", \"status\": \"async_launched\", \"workflow_name\": \"wf\"}",
+      "tool": "Workflow"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "",
+      "error": "",
+      "input_hash": "",
+      "name": "status",
+      "output": "{\"active_node_ids\": [], \"attempts_used\": 1, \"cancel_reason\": null, \"definition_revision\": \"wfdef_adf83349003bfd76\", \"error\": null, \"nodes\": [{\"attempt_ids\": [\"<attempt>\"], \"error\": null, \"node_id\": \"a\", \"status\": \"SUCCEEDED\"}], \"result\": {\"answer\": \"中文\"}, \"run_id\": \"<run>\", \"status\": \"COMPLETED\", \"version\": 4, \"workflow_name\": \"wf\"}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "",
+      "error": "",
+      "input_hash": "",
+      "name": "cancel",
+      "output": "{\"run_id\": \"<run>\", \"status\": \"COMPLETED\"}",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "launch",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "",
+      "error": "",
+      "input_hash": "72159dca9cf01191cfdb28ec0aa0ba3a6f20a18a7c4842f48f6a26d5108043a6",
+      "name": "launch-only",
+      "output": "{\"definition_revision\": \"wfdef_adf83349003bfd76\", \"error\": null, \"estimated_size\": \"small\", \"reused\": false, \"run_id\": \"<run>\", \"status\": \"async_launched\", \"workflow_name\": \"wf\"}",
+      "tool": "Workflow"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "manage",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "",
+      "error": "",
+      "input_hash": "",
+      "name": "manage-only-status",
+      "output": "{\"active_node_ids\": [], \"attempts_used\": 1, \"cancel_reason\": null, \"definition_revision\": \"wfdef_adf83349003bfd76\", \"error\": null, \"nodes\": [{\"attempt_ids\": [\"<attempt>\"], \"error\": null, \"node_id\": \"a\", \"status\": \"SUCCEEDED\"}], \"result\": {\"answer\": \"中文\"}, \"run_id\": \"<run>\", \"status\": \"COMPLETED\", \"version\": 4, \"workflow_name\": \"wf\"}",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "manage",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "",
+      "error": "",
+      "input_hash": "",
+      "name": "manage-only-cancel",
+      "output": "{\"run_id\": \"<run>\", \"status\": \"COMPLETED\"}",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "manage",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow operation requires per-message workflow.launch approval",
+      "error": "PermissionError",
+      "input_hash": "",
+      "name": "launch-missing-cap",
+      "output": "",
+      "tool": "Workflow"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "launch",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow operation requires per-message workflow.manage approval",
+      "error": "PermissionError",
+      "input_hash": "",
+      "name": "status-missing-cap",
+      "output": "",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "launch",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow operation requires per-message workflow.manage approval",
+      "error": "PermissionError",
+      "input_hash": "",
+      "name": "cancel-missing-cap",
+      "output": "",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "untrusted",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow operations require an explicit_human trusted local context",
+      "error": "PermissionError",
+      "input_hash": "",
+      "name": "untrusted-launch",
+      "output": "",
+      "tool": "Workflow"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "untrusted",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow operations require an explicit_human trusted local context",
+      "error": "PermissionError",
+      "input_hash": "",
+      "name": "untrusted-status",
+      "output": "",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "untrusted",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow operations require an explicit_human trusted local context",
+      "error": "PermissionError",
+      "input_hash": "",
+      "name": "untrusted-cancel",
+      "output": "",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "none",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow operations require an explicit_human trusted local context",
+      "error": "PermissionError",
+      "input_hash": "",
+      "name": "no-context",
+      "output": "",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow launch requires a journaled tool action",
+      "error": "RuntimeError",
+      "input_hash": "",
+      "name": "no-action",
+      "output": "",
+      "tool": "Workflow"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow launch requires a journaled tool action",
+      "error": "RuntimeError",
+      "input_hash": "",
+      "name": "no-call",
+      "output": "",
+      "tool": "Workflow"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow launch requires a managed AgentSession",
+      "error": "RuntimeError",
+      "input_hash": "",
+      "name": "no-parent",
+      "output": "",
+      "tool": "Workflow"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow service is not available",
+      "error": "RuntimeError",
+      "input_hash": "",
+      "name": "no-service-launch",
+      "output": "",
+      "tool": "Workflow"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow service is not available",
+      "error": "RuntimeError",
+      "input_hash": "",
+      "name": "no-service-status",
+      "output": "",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "workflow service is not available",
+      "error": "RuntimeError",
+      "input_hash": "",
+      "name": "no-service-cancel",
+      "output": "",
+      "tool": "WorkflowCancel"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "run <run> not found",
+      "error": "NotFoundError",
+      "input_hash": "",
+      "name": "foreign-status",
+      "output": "",
+      "tool": "WorkflowStatus"
+    },
+    {
+      "args": {
+        "float": 1.0,
+        "x": "中文"
+      },
+      "context": "both",
+      "definition": {
+        "name": "wf",
+        "nodes": [
+          {
+            "id": "a",
+            "kind": "agent"
+          }
+        ],
+        "return_from": "a",
+        "revision": "forged",
+        "source": "plugin"
+      },
+      "detail": "run <run> not found",
+      "error": "NotFoundError",
+      "input_hash": "",
+      "name": "foreign-cancel",
+      "output": "",
+      "tool": "WorkflowCancel"
+    }
+  ],
+  "traits": [
+    {
+      "name": "Workflow",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "exec"
+    },
+    {
+      "name": "WorkflowStatus",
+      "parallel_safe": false,
+      "readonly": true,
+      "risk": "read"
+    },
+    {
+      "name": "WorkflowCancel",
+      "parallel_safe": false,
+      "readonly": false,
+      "risk": "write"
+    }
+  ]
+}
