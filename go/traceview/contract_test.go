@@ -57,7 +57,10 @@ func TestActualPythonLedgerAndCompleteHTML(t *testing.T) {
 			if len(ledger.Rows) != row.RowCount || ledger.Omitted != row.Omitted || !reflect.DeepEqual(kinds, row.Kinds) || !reflect.DeepEqual(ledger.EndedAt, row.EndedAt) {
 				t.Fatal("ledger shape differs", len(ledger.Rows), ledger.Omitted, kinds)
 			}
-			actual := Render([]Ledger{ledger}, "mini-loop trace · fixture", now)
+			actual, err := Render([]Ledger{ledger}, "mini-loop trace · fixture", now)
+			if err != nil {
+				t.Fatal(err)
+			}
 			if actual != row.Page {
 				i := 0
 				for i < len(actual) && i < len(row.Page) && actual[i] == row.Page[i] {
@@ -80,7 +83,7 @@ func TestActualPythonLedgerAndCompleteHTML(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if page := Render([]Ledger{ledger}, "mini-loop trace · fixture", now); page != fixture.File.Page {
+	if page, err := Render([]Ledger{ledger}, "mini-loop trace · fixture", now); err != nil || page != fixture.File.Page {
 		t.Fatal("export assembly differs from Python")
 	}
 	for _, invalid := range [][]byte{[]byte(`null`), []byte(`{} {}`), {0xff}} {

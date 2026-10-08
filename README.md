@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `801584b` plus closed historical summary views,
+Runtime review baseline: `f292c5b` plus phase-specific unbounded ledger metrics,
 final HTML UTF-8 validation and private traceview output,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
@@ -376,7 +376,7 @@ flowchart LR
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
-        GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
+        GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
@@ -1563,6 +1563,14 @@ filter rows before their masked strict UTF-8 projection. Truthy non-object metad
 fails summary/list and owned admission while direct document reads remain available.
 Direct page and successful HTTP page/list contents match Source. Ledger metric
 conversion, timing/input/output profiles, native SQLite and full G7 remain pending.
+Snapshot 139 compares seventy-one metric recipes and 284 HTTP outcomes. Named
+IntegerCount values retain unbounded token sums; MetricValue retains closed historical
+counters until render-time int conversion. Usage conversion stays at ledger build,
+header counter conversion at render, and integer formatting observes the Source
+4300-digit limit. Pair metrics honor Source scalar key equality. Render now returns
+HTML or a typed error; RenderUTF8 preserves the final text boundary after caps.
+Timing/input/output, remaining model/tool scalar profiles, native SQLite, MCP and
+full G7 remain pending.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

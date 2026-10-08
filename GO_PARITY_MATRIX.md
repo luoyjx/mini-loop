@@ -1,5 +1,56 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native unbounded ledger metrics and conversion phases
+
+Baseline f292c5b (Source snapshot 139 preparation). IntegerCount retains canonical
+private decimal text and performs arithmetic through local big.Int values; published
+counts are immutable. MetricValue retains a closed historical counter until render.
+Usage tokens cross PythonInteger conversion at ledger construction, while header
+model/tool/error counters cross it at render. Token folds and cross-ledger totals no
+longer overflow int64. Source decimal text rules, pinned Unicode decimal digits,
+float truncation and the 4300-digit conversion/serialization/format limits are explicit.
+
+Metric containers lower dict(value or {}) at the decoder boundary, including pair
+sequences, string/object pairs, scalar key equality and unhashable-key refusal.
+Unknown metric members remain inert archive values. Original header token fields
+are overwritten by the actual usage fold, matching Source. Event truthiness uses
+closed-value semantics. Render now returns (string, error); callers and the existing
+full-HTML contract test handle this result. RenderUTF8 validates capped final text
+after metric conversion. No mutable big.Int or ambiguous any/interface/map/RawMessage
+was added to a domain struct. No dependencies or production defaults changed.
+
+Native tests compare 71 actual Source decoded-wire recipes: complete folded metrics,
+separate build/serialization/render failures, single and two-ledger HTML hashes and
+284 real Source HTTP outcomes with complete successful owned page hashes. Sixteen
+recipes fail build and thirteen fail single-page render. Historical files are explicit
+seeds, not proof of native session SQLite. Source exception classes are recorded;
+native typed errors preserve the phase but do not claim exact Python error bodies.
+
+Validation: focused metric/ledger/archive/summary race tests; full go test ./...
+with shared coverage; full race suite (-count=1 -timeout=180s); go vet ./... passed.
+Logs and exit code 0 are retained in /tmp/mini-loop-metrics-{go,python}-validation.{log,exit}.
+All 139 Source exports are current; all 19 source scan guards anchored. Full Python
+regression: 2,155 passed, 28 skipped, 24 subtests, three dependency warnings in 78.52s.
+README outline and git diff --check passed. No Python runtime modules changed;
+Python invariant/guard sweeps were not rerun.
+
+Fresh Go statement coverage: 21,311/23,618 (90.23%), merging duplicate source blocks
+by maximum hit count across -coverpkg=./... test binaries. Profile:
+/tmp/mini-loop-trace-metrics-coverage.out. Python coverage was not refreshed;
+statement coverage does not measure feature migration completion.
+
+README baseline, canonical Mermaid, boundary text, extension map and architecture
+source/generated HTML are updated. Archify passed 9/9 showcase checks with zero
+errors/warnings. Specification SHA256:
+fb66e7ff264a0c5c2da1ca89be0ce793f4dcfe353bef189fed4c97e3fab585f2.
+HTML SHA256: 78200504fefb0b038551bd232032788c38691af091527136701bd6a0a57b7d85.
+Visual review remains skipped after prior access denial. Permissive timing/input/output,
+remaining model/tool scalar and transport profiles, MCP, native session SQLite and
+full G7 remain open. SQLite driver approval remains unanswered; no dependency was
+added. Next capture actual Source timing/input/output behavior and advance remaining
+native capabilities that can be implemented without the pending driver decision.
+The complete Python-to-Go objective stays open.
+
 ## 2026-10-08 ledger metric conversion contract preparation
 
 Baseline b0c1111. Source snapshot 139 executes seventy-one decoded-wire recipes

@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/agent"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
-	"strings"
 	"unicode/utf8"
 )
 
@@ -35,11 +34,6 @@ const (
 )
 
 type Field struct{ Name, Text string }
-type Metrics struct {
-	agent.TrajectoryMetrics
-	InputTokens  int64 `json:"input_tokens"`
-	OutputTokens int64 `json:"output_tokens"`
-}
 type Row struct {
 	Kind                   Kind
 	Label, Content, Status string
@@ -114,7 +108,6 @@ func Build(document []byte) (Ledger, error) {
 		EndedAt              *float64 `json:"ended_at"`
 		DurationMS           *float64 `json:"duration_ms"`
 		Input, Output, Error *string
-		Metrics              Metrics
 		Events               []json.RawMessage
 	}
 
@@ -141,10 +134,10 @@ func Build(document []byte) (Ledger, error) {
 	if !present {
 		metrics, _ = value.Lookup("Metrics")
 	}
-	if metrics.Truth() && metrics.Kind() != jsonvalue.Object {
-		return out, ErrDocument
+	metricValues, err := metricMap(metrics)
+	if err != nil {
+		return out, err
 	}
-	fields = append(fields, jsonvalue.Field{Name: "metrics", Value: metrics.Select("event_count", "model_calls", "tool_calls", "tool_errors", "errors")})
 	header, err := jsonvalue.ObjectValue(fields).MarshalJSON()
 	if err != nil || json.Unmarshal(header, &wire) != nil {
 		return out, ErrDocument
@@ -156,12 +149,10 @@ func Build(document []byte) (Ledger, error) {
 		}
 		wire.Events = append(wire.Events, raw)
 	}
-	out = Ledger{TrajectoryID: wire.TrajectoryID, Session: wire.Session, RunIndex: wire.RunIndex, Status: agent.TrajectoryCompleted, Partial: wire.Partial, StartedAt: wire.StartedAt, EndedAt: wire.EndedAt, DurationMS: wire.DurationMS, Input: wire.Input, Metrics: wire.Metrics, Rows: []Row{}}
+	out = Ledger{TrajectoryID: wire.TrajectoryID, Session: wire.Session, RunIndex: wire.RunIndex, Status: agent.TrajectoryCompleted, Partial: wire.Partial, StartedAt: wire.StartedAt, EndedAt: wire.EndedAt, DurationMS: wire.DurationMS, Input: wire.Input, Metrics: newMetrics(metricValues), Rows: []Row{}}
 	if wire.Status != nil {
 		out.Status = *wire.Status
 	}
-	out.Metrics.InputTokens = 0
-	out.Metrics.OutputTokens = 0
 	add := func(kind Kind, label, content string, seq *int64, ts *float64) int {
 		out.Rows = append(out.Rows, Row{Kind: kind, Label: label, Content: content, Sequence: seq, Timestamp: ts, Detail: []Field{}})
 		return len(out.Rows) - 1
@@ -218,10 +209,7 @@ func Build(document []byte) (Ledger, error) {
 			}
 			return v
 		}
-		truth := func(key string) bool {
-			v := strings.TrimSpace(string(fields[key]))
-			return v != "" && v != "null" && v != "false" && v != "0" && v != "0.0" && v != `""` && v != "[]" && v != "{}"
-		}
+		truth := func(key string) bool { child, _ := event.Lookup(key); return child.Truth() }
 		detail := func(row *Row, name, key string) {
 			v, ok := fields[key]
 			if ok && !bytes.Equal(v, []byte("null")) {
@@ -298,15 +286,22 @@ func Build(document []byte) (Ledger, error) {
 				}
 				if truth("usage") {
 					detail(row, "Usage", "usage")
-					var usage struct {
-						Input  int64 `json:"input_tokens"`
-						Output int64 `json:"output_tokens"`
-					}
-					if json.Unmarshal(fields["usage"], &usage) != nil {
+					usage, err := jsonvalue.Decode(string(fields["usage"]))
+					if err != nil || usage.Kind() != jsonvalue.Object {
 						return Ledger{}, ErrDocument
 					}
-					out.Metrics.InputTokens += usage.Input
-					out.Metrics.OutputTokens += usage.Output
+					input, _ := usage.Lookup("input_tokens")
+					output, _ := usage.Lookup("output_tokens")
+					in, err := count(input)
+					if err != nil {
+						return Ledger{}, err
+					}
+					outCount, err := count(output)
+					if err != nil {
+						return Ledger{}, err
+					}
+					out.Metrics.InputTokens = out.Metrics.InputTokens.Add(in)
+					out.Metrics.OutputTokens = out.Metrics.OutputTokens.Add(outCount)
 				}
 				value := bytes.TrimSpace(fields["model_output"])
 				if len(value) > 0 && (value[0] == '[' || value[0] == '{') {

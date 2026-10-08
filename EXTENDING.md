@@ -1617,7 +1617,10 @@ safe. Reader ownership enforcement belongs to the HTTP/manager caller; raw libra
 store access is an operator capability. Default deletion retains files, and explicit
 purge runs after manager drain. File recording has no session-restoration authority.
 `traceview.Build` decodes wire JSON into named ledger rows and plain inspector strings;
-`Render` applies one HTML escaping boundary. The HTTP view uses recorded-owner and
+`Render` returns HTML or a conversion error and applies one HTML escaping boundary.
+Named IntegerCount values fold unbounded tokens; MetricValue retains closed counters
+until render-time int conversion. Snapshot 139 compares 71 actual metric recipes and
+284 HTTP outcomes, including Source digit limits and pair-key normalization. The HTTP view uses recorded-owner and
 file-size checks before Build. The standalone traceview CLI is an operator reader,
 with no synthetic HTTP principal. Original CSS and filter JS are embedded.
 

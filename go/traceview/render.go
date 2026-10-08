@@ -66,7 +66,10 @@ func preview(text string) string {
 // RenderUTF8 validates the final page after preview/inspector caps, as the Source
 // response/file writer does. Historical text is never silently replaced.
 func RenderUTF8(ledgers []Ledger, title string, generatedAt time.Time) ([]byte, error) {
-	page := Render(ledgers, title, generatedAt)
+	page, err := Render(ledgers, title, generatedAt)
+	if err != nil {
+		return nil, err
+	}
 	if !utf8.ValidString(page) {
 		return nil, ErrDocument
 	}
@@ -145,20 +148,23 @@ func renderRow(out *strings.Builder, row Row, base *float64) {
 }
 
 // Render is self-contained; all supplied text crosses the same HTML escaping boundary.
-func Render(ledgers []Ledger, title string, generatedAt time.Time) string {
+func Render(ledgers []Ledger, title string, generatedAt time.Time) (string, error) {
 	var out strings.Builder
 	css, _ := assets.ReadFile("style.css")
 	js, _ := assets.ReadFile("filter.js")
 	out.WriteString("<!doctype html><html><head><meta charset='utf-8'><title>" + escape(title) + "</title><meta name='viewport' content='width=device-width,initial-scale=1'><style>" + string(css) + "</style></head><body><h1>" + escape(title) + "</h1>")
-	var totals Metrics
+	totals := [6]IntegerCount{}
 	session := ""
 	for _, ledger := range ledgers {
-		totals.ModelCalls += ledger.Metrics.ModelCalls
-		totals.ToolCalls += ledger.Metrics.ToolCalls
-		totals.ToolErrors += ledger.Metrics.ToolErrors
-		totals.Errors += ledger.Metrics.Errors
-		totals.InputTokens += ledger.Metrics.InputTokens
-		totals.OutputTokens += ledger.Metrics.OutputTokens
+		for i, metric := range []MetricValue{ledger.Metrics.ModelCalls, ledger.Metrics.ToolCalls, ledger.Metrics.ToolErrors, ledger.Metrics.Errors} {
+			value, err := metric.counter()
+			if err != nil {
+				return "", err
+			}
+			totals[i] = totals[i].Add(value)
+		}
+		totals[4] = totals[4].Add(ledger.Metrics.InputTokens)
+		totals[5] = totals[5].Add(ledger.Metrics.OutputTokens)
 		if session == "" {
 			session = string(ledger.Session)
 		}
@@ -167,12 +173,16 @@ func Render(ledgers []Ledger, title string, generatedAt time.Time) string {
 	out.WriteString(`<div class="totals">`)
 	for i, value := range []struct {
 		name  string
-		count int64
-	}{{"model calls", int64(totals.ModelCalls)}, {"tool calls", int64(totals.ToolCalls)}, {"tool errors", int64(totals.ToolErrors)}, {"errors", int64(totals.Errors)}, {"input tokens", totals.InputTokens}, {"output tokens", totals.OutputTokens}} {
+		count IntegerCount
+	}{{"model calls", totals[0]}, {"tool calls", totals[1]}, {"tool errors", totals[2]}, {"errors", totals[3]}, {"input tokens", totals[4]}, {"output tokens", totals[5]}} {
 		if i > 0 {
 			out.WriteString(" · ")
 		}
-		fmt.Fprintf(&out, `%s <b>%s</b>`, value.name, Comma(value.count))
+		formatted, err := value.count.comma()
+		if err != nil {
+			return "", err
+		}
+		fmt.Fprintf(&out, `%s <b>%s</b>`, value.name, formatted)
 	}
 	out.WriteString(`</div><input id="q" type="search" placeholder="filter records">`)
 	for i, ledger := range ledgers {
@@ -200,5 +210,5 @@ func Render(ledgers []Ledger, title string, generatedAt time.Time) string {
 		out.WriteString(`</section>`)
 	}
 	out.WriteString("<script>" + string(js) + "</script></body></html>")
-	return out.String()
+	return out.String(), nil
 }

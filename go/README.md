@@ -2432,6 +2432,14 @@ filter rows before their masked strict UTF-8 projection. Truthy non-object metad
 fails summary/list and owned admission while direct document reads remain available.
 Direct page and successful HTTP page/list contents match Source. Ledger metric
 conversion, timing/input/output profiles, native SQLite and full G7 remain pending.
+Snapshot 139 compares seventy-one metric recipes and 284 HTTP outcomes. Named
+IntegerCount values retain unbounded token sums; MetricValue retains closed historical
+counters until render-time int conversion. Usage conversion stays at ledger build,
+header counter conversion at render, and integer formatting observes the Source
+4300-digit limit. Pair metrics honor Source scalar key equality. Render now returns
+HTML or a typed error; RenderUTF8 preserves the final text boundary after caps.
+Timing/input/output, remaining model/tool scalar profiles, native SQLite, MCP and
+full G7 remain pending.
 
 
 ## Owned workflow result injection
