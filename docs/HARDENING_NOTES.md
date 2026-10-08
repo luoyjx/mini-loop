@@ -7890,4 +7890,9 @@ Missing versus explicit-null sequences and early legacy epoch returns are retain
 Context/read errors propagate; count/ordering faults cannot masquerade as a missing
 request. Named projections detach returned message containers and capability records.
 Actual Source SQLite recipes and rewrite stability are compared through an archive
-reader, not a native SQLite backend or managed-store reconstruction adapter.
+reader. The managed adapter now binds the selected session ID, preserves stored
+masking and loads the stamped integer epoch without current-epoch substitution.
+Reads release persistence locks before backend IO, bypass admission and lease claims,
+and preserve unrepaired foreign-lease crash tails. Nil/disabled storage returns the
+missing-start result. In-flight provider reads and old-epoch native round trips are
+tested through an injected typed store; this still does not prove native SQLite.

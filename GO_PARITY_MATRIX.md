@@ -1,5 +1,51 @@
 # Python to Go parity matrix
 
+## 2026-10-08 managed historical request reconstruction
+
+Baseline 1e9240a (Source snapshot 149). ManagedSession.ReconstructRequest now
+binds its own session ID to the enabled configured StateStore. A private concrete
+reader projects typed stored events into the closed RequestEvent union and loads
+messages from the model_start's exact integer TranscriptEpoch. Physical ordering
+and ignored-event sequence stopping survive. Nil/disabled storage returns the
+Source MissingStart result; no live-history fallback is used.
+
+The caller owns authorization and backend lifetime. Reads release persistence
+locks before IO and do not take turn admission, flush history, acquire leases,
+repair crash tails or reinstall permission/capability observations. Backend errors
+retain errors.Is identity through ErrRequestReconstruction; backend panics retain
+only their type. Historical message values detach and retain stored masking and
+caller omission. The managed typed-store profile supports concrete integer epochs;
+the broader Source scalar/malformed archive profile remains the library contract.
+No model tool or HTTP route is added by the operator method.
+
+Native tests reconstruct both rounds of a real managed tool/model turn and compare
+messages, cached system representation, tool schemas, model and max tokens against
+the actual provider boundary. Requests remain identical after an idle rewrite
+advances the transcript epoch. Reads also work during actual provider invocation;
+masked projections, missing/disabled stores, event/message errors, panics and
+cancellation, concurrent event capture and foreign-lease unrepaired crash tails are
+verified. The test backend is injected and in memory, not a native SQLite database.
+
+Validation: focused reconstruction race tests; full go test ./... -count=1
+-timeout=180s, go test -race ./... -count=1 -timeout=180s and go vet ./... pass.
+Source export --check passes 149 files; all 19 scan guards remain anchored. Full
+Python regression passes 2155 tests, skips 28 and passes 24 subtests in 187.40s.
+Warnings: three dependency deprecations and one subprocess finalizer reporting an
+already closed event loop during test_owner_map_bound. Python runtime modules and
+scanner targets were unchanged; separate invariants and mutation sweeps were not
+rerun. README outline and git diff --check pass. Coverage was not rerun after this
+adapter; the preceding 90.15% profile belongs to 1e9240a, not this changed tree.
+
+README canonical map/boundary and interactive specification are synchronized.
+Archify deliver passes 9/9 showcase checks with zero errors/warnings. Visual
+inspection remains skipped after prior access denial. Specification SHA256:
+af82235b359024451f0959cddd58de0c3c49004219c903f401a63d94670225ab;
+HTML SHA256: 88c5562f9c000dee39baadc1a1d8661231e130ab692f77b32af77a3df271d812.
+Native SQLite driver approval, remaining full-registry services, nonfinite/surrogate
+archival profiles, full activation and G7 remain open. Next inspect the remaining
+full-registry service contracts and port their runtime composition in small slices.
+The complete Python-to-Go objective remains active.
+
 ## 2026-10-08 native historical request reconstruction
 
 Baseline c2088cf (Source snapshot 149). sessionquery.Reconstruct exposes a closed

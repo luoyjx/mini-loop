@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `c2088cf` plus typed historical request reconstruction
+Runtime review baseline: `1e9240a` plus managed stored-request reconstruction
+and typed historical request reconstruction
 and independent transcript-search launcher/CLI
 selection and actual Source runtime replay, plus explicit session-bound transcript_search
 and the typed bounded transcript-search library
@@ -382,7 +383,7 @@ flowchart LR
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>owner lookup · resource snapshots / default scoped memory<br/>workspace policy · delete / stop drain"]
-        GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch reads"]
+        GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance"]
@@ -391,7 +392,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · library only"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
@@ -1157,6 +1158,15 @@ paired model-visible results omit `is_error`, matching Python. Empty refusal
 content uses an empty string because the strict request domain forbids empty
 block arrays. Absent and explicit-null provider caller metadata remain distinct.
 See the parity matrix.
+
+`ManagedSession.ReconstructRequest` reads the configured typed event/transcript store
+for its own session ID and returns a closed historical request projection. It preserves
+physical event order and the exact stamped epoch, including superseded transcripts.
+The caller owns authorization; reads do not take turn admission, flush live messages,
+claim a lease, repair crash tails or reinstall historical capabilities. Missing or
+disabled storage returns the Source missing-start result. Native provider-boundary
+and rewrite tests use an injected backend; native SQLite remains pending.
+
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
 Guardian is an opt-in reviewer inside the existing approval boundary, not a new

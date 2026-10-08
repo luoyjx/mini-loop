@@ -2974,6 +2974,16 @@ observations, not live authority. Request() detaches containers; standard JSON o
 retains strict serialization errors. Readers must return stored masked snapshots
 and preserve physical event order and epoch selection. The caller owns authorization,
 lifetime and backend close. No provider invocation, state repair, role installation
-or broker grant is introduced. Managed typed-store binding and native SQLite remain
-separate slices; nonfinite/surrogate and wider malformed archival profiles are not
-claimed from the current finite corpus.
+or broker grant is introduced.
+
+`ManagedSession.ReconstructRequest` snapshots its configured enabled StateStore and
+binds its own trusted session ID. The private reader projects typed stored events in
+physical order and loads only the model_start's integer epoch. It releases persistence
+locks before IO and never claims a lease or flushes live history. Nil/disabled storage
+returns MissingStart. State faults are wrapped by ErrRequestReconstruction while
+preserving error identity and type-only panic diagnostics. Messages are validated
+and encoded into detached inert values; recorded masks and caller omission survive.
+Native event types support concrete integer epochs; broader historical scalar and
+malformed records remain the archive library's separate contract. No model tool or
+HTTP route is installed by this operator method. Native SQLite, nonfinite/surrogate
+and wider archival profiles remain unproven.
