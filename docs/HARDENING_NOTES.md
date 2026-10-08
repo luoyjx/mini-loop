@@ -7974,3 +7974,14 @@ have direct-child cleanup only. Cancellation returns failure after joining local
 process/drains. Normal Source probes, digest recheck after file mutation, exact byte
 caps, closed-pipe hangs and exited-child pipe holders are exercised by native helpers.
 No source snapshot or model AST tool has been installed.
+
+### Go migration — foreground startup publication before Interrupt
+
+The full race suite failed a real-child stop stress deadline. Code inspection found
+a window where the child can write its ready file before its parent inserts the PID
+into the live-process tracker. Interrupt could observe
+an empty registry and miss an already-running child. Start and PID insertion now
+share the tracker lock with Interrupt; startup error paths release it. Callbacks and
+process waits remain outside the lock. Existing actual child-spawn/stop stress tests
+cover interruption and context cancellation; no new effect permission or background
+ownership was introduced.

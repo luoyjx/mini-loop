@@ -232,14 +232,22 @@ func (executor *Executor) execute(ctx context.Context, command string, policy ex
 	if policy.background {
 		cmd.Stderr = stdoutWrite
 	}
+	// A child can publish effects immediately after Start. Serialize foreground
+	// start and registration with Interrupt so an already-running child cannot
+	// be missed merely because its parent has not published the PID yet.
+	if !policy.background {
+		executor.processes.mu.Lock()
+	}
 	if err := cmd.Start(); err != nil {
+		if !policy.background {
+			executor.processes.mu.Unlock()
+		}
 		return failure(err)
 	}
 	_ = stdoutWrite.Close()
 	_ = stderrWrite.Close()
 	interrupted := make(chan struct{}, 1)
 	if !policy.background {
-		executor.processes.mu.Lock()
 		executor.processes.live[cmd.Process] = interrupted
 		executor.processes.mu.Unlock()
 		defer func() {

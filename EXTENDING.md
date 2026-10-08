@@ -3098,3 +3098,12 @@ and joins the child/drains. Caller cancellation returns its context error; inter
 timeouts/overflow and ordinary process faults become typed probe statuses. There is
 no persistent child or request cache. Source snapshots and tool activation remain
 pending; an Applied version probe is not proof of semantic payload correctness.
+
+## Go foreground spawn and Interrupt ordering
+
+The shell executor serializes foreground Start and live-PID registration with
+Interrupt under the same tracker lock. A child can publish filesystem effects before
+Start returns to its parent; an interrupt observing those effects must wait for PID
+publication rather than return an empty registry. Startup errors release the lock
+before failure projection. The lock is released before started callbacks, captures,
+waits and policy execution. Background spawning uses its separate owner.

@@ -1,5 +1,31 @@
 # Python to Go parity matrix
 
+## 2026-10-08 foreground shell startup registration ordering
+
+Baseline d3157cf. A full race run failed the existing real-child spawn/stop stress
+test's two-second deadline. Code inspection found a Start/registration window:
+a child can emit effects before its parent publishes its PID, allowing Interrupt
+to observe an empty tracker. The foreground executor now holds the same tracker
+lock through Start and PID insertion; startup failures unlock before projection.
+Callbacks, output drains and waits remain outside the lock. Background ownership
+and effect permission policy are unchanged. This is a separate small runtime fix.
+
+The existing TestStopWhileShellSpawnsChild runs both interruption and context
+cancellation over twenty starts per case. Five repeated race runs pass after the
+fix (200 real starts/stops). Final combined-worktree go test ./... -count=1
+-timeout=180s, go test -race ./... -count=1 -timeout=180s and go vet ./... pass;
+all 152 Source exports were checked in this batch. No Source runtime module or
+mutation anchor changed; full Python regression, Source mutation sweeps and
+coverage were not refreshed. README outline and git diff --check pass. Architecture
+source/generated map match; Archify passes 9/9 showcase checks with zero errors/
+warnings. Visual inspection remains skipped after prior access denial.
+Specification SHA256: 38e875be238f24e99e2fbec83aa556c30b437c223dba7184d4f09e5962f601fe;
+HTML SHA256: e0ca6fcd24a5d050bbf26ffa89d198fed03eb90fa54eb350dbec7764a58708c3.
+
+AST source snapshots/structured payloads/tool wiring, diagnostics parser choice,
+native SQLite and the complete G7 migration audit remain required. The full
+Python-to-Go objective is still active.
+
 ## 2026-10-08 standalone AST executable probes and bounded processes
 
 Baseline 0477c2b. NewAdapter validates Config and exposes Probe(ctx, workspace).

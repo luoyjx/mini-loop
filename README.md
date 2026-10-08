@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `0477c2b` plus standalone AST executable probing and
+Runtime review baseline: `d3157cf` plus foreground shell start/Interrupt
+registration serialization, plus standalone AST executable probing and
 bounded process capture/cancellation, plus typed AST configuration/status and inert
 version-output parsing, plus AST adapter Source admission/probe contracts,
 plus explicit diagnostics launcher forwarding
@@ -410,7 +411,7 @@ flowchart LR
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
-        GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
+        GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · source snapshots pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
@@ -1195,6 +1196,11 @@ symlink-file behavior is retained; explicit target paths still pass confinement 
 Replay of actual parser input hashes/results verifies the scanner, not a Python grammar.
 The language-parser implementation/selection remains pending.
 
+
+Foreground shell startup now holds the process-tracker lock through Start and PID
+publication. Interrupt therefore cannot miss a child that has already begun effects
+while its parent is still registering it. Startup failure releases the lock, and the
+background path retains its separate lifetime owner.
 
 The standalone Go `astcontext` library now validates explicit configuration and
 parses captured version output into closed statuses and immutable probe records.
