@@ -1,5 +1,49 @@
 # Python to Go parity matrix
 
+## 2026-10-09 typed response settings and policy library
+
+Baseline 5e4dffa. StableResponseSettings names bounded instruction strings, ordered
+ResponseMetadata pairs, optional unbounded output caps and optional verbosity.
+Constructors enforce Source count/character/uniqueness/positive-value limits and
+snapshots detach all mutable fields. ResponseContext names task, provider capabilities,
+budget, opt-in and deduplicated ownership; ResponsePlan names settings/warnings.
+ResponsePlanner is an explicit typed SPI. No generic domain map, any/interface{},
+RawMessage payload or new dependency is introduced.
+
+ResponsePipeline pins response bindings/modes, revalidates candidate settings and
+warnings, preserves off/double ordering, unchanged-before-output-cap and shadow-before-
+output-cap checks and adopts only enforced safe candidates. Existing output limits
+and context budget define the tighter ceiling; removing or raising it is degraded.
+Ordinary faults retain the previous settings with bounded class-only reasons, while
+cancellation escapes. The Source response stage does not enforce descriptor input
+byte caps or byte/token inflation on settings; native planning retains that behavior.
+Counter inputs, hashes and sizes use exact StableRequestSettings dataclass repr.
+
+PassthroughResponsePlanner and opt-in ConciseResponsePlanner port actual Source
+builtins. Concise adds the configured instruction once, chooses the tighter
+existing/config/context output limit, sets concise verbosity and replaces policy
+metadata at the end while preserving other order. Configuration permits a long
+nonblank instruction; producing settings applies normal Source bounds and fails
+open through the runtime. Its configured numeric cap is detached from caller state.
+
+Nineteen actual Source constructor recipes match settings, refused boundaries and
+representation. Forty-eight actual Source runtime recipes match full contexts,
+receipts, policy call order and every token-counter input, normalizing only elapsed_ms.
+Native tests verify detached settings/context/policy values, malformed metadata pairs,
+Unicode whitespace, positive limits, pinned caller modes/bindings, confirmed queued
+clone cancellation, health exclusion, close fencing/drain/retry and missing hooks.
+Each independently constructed stage is still a separate lifecycle root. E4 provider
+capability lowering, E5 multi-stage identity registration and E6 Agent/Manager/default
+composition remain open. No default response style or efficiency mode is activated.
+
+Validation: targeted efficiency race, full go test ./... -p=1 -count=1 -timeout=180s,
+full go test -race ./... -p=1 -count=1 -timeout=180s and go vet ./... pass. Source
+capture was committed separately after 48 focused efficiency tests, a 172-file exporter
+check and all 19 scan guards. README outline and git diff --check pass. Archify
+passes 9/9 with zero errors/warnings; specification SHA256 b5ff4d9e674f475cd5541434ee4018ad85159c505b4615320c690e7ef73e1e6c; HTML dbb96daa4b69beda1734aa59928be1143370fd61ca430a1fa0049ff9c49877f0.
+Visual inspection remains skipped after prior browser access denial. Full Python
+regression, coverage and mutation sweep are not refreshed. Evidence: Darwin arm64.
+
 ## 2026-10-09 response policy Source contracts
 
 Baseline 4755905. Nineteen StableRequestSettings constructors capture bounds,

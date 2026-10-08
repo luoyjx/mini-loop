@@ -2565,3 +2565,13 @@ PassthroughRequestContextOptimizer. Common typed hook/coordinator code serves bo
 stage libraries, while their independently constructed roots remain separate.
 Request clones share admission, counters and cached lifecycle reports. Agent
 protocol/identity checks, request projection ledger and default adoption remain open.
+
+
+ResponsePipeline adds StableResponseSettings, ResponseMetadata, ResponseContext and
+ResponsePlan with bounded concrete fields and detached snapshots. ResponsePlanner
+supports typed custom policies plus PassthroughResponsePlanner and explicit opt-in
+ConciseResponsePlanner. Exact Source dataclass-repr receipt identities, unchanged/
+shadow ordering and output ceilings match 19 constructor and 48 runtime recipes.
+Clone shares the existing stage coordinator; defaults and provider/runtime adoption
+remain pending. Source response does not enforce descriptor max_input_bytes or byte/
+token inflation on settings, so native response planning adds neither guard.

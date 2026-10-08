@@ -3376,6 +3376,26 @@ Non-string Python mapping keys and opaque Python objects are outside the closed 
 boundary. No Agent cache/projection ledger, provider adoption or default activation
 is added by this library.
 
+NewResponseSettings accepts ResponseSettingsConfig with bounded instruction strings,
+ordered ResponseMetadata pairs, optional unbounded MaxOutputTokens and verbosity.
+Snapshot/MarshalJSON detach numeric/slice/pointer inputs. Metadata keys are unique;
+limits count Source Unicode characters. ResponseContext names task, settings,
+provider capabilities, positive optional budget, opt-in and deduplicated ownership.
+NewResponsePlan names settings/warnings; ResponsePlanner exposes Plan explicitly.
+DefaultResponsePipelineConfig/NewResponsePipeline pin response bindings and modes.
+PlanResponse revalidates settings/warnings, preserves Source unchanged/shadow-before-
+ceiling order and rejects removal/raising of the tighter existing/context output cap.
+Descriptor max_input_bytes does not add a response guard; Source does not enforce it.
+Receipts use the exact StableRequestSettings dataclass representation rather than
+JSON. PassthroughResponsePlanner is a structured no-op. NewConciseResponsePlanner
+uses DefaultConciseResponseConfig, optional opt-in, a detached cap and a nonblank
+instruction; it retains the tighter existing/config/context limit, adds the instruction
+once and replaces response_policy metadata at the end. Its instruction/output bounds
+are validated when producing StableResponseSettings. Root clones share lifecycle,
+serialization and counter state; independently constructed stages remain separate.
+Caller-owned content masking, provider capability lowering and Agent adoption still
+belong to the later runtime composition slice.
+
 No multi-stage registry, full multi-stage component lifecycle or default efficiency
 runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin
