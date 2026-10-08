@@ -261,8 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `50715c8` plus workflow scalar trajectory files,
-privacy-before-UTF-8 encoding and archival JSON downloads,
+Runtime review baseline: `ebf0e68` plus historical workflow ledgers,
+final HTML UTF-8 validation and private traceview output,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -376,7 +376,7 @@ flowchart LR
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
-        GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
+        GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival scalars<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
@@ -1542,8 +1542,14 @@ HTTP outcomes. Native file append, scanning, summaries, JSON assembly and filter
 iteration preserve nonfinite payloads. Content privacy runs before UTF-8 encoding;
 redacted surrogate text can be written, while surviving surrogate keys/text fail
 without appending bytes. Owned JSON downloads retain archival scalars, while ordinary
-JSON details stay strict. Native Go SQLite, legacy ledger/HTML consumers and
-permissive header profiles remain pending.
+JSON details stay strict. Snapshot 136 compares fourteen Source ledgers, complete
+HTML hashes, file assembly, CLI output and seventy HTTP outcomes. Native ledgers
+preserve historical nonfinite payloads and surrogatepass inspector text without
+turning them into live authority. Preview and inspector caps count Source characters;
+final HTML UTF-8 validation runs after capping. Visible surrogate text fails, while
+fully capped text can render successfully. File, trajectory-ID and session CLI loads
+retain private 0600 output. Ordinary JSON details and downloads keep their separate
+scalar boundaries. Native Go SQLite and permissive metadata profiles remain pending.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

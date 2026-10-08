@@ -1,7 +1,6 @@
 package httpapi
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/traceview"
 	"net/http"
@@ -157,7 +156,7 @@ func (s *Server) trajectoryDocument(w http.ResponseWriter, r *http.Request, expo
 	if export {
 		data, err = trajectoryExportJSON(s, data)
 	} else {
-		data, err = recordingJSON(s, json.RawMessage(data))
+		data, err = trajectoryDetailJSON(s, data)
 	}
 	if err != nil {
 		writeJSON(s, w, 500, ErrorResponse{"recording projection failed"})
@@ -170,23 +169,46 @@ func (s *Server) trajectoryDocument(w http.ResponseWriter, r *http.Request, expo
 	w.Write(data)
 }
 
-// Source downloads use archival json.dumps semantics, while ordinary detail
-// responses retain their strict JSON boundary. Both mask before escaping.
-func trajectoryExportJSON(s *Server, data []byte) (result []byte, err error) {
+func trajectoryProjection(s *Server, data []byte) (value jsonvalue.Value, err error) {
 	defer func() {
 		if recover() != nil {
-			result = nil
-			err = fmt.Errorf("trajectory export projection failed")
+			value = jsonvalue.Value{}
+			err = fmt.Errorf("trajectory projection failed")
 		}
 	}()
-	value, err := jsonvalue.Decode(string(data))
+	value, err = jsonvalue.Decode(string(data))
 	if err != nil {
-		return nil, err
+		return jsonvalue.Value{}, err
 	}
 	if masker := s.manager.RecordingMasker(); masker != nil {
 		value = value.MapStrings(masker.MaskText)
 	}
+	return value, nil
+}
+
+func trajectoryDetailJSON(s *Server, data []byte) ([]byte, error) {
+	value, err := trajectoryProjection(s, data)
+	if err != nil {
+		return nil, err
+	}
+	return value.MarshalUTF8()
+}
+
+// Downloads encode archival values at their UTF-8 boundary. Views retain the
+// inert string vocabulary until preview caps and final HTML encoding run.
+func trajectoryExportJSON(s *Server, data []byte) ([]byte, error) {
+	value, err := trajectoryProjection(s, data)
+	if err != nil {
+		return nil, err
+	}
 	return value.MarshalLegacyUTF8()
+}
+func trajectoryViewJSON(s *Server, data []byte) ([]byte, error) {
+	value, err := trajectoryProjection(s, data)
+	if err != nil {
+		return nil, err
+	}
+	return jsonvalue.AppendLegacy(nil, value)
 }
 func commaBytes(size int64) string {
 	text := strconv.FormatInt(size, 10)
@@ -223,7 +245,7 @@ func (s *Server) viewTrajectory(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	data, err = recordingJSON(s, json.RawMessage(data))
+	data, err = trajectoryViewJSON(s, data)
 	if err != nil {
 		writeJSON(s, w, 500, ErrorResponse{"recording projection failed"})
 		return
@@ -233,7 +255,11 @@ func (s *Server) viewTrajectory(w http.ResponseWriter, r *http.Request) {
 		writeJSON(s, w, 500, ErrorResponse{"trajectory view could not be rendered"})
 		return
 	}
-	page := traceview.Render([]traceview.Ledger{ledger}, "mini-loop trace · "+string(id), s.now())
+	page, err := traceview.RenderUTF8([]traceview.Ledger{ledger}, "mini-loop trace · "+string(id), s.now())
+	if err != nil {
+		writeJSON(s, w, 500, ErrorResponse{"trajectory view could not be rendered"})
+		return
+	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Write([]byte(page))
+	w.Write(page)
 }

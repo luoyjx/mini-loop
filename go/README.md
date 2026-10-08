@@ -2409,7 +2409,14 @@ file/privacy recipes and forty HTTP outcomes. Concrete native files now apply co
 privacy before legacy UTF-8 encoding, preserve nonfinite payloads through scan/summary,
 JSON assembly and filtered iteration, and refuse surviving surrogate text/keys.
 Source-compatible JSON downloads accept archival scalars while ordinary JSON details
-stay strict. Native SQL behavior, legacy ledger/HTML consumers and permissive header
+stay strict. Snapshot 136 adds fourteen actual Source ledgers/pages/file assemblies,
+CLI outcomes and seventy HTTP outcomes. Build retains historical payloads as inert
+inspector strings; pretty printing preserves Source Unicode and scalar vocabulary.
+Source character caps run before RenderUTF8 checks the final HTML. Visible surrogate
+text fails; a fully capped tail may succeed. All CLI load modes preserve 0600 output
+and empty files on failed UTF-8 writes. Owned views retain escaping and mask before
+projection. Store.JSON now supplies archival wire values; HTTP detail/download/view
+adapters choose their encoding boundary explicitly. Native SQL and permissive metadata
 profiles remain pending. Owned later-turn injection is described
 below. Defaults remain off.
 

@@ -3,10 +3,12 @@ package traceview
 import (
 	"embed"
 	"fmt"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"math"
 	"strings"
 	"time"
 	"unicode"
+	"unicode/utf8"
 )
 
 // Assets preserve the existing Python ledger's typography and interaction.
@@ -47,19 +49,28 @@ func offset(ts, base *float64) string {
 	return fmt.Sprintf("+%.1fs", math.Max(0, *ts-*base))
 }
 func capped(text string, limit int) string {
-	runes := []rune(text)
-	if len(runes) <= limit {
+	count := jsonvalue.RuneCount(text)
+	if count <= limit {
 		return text
 	}
-	return string(runes[:limit]) + fmt.Sprintf("\n[... %s more characters -- export the trajectory for the full record]", Comma(int64(len(runes)-limit)))
+	return jsonvalue.TextPrefix(text, limit) + fmt.Sprintf("\n[... %s more characters -- export the trajectory for the full record]", Comma(int64(count-limit)))
 }
 func preview(text string) string {
 	text = strings.Join(strings.FieldsFunc(text, func(r rune) bool { return unicode.IsSpace(r) || r >= 0x1c && r <= 0x1f }), " ")
-	runes := []rune(text)
-	if len(runes) > PreviewChars {
-		return string(runes[:PreviewChars]) + "..."
+	if jsonvalue.RuneCount(text) > PreviewChars {
+		return jsonvalue.TextPrefix(text, PreviewChars) + "..."
 	}
 	return text
+}
+
+// RenderUTF8 validates the final page after preview/inspector caps, as the Source
+// response/file writer does. Historical text is never silently replaced.
+func RenderUTF8(ledgers []Ledger, title string, generatedAt time.Time) ([]byte, error) {
+	page := Render(ledgers, title, generatedAt)
+	if !utf8.ValidString(page) {
+		return nil, ErrDocument
+	}
+	return []byte(page), nil
 }
 func overview(out *strings.Builder, ledger Ledger) {
 	if ledger.StartedAt == nil || ledger.EndedAt == nil {

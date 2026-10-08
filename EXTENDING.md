@@ -2633,8 +2633,12 @@ payloads to the concrete writer, which applies content privacy before legacy UTF
 encoding. Redacted surrogate text may disappear; surviving surrogate text/keys fail
 the append. Native scanners and filtered iterators retain nonfinite payloads.
 Owned JSON downloads use archival encoding; ordinary JSON details remain strict.
-Permissive constructor metadata, legacy ledger/HTML readers and native SQLite remain
-pending. Owned result injection and
+traceview.Build and file assembly now retain inert legacy payloads in named ledger
+rows and inspector strings. RenderUTF8 validates final output after Source character
+caps; HTTP views and CLI files use this boundary. Source-visible surrogate text fails
+UTF-8 output, while a fully omitted tail can succeed. Store.JSON is an archival wire
+projection; embedding callers must choose strict JSON, archival download or final HTML
+encoding. Constructor metadata profiles and native SQLite remain pending. Owned result injection and
 workflow HTTP routes are described below. Stores and callbacks retain their existing
 cooperative and ownership requirements; an injected store is not proof of native SQLite support.
 

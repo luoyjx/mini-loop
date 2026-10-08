@@ -1,5 +1,45 @@
 # Go port plan
 
+## 2026-10-08 native workflow ledger and final UTF-8 boundaries
+
+Baseline ebf0e68 (Source snapshot 136). Native ledger construction, JSONL assembly
+and path/id/session loading now retain historical workflow scalar values through
+immutable closed JSON values. Inspector strings preserve Source insertion order,
+integer/float identity, nonfinite numbers and surrogatepass characters. Rendering
+applies Source character caps before final UTF-8 validation, permitting a fully
+omitted surrogate tail while rejecting visible surrogate text or keys.
+
+Store.JSON provides an ASCII archival projection. Owned details use strict UTF-8,
+downloads use legacy UTF-8, and views retain archival values until page rendering.
+The CLI applies the same final boundary and leaves private 0600 output empty on
+render failure. Ownership, admission, masking and size bounds remain in place.
+
+Native tests compare fourteen actual Source ledgers, complete valid HTML hashes,
+file assembly and CLI path/id/session output. Seventy Source HTTP outcomes and
+successful complete HTTP HTML body hashes match. These tests do not establish
+native session SQLite or permissive metadata parity.
+
+Validation: focused race tests; full go test ./... with shared coverage; full
+race tests (-count=1 -timeout=180s); go vet ./... passed. All 136 Source exports
+are current; all 19 scan guards anchored. Full Python regression: 2,155 passed,
+28 skipped, 24 subtests and three dependency warnings in 69.74s. README outline
+and git diff --check passed. No dependencies or Python runtime modules changed;
+Python invariant/guard sweeps were not rerun.
+
+Fresh Go statement coverage: 21,039/23,326 (90.20%), merging duplicate source blocks
+by maximum hit count across -coverpkg=./... test binaries. Profile:
+/tmp/mini-loop-workflow-trace-view-coverage.out. Python coverage was not refreshed;
+statement coverage does not measure feature migration completion.
+
+README baseline, canonical Mermaid, boundary text and generated architecture map
+are updated. Archify passed 9/9 showcase checks with zero errors/warnings.
+Specification SHA256: a4533638fad5c9d48ffa1be106adb039152ba8b7cd629336f94a1b93ef2ff49b.
+HTML SHA256: b26d108b653fdd69b6663dbb31ff7e86b77d745fcd70fb7ef6016ffefaa6fbf5.
+Visual review remains skipped after prior access denial. Permissive workflow and
+trajectory metadata, remaining model/tool/timing scalar and transport profiles,
+MCP, native session SQLite and full G7 remain pending. The next slice should
+capture actual Source metadata profiles. The complete Python-to-Go port stays open.
+
 ## 2026-10-08 workflow trace-view contract preparation
 
 Baseline b474699. Source snapshot 136 compares fourteen actual ledgers and complete

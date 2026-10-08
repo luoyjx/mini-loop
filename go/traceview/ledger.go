@@ -7,9 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/agent"
-	"github.com/luoyjx/mini-loop/go/protocol"
-	"io"
-	"strconv"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"strings"
 	"unicode/utf8"
 )
@@ -69,111 +67,36 @@ var envelope = map[string]bool{"type": true, "seq": true, "ts": true, "session":
 
 // PrettyJSON is a transient serialization projection, not a retained JSON domain.
 func PrettyJSON(raw []byte) string {
-	if len(raw) == 0 {
-		return "null"
-	}
-	var text string
-	if json.Unmarshal(raw, &text) == nil && len(bytes.TrimSpace(raw)) > 0 && bytes.TrimSpace(raw)[0] == '"' {
-		return text
-	}
-	compact, err := protocol.PythonJSON(json.RawMessage(raw), false, true)
+	value, err := jsonvalue.Decode(string(raw))
 	if err != nil {
 		return "null"
 	}
-	var out bytes.Buffer
-	if json.Indent(&out, normalizeNumbers(compact), "", "  ") != nil {
+	if text, ok := value.Text(); ok {
+		return text
+	}
+	text, err := value.LegacyStringIndent()
+	if err != nil {
 		return "null"
 	}
-	return out.String()
+	return text
 }
 
-// Python loads JSON floats before pretty-printing; normalize lexical exponents
-// at this wire boundary while preserving integers and object member order.
-func normalizeNumbers(text string) []byte {
-	var out strings.Builder
-	for i := 0; i < len(text); {
-		if text[i] == '"' {
-			end := i + 1
-			for end < len(text) {
-				if text[end] == '\\' {
-					end += 2
-					continue
-				}
-				if text[end] == '"' {
-					end++
-					break
-				}
-				end++
-			}
-			out.WriteString(text[i:end])
-			i = end
-			continue
-		}
-		if text[i] == '-' || text[i] >= '0' && text[i] <= '9' {
-			end := i + 1
-			for end < len(text) && strings.ContainsRune("0123456789.eE+-", rune(text[end])) {
-				end++
-			}
-			number := text[i:end]
-			if strings.ContainsAny(number, ".eE") {
-				if value, err := strconv.ParseFloat(number, 64); err == nil {
-					scientific := strconv.FormatFloat(value, 'e', -1, 64)
-					exponent, _ := strconv.Atoi(scientific[strings.LastIndex(scientific, "e")+1:])
-					if exponent >= -4 && exponent < 16 {
-						number = strconv.FormatFloat(value, 'f', -1, 64)
-						if !strings.Contains(number, ".") {
-							number += ".0"
-						}
-					} else {
-						number = scientific
-					}
-				}
-			}
-			out.WriteString(number)
-			i = end
-			continue
-		}
-		out.WriteByte(text[i])
-		i++
-	}
-	return []byte(out.String())
-}
 func payload(raw []byte) []byte {
-	dec := json.NewDecoder(bytes.NewReader(raw))
-	if _, err := dec.Token(); err != nil {
+	value, err := jsonvalue.Decode(string(raw))
+	if err != nil {
 		return []byte(`{}`)
 	}
-	var out bytes.Buffer
-	out.WriteByte('{')
-	count := 0
-	for dec.More() {
-		token, err := dec.Token()
-		if err != nil {
-			break
+	fields := []jsonvalue.Field{}
+	for _, name := range value.Keys() {
+		if !envelope[name] {
+			child, _ := value.Lookup(name)
+			fields = append(fields, jsonvalue.Field{Name: name, Value: child})
 		}
-		key, ok := token.(string)
-		if !ok {
-			break
-		}
-		var value json.RawMessage
-		if dec.Decode(&value) != nil {
-			break
-		}
-		if envelope[key] {
-			continue
-		}
-		if count > 0 {
-			out.WriteByte(',')
-		}
-		quoted, _ := json.Marshal(key)
-		out.Write(quoted)
-		out.WriteByte(':')
-		out.Write(value)
-		count++
 	}
-	out.WriteByte('}')
-	return out.Bytes()
+	data, _ := jsonvalue.AppendLegacy(nil, jsonvalue.ObjectValue(fields))
+	return data
 }
+
 func Build(document []byte) (Ledger, error) {
 	var out Ledger
 	if !utf8.Valid(document) || len(bytes.TrimSpace(document)) == 0 || bytes.TrimSpace(document)[0] != '{' {
@@ -194,13 +117,29 @@ func Build(document []byte) (Ledger, error) {
 		Metrics              Metrics
 		Events               []json.RawMessage
 	}
-	dec := json.NewDecoder(bytes.NewReader(document))
-	if dec.Decode(&wire) != nil {
+
+	value, err := jsonvalue.Decode(string(document))
+	if err != nil || value.Kind() != jsonvalue.Object {
 		return out, ErrDocument
 	}
-	var extra json.RawMessage
-	if dec.Decode(&extra) != io.EOF {
+	events, present := value.Lookup("events")
+	if !present {
+		events, _ = value.Lookup("Events")
+	}
+	eventValues, eventsArray := events.Array()
+	if events.Kind() != jsonvalue.Null && !eventsArray {
 		return out, ErrDocument
+	}
+	header, err := replaceEvents(value, jsonvalue.ArrayValue(nil)).MarshalJSON()
+	if err != nil || json.Unmarshal(header, &wire) != nil {
+		return out, ErrDocument
+	}
+	for _, event := range eventValues {
+		raw, err := jsonvalue.AppendLegacy(nil, event)
+		if err != nil {
+			return out, ErrDocument
+		}
+		wire.Events = append(wire.Events, raw)
 	}
 	out = Ledger{TrajectoryID: wire.TrajectoryID, Session: wire.Session, RunIndex: wire.RunIndex, Status: agent.TrajectoryCompleted, Partial: wire.Partial, StartedAt: wire.StartedAt, EndedAt: wire.EndedAt, DurationMS: wire.DurationMS, Input: wire.Input, Metrics: wire.Metrics, Rows: []Row{}}
 	if wire.Status != nil {
@@ -221,8 +160,18 @@ func Build(document []byte) (Ledger, error) {
 	step, requestNo := 0, 0
 	for _, raw := range wire.Events {
 		var fields map[string]json.RawMessage
-		if json.Unmarshal(raw, &fields) != nil || fields == nil {
+
+		event, err := jsonvalue.Decode(string(raw))
+		if err != nil || event.Kind() != jsonvalue.Object {
 			return Ledger{}, ErrDocument
+		}
+		fields = make(map[string]json.RawMessage, len(event.Keys()))
+		for _, name := range event.Keys() {
+			child, _ := event.Lookup(name)
+			fields[name], err = jsonvalue.AppendLegacy(nil, child)
+			if err != nil {
+				return Ledger{}, ErrDocument
+			}
 		}
 		text := func(key, fallback string) string {
 			v, ok := fields[key]
@@ -232,9 +181,12 @@ func Build(document []byte) (Ledger, error) {
 			if string(v) == "null" {
 				return "None"
 			}
-			var s string
-			if json.Unmarshal(v, &s) == nil {
-				return s
+
+			decoded, err := jsonvalue.Decode(string(v))
+			if err == nil {
+				if s, ok := decoded.Text(); ok {
+					return s
+				}
 			}
 			if bytes.Equal(v, []byte("true")) {
 				return "True"

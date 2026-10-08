@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/agent"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/trajectory"
 	"os"
 	"path/filepath"
@@ -39,14 +40,17 @@ func AssembleFile(ctx context.Context, path string) (Ledger, error) {
 		if !utf8.Valid(line) {
 			return Ledger{}, ErrDocument
 		}
-		if !json.Valid(line) {
+		value, decodeErr := jsonvalue.Decode(string(line))
+		if decodeErr != nil {
 			partial = true
 			continue
 		}
 		var record struct {
 			RecordType string `json:"record_type"`
 		}
-		if json.Unmarshal(line, &record) != nil {
+		kind, _ := value.Lookup("record_type")
+		projection, err := kind.MarshalJSON()
+		if err != nil || json.Unmarshal(projection, &record.RecordType) != nil {
 			return Ledger{}, ErrDocument
 		}
 		if start == nil {
@@ -117,7 +121,23 @@ func AssembleFile(ctx context.Context, path string) (Ledger, error) {
 		Metrics              Metrics
 		Events               []json.RawMessage
 		Partial              bool
-	}{id, header.Session, header.RunIndex, header.StartedAt, terminal.EndedAt, terminal.DurationMS, status, header.Input, terminal.Output, terminal.Error, terminal.Metrics, events, partial || end == nil})
+	}{id, header.Session, header.RunIndex, header.StartedAt, terminal.EndedAt, terminal.DurationMS, status, header.Input, terminal.Output, terminal.Error, terminal.Metrics, []json.RawMessage{}, partial || end == nil})
+	if err != nil {
+		return Ledger{}, err
+	}
+	value, err := jsonvalue.Decode(string(document))
+	if err != nil {
+		return Ledger{}, err
+	}
+	decodedEvents := make([]jsonvalue.Value, 0, len(events))
+	for _, event := range events {
+		v, err := jsonvalue.Decode(string(event))
+		if err != nil {
+			return Ledger{}, err
+		}
+		decodedEvents = append(decodedEvents, v)
+	}
+	document, err = jsonvalue.AppendLegacy(nil, replaceEvents(value, jsonvalue.ArrayValue(decodedEvents)))
 	if err != nil {
 		return Ledger{}, err
 	}

@@ -544,7 +544,7 @@ func (s *Store) JSON(id agent.TrajectoryID, limit int64) ([]byte, error) {
 		}
 		fields = append(fields, jsonvalue.Field{Name: name, Value: child})
 	}
-	return jsonvalue.ObjectValue(fields).MarshalLegacyUTF8()
+	return jsonvalue.AppendLegacy(nil, jsonvalue.ObjectValue(fields))
 }
 func (s *Store) Stream(ctx context.Context, id agent.TrajectoryID, out io.Writer) error {
 	path, err := s.path(id)

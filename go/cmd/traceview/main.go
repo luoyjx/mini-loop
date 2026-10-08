@@ -76,8 +76,12 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 	if err != nil {
 		return fail(err)
 	}
-	page := traceview.Render(ledgers, "mini-loop trace · "+target, time.Now())
-	_, err = io.WriteString(file, page)
+	page, err := traceview.RenderUTF8(ledgers, "mini-loop trace · "+target, time.Now())
+	if err != nil {
+		file.Close()
+		return fail(err)
+	}
+	_, err = file.Write(page)
 	closeErr := file.Close()
 	if err != nil {
 		return fail(err)
