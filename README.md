@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `8c2cf7e` plus independent transcript-search launcher/CLI
+Runtime review baseline: `c2088cf` plus typed historical request reconstruction
+and independent transcript-search launcher/CLI
 selection and actual Source runtime replay, plus explicit session-bound transcript_search
 and the typed bounded transcript-search library
 and Source-selected task-child MCP binding
@@ -390,7 +391,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending<br/>optional session-bound search · typed reader"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · library only"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
@@ -923,8 +924,17 @@ and Null-store results. `launcher.Options.SessionQueryTools` and standalone
 `--session-query-tools` select the tool independently; inspection reports selection
 without starting runtime or widening MINILOOP_FEATURES support. The launcher still
 has no native state backend and returns an empty search over its no-op reader.
-Request reconstruction, native SQLite and historical nonfinite/surrogate search
-profiles remain open.
+The `sessionquery.Reconstruct` library now returns a closed Found/MissingStart/
+LegacyEpoch result through an explicit ReconstructionReader. Named RequestEvent
+variants carry only historical start/catalogue/system/capability data; the output is
+an inert RequestProjection, distinct from executable model requests. It retains
+first matching start, physical-order early stop, latest preceding matched projections,
+missing/null sequence differences, exact Python numeric/structural fingerprint
+equality, truth/int conversion and negative/large prefix slicing. Snapshot 149's
+32 SQLite recipes and actual old-request stability after a live rewrite match Go.
+Context and backend errors propagate separately from named count/sequence faults.
+Returned slices/capability records detach. Managed EventStore/TranscriptStore binding,
+native SQLite and remaining nonfinite/surrogate archival profiles remain open.
 
 `ManagedSession.ReadTranscript(ctx, selection)` returns a detached persisted epoch,
 including old compaction inputs and unfinished crash tails. Current selection is

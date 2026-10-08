@@ -1,5 +1,51 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native historical request reconstruction
+
+Baseline c2088cf (Source snapshot 149). sessionquery.Reconstruct exposes a closed
+RequestEvent union, immutable integer RequestSequence, ReconstructionReader,
+named RequestProjection/CapabilityProjection and Found/MissingStart/LegacyEpoch
+result variants. Fields from historical records are immutable closed archive values,
+not runtime permission or executable model-request types. Request() detaches message
+containers and capability projections; standard JSON preserves strict serialization
+failures. Reader ownership, authorization and close remain with the caller.
+
+All 32 actual Source SQLite recipes match output or typed Source exception class,
+and the original request from an actual managed Source run reconstructs unchanged
+after a later epoch rewrite. First matching model_start, early legacy epoch before
+count conversion, physical-order stopping, latest preceding fingerprint projections,
+missing/null sequence distinctions and inert scalar output survive. Python structural
+fingerprint equality compares exact numeric leaves across integer/float/bool and
+ignores object insertion order. Count truth/int conversion retains Unicode decimal
+text, truncation, large clipping and negative prefix slices. Count/sequence faults
+are named ReconstructionFault variants separate from backing/context errors.
+
+Native tests verify cancellation during event/message reads, backing errors, explicit
+session selection, invalid/large sequence parsing and detached result containers.
+This is archive-reader replay of Source SQLite evidence, not a managed native event/
+transcript adapter or native SQLite durability. A reader must preserve physical order
+and stored masking; the library neither repairs state nor issues grants. Managed
+backing integration, nonfinite/surrogate/wider malformed profiles, native SQLite
+driver approval, remaining full-registry services, full activation and G7 remain open.
+
+Validation: focused sessionquery/jsonvalue race tests; full go test ./... -count=1
+-timeout=180s, full go test -race ./... -count=1 -timeout=180s and go vet ./...
+passed. Source export --check passes all 149 files; all 19 scanning guards remain
+anchored. Python regression: 2155 passed, 28 skipped, 3 dependency warnings and
+24 subtests in 86.48s. No Source runtime modules changed; separate invariant check,
+Source mutation sweep and coverage were not rerun. Old coverage does not measure
+this tree or migration completion. README outline and git diff --check pass.
+
+Canonical README review baseline/state node, extension/hardening boundaries and
+interactive specification are updated. Archify deliver passes 9/9 showcase checks
+with zero errors/warnings. Visual inspection remains skipped after prior access
+denial. Specification SHA256:
+e59a5b0dc683cc57b8829e636afa0d2a1c5f5ef5b507482b03d5606c28338720;
+HTML SHA256: 6ef0d98528cf0102fc06a0fece56b1ed86459a9ab83fd70bb0e8cfca896fa480.
+Next bind reconstruction to configured native event/transcript records and verify
+native generated request projections before moving to other full-registry services.
+The complete Python-to-Go objective remains active.
+
 ## 2026-10-08 request-reconstruction Source contracts
 
 Baseline 654b1a8. Snapshot 149 calls Source reconstruct_request against actual

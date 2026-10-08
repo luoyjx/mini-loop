@@ -7879,3 +7879,15 @@ and superseded own history after a rewrite, excluding foreign session history.
 Caller absence/null stays a wire fact and must not be normalized while generating
 searchable stored text. Native HTTP matches Source Null-store outcomes; durable
 SQLite restart evidence and arbitrary archival profiles remain open.
+
+### Go migration — historical request projection without authority
+
+The native reconstruction library reads historical records through an explicit
+caller-owned reader and returns an inert closed result. Capability/sandbox fields
+never enter live runtime permission types. First-start and physical predecessor
+order remain observable; sorting can associate a request with the wrong catalogue.
+Missing versus explicit-null sequences and early legacy epoch returns are retained.
+Context/read errors propagate; count/ordering faults cannot masquerade as a missing
+request. Named projections detach returned message containers and capability records.
+Actual Source SQLite recipes and rewrite stability are compared through an archive
+reader, not a native SQLite backend or managed-store reconstruction adapter.

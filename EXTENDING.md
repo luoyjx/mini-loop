@@ -2951,3 +2951,29 @@ omits caller metadata, so native fixture replies preserve omission instead of
 adding caller=null. Two Source/native HTTP recipes compare defaults and selection.
 These observations do not establish native SQLite durability, arbitrary archival
 content parity or request reconstruction.
+
+## Go historical request reconstruction
+
+`sessionquery.ReconstructionReader` supplies ordered RequestEvent snapshots and
+historical message rows for an explicit SessionID and closed archive epoch selector.
+`DecodeRequestEvent` projects a closed historical union; sequence presence survives
+so an absent seq and explicit null cannot be normalized. Unknown kinds retain only
+scan ordering semantics. RequestSequence is a closed immutable integer, with an
+int64 constructor and decimal parser supporting Source-sized large integers.
+
+`Reconstruct` selects the first matching model_start and stops predecessor scanning
+at the first physical seq at/after the target. It never sorts or chooses a later
+start. Missing/legacy records are result variants; Python count/sequence failures
+are typed ReconstructionFault values, separate from context/backing errors. Count
+conversion uses Source truth/int rules and Python negative prefix slicing. Historical
+fingerprints use structural numeric equality, not JSON byte equality or float casts.
+
+A found RequestProjection has named Messages/System/Tools/Capability/Model/MaxTokens
+fields carrying immutable closed archive data. Permission and sandbox fields are
+observations, not live authority. Request() detaches containers; standard JSON output
+retains strict serialization errors. Readers must return stored masked snapshots
+and preserve physical event order and epoch selection. The caller owns authorization,
+lifetime and backend close. No provider invocation, state repair, role installation
+or broker grant is introduced. Managed typed-store binding and native SQLite remain
+separate slices; nonfinite/surrogate and wider malformed archival profiles are not
+claimed from the current finite corpus.
