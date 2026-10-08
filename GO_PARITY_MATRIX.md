@@ -1,5 +1,27 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native AST results and captured payload classification
+
+Baseline 8dc34a8. Native astcontext now has closed Operation and immutable Result/Payload records.
+The private captured-output classifier preserves envelope numeric equality, values-only
+path rewriting, error-before-import handling, iterable warnings/errors, arbitrary integer
+metrics and partial/ambiguity/no-match precedence. All 65 actual Source observations
+replay: 61 compare exact ASCII/UTF-8 JSON and four preserve ordinary TypeError text.
+Detached records/warnings and strict standard-JSON nonfinite refusal are tested.
+Actual semantic subprocess execution, four model tools and runtime selection remain
+pending. Extreme CPython recursion/digit-fault wording and lone-surrogate string
+projection still need final profile work; current ToJSON enforces a UTF-8 boundary.
+
+Validation: focused 65 Source replays, detached publication records and probe/process
+short-circuits pass; focused AST race also covers native integer/depth fault refusal.
+Full go test ./... -count=1 -timeout=180s, go test -race ./... -count=1 -timeout=180s,
+and go vet ./... pass. README outline and git diff --check pass.
+Archify delivery passes 9/9, zero errors/warnings. Specification SHA256
+135accd1c962af6bba8e08fed0e6b75dc3d15cc9475dcd4b200bd4efdafe9bbf;
+artifact 1b5ff7be079bd59d79519e23bd10e330f2425edbf1fa3f4be221acf6a5126361.
+Visual inspection skipped after prior browser access denial. Coverage, full Python
+regression and full mutation sweep were not refreshed. G0-G7 remain open.
+
 ## 2026-10-08 shared CPython JSON syntax diagnostics
 
 Baseline 2279dc1. The HTTP syntax-only scanner now lives in internal/jsonsyntax

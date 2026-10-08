@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `2279dc1` plus shared CPython JSON syntax diagnostics,
+Runtime review baseline: `8dc34a8` plus native AST results and captured payload classification,
+plus shared CPython JSON syntax diagnostics,
 plus AST payload invocation Source contracts,
 plus native AST canonical path and bounded glob selection,
 plus AST path-selection Source contracts,
@@ -421,7 +422,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>semantic payloads / tools pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed payload classification · semantic calls / tools pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1284,6 +1285,16 @@ Successful JSON still lowers into existing closed value/typed request decoders.
 Eight actual malformed AST CLI outputs match Source diagnostic wording/positions;
 HTTP syntax, encoding, number, depth and surrogate regression tests remain gates.
 No AST payload interpreter or model tool is installed by this extraction.
+
+Native astcontext now has closed Operation and immutable Result/Payload records.
+The private captured-output classifier preserves envelope numeric equality, values-only
+path rewriting, error-before-import handling, iterable warnings/errors, arbitrary integer
+metrics and partial/ambiguity/no-match precedence. All 65 actual Source observations
+replay: 61 compare exact ASCII/UTF-8 JSON and four preserve ordinary TypeError text.
+Detached records/warnings and strict standard-JSON nonfinite refusal are tested.
+Actual semantic subprocess execution, four model tools and runtime selection remain
+pending. Extreme CPython recursion/digit-fault wording and lone-surrogate string
+projection still need final profile work; current ToJSON enforces a UTF-8 boundary.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The

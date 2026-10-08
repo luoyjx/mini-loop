@@ -3171,3 +3171,20 @@ offsets. Select fixed Limits per wire profile; HTTP retains 985 containers and
 HTTP's typed value reader and AST's closed payload lowering retain their own
 ownership, failure projection and publication gates. Reuse NumberLength when
 lowering a validated number prefix, rather than duplicating number grammar.
+
+### Go AST result records and captured-output classifier
+
+Native astcontext now has closed Operation and immutable Result/Payload records.
+The private captured-output classifier preserves envelope numeric equality, values-only
+path rewriting, error-before-import handling, iterable warnings/errors, arbitrary integer
+metrics and partial/ambiguity/no-match precedence. All 65 actual Source observations
+replay: 61 compare exact ASCII/UTF-8 JSON and four preserve ordinary TypeError text.
+Detached records/warnings and strict standard-JSON nonfinite refusal are tested.
+Actual semantic subprocess execution, four model tools and runtime selection remain
+pending. Extreme CPython recursion/digit-fault wording and lone-surrogate string
+projection still need final profile work; current ToJSON enforces a UTF-8 boundary.
+Use NewPayload for inert object data and NewResult for detached optional records.
+Result.Value retains Source field order; ToJSON permits archival nonfinite numbers,
+while standard MarshalJSON rejects nonfinite values. Neither projection grants
+executable/path authority. Actual Adapter operations must probe and execute through
+the existing admitted process/snapshot boundaries before classifying output.

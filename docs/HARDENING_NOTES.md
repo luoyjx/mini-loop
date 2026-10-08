@@ -8047,3 +8047,13 @@ screening, duplicate-key lowering and stricter typed service admission remain in
 the HTTP boundary. Grammar acceptance grants no authority and is not a substitute
 for closed value decoding. Actual AST malformed-output fixtures pin diagnostic
 wording/character offsets; the existing full HTTP corpus pins extraction behavior.
+
+### Go migration — AST output remains inert data
+
+Closed PayloadValue variants preserve unknown CLI members without host interfaces.
+Path rewriting changes values only, preserving object keys and insertion order.
+Error envelopes retain imports; successful outputs strip only direct file import
+members when explicitly disabled. Malformed non-iterable collections preserve typed
+faults rather than clean results. Partial classification precedes show ambiguity and
+empty matches. Probe failure short-circuits captured output; actual executable and
+frozen-source admission are still the future operation caller's responsibility.
