@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `6158e2c` plus AST snapshot filesystem Source contracts,
+Runtime review baseline: `aff92ec` plus AST ignore Source contracts,
+plus AST snapshot filesystem Source contracts,
 plus foreground shell start/Interrupt
 registration serialization, plus standalone AST executable probing and
 bounded process capture/cancellation, plus typed AST configuration/status and inert

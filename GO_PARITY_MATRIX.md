@@ -1,5 +1,27 @@
 # Python to Go parity matrix
 
+## 2026-10-08 AST ignore matcher Source contracts
+
+Baseline aff92ec. Source export 154 adds 41 actual ignore-guard/GitIgnoreSpec
+recipes against installed pathspec 1.1.1. Include/keep/unmatched decisions, selected
+pattern indices and compiled pattern counts are observed independently of Go.
+Root anchors, segment/globstar rules, file/directory precedence, negation, blank/
+comment filtering, escapes, Unicode runes, bracket classes, invalid ranges, guards,
+normalization and Python final-newline matching are captured. The POSIX-looking
+nested class emits Python's existing FutureWarning; its current behavior is recorded.
+
+These records support the native snapshotter's prerequisite ignore matcher; they
+prove no no-follow snapshot copy or public AST-tool installation. Descriptor/copy
+and nested frame/budget/lifetime integration, semantic payloads, tool/runtime wiring,
+diagnostics parser choice, native SQLite and G7 remain open. The full port stays active.
+
+Validation: all 154 Source exports pass --check, 41 Source AST-context tests
+pass, all 19 scanning guards remain anchored and verify_invariants.py passes.
+README outline and git diff --check pass. Source runtime, defaults and topology
+are unchanged; full Python regression, mutation sweeps and coverage were not
+refreshed. Native matching is delivered in the next independent commit; no
+native snapshot claim is made by this Source-contract preparation.
+
 ## 2026-10-08 AST source snapshot filesystem contracts
 
 Baseline 6158e2c. Source export 153 records 36 actual private anchored snapshot

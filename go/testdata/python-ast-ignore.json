@@ -1,0 +1,1019 @@
+{
+  "pathspec_version": "1.1.1",
+  "patterns": [
+    {
+      "lines": [
+        "",
+        "#comment",
+        "/",
+        "  "
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "null-lines",
+      "paths": [
+        "code.py",
+        "src/code.py"
+      ],
+      "pattern_count": 3
+    },
+    {
+      "lines": [
+        "*.py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "basename",
+      "paths": [
+        "code.py",
+        "src/code.py",
+        "code.ts",
+        ".hidden.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "/code.py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "root-anchor",
+      "paths": [
+        "code.py",
+        "src/code.py",
+        "code.py/child"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "src/code.py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "multi-segment",
+      "paths": [
+        "src/code.py",
+        "nested/src/code.py",
+        "src/code.py/child"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "cache/"
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "directory",
+      "paths": [
+        "cache",
+        "cache/",
+        "cache/code.py",
+        "src/cache/code.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "**"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "everything",
+      "paths": [
+        "a",
+        "a/b",
+        "",
+        "\n"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "*"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "star",
+      "paths": [
+        "a",
+        "a/b",
+        "",
+        "\n"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "**/"
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "all-directories",
+      "paths": [
+        "a",
+        "a/",
+        "a/b",
+        "a/b/"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "*/"
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "star-directory",
+      "paths": [
+        "a",
+        "a/",
+        "a/b"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "**/**"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "collapsed-globstar",
+      "paths": [
+        "a",
+        "a/b",
+        "a/b/c"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "src/**"
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "trailing-globstar",
+      "paths": [
+        "src",
+        "src/",
+        "src/code.py",
+        "src/a/code.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "a/**/b"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "inner-globstar",
+      "paths": [
+        "a/b",
+        "a/x/b",
+        "a/x/y/b",
+        "a/x/c"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "**/code.py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "leading-globstar",
+      "paths": [
+        "code.py",
+        "src/code.py",
+        "a/b/code.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "*.py",
+        "!keep.py"
+      ],
+      "matches": [
+        {
+          "include": false,
+          "index": 1
+        },
+        {
+          "include": false,
+          "index": 1
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "negation",
+      "paths": [
+        "keep.py",
+        "src/keep.py",
+        "other.py"
+      ],
+      "pattern_count": 2
+    },
+    {
+      "lines": [
+        "!cache/code.py",
+        "cache/"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 1
+        },
+        {
+          "include": false,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 1
+        }
+      ],
+      "name": "file-priority",
+      "paths": [
+        "cache/",
+        "cache/code.py",
+        "cache/other.py"
+      ],
+      "pattern_count": 2
+    },
+    {
+      "lines": [
+        "cache/",
+        "!cache/code.py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": false,
+          "index": 1
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "directory-priority",
+      "paths": [
+        "cache/",
+        "cache/code.py",
+        "cache/other.py"
+      ],
+      "pattern_count": 2
+    },
+    {
+      "lines": [
+        "a",
+        "!a",
+        "a"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 2
+        },
+        {
+          "include": true,
+          "index": 2
+        },
+        {
+          "include": true,
+          "index": 2
+        }
+      ],
+      "name": "ordered-negation",
+      "paths": [
+        "a",
+        "a/",
+        "a/child"
+      ],
+      "pattern_count": 3
+    },
+    {
+      "lines": [
+        "",
+        "#null",
+        "*.py",
+        "",
+        "!keep.py"
+      ],
+      "matches": [
+        {
+          "include": false,
+          "index": 2
+        },
+        {
+          "include": true,
+          "index": 1
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "blank-index",
+      "paths": [
+        "keep.py",
+        "other.py",
+        "other.ts"
+      ],
+      "pattern_count": 3
+    },
+    {
+      "lines": [
+        "\\#name",
+        "\\!name"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 1
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "escaped-leading",
+      "paths": [
+        "#name",
+        "!name",
+        "name"
+      ],
+      "pattern_count": 2
+    },
+    {
+      "lines": [
+        " name"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "leading-space",
+      "paths": [
+        " name",
+        "name",
+        "src/ name"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "name "
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "trailing-space",
+      "paths": [
+        "name",
+        "name "
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "name\\ "
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "escaped-space",
+      "paths": [
+        "name",
+        "name "
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "a\\*"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "escaped-star",
+      "paths": [
+        "a*",
+        "abc",
+        "src/a*"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "?.py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "single-rune",
+      "paths": [
+        "a.py",
+        "😀.py",
+        "ab.py",
+        "src/😀.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "[ab].py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "class",
+      "paths": [
+        "a.py",
+        "b.py",
+        "c.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "[!a-c].py"
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "negated-class",
+      "paths": [
+        "a.py",
+        "c.py",
+        "d.py",
+        "😀.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "[^a-c].py"
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "caret-class",
+      "paths": [
+        "a.py",
+        "d.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "[][!].py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "literal-brackets",
+      "paths": [
+        "].py",
+        "[.py",
+        "!.py",
+        "a.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "[]-].py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "literal-hyphen",
+      "paths": [
+        "].py",
+        "-.py",
+        "a.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "[bad"
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "unclosed-class",
+      "paths": [
+        "[bad",
+        "bad"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "[[:digit:]]"
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "posix-looking-class",
+      "paths": [
+        "1",
+        "1]",
+        "d]",
+        "[]",
+        ":]"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "error": "bad character range z-a at position 10",
+      "error_class": "error",
+      "lines": [
+        "[z-a]"
+      ],
+      "name": "range-error",
+      "paths": [
+        "z"
+      ]
+    },
+    {
+      "error": "Invalid git pattern: 'name\\\\'",
+      "error_class": "GitIgnorePatternError",
+      "lines": [
+        "name\\"
+      ],
+      "name": "escape-error",
+      "paths": [
+        "name"
+      ]
+    },
+    {
+      "error": "Invalid git pattern: '!'",
+      "error_class": "GitIgnorePatternError",
+      "lines": [
+        "!"
+      ],
+      "name": "negation-error",
+      "paths": [
+        "a"
+      ]
+    },
+    {
+      "error": "ast-outline ignore patterns allow at most two variable-star groups",
+      "error_class": "ValueError",
+      "lines": [
+        "*a*a*a*ab"
+      ],
+      "name": "star-guard",
+      "paths": [
+        "a"
+      ]
+    },
+    {
+      "error": "ast-outline ignore patterns allow at most two variable-star groups",
+      "error_class": "ValueError",
+      "lines": [
+        "**/a/**/b/**"
+      ],
+      "name": "globstar-guard",
+      "paths": [
+        "a/b"
+      ]
+    },
+    {
+      "lines": [
+        "a\\*\\*\\*"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "guard-escaped-stars",
+      "paths": [
+        "a***",
+        "abc"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "#****"
+      ],
+      "matches": [
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "comment-stars",
+      "paths": [
+        "a"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "error": "ast-outline ignore patterns must be at most 4096 characters",
+      "error_class": "ValueError",
+      "lines": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "name": "length-guard",
+      "paths": [
+        "a"
+      ]
+    },
+    {
+      "lines": [
+        "code.py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": true,
+          "index": 0
+        }
+      ],
+      "name": "normalization",
+      "paths": [
+        "/code.py",
+        "./code.py",
+        "//code.py",
+        "././code.py"
+      ],
+      "pattern_count": 1
+    },
+    {
+      "lines": [
+        "code.py"
+      ],
+      "matches": [
+        {
+          "include": true,
+          "index": 0
+        },
+        {
+          "include": null,
+          "index": null
+        },
+        {
+          "include": null,
+          "index": null
+        }
+      ],
+      "name": "final-newline",
+      "paths": [
+        "code.py\n",
+        "code.py\nx",
+        "code.py\n\n"
+      ],
+      "pattern_count": 1
+    }
+  ]
+}
