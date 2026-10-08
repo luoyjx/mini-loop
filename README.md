@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `ce898e8` plus typed request optimization library,
+Runtime review baseline: `4755905` plus response policy Source contracts,
+plus typed request optimization library,
 plus request optimizer Source contracts,
 plus shared observation component lifecycle,
 plus efficiency lifecycle Source contracts,

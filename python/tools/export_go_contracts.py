@@ -6532,6 +6532,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.efficiency_pipeline_contracts import efficiency_pipeline_contracts
     from tools.efficiency_lifecycle_contracts import efficiency_lifecycle_contracts
     from tools.efficiency_request_contracts import efficiency_request_contracts
+    from tools.efficiency_response_contracts import efficiency_response_contracts
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
         # composition root too, before importing the module.
@@ -6853,6 +6854,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-efficiency-pipeline.json": _json_bytes(efficiency_pipeline_contracts()),
         "python-efficiency-lifecycle.json": _json_bytes(efficiency_lifecycle_contracts()),
         "python-efficiency-request.json": _json_bytes(efficiency_request_contracts()),
+        "python-efficiency-response.json": _json_bytes(efficiency_response_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

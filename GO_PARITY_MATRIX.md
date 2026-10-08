@@ -1,5 +1,21 @@
 # Python to Go parity matrix
 
+## 2026-10-09 response policy Source contracts
+
+Baseline 4755905. Nineteen StableRequestSettings constructors capture bounds,
+ordered metadata/uniqueness, unbounded output limits, Unicode character counts and
+exact dataclass repr. Forty-eight actual response-runtime recipes cover modes,
+unchanged-before-cap and shadow-before-cap ordering, existing/budget ceilings,
+double ownership, cap removal/raising, safe faults, cancellation/timeout, forged
+settings/warnings, counter fallback, closed receipts and actual passthrough/concise
+policies. Full context/receipt projections and all counter inputs are retained;
+only elapsed_ms is normalized. Descriptor max_input_bytes is not enforced by this
+Source response-stage implementation. No native response runtime is added here.
+
+Validation: 48 focused Source efficiency tests, exporter --check (172 files), all
+19 source scan guards and git diff --check. Full Python regression, coverage,
+mutation sweeps and Go gates are not refreshed for this capture-only commit.
+
 ## 2026-10-09 typed request optimization library
 
 Baseline ce898e8. NewRequestDocument represents the provider-neutral request as an
