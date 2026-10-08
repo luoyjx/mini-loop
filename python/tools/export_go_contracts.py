@@ -6762,6 +6762,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-views.json": _json_bytes(_workflow_views_contracts()),
         "python-workflow-admission.json": _json_bytes(_workflow_admission_contracts()),
         "python-workflow-tools.json": _json_bytes(_workflow_tool_contracts(Path(scratch))),
+        "python-workflow-service.json": _json_bytes(_workflow_service_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -10307,6 +10308,109 @@ def _workflow_tool_contracts(scratch: Path) -> dict:
                 runs.append(dict(backing=backing,mode=mode,input_json=json.dumps(value), replay_json=json.dumps(replay["input_value"]),records=records,errors=errors))
                 if store: store.close()
     return dict(inputs=rows,schemas=schemas,refusals=refusals,runs=runs)
+
+
+def _workflow_service_contracts() -> dict:
+    """Actual owned service/engine/store/journal; replace only isolated worker body."""
+    import asyncio
+    import copy
+    import dataclasses
+    from types import SimpleNamespace
+    from mini_loop.actions import InMemoryActionJournal
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.run_context import RunContext, WORKFLOW_LAUNCH, WORKFLOW_MANAGE
+    from mini_loop.workflows.artifacts import ArtifactSubmission
+    import mini_loop.workflows.service as module
+    recipes = [dict(name=name) for name in ("complete","raw-action","serial","verify","worker-fault","factory-fault","missing-result","invalid-result","timeout","cancel","close","wait-shield","foreign-cancel","terminal-replay","payload-conflict","observer-fault")]
+    recipes += [dict(name=name) for name in ("untrusted","no-capability","no-action","no-parent","authority-policy","args-schema","closed-first")]
+    async def scenario(recipe):
+        mode=recipe["name"]
+        definition=dict(name="wf",return_from="a",nodes=[dict(id="a",kind="agent")])
+        if mode=="serial": definition=dict(name="wf",return_from="b",nodes=[dict(id="a",kind="agent"),dict(id="b",kind="reduce",needs=["a"])])
+        if mode=="verify": definition=dict(name="wf",return_from="b",nodes=[dict(id="a",kind="agent"),dict(id="b",kind="verify",needs=["a"])])
+        if mode=="raw-action": definition.update(revision="forged",source="plugin",source_version="v",definition_hash=False)
+        if mode=="timeout": definition["budget"]=dict(wall_time_seconds=0.02)
+        if mode=="authority-policy":definition["policy"]=dict(origin_authority_required="untrusted")
+        if mode=="args-schema":definition["input_schema"]=dict(type="object",required=["x"],properties=dict(x=dict(type="string")))
+        started,release=asyncio.Event(),asyncio.Event()
+        events,calls=[],[]
+        async def emit(event):
+            if mode=="observer-fault":raise RuntimeError("observer failed")
+            events.append(event)
+        parent=SimpleNamespace(workspace="<workspace>",emit=emit)
+        class Worker:
+            def __init__(self, **kwargs):
+                if mode=="factory-fault":raise RuntimeError("factory fault")
+                self.config=kwargs
+            async def __call__(self,attempt,node,inputs):
+                context=self.config["context_resolver"](attempt)
+                calls.append(dict(node_id=node.id,spawn_index=attempt.spawn_index,inputs=inputs,context=context.as_dict(),max_rounds=self.config["max_rounds"],workspace=str(self.config["workspace"])))
+                await self.config["emit"](dict(type="tool_use",name="compress",id="u",input=dict(secret="excluded"),output="excluded",text="excluded"))
+                started.set()
+                if mode in ("timeout","cancel","close","wait-shield"):await release.wait()
+                if mode=="worker-fault":raise RuntimeError("worker fault")
+                if mode=="missing-result":return None
+                value=["bad"] if mode=="invalid-result" else (dict(status="verified") if node.kind.value=="verify" else dict(node=node.id))
+                return ArtifactSubmission(value=value)
+        original=module.FreshAgentRunner;module.FreshAgentRunner=Worker
+        journal=InMemoryActionJournal()
+        service=module.WorkflowService(settings=Settings(fake_llm=True),client=FakeAsyncAnthropic(),action_journal=journal,session_resolver=lambda _: None if mode=="no-parent" else parent)
+        context=dataclasses.replace(RunContext.explicit_human(actor_id="human",approved_capabilities=(WORKFLOW_LAUNCH,WORKFLOW_MANAGE)),message_id="m")
+        if mode in ("untrusted","closed-first"):context=dataclasses.replace(RunContext.default(),message_id="m")
+        if mode=="no-capability":context=dataclasses.replace(context,approved_capabilities=())
+        request=dict(session_id="s",definition=definition,args={},run_context=context,action_id="" if mode=="no-action" else "action",launch_turn=2,tool_use_id="u")
+        if mode=="raw-action":request["action_input"]=dict(definition=copy.deepcopy(definition),args={})
+        launches,error,detail,operation_error,operation_detail=[],"","","",""
+        run=None
+        try:
+            if mode=="closed-first":await service.close()
+            try:
+                result=await service.launch(**request);launches.append(result.as_dict())
+                if mode in ("cancel","close","wait-shield","timeout"):await started.wait()
+                if mode=="cancel":await service.cancel(result.run_id)
+                if mode=="close":await service.close()
+                if mode=="wait-shield":
+                    waiter=asyncio.create_task(service.wait(result.run_id));await asyncio.sleep(0);waiter.cancel()
+                    try:await waiter
+                    except asyncio.CancelledError:pass
+                    release.set()
+                run=await service.wait(result.run_id)
+                if mode in ("terminal-replay","payload-conflict"):
+                    replay=copy.copy(request)
+                    if mode=="payload-conflict":replay["args"]={"changed":True}
+                    try:launches.append((await service.launch(**replay)).as_dict())
+                    except Exception as failure:operation_error,operation_detail=type(failure).__name__,str(failure)
+                if mode=="foreign-cancel":
+                    try:await service.cancel(result.run_id,session_id="other")
+                    except Exception as failure:operation_error,operation_detail=type(failure).__name__,str(failure)
+            except Exception as failure:error,detail=type(failure).__name__,str(failure)
+            ids={}
+            attempts=service.store.list_attempts(run.run_id) if run else []
+            artifacts=[]
+            if run:
+                ids[run.run_id]="<run>"
+                for attempt in attempts:
+                    ids[attempt.attempt_id]="<attempt-"+attempt.node_id+">";ids[attempt.agent_id]="<agent-"+attempt.node_id+">"
+                for node in service.store.list_nodes(run.run_id):artifacts+=service.store.artifacts_for_node(run.run_id,node.node_id)
+                for artifact in artifacts:ids[artifact.artifact_id]="<artifact-"+artifact.node_id+">"
+            outbox=service.store.list_outbox()
+            for notice in outbox:ids[notice.message_id]="<outbox>"
+            def clean(value):
+                if dataclasses.is_dataclass(value):value=dataclasses.asdict(value)
+                if isinstance(value,dict):
+                    return {key:(0 if key in ("created_at","started_at","ended_at","heartbeat_at","completed_at","occurred_at") and child is not None else "<event>" if key=="event_id" else clean(child)) for key,child in value.items()}
+                if isinstance(value,(list,tuple)):return [clean(child) for child in value]
+                if isinstance(value,str):
+                    for raw,label in ids.items():value=value.replace(raw,label)
+                    return value
+                return value
+            data=clean(dict(launches=launches,run=run,nodes=service.store.list_nodes(run.run_id) if run else [],attempts=attempts,artifacts=artifacts,outbox=outbox,events=events,calls=calls,journal=journal.get("action"),observability=service.observability_errors,active=service.has_active("s")))
+            return dict(recipe=recipe,definition_json=json.dumps(definition),error=error,detail=clean(detail),operation_error=operation_error,operation_detail=clean(operation_detail),output_json=json.dumps(data,ensure_ascii=False))
+        finally:
+            release.set();await service.close();module.FreshAgentRunner=original
+    async def collect():return [await scenario(recipe) for recipe in recipes]
+    return dict(rows=asyncio.run(collect()))
 
 
 if __name__ == "__main__":

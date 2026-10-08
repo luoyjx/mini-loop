@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `b4aac9e` plus process-local workflow retention pins and the Python directory split, its
+Runtime review baseline: `9454a06` plus the native owned workflow service,
+the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
 model requests, token metering, four-layer context compaction and typed subagent
@@ -1484,9 +1485,17 @@ Workflow/WorkflowStatus/WorkflowCancel inputs, original immutable object definit
 args and a shared named run ID. Recursive masking leaves the original input unchanged;
 admission does not replace the raw journal payload. Existing native journals begin,
 bind and refuse conflicting replays with full source record effects. The native stored
-journal still uses an injected store, not a native SQLite driver. Owned launch/task
-service and manager/model/HTTP installation remain pending; the canonical runtime
-topology is unchanged.
+journal still uses an injected store, not a native SQLite driver. Snapshot 126
+compares 23 actual Python owned-service profiles. Native agent.WorkflowService
+checks trusted human launch capabilities, admits arguments, binds actions and owns
+background execution, wait/cancel, wall-time limits, terminal outbox effects and
+closed lifecycle/progress events. Queued replay requires a matching trusted live
+context; persisted provenance cannot grant authority. Close and parent deletion
+cancel and join workers; caller timeout leaves background cleanup owned. Active
+tasks pin graphs until terminal publication finishes. Observer failures are bounded
+and do not change execution results. The service is an explicit operator library;
+manager/model/HTTP installation, SSE/archive integration and automatic parent
+notification append remain pending. The canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

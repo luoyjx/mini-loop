@@ -2471,8 +2471,9 @@ are a named closed variant, including explicit null; exact immutable schema proj
 preserve numeric enum/const across model requests and archival ToolSchema reads.
 Normal exit without a structured result raises source RuntimeError. Parent cancellation
 must be joined by the engine/service before resource reclamation. LastWorker is a
-synchronized detached diagnostic and does not grant authority. No owned workflow
-service, launch/manage tools, HTTP or manager installation is supplied yet.
+synchronized detached diagnostic and does not grant authority. The owned
+WorkflowService below composes this runner. Launch/manage tools, HTTP and manager
+installation remain pending.
 
 workflows.NewServiceViews owns the status/summary and notification projection layer.
 Status reads run/node/artifact state under one store lock and detaches optional fields.
@@ -2506,11 +2507,47 @@ than prematurely lowering DefinitionAdmission's normalized view into the journal
 WorkflowReferenceInput uses WorkflowRunID shared with workflows.RunID and the
 agent action record alias. The closed ToolInput variants support exact canonical
 and spaced Python JSON, archival round trips and recursive recording masks.
-WorkflowToolSchemas returns detached source schemas only; handlers, trusted origin/
-capability checks and manager installation remain future service composition.
+WorkflowToolSchemas returns detached source schemas only; handlers and manager
+installation remain future composition. The owned service below performs trusted
+origin/capability checks.
 Optional tools are absent from DefaultToolNames. The decoder enforces the advertised
 outer object shape; it does not validate the definition DAG or argument schema.
 ActionJournal.Begin hashes the original input and AttachWorkflow binds one run
 without changing action status; duplicate binding is idempotent, conflicting run
 binding/replay is refused. A started record is not a dispatch claim. Missing-action
 errors retain existing native diagnostics instead of Python KeyError formatting.
+
+
+### Go owned workflow service seam
+
+agent.NewWorkflowService captures DefinitionCaps, an ActionJournal, a live
+WorkflowParentResolver and WorkflowRunnerConfig. The parent resolver binds a
+trusted OwnerID/workspace and a concurrent-safe WorkflowEventSink. WorkerFactory
+is an optional operator injection; the default creates FreshWorkflowRunner workers.
+Service-supplied parent, live context, rounds and progress sink replace caller worker
+configuration. A shared AttemptPool limits aggregate worker concurrency. Custom
+workers and observers must cooperate with cancellation; callbacks are not sandboxed.
+
+Launch requires a private validated ExplicitHuman RunContext with per-message
+workflow.launch capability, nonempty ActionID and a live owned parent. Definition
+admission, authority policy and argument schema checks precede journal/store effects.
+WorkflowLaunchRequest.ActionInput must carry the original typed model input when
+composition already began its action; nil uses the source direct-service normalized
+fallback. Replays bind one run. Queued replay accepts only a matching original
+trusted live context, never reconstructs authority from a saved runmeta snapshot.
+
+Wait cancellation only ends the caller's wait. Cancel, CancelSession and Close join
+owned tasks; Close continues draining when its caller times out and rejects new
+launches. Live context is reclaimed at terminal task completion. PruneTerminalRuns
+pins registered tasks through terminal event/outbox publication and clears service
+bookkeeping after eviction. Use the service pruning entry point when tasks are active;
+direct Store/Views mutations are operator seams and bypass those lifecycle pins.
+
+WorkflowEvent is a closed payload union. Progress exports only type/name/id/error/
+duration_ms, without tool inputs or outputs. Observer errors retain at most 100
+500-code-point diagnostics and cannot fail execution. Terminal event publication
+and result enqueue events are once per live service. Outbox enqueue retains source
+run/kind deduplication, including the store's three-field completion payload.
+Native wall times must fit a positive Go duration. These process-local mechanisms
+are not durable recovery or exactly-once delivery. Manager/tool/HTTP installation,
+SSE/archive projection and automatic parent append are separate pending work.

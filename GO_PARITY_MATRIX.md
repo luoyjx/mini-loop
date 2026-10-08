@@ -1,5 +1,57 @@
 # Python to Go parity matrix
 
+## 2026-10-08 owned workflow service
+
+Baseline 9454a06. W5B3 adds agent.WorkflowService as an explicit operator library.
+Trusted human origin, per-message workflow.launch, parent owner binding, dynamic
+admission, authority policy and args validation precede journal/store publication.
+Original ActionInput or source normalized fallback binds one run. Background tasks
+own fresh readonly workers, shared permits, min(definition, process) budgets,
+shielded wait, cancel, deleted-parent cleanup and draining Close. Saved provenance
+remains inert; queued replay requires matching original trusted live context.
+Task completion reclaims live bindings. Service pruning pins active tasks through
+terminal event/outbox publication and removes per-run event/launch bookkeeping.
+
+Snapshot 126 uses the actual Python service/engine/store/journal in 23 profiles,
+replacing only worker execution. Full normalized launch/run/node/attempt/artifact/
+outbox/event/context/journal effects are compared. Profiles cover raw action input,
+serial/verify, worker/factory failures, missing/invalid results, timeout, cancellation,
+shutdown, wait shielding, foreign cancel, replay/conflict, observer failures and
+ordered admission refusals. Closed events retain source header/payload fields;
+progress excludes inputs/outputs. Observer errors are bounded at 100 entries of
+500 code points and do not alter results. Native tests cover concurrent replay and
+cancel joins, deleted parents, cleanup after caller timeout, trusted replay isolation,
+actual fresh workers and terminal publication retention. Native live-context replay,
+positive representable duration validation and goroutine graph pins are explicit
+extensions. Callback cooperation remains required; no durable task recovery is added.
+
+Validation: full Go tests, full race tests and vet passed; focused retention/race
+checks also passed. All 126 source exports are current and all 19 scan guards
+anchored. Full Python regression passed on an isolated rerun: 2,155 passed,
+28 skipped, 24 subtests and three dependency deprecation warnings in 81.31s.
+An initial concurrent run failed only the existing 0.5s session timing assertion
+at 0.527s while full Go race tests were active; no Python test/runtime was changed.
+The final isolated full suite passed. git diff --check and README outline passed.
+Python package invariants/guard sweeps were not rerun because no package module or
+guarded Python runtime changed. No dependency was added. README map reviewed;
+runtime Mermaid topology remains unchanged because this library is uninstalled.
+Archify regeneration passed 9/9 showcase checks with zero errors/warnings.
+Specification SHA256 c7e53a0d949a3ba70d6a69844c4f49df650422c59a15449f6bcf85b61c640901;
+HTML SHA256 750aff832e71d45bbb0efee080fb224a8e9aad208c78b8ec85dd42de2042d65c.
+Visual inspection remains skipped after prior access denial.
+
+Fresh Go shared-package statement coverage is 90.20% (20,359/22,572), merging
+identical source blocks across -coverpkg=./... test binaries by maximum hit count.
+Profile: /tmp/mini-loop-workflow-service-coverage.out. This measures tested
+statements, not migration completion. Python coverage was not refreshed.
+
+Next W6 installs optional manager/tools/HTTP, owned manage admission, parent
+notification append, manager deletion/shutdown joins and SSE/archive projection.
+MCP, native session SQLite, remaining profiles and full G7 remain open. The full
+Python-to-Go port remains unfinished.
+
+
+
 ## 2026-10-08 typed workflow tool inputs and journal contracts
 
 Baseline 640aace. W5B2 extends the closed ToolInput union with concrete WorkflowInput

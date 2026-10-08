@@ -2225,7 +2225,7 @@ inputs, repeats and five constructor limits. Native race tests additionally cove
 shared-pool arbitration, duplicate Execute serialization, running/blocked cancellation,
 parent deadline settlement and cancelled lock waits. RunnerError provides finite
 source-style kinds; other callback errors use NativeRunnerError. The native worker
-below is callable; owned service, parent append, tools/HTTP and manager activation
+below is callable; parent append, tools/HTTP and manager activation
 remain pending. The store remains process-local.
 
 ### Isolated workflow workers
@@ -2300,4 +2300,32 @@ source schemas without installing tools or granting authority. Snapshot 125 matc
 eight input/action identities, 20 advertised-shape refusals, three schemas and 18
 actual Python memory/SQLite journal profiles. Native injected-store effects are
 compared to SQLite source, without claiming a native SQLite implementation.
-Background launch/wait/cancel/events and manager/tool activation remain pending.
+Background launch/wait/cancel/events are implemented by the owned service below;
+manager/tool activation remains pending.
+
+
+## Owned workflow service
+
+agent.NewWorkflowService is an explicit operator API with captured caps, journal,
+live parent resolver and worker configuration. Launch admits trusted human
+workflow.launch contexts, dynamic definitions and args before action/store effects.
+Supply the original ActionInput for an already-begun model action; nil selects the
+source normalized direct-service fallback. Tasks execute in the background with
+shared permits and min(definition, process) wall-time/round limits.
+
+Wait is shielded from caller cancellation. CancelSession and Close cancel/join
+workers; a timed-out Close caller leaves cleanup running. Service pruning pins
+unfinished publication and removes reclaimed bookkeeping. Queued replay requires
+matching trusted live context; inert stored provenance never restores authority.
+WorkflowEventSink receives closed detached events and bounded progress fields.
+Observer failure is isolated in 100 diagnostics of at most 500 code points.
+
+Snapshot 126 compares 23 actual Python service profiles: complete/serial/verify,
+raw/fallback action identity, worker/factory/missing/invalid result failures,
+timeout/cancel/close/wait shielding, foreign cancellation, terminal replay,
+conflicting payload, observer failure and ordered admission refusals. Native race
+tests additionally cover concurrent replay/cancel, cleanup after caller timeout,
+publication retention, deleted parents, context isolation, actual fresh workers
+and bounded detached observer errors. Native callbacks must cooperate; duration
+limits are explicitly validated. Manager/tools/HTTP, SSE/archive integration and
+automatic notification append remain pending. No native SQLite backend is added.
