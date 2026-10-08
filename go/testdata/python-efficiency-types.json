@@ -1,0 +1,2634 @@
+{
+  "descriptors": [
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "default",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "id-max",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "component id must be 1-128 safe identifier characters"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "id-too-long",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "component id must be 1-128 safe identifier characters"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "../escape",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "id-escape",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "component id must be 1-128 safe identifier characters"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "safe\n",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "id-newline",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "name": "version-max",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1111111111111111111111111111111111111111111111111111111111111111"
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "component version must be a 1-64 character safe identifier"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "11111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "name": "version-too-long",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "component version must be a 1-64 character safe identifier"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "safe\n"
+      },
+      "name": "version-newline",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "request_context",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "request-stage",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "request_context",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "response_policy",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "response-stage",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "response_policy",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "'bogus' is not a valid ComponentStage"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "bogus",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "bad-stage",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "'bogus' is not a valid Lossiness"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "bogus",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "bad-lossiness",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "content_types must contain MIME-like values"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "no-content-types",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "content_types must contain MIME-like values"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "bad-content-type",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "/"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "slash-content-type",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "/"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "capabilities must be non-empty strings"
+      },
+      "input": {
+        "capabilities": [
+          ""
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "empty-capability",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "timeout_ms must be positive"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 0,
+        "version": "1.2+3"
+      },
+      "name": "zero-timeout",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "timeout_ms must be positive"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": -1,
+        "version": "1.2+3"
+      },
+      "name": "negative-timeout",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "version": "1.2+3"
+      },
+      "name": "large-timeout",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "max_input_bytes must be positive when set"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": 0,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "zero-input-limit",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "large-input-limit",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "ml",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "cost-ml",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "ml",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "remote",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "cost-remote",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "remote",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "cost_tier must be fast, ml, or remote"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "other",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossless",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "bad-cost",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "recoverable lossiness requires recoverable=True"
+      },
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "recoverable",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "unbacked-recoverable",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "recoverable",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": true,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "backed-recoverable",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "recoverable",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": true,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "capabilities": [
+          "logs",
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossy",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      },
+      "name": "lossy",
+      "output": {
+        "capabilities": [
+          "logs",
+          "glob"
+        ],
+        "content_types": [
+          "text/plain"
+        ],
+        "cost_tier": "fast",
+        "deterministic": true,
+        "id": "example.reducer",
+        "lossiness": "lossy",
+        "max_input_bytes": null,
+        "network_access": false,
+        "recoverable": false,
+        "stage": "observation",
+        "timeout_ms": 1000,
+        "version": "1.2+3"
+      }
+    }
+  ],
+  "receipts": [
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "changed",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "unchanged",
+      "output": {
+        "changed": false,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": null,
+        "raw_ref": null,
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "no-raw-ref",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": null,
+        "raw_ref": null,
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "receipt component id is invalid"
+      },
+      "input": {
+        "component_id": "../escape",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-id",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "receipt component version is invalid"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "secret\nvalue",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-version",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "receipt reason must be a bounded machine-readable code"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "contains free text",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-reason",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "reason-max",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "receipt reason must be a bounded machine-readable code"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "reason-overlong",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "'bogus' is not a valid ComponentStage"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "bogus",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-stage",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "'bogus' is not a valid OptimizationMode"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "bogus",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-mode",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "'bogus' is not a valid OptimizationStatus"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "bogus",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-status",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "'bogus' is not a valid Lossiness"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "bogus",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-lossiness",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "warnings-max",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "warnings must contain at most 32 entries"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "warnings-overflow",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "warning entries must be at most 256 characters"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+        ]
+      },
+      "name": "warning-overlong",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "warnings must contain bounded machine-readable codes"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "free text"
+        ]
+      },
+      "name": "warning-unsafe",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "warnings must contain bounded machine-readable codes"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "Uppercase"
+        ]
+      },
+      "name": "warning-uppercase",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:123456789012"
+        ]
+      },
+      "name": "warning-numeric-suffix-max",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:123456789012"
+        ]
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "warnings must contain bounded machine-readable codes"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:1234567890123"
+        ]
+      },
+      "name": "warning-numeric-suffix-overflow",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "elapsed_ms must be finite and non-negative"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": -1,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "negative-elapsed",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "input_digest must be a sha256 digest"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-input-digest",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "output_digest must be a sha256 digest"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "bad",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-output-digest",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "raw_ref and raw_digest must be set together"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": null,
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "unpaired-raw-ref",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "raw_ref and raw_digest must be set together"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": null,
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "unpaired-raw-digest",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "raw_ref is invalid"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-raw-ref",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "raw_digest must be a sha256 digest"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "bad",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "bad-raw-digest",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "large-counter",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "raw_bytes cannot be negative"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": -1,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "negative-raw_bytes",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "projected_bytes cannot be negative"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": -1,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "negative-projected_bytes",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "tokens_before_estimate cannot be negative"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": -1,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "negative-tokens_before_estimate",
+      "output": null
+    },
+    {
+      "error": {
+        "kind": "ValueError",
+        "message": "tokens_after_estimate cannot be negative"
+      },
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": -1,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "negative-tokens_after_estimate",
+      "output": null
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "off",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "mode-off",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "off",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "shadow",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "mode-shadow",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "shadow",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "passthrough",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "status-passthrough",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "passthrough",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "shadowed",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "status-shadowed",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "shadowed",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "degraded",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "status-degraded",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "degraded",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "error",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "status-error",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "error",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "request_context",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "stage-request_context",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "request_context",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "response_policy",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "stage-response_policy",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "recoverable",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "response_policy",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "lossless",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "lossiness-lossless",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "lossless",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    },
+    {
+      "error": null,
+      "input": {
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "lossy",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      },
+      "name": "lossiness-lossy",
+      "output": {
+        "changed": true,
+        "component_id": "example.reducer",
+        "component_version": "1.2+3",
+        "deterministic": true,
+        "elapsed_ms": 1.5,
+        "input_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lossiness": "lossy",
+        "mode": "enforce",
+        "output_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "projected_bytes": 80,
+        "raw_bytes": 100,
+        "raw_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "raw_ref": "raw_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "reason": "reduced:2",
+        "stage": "observation",
+        "status": "applied",
+        "tokens_after_estimate": 20,
+        "tokens_before_estimate": 25,
+        "warnings": [
+          "trimmed:2",
+          "trimmed:2"
+        ]
+      }
+    }
+  ]
+}

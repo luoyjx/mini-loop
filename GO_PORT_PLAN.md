@@ -1,5 +1,56 @@
 # Go port plan
 
+## 2026-10-09 token-efficiency descriptor/receipt Source contracts
+
+Baseline 2f742eb. Export 165 captures 27 real ComponentDescriptor constructors and
+41 real OptimizationReceipt constructors/as_dict projections. Inputs follow the
+Source-declared field types; sequence recipes are converted to tuple warnings at
+the Source boundary. Captures retain full normalized output or exact error class/
+message without substituting validation or implementing a reducer.
+
+Cases cover closed stages/modes/status/lossiness, identifier/version/reason bounds,
+MIME-like values (including the Source-admitted slash-only value), stable capability
+deduplication, costs, recoverability declaration, positive descriptor limits, warning
+count/code/length boundaries, nonnegative metric validation, digest/ref pairing and
+changed detection. Descriptor limits include 101-digit integers; a receipt raw-byte
+metric contains 1001 digits, pinning unbounded counts before native type design.
+Native field types will prevent arbitrary ill-typed Python objects from entering
+the domain; this corpus does not claim dynamic duck-typed SPI input conformance.
+
+Validation: 68 isolated constructor captures, Source exporter --check confirms 165
+files, all 19 scan guards pass, and python/tests/test_token_efficiency.py passes
+48 tests. README outline and git diff --check pass. This commit adds the E0-E6
+migration breakdown and Source evidence only; no Go implementation or runtime
+activation is included. Full Python regression, coverage and mutation sweep remain
+unrefreshed. Native immutable contracts follow; E1-E6 and the full port stay open.
+
+## Token-efficiency migration slices — 2026-10-09
+
+Current baseline 2f742eb: Settings parses the efficiency fields, but the Go runtime
+has no observation/request/response optimization service. Mode/style activation
+remains explicitly unsupported. The full Source token_efficiency.py contract,
+including optional/custom components, is still required for the port.
+
+- E0: named immutable component descriptors and optimization receipts, closed stage/
+  mode/status/lossiness/cost types, bounded warnings, unbounded integer metrics and
+  Source-safe event projections. Capture constructor/receipt behavior before wiring.
+- E1: scoped masked raw-artifact memory store, opaque refs, trusted monotonic TTL,
+  per-item/total capacity, integrity checks, discard/sweep/clear/close and tools.
+- E2: observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
+  single ownership, no inflation, recoverable storage and fail-open fault receipts.
+- E3: detached typed request projection, frozen-prefix/identity/envelope guards,
+  optimizer admission, budgets and cache-order/transcript preservation.
+- E4: stable typed response settings and concise policy; bounded instructions,
+  existing output-cap/context-budget preservation, shadow and fault behavior.
+- E5: shared component identities, serial admission, initialize/health/close once,
+  draining/deadlines/retry, per-session clone/store binding and contained failures.
+- E6: agent/manager/launcher/benchmark/HTTP composition, events/recording, independent
+  environment selection and actual Source end-to-end feature-combination tests.
+
+Each slice retains the overall port objective and gets a separate validated commit.
+E0 alone will not activate the runtime or remove unsupported settings; completion
+requires the admission, protection, lifecycle and runtime consumers above.
+
 ## 2026-10-09 native Guardian Launcher activation and HTTP effects
 
 Baseline cfb5304. The standalone Launcher now forwards Settings.GuardianEnabled to

@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `cfb5304` plus Guardian Launcher activation,
+Runtime review baseline: `2f742eb` plus token-efficiency type Source contracts,
+plus Guardian Launcher activation,
 plus Guardian HTTP Source contracts,
 plus manager-owned per-action Guardian binding,
 plus manager-selected Guardian Source contracts,

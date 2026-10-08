@@ -1,5 +1,29 @@
 # Python to Go parity matrix
 
+## 2026-10-09 token-efficiency descriptor/receipt Source contracts
+
+Baseline 2f742eb. Export 165 captures 27 real ComponentDescriptor constructors and
+41 real OptimizationReceipt constructors/as_dict projections. Inputs follow the
+Source-declared field types; sequence recipes are converted to tuple warnings at
+the Source boundary. Captures retain full normalized output or exact error class/
+message without substituting validation or implementing a reducer.
+
+Cases cover closed stages/modes/status/lossiness, identifier/version/reason bounds,
+MIME-like values (including the Source-admitted slash-only value), stable capability
+deduplication, costs, recoverability declaration, positive descriptor limits, warning
+count/code/length boundaries, nonnegative metric validation, digest/ref pairing and
+changed detection. Descriptor limits include 101-digit integers; a receipt raw-byte
+metric contains 1001 digits, pinning unbounded counts before native type design.
+Native field types will prevent arbitrary ill-typed Python objects from entering
+the domain; this corpus does not claim dynamic duck-typed SPI input conformance.
+
+Validation: 68 isolated constructor captures, Source exporter --check confirms 165
+files, all 19 scan guards pass, and python/tests/test_token_efficiency.py passes
+48 tests. README outline and git diff --check pass. This commit adds the E0-E6
+migration breakdown and Source evidence only; no Go implementation or runtime
+activation is included. Full Python regression, coverage and mutation sweep remain
+unrefreshed. Native immutable contracts follow; E1-E6 and the full port stay open.
+
 ## 2026-10-09 native Guardian Launcher activation and HTTP effects
 
 Baseline cfb5304. The standalone Launcher now forwards Settings.GuardianEnabled to
