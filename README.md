@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `03d02d4` plus explicit typed diagnostics provider/tool
+Runtime review baseline: `82c9d05` plus diagnostics parser-boundary Source observations
+and explicit typed diagnostics provider/tool
 composition (default Python syntax backend pending), managed stored-request reconstruction
 and typed historical request reconstruction
 and independent transcript-search launcher/CLI

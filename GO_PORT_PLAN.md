@@ -1,5 +1,33 @@
 # Go port plan
 
+## 2026-10-08 diagnostics parser-boundary Source observations
+
+Baseline 82c9d05. Snapshot 150's diagnostics corpus now includes 37 real file/tool
+recipes and six injected-provider recipes. A temporary ast.parse observer calls the
+original CPython parser and records the normalized input SHA256, clean/syntax/fault
+variant, line/message and non-syntax exception class. No parser or scan is replaced.
+This supplies a replay boundary for native file/control-flow implementation while
+the actual parser implementation remains separately provable.
+
+New recipes capture pathlib component sorting (a/inner.py precedes a.py), .py as a
+hidden tree match but not an explicit Python suffix, explicit dot-directory selection,
+matching .py directories, quoted/Unicode filesystem warnings, UTF-8 maximal-subpart
+replacement/universal newlines and oversized-warning continuation. The Source byte
+limit is a stat-before-read gate. Its oversized-file branch continues before checking
+the 50-report stop: 53 oversized warnings are collected and the later clean file is
+still parsed, although tool rendering caps at 50. Whole-tree enumeration precedes
+sorted 200-entry selection. Native work must retain these actual behaviors and not
+claim stronger work/race bounds than the Source implements.
+
+Validation: all 150 export files pass --check, all 19 scanning guards remain anchored,
+8 Python diagnostics/query tests pass, full Go tests and go vet ./... pass, README
+outline and git diff --check pass. Runtime code/dependencies/topology are unchanged;
+full Python/race, invariants, mutation sweeps and coverage were not rerun.
+Next implement the native scanner around a closed parser-result interface. The user
+has been asked whether the language parser may invoke an installed Python compiler
+or must be fully native; no compiler dependency/default is selected before a reply.
+The full Python-to-Go objective remains active.
+
 ## 2026-10-08 native diagnostics provider and tool seam
 
 Baseline 03d02d4 (Source snapshot 150). The native diagnostics package now has

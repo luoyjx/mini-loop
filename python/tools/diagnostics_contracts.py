@@ -2,11 +2,14 @@
 from __future__ import annotations
 
 import asyncio
+import ast
+import hashlib
 import sys
 import tempfile
 from dataclasses import asdict
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 
 def diagnostics_contracts() -> dict:
@@ -24,14 +27,21 @@ def diagnostics_contracts() -> dict:
         dict(name="sorted-tree", files=[dict(path="z.py", text="x =\n"),
             dict(path="a/first.py", text="if True\n    pass\n"),
             dict(path="ignore.PY", text="x =\n")], input={}),
+        dict(name="component-sorted-tree", files=[dict(path="a.py", text="a =\n"),
+            dict(path="a/inner.py", text="b =\n"), dict(path="z/inner.py", text="c =\n")], input={}),
         dict(name="hidden-tree", files=[dict(path=".hidden.py", text="x =\n"),
             dict(path=".nested/问题.py", text="x =\n")], input={}),
+        dict(name="dot-suffix-tree", files=[dict(path=".py", text="x =\n")], input={}),
+        dict(name="dot-suffix-target", files=[dict(path=".py", text="x =\n")], input=dict(path=".py")),
+        dict(name="dot-directory-target", files=[dict(path="bad.py", text="x =\n")], input=dict(path=".")),
         dict(name="target-only", files=[dict(path="a.py", text="x =\n"),
             dict(path="b.py", text="x =\n")], input=dict(path="b.py")),
         dict(name="non-python", files=[dict(path="bad.txt", text="x =\n")], input=dict(path="bad.txt")),
         dict(name="missing-non-python", files=[], input=dict(path="missing.txt")),
         dict(name="missing-python", files=[], input=dict(path="missing.py")),
         dict(name="directory-python", files=[dict(path="dir.py", directory=True)], input=dict(path="dir.py")),
+        dict(name="directory-python-tree", files=[dict(path="dir.py/child.py", text="x =\n")], input={}),
+        dict(name="missing-quoted-python", files=[], input=dict(path="missing'文.py")),
         dict(name="null-path", files=[dict(path="bad.py", text="x =\n")], input=dict(path=None)),
         dict(name="empty-path", files=[dict(path="bad.py", text="x =\n")], input=dict(path="")),
         dict(name="parent-refusal", files=[], input=dict(path="../outside/bad.py")),
@@ -45,6 +55,7 @@ def diagnostics_contracts() -> dict:
         dict(name="broken-symlink", files=[dict(path="link.py", symlink="<outside>/missing.py")], input={}),
         dict(name="invalid-utf8-in-string", files=[dict(path="ok.py", bytes_hex="78203d2027ff270a")], input={}),
         dict(name="invalid-utf8-in-code", files=[dict(path="bad.py", bytes_hex="78203d20ff0a")], input={}),
+        dict(name="replacement-and-newlines", files=[dict(path="ok.py", bytes_hex="78203d2027e282270d0a2320ffff0d")], input={}),
         dict(name="nul-source", files=[dict(path="bad.py", text="x = '\x00'\n")], input={}),
         dict(name="byte-limit-exact", files=[dict(path="limit.py", text="#", repeat=MAX_FILE_BYTES)], input={}),
         dict(name="byte-limit-over", files=[dict(path="limit.py", text="#", repeat=MAX_FILE_BYTES + 1)], input={}),
@@ -52,6 +63,8 @@ def diagnostics_contracts() -> dict:
             for index in range(MAX_FILES + 1)], input={}),
         dict(name="report-cap", files=[dict(path=f"f{index:03}.py", text="x =\n")
             for index in range(MAX_REPORTED + 3)], input={}),
+        dict(name="oversized-warnings-pass-report-cap", files=[dict(path=f"f{index:03}.py", text="#", repeat=MAX_FILE_BYTES + 1)
+            for index in range(MAX_REPORTED + 3)] + [dict(path="z.py", text="pass\n")], input={}),
         dict(name="nonempty-list-path", files=[], input=dict(path=["bad.py"])),
         dict(name="empty-list-path", files=[dict(path="bad.py", text="x =\n")], input=dict(path=[])),
         dict(name="unknown-key", files=[], input=dict(extra="unrecognized")),
@@ -90,11 +103,31 @@ def diagnostics_contracts() -> dict:
                 if isinstance(input_.get("path"), str):
                     input_["path"] = materialize(input_["path"])
                 ctx = ToolContext(SimpleNamespace(toolset=toolset), root, {})
-                try:
-                    observation = dict(output=normalize(await tool.run(ctx, **input_)))
-                except Exception as error:
-                    observation = observe_failure(error, normalize)
-                rows.append(dict(**recipe, **observation))
+                parsed = []
+                original_parse = ast.parse
+
+                def observe_parse(source, *args, **kwargs):
+                    call = dict(source_sha256=hashlib.sha256(source.encode("utf-8")).hexdigest())
+                    parsed.append(call)
+                    try:
+                        result = original_parse(source, *args, **kwargs)
+                    except SyntaxError as error:
+                        call.update(kind="syntax", line=int(error.lineno or 0), message=error.msg or "syntax error")
+                        raise
+                    except Exception as error:
+                        call.update(kind="fault", error_class=type(error).__name__, message=str(error))
+                        raise
+                    call.update(kind="clean")
+                    return result
+
+                # Observe the actual parser boundary while calling the original
+                # CPython implementation; no parser or file scan is substituted.
+                with patch.object(ast, "parse", observe_parse):
+                    try:
+                        observation = dict(output=normalize(await tool.run(ctx, **input_)))
+                    except Exception as error:
+                        observation = observe_failure(error, normalize)
+                rows.append(dict(**recipe, parsed=parsed, **observation))
 
             class RecordingProvider:
                 scope = "injected types only"
