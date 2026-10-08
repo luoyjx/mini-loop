@@ -1,5 +1,32 @@
 # Python to Go parity matrix
 
+## 2026-10-08 AST payload invocation Source contracts
+
+Baseline 632f208. Export 156 executes 65 actual Source _invoke calls against a
+real isolated CLI child outside the workspace. Each recipe records actual version
+probe/operation argv, Source result JSON in ASCII and UTF-8 projections, stdout
+byte accounting and four ordinary TypeError escapes. No Source classifier,
+JSON decoder, process runner, rewriting or projection method is replaced.
+
+The corpus pins envelope validation (including Python true/1.0 schema equality),
+nonzero stderr precedence, malformed JSON diagnostics, non-object output omission,
+error-member presence/notes/hint conversion, imports removal ordering, values-only
+snapshot rewriting, warning iteration, recursive arbitrary-precision metric sums,
+container counts without recursive double-counting, nonfinite observations and
+partial-before-ambiguity/no-match precedence for all four commands. Malformed null
+collections remain ordinary exceptions where Source iteration raises, rather than
+being synthesized as clean/empty results. Non-string iterable behavior is observed.
+
+These are capture contracts, not a Go semantic implementation or tool activation.
+Closed native results/payload trees, actual semantic subprocess invocation and
+four model tools/runtime wiring remain required. SQLite, diagnostics parser choice
+and G7 remain open; the full migration goal stays active.
+Validation: 156 Source contract exports current; all 41 AST-context tests pass;
+all 19 scanning guards anchored. README outline and git diff --check pass. Source
+runtime/defaults did not change; Go gates, full Python regression, full mutation
+sweep and coverage were not refreshed for this capture commit.
+
+
 ## 2026-10-08 native AST canonical and bounded glob selection
 
 Baseline af83178. Private helpers now validate named-string arrays with Source

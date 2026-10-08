@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `af83178` plus native AST canonical path and bounded glob selection,
+Runtime review baseline: `632f208` plus AST payload invocation Source contracts,
+plus native AST canonical path and bounded glob selection,
 plus AST path-selection Source contracts,
 plus full private AST source snapshot construction,
 plus anchored AST snapshot filesystem primitives,

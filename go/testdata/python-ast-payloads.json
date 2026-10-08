@@ -1,0 +1,1307 @@
+{
+  "invocations": [
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "outline-applied",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"path\":\"/private/frozen/workspace/code.py\",\"nodes\":[{\"name\":\"One\"}]}]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"path\":\"<workspace>/code.py\",\"nodes\":[{\"name\":\"One\"}]}]},\"output_bytes\":141}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"path\":\"<workspace>/code.py\",\"nodes\":[{\"name\":\"One\"}]}]},\"output_bytes\":141}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "outline-empty",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[]},\"output_bytes\":72}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[]},\"output_bytes\":72}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "outline-missing-files",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\"}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\"},\"output_bytes\":61}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\"},\"output_bytes\":61}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "digest",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "digest",
+        "include_imports": null,
+        "name": "digest-empty",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"digest\",\"files\":[]}"
+      },
+      "operation": "repo_map",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"repo_map\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"digest\",\"files\":[]},\"output_bytes\":71}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"repo_map\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"digest\",\"files\":[]},\"output_bytes\":71}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "outline-object-files",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":{\"foreign\":1}}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":{\"foreign\":1}},\"output_bytes\":83}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":{\"foreign\":1}},\"output_bytes\":83}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "outline-null-files",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":null}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":null},\"output_bytes\":74}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":null},\"output_bytes\":74}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": false,
+        "name": "outline-null-files-import-filter",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":null}"
+      },
+      "error": "'NoneType' object is not iterable",
+      "error_class": "TypeError",
+      "operation": "file_outline"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "schema-boolean-one",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":true,\"command\":\"outline\",\"files\":[]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":true,\"command\":\"outline\",\"files\":[]},\"output_bytes\":75}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":true,\"command\":\"outline\",\"files\":[]},\"output_bytes\":75}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "schema-float-one",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1.0,\"command\":\"outline\",\"files\":[]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1.0,\"command\":\"outline\",\"files\":[]},\"output_bytes\":74}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1.0,\"command\":\"outline\",\"files\":[]},\"output_bytes\":74}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "schema-text-one",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":\"1\",\"command\":\"outline\",\"files\":[]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"incompatible\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"unexpected ast-outline JSON envelope: expected tool=ast-outline, schema_version=1, command=outline\",\"output_bytes\":74}",
+      "utf8_json": "{\"status\":\"incompatible\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"unexpected ast-outline JSON envelope: expected tool=ast-outline, schema_version=1, command=outline\",\"output_bytes\":74}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "wrong-tool",
+        "stdout": "{\"tool\":\"other\",\"schema_version\":1,\"command\":\"outline\",\"files\":[]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"incompatible\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"unexpected ast-outline JSON envelope: expected tool=ast-outline, schema_version=1, command=outline\",\"output_bytes\":66}",
+      "utf8_json": "{\"status\":\"incompatible\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"unexpected ast-outline JSON envelope: expected tool=ast-outline, schema_version=1, command=outline\",\"output_bytes\":66}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "wrong-command",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"digest\",\"files\":[]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"incompatible\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"unexpected ast-outline JSON envelope: expected tool=ast-outline, schema_version=1, command=outline\",\"output_bytes\":71}",
+      "utf8_json": "{\"status\":\"incompatible\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"unexpected ast-outline JSON envelope: expected tool=ast-outline, schema_version=1, command=outline\",\"output_bytes\":71}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": false,
+        "name": "error-null",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":null,\"files\":[{\"imports\":[\"kept\"]}]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline reported an error\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":null,\"files\":[{\"imports\":[\"kept\"]}]},\"output_bytes\":105}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline reported an error\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":null,\"files\":[{\"imports\":[\"kept\"]}]},\"output_bytes\":105}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "error-scalar",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":\"detail\"}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline reported an error\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":\"detail\"},\"output_bytes\":78}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline reported an error\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":\"detail\"},\"output_bytes\":78}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "error-notes-hint",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":[\"first\",42,false,{\"item\":[1,null]}],\"hint\":[\"choose\",2]}}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"first; 42; False; {'item': [1, None]} (hint: ['choose', 2])\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":[\"first\",42,false,{\"item\":[1,null]}],\"hint\":[\"choose\",2]}},\"output_bytes\":136}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"first; 42; False; {'item': [1, None]} (hint: ['choose', 2])\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":[\"first\",42,false,{\"item\":[1,null]}],\"hint\":[\"choose\",2]}},\"output_bytes\":136}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "error-notes-string",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":\"\\u03b1\\u03b2\",\"hint\":true}}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"\\u03b1; \\u03b2 (hint: True)\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":\"\\u03b1\\u03b2\",\"hint\":true}},\"output_bytes\":106}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"α; β (hint: True)\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":\"αβ\",\"hint\":true}},\"output_bytes\":106}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "error-notes-object",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":{\"first\":1,\"second\":2},\"hint\":\"\"}}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"first; second\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":{\"first\":1,\"second\":2},\"hint\":\"\"}},\"output_bytes\":112}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"first; second\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":{\"first\":1,\"second\":2},\"hint\":\"\"}},\"output_bytes\":112}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "error-empty-notes-hint",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":[],\"hint\":\"use explicit path\"}}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"use explicit path\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":[],\"hint\":\"use explicit path\"}},\"output_bytes\":109}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"use explicit path\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":[],\"hint\":\"use explicit path\"}},\"output_bytes\":109}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "error-null-notes",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":null}}"
+      },
+      "error": "'NoneType' object is not iterable",
+      "error_class": "TypeError",
+      "operation": "file_outline"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "error-quiet-hint",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":[],\"hint\":0}}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline reported an error\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":[],\"hint\":0}},\"output_bytes\":91}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline reported an error\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{\"notes\":[],\"hint\":0}},\"output_bytes\":91}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": false,
+        "name": "imports-removed",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"other\":1},42,null]},\"output_bytes\":164}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"other\":1},42,null]},\"output_bytes\":164}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": true,
+        "name": "imports-retained",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]},\"output_bytes\":164}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]},\"output_bytes\":164}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "imports-unspecified",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]},\"output_bytes\":164}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]},\"output_bytes\":164}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": false,
+        "name": "imports-under-error-retained",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{},\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline reported an error\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{},\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]},\"output_bytes\":175}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline reported an error\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"error\":{},\"files\":[{\"imports\":[\"one\"],\"conditional_imports_count\":3,\"import_regions\":[\"one\"],\"other\":1},42,null]},\"output_bytes\":175}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "rewrite-values-only",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"path\":\"/private/frozen/workspace/code.py\",\"nested\":[\"/private/frozen/workspace/a /private/frozen/workspace/b\",{\"/private/frozen/workspace/key\":\"/private/frozen/workspace/value\"}]}]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"path\":\"<workspace>/code.py\",\"nested\":[\"<workspace>/a <workspace>/b\",{\"/private/frozen/workspace/key\":\"<workspace>/value\"}]}]},\"output_bytes\":253}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"path\":\"<workspace>/code.py\",\"nested\":[\"<workspace>/a <workspace>/b\",{\"/private/frozen/workspace/key\":\"<workspace>/value\"}]}]},\"output_bytes\":253}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "warning-array",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":[\"first\",2,null,\"\\u03b1\"]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[\"first\",\"\\u03b1\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":[\"first\",2,null,\"\\u03b1\"]},\"output_bytes\":108}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[\"first\",\"α\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":[\"first\",2,null,\"α\"]},\"output_bytes\":108}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "warning-string",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":\"\\u03b1\\u03b2\"}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[\"\\u03b1\",\"\\u03b2\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":\"\\u03b1\\u03b2\"},\"output_bytes\":97}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[\"α\",\"β\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":\"αβ\"},\"output_bytes\":97}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "warning-object",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":{\"first\":1,\"second\":2}}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[\"first\",\"second\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":{\"first\":1,\"second\":2}},\"output_bytes\":105}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[\"first\",\"second\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":{\"first\":1,\"second\":2}},\"output_bytes\":105}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "warning-null",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":null}"
+      },
+      "error": "'NoneType' object is not iterable",
+      "error_class": "TypeError",
+      "operation": "file_outline"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "nested-metrics",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"error_count\":true,\"parse_errors\":[null,{},false],\"truncated_count\":{\"one\":1,\"two\":2},\"child\":{\"error_count\":7}}],\"error_count\":-2,\"parse_errors\":2.0,\"other\":[{\"parse_errors\":3},{\"truncated_count\":true}],\"notes\":[\"first\"]}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"partial\",\"operation\":\"file_outline\",\"warnings\":[\"first\",\"ast_parse_errors:14\",\"ast_matches_truncated:3\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"error_count\":true,\"parse_errors\":[null,{},false],\"truncated_count\":{\"one\":1,\"two\":2},\"child\":{\"error_count\":7}}],\"error_count\":-2,\"parse_errors\":2.0,\"other\":[{\"parse_errors\":3},{\"truncated_count\":true}],\"notes\":[\"first\"]},\"output_bytes\":293}",
+      "utf8_json": "{\"status\":\"partial\",\"operation\":\"file_outline\",\"warnings\":[\"first\",\"ast_parse_errors:14\",\"ast_matches_truncated:3\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{\"error_count\":true,\"parse_errors\":[null,{},false],\"truncated_count\":{\"one\":1,\"two\":2},\"child\":{\"error_count\":7}}],\"error_count\":-2,\"parse_errors\":2.0,\"other\":[{\"parse_errors\":3},{\"truncated_count\":true}],\"notes\":[\"first\"]},\"output_bytes\":293}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "metric-container-does-not-recurse",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error_count\":{\"parse_errors\":[1,2,3]}}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"partial\",\"operation\":\"file_outline\",\"warnings\":[\"ast_parse_errors:1\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error_count\":{\"parse_errors\":[1,2,3]}},\"output_bytes\":113}",
+      "utf8_json": "{\"status\":\"partial\",\"operation\":\"file_outline\",\"warnings\":[\"ast_parse_errors:1\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error_count\":{\"parse_errors\":[1,2,3]}},\"output_bytes\":113}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "unbounded-metric",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error_count\":10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"partial\",\"operation\":\"file_outline\",\"warnings\":[\"ast_parse_errors:10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error_count\":10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000},\"output_bytes\":190}",
+      "utf8_json": "{\"status\":\"partial\",\"operation\":\"file_outline\",\"warnings\":[\"ast_parse_errors:10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error_count\":10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000},\"output_bytes\":190}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "ignored-float-metrics",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error_count\":Infinity,\"parse_errors\":NaN}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error_count\":Infinity,\"parse_errors\":NaN},\"output_bytes\":116}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error_count\":Infinity,\"parse_errors\":NaN},\"output_bytes\":116}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "show",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "show",
+        "include_imports": null,
+        "name": "show-empty",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[]}"
+      },
+      "operation": "show_symbol",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[]},\"output_bytes\":71}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[]},\"output_bytes\":71}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "show",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "show",
+        "include_imports": null,
+        "name": "show-one",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"matches\":[1]}]}"
+      },
+      "operation": "show_symbol",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"matches\":[1]}]},\"output_bytes\":86}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"matches\":[1]}]},\"output_bytes\":86}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "show",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "show",
+        "include_imports": null,
+        "name": "show-two",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"matches\":[1,2]}]}"
+      },
+      "operation": "show_symbol",
+      "result_json": "{\"status\":\"ambiguous\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"matches\":[1,2]}]},\"output_bytes\":88}",
+      "utf8_json": "{\"status\":\"ambiguous\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"matches\":[1,2]}]},\"output_bytes\":88}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "show",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "show",
+        "include_imports": null,
+        "name": "show-true-ambiguous",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"ambiguous\":true,\"matches\":[]}]}"
+      },
+      "operation": "show_symbol",
+      "result_json": "{\"status\":\"ambiguous\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"ambiguous\":true,\"matches\":[]}]},\"output_bytes\":102}",
+      "utf8_json": "{\"status\":\"ambiguous\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"ambiguous\":true,\"matches\":[]}]},\"output_bytes\":102}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "show",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "show",
+        "include_imports": null,
+        "name": "show-integer-ambiguous",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"ambiguous\":1,\"matches\":[]}]}"
+      },
+      "operation": "show_symbol",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"ambiguous\":1,\"matches\":[]}]},\"output_bytes\":99}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[{\"ambiguous\":1,\"matches\":[]}]},\"output_bytes\":99}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "show",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "show",
+        "include_imports": null,
+        "name": "show-mixed",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[42,{\"matches\":[]}]}"
+      },
+      "operation": "show_symbol",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[42,{\"matches\":[]}]},\"output_bytes\":88}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":[42,{\"matches\":[]}]},\"output_bytes\":88}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "show",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "show",
+        "include_imports": null,
+        "name": "show-object",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":{\"name\":1}}"
+      },
+      "operation": "show_symbol",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":{\"name\":1}},\"output_bytes\":79}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"show_symbol\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":{\"name\":1}},\"output_bytes\":79}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "show",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "show",
+        "include_imports": null,
+        "name": "show-null",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":null}"
+      },
+      "error": "'NoneType' object is not iterable",
+      "error_class": "TypeError",
+      "operation": "show_symbol"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "show",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "show",
+        "include_imports": null,
+        "name": "show-partial-precedes-invalid-results",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":null,\"error_count\":1}"
+      },
+      "operation": "show_symbol",
+      "result_json": "{\"status\":\"partial\",\"operation\":\"show_symbol\",\"warnings\":[\"ast_parse_errors:1\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":null,\"error_count\":1},\"output_bytes\":89}",
+      "utf8_json": "{\"status\":\"partial\",\"operation\":\"show_symbol\",\"warnings\":[\"ast_parse_errors:1\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"show\",\"results\":null,\"error_count\":1},\"output_bytes\":89}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "grep",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "grep",
+        "include_imports": null,
+        "name": "grep-missing",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\"}"
+      },
+      "operation": "symbol_references",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\"},\"output_bytes\":58}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\"},\"output_bytes\":58}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "grep",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "grep",
+        "include_imports": null,
+        "name": "grep-empty",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[]}"
+      },
+      "operation": "symbol_references",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[]},\"output_bytes\":69}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[]},\"output_bytes\":69}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "grep",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "grep",
+        "include_imports": null,
+        "name": "grep-all-empty",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[{\"matches\":[]}]}"
+      },
+      "operation": "symbol_references",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[{\"matches\":[]}]},\"output_bytes\":83}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[{\"matches\":[]}]},\"output_bytes\":83}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "grep",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "grep",
+        "include_imports": null,
+        "name": "grep-one",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[{\"matches\":[1]}]}"
+      },
+      "operation": "symbol_references",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[{\"matches\":[1]}]},\"output_bytes\":84}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[{\"matches\":[1]}]},\"output_bytes\":84}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "grep",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "grep",
+        "include_imports": null,
+        "name": "grep-non-object-files",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[42]}"
+      },
+      "operation": "symbol_references",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[42]},\"output_bytes\":71}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"files\":[42]},\"output_bytes\":71}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "grep",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "grep",
+        "include_imports": null,
+        "name": "grep-summary-zero",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":0},\"files\":[{\"matches\":[1]}]}"
+      },
+      "operation": "symbol_references",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":0},\"files\":[{\"matches\":[1]}]},\"output_bytes\":114}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":0},\"files\":[{\"matches\":[1]}]},\"output_bytes\":114}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "grep",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "grep",
+        "include_imports": null,
+        "name": "grep-summary-false",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":false}}"
+      },
+      "operation": "symbol_references",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":false}},\"output_bytes\":92}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":false}},\"output_bytes\":92}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "grep",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "grep",
+        "include_imports": null,
+        "name": "grep-summary-float-zero",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":0.0}}"
+      },
+      "operation": "symbol_references",
+      "result_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":0.0}},\"output_bytes\":90}",
+      "utf8_json": "{\"status\":\"no_match\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":0.0}},\"output_bytes\":90}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "grep",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "grep",
+        "include_imports": null,
+        "name": "grep-summary-text-zero",
+        "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":\"0\"}}"
+      },
+      "operation": "symbol_references",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":\"0\"}},\"output_bytes\":90}",
+      "utf8_json": "{\"status\":\"applied\",\"operation\":\"symbol_references\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"grep\",\"summary\":{\"total_matches\":\"0\"}},\"output_bytes\":90}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "array",
+        "stdout": "[]"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline JSON must be an object\"}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline JSON must be an object\"}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "null",
+        "stdout": "null"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline JSON must be an object\"}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline JSON must be an object\"}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "number",
+        "stdout": "1"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline JSON must be an object\"}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline JSON must be an object\"}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "string",
+        "stdout": "\"text\""
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline JSON must be an object\"}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline JSON must be an object\"}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "empty-json",
+        "stdout": ""
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting value: line 1 column 1 (char 0)\"}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting value: line 1 column 1 (char 0)\"}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "invalid-json",
+        "stdout": "not JSON"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting value: line 1 column 1 (char 0)\",\"output_bytes\":8}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting value: line 1 column 1 (char 0)\",\"output_bytes\":8}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "invalid-key",
+        "stdout": "{x:1}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)\",\"output_bytes\":5}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)\",\"output_bytes\":5}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "trailing-comma",
+        "stdout": "{\"a\":1,}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting property name enclosed in double quotes: line 1 column 8 (char 7)\",\"output_bytes\":8}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting property name enclosed in double quotes: line 1 column 8 (char 7)\",\"output_bytes\":8}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "trailing-data",
+        "stdout": "{} {}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Extra data: line 1 column 4 (char 3)\",\"output_bytes\":5}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Extra data: line 1 column 4 (char 3)\",\"output_bytes\":5}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "invalid-escape",
+        "stdout": "\"bad\\q\""
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Invalid \\\\escape: line 1 column 5 (char 4)\",\"output_bytes\":7}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Invalid \\\\escape: line 1 column 5 (char 4)\",\"output_bytes\":7}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "unterminated",
+        "stdout": "\"bad"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Unterminated string starting at: line 1 column 1 (char 0)\",\"output_bytes\":4}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Unterminated string starting at: line 1 column 1 (char 0)\",\"output_bytes\":4}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "include_imports": null,
+        "name": "unicode-invalid",
+        "stdout": "{\"α\":!}"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting value: line 1 column 6 (char 5)\",\"output_bytes\":8}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline returned invalid JSON: Expecting value: line 1 column 6 (char 5)\",\"output_bytes\":8}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "exit_code": 7,
+        "name": "nonzero-stderr-precedence",
+        "stderr": "  failure /private/frozen/workspace/code.py  ",
+        "stdout": "output"
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline exited 7: failure <workspace>/code.py\",\"output_bytes\":6}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline exited 7: failure <workspace>/code.py\",\"output_bytes\":6}"
+    },
+    {
+      "calls": [
+        [
+          "--version"
+        ],
+        [
+          "outline",
+          "--json"
+        ]
+      ],
+      "case": {
+        "command": "outline",
+        "exit_code": 8,
+        "name": "nonzero-stdout-fallback",
+        "stderr": "  ",
+        "stdout": "  failure α /private/frozen/workspace/code.py  "
+      },
+      "operation": "file_outline",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline exited 8: failure \\u03b1 <workspace>/code.py\",\"output_bytes\":48}",
+      "utf8_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"ast-outline exited 8: failure α <workspace>/code.py\",\"output_bytes\":48}"
+    }
+  ],
+  "snapshot_prefix": "/private/frozen/workspace"
+}
