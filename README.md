@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `b45bc58` plus request optimizer Source contracts,
+Runtime review baseline: `ce898e8` plus typed request optimization library,
+plus request optimizer Source contracts,
 plus shared observation component lifecycle,
 plus efficiency lifecycle Source contracts,
 plus typed observation orchestration library,
@@ -434,7 +435,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency observation + lifecycle: explicit library"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency observation/request + lifecycle: explicit libraries"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
@@ -2067,7 +2068,7 @@ gate, with caller-owned store lifetime and pinned session/owner/workspace author
 Character pagination plus header/continuation stays within 50,000 UTF-8 bytes;
 unbounded numeric pagination and explicit null retain typed replay identity. Existing
 tool selections and custom same-name catalogue entries remain intact. Agent reducer integration,
-request/response policies, multi-stage component lifecycle and default runtime composition
+response policies, multi-stage component lifecycle and default runtime composition
 remain open; efficiency mode/style
 activation is still refused. Immutable MaskedObservation/ObservationReduction and
 two builtin reducer libraries now match twenty Source constructors and 69 reducer
@@ -2081,6 +2082,14 @@ Initialize/Health/Close hooks, clone-shared cached reports, exclusive health adm
 and close-before-drain fencing. Timed drain failures remain retryable; hook faults are
 contained class-only records. Raw storage remains caller-owned. Masking before/after
 the plugin boundary, multi-stage identity registration and default selection remain pending.
+RequestPipeline now optimizes immutable provider-neutral RequestDocument values
+through explicit RequestOptimizer/OptimizationContext/result types. JSON data uses
+closed recursive variants; no generic service map or opaque raw JSON is retained.
+Frozen-prefix guards, mode ordering, inflation, ownership, failure receipts and
+cancellation match Source. Common componentRuntime owns typed hooks, call gates,
+counters and drain state for each stage's clones. Observation/request libraries
+remain separate roots: no multi-stage registry or Agent request ledger is installed.
+The optimizer library does not claim Agent role/tool-identity or envelope guards.
 See E0-E6 in GO_PORT_PLAN.md for the remaining sequence.
 
 ## Repository map
@@ -2098,7 +2107,7 @@ See E0-E6 in GO_PORT_PLAN.md for the remaining sequence.
 | `python/examples/` | Runnable Python custom composition |
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
-| `go/efficiency/` | Typed observation orchestration/lifecycle, scoped masked RAM and recovery; Agent adoption pending |
+| `go/efficiency/` | Typed observation/request orchestration and lifecycle, scoped masked RAM and recovery; Agent adoption pending |
 | `go/secrets/` | Typed optional credential lookup, environment selection and masking |
 | `go/internal/` | Shared Python filename matching and pinned Unicode/text semantics |
 | `go/testdata/` | Generated Python tool, OpenAPI, and SQLite contract snapshots |

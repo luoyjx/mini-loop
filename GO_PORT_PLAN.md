@@ -1,5 +1,53 @@
 # Go port plan
 
+## 2026-10-09 typed request optimization library
+
+Baseline ce898e8. NewRequestDocument represents the provider-neutral request as an
+immutable closed JSON Object; OptimizationContext names detached unbounded frozen
+prefix counts and stable ownership markers, and RequestOptimizationResult names
+bounded warnings. RequestOptimizer uses explicit arguments/results. No any,
+interface{}, generic domain map, RawMessage payload or dependency is introduced.
+The document is genuine open provider JSON: native consumers must lower projected
+values into their concrete protocol types before dispatch. Non-string Python keys,
+opaque Python objects and extreme nesting/annotation-violating profiles stay open.
+
+RequestPipeline pins typed bindings/modes/descriptors and implements ordered off,
+double-owner/input-cap skips, frozen-prefix-before-passthrough/shadow, byte/token
+inflation and enforce adoption. Safe immutable receipts preserve last-good request
+copies on ordinary faults; cancellation escapes. Stable text sorts finite JSON keys,
+retains unbounded integers/float identity, uses Source object repr for nonfinite
+values and replaces surrogate characters with question marks at the byte boundary.
+Counter call ordering and fallback match Source. PassthroughRequestOptimizer ports
+the actual structured no-op. Source library intentionally does not guard envelope
+fields or role/tool identities at zero prefix; those belong to later Agent adoption.
+
+Private componentBinding/componentRuntime now own named hook capabilities, pinned
+descriptors, per-component serialization, counters and shared lifecycle state for
+both library implementations. Observation payloads and request documents remain
+stage-specific. Request clones share initialize/health/close reports and admission;
+root construction is still independent per stage, without a multi-stage registry.
+Observation WithRawStore continues to share its existing root and caller-owned store.
+
+Forty real Source recipes (39 controlled optimizer cases plus the actual builtin)
+match complete contexts/receipts, call arguments/order and every counter input; only
+elapsed_ms is normalized. Input preservation, frozen big integers/markers/modes,
+clone serialization with confirmed queued cancellation, health exclusion, close
+fencing/drain/retry and missing request hooks have native evidence. Existing 38
+observation and nine lifecycle differential recipes continue to pass after extracting
+the common coordinator. E3 Agent identity/envelope/ledger and cache/transcript adoption,
+E4 response policies, E5 multi-stage identities and E6 runtime selection remain open.
+Default efficiency/style refusal is intact; this is not full runtime activation.
+
+Validation: targeted efficiency race, full go test ./... -p=1 -count=1 -timeout=180s,
+full go test -race ./... -p=1 -count=1 -timeout=180s and go vet ./... pass. Final
+Source efficiency suite passes 48 tests, exporter --check confirms 171 files and all
+19 source scan guards pass. README outline and git diff --check pass. Archify delivery
+passes 9/9 with zero errors/warnings; spec SHA256
+fc89fc843763458213ed1ac3188fbec38a423136fce74893ad46030b3b4f83b3; HTML
+6ac34c9343fb240164dd531da9b6df1cd61a89ceb75735798669b7953058d910.
+Visual inspection remains skipped after prior browser access denial. Full Python
+regression, coverage and mutation sweep are not refreshed. Evidence: Darwin arm64.
+
 ## 2026-10-09 request optimizer Source contracts
 
 Baseline b45bc58. Thirty-nine actual TokenEfficiencyRuntime request recipes capture
@@ -416,7 +464,7 @@ including optional/custom components, is still required for the port.
   per-item/total capacity, integrity checks, discard/sweep/clear/close and tools.
 - E2 (observation orchestration library delivered; Agent masking/adoption pending): observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
   single ownership, no inflation, recoverable storage and fail-open fault receipts.
-- E3: detached typed request projection, frozen-prefix/identity/envelope guards,
+- E3 (request orchestration library delivered; Agent identity/envelope/ledger pending): detached typed request projection, frozen-prefix/identity/envelope guards,
   optimizer admission, budgets and cache-order/transcript preservation.
 - E4: stable typed response settings and concise policy; bounded instructions,
   existing output-cap/context-budget preservation, shadow and fault behavior.

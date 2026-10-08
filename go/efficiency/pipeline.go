@@ -78,26 +78,23 @@ func DefaultObservationPipelineConfig() ObservationPipelineConfig {
 }
 
 type observationBinding struct {
-	reducer    ObservationReducer
-	descriptor DescriptorConfig
-	mode       Mode
-	serial     chan struct{}
+	*componentBinding
+	reducer ObservationReducer
+}
+
+type componentCounter struct {
+	mu   sync.Mutex
+	call TokenCounter
 }
 
 // ObservationPipeline is an immutable observation-stage library. Component
 // lifecycle admission is shared by clones; Agent composition remains separate.
 // Clones share reducer serialization, while raw storage stays explicitly bound.
-type observationCounter struct {
-	mu   sync.Mutex
-	call TokenCounter
-}
-
 type ObservationPipeline struct {
+	*componentRuntime
 	bindings          []*observationBinding
 	rawStore          *RawStore
 	inflation, double bool
-	counter           *observationCounter
-	lifecycle         *lifecycleState
 }
 
 func NewObservationPipeline(c ObservationPipelineConfig) (*ObservationPipeline, error) {
@@ -107,7 +104,7 @@ func NewObservationPipeline(c ObservationPipelineConfig) (*ObservationPipeline, 
 	if c.TokenCounter == nil {
 		return nil, errors.New("token_counter must be callable")
 	}
-	p := &ObservationPipeline{lifecycle: newLifecycleState(), rawStore: c.RawStore, inflation: c.InflationGuard, double: c.PreventDoubleReduction, counter: &observationCounter{call: c.TokenCounter}}
+	p := &ObservationPipeline{componentRuntime: newComponentRuntime(c.TokenCounter), rawStore: c.RawStore, inflation: c.InflationGuard, double: c.PreventDoubleReduction}
 	seen := make(map[string]bool)
 	for _, entry := range c.Bindings {
 		if entry.Reducer == nil {
@@ -131,7 +128,9 @@ func NewObservationPipeline(c ObservationPipelineConfig) (*ObservationPipeline, 
 			return nil, fmt.Errorf("duplicate token-efficiency component id: %s", d.ID)
 		}
 		seen[d.ID] = true
-		p.bindings = append(p.bindings, &observationBinding{entry.Reducer, d, mode, make(chan struct{}, 1)})
+		binding := newComponentBinding(entry.Reducer, d, mode)
+		p.componentRuntime.bindings = append(p.componentRuntime.bindings, binding)
+		p.bindings = append(p.bindings, &observationBinding{binding, entry.Reducer})
 	}
 	return p, nil
 }
@@ -176,7 +175,7 @@ func (o ObservationOutcome) Snapshot() (ObservationOutcomeSnapshot, error) {
 	}
 	return result, nil
 }
-func (p *ObservationPipeline) estimateUnlocked(text string) (value *big.Int) {
+func (p *componentRuntime) estimateUnlocked(text string) (value *big.Int) {
 	value = EstimateObservationTokens(text)
 	defer func() {
 		if recover() != nil {
@@ -189,7 +188,7 @@ func (p *ObservationPipeline) estimateUnlocked(text string) (value *big.Int) {
 	}
 	return value
 }
-func (p *ObservationPipeline) estimates(before, after string) (*big.Int, *big.Int) {
+func (p *componentRuntime) estimates(before, after string) (*big.Int, *big.Int) {
 	p.counter.mu.Lock()
 	defer p.counter.mu.Unlock()
 	return p.estimateUnlocked(before), p.estimateUnlocked(after)
@@ -218,11 +217,11 @@ func observationContentSupported(d DescriptorConfig, kind string) bool {
 	}
 	return false
 }
-func (p *ObservationPipeline) receipt(b *observationBinding, status Status, reason, before, after string, obs ObservationConfig, warnings []string, elapsed float64) (Receipt, error) {
+func (p *componentRuntime) receipt(b *componentBinding, status Status, reason, before, after string, refs receiptReferences, warnings []string, elapsed float64) (Receipt, error) {
 	beforeTokens, afterTokens := p.estimates(before, after)
 	return NewReceipt(ReceiptConfig{ComponentID: b.descriptor.ID, ComponentVersion: b.descriptor.Version, Stage: b.descriptor.Stage, Mode: b.mode, Status: status, Reason: reason,
 		RawBytes: new(big.Int).SetUint64(uint64(len(before))), ProjectedBytes: new(big.Int).SetUint64(uint64(len(after))), TokensBeforeEstimate: beforeTokens, TokensAfterEstimate: afterTokens,
-		InputDigest: artifactDigest(before), OutputDigest: artifactDigest(after), Lossiness: b.descriptor.Lossiness, Deterministic: b.descriptor.Deterministic, RawRef: obs.RawRef, RawDigest: obs.RawDigest, Warnings: warnings, ElapsedMS: elapsed})
+		InputDigest: artifactDigest(before), OutputDigest: artifactDigest(after), Lossiness: b.descriptor.Lossiness, Deterministic: b.descriptor.Deterministic, RawRef: refs.ref, RawDigest: refs.digest, Warnings: warnings, ElapsedMS: elapsed})
 }
 func invocationDuration(ms *big.Int) time.Duration {
 	// Source can admit a timeout larger than Go's nanosecond duration. Saturate
@@ -272,7 +271,7 @@ func (p *ObservationPipeline) ReduceObservation(ctx context.Context, observation
 		}
 		outcome := ObservationOutcome{observation: observation, receipts: []Receipt{}, warnings: []string{reason}}
 		for _, b := range p.bindings {
-			receipt, err := p.receipt(b, Passthrough, reason, current.Content, current.Content, current, []string{reason}, 0)
+			receipt, err := p.receipt(b.componentBinding, Passthrough, reason, current.Content, current.Content, receiptReferences{current.RawRef, current.RawDigest}, []string{reason}, 0)
 			if err != nil {
 				return ObservationOutcome{}, err
 			}
@@ -309,7 +308,7 @@ func (p *ObservationPipeline) ReduceObservation(ctx context.Context, observation
 			skip = "max_input_bytes_exceeded"
 		}
 		if skip != "" {
-			receipt, e := p.receipt(binding, Passthrough, skip, before, before, current, shared, 0)
+			receipt, e := p.receipt(binding.componentBinding, Passthrough, skip, before, before, receiptReferences{current.RawRef, current.RawDigest}, shared, 0)
 			if e != nil {
 				return ObservationOutcome{}, e
 			}
@@ -341,7 +340,7 @@ func (p *ObservationPipeline) ReduceObservation(ctx context.Context, observation
 		}
 		elapsed := float64(time.Since(started)) / float64(time.Millisecond)
 		if callErr != nil {
-			receipt, e := p.receipt(binding, Error, componentReason(callErr), before, before, current, shared, elapsed)
+			receipt, e := p.receipt(binding.componentBinding, Error, componentReason(callErr), before, before, receiptReferences{current.RawRef, current.RawDigest}, shared, elapsed)
 			if e != nil {
 				return ObservationOutcome{}, e
 			}
@@ -391,9 +390,9 @@ func (p *ObservationPipeline) ReduceObservation(ctx context.Context, observation
 				projected.RawDigest = nil
 			}
 		}
-		receipt, e := p.receipt(binding, status, reason, before, after, projected, warnings, elapsed)
+		receipt, e := p.receipt(binding.componentBinding, status, reason, before, after, receiptReferences{projected.RawRef, projected.RawDigest}, warnings, elapsed)
 		if e != nil {
-			receipt, e = p.receipt(binding, Error, "component_error:ValueError", before, before, current, shared, elapsed)
+			receipt, e = p.receipt(binding.componentBinding, Error, "component_error:ValueError", before, before, receiptReferences{current.RawRef, current.RawDigest}, shared, elapsed)
 		}
 		if e != nil {
 			return ObservationOutcome{}, e

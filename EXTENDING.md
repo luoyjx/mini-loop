@@ -3357,6 +3357,25 @@ projections copy record slices. Source malformed/async health values map to type
 ComponentFaults at a plugin adapter; dynamic Python service objects stay outside this
 explicit service seam. This library does not mask plugin content.
 
+NewRequestDocument accepts an immutable closed JSON Object; it represents the
+provider-neutral request SPI, not trusted session state or a service dictionary.
+Value returns a closed recursive value. Provider callers must lower optimized data
+into concrete protocol types and apply their own message-role/tool-identity guards.
+NewOptimizationContext detaches unbounded frozen-prefix counts and ownership markers;
+NewRequestOptimization detaches bounded warnings. RequestOptimizer exposes explicit
+Optimize arguments/results. DefaultRequestPipelineConfig/NewRequestPipeline apply
+pinned request bindings, Source frozen-prefix-before-shadow ordering, inflation,
+ownership and safe fault receipts. Clone shares hooks/gates/counters/cached reports;
+Initialize/Health/Close use the same coordinator as observation-stage roots. Roots
+are still independent; constructing two stage libraries does not merge lifecycle.
+PassthroughRequestOptimizer implements the explicit Source no-op. Stable request
+bytes sort finite JSON keys and retain integer/float identity; nonfinite JSON falls
+back to Source object repr, while surrogate characters encode as question marks.
+Input documents remain unchanged and optimized requests are transient projections.
+Non-string Python mapping keys and opaque Python objects are outside the closed JSON
+boundary. No Agent cache/projection ledger, provider adoption or default activation
+is added by this library.
+
 No multi-stage registry, full multi-stage component lifecycle or default efficiency
 runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin

@@ -4,6 +4,7 @@ import copy
 import json
 from mini_loop.token_efficiency import (
     ComponentDescriptor, RequestContext, RequestOptimization, TokenEfficiencyRegistry,
+    PassthroughRequestContextOptimizer,
 )
 
 
@@ -51,6 +52,7 @@ def efficiency_request_contracts() -> dict:
         ("nonfinite-stable",[component()],dict(extra=float("nan"))),
         ("surrogate-stable",[component()],dict(extra="\ud800")),
         ("closed",[component(),component(id="second",mode="off")],dict(closed=True)),
+        ("builtin-passthrough",[component(id="passthrough-request",action="builtin")]),
     ]
     async def capture():
         rows=[]
@@ -80,7 +82,7 @@ def efficiency_request_contracts() -> dict:
                     result=RequestOptimization(request,("tail_changed",) if action=="tail" else ())
                     if action=="warning":object.__setattr__(result,"warnings",("private invalid warning",))
                     return result
-            for spec in components:registry.register_request_optimizer(Optimizer(spec),mode=spec["mode"])
+            for spec in components:registry.register_request_optimizer(PassthroughRequestContextOptimizer() if spec["action"]=="builtin" else Optimizer(spec),mode=spec["mode"])
             request=copy.deepcopy(base)
             if "extra" in options:request["extra"]=options["extra"]
             original=encoded(request)

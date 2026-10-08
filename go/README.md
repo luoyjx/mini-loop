@@ -2553,3 +2553,15 @@ native concurrency tests verify admission, cancellation, health exclusion and dr
 Agent masking/event/journal composition, multi-stage registration and default
 activation are not installed.
 Source extremely large timeout/overflow and cross-root identity profiles remain open.
+
+
+RequestPipeline now orchestrates explicit RequestOptimizer bindings on immutable
+RequestDocument/OptimizationContext/RequestOptimizationResult values. The open
+provider-neutral JSON format is represented by closed recursive variants, with no
+any/interface{}/generic service map/RawMessage payload. Stable Source bytes and
+frozen-prefix-before-shadow semantics preserve exact receipts and counter inputs.
+Forty Source recipes cover 39 custom-probe runtime cases plus the actual builtin
+PassthroughRequestContextOptimizer. Common typed hook/coordinator code serves both
+stage libraries, while their independently constructed roots remain separate.
+Request clones share admission, counters and cached lifecycle reports. Agent
+protocol/identity checks, request projection ledger and default adoption remain open.

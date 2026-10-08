@@ -253,11 +253,11 @@ func aggregateLifecycle(phase LifecyclePhase, records []LifecycleRecord) Lifecyc
 	}
 	return lifecycleReport(phase, status, records)
 }
-func lifecycleRecord(b *observationBinding, phase LifecyclePhase, status LifecycleStatus, detail string, elapsed time.Duration) LifecycleRecord {
+func lifecycleRecord(b *componentBinding, phase LifecyclePhase, status LifecycleStatus, detail string, elapsed time.Duration) LifecycleRecord {
 	return LifecycleRecord{LifecycleRecordConfig{b.descriptor.ID, b.descriptor.Version, b.descriptor.Stage, phase, status, detail, float64(elapsed) / float64(time.Millisecond)}, true}
 }
-func (p *ObservationPipeline) lifecycleBindings() []*observationBinding {
-	out := make([]*observationBinding, 0, len(p.bindings))
+func (p *componentRuntime) lifecycleBindings() []*componentBinding {
+	out := make([]*componentBinding, 0, len(p.bindings))
 	for _, b := range p.bindings {
 		if b.mode != Off {
 			out = append(out, b)
@@ -293,7 +293,7 @@ func cancellation(err error, ctx context.Context) error {
 	}
 	return nil
 }
-func (p *ObservationPipeline) Initialize(ctx context.Context, services LifecycleServices) (LifecycleReport, error) {
+func (p *componentRuntime) Initialize(ctx context.Context, services LifecycleServices) (LifecycleReport, error) {
 	s := p.lifecycle
 	if err := acquireLifecycle(ctx, s.serial); err != nil {
 		return LifecycleReport{}, err
@@ -314,8 +314,8 @@ func (p *ObservationPipeline) Initialize(ctx context.Context, services Lifecycle
 	defer func() { s.mu.Lock(); s.initializing = false; s.mu.Unlock() }()
 	records := []LifecycleRecord{}
 	for _, b := range p.lifecycleBindings() {
-		hook, ok := b.reducer.(ComponentInitializer)
-		if !ok {
+		hook := b.initializer
+		if hook == nil {
 			records = append(records, lifecycleRecord(b, InitializePhase, LifecycleSkipped, "hook_not_implemented", 0))
 			continue
 		}
@@ -348,7 +348,7 @@ func callHealth(hook ComponentHealthProvider) (health LifecycleHealth, err error
 	}()
 	return hook.Health()
 }
-func (p *ObservationPipeline) Health() LifecycleReport {
+func (p *componentRuntime) Health() LifecycleReport {
 	s := p.lifecycle
 	if s.enter(true) != "" {
 		return lifecycleReport(HealthPhase, LifecycleSkipped, nil)
@@ -356,8 +356,8 @@ func (p *ObservationPipeline) Health() LifecycleReport {
 	defer s.leave(true)
 	records := []LifecycleRecord{}
 	for _, b := range p.lifecycleBindings() {
-		hook, ok := b.reducer.(ComponentHealthProvider)
-		if !ok {
+		hook := b.health
+		if hook == nil {
 			records = append(records, lifecycleRecord(b, HealthPhase, LifecycleSkipped, "hook_not_implemented", 0))
 			continue
 		}
@@ -383,7 +383,7 @@ func (p *ObservationPipeline) Health() LifecycleReport {
 	}
 	return aggregateLifecycle(HealthPhase, records)
 }
-func (p *ObservationPipeline) closeDeadlineExceeded() LifecycleReport {
+func (p *componentRuntime) closeDeadlineExceeded() LifecycleReport {
 	bindings := p.lifecycleBindings()
 	records := []LifecycleRecord{}
 	for i := len(bindings) - 1; i >= 0; i-- {
@@ -397,7 +397,7 @@ func closeDuration(seconds float64) time.Duration {
 	}
 	return time.Duration(seconds * float64(time.Second))
 }
-func (p *ObservationPipeline) Close(ctx context.Context, options LifecycleCloseOptions) (LifecycleReport, error) {
+func (p *componentRuntime) Close(ctx context.Context, options LifecycleCloseOptions) (LifecycleReport, error) {
 	// Snapshot the caller's optional deadline before any user code runs.
 	var deadline time.Time
 	if options.DeadlineSeconds != nil {
@@ -449,8 +449,8 @@ func (p *ObservationPipeline) Close(ctx context.Context, options LifecycleCloseO
 	bindings := p.lifecycleBindings()
 	for i := len(bindings) - 1; i >= 0; i-- {
 		b := bindings[i]
-		hook, ok := b.reducer.(ComponentCloser)
-		if !ok {
+		hook := b.closer
+		if hook == nil {
 			records = append(records, lifecycleRecord(b, ClosePhase, LifecycleSkipped, "hook_not_implemented", 0))
 			continue
 		}

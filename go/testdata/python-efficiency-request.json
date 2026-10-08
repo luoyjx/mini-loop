@@ -2381,6 +2381,56 @@
         ],
         "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
       }
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "builtin",
+          "fields": {},
+          "id": "passthrough-request",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "builtin-passthrough",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "passthrough-request",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_passthrough",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
     }
   ]
 }
