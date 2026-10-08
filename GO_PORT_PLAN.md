@@ -1,5 +1,43 @@
 # Go port plan
 
+## 2026-10-09 Manager efficiency composition Source contracts
+
+Baseline `098eb57`. Fourteen real SessionManager recipes capture six mode/style
+combinations, caller-owned empty catalogue preservation, disabled raw persistence,
+injected runtime precedence, foreign/shared template stores, contained initialize/
+close faults and a live managed tool consumer during shutdown. Actual start/create/
+delete/stop methods, registry/runtime, hooks and masked RAM stores run unchanged;
+only lifecycle elapsed metrics are normalized. Complete component descriptors and
+binding modes, per-session store/tool/workspace identity, authority text, delete/
+sharing/revocation outcomes, lifecycle reports, hook order and stopped admission are
+captured. Random refs/session IDs/paths are not part of these observed projections.
+
+The real live turn uses a scripted model and an actual safe printf command. Its
+reducer blocks cooperatively; Manager.stop cancels and joins it before store
+revocation and shared close. The trace proves initialize -> reduce -> cancellation
+-> close with all stores already closed. Repeated start/stop does not rerun hooks.
+Lifecycle plugin faults remain report records and do not prevent authoritative
+cleanup. Explicit injected runtimes keep their own mode/components. Template stores
+matching the same workspace can be shared, including by readonly sessions; default
+automatic allocation excludes readonly. Delete retains a shared live store and stop
+revokes every distinct template/session store.
+
+Next E6.4 work is split into (a) typed Manager default/injected composition plus
+private catalogue preservation, new/fork/restored session raw binding and owned
+store cleanup; (b) shared initialize/close reports and drain/order/idempotency; then
+(c) launcher/HTTP/benchmark setting translation and removal of mode/style refusal
+only after their actual flows are verified. Default off/normal, authority boundaries
+and the full Go port remain unchanged by this Source-only capture. Agent fallback
+raw threshold is 4096; actual Settings default is 16384 and must be forwarded by
+service composition rather than replaced with that fallback.
+
+Validation: 74 targeted Python efficiency tests and all 19 scan guards passed.
+The complete exporter check passed after the final live-consumer recipe: 178 files.
+git diff --check and README/helper outlines passed. No Python package module or Go
+implementation changed; full Python regression, Go gates and coverage were not
+rerun for this Source-only capture. No dependencies, merge or push were added.
+
+
 ## 2026-10-09 explicit Agent observation projection adoption
 
 Baseline `0ce795c`. Session dispatch now binds a named private toolOutcomeProjector
