@@ -154,6 +154,7 @@ type ToolInput struct {
 	symbolReferences  SymbolReferencesInput
 	diagnostics       DiagnosticsInput
 	transcriptSearch  TranscriptSearchInput
+	readTokenArtifact ReadTokenArtifactInput
 	connectMCP        ConnectMCPInput
 	mcpArguments      jsonvalue.Value
 	workflow          WorkflowInput
@@ -393,6 +394,8 @@ func (input ToolInput) clone() (result ToolInput) {
 		return BackgroundRunToolInput(input.backgroundRun)
 	case ToolCheckBackground:
 		return CheckBackgroundToolInput(input.checkBackground)
+	case ToolReadTokenArtifact:
+		return ReadTokenArtifactToolInput(input.readTokenArtifact)
 	case ToolBash:
 		value, _ := input.Bash()
 		return BashToolInput(value)
@@ -458,7 +461,7 @@ func (input ToolInput) Validate() error {
 		}
 		_, err := decisions.NewRequest(input.decision.State(), input.decision.Questions())
 		return err
-	case ToolDiagnostics, ToolTranscriptSearch, ToolSelfAudit, ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
+	case ToolReadTokenArtifact, ToolDiagnostics, ToolTranscriptSearch, ToolSelfAudit, ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
 		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
 		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
 		return nil
@@ -498,6 +501,8 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 		return input.mcpArguments.MarshalJSON()
 	}
 	switch input.name {
+	case ToolReadTokenArtifact:
+		return input.marshalTokenArtifact()
 	case ToolTranscriptSearch:
 		return json.Marshal(input.transcriptSearch)
 	case ToolWorkflow:
@@ -624,6 +629,12 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 			return result, errors.New("goal_create requires objective")
 		}
 		result = CreateGoalToolInput(CreateGoalInput{Objective: *wire.Objective, MaxRounds: wire.MaxRounds})
+	case ToolReadTokenArtifact:
+		decoded, err := decodeTokenArtifact(data)
+		if err != nil {
+			return decoded, err
+		}
+		result = decoded
 	case ToolTranscriptSearch:
 		var wire struct {
 			Query *string `json:"query"`

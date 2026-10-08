@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `5f6035b` plus artifact-recovery Source contracts,
+Runtime review baseline: `30274e7` plus typed masked-artifact recovery tool,
+plus artifact-recovery Source contracts,
 plus native scoped masked RAM storage,
 plus masked raw-store Source contracts,
 plus native immutable efficiency contracts,
@@ -472,7 +473,7 @@ flowchart LR
         GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join<br/>18 observation kinds · scoped summaries<br/>archival scalars / SSE · authenticated HTTP launch · owned reads / cancel"]
         GoGate -. explicit-human workflow tools .-> GoWorkflow
         GoWorkflow -. events / summaries / later-turn results .-> GoSession
-        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
+        GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow / masked recovery tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent / auditor sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
         GoEntry -->|public static documents| GoBrowser
@@ -2053,8 +2054,14 @@ unbounded typed integer limits/metrics, validated digests/references, bounded wa
 codes and detached projections match 68 actual Source constructor recipes. An explicit
 RawStore now holds caller-masked UTF-8 text in session-local RAM, with cryptographic
 refs, trusted-clock TTL, capacity and integrity checks and close/clear/discard/sweep.
-Workspace/directory are provenance only; no raw artifact files are created. Store
-tools, reducers, request/response policies, component lifecycle and runtime composition remain open; efficiency mode/style
+Workspace/directory are provenance only; no raw artifact files are created. Explicit
+RuntimeConfig.TokenArtifactTools installs bounded read_token_artifact via the common
+gate, with caller-owned store lifetime and pinned session/owner/workspace authority.
+Character pagination plus header/continuation stays within 50,000 UTF-8 bytes;
+unbounded numeric pagination and explicit null retain typed replay identity. Existing
+tool selections and custom same-name catalogue entries remain intact. Reducers,
+request/response policies, shared component lifecycle and default runtime composition
+remain open; efficiency mode/style
 activation is still refused. See E0-E6 in GO_PORT_PLAN.md for the remaining sequence.
 
 ## Repository map

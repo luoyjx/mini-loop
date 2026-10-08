@@ -3304,7 +3304,18 @@ NewArtifactPointer/Snapshot provide detached metadata. ArtifactError.Kind and
 errors.Is preserve expired-as-not-found and all storage faults as store errors.
 Directory is validated legacy metadata and is never used to persist content.
 
-These are library contracts only. No reducer/optimizer/policy registry, store tools,
-component lifecycle or runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
+ReadMaskedPage(store, RecoveryPage) uses character offsets and limits while bounding
+the complete page, including continuation header, to 50,000 UTF-8 bytes. Numeric
+fields use *big.Int; nil selects defaults. The protocol closed input also retains
+explicit-null pagination for validation and replay. Set RuntimeConfig.TokenArtifactTools
+and TokenArtifactStore to install recovery on an explicit native runtime; nil store
+returns the Source unavailable notice. The caller owns close/clear. Cross-workspace
+stores are refused, and each handler pins session/owner/workspace authority.
+InstallTokenArtifactTool extends an immutable custom catalogue while preserving an
+existing same-name definition and its catalogue identity. It does not widen an
+explicit RuntimeConfig.ToolSelection or register a default feature.
+
+No reducer/optimizer/policy registry, shared component lifecycle or default efficiency
+runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin
 objects and broader Unicode/numeric wire profiles are not claimed by this foundation.

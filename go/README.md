@@ -2515,6 +2515,11 @@ The explicit RawStore library now stores caller-masked text in RAM, with typed
 metadata, cryptographic references, trusted monotonic default TTL, unbounded limits,
 integrity checks and scoped lifecycle. It writes no workspace/directory content.
 Fifteen real Source operation recipes and twelve constructor profiles are captured.
-No operational optimization is installed yet. E1 store tools and E2-E6 in
-GO_PORT_PLAN.md cover observation/request/response stages, lifecycle and runtime adoption.
+Explicit RuntimeConfig.TokenArtifactTools/TokenArtifactStore now install bounded
+read_token_artifact through the common gate. Twenty Source handler results match
+actual Go turns, including Unicode pages and unbounded/null pagination. The caller
+owns store lifetime. An immutable catalogue installer preserves same-name custom
+definitions; explicit tool selection still narrows admission. No operational
+optimization is installed yet. E2-E6 in GO_PORT_PLAN.md cover observation/request/
+response stages, lifecycle and default runtime adoption.
 Efficiency activation remains explicitly unsupported until those consumers exist.

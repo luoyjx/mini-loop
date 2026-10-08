@@ -68,6 +68,8 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 			Message  string       `json:"message"`
 			Revision GoalRevision `json:"revision"`
 		}{v.Code, v.Message, v.Revision}, false, compact)
+	case ToolReadTokenArtifact:
+		return PythonJSON(input.artifactProjection(), false, compact)
 	case ToolDiagnostics, ToolTranscriptSearch, ToolSelfAudit, ToolGoalStatus, ToolGoalComplete, ToolGoalResume:
 		return PythonJSON(input, false, compact)
 

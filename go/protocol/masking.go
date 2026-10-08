@@ -184,6 +184,8 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 		}
 	case ToolGetTask, ToolClaimTask, ToolCompleteTask:
 		input.taskRef.TaskID = mask(input.taskRef.TaskID)
+	case ToolReadTokenArtifact:
+		input.readTokenArtifact.RawRef = mask(input.readTokenArtifact.RawRef)
 	case ToolTranscriptSearch:
 		input.transcriptSearch.Query = mask(input.transcriptSearch.Query)
 	case ToolAskUser:

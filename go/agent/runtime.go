@@ -9,6 +9,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/astcontext"
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/diagnostics"
+	"github.com/luoyjx/mini-loop/go/efficiency"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/sessionquery"
@@ -68,11 +69,14 @@ type RuntimeConfig struct {
 	// A nonnil provider explicitly installs diagnostics. The default Python
 	// syntax backend is not yet implemented; nil leaves the tool unregistered.
 	DiagnosticsProvider diagnostics.Provider
-	SessionQueryTools   bool
-	transcriptSearch    sessionquery.Reader
-	mcpLifetime         *mcpLifetime
-	MCPTools            bool
-	MCPServers          []MCPServer
+	// TokenArtifactTools explicitly installs recovery only; caller owns store lifetime.
+	TokenArtifactTools bool
+	TokenArtifactStore *efficiency.RawStore
+	SessionQueryTools  bool
+	transcriptSearch   sessionquery.Reader
+	mcpLifetime        *mcpLifetime
+	MCPTools           bool
+	MCPServers         []MCPServer
 	// MCPCatalog is an explicitly discovered snapshot. Client lifetime remains operator-owned.
 	MCPCatalog      *ToolCatalog
 	WorkflowTools   bool
@@ -522,6 +526,13 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	if config.DiagnosticsProvider != nil {
 		definition, err := NewToolDefinitionWithSchema(protocol.DiagnosticsSchema(), ToolTraits{Risk: RiskRead, Readonly: true, ParallelSafe: true}, handler)
+		if err != nil {
+			return nil, err
+		}
+		definitions = append(definitions, definition)
+	}
+	if config.TokenArtifactTools {
+		definition, err := tokenArtifactDefinition(handler.binding, config.TokenArtifactStore)
 		if err != nil {
 			return nil, err
 		}

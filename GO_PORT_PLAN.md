@@ -1,5 +1,48 @@
 # Go port plan
 
+## 2026-10-09 typed masked-artifact recovery tool
+
+Baseline 30274e7. efficiency.ReadMaskedPage accepts a scoped reference and named
+RecoveryPage with unbounded integer character offsets/limits. It retrieves caller-
+masked strict UTF-8 from RawStore, renders Source continuation/header text and
+binary-searches the complete page against the 50,000-byte limit. Empty/end pages,
+Unicode, huge offsets and clamped limits preserve Source output.
+
+protocol adds a closed ReadTokenArtifactInput, exact schema and typed decoder,
+canonical sorted replay, detached integer snapshots and masked recording copies.
+Absent pagination defaults and explicit JSON null remain distinct; null/negative
+pagination returns Source validation text before store availability checks.
+Malformed noninteger JSON is refused at the typed decoding boundary; broader
+annotation-violating Source input/fault profiles remain open.
+
+RuntimeConfig.TokenArtifactTools explicitly installs the read-only, parallel-safe
+observation.recover tool through the normal gate; TokenArtifactStore remains
+caller-owned, with nil returning the Source unavailable notice. Each handler pins
+session, owner and canonical workspace and refuses foreign authority/workspace.
+InstallTokenArtifactTool extends immutable catalogues and preserves an existing
+same-name custom definition and catalogue identity. Explicit ToolSelection continues
+to narrow runtime admission. No manager/default/environment activation or implicit
+store allocation/close is added; E2-E6 and default clone/lifecycle binding remain open.
+The recovery marker will follow typed observation outcomes in E2.
+
+Twenty actual Source handler recipes compare complete UTF-8 output digest, byte
+count and header against actual Go tool turns, with exact schemas/traits. Native
+checks pin scoped handler authority, cancellation, workspace refusal, custom tool
+preservation, closed input/null replay and detached large integer fields. Guard
+refusal proves zero store-clock reads. An initial test assumption that textual
+refusal sets the provider error flag was corrected to the existing Source-compatible
+gate behavior; runtime refusal semantics were unchanged.
+
+Validation: full go test ./... -count=1 -timeout=180s, full go test -race ./...
+-count=1 -timeout=180s and go vet ./... pass after correction. Focused recovery/
+store race passes. Source exporter --check confirms 167 files, all 19 scan guards
+pass and Source token-tools/efficiency tests pass 52 tests. README outline and
+ git diff --check pass. Archify delivery passes 9/9 with zero errors/warnings;
+spec SHA256 82c866cc9fa8bb9e89607350ec0132f0e764a50693d5c7b9d4a9c2b1860833c5,
+HTML 86457c3bfa53ac71fb07fa7af4283f4c036af43e4b8575daea840937684e4162.
+Visual inspection remains skipped after prior browser access denial. Full Python
+regression, coverage and mutation sweep are not refreshed. Evidence is Darwin arm64.
+
 ## 2026-10-09 bounded artifact-recovery Source contracts
 
 Baseline 5f6035b. Export 167 executes the real installed read_token_artifact handler
@@ -146,7 +189,7 @@ including optional/custom components, is still required for the port.
 - E0 (native foundation delivered; broader wire/SPI profiles open): named immutable component descriptors and optimization receipts, closed stage/
   mode/status/lossiness/cost types, bounded warnings, unbounded integer metrics and
   Source-safe event projections. Capture constructor/receipt behavior before wiring.
-- E1 (native store library delivered; tools/runtime binding pending): scoped masked raw-artifact memory store, opaque refs, trusted monotonic TTL,
+- E1 (native store/recovery tool delivered; default activation/lifecycle pending): scoped masked raw-artifact memory store, opaque refs, trusted monotonic TTL,
   per-item/total capacity, integrity checks, discard/sweep/clear/close and tools.
 - E2: observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
   single ownership, no inflation, recoverable storage and fail-open fault receipts.

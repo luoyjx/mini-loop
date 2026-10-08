@@ -373,7 +373,7 @@
       "id": "goResources",
       "type": "backend",
       "label": "Session Resources",
-      "sublabel": "Optional workflow / team / goal tools; bound Todo / skill / question / task",
+      "sublabel": "Optional workflow / team / goal / recovery; bound Todo / skill / task",
       "pos": [
         1920,
         1540
@@ -382,7 +382,7 @@
         280,
         76
       ],
-      "tag": "optional team tools included"
+      "tag": "optional masked RAM recovery"
     },
     {
       "id": "goContext",
