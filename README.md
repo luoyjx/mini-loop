@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `a008dc8` plus immutable MCP registration snapshots
+Runtime review baseline: `1c77855` plus default-off raw-session connect_mcp
+and exclusive inventory publication, plus immutable MCP registration snapshots
 and explicit runtime catalogue injection, plus the native stdio MCP client library,
 phase-specific unbounded ledger metrics,
 final HTML UTF-8 validation and private traceview output,
@@ -382,8 +383,9 @@ flowchart LR
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
-        GoMCP["Go MCP operator registration / stdio<br/>closed input / exact schema / bounded RPC<br/>raw owner collisions · immutable catalogues<br/>connect_mcp / manager / launcher pending"]
+        GoMCP["Go MCP connect_mcp / registration / stdio<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>manager / launcher / client cleanup pending"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
+        GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
@@ -1593,8 +1595,20 @@ the existing model-request/gate path; default tools are unchanged. Client lifeti
 is still operator-owned. Nonfinite/surrogate argument profiles remain unsupported
 at the strict protocol boundary; the stdio library's archival values do not expand it.
 Timing/input/output, remaining model/tool scalar profiles, native SQLite, MCP
-dynamic connect_mcp/session publication, manager/client cleanup, launcher activation,
-InProcessMCP and full G7 remain pending.
+manager/client cleanup, launcher activation, InProcessMCP and full G7 remain pending.
+Snapshot 142 runs five real Source Agent batches: aliases versus raw server names,
+lazy factories, idempotent connection, same-batch discovered tool calls, same raw
+server replacement through another alias, cross-server collision refusal, empty
+server catalogues/empty aliases and withheld-credential diagnostics. Raw Go sessions
+explicitly selecting `MCPTools` install connect_mcp as external/exclusive. Successful
+connection replaces the immutable inventory after prior parallel groups have joined;
+remaining calls in that batch use the new inventory, matching Source. The next
+request fits fresh schemas; already built request schemas remain unchanged.
+Initial ToolSelection is applied at construction; newly discovered tools are added
+by the authorized connection even if absent from that initial subset, as in Source.
+`MCPProblems()` exposes the bounded per-session diagnostics. Factories must retain
+lifecycle ownership; manager reference counting, child/fork composition and startup
+configuration are still pending. No default feature activation or durable claim.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

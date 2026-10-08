@@ -1,5 +1,71 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native raw-session MCP connection and inventory publication
+
+Baseline 1c77855 (Source snapshot 142). RuntimeConfig.MCPTools explicitly adds the
+closed connect_mcp input/schema and an external/exclusive runtime handler. Ordered
+MCPServers contain exactly one named client or typed cancellable factory per alias;
+configuration is detached at construction, duplicates rejected and empty aliases
+retained. An empty server list still installs the Source (none) connector. No
+default feature activation, dependency or ambiguous domain/service structure added.
+
+The session owns an independent registry and connected alias map. Connection
+resolves a trusted configured alias, creates a client lazily and registers its
+tools through external-risk definitions. Repeat aliases return the original raw
+client name without factory/discovery work. Unknown aliases return Source text.
+Successful same-raw-name re-registration through another alias replaces the current
+handler; cross-server normalized-name collision is refused/reported but the second
+alias is still connected with Added tools: (none), matching Source. Withheld
+credential diagnostics carry count and the first three returned names.
+
+Inventory publication replaces the immutable catalogue, preserving retained old
+snapshots. connect_mcp is an exclusive barrier: preceding parallel workers join
+before replacement. Source _exec_tool_batch uses fresh registry lookups after each
+exclusive effect, so later calls in the SAME batch can invoke discovered tools.
+The native scheduler and gate retain that behavior; the next request fits fresh
+schemas, while already built request/schema objects do not mutate. This is not
+a claim that initial request schema fitting freezes every later handler lookup.
+Initial ToolSelection applies to construction, and the authorized connector adds
+newly discovered tools even when absent from that initial subset, as Source does.
+
+Session.MCPProblems exposes the bounded Source-style ledger without taking the
+turn lock. Callback implementations must honor cancellation and not reenter the
+active session. Factory cancellation before registration does not publish an alias
+or tools; this does not claim rollback of partially registered metadata or remote
+effects. Factories retain lifecycle ownership, including unsuccessful connections.
+Automatic close, shared reference counts and manager composition are still open.
+
+Native tests run all five real Source Agent recipes and compare both fitted request
+name lists, complete ordered results, alias state, connect schema, factory/list/call
+counts, ownership and problem strings. They verify unchanged retained snapshots,
+detached server configuration, external permission before factory construction and
+parent cancellation without publication. Protocol tests cover required string name,
+empty alias, strict invalid input rejection, canonical archive and recording masks.
+
+Validation: focused native MCP race tests; full `go test ./... -count=1
+-timeout=180s`, full `go test -race ./... -count=1 -timeout=180s` and
+`go vet ./...` passed. Source contract export `--check` verified 142 files;
+`verify_scans.py` verified 19 scan anchors and `verify_guards.py -k mcp`
+verified 10 selected load-bearing guards. The unrelated full mutation sweep was
+not rerun. Python full regression: 2155 passed, 28 skipped, 3 warnings and
+24 subtests passed in 76.74 seconds. README outline and `git diff --check` passed.
+No Python package-module changes; the separate invariant verifier was not rerun.
+Coverage was not refreshed: the last Go statement result, 90.23%
+(21,311/23,618), belongs to 721b413 before the MCP implementations. Python
+coverage was not refreshed; statement coverage is not feature migration completion.
+
+README baseline, canonical Mermaid, boundary text, extension seam and hardening
+barrier note are updated. The existing interactive map records the connection flow
+in its Language layout card. Archify deliver passes 9/9 showcase checks with zero
+errors/warnings; visual review remains skipped after prior access denial. Spec SHA256
+b1e6bf611faf85f91653b200f4496d7a6b9f58d868491086d5b32bb1cef38287; HTML SHA256 56b6f0fa2c9d68d01acae553ca07d422f26c55c19c3e2a44901aef759a37f45f.
+
+Next: compose manager/client reference lifetime, failed-factory cleanup, fork/child
+MCP scope and launcher configuration. InProcessMCP and wider malformed/archival
+argument profiles remain open. Native session SQLite still awaits driver approval.
+Remaining timing/input/output and model/tool scalar/transport profiles and full G7
+remain open; the full Python-to-Go objective stays active.
+
 ## 2026-10-08 same-batch MCP connection Source contracts
 
 Baseline e87772e. Source snapshot 142 runs five actual Python Agent model/tool

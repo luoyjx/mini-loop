@@ -7778,3 +7778,15 @@ old admitted bindings retain the old handler. Native tests cover both constructo
 old/new snapshots, Source collision diagnostics, hook order, real model dispatch
 and terminal journal replay under current external permission. Live connect_mcp
 publication and shared-client lifecycle ownership are not implemented by this seam.
+
+### Go migration — exclusive MCP connection publication
+
+The raw-session connector executes under external permission and is an exclusive
+batch barrier. Factory construction cannot happen after a readonly/interactive
+denial. Prior parallel groups join before an immutable inventory replacement;
+later calls observe the new inventory, matching Source fresh registry lookups in
+_exec_tool_batch. Already built schema snapshots do not mutate. Native tests compare
+five real Source Agent batches, including factory idempotence, same-batch call
+visibility, owner collision refusal and withheld credentials, and exercise parent
+cancellation without connected-state publication. Automatic client close/reference
+counting and fleet/fork/child composition remain open.

@@ -19,6 +19,8 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return PythonJSON(input.mcpArguments.Sorted(), false, compact)
 	}
 	switch input.Name() {
+	case ToolConnectMCP:
+		return PythonJSON(input.connectMCP, false, compact)
 	case ToolWorkflow:
 		return PythonJSON(struct {
 			Args       jsonvalue.Value `json:"args"`

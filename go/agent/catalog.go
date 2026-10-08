@@ -174,8 +174,9 @@ func (definition ToolDefinition) Capabilities() []Capability {
 	return append([]Capability(nil), definition.capabilities...)
 }
 
-// ToolCatalog copies the ordered definitions at construction. No runtime
-// mutation can change which handler and risk a model turn was bound to.
+// ToolCatalog copies ordered definitions at construction. Published snapshots
+// never change. A session may replace its inventory after an exclusive feature
+// effect; retained snapshots keep their original handlers and risk metadata.
 type ToolCatalog struct {
 	ordered []ToolDefinition
 	index   map[protocol.ToolName]int

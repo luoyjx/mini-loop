@@ -147,6 +147,7 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
+	connectMCP        ConnectMCPInput
 	mcpArguments      jsonvalue.Value
 	workflow          WorkflowInput
 	workflowReference WorkflowReferenceInput
@@ -410,6 +411,8 @@ func (input ToolInput) Validate() error {
 		return err
 	}
 	switch input.name {
+	case ToolConnectMCP:
+		return nil
 	case ToolWorkflow:
 		return validateWorkflowInput(input.workflow)
 	case ToolWorkflowStatus, ToolWorkflowCancel:
@@ -462,6 +465,9 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
+	if input.name == ToolConnectMCP {
+		return marshalConnectMCP(input)
+	}
 	if IsMCPToolName(input.name) {
 		if err := input.Validate(); err != nil {
 			return nil, err
@@ -556,6 +562,8 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	}
 	var result ToolInput
 	switch name {
+	case ToolConnectMCP:
+		return decodeConnectMCPInput(data)
 	case ToolWorkflow, ToolWorkflowStatus, ToolWorkflowCancel:
 		return decodeWorkflowInput(name, data)
 	case ToolReturnArtifact:

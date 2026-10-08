@@ -58,6 +58,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	MCPTools   bool
+	MCPServers []MCPServer
 	// MCPCatalog is an explicitly discovered snapshot. Client lifetime remains operator-owned.
 	MCPCatalog      *ToolCatalog
 	WorkflowTools   bool
@@ -137,6 +139,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	mcp                  *mcpState
 	workflows            *WorkflowService
 	workflowManager      *SessionManager
 	workflowParent       *ManagedSession
@@ -196,6 +199,12 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return "", err
 	}
 	switch input.Name() {
+	case protocol.ToolConnectMCP:
+		if handler.mcp == nil || handler.session == nil {
+			return "", errors.New("MCP connection service is not bound")
+		}
+		value, _ := input.ConnectMCP()
+		return handler.mcp.connect(ctx, handler.session, value.Name)
 	case protocol.ToolWorkflow, protocol.ToolWorkflowStatus, protocol.ToolWorkflowCancel:
 		return handler.executeWorkflow(ctx, authority, input)
 	case protocol.ToolSpawnTeammate, protocol.ToolSendMessage, protocol.ToolReadInbox, protocol.ToolBroadcast, protocol.ToolListTeammates, protocol.ToolRequestShutdown, protocol.ToolRequestPlan, protocol.ToolSubmitPlan, protocol.ToolReviewPlan, protocol.ToolListProtocols:
@@ -559,6 +568,18 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 			definitions = append(definitions, definition)
 		}
 	}
+	if config.MCPTools {
+		state, err := newMCPState(config.MCPServers)
+		if err != nil {
+			return nil, err
+		}
+		handler.mcp = state
+		definition, err := NewToolDefinitionWithSchema(protocol.ConnectMCPSchema(state.aliases()), ToolTraits{Risk: RiskExternal}, handler)
+		if err != nil {
+			return nil, err
+		}
+		definitions = append(definitions, definition)
+	}
 	catalog, err := NewToolCatalog(config.ToolSelection.filter(definitions)...)
 	if err != nil {
 		return nil, err
@@ -611,6 +632,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	session.events.sessionID, session.events.sink = config.ID, config.EventSink
 	session.bindEventHistory()
 	handler.session = session
+	session.mcp = handler.mcp
 	session.runtime = handler
 	if config.TeamTools {
 		session.teamManager = config.teamManager

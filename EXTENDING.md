@@ -2746,6 +2746,39 @@ session. It accepts only namespaced external definitions; ToolSelection still
 narrows installed tools. The model sees fitted schemas and dispatch uses the
 existing before/guard/permission/execute/after/result and journal pipeline. No live
 registry mutation reaches an admitted request. The operator keeps client lifetime
-ownership, including old clients captured by earlier snapshots. This seam does not
-implement connect_mcp, active-session publication, manager/fork/child lifecycle
-composition or launcher selection; those remain pending.
+ownership, including old clients captured by earlier snapshots. This fixed-snapshot
+seam is complemented by the raw-session connector below.
+Manager/fork/child lifecycle composition and launcher selection remain pending.
+
+## Go raw-session MCP connection
+
+Select `RuntimeConfig.MCPTools` and ordered `MCPServers` entries to install
+connect_mcp. Each `MCPServer` has an alias and exactly one concrete Client or typed
+MCPFactory. Aliases/factories are captured at construction; duplicate aliases are
+rejected, while an empty alias is valid. No servers still installs the connector
+with the Source `(none)` description. Factory callbacks execute lazily through
+the external permission gate and must honor context cancellation without reentering
+the active session. They retain client lifecycle ownership; automatic close is
+not implemented by this raw-session seam.
+
+Connected aliases map to the raw client name. A successful connection is idempotent
+for that alias, even if every discovered tool was refused by collision ownership.
+Unknown aliases return Source text without reaching a factory. Factory/discovery
+failure or cancellation before inventory publication does not mark the alias
+connected; already registered metadata is not a rollback guarantee. The connector
+is exclusive: it joins earlier parallel workers before replacing the gate's
+immutable inventory.
+Source `_exec_tool_batch` performs fresh registry lookups after an exclusive effect,
+so the remainder of the same batch can invoke a newly discovered tool. The next
+model request builds a fresh fitted schema snapshot; the old request schema object
+and retained published catalogues do not mutate. Initial ToolSelection restricts
+construction, while an authorized connection appends newly discovered tools, as
+Source ToolRegistry.subset followed by register_mcp does.
+
+Withheld credential diagnostics record count and the first three names.
+`Session.MCPProblems()` reads the bounded ledger without acquiring the turn lock.
+Factory errors use the existing failed-result path; tool call timeout text stays
+in the registration wrapper. Client lifecycle/reference counting, manager factory
+composition, fork/child handling, launcher configuration and InProcessMCP remain
+open. The operator must retain/close factory-produced clients, including clients
+created by an unsuccessful connection; this is not a managed lifecycle claim.

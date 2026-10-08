@@ -20,6 +20,8 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 		return input
 	}
 	switch input.name {
+	case ToolConnectMCP:
+		input.connectMCP.Name = mask(input.connectMCP.Name)
 	case ToolWorkflow:
 		input.workflow.Definition = input.workflow.Definition.MapStrings(mask)
 		input.workflow.Args = input.workflow.Args.MapStrings(mask)

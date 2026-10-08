@@ -39,6 +39,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	mcp                                               *mcpState
 	teamManager                                       *SessionManager
 	runtime                                           *runtimeHandler
 	teamShutdown                                      atomic.Bool
