@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `67d83e4` plus native immutable efficiency contracts,
+Runtime review baseline: `7484fd5` plus masked raw-store Source contracts,
+plus native immutable efficiency contracts,
 plus token-efficiency type Source contracts,
 plus Guardian Launcher activation,
 plus Guardian HTTP Source contracts,

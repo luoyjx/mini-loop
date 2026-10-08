@@ -1,5 +1,20 @@
 # Go port plan
 
+## 2026-10-09 masked raw-store Source contracts
+
+Baseline 7484fd5. Export 166 captures 12 constructor profiles and 15 real
+MaskedRawArtifactStore operation sequences, controlling only the trusted clock
+and token entropy boundary. Covers scoped refs, UTF-8 byte sizes, capacities,
+eager expiry, expiry removal, backward/failing/nonfinite clocks, collisions,
+private record corruption and close/clear/discard ordering. Each fixture retains
+actual pointer fields or Source exception class/message and closed state.
+All stores use isolated temporary workspaces; captures assert no files are written.
+
+Validation: Source token-efficiency suite passes 48 tests; exporter --check and
+all 19 scan guards pass. git diff --check passes. This is Source evidence only;
+native storage and tools/runtime activation remain pending. Full Python regression,
+coverage and mutation sweep are not refreshed.
+
 ## 2026-10-09 native immutable token-efficiency contracts
 
 Baseline 67d83e4. Package efficiency adds named Stage/Mode/Status/Lossiness/CostTier,
