@@ -15,6 +15,9 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	if err := input.Validate(); err != nil {
 		return "", err
 	}
+	if IsMCPToolName(input.Name()) {
+		return PythonJSON(input.mcpArguments.Sorted(), false, compact)
+	}
 	switch input.Name() {
 	case ToolWorkflow:
 		return PythonJSON(struct {

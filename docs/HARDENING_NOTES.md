@@ -7764,3 +7764,17 @@ regressions assert send refusal, empty peek/read, no JSONL and no root creation;
 The Go source corpus retains these refusal outcomes. Ordinary dotted names stay
 valid. Trusted-root symlinks and cross-process delivery remain separate boundaries;
 this lexical fix is not a host filesystem sandbox.
+
+### Go migration — MCP readonly hint and catalogue ownership
+
+The Go MCP registration seam retains the untrusted readonly hint while pinning
+external risk and exclusive execution. Both definition construction and immutable
+catalogue admission allow that mismatch only for the closed normalized MCP
+namespace with external risk. Permission still reasons about risk, so a readonly
+session denies the tool and interactive execution requires external-action approval.
+The registry keeps raw server names for collision ownership; normalization alone
+is not a takeover defense. Same-server replacement publishes a fresh catalogue;
+old admitted bindings retain the old handler. Native tests cover both constructors,
+old/new snapshots, Source collision diagnostics, hook order, real model dispatch
+and terminal journal replay under current external permission. Live connect_mcp
+publication and shared-client lifecycle ownership are not implemented by this seam.

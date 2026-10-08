@@ -147,6 +147,7 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
+	mcpArguments      jsonvalue.Value
 	workflow          WorkflowInput
 	workflowReference WorkflowReferenceInput
 	returnArtifact    jsonvalue.Value
@@ -401,6 +402,13 @@ func (input ToolInput) clone() (result ToolInput) {
 }
 
 func (input ToolInput) Validate() error {
+	if IsMCPToolName(input.name) {
+		if input.mcpArguments.Kind() != jsonvalue.Object {
+			return errors.New("MCP arguments must be an object")
+		}
+		_, err := input.mcpArguments.MarshalJSON()
+		return err
+	}
 	switch input.name {
 	case ToolWorkflow:
 		return validateWorkflowInput(input.workflow)
@@ -454,6 +462,12 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
+	if IsMCPToolName(input.name) {
+		if err := input.Validate(); err != nil {
+			return nil, err
+		}
+		return input.mcpArguments.MarshalJSON()
+	}
 	switch input.name {
 	case ToolWorkflow:
 		if err := input.Validate(); err != nil {
@@ -537,6 +551,9 @@ func decodeToolObject[T any](data []byte, target *T) error {
 // DecodeToolInput is the provider boundary. No raw JSON or open-ended map
 // survives it; a new default tool must add a concrete case here.
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
+	if IsMCPToolName(name) {
+		return decodeMCPInput(name, data)
+	}
 	var result ToolInput
 	switch name {
 	case ToolWorkflow, ToolWorkflowStatus, ToolWorkflowCancel:

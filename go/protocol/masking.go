@@ -15,6 +15,10 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 		return input.clone()
 	}
 	input = input.clone()
+	if IsMCPToolName(input.name) {
+		input.mcpArguments = input.mcpArguments.MapStrings(mask)
+		return input
+	}
 	switch input.name {
 	case ToolWorkflow:
 		input.workflow.Definition = input.workflow.Definition.MapStrings(mask)

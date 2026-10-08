@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `bb069d3` plus the native stdio MCP client library,
+Runtime review baseline: `a008dc8` plus immutable MCP registration snapshots
+and explicit runtime catalogue injection, plus the native stdio MCP client library,
 phase-specific unbounded ledger metrics,
 final HTML UTF-8 validation and private traceview output,
 the Python directory split, its
@@ -381,7 +382,8 @@ flowchart LR
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
-        GoMCP["Go MCP stdio client library<br/>closed discovery / RPC / capped results<br/>dead-child restart; no in-flight retry<br/>registration / launcher still pending"]
+        GoMCP["Go MCP operator registration / stdio<br/>closed input / exact schema / bounded RPC<br/>raw owner collisions · immutable catalogues<br/>connect_mcp / manager / launcher pending"]
+        GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
@@ -1579,9 +1581,20 @@ withholds registered secrets except explicit passthrough, and restarts dead chil
 on the next call without replaying a failed effect. Discovery values are inert
 closed JSON; they grant no authority. Tool calls use the supplied context; blocked
 pipe-write cancellation kills that child to avoid abandoning a partial request.
-The library is not yet installed in ToolGate, manager cleanup or launcher selection.
+Snapshot 141 compares seven real Source registration scenarios with ten publications,
+namespace normalization and original-name/timeout outputs. MCP inputs lower to an
+explicit closed object variant before dispatch, masking and action hashing. Schemas
+retain refs, numeric enums and Source null/bool metadata as inert closed values;
+they do not validate arguments or grant authority. `MCPRegistry.Register` publishes
+a new immutable catalogue, preserving raw server ownership, description caps and
+external risk with advisory readonly hints. Existing snapshots retain old handlers.
+`RuntimeConfig.MCPCatalog` explicitly installs an operator-discovered snapshot through
+the existing model-request/gate path; default tools are unchanged. Client lifetime
+is still operator-owned. Nonfinite/surrogate argument profiles remain unsupported
+at the strict protocol boundary; the stdio library's archival values do not expand it.
 Timing/input/output, remaining model/tool scalar profiles, native SQLite, MCP
-registration/catalogue publication/activation and full G7 remain pending.
+dynamic connect_mcp/session publication, manager/client cleanup, launcher activation,
+InProcessMCP and full G7 remain pending.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

@@ -73,7 +73,8 @@ func (v *SchemaAdditional) UnmarshalJSON(b []byte) error {
 // InputSchema describes the closed source schema language. Multiple Types,
 // OneOf and Additional cover decision questions without erasing their contract.
 type InputSchema struct {
-	// Only the synthetic workflow tool carries an exact immutable schema projection.
+	mcpSchema *jsonvalue.Value
+	// The workflow and MCP variants carry exact immutable schema projections.
 	workflowSchema *jsonvalue.Value
 	Additional     *SchemaAdditional `json:"additionalProperties,omitempty"`
 	Const          *string           `json:"const,omitempty"`
@@ -108,6 +109,9 @@ func (v *schemaTypeWire) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, &v.single)
 }
 func (schema InputSchema) MarshalJSON() ([]byte, error) {
+	if schema.mcpSchema != nil {
+		return schema.mcpSchema.MarshalJSON()
+	}
 	if schema.workflowSchema != nil {
 		return schema.workflowSchema.MarshalJSON()
 	}
@@ -153,6 +157,10 @@ func (schema *InputSchema) UnmarshalJSON(b []byte) error {
 	return nil
 }
 func (schema InputSchema) Clone() InputSchema {
+	if schema.mcpSchema != nil {
+		value := *schema.mcpSchema
+		return InputSchema{mcpSchema: &value}
+	}
 	if schema.workflowSchema != nil {
 		value := *schema.workflowSchema
 		return InputSchema{workflowSchema: &value}
@@ -206,6 +214,10 @@ func (schema InputSchema) Clone() InputSchema {
 }
 func (schema InputSchema) Validate() error { return schema.validate(0) }
 func (schema InputSchema) validate(depth int) error {
+	if schema.mcpSchema != nil {
+		_, err := schema.mcpSchema.MarshalJSON()
+		return err
+	}
 	if schema.workflowSchema != nil {
 		if schema.workflowSchema.Kind() != jsonvalue.Object {
 			return errors.New("workflow tool schema must be an object")
@@ -322,6 +334,9 @@ func (schema ToolSchema) Clone() ToolSchema {
 	return schema
 }
 func (schema ToolSchema) Validate() error {
+	if schema.InputSchema.mcpSchema != nil && !IsMCPToolName(schema.Name) {
+		return errors.New("external MCP schema requires an MCP tool name")
+	}
 	if schema.InputSchema.workflowSchema != nil && schema.Name != ToolReturnArtifact {
 		return errors.New("exact workflow schema requires return_artifact")
 	}

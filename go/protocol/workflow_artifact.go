@@ -60,6 +60,14 @@ func (schema *ToolSchema) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &wire); err != nil {
 		return err
 	}
+	if IsMCPToolName(wire.Name) {
+		decoded, err := MCPToolSchema(wire.Name, wire.Description, wire.InputSchema)
+		if err != nil {
+			return err
+		}
+		*schema = decoded
+		return nil
+	}
 	if wire.Name == ToolReturnArtifact {
 		value := wire.InputSchema
 		decoded := ToolSchema{Name: wire.Name, Description: wire.Description, InputSchema: InputSchema{workflowSchema: &value}}

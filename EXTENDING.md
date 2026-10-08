@@ -2715,6 +2715,37 @@ partial bytes cannot corrupt the next request. Failed handshakes are killed/reap
 `Close()` terminates/reaps the child, escalates after two seconds, and permits a
 later start. Failed tool calls are never replayed.
 
-This is an operator library seam. Dynamic registration, collision ownership,
-connect_mcp inputs, pinned catalogue publication, manager lifetime and launcher
-selection remain open. No default tool, permission policy or execution gate changes.
+This is an operator library seam. The registration and fixed runtime snapshot
+seam below now preserves collision ownership and common gate dispatch. Session-driven
+connect_mcp publication, manager lifetime and launcher selection remain open.
+No default tools or permission policy change.
+
+## Go MCP registration and fixed runtime catalogue
+
+`agent.MCPRegistry` is an operator builder. `Register(ctx, client, timeout)` accepts
+a named discovery/call interface and returns `MCPRegistration{Catalog, Added}`.
+Zero timeout selects 60 seconds; clients must honor context cancellation. The raw
+client name owns each normalized tool key; another server is refused and reported
+in the bounded `Problems()` ledger. Same-server re-registration replaces its
+definition in place while previously returned catalogues retain old bindings.
+Discovery happens before the short publication lock. Description str conversion,
+4,000 Source-character cap and original tool names are preserved.
+
+Each definition pins external risk, exclusive execution and empty capabilities.
+Readonly is the server's advisory hint and cannot bypass readonly-mode refusal or
+external-action approval. The concrete MCP protocol variant holds an immutable
+closed argument object; masking visits values and keys without changing live input.
+Canonical hashes sort nested keys. Request/archive schema round trips retain
+server-defined language and even null/bool schema values as inert metadata, matching
+Source registration; schema content is not an authority or an argument validator.
+Arguments currently require finite/scalar-Unicode JSON, as the ordinary protocol
+serialization boundary does. Broader historical argument profiles remain open.
+
+Assign a discovered snapshot to `RuntimeConfig.MCPCatalog` before creating a raw
+session. It accepts only namespaced external definitions; ToolSelection still
+narrows installed tools. The model sees fitted schemas and dispatch uses the
+existing before/guard/permission/execute/after/result and journal pipeline. No live
+registry mutation reaches an admitted request. The operator keeps client lifetime
+ownership, including old clients captured by earlier snapshots. This seam does not
+implement connect_mcp, active-session publication, manager/fork/child lifecycle
+composition or launcher selection; those remain pending.

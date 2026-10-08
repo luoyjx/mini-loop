@@ -58,6 +58,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	// MCPCatalog is an explicitly discovered snapshot. Client lifetime remains operator-owned.
+	MCPCatalog      *ToolCatalog
 	WorkflowTools   bool
 	WorkflowService *WorkflowService
 	workflowManager *SessionManager
@@ -545,6 +547,14 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 			definition, err := NewToolDefinitionWithSchema(schema, traits, handler)
 			if err != nil {
 				return nil, err
+			}
+			definitions = append(definitions, definition)
+		}
+	}
+	if config.MCPCatalog != nil {
+		for _, definition := range config.MCPCatalog.ordered {
+			if !protocol.IsMCPToolName(definition.Name()) || definition.Risk() != RiskExternal {
+				return nil, errors.New("MCP runtime catalog requires namespaced external tools")
 			}
 			definitions = append(definitions, definition)
 		}

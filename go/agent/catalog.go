@@ -149,7 +149,7 @@ func NewToolDefinitionWithSchema(schema protocol.ToolSchema, traits ToolTraits, 
 	if err := schema.Validate(); err != nil {
 		return ToolDefinition{}, err
 	}
-	if name == "" || !traits.Risk.valid() || handler == nil || (traits.Readonly && traits.Risk != RiskRead) {
+	if name == "" || !traits.Risk.valid() || handler == nil || (traits.Readonly && traits.Risk != RiskRead && !(protocol.IsMCPToolName(name) && traits.Risk == RiskExternal)) {
 		return ToolDefinition{}, errors.New("tool definition requires name, valid risk, matching readonly claim, and handler")
 	}
 	seen := make(map[Capability]bool, len(traits.Capabilities))
@@ -188,7 +188,7 @@ func NewToolCatalog(definitions ...ToolDefinition) (*ToolCatalog, error) {
 		if err := definition.schema.Validate(); err != nil || definition.schema.Name != definition.name {
 			return nil, fmt.Errorf("tool %d has an invalid schema", i)
 		}
-		if definition.name == "" || !definition.risk.valid() || definition.handler == nil || (definition.readonly && definition.risk != RiskRead) {
+		if definition.name == "" || !definition.risk.valid() || definition.handler == nil || (definition.readonly && definition.risk != RiskRead && !(protocol.IsMCPToolName(definition.name) && definition.risk == RiskExternal)) {
 			return nil, fmt.Errorf("tool %d has an invalid definition", i)
 		}
 		if _, exists := index[definition.name]; exists {

@@ -1,5 +1,69 @@
 # Go port plan
 
+## 2026-10-08 native MCP registration and fixed runtime snapshots
+
+Baseline a008dc8 (Source snapshot 141). A concrete MCP protocol variant lowers
+server-defined arguments to immutable closed JSON objects before the agent/gate
+layer; nested keys participate in canonical hashes and recording masks. Exact
+MCP schema variants retain refs/numeric enums/extensions, including Source null
+and bool metadata, without treating schema text as an argument validator or
+authority. Request/schema archives round-trip through the namespaced decoder.
+Arguments currently enforce finite/scalar-Unicode JSON; wider historical Source
+argument profiles remain open. No any/interface{}, map[string]any or RawMessage
+was added to a domain/service struct; no dependency or Python runtime change.
+
+MCPRegistry.Register discovers outside its publication lock and preserves raw
+server ownership for normalized names. Cross-server takeover is refused with a
+bounded problem record; same-server replacement retains order and publishes a
+fresh immutable catalogue. Existing returned catalogues/gates keep old handlers.
+Description str projections and 4,000 Source-character caps match the fixtures.
+The wrapper calls the original raw tool name with a bounded context. A wrapper
+timeout returns Source text; cancellation of its parent propagates as cancellation.
+Custom clients must honor context deadlines and be safe for their caller's sharing.
+
+Risk is pinned external; readonly hints remain advisory. Definition construction
+and catalogue admission allow that mismatch only for normalized MCP names with
+external risk. Execution stays exclusive and capabilities empty. Readonly sessions
+deny the external effect, interactive sessions require approval, and auto mode
+retains the existing explicit permission behavior. RuntimeConfig.MCPCatalog installs
+a fixed operator snapshot before session admission, with namespaced-external
+validation and the existing ToolSelection filter. Default tool inventory stays ten.
+Client lifecycle remains operator-owned, including clients in older snapshots.
+
+Native tests compare seven actual Source registration scenarios/ten publications,
+seven namespace normalizations and two original-name/timeout handler results. They
+also verify old/new handler binding, readonly/interactive refusal despite the hint,
+before rewrite -> guard -> permission -> execute -> after -> observer order, real
+model-request session execution and terminal journal replay under current permission.
+Protocol tests cover nested key masking without changing live arguments, canonical
+Unicode input/archive round trips, exact schema variants and unsupported strict
+argument/namespace rejection. Malformed Source registration profiles are not all
+implemented; this is not a claim of complete MCP parity.
+
+Validation: focused MCP protocol/registration/runtime race tests, full go test
+./..., full go test -race ./... (-count=1 -timeout=180s) and go vet ./... pass.
+Full Python regression passes separately: 2,155 passed, 28 skipped, 24 subtests,
+three warnings in 75.87s. All 141 Source exports and all 19 source scan anchors
+pass. verify_guards.py selects all 10 MCP guards plus readonly/risk drift and
+external-tool approval (12 guards, all load-bearing); the unrelated full mutation
+sweep was not rerun. No Python package-module changes, so verify_invariants.py
+was not rerun. Logs/exit codes 0 are retained under /tmp/mini-loop-mcp-registration-
+{go,python,contracts,guards,risk-guards}.{log,exit}. README outline and git diff
+--check pass. Coverage was not refreshed; the previous 90.23% belongs to 721b413.
+
+README review baseline, canonical Mermaid, boundary explanation, extension map and
+hardening invariant note are updated. Existing interactive geometry is retained;
+its Language layout card records the fixed snapshot/gate seam. Archify deliver
+passes 9/9 showcase checks with zero errors/warnings. Visual inspection stays skipped
+after prior access denial. Specification SHA256 df41473d60e3c756f6a892aa8077b49102bff2db2212810cae73bc8b2c1a41e6;
+HTML SHA256 c15e8a8c2754634fb33dffad2139544c5c10e196a2509c457a53268de610f75e.
+
+Live connect_mcp/session catalogue publication, manager/client reference lifetime,
+child/fork composition, launcher activation and InProcessMCP remain open. Native
+session SQLite still needs the unanswered driver approval. Remaining model/tool
+scalar/transport and timing/input/output profiles and full G7 remain open. The
+complete Python-to-Go goal remains active; this checkpoint does not narrow it.
+
 ## 2026-10-08 MCP registration contract preparation
 
 Baseline edd6c46. Source snapshot 141 captures seven real register_mcp scenarios
