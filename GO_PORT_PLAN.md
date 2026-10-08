@@ -1,5 +1,62 @@
 # Go port plan
 
+## 2026-10-08 workflow runtime records
+
+Baseline 3fb1e91. W1B data projections now port WorkflowRun, NodeState,
+AttemptClaim, NodeAttempt and OutboxMessage (native OutboxSnapshot). IDs, keys,
+versions, cursors, attempt numbers/counts, spawn indexes, kinds and claim tokens
+have named types. State enums reuse the existing finite variants. Args/payload
+are closed immutable object values. Runtime provenance uses inert runmeta.Snapshot,
+not the live agent context; historical unknown authority remains observable.
+
+Five concrete Decode functions set source defaults only for omitted fields,
+validate required declared field types and finite state variants, retain empty
+IDs/negative counters/array order and preserve explicitly supplied zero times.
+Explicit null status/scalar/list fields are refused before encoding/json can
+silently keep their defaults. Native boundaries reject unknown fields and null
+ID-array members. Python arbitrary live-object behavior is outside the native
+JSON contract. Counters are machine integers/int64, timestamps float64.
+
+All five projections have detached Clone methods: optional pointers, lists and
+provenance pointers/capability lists cannot mutate the original. Closed args/payload
+containers are already immutable. Source frozen claim/outbox objects are exposed
+as detached mutable DTOs; storage owns eventual internal records and must clone
+both admission and reads. Record decoding does not validate argument schemas,
+authorize launch, advance run state or establish external delivery.
+
+Snapshot 115 runs actual source constructors: 46 default/full/state/provenance
+projections and eight invalid status/verification cases. Only generated wall times
+are normalized, and only when omitted by the recipe. Native tests compare every
+projected field and terminal predicate, require generated times to be positive,
+mutate every clone pointer/list and cover stricter native malformed input.
+
+Validation: focused workflows race, full Go test/race/vet passed; all 115 source
+snapshots current and all 19 scan guards anchored. Full Python regression ran after
+Go gates completed: 2,155 passed, 28 skipped, 24 subtests in 100.46s. Four warnings:
+three dependency deprecations and one subprocess destructor/Event loop is closed
+warning during test_owner_map_bound.py::test_the_owner_map_stays_bounded_across_many_deletes.
+That warning did not fail the suite; no corresponding Python runtime module changed.
+Diff check and README outline passed. Overall coverage was not refreshed this slice.
+Python package invariants and mutation guards were not rerun because package
+modules and guarded source behavior/anchors were unchanged.
+
+Interactive architecture regenerated from JSON: showcase 9/9, zero errors/warnings.
+Spec SHA256 aba7b19cb46e921163c656081e53fbaa56ea841f5d94556f8743a66a0794091f;
+HTML SHA256 75f9918eabf8dc8c61cd9887c4288dda3989efd843930c5434364d24c2200361.
+Visual review remains skipped after prior denial, without retry/bypass.
+Nested provenance is an already materialized inert snapshot; this decoder does not
+stamp missing caller fields or reconstruct a trusted live context.
+No new dependencies or Python runtime/package modules changed. Active README
+Mermaid topology is reviewed and unchanged because this is an uninstalled library;
+boundary/specification and extension/parity/package docs are updated.
+
+Next W3A ports actual source in-memory definition registration, idempotent run
+admission, read/list, versioned transition and atomic claim. W3B settlement/cancel,
+W3C outbox/pruning, trusted live origin adaptation, W4-W6 execution/installation,
+MCP, native session SQLite, profiles and full G7 remain open. Source workflow
+storage is process-local; no restart durability is inferred from session SQLite.
+
+
 ## 2026-10-08 shared inert provenance preparation
 
 Baseline c2efdcb. Preparing W1B without a workflows -> agent -> workflows

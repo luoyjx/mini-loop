@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `c2efdcb` plus shared inert run provenance records;
+reviewed **2026-10-08** (Go baseline `3fb1e91` plus typed workflow runtime records;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1419,7 +1419,13 @@ completion binds the controller's attempt IDs and validates its schema before cr
 Run provenance snapshots and their named IDs now live in `go/runmeta`; the agent
 retains its private trusted RunContext and source-compatible public aliases.
 Decoded snapshot data cannot mint a trusted context or grant execution authority.
-Run/attempt/outbox records, storage and execution are still pending. This library is
+Snapshot 115 compares 46 actual Python run/node/claim/attempt/outbox projections
+and eight constructor refusals. Native records use named identities/counters,
+closed immutable object args/payload and detached optional/slice fields. Strict
+record decoders retain source defaults, array order, empty identities and negative
+counters; null or invalid status values cannot acquire default execution states.
+Historical provenance remains inert data, including unrecognized authority text.
+Storage, execution and trusted live workflow launch adaptation remain pending. This library is
 not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four

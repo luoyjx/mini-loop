@@ -1,0 +1,2159 @@
+{
+  "cases": [
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session"
+      },
+      "kind": "run",
+      "name": "default",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "QUEUED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {},
+        "created_at": 0,
+        "definition_revision": "",
+        "idempotency_key": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "",
+        "session_id": ""
+      },
+      "kind": "run",
+      "name": "empty-identities",
+      "output": {
+        "active_node_ids": [],
+        "args": {},
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "",
+        "session_id": "",
+        "started_at": null,
+        "status": "QUEUED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "node_id": "node",
+        "run_id": "run"
+      },
+      "kind": "node",
+      "name": "default",
+      "output": {
+        "attempt_ids": [],
+        "error": null,
+        "node_id": "node",
+        "result_artifact_ids": [],
+        "run_id": "run",
+        "status": "PENDING",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "node_id": "",
+        "run_id": ""
+      },
+      "kind": "node",
+      "name": "empty-identities",
+      "output": {
+        "attempt_ids": [],
+        "error": null,
+        "node_id": "",
+        "result_artifact_ids": [],
+        "run_id": "",
+        "status": "PENDING",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "node_id": "node",
+        "spawn_index": 0
+      },
+      "kind": "claim",
+      "name": "default",
+      "output": {
+        "agent_id": "worker",
+        "node_id": "node",
+        "parent_agent_id": null,
+        "spawn_index": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "",
+        "node_id": "",
+        "spawn_index": -2
+      },
+      "kind": "claim",
+      "name": "empty-identities",
+      "output": {
+        "agent_id": "",
+        "node_id": "",
+        "parent_agent_id": null,
+        "spawn_index": -2
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0
+      },
+      "kind": "attempt",
+      "name": "default",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "CLAIMED",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "",
+        "attempt": 1,
+        "attempt_id": "",
+        "node_id": "",
+        "run_id": "",
+        "spawn_index": -2
+      },
+      "kind": "attempt",
+      "name": "empty-identities",
+      "output": {
+        "agent_id": "",
+        "attempt": 1,
+        "attempt_id": "",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "",
+        "spawn_index": -2,
+        "started_at": null,
+        "status": "CLAIMED",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "kind": "custom_notice",
+        "message_id": "outbox",
+        "payload": {
+          "nested": [
+            1.0,
+            "中文"
+          ],
+          "ok": true
+        },
+        "run_id": "run",
+        "session_id": "session"
+      },
+      "kind": "outbox",
+      "name": "default",
+      "output": {
+        "claim_token": null,
+        "claimed_at": null,
+        "created_at": 0,
+        "delivered_at": null,
+        "kind": "custom_notice",
+        "message_id": "outbox",
+        "payload": {
+          "nested": [
+            1.0,
+            "中文"
+          ],
+          "ok": true
+        },
+        "run_id": "run",
+        "session_id": "session"
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "created_at": 0,
+        "kind": "",
+        "message_id": "",
+        "payload": {},
+        "run_id": "",
+        "session_id": ""
+      },
+      "kind": "outbox",
+      "name": "empty-identities",
+      "output": {
+        "claim_token": null,
+        "claimed_at": null,
+        "created_at": 0,
+        "delivered_at": null,
+        "kind": "",
+        "message_id": "",
+        "payload": {},
+        "run_id": "",
+        "session_id": ""
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "active_node_ids": [
+          "b",
+          "a"
+        ],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 2,
+        "cancel_reason": "reason",
+        "created_at": 42.25,
+        "definition_revision": "revision",
+        "ended_at": 44.25,
+        "error": "detail",
+        "event_cursor": 7,
+        "final_artifact_id": "artifact",
+        "idempotency_key": "key",
+        "launch_action_id": "launch",
+        "parent_run_id": "parent",
+        "policy_snapshot_hash": "policy",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": 43.25,
+        "status": "COMPLETED",
+        "version": 3,
+        "workspace_baseline": "base"
+      },
+      "kind": "run",
+      "name": "full",
+      "output": {
+        "active_node_ids": [
+          "b",
+          "a"
+        ],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 2,
+        "cancel_reason": "reason",
+        "created_at": 42.25,
+        "definition_revision": "revision",
+        "ended_at": 44.25,
+        "error": "detail",
+        "event_cursor": 7,
+        "final_artifact_id": "artifact",
+        "idempotency_key": "key",
+        "launch_action_id": "launch",
+        "parent_run_id": "parent",
+        "policy_snapshot_hash": "policy",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": 43.25,
+        "status": "COMPLETED",
+        "version": 3,
+        "workspace_baseline": "base"
+      },
+      "terminal": true
+    },
+    {
+      "input": {
+        "attempt_ids": [
+          "a",
+          "b"
+        ],
+        "error": "detail",
+        "node_id": "node",
+        "result_artifact_ids": [
+          "x",
+          "y"
+        ],
+        "run_id": "run",
+        "status": "UNVERIFIED",
+        "version": -1
+      },
+      "kind": "node",
+      "name": "full",
+      "output": {
+        "attempt_ids": [
+          "a",
+          "b"
+        ],
+        "error": "detail",
+        "node_id": "node",
+        "result_artifact_ids": [
+          "x",
+          "y"
+        ],
+        "run_id": "run",
+        "status": "UNVERIFIED",
+        "version": -1
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "node_id": "node",
+        "parent_agent_id": "parent",
+        "spawn_index": 3
+      },
+      "kind": "claim",
+      "name": "full",
+      "output": {
+        "agent_id": "worker",
+        "node_id": "node",
+        "parent_agent_id": "parent",
+        "spawn_index": 3
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": 44.25,
+        "error": "detail",
+        "heartbeat_at": 43.25,
+        "node_id": "node",
+        "parent_agent_id": "parent",
+        "result_artifact_id": "artifact",
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": 42.25,
+        "status": "UNKNOWN",
+        "verification_status": "refuted",
+        "version": 5
+      },
+      "kind": "attempt",
+      "name": "full",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": 44.25,
+        "error": "detail",
+        "heartbeat_at": 43.25,
+        "node_id": "node",
+        "parent_agent_id": "parent",
+        "result_artifact_id": "artifact",
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": 42.25,
+        "status": "UNKNOWN",
+        "verification_status": "refuted",
+        "version": 5
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "claim_token": "token",
+        "claimed_at": 43.25,
+        "created_at": 42.25,
+        "delivered_at": 44.25,
+        "kind": "custom_notice",
+        "message_id": "outbox",
+        "payload": {
+          "nested": [
+            1.0,
+            "中文"
+          ],
+          "ok": true
+        },
+        "run_id": "run",
+        "session_id": "session"
+      },
+      "kind": "outbox",
+      "name": "full",
+      "output": {
+        "claim_token": "token",
+        "claimed_at": 43.25,
+        "created_at": 42.25,
+        "delivered_at": 44.25,
+        "kind": "custom_notice",
+        "message_id": "outbox",
+        "payload": {
+          "nested": [
+            1.0,
+            "中文"
+          ],
+          "ok": true
+        },
+        "run_id": "run",
+        "session_id": "session"
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "historical-unknown",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session"
+      },
+      "kind": "run",
+      "name": "inert-provenance",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "historical-unknown",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "QUEUED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "CREATED"
+      },
+      "kind": "run",
+      "name": "status-CREATED",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "CREATED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "PLANNING"
+      },
+      "kind": "run",
+      "name": "status-PLANNING",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "PLANNING",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "AWAITING_APPROVAL"
+      },
+      "kind": "run",
+      "name": "status-AWAITING_APPROVAL",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "AWAITING_APPROVAL",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "QUEUED"
+      },
+      "kind": "run",
+      "name": "status-QUEUED",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "QUEUED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "RUNNING"
+      },
+      "kind": "run",
+      "name": "status-RUNNING",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "RUNNING",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "PAUSING"
+      },
+      "kind": "run",
+      "name": "status-PAUSING",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "PAUSING",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "PAUSED"
+      },
+      "kind": "run",
+      "name": "status-PAUSED",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "PAUSED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "WAITING_APPROVAL"
+      },
+      "kind": "run",
+      "name": "status-WAITING_APPROVAL",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "WAITING_APPROVAL",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "CANCELLING"
+      },
+      "kind": "run",
+      "name": "status-CANCELLING",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "CANCELLING",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": false
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "CANCELLED"
+      },
+      "kind": "run",
+      "name": "status-CANCELLED",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "CANCELLED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": true
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "REJECTED"
+      },
+      "kind": "run",
+      "name": "status-REJECTED",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "REJECTED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": true
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "COMPLETED"
+      },
+      "kind": "run",
+      "name": "status-COMPLETED",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "COMPLETED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": true
+    },
+    {
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "FAILED"
+      },
+      "kind": "run",
+      "name": "status-FAILED",
+      "output": {
+        "active_node_ids": [],
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "attempts_used": 0,
+        "cancel_reason": null,
+        "created_at": 0,
+        "definition_revision": "revision",
+        "ended_at": null,
+        "error": null,
+        "event_cursor": 0,
+        "final_artifact_id": null,
+        "idempotency_key": "key",
+        "launch_action_id": null,
+        "parent_run_id": null,
+        "policy_snapshot_hash": "",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "started_at": null,
+        "status": "FAILED",
+        "version": 0,
+        "workspace_baseline": null
+      },
+      "terminal": true
+    },
+    {
+      "input": {
+        "node_id": "node",
+        "run_id": "run",
+        "status": "PENDING"
+      },
+      "kind": "node",
+      "name": "status-PENDING",
+      "output": {
+        "attempt_ids": [],
+        "error": null,
+        "node_id": "node",
+        "result_artifact_ids": [],
+        "run_id": "run",
+        "status": "PENDING",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "node_id": "node",
+        "run_id": "run",
+        "status": "RUNNING"
+      },
+      "kind": "node",
+      "name": "status-RUNNING",
+      "output": {
+        "attempt_ids": [],
+        "error": null,
+        "node_id": "node",
+        "result_artifact_ids": [],
+        "run_id": "run",
+        "status": "RUNNING",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "node_id": "node",
+        "run_id": "run",
+        "status": "SUCCEEDED"
+      },
+      "kind": "node",
+      "name": "status-SUCCEEDED",
+      "output": {
+        "attempt_ids": [],
+        "error": null,
+        "node_id": "node",
+        "result_artifact_ids": [],
+        "run_id": "run",
+        "status": "SUCCEEDED",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "node_id": "node",
+        "run_id": "run",
+        "status": "UNVERIFIED"
+      },
+      "kind": "node",
+      "name": "status-UNVERIFIED",
+      "output": {
+        "attempt_ids": [],
+        "error": null,
+        "node_id": "node",
+        "result_artifact_ids": [],
+        "run_id": "run",
+        "status": "UNVERIFIED",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "node_id": "node",
+        "run_id": "run",
+        "status": "FAILED"
+      },
+      "kind": "node",
+      "name": "status-FAILED",
+      "output": {
+        "attempt_ids": [],
+        "error": null,
+        "node_id": "node",
+        "result_artifact_ids": [],
+        "run_id": "run",
+        "status": "FAILED",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "node_id": "node",
+        "run_id": "run",
+        "status": "CANCELLED"
+      },
+      "kind": "node",
+      "name": "status-CANCELLED",
+      "output": {
+        "attempt_ids": [],
+        "error": null,
+        "node_id": "node",
+        "result_artifact_ids": [],
+        "run_id": "run",
+        "status": "CANCELLED",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "status": "PENDING"
+      },
+      "kind": "attempt",
+      "name": "status-PENDING",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "PENDING",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "status": "CLAIMED"
+      },
+      "kind": "attempt",
+      "name": "status-CLAIMED",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "CLAIMED",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "status": "RUNNING"
+      },
+      "kind": "attempt",
+      "name": "status-RUNNING",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "RUNNING",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "status": "SUCCEEDED"
+      },
+      "kind": "attempt",
+      "name": "status-SUCCEEDED",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "SUCCEEDED",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "status": "FAILED"
+      },
+      "kind": "attempt",
+      "name": "status-FAILED",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "FAILED",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "status": "UNKNOWN"
+      },
+      "kind": "attempt",
+      "name": "status-UNKNOWN",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "UNKNOWN",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "status": "CANCELLED"
+      },
+      "kind": "attempt",
+      "name": "status-CANCELLED",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "CANCELLED",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "verification_status": "not_applicable"
+      },
+      "kind": "attempt",
+      "name": "verification-not_applicable",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "CLAIMED",
+        "verification_status": "not_applicable",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "verification_status": "verified"
+      },
+      "kind": "attempt",
+      "name": "verification-verified",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "CLAIMED",
+        "verification_status": "verified",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "verification_status": "refuted"
+      },
+      "kind": "attempt",
+      "name": "verification-refuted",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "CLAIMED",
+        "verification_status": "refuted",
+        "version": 0
+      },
+      "terminal": null
+    },
+    {
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "verification_status": "unverified"
+      },
+      "kind": "attempt",
+      "name": "verification-unverified",
+      "output": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "ended_at": null,
+        "error": null,
+        "heartbeat_at": null,
+        "node_id": "node",
+        "parent_agent_id": null,
+        "result_artifact_id": null,
+        "run_id": "run",
+        "spawn_index": 0,
+        "started_at": null,
+        "status": "CLAIMED",
+        "verification_status": "unverified",
+        "version": 0
+      },
+      "terminal": null
+    }
+  ],
+  "errors": [
+    {
+      "error": "ValueError",
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": null
+      },
+      "kind": "run"
+    },
+    {
+      "error": "ValueError",
+      "input": {
+        "args": {
+          "x": [
+            1.0,
+            "中文"
+          ]
+        },
+        "definition_revision": "revision",
+        "idempotency_key": "key",
+        "run_context": {
+          "actor_id": "owner",
+          "approved_capabilities": [
+            "workflow.launch",
+            "workflow.manage"
+          ],
+          "authority": "explicit_human",
+          "channel": "local",
+          "delegated_by": null,
+          "message_id": "msg_fixed",
+          "origin": "explicit_human",
+          "parent_message_id": null,
+          "stamped_by": "trusted_local"
+        },
+        "run_id": "run",
+        "session_id": "session",
+        "status": "bad"
+      },
+      "kind": "run"
+    },
+    {
+      "error": "ValueError",
+      "input": {
+        "node_id": "node",
+        "run_id": "run",
+        "status": null
+      },
+      "kind": "node"
+    },
+    {
+      "error": "ValueError",
+      "input": {
+        "node_id": "node",
+        "run_id": "run",
+        "status": "bad"
+      },
+      "kind": "node"
+    },
+    {
+      "error": "ValueError",
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "status": null
+      },
+      "kind": "attempt"
+    },
+    {
+      "error": "ValueError",
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "status": "bad"
+      },
+      "kind": "attempt"
+    },
+    {
+      "error": "ValueError",
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "verification_status": null
+      },
+      "kind": "attempt"
+    },
+    {
+      "error": "ValueError",
+      "input": {
+        "agent_id": "worker",
+        "attempt": 1,
+        "attempt_id": "attempt",
+        "node_id": "node",
+        "run_id": "run",
+        "spawn_index": 0,
+        "verification_status": "bad"
+      },
+      "kind": "attempt"
+    }
+  ]
+}

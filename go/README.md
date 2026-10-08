@@ -2103,3 +2103,17 @@ null versus empty arrays. agent aliases these public types and retains its priva
 live RunContext, trusted factories and capability checks. A decoded snapshot is
 archival data; it has no authority constructor or authorization methods. This
 prepares workflow records without a workflows/agent dependency cycle.
+
+### Workflow runtime records
+
+WorkflowRun, NodeState, AttemptClaim, NodeAttempt and OutboxSnapshot have named
+identities, counters and finite run/node/attempt/verification states. Five Decode
+functions preserve Python defaults and validate concrete record input before use.
+Clone detaches all pointers/slices; args and outbox payload use immutable closed
+JSON object values. OutboxSnapshot is a detached mutable view of source frozen
+message data, not a send acknowledgment. AttemptClaim is likewise an input projection.
+Snapshot 115 compares 46 actual source constructors and eight invalid state cases.
+Empty identities, negative counters and extensible outbox kinds survive; store
+admission and scheduler budgets remain separate. Unrecognized recorded provenance
+is retained as inert metadata, never restored as a trusted agent.RunContext.
+No workflow store, scheduler or live service binding is installed yet.

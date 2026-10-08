@@ -1,5 +1,22 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow runtime record projections
+
+Snapshot 115 executes actual Python WorkflowRun, NodeState, AttemptClaim,
+NodeAttempt and OutboxMessage constructors: 46 projections and eight invalid
+state cases. Native decoders preserve defaults, all finite state spellings,
+optional fields, array order, supplied zero timestamps, empty identifiers,
+negative counters and extensible outbox kind text. Required args/payload are
+closed immutable objects; snapshot provenance is inert, including historical
+unknown authority. Native tests verify every mutable field is detached by Clone.
+The source frozen claim/outbox values are exposed as detached mutable DTOs, not
+shared live objects. Native boundaries additionally reject unknown fields,
+malformed declared JSON types, null scalar/default fields and invalid ID-array
+members. Counters use machine integers/int64 and timestamps use float64; Python
+arbitrary live objects/integers are not asserted. No store/engine/launch binding
+or external-delivery evidence is added. Trusted origin and W3-W6 remain open.
+
+
 ## 2026-10-08 shared inert provenance preparation
 
 Native runmeta now owns the existing snapshot wire record and named provenance

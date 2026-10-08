@@ -2370,4 +2370,16 @@ runmeta.Snapshot is a shared inert provenance record with detached Clone project
 agent retains private trusted RunContext construction, validation and capability checks;
 its public provenance types alias runmeta without a wire-format change. Consumers
 may store snapshots but must not use decoded fields to mint execution authority.
-Runtime records and trusted-origin adaptation are the next separate slice.
+WorkflowRun, NodeState, AttemptClaim, NodeAttempt and OutboxSnapshot now expose
+named record projections and Clone methods. DecodeWorkflowRun/DecodeNodeState/
+DecodeAttemptClaim/DecodeNodeAttempt/DecodeOutboxSnapshot lower JSON through
+concrete variants, refuse unknown fields and validate status enums before return.
+Store/service adapters must clone write/read records and use these boundary
+functions for external JSON instead of decoding directly into mutable projections.
+Args and outbox payload must be closed object values; decoding does not validate
+a workflow input schema, authorize launch or establish delivery/verification.
+Nested provenance is an already materialized snapshot; decoding never stamps missing
+caller fields, normalizes historical grants or reconstructs a trusted live context.
+Native counters are bounded machine integers (versions/cursors use int64), and
+wall timestamps are float64; Python arbitrary live objects are not admitted.
+Trusted live origin adaptation and storage remain the next separate slices.

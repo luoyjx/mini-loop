@@ -6751,6 +6751,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-models.json": _json_bytes(_workflow_model_contracts()),
 
         "python-workflow-validation.json": _json_bytes(_workflow_validation_contracts()),
+        "python-workflow-records.json": _json_bytes(_workflow_record_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -9202,6 +9203,76 @@ def _workflow_validation_contracts() -> dict:
     verification=[None,{}, {"status":"verified"},{"status":"refuted"},{"status":"not_applicable"},{"status":"unverified"},{"status":[]},{"status":False},{"status":"unknown"}]
     return dict(definitions=definitions,schemas=schema_cases,values=value_cases,submissions=submissions,
                 verification=[dict(value_json=json.dumps(value),status=verification_status_from_value(value).value) for value in verification])
+
+
+def _workflow_record_contracts() -> dict:
+    """Actual source constructors and normalized record projections; no store effects."""
+    import copy
+    import dataclasses
+    from mini_loop.run_context import RunContext
+    from mini_loop.workflows.models import (
+        WorkflowRun, NodeState, AttemptClaim, NodeAttempt, OutboxMessage,
+        RunStatus, NodeStatus, AttemptStatus, VerificationStatus,
+    )
+    context = dataclasses.asdict(RunContext(message_id="msg_fixed", actor_id="owner",
+        origin="explicit_human", channel="local", authority="explicit_human",
+        stamped_by="trusted_local", approved_capabilities=("workflow.manage", "workflow.launch")))
+    bases = {
+        "run": dict(run_id="run", definition_revision="revision", session_id="session",
+                    run_context=context, idempotency_key="key", args={"x":[1.0,"中文"]}),
+        "node": dict(run_id="run", node_id="node"),
+        "claim": dict(node_id="node", agent_id="worker", spawn_index=0),
+        "attempt": dict(attempt_id="attempt", run_id="run", node_id="node", attempt=1,
+                        agent_id="worker", spawn_index=0),
+        "outbox": dict(message_id="outbox", run_id="run", session_id="session", kind="custom_notice",
+                       payload={"ok":True,"nested":[1.0,"中文"]}),
+    }
+    constructors = {"run":WorkflowRun, "node":NodeState, "claim":AttemptClaim,
+                    "attempt":NodeAttempt, "outbox":OutboxMessage}
+    cases = []
+    errors = []
+    def execute(kind, recipe):
+        args = copy.deepcopy(recipe)
+        if kind == "run": args["run_context"] = RunContext(**args["run_context"])
+        return constructors[kind](**args)
+    def capture(kind, label, patch):
+        recipe = copy.deepcopy(bases[kind]); recipe.update(patch)
+        model = execute(kind, recipe)
+        output = dataclasses.asdict(model)
+        if "created_at" in output and "created_at" not in recipe: output["created_at"] = 0
+        cases.append(dict(kind=kind, name=label, input=recipe, output=output,
+                          terminal=model.is_terminal if kind == "run" else None))
+    for kind in bases:
+        capture(kind, "default", {})
+        empty = {key:"" for key,value in bases[kind].items() if isinstance(value,str)}
+        if kind == "run": empty.update(args={},created_at=0)
+        if kind == "outbox": empty.update(payload={},created_at=0)
+        if kind in ("claim","attempt"): empty["spawn_index"] = -2
+        capture(kind, "empty-identities", empty)
+    capture("run", "full", dict(status="COMPLETED",version=3,parent_run_id="parent",
+        launch_action_id="launch",created_at=42.25,started_at=43.25,ended_at=44.25,
+        active_node_ids=["b","a"],event_cursor=7,attempts_used=2,policy_snapshot_hash="policy",
+        workspace_baseline="base",final_artifact_id="artifact",error="detail",cancel_reason="reason"))
+    capture("node", "full", dict(status="UNVERIFIED",version=-1,attempt_ids=["a","b"],
+                                  result_artifact_ids=["x","y"],error="detail"))
+    capture("claim", "full", dict(parent_agent_id="parent",spawn_index=3))
+    capture("attempt", "full", dict(status="UNKNOWN",version=5,parent_agent_id="parent",
+        started_at=42.25,heartbeat_at=43.25,ended_at=44.25,result_artifact_id="artifact",
+        verification_status="refuted",error="detail"))
+    capture("outbox", "full", dict(created_at=42.25,claim_token="token",claimed_at=43.25,delivered_at=44.25))
+    capture("run", "inert-provenance", dict(run_context={**context,"authority":"historical-unknown"}))
+    for kind, enum in [("run",RunStatus),("node",NodeStatus),("attempt",AttemptStatus)]:
+        for status in enum: capture(kind, "status-"+status.value, dict(status=status.value))
+        for status in [None, "bad"]:
+            recipe=copy.deepcopy(bases[kind]);recipe["status"]=status
+            try: execute(kind, recipe)
+            except Exception as error: errors.append(dict(kind=kind,input=recipe,error=type(error).__name__))
+    for status in VerificationStatus: capture("attempt", "verification-"+status.value, dict(verification_status=status.value))
+    for status in [None,"bad"]:
+        recipe=copy.deepcopy(bases["attempt"]);recipe["verification_status"]=status
+        try: execute("attempt",recipe)
+        except Exception as error: errors.append(dict(kind="attempt",input=recipe,error=type(error).__name__))
+    return dict(cases=cases,errors=errors)
 
 
 if __name__ == "__main__":
