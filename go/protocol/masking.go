@@ -15,6 +15,9 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 		return input.clone()
 	}
 	input = input.clone()
+	if IsASTTool(input.name) {
+		return input.maskAST(mask)
+	}
 	if IsMCPToolName(input.name) {
 		input.mcpArguments = input.mcpArguments.MapStrings(mask)
 		return input

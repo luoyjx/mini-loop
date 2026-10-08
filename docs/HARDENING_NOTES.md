@@ -8068,3 +8068,12 @@ checks; a selected show target must be a regular file in the private tree. Glob
 ambiguity returns bounded names before any process side effect. Result interpretation
 occurs while the snapshot is alive; removal follows success and faults. No tool
 registry installation or runtime default changes occur in this library slice.
+
+### Go migration — AST input projection owns no path authority
+
+Four named AST input variants preserve optional presence for replay and detach
+caller containers. Unknown/null fields and malformed typed shapes fail at decoding;
+path admission, count/string guards, freezing and executable integrity remain in
+astcontext. Canonical input and masking operate on recording copies, never on the
+execution object. Model schema defaults are descriptive; execution applies them
+explicitly. Default annotation data remain immutable closed JSON variants.

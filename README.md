@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `f77182e` plus native AST semantic operations,
+Runtime review baseline: `2169cd4` plus AST tool declarations and closed input variants,
+plus native AST semantic operations,
 plus AST public-operation Source contracts,
 plus native AST results and captured payload classification,
 plus shared CPython JSON syntax diagnostics,
@@ -1312,6 +1313,19 @@ workspace during child execution still reads original bytes. Workspace executabl
 are refused before side effects and caller cancellation remains a Go error.
 Four model-tool registrations and runtime selection remain next. Final extreme
 numeric/recursion wording and lone-surrogate projection profiles remain open.
+
+Native protocol now declares four AST ToolInput variants with named density,
+view and reference-kind enums, detached required arrays and optional presence
+pointers. Canonical sorted UTF-8 identity and recording-only string masking preserve
+supplied fields without inserting execution defaults. The model schema projection
+matches all four actually installed Source declarations, including default values,
+maxLength, array limits, numeric bounds, descriptions and additionalProperties=false.
+InputSchema adds named MaxLength/Minimum/Maximum/Default fields with detached clones
+and typed validation; defaults use existing immutable closed JSON variants.
+The Go boundary refuses non-string arrays, unknown fields, null fields and invalid
+enums. These are explicit typed admission refusals, not a claim of parity for every
+malformed dynamic Python handler input. Scalar/count semantic errors still belong
+to the existing adapter. Runtime registration is the next delivery slice.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The

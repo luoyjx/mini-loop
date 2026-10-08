@@ -148,6 +148,10 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
+	repoMap           RepoMapInput
+	fileOutline       FileOutlineInput
+	showSymbol        ShowSymbolInput
+	symbolReferences  SymbolReferencesInput
 	diagnostics       DiagnosticsInput
 	transcriptSearch  TranscriptSearchInput
 	connectMCP        ConnectMCPInput
@@ -354,6 +358,14 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() { result.nulls = input.nulls }()
 	switch input.name {
+	case ToolRepoMap:
+		return RepoMapToolInput(input.repoMap)
+	case ToolFileOutline:
+		return FileOutlineToolInput(input.fileOutline)
+	case ToolShowSymbol:
+		return ShowSymbolToolInput(input.showSymbol)
+	case ToolSymbolReferences:
+		return SymbolReferencesToolInput(input.symbolReferences)
 	case ToolDiagnostics:
 		return DiagnosticsToolInput(input.diagnostics)
 	case ToolSendMessage:
@@ -408,6 +420,9 @@ func (input ToolInput) clone() (result ToolInput) {
 }
 
 func (input ToolInput) Validate() error {
+	if IsASTTool(input.name) {
+		return input.validateAST()
+	}
 	if IsMCPToolName(input.name) {
 		if input.mcpArguments.Kind() != jsonvalue.Object {
 			return errors.New("MCP arguments must be an object")
@@ -470,6 +485,9 @@ func (input ToolInput) Validate() error {
 }
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
+	if IsASTTool(input.name) {
+		return input.marshalAST()
+	}
 	if input.name == ToolConnectMCP {
 		return marshalConnectMCP(input)
 	}
@@ -564,6 +582,9 @@ func decodeToolObject[T any](data []byte, target *T) error {
 // DecodeToolInput is the provider boundary. No raw JSON or open-ended map
 // survives it; a new default tool must add a concrete case here.
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
+	if IsASTTool(name) {
+		return decodeASTInput(name, data)
+	}
 	if IsMCPToolName(name) {
 		return decodeMCPInput(name, data)
 	}

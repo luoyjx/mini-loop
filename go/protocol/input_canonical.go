@@ -18,6 +18,17 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 	if IsMCPToolName(input.Name()) {
 		return PythonJSON(input.mcpArguments.Sorted(), false, compact)
 	}
+	if IsASTTool(input.Name()) {
+		raw, err := input.marshalAST()
+		if err != nil {
+			return "", err
+		}
+		value, err := jsonvalue.Decode(string(raw))
+		if err != nil {
+			return "", err
+		}
+		return PythonJSON(value.Sorted(), false, compact)
+	}
 	switch input.Name() {
 	case ToolConnectMCP:
 		return PythonJSON(input.connectMCP, false, compact)

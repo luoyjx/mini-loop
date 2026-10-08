@@ -1,5 +1,34 @@
 # Python to Go parity matrix
 
+## 2026-10-08 AST tool declarations and closed input variants
+
+Baseline 2169cd4. Source export 158 captures the four installed tools'
+schemas, risk/read-only/parallel claims and capability sets without replacing handlers.
+Native protocol now declares four AST ToolInput variants with named density,
+view and reference-kind enums, detached required arrays and optional presence
+pointers. Canonical sorted UTF-8 identity and recording-only string masking preserve
+supplied fields without inserting execution defaults. The model schema projection
+matches all four actually installed Source declarations, including default values,
+maxLength, array limits, numeric bounds, descriptions and additionalProperties=false.
+InputSchema adds named MaxLength/Minimum/Maximum/Default fields with detached clones
+and typed validation; defaults use existing immutable closed JSON variants.
+The Go boundary refuses non-string arrays, unknown fields, null fields and invalid
+enums. These are explicit typed admission refusals, not a claim of parity for every
+malformed dynamic Python handler input. Scalar/count semantic errors still belong
+to the existing adapter. Runtime registration is the next delivery slice.
+
+Validation: all four schemas equal actual Source declarations; optional supplied-field
+identity, array/pointer detachment, recording-only masking and typed shape refusals
+pass. Focused protocol race also validates named schema-bound refusals. Full go test
+./... -count=1 -timeout=180s, go test -race ./... -count=1 -timeout=180s and go vet
+./... pass for the working implementation. Export --check confirms all 158 Source
+contracts current; verify_scans confirms all 19 guards anchored. README outline and
+git diff --check pass. Archify delivery passes 9/9 with zero errors/warnings;
+specification SHA256 fa0425e2efabab9d62a50e757413267c96ce9228f63c2ae5a14d4e50f9358fa6,
+artifact 5f11a98def2e1ffa31c1a796abbc7bfc284f3e3c88e58cc8ffe90ffe059f351a.
+Visual inspection remains skipped after prior browser access denial. Coverage, full
+Python regression and mutation sweep were not refreshed; G0-G7 stay open.
+
 ## 2026-10-08 native AST semantic operations
 
 Baseline f77182e. Native astcontext Adapter now implements RepoMap, FileOutline, ShowSymbol and

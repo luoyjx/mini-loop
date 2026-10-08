@@ -3209,3 +3209,18 @@ Each method returns (Result, error): ordinary input/filesystem failures produce 
 Source-shaped Error result; caller cancellation and ordinary payload iteration faults
 remain errors. No public arbitrary argv or model-selected environment is exposed.
 The Adapter is request-stateless and can be reused for independent calls.
+
+### Go AST model-input declarations
+
+Native protocol now declares four AST ToolInput variants with named density,
+view and reference-kind enums, detached required arrays and optional presence
+pointers. Canonical sorted UTF-8 identity and recording-only string masking preserve
+supplied fields without inserting execution defaults. The model schema projection
+matches all four actually installed Source declarations, including default values,
+maxLength, array limits, numeric bounds, descriptions and additionalProperties=false.
+InputSchema adds named MaxLength/Minimum/Maximum/Default fields with detached clones
+and typed validation; defaults use existing immutable closed JSON variants.
+The Go boundary refuses non-string arrays, unknown fields, null fields and invalid
+enums. These are explicit typed admission refusals, not a claim of parity for every
+malformed dynamic Python handler input. Scalar/count semantic errors still belong
+to the existing adapter. Runtime registration is the next delivery slice.

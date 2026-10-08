@@ -78,13 +78,17 @@ type InputSchema struct {
 	workflowSchema *jsonvalue.Value
 	Additional     *SchemaAdditional `json:"additionalProperties,omitempty"`
 	Const          *string           `json:"const,omitempty"`
+	Default        *jsonvalue.Value  `json:"default,omitempty"`
 	Description    string            `json:"description,omitempty"`
 	Enum           []string          `json:"enum,omitempty"`
 	Items          *InputSchema      `json:"items,omitempty"`
 	MaxItems       *int              `json:"maxItems,omitempty"`
+	MaxLength      *int              `json:"maxLength,omitempty"`
 	MaxProperties  *int              `json:"maxProperties,omitempty"`
+	Maximum        *int              `json:"maximum,omitempty"`
 	MinItems       *int              `json:"minItems,omitempty"`
 	MinProperties  *int              `json:"minProperties,omitempty"`
+	Minimum        *int              `json:"minimum,omitempty"`
 	OneOf          []InputSchema     `json:"oneOf,omitempty"`
 	Properties     *SchemaProperties `json:"properties,omitempty"`
 	Required       []string          `json:"required,omitempty"`
@@ -174,7 +178,11 @@ func (schema InputSchema) Clone() InputSchema {
 		v := *schema.Const
 		schema.Const = &v
 	}
-	for _, p := range []**int{&schema.MinItems, &schema.MaxItems, &schema.MinProperties, &schema.MaxProperties} {
+	if schema.Default != nil {
+		v := *schema.Default
+		schema.Default = &v
+	}
+	for _, p := range []**int{&schema.MinItems, &schema.MaxItems, &schema.MinProperties, &schema.MaxProperties, &schema.MaxLength, &schema.Minimum, &schema.Maximum} {
 		if *p != nil {
 			v := **p
 			*p = &v
@@ -254,6 +262,20 @@ func (schema InputSchema) validate(depth int) error {
 		return errors.New("schema requires a type, const or oneOf")
 	}
 	object, array := seen[SchemaObject], seen[SchemaArray]
+	if schema.Default != nil {
+		if _, err := schema.Default.MarshalJSON(); err != nil {
+			return err
+		}
+	}
+	if schema.MaxLength != nil && (!seen[SchemaString] || *schema.MaxLength < 0) {
+		return errors.New("maximum length requires a string and a nonnegative limit")
+	}
+	if (schema.Minimum != nil || schema.Maximum != nil) && !seen[SchemaInteger] && !seen[SchemaNumber] {
+		return errors.New("numeric bounds require a numeric schema")
+	}
+	if schema.Minimum != nil && schema.Maximum != nil && *schema.Minimum > *schema.Maximum {
+		return errors.New("numeric schema bounds must be ordered")
+	}
 	if schema.Properties != nil {
 		if !object || *schema.Properties == nil {
 			return errors.New("object schema requires nonnull properties")
