@@ -417,8 +417,8 @@
     {
       "id": "goChildren",
       "type": "backend",
-      "label": "Go Subagent Sessions",
-      "sublabel": "role subset / inherited seams + pools",
+      "label": "Go Fresh Child Sessions",
+      "sublabel": "task roles / explicit readonly auditors",
       "pos": [
         1370,
         1540
@@ -427,7 +427,7 @@
         330,
         76
       ],
-      "tag": "default depth limit: 2"
+      "tag": "tasks: depth 2 / Guardian: explicit"
     },
     {
       "id": "goSecrets",
@@ -448,7 +448,7 @@
       "id": "goApprovals",
       "type": "security",
       "label": "Go Approval Broker",
-      "sublabel": "grants / questions / review / diagnostic snapshots",
+      "sublabel": "grants / explicit Guardian / questions",
       "pos": [
         1920,
         980
@@ -457,7 +457,7 @@
         280,
         76
       ],
-      "tag": "process-local + store seam"
+      "tag": "human default / store seam"
     },
     {
       "id": "goArchives",
@@ -1521,6 +1521,28 @@
           1218
         ]
       ]
+    },
+    {
+      "id": "goGuardianReview",
+      "from": "goApprovals",
+      "to": "goChildren",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          2410,
+          1018
+        ],
+        [
+          2410,
+          1700
+        ],
+        [
+          1535,
+          1700
+        ]
+      ]
     }
   ],
   "cards": [
@@ -1653,7 +1675,8 @@
         "Protocol now carries four named AST ToolInput variants with detached arrays/optional pointers, closed density/view/reference-kind enums, supplied-field canonical identity and recording-only masking. Four actual installed Source declarations match full schema defaults, maxLength, numeric/array limits, false additionalProperties and descriptions. Named InputSchema fields preserve these projections with detached clones. Typed unknown/null/non-string/enum admission refusals are explicit; snapshot/path/process authority remains in the standalone Adapter. Runtime registration follows as the next slice, and launcher defaults remain unchanged.",
         "Explicit RuntimeConfig/ManagerServices ASTConfig now installs the four Source read/parallel tools with semantic-outline/symbol/references capabilities through ToolGate. Nil stays default off and zero config fails construction. Manager copies the operator config; handlers verify bound identity/current workspace under lock and run stateless requests after releasing it. Fresh task-child handlers inherit selected AST tools through existing read-capability policy. Native model-batch/child traces exercise actual version probes, frozen 0400 source reads, values-only rewrites and cleanup. Guard denial starts no CLI, foreign authority fails, root transitions rebind and manager config reassignment cannot alter sessions. Launcher settings/env/CLI and HTTP Source traces remain next; extreme output profiles and the full port are still open.",
         "Go Launcher forwards the five Source MINILOOP_AST_OUTLINE_* settings to ManagerServices.ASTConfig. Default off; activation requires a trusted absolute executable and SHA-256 pin, with Source timeout/output limits. Inspection reports configured selection without probes. Fourteen Source HTTP/model traces match exact catalogues/results, native child argv/cwd and snapshot removal, including readonly path, integrity, version, output and timeout failures. Existing ToolGate and session authority remain unchanged; extreme malformed output profiles remain open.",
-        "AST Result.ToJSON now preserves compact Source result strings, including surrogatepass text and nonfinite values. Strict byte encoders remain separate. The named tool-result wire text variant refuses invalid UTF-8 before direct/streaming provider transport; in-memory models retain the exact string. Eight real Source operation/Tool.run/SDK recipes match native text, readonly model execution, request-wire admission and snapshot cleanup. Other Unicode lifecycle profiles remain open."
+        "AST Result.ToJSON now preserves compact Source result strings, including surrogatepass text and nonfinite values. Strict byte encoders remain separate. The named tool-result wire text variant refuses invalid UTF-8 before direct/streaming provider transport; in-memory models retain the exact string. Eight real Source operation/Tool.run/SDK recipes match native text, readonly model execution, request-wire admission and snapshot cleanup. Other Unicode lifecycle profiles remain open.",
+        "Explicit AgentGuardian creates a fresh readonly auditor through the shared typed child-construction kernel. Eighteen Source reviews match prompts, catalogues, model results and Unicode verdict/reason parsing; hostile writes are denied even with a widened catalogue. GuardianReviewer masks typed inputs before a 2000-character ASCII preview and plugs into ApprovalBrokerConfig.Reviewer. Default human review is unchanged. Manager/Launcher MINILOOP_GUARDIAN binding remains pending; pinned operator reviewers must be recaptured after workspace changes and never recursively acquire a held parent turn lock."
       ]
     }
   ]

@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `917574a` plus Guardian Source review/adapter contracts,
+Runtime review baseline: `afa4f2d` plus native readonly Guardian/explicit reviewer,
+plus Guardian Source review/adapter contracts,
 plus native AST text/final tool-result encoding,
 plus AST text/provider encoding Source contracts,
 plus native AST decimal conversion faults,
@@ -430,7 +431,7 @@ flowchart LR
         GoLaunch -. explicit MCPTools / MCPServers selection .-> GoMCP
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
-        GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
+        GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · explicit readonly Guardian · typed store seam"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
@@ -463,7 +464,7 @@ flowchart LR
         GoGate -. explicit-human workflow tools .-> GoWorkflow
         GoWorkflow -. events / summaries / later-turn results .-> GoSession
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
-        GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
+        GoChildren["Fresh subagent / auditor sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
         GoEntry -->|public static documents| GoBrowser
         GoBrowser -->|authenticated API / SSE| GoTrust
@@ -496,6 +497,7 @@ flowchart LR
         GoGate -. permission ask .-> GoApprovals
         GoResources -. textual question .-> GoApprovals
         GoApprovals -. scoped approval events .-> GoSession
+        GoApprovals -. explicit readonly Guardian review .-> GoChildren
         GoSecrets -. bind gate / context / recording / shell .-> GoSession
         GoResources -->|task / depth gate| GoChildren
         GoChildren --> GoContext
@@ -1994,6 +1996,16 @@ The Mermaid block above remains the canonical GitHub view.
   HTML.
 
 </details>
+
+Go AgentGuardian now derives a fresh readonly auditor from a pinned typed parent
+environment. GuardianReviewer can be explicitly installed as ApprovalBrokerConfig.Reviewer;
+masked ASCII previews cap at 2000 characters. Eighteen Source reviews and four
+adapters match prompts, catalogues, text results and verdicts. Both narrow and
+operator-widened catalogues preserve zero-write enforcement. Parent history remains
+unchanged; child provenance is peer-agent and lineage role is auditor.
+Session.Guardian captures outside a running parent turn; it must not recursively
+acquire the parent turn lock from an approval callback. Manager/Launcher automatic
+MINILOOP_GUARDIAN selection remains pending; the default reviewer is unchanged.
 
 AST Result.ToJSON now matches Source compact result strings, preserving lone
 surrogates through the closed value's existing surrogatepass representation. Strict

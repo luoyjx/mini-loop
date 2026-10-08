@@ -3267,3 +3267,14 @@ UTF-8 byte encoder. Keep MarshalJSON/MarshalUTF8/MarshalLegacyUTF8 strict. Tool-
 block encoding checks wireResultText and returns ErrResultUTF8 before provider HTTP;
 in-memory models can still observe the original string. Do not replace characters
 at this boundary. Go provider failures retain their existing typed protocol category.
+
+### Go explicit Guardian review
+
+Call Session.Guardian outside the parent's held turn to pin its current typed
+environment. Review uses fresh readonly auditor state and the explore catalogue,
+returning GuardianDecision (allow/deny/abstain plus Source reason). Explicitly set
+ApprovalBrokerConfig.Reviewer to GuardianReviewer{Guardian: reviewer, Secrets: redactor}
+to bridge masked typed inputs and bounded ASCII preview to the broker. Errors remain
+subject to existing broker containment; they do not imply approval. Capture again
+when execution workspace changes. Automatic manager/launcher selection remains open;
+never call Session.Guardian recursively under an already locked parent tool turn.

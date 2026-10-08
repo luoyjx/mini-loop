@@ -8118,3 +8118,14 @@ and SDK observations cover text fields, keys, warnings, error hints and valid pa
 Unicode. Runtime readonly tools retain the string; direct/streaming requests refuse
 without HTTP. This establishes the AST/tool-result boundary, not every Unicode field
 or full SSE/recording lifecycle parity. Per-call snapshot cleanup remains unchanged.
+
+### Go migration — Guardian remains a readonly answerer
+
+The explicit native Guardian uses the shared fresh-child constructor with an explore
+catalogue and readonly permission mode. Hostile model writes are rejected with both
+the normal role subset and an operator-widened catalogue; neither layer requires a
+recursive approval. Parent transcript/counters are not inherited. Auditor lineage
+and peer-agent provenance retain no human powers. The broker adapter masks typed
+input before ASCII JSON preview and caps at 2000 characters; unparsed output abstains
+and faults remain handled by the existing broker. Current library reviewers pin the
+parent environment outside its turn; automatic per-request binding is still pending.

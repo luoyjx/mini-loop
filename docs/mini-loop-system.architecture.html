@@ -4638,6 +4638,7 @@
         <path data-edge-from="goManaged" data-edge-to="goTeams" data-edge-key="49" data-edge-id="goManagedTeam" data-composition-points="990,980;990,920;832.5,920;832.5,876" d="M 990 980 L 990 928 Q 990 920 982 920 L 840.5 920 Q 832.5 920 832.5 912 L 832.5 876" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         <path data-edge-from="goGate" data-edge-to="goWorkflow" data-edge-key="50" data-edge-id="go-workflow-tools" data-composition-points="1510,1180;1510,1143;1510,1143;1510,1106" d="M 1510 1180 L 1510 1143 L 1510 1143 L 1510 1106" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         <path data-edge-from="goWorkflow" data-edge-to="goSession" data-edge-key="51" data-edge-id="goWorkflowEvents" data-composition-points="1370,1068;1300,1068;1300,1090;790,1090;790,1218;850,1218" d="M 1370 1068 L 1308 1068 Q 1300 1068 1300 1076 L 1300 1082 Q 1300 1090 1292 1090 L 798 1090 Q 790 1090 790 1098 L 790 1210 Q 790 1218 798 1218 L 850 1218" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="goApprovals" data-edge-to="goChildren" data-edge-key="52" data-edge-id="goGuardianReview" data-composition-points="2200,1018;2410,1018;2410,1700;1535,1700;1535,1616" d="M 2200 1018 L 2402 1018 Q 2410 1018 2410 1026 L 2410 1692 Q 2410 1700 2402 1700 L 1543 1700 Q 1535 1700 1535 1692 L 1535 1616" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-clients" data-node-id="clients" data-node-label="Callers" tabindex="0" role="button" aria-label="Focus Callers, Python / REST / SSE, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Python / REST / SSE" data-node-context="Architecture component">
@@ -4911,16 +4912,16 @@
         <text data-detail="fine" x="1510" y="1428" class="t-database" font-size="7" text-anchor="middle">injected / SQLite pending</text>
         </g>
 
-        <g id="node-goChildren" data-node-id="goChildren" data-node-label="Go Subagent Sessions" tabindex="0" role="button" aria-label="Focus Go Subagent Sessions, role subset / inherited seams + pools, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="role subset / inherited seams + pools" data-node-tag="default depth limit: 2" data-node-context="Independent Go port - in progress">
-          <title>Go Subagent Sessions · role subset / inherited seams + pools · Independent Go port - in progress · default depth limit: 2</title>
+        <g id="node-goChildren" data-node-id="goChildren" data-node-label="Go Fresh Child Sessions" tabindex="0" role="button" aria-label="Focus Go Fresh Child Sessions, task roles / explicit readonly auditors, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="task roles / explicit readonly auditors" data-node-tag="tasks: depth 2 / Guardian: explicit" data-node-context="Independent Go port - in progress">
+          <title>Go Fresh Child Sessions · task roles / explicit readonly auditors · Independent Go port - in progress · tasks: depth 2 / Guardian: explicit</title>
           <rect x="1370" y="1540" width="330" height="76" rx="6" class="c-mask"/>
           <rect x="1370" y="1540" width="330" height="76" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1376 1546) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-detail-anchor x="1535" y="1576" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Subagent Sessions</text>
-        <text data-detail="context" x="1535" y="1592" class="t-muted" font-size="9" text-anchor="middle">role subset / inherited seams + pools</text>
-        <text data-detail="fine" x="1535" y="1608" class="t-backend" font-size="7" text-anchor="middle">default depth limit: 2</text>
+          <text data-detail-anchor x="1535" y="1576" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Fresh Child Sessions</text>
+        <text data-detail="context" x="1535" y="1592" class="t-muted" font-size="9" text-anchor="middle">task roles / explicit readonly auditors</text>
+        <text data-detail="fine" x="1535" y="1608" class="t-backend" font-size="7" text-anchor="middle">tasks: depth 2 / Guardian: explicit</text>
         </g>
 
         <g id="node-goSecrets" data-node-id="goSecrets" data-node-label="Go Secret Registry" tabindex="0" role="button" aria-label="Focus Go Secret Registry, cached values / masked copies, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="cached values / masked copies" data-node-tag="optional deployment binding" data-node-context="Independent Go port - in progress">
@@ -4936,8 +4937,8 @@
         <text data-detail="fine" x="470" y="1048" class="t-security" font-size="7" text-anchor="middle">optional deployment binding</text>
         </g>
 
-        <g id="node-goApprovals" data-node-id="goApprovals" data-node-label="Go Approval Broker" tabindex="0" role="button" aria-label="Focus Go Approval Broker, grants / questions / review / diagnostic snapshots, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="grants / questions / review / diagnostic snapshots" data-node-tag="process-local + store seam" data-node-context="Independent Go port - in progress">
-          <title>Go Approval Broker · grants / questions / review / diagnostic snapshots · Independent Go port - in progress · process-local + store seam</title>
+        <g id="node-goApprovals" data-node-id="goApprovals" data-node-label="Go Approval Broker" tabindex="0" role="button" aria-label="Focus Go Approval Broker, grants / explicit Guardian / questions, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="grants / explicit Guardian / questions" data-node-tag="human default / store seam" data-node-context="Independent Go port - in progress">
+          <title>Go Approval Broker · grants / explicit Guardian / questions · Independent Go port - in progress · human default / store seam</title>
           <rect x="1920" y="980" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1920" y="980" width="280" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1926 986) scale(0.6875)">
@@ -4945,8 +4946,8 @@
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text data-detail-anchor x="2060" y="1016" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go Approval Broker</text>
-        <text data-detail="context" x="2060" y="1032" class="t-muted" font-size="9" text-anchor="middle">grants / questions / review / diagnostic snapshots</text>
-        <text data-detail="fine" x="2060" y="1048" class="t-security" font-size="7" text-anchor="middle">process-local + store seam</text>
+        <text data-detail="context" x="2060" y="1032" class="t-muted" font-size="9" text-anchor="middle">grants / explicit Guardian / questions</text>
+        <text data-detail="fine" x="2060" y="1048" class="t-security" font-size="7" text-anchor="middle">human default / store seam</text>
         </g>
 
         <g id="node-goArchives" data-node-id="goArchives" data-node-label="Compaction Artifacts" tabindex="0" role="button" aria-label="Focus Compaction Artifacts, .task_outputs / .transcripts, Independent Go port - in progress" aria-pressed="false" data-node-kind="database" data-node-sublabel=".task_outputs / .transcripts" data-node-tag="workspace files" data-node-context="Independent Go port - in progress">
@@ -5211,6 +5212,7 @@
           <rect x="429.4" y="1100" width="101.2" height="14" rx="3" class="c-mask"/>
           <text x="480" y="1110" class="t-messagebus" font-size="8" text-anchor="middle">self_audit via gate</text>
         </g>
+
 
 
 
@@ -5572,6 +5574,7 @@
           <li>&bull; Explicit RuntimeConfig/ManagerServices ASTConfig now installs the four Source read/parallel tools with semantic-outline/symbol/references capabilities through ToolGate. Nil stays default off and zero config fails construction. Manager copies the operator config; handlers verify bound identity/current workspace under lock and run stateless requests after releasing it. Fresh task-child handlers inherit selected AST tools through existing read-capability policy. Native model-batch/child traces exercise actual version probes, frozen 0400 source reads, values-only rewrites and cleanup. Guard denial starts no CLI, foreign authority fails, root transitions rebind and manager config reassignment cannot alter sessions. Launcher settings/env/CLI and HTTP Source traces remain next; extreme output profiles and the full port are still open.</li>
           <li>&bull; Go Launcher forwards the five Source MINILOOP_AST_OUTLINE_* settings to ManagerServices.ASTConfig. Default off; activation requires a trusted absolute executable and SHA-256 pin, with Source timeout/output limits. Inspection reports configured selection without probes. Fourteen Source HTTP/model traces match exact catalogues/results, native child argv/cwd and snapshot removal, including readonly path, integrity, version, output and timeout failures. Existing ToolGate and session authority remain unchanged; extreme malformed output profiles remain open.</li>
           <li>&bull; AST Result.ToJSON now preserves compact Source result strings, including surrogatepass text and nonfinite values. Strict byte encoders remain separate. The named tool-result wire text variant refuses invalid UTF-8 before direct/streaming provider transport; in-memory models retain the exact string. Eight real Source operation/Tool.run/SDK recipes match native text, readonly model execution, request-wire admission and snapshot cleanup. Other Unicode lifecycle profiles remain open.</li>
+          <li>&bull; Explicit AgentGuardian creates a fresh readonly auditor through the shared typed child-construction kernel. Eighteen Source reviews match prompts, catalogues, model results and Unicode verdict/reason parsing; hostile writes are denied even with a widened catalogue. GuardianReviewer masks typed inputs before a 2000-character ASCII preview and plugs into ApprovalBrokerConfig.Reviewer. Default human review is unchanged. Manager/Launcher MINILOOP_GUARDIAN binding remains pending; pinned operator reviewers must be recaptured after workspace changes and never recursively acquire a held parent turn lock.</li>
         </ul>
       </div>
     </div>

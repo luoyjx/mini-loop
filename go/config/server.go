@@ -80,7 +80,7 @@ func (s Settings) Unsupported() []UnsupportedSetting {
 		}
 	}
 	add(s.EnableFeatures, "MINILOOP_FEATURES", "comprehensive feature services are not implemented")
-	add(s.GuardianEnabled, "MINILOOP_GUARDIAN", "guardian implementation is not available")
+	add(s.GuardianEnabled, "MINILOOP_GUARDIAN", "automatic manager-bound guardian review is not implemented")
 	add(s.TokenEfficiencyMode != OptimizationOff, "MINILOOP_TOKEN_EFFICIENCY_MODE", "protected request/observation projections are not implemented")
 	add(s.TokenEfficiencyResponseStyle != ResponseNormal, "MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE", "response policies are not implemented")
 	return result

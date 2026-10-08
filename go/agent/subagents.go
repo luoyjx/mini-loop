@@ -18,8 +18,9 @@ const DefaultSubagentMaxRounds = 30
 const SubagentDisplayCap = 2000
 
 type SubagentLineage struct {
-	Parent          string `json:"parent"`
-	DelegationDepth int    `json:"delegation_depth"`
+	Parent          string    `json:"parent"`
+	DelegationDepth int       `json:"delegation_depth"`
+	Role            AgentRole `json:"role,omitempty"`
 }
 
 // SubagentParent is a pinned environment, not the mutable parent session.
@@ -120,23 +121,36 @@ type FixedSystem string
 func (system FixedSystem) BuildSystem(SystemContext) (string, error) { return string(system), nil }
 
 func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request SubagentRequest) (string, error) {
-	if err := ctx.Err(); err != nil {
+	child, run, err := newSubagent(ctx, request)
+	if err != nil {
 		return "", err
+	}
+	provider.mu.Lock()
+	provider.lastLineage = child.lineage
+	provider.mu.Unlock()
+	return child.RunWithContext(ctx, request.Prompt, run)
+}
+
+// newSubagent owns the shared fresh-child construction; normal delegation and
+// zero-write reviewers derive the same typed runtime seams.
+func newSubagent(ctx context.Context, request SubagentRequest) (*Session, RunContext, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, RunContext{}, err
 	}
 	parent := request.Parent
 	if parent.catalog == nil || parent.rolePolicy == nil || parent.provider == nil || parent.events == nil {
-		return "", errors.New("subagent requires a bound parent environment")
+		return nil, RunContext{}, errors.New("subagent requires a bound parent environment")
 	}
 	childContext, err := request.RunContext.DerivePeerAgent(parent.label)
 	if err != nil {
-		return "", err
+		return nil, RunContext{}, err
 	}
 	catalog, err := parent.rolePolicy.Select(request.Role, parent.catalog)
 	if err != nil {
-		return "", err
+		return nil, RunContext{}, err
 	}
 	if catalog == nil {
-		return "", errors.New("role policy returned a nil catalogue")
+		return nil, RunContext{}, errors.New("role policy returned a nil catalogue")
 	}
 	explore := normalizedRole(request.Role) == normalizedRole(RoleExplore)
 	mode := ModeInteractive
@@ -178,14 +192,14 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 			// factory closures retain their enclosing parent's drained lifetime.
 			handler.mcp, err = newMCPState(parent.mcpServers)
 			if err != nil {
-				return "", err
+				return nil, RunContext{}, err
 			}
 			break
 		}
 	}
 	catalog, err = NewToolCatalog(definitions...)
 	if err != nil {
-		return "", err
+		return nil, RunContext{}, err
 	}
 	hooks := parent.hooks
 	hooks.Guards = append([]GuardHook(nil), parent.hooks.Guards...)
@@ -198,12 +212,12 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	}
 	gate, err := NewToolGate(catalog, parent.policy, hooks)
 	if err != nil {
-		return "", err
+		return nil, RunContext{}, err
 	}
 	gate.secrets = parent.secrets
 	child, err := NewSessionWithGate(id, parent.authority.OwnerID, parent.provider, gate, mode, parent.authority.Workspace, parent.maxRounds)
 	if err != nil {
-		return "", err
+		return nil, RunContext{}, err
 	}
 	child.label, child.depth = parent.label+">"+strings.ToLower(string(request.Role)), parent.depth+1
 	child.secrets = parent.secrets
@@ -248,16 +262,13 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 		if definition.handler == handler && (definition.name == protocol.ToolBackgroundRun || definition.name == protocol.ToolCheckBackground) {
 			child.background, err = parent.background.child(ctx, string(childContext.MessageID()))
 			if err != nil {
-				return "", err
+				return nil, RunContext{}, err
 			}
 			handler.background = child.background
 			break
 		}
 	}
-	provider.mu.Lock()
-	provider.lastLineage = &lineage
-	provider.mu.Unlock()
-	return child.RunWithContext(ctx, request.Prompt, childContext)
+	return child, childContext, nil
 }
 
 func capSubagentDisplay(value string) string {
@@ -293,6 +304,21 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 		return fmt.Sprintf("(delegation refused: depth %d exceeds subagent_max_depth=%d; do the work directly)", childDepth, s.subagentMaxDepth), nil
 	}
 	s.events.appendRecorded(SessionEvent{kind: EventSubagentStart, subagent: SubagentEvent{kind: EventSubagentStart, role: role, prompt: capSubagentDisplay(prompt)}}, trajectoryDetails{kind: EventSubagentStart, text: prompt})
+	parent := s.subagentParent(run)
+	summary, err := s.subagents.RunSubagent(ctx, SubagentRequest{parent, prompt, role, run.clone()})
+	if err != nil {
+		return "", err
+	}
+	s.events.appendRecorded(SessionEvent{kind: EventSubagentEnd, subagent: SubagentEvent{kind: EventSubagentEnd, role: role, summary: capSubagentDisplay(summary)}}, trajectoryDetails{kind: EventSubagentEnd, text: summary})
+	if summary == "" {
+		return "(subagent produced no summary)", nil
+	}
+	return summary, nil
+}
+
+// Caller holds the session's turn lock. The returned environment detaches mutable
+// slices and binds the current workspace without reentering the parent run.
+func (s *Session) subagentParent(run RunContext) SubagentParent {
 	parent := SubagentParent{
 		selfAudit:        s.selfAudit,
 		memoryAuto:       s.memoryAuto,
@@ -311,13 +337,5 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 	if s.mcp != nil {
 		parent.mcpServers = append([]MCPServer(nil), s.mcp.servers...)
 	}
-	summary, err := s.subagents.RunSubagent(ctx, SubagentRequest{parent, prompt, role, run.clone()})
-	if err != nil {
-		return "", err
-	}
-	s.events.appendRecorded(SessionEvent{kind: EventSubagentEnd, subagent: SubagentEvent{kind: EventSubagentEnd, role: role, summary: capSubagentDisplay(summary)}}, trajectoryDetails{kind: EventSubagentEnd, text: summary})
-	if summary == "" {
-		return "(subagent produced no summary)", nil
-	}
-	return summary, nil
+	return parent
 }

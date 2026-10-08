@@ -1,5 +1,54 @@
 # Go port plan
 
+## 2026-10-09 native readonly Guardian library and explicit broker reviewer
+
+Baseline afa4f2d. GuardianRequest/GuardianDecision/Guardian and AgentGuardian now
+provide a named Go review boundary. Session.Guardian snapshots a typed parent
+environment outside its held turn; each review constructs a fresh readonly auditor
+with the explore catalogue, isolated messages/counters, parent hooks/services/pools,
+peer-agent provenance, source system prompt and auditor lineage. It adds no task
+wrapper or delegation-depth refusal to the Source readonly-role path. Normal task
+delegation and Guardian reuse the extracted fresh-child constructor and parent
+snapshot builder, retaining existing task depth checks and selected-handler rebinding.
+
+Verdicts use Source's first Unicode word-boundary ALLOW/DENY occurrence and first
+trimmed line capped at 200 Python characters. Other replies abstain. GuardianReviewer
+implements the existing ApprovalReviewer seam: mask typed input before ASCII JSON,
+cap preview at 2000 characters, drop the reason and forward only the decision.
+Explicit ApprovalBrokerConfig.Reviewer selection is tested for actual allow/deny
+settlement without pending human requests. No opaque payloads or dependencies added.
+
+Eighteen real Source reviews match verdict/reason, prompt/system/cache fields,
+catalogues/results and unchanged parent history. Both default and widened catalogue
+hostile writes leave the workspace untouched. Four Source bridge recipes match
+masked/escaped/bounded previews and defer. Native tests also check zero/nil parent
+refusal, caller cancellation before provider, inherited stop hooks, auditor label/
+depth/lineage and absence of inherited human authority.
+
+Manager/Launcher automatic selection is not yet installed; MINILOOP_GUARDIAN still
+fails activation with the truthful automatic-binding reason. Pinned library reviewers
+must be freshly captured when the execution workspace changes. Session.Guardian must
+not be called from an already locked parent tool turn; the manager-bound next slice
+must construct from the existing owned turn, compare HTTP approval outcomes and
+contain faults/defer/cancellation. Optional-harness state profiles and full G6 remain
+open; this slice proves the captured default-core and widened-catalogue recipes.
+
+Validation: full go test ./... -count=1 -timeout=180s and go vet ./... pass;
+full go test -race ./... -count=1 -timeout=180s passes after the final lineage
+change. Focused Guardian/subagent race also passes.
+Source exports 162 and all 19 scan guards pass. Existing Source Guardian/wiring/
+readonly-role suite: 14 passed, 1 operator-gated real-provider test skipped.
+README outline and git diff --check pass. Archify delivery passes 9/9, zero
+errors/warnings after isolating the new review arrow in a separate corridor.
+Specification SHA256 1a96135acd0eff68bb1d5e8669a394fc52db9a4a6eea9800a14081075db76f84;
+artifact 12563377d1c500c28d8dafdef691342dd934fc8e1457e57a9d5783d3a26c6cf0.
+Visual inspection remains skipped after prior browser access denial. Native runtime
+evidence is Darwin arm64.
+Full Python regression, coverage and mutation sweep are not refreshed. Previous Go
+coverage remains the earlier 90.03% snapshot. SQLite, diagnostics parser choice,
+token-efficiency/default bundle selection and G0-G7 remain open.
+
+
 ## 2026-10-09 Guardian Source review and broker-adapter contracts
 
 Baseline 917574a. Export 162 captures eighteen actual AgentGuardian reviews through
