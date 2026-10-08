@@ -7945,3 +7945,15 @@ and individual selection cannot bypass the unsupported full-feature bundle guard
 Actual HTTP/model comparisons cover all six Source fixture turns, including zero
 callbacks for disabled selection and explicit path escape. Default parser/CLI selection
 remains pending.
+
+### Go migration — inert AST configuration and probes
+
+The astcontext library has no execution authority. Captured VersionOutput can
+produce an Applied observation without proving executable identity, workspace
+containment, sidecar environment or source-snapshot safety. The eventual process
+adapter must perform those checks before execution. Private validated Config and
+Probe fields prevent zero/invalid records from becoming successful parsed output;
+status JSON rejects unknown variants. Snapshot environment names/digests detach
+caller storage. Finite positive duration admission strengthens Source's dynamic
+timeout handling; typed environment input refuses non-string names. No AST tool
+or executable default was activated.

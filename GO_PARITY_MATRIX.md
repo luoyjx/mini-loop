@@ -1,5 +1,41 @@
 # Python to Go parity matrix
 
+## 2026-10-08 typed AST configuration and inert version probes
+
+Baseline 1b820e2. The standalone astcontext package now implements Parameters,
+private validated Config, seven closed Status variants, immutable Probe and typed
+ProbeSnapshot/VersionOutput. DefaultParameters matches the Source adapter defaults;
+NewConfig validates bounds, environment names, digest normalization, schema and
+version-range ordering. Snapshots detach mutable names/digest storage. Version
+components use existing Python Unicode 14 decimal blocks and arbitrary-precision
+comparison; suffix range behavior is retained without machine integer overflow.
+
+ParseVersion matches Source banner search, homepage normalization, supported range
+and nonzero-exit text. It interprets captured output without launching or trusting an
+executable. Seventeen typed configuration recipes and all twelve actual version-
+output recipes compare Source results. The numeric environment recipe is separately
+refused by concrete JSON admission. All seven valid Source probe/status projections
+match; unknown/zero status, zero Config, invalid duration and mutable snapshot cases
+are exercised. Native timeouts must additionally fit a finite positive Go duration;
+Source dynamic NaN/infinity or sub-nanosecond values are not admitted as equivalent.
+
+The four executable-admission probes still require the future native process adapter.
+General AST payload/result projection, bounded argv execution/streams/deadline,
+executable checks, anchored snapshots/ignores/globs and tool/runtime/startup wiring
+remain required. This library installs no tool, dependency or default, and does not
+resolve the diagnostics parser question or native SQLite approval. The full port
+objective remains active; no AST execution/G7 completion is claimed.
+
+Validation: focused astcontext tests, full go test ./... -count=1 -timeout=180s,
+go test -race ./... -count=1 -timeout=180s and go vet ./... pass. All 152 Source
+contract exports pass --check. README outline and git diff --check pass. Canonical
+architecture and generated HTML are synchronized; Archify passes 9/9 showcase
+checks with zero errors/warnings. Visual inspection remains skipped after prior
+access denial. Full Python regression, invariants, source mutation sweep and coverage
+were not refreshed for this Go-only library slice. Specification SHA256:
+a3112c0e64f73a6f94c1ec55dfd7b5d77fa8067062ac2a6c62b724becc4bd8ed;
+HTML SHA256: 26b7a9a238648d29b0b57cec40dfca09c3b17f0b00ad9c80baaa00aa68dacfa5.
+
 ## 2026-10-08 AST adapter Source admission and probe contracts
 
 Baseline 940c023. Source export 152 starts the missing AST-context adapter port.

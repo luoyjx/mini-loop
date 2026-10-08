@@ -3057,3 +3057,20 @@ strict admission refusals. This proves file/read/control-flow behavior without
 claiming a native Python grammar. The user has been asked to select an installed
 Python compiler or fully native parser; no compiler dependency/default is chosen
 before their reply. CLI/default parser selection and full activation remain pending.
+
+## Go AST configuration and version-output contract
+
+The standalone astcontext package exposes DefaultParameters and NewConfig. The
+validated Config keeps private version bounds and duration; Parameters() returns
+detached environment/digest snapshots. Seven named statuses serialize only when
+valid; ParseStatus rejects unknown strings. Probe holds private immutable fields
+and exposes a typed ProbeSnapshot. A zero probe/config is rejected at serialization
+or version parsing.
+
+ParseVersion accepts named VersionOutput and performs Source banner, homepage and
+version-range checks. Python Unicode 14 decimal components and Python whitespace
+are retained. Config timeouts additionally must fit a finite positive Go duration.
+This is inert observation parsing, not an executable health/trust check. Process
+execution, digest/workspace checks, bounded snapshots, structured AST payloads, tool
+installation and startup selection remain pending. No provider/default/dependency
+was installed.

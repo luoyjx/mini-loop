@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `940c023` plus AST adapter Source admission/probe contracts,
+Runtime review baseline: `1b820e2` plus typed AST configuration/status and inert
+version-output parsing, plus AST adapter Source admission/probe contracts,
 plus explicit diagnostics launcher forwarding
 and actual HTTP/model replay, plus diagnostics HTTP Source contracts,
 native diagnostic file scanning and
@@ -409,7 +410,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST config / version parsing · no process adapter"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1193,6 +1194,14 @@ symlink-file behavior is retained; explicit target paths still pass confinement 
 Replay of actual parser input hashes/results verifies the scanner, not a Python grammar.
 The language-parser implementation/selection remains pending.
 
+
+The standalone Go `astcontext` library now validates explicit configuration and
+parses captured version output into closed statuses and immutable probe records.
+Environment names/digests normalize into detached snapshots; semantic components
+use Python-pinned Unicode decimal blocks without machine-integer overflow. Zero
+configuration/status values and unrepresentable timeouts are refused. Version
+parsing is inert: it does not execute a program, verify its digest, confine snapshots
+or install semantic-read tools. Those adapter stages remain pending.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
