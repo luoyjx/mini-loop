@@ -2224,6 +2224,33 @@ Snapshot 121 compares 42 actual Python full-state engine profiles, captured runn
 inputs, repeats and five constructor limits. Native race tests additionally cover
 shared-pool arbitration, duplicate Execute serialization, running/blocked cancellation,
 parent deadline settlement and cancelled lock waits. RunnerError provides finite
-source-style kinds; other callback errors use NativeRunnerError. No live readonly
-FreshAgentRunner, trusted context resolver, owned service, parent append, tools/HTTP
-or manager activation is installed. The store remains process-local.
+source-style kinds; other callback errors use NativeRunnerError. The native worker
+below is callable; owned service, parent append, tools/HTTP and manager activation
+remain pending. The store remains process-local.
+
+### Isolated workflow workers
+
+agent.NewFreshWorkflowRunner implements workflows.WorkflowRunner with explicit
+provider/owner/workspace/live WorkflowContextResolver. Each node creates a fresh
+readonly Session, default Explore-selected read_file/glob tools, synthetic
+return_artifact capture and in-memory compaction. Trusted live RunContext derivation
+names the attempt agent, retains parent provenance and drops human capabilities;
+saved snapshots cannot enter this authority seam. No parent history, injectors,
+hooks, stop hooks, approvals or persistence are retained. Provider/model budgets,
+shared limiters, recovery/cache/stuck/skill/masking/event seams are explicit.
+Configured catalogues retain their handler scope, with readonly permission still
+denying selected write/exec/external/unclassified tools. Builtin files retain root
+confinement and results are masked before model/artifact use. Capture validates first,
+permits repair and accepts once; repeat submissions preserve the original. Normal
+exit without capture raises source RuntimeError. Cancellation is cooperative.
+ReturnArtifactInput is a concrete closed Value variant with exactly-value admission,
+including null, and recursive recording masking. The synthetic ToolSchema retains an
+exact immutable projection, preserving numeric enum/const and archival round trips;
+ordinary tool schema parsing is unchanged. Schema-language validation remains in the
+controller/runner. LastWorker detaches its diagnostic projections under a mutex.
+Snapshot 122 compares eight actual Python worker profiles over real Agents with
+scripted fake model tools. Native race tests also cover widened-role readonly denial,
+masked repository reads, no context-management writes, concurrent fresh histories,
+invalid live contexts and two-node native engine/worker completion. No external model
+endpoint was called. No owned launch service, tools/HTTP, parent append or manager
+workflow activation is installed yet; no durable workflow backend ships.

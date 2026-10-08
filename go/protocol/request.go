@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
 
 type SchemaType string
@@ -72,20 +73,22 @@ func (v *SchemaAdditional) UnmarshalJSON(b []byte) error {
 // InputSchema describes the closed source schema language. Multiple Types,
 // OneOf and Additional cover decision questions without erasing their contract.
 type InputSchema struct {
-	Additional    *SchemaAdditional `json:"additionalProperties,omitempty"`
-	Const         *string           `json:"const,omitempty"`
-	Description   string            `json:"description,omitempty"`
-	Enum          []string          `json:"enum,omitempty"`
-	Items         *InputSchema      `json:"items,omitempty"`
-	MaxItems      *int              `json:"maxItems,omitempty"`
-	MaxProperties *int              `json:"maxProperties,omitempty"`
-	MinItems      *int              `json:"minItems,omitempty"`
-	MinProperties *int              `json:"minProperties,omitempty"`
-	OneOf         []InputSchema     `json:"oneOf,omitempty"`
-	Properties    *SchemaProperties `json:"properties,omitempty"`
-	Required      []string          `json:"required,omitempty"`
-	Type          SchemaType        `json:"type,omitempty"`
-	Types         []SchemaType      `json:"-"`
+	// Only the synthetic workflow tool carries an exact immutable schema projection.
+	workflowSchema *jsonvalue.Value
+	Additional     *SchemaAdditional `json:"additionalProperties,omitempty"`
+	Const          *string           `json:"const,omitempty"`
+	Description    string            `json:"description,omitempty"`
+	Enum           []string          `json:"enum,omitempty"`
+	Items          *InputSchema      `json:"items,omitempty"`
+	MaxItems       *int              `json:"maxItems,omitempty"`
+	MaxProperties  *int              `json:"maxProperties,omitempty"`
+	MinItems       *int              `json:"minItems,omitempty"`
+	MinProperties  *int              `json:"minProperties,omitempty"`
+	OneOf          []InputSchema     `json:"oneOf,omitempty"`
+	Properties     *SchemaProperties `json:"properties,omitempty"`
+	Required       []string          `json:"required,omitempty"`
+	Type           SchemaType        `json:"type,omitempty"`
+	Types          []SchemaType      `json:"-"`
 }
 type schemaTypeWire struct {
 	single   SchemaType
@@ -105,6 +108,9 @@ func (v *schemaTypeWire) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, &v.single)
 }
 func (schema InputSchema) MarshalJSON() ([]byte, error) {
+	if schema.workflowSchema != nil {
+		return schema.workflowSchema.MarshalJSON()
+	}
 	type fields InputSchema
 	var typ *schemaTypeWire
 	if schema.Type != "" {
@@ -147,6 +153,10 @@ func (schema *InputSchema) UnmarshalJSON(b []byte) error {
 	return nil
 }
 func (schema InputSchema) Clone() InputSchema {
+	if schema.workflowSchema != nil {
+		value := *schema.workflowSchema
+		return InputSchema{workflowSchema: &value}
+	}
 	schema.Enum = append([]string(nil), schema.Enum...)
 	schema.Required = append([]string(nil), schema.Required...)
 	if schema.Types != nil {
@@ -196,6 +206,13 @@ func (schema InputSchema) Clone() InputSchema {
 }
 func (schema InputSchema) Validate() error { return schema.validate(0) }
 func (schema InputSchema) validate(depth int) error {
+	if schema.workflowSchema != nil {
+		if schema.workflowSchema.Kind() != jsonvalue.Object {
+			return errors.New("workflow tool schema must be an object")
+		}
+		_, err := schema.workflowSchema.MarshalJSON()
+		return err
+	}
 	if depth > 32 {
 		return errors.New("tool schema exceeds supported depth")
 	}
@@ -305,6 +322,9 @@ func (schema ToolSchema) Clone() ToolSchema {
 	return schema
 }
 func (schema ToolSchema) Validate() error {
+	if schema.InputSchema.workflowSchema != nil && schema.Name != ToolReturnArtifact {
+		return errors.New("exact workflow schema requires return_artifact")
+	}
 	if schema.Name == "" {
 		return errors.New("tool schema requires a name")
 	}

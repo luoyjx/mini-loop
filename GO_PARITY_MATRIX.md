@@ -1,5 +1,74 @@
 # Python to Go parity matrix
 
+## 2026-10-08 isolated native workflow workers
+
+Baseline c1016d7. W4B adds agent.NewFreshWorkflowRunner with explicit provider,
+owner, workspace, model budgets, optional catalogue/Explore role policy, shared
+model/tool limiters, recovery/cache/stuck/skill/masking seams and a typed live
+WorkflowContextResolver. Every call constructs a fresh readonly Session, default
+read_file/glob catalogue, node-specific return_artifact capture and InMemoryCompactor.
+No parent transcript, injectors, permission hooks, stop hooks, approvals, persistence
+or manager are accepted. Operator catalogues keep their own handler bindings; the
+readonly permission gate still denies selected write/exec/external/unclassified tools.
+Repository reads use the existing confined native file handlers. The resolver must
+return a valid private RunContext; inert saved snapshots cannot enter this seam.
+Derived peer provenance names the attempt agent, retains parent message/delegation
+and drops explicit-human capabilities. Cancellation remains cooperative.
+
+The protocol now has a concrete ReturnArtifactInput carrying immutable closed Value,
+strict exactly-value JSON admission (null is a real value), canonical/spaced identities
+and recursive recording masking. Synthetic return_artifact ToolSchema alone retains
+an exact immutable schema projection, including numeric enum/const. Ordinary tool
+schema parsing remains unchanged; typed request/catalogue clone and archival reads
+preserve the synthetic projection. Workflow schema-language validation belongs to
+the controller/runner, not the wire decoder. No open service/domain payload is added.
+Capture validates before publishing the first result; repair remains possible and
+later submissions retain the first value. The selected synthetic handler is replaced
+by owned capture if an operator catalogue supplies that same name. Round count is
+min(runner default 8 or explicit positive limit, nonzero node limit). Normal exit
+without capture has the source RuntimeError; provider/cancellation faults propagate.
+LastWorker is a detached synchronized diagnostic, not execution authority/history.
+
+Snapshot 122 runs real Python FreshAgentRunner/Agent with scripted fake model calls,
+using an observational Agent subclass to retain the actual constructed worker. Eight
+profiles compare submitted values, calls, tools, fixed worker system, full synthetic
+schema, round cap and named peer context: object, repair, duplicate, numeric enum/const,
+null, missing result, exhaustion and task-name fallback. Source UUID message identity
+is normalized by comparing parent linkage. Source resolver wrong-type inputs are
+excluded by the Go callback signature; invalid zero contexts fail before model access.
+Native tests additionally cover readonly denial under an enlarged role catalogue,
+masked repository reads reaching artifacts, no context-management file writes,
+concurrent fresh histories, detached diagnostics and a real two-node native engine
+executing fresh workers through completion. No external model endpoint was called.
+The native runner validates the schema before session/model creation and uses bounded
+existing native file/JSON contracts; arbitrary Python live-object inputs are excluded.
+
+Validation: full `go test ./... -count=1 -timeout=180s`, full
+`go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+Final focused worker/protocol race also passed, including operator same-name handler
+replacement. All 122 actual Python exports are current; exporter emitted dependency
+deprecations and a subprocess-transport finalizer after event-loop closure, with no
+contract mismatch. All 19 source scan guards are anchored. Full Python regression:
+2,155 passed, 28 skipped, 24 subtests passed, 3 dependency deprecation warnings in
+94.17 seconds. `git diff --check` and README outline passed. Python package invariant/
+guard checks were not rerun: no package module or guarded Python runtime changed.
+Architecture regeneration passed 9/9 checks, zero errors/warnings. Specification
+SHA256: `7f67379ebadb2846ac25cd3bfe545ec78fee76597d7737c696caf49b3eb92ad7`;
+HTML SHA256: `04482bbbf5c53ad771ecc91cb50d114d47dec5bc58408a1366e6c4a780ae3372`.
+Runtime topology remains unchanged: this operator runner is callable, with no manager
+workflow activation. Visual review remains skipped after the earlier access denial.
+No dependencies or Python runtime modules changed. Overall statement coverage was
+not refreshed; the previous 90.56% belongs to c1016d7 and is not a current completion
+claim.
+
+Next W5 adds owner-bound launch/status/wait/cancel, trusted live origin admission,
+service wall-time control, launch-turn bookkeeping and parent notification append/
+receipt/retention flow. W6 installs optional workflow tools/HTTP and manager lifecycle.
+MCP, native session SQLite, remaining runtime profiles and full G7 remain open.
+Full Python-to-Go migration is unfinished; workflow persistence/restart-resume is
+not delivered by this in-process runner.
+
+
 ## 2026-10-08 typed workflow batch engine
 
 Baseline 826f7d1. W4A adds WorkflowRunner, detached AttemptExecution, finite

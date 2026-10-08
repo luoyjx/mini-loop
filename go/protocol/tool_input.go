@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
 
 const (
@@ -146,6 +147,7 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
+	returnArtifact  jsonvalue.Value
 	spawnTeammate   SpawnTeammateInput
 	sendMessage     SendMessageInput
 	broadcast       BroadcastInput
@@ -398,6 +400,9 @@ func (input ToolInput) clone() (result ToolInput) {
 
 func (input ToolInput) Validate() error {
 	switch input.name {
+	case ToolReturnArtifact:
+		_, err := input.returnArtifact.MarshalJSON()
+		return err
 	case ToolSendMessage:
 		if input.sendMessage.Metadata != nil {
 			_, err := input.sendMessage.Metadata.MarshalJSON()
@@ -444,6 +449,8 @@ func (input ToolInput) Validate() error {
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
 	switch input.name {
+	case ToolReturnArtifact:
+		return json.Marshal(ReturnArtifactInput{Value: input.returnArtifact})
 	case ToolSpawnTeammate, ToolSendMessage, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:
 		return input.marshalTeamJSON(false)
 	case ToolRemember, ToolRecall:
@@ -519,6 +526,8 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolReturnArtifact:
+		return decodeReturnArtifactInput(data)
 	case ToolSpawnTeammate, ToolSendMessage, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:
 		return decodeTeamInput(name, data)
 	case ToolRemember, ToolRecall:

@@ -2454,5 +2454,22 @@ join Execute before reclaiming worker resources. Parent context expiration settl
 attempts and returns the context error; run cancellation/wall-time policy remains
 service-owned. Verifier failures retain schema-invalid unverified fallback artifacts,
 including source nil-submission AttributeError. Idle run locks are reclaimed rather
-than accumulating Source's lock table. No FreshAgentRunner, live context resolver,
-service, tool, HTTP or manager installation is supplied by this seam.
+than accumulating Source's lock table. agent.NewFreshWorkflowRunner now supplies
+the isolated native worker adapter through WorkflowRunnerConfig. Provider, owner,
+workspace and WorkflowContextResolver are required; the resolver receives a detached
+attempt and returns a valid private RunContext. It must resolve trusted live authority,
+never reconstruct it from saved snapshots. Each call creates a fresh readonly session,
+Explore-selected catalogue, owned exact-schema return_artifact handler and in-memory
+compactor. Defaults select read_file/glob; configured catalogues retain handler scope
+and the independent readonly policy denies mutation. Human capabilities are dropped
+in the named peer context. Configured secrets mask read results before the model;
+shared limiters, recovery/cache/stuck/skill/event seams are explicit. No parent history,
+injectors, hooks, stop hooks, approval broker or persistence are inherited. Custom
+handlers remain responsible for their workspace/confinement contract. Capture validates
+before accepting once; duplicate submission is a textual refusal. Synthetic tool inputs
+are a named closed variant, including explicit null; exact immutable schema projections
+preserve numeric enum/const across model requests and archival ToolSchema reads.
+Normal exit without a structured result raises source RuntimeError. Parent cancellation
+must be joined by the engine/service before resource reclamation. LastWorker is a
+synchronized detached diagnostic and does not grant authority. No owned workflow
+service, launch/manage tools, HTTP or manager installation is supplied yet.

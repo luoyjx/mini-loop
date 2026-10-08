@@ -13,6 +13,8 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return "", err
 	}
 	switch input.Name() {
+	case ToolReturnArtifact:
+		return PythonJSON(ReturnArtifactToolInput(input.returnArtifact.Sorted()), false, compact)
 	case ToolSpawnTeammate, ToolSendMessage, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:
 		return PythonJSON(teamInputProjection{input: input, sorted: true}, false, compact)
 	case ToolRemember:

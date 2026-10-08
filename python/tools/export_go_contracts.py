@@ -6758,6 +6758,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-outbox.json": _json_bytes(_workflow_outbox_contracts()),
         "python-workflow-retention.json": _json_bytes(_workflow_retention_contracts()),
         "python-workflow-engine.json": _json_bytes(_workflow_engine_contracts()),
+        "python-workflow-runner.json": _json_bytes(_workflow_runner_contracts(scratch)),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -10004,6 +10005,70 @@ def _workflow_engine_contracts() -> dict:
         except Exception as failure:
             constructor.append(dict(limit=limit, error=type(failure).__name__, detail=str(failure)))
     return dict(rows=asyncio.run(collect()), constructor=constructor)
+
+
+def _workflow_runner_contracts(scratch: Path) -> dict:
+    """Exercise real isolated Agents with scripted native tool calls."""
+    import asyncio
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic, text, tool
+    from mini_loop.run_context import RunContext
+    from mini_loop.workflows.models import NodeAttempt, WorkflowNode, NodeKind
+    from mini_loop.workflows import runner as module
+    scratch = Path(scratch)
+    base = module.Agent
+    workers = []
+    class CapturedAgent(base):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            workers.append(self)
+    recipes = [
+        dict(name="object", schema={"type": "object"}, values=[{"value": "ok"}]),
+        dict(name="repair", schema={"type": "string"}, values=[1, "repaired"]),
+        dict(name="duplicate", schema={"type": "string"}, values=["first", "second"]),
+        dict(name="numeric-enum", schema={"type": "integer", "enum": [1, 2], "const": 2}, values=[2]),
+        dict(name="null", schema={"type": "null"}, values=[None]),
+        dict(name="missing", schema={"type": "object"}, values=[]),
+        dict(name="exhausted", schema={"type": "string"}, values=[1, "unreached"], node_rounds=1),
+        dict(name="task-fallback", schema={"type": "object"}, values=[{}], task=""),
+    ]
+    async def scenario(recipe):
+        root = scratch / ("workflow-worker-" + recipe["name"])
+        root.mkdir(parents=True, exist_ok=True)
+        settings = Settings(fake_llm=True, workspace_root=root / "workspaces", skills_dir=root / "skills")
+        index = 0
+        def responder(request):
+            nonlocal index
+            current = index
+            index += 1
+            if current < len(recipe["values"]):
+                return [tool("return_artifact", _id="u" + str(current), value=recipe["values"][current])], "tool_use"
+            return [text("done")], "end_turn"
+        client = FakeAsyncAnthropic(responder=responder, thinking=False)
+        launch = RunContext(message_id="launch", actor_id="human", authority="explicit_human", approved_capabilities=frozenset({"workflow.launch", "workflow.manage"}))
+        runner = module.FreshAgentRunner(client=client, settings=settings, workspace=root, context_resolver=lambda _: launch, max_rounds=4)
+        node = WorkflowNode("a", NodeKind.AGENT, output_schema=recipe["schema"], max_rounds=recipe.get("node_rounds"), prompt_template=recipe.get("task", "inspect"))
+        attempt = NodeAttempt("attempt", "run", "a", 1, "worker", 0)
+        submission, error, detail = None, "", ""
+        try:
+            submission = await runner(attempt, node, {"args": {"text": "你好"}})
+        except Exception as failure:
+            error, detail = type(failure).__name__, str(failure)
+        worker = workers[-1]
+        context = runner.last_run_context
+        return dict(recipe=recipe, value=submission.value if submission else None, error=error, detail=detail,
+                    calls=client.calls, tools=list(runner.last_tool_names), system=worker._system,
+                    rounds=worker.max_rounds, mode=worker.state["permission_mode"],
+                    schema=worker.tools.get("return_artifact").input_schema,
+                    context=dict(authority=context.authority, actor_id=context.actor_id, parent_message_id=context.parent_message_id,
+                                 delegated_by=context.delegated_by, approved_capabilities=sorted(context.approved_capabilities)))
+    async def collect():
+        return [await scenario(recipe) for recipe in recipes]
+    module.Agent = CapturedAgent
+    try:
+        return dict(rows=asyncio.run(collect()))
+    finally:
+        module.Agent = base
 
 
 if __name__ == "__main__":

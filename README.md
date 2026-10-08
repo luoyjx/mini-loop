@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `826f7d1` plus typed workflow batch execution;
+reviewed **2026-10-08** (Go baseline `c1016d7` plus isolated native workflow workers;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1460,9 +1460,15 @@ WorkflowRunner, shares an optional AttemptPool, serializes each run and settles
 structured artifacts, verifier fallback and cooperative cancellation. Inputs retain
 source scalar/list folding and dependency names can overwrite args. Wall-time budget
 handling remains service-owned. Idle execution locks are reclaimed; decoded provenance
-cannot supply live runner authority. Trusted live worker adaptation and service
-installation remain pending. This library is not installed in manager/model/HTTP
-paths; the canonical runtime topology is unchanged.
+cannot supply live runner authority. Snapshot 122 compares eight real Python isolated
+worker profiles. Go FreshWorkflowRunner constructs fresh readonly sessions with an
+Explore catalogue, exact synthetic artifact schema, confined/masked reads, fresh
+in-memory compaction and typed trusted live context resolution. Named peer contexts
+drop human capabilities. Invalid submission can repair; duplicate capture keeps the
+first value. Native tests exercise widened-catalogue readonly denial, isolated histories,
+no context-management writes and engine/worker completion. The operator runner is
+callable; owned service and manager/model/HTTP installation remain pending, and the
+canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

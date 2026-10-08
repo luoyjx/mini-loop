@@ -16,6 +16,8 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolReturnArtifact:
+		input.returnArtifact = input.returnArtifact.MapStrings(mask)
 	case ToolSpawnTeammate:
 		input.spawnTeammate.Name = mask(input.spawnTeammate.Name)
 		input.spawnTeammate.Role = mask(input.spawnTeammate.Role)

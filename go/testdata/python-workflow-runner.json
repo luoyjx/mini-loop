@@ -1,0 +1,357 @@
+{
+  "rows": [
+    {
+      "calls": 2,
+      "context": {
+        "actor_id": "worker",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "delegated_by": "workflow:run",
+        "parent_message_id": "launch"
+      },
+      "detail": "",
+      "error": "",
+      "mode": "readonly",
+      "recipe": {
+        "name": "object",
+        "schema": {
+          "type": "object"
+        },
+        "values": [
+          {
+            "value": "ok"
+          }
+        ]
+      },
+      "rounds": 4,
+      "schema": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "system": "You are an isolated read-only workflow worker. Use only the provided read-only repository tools for evidence. Do not assume access to a parent conversation. You must finish by calling return_artifact exactly once with a value matching this JSON Schema:\n{\"type\":\"object\"}",
+      "tools": [
+        "read_file",
+        "glob",
+        "return_artifact"
+      ],
+      "value": {
+        "value": "ok"
+      }
+    },
+    {
+      "calls": 3,
+      "context": {
+        "actor_id": "worker",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "delegated_by": "workflow:run",
+        "parent_message_id": "launch"
+      },
+      "detail": "",
+      "error": "",
+      "mode": "readonly",
+      "recipe": {
+        "name": "repair",
+        "schema": {
+          "type": "string"
+        },
+        "values": [
+          1,
+          "repaired"
+        ]
+      },
+      "rounds": 4,
+      "schema": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "system": "You are an isolated read-only workflow worker. Use only the provided read-only repository tools for evidence. Do not assume access to a parent conversation. You must finish by calling return_artifact exactly once with a value matching this JSON Schema:\n{\"type\":\"string\"}",
+      "tools": [
+        "read_file",
+        "glob",
+        "return_artifact"
+      ],
+      "value": "repaired"
+    },
+    {
+      "calls": 3,
+      "context": {
+        "actor_id": "worker",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "delegated_by": "workflow:run",
+        "parent_message_id": "launch"
+      },
+      "detail": "",
+      "error": "",
+      "mode": "readonly",
+      "recipe": {
+        "name": "duplicate",
+        "schema": {
+          "type": "string"
+        },
+        "values": [
+          "first",
+          "second"
+        ]
+      },
+      "rounds": 4,
+      "schema": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "system": "You are an isolated read-only workflow worker. Use only the provided read-only repository tools for evidence. Do not assume access to a parent conversation. You must finish by calling return_artifact exactly once with a value matching this JSON Schema:\n{\"type\":\"string\"}",
+      "tools": [
+        "read_file",
+        "glob",
+        "return_artifact"
+      ],
+      "value": "first"
+    },
+    {
+      "calls": 2,
+      "context": {
+        "actor_id": "worker",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "delegated_by": "workflow:run",
+        "parent_message_id": "launch"
+      },
+      "detail": "",
+      "error": "",
+      "mode": "readonly",
+      "recipe": {
+        "name": "numeric-enum",
+        "schema": {
+          "const": 2,
+          "enum": [
+            1,
+            2
+          ],
+          "type": "integer"
+        },
+        "values": [
+          2
+        ]
+      },
+      "rounds": 4,
+      "schema": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "const": 2,
+            "enum": [
+              1,
+              2
+            ],
+            "type": "integer"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "system": "You are an isolated read-only workflow worker. Use only the provided read-only repository tools for evidence. Do not assume access to a parent conversation. You must finish by calling return_artifact exactly once with a value matching this JSON Schema:\n{\"const\":2,\"enum\":[1,2],\"type\":\"integer\"}",
+      "tools": [
+        "read_file",
+        "glob",
+        "return_artifact"
+      ],
+      "value": 2
+    },
+    {
+      "calls": 2,
+      "context": {
+        "actor_id": "worker",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "delegated_by": "workflow:run",
+        "parent_message_id": "launch"
+      },
+      "detail": "",
+      "error": "",
+      "mode": "readonly",
+      "recipe": {
+        "name": "null",
+        "schema": {
+          "type": "null"
+        },
+        "values": [
+          null
+        ]
+      },
+      "rounds": 4,
+      "schema": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "system": "You are an isolated read-only workflow worker. Use only the provided read-only repository tools for evidence. Do not assume access to a parent conversation. You must finish by calling return_artifact exactly once with a value matching this JSON Schema:\n{\"type\":\"null\"}",
+      "tools": [
+        "read_file",
+        "glob",
+        "return_artifact"
+      ],
+      "value": null
+    },
+    {
+      "calls": 1,
+      "context": {
+        "actor_id": "worker",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "delegated_by": "workflow:run",
+        "parent_message_id": "launch"
+      },
+      "detail": "workflow node a did not call return_artifact",
+      "error": "RuntimeError",
+      "mode": "readonly",
+      "recipe": {
+        "name": "missing",
+        "schema": {
+          "type": "object"
+        },
+        "values": []
+      },
+      "rounds": 4,
+      "schema": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "system": "You are an isolated read-only workflow worker. Use only the provided read-only repository tools for evidence. Do not assume access to a parent conversation. You must finish by calling return_artifact exactly once with a value matching this JSON Schema:\n{\"type\":\"object\"}",
+      "tools": [
+        "read_file",
+        "glob",
+        "return_artifact"
+      ],
+      "value": null
+    },
+    {
+      "calls": 1,
+      "context": {
+        "actor_id": "worker",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "delegated_by": "workflow:run",
+        "parent_message_id": "launch"
+      },
+      "detail": "workflow node a did not call return_artifact",
+      "error": "RuntimeError",
+      "mode": "readonly",
+      "recipe": {
+        "name": "exhausted",
+        "node_rounds": 1,
+        "schema": {
+          "type": "string"
+        },
+        "values": [
+          1,
+          "unreached"
+        ]
+      },
+      "rounds": 1,
+      "schema": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "system": "You are an isolated read-only workflow worker. Use only the provided read-only repository tools for evidence. Do not assume access to a parent conversation. You must finish by calling return_artifact exactly once with a value matching this JSON Schema:\n{\"type\":\"string\"}",
+      "tools": [
+        "read_file",
+        "glob",
+        "return_artifact"
+      ],
+      "value": null
+    },
+    {
+      "calls": 2,
+      "context": {
+        "actor_id": "worker",
+        "approved_capabilities": [],
+        "authority": "peer_agent",
+        "delegated_by": "workflow:run",
+        "parent_message_id": "launch"
+      },
+      "detail": "",
+      "error": "",
+      "mode": "readonly",
+      "recipe": {
+        "name": "task-fallback",
+        "schema": {
+          "type": "object"
+        },
+        "task": "",
+        "values": [
+          {}
+        ]
+      },
+      "rounds": 4,
+      "schema": {
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "system": "You are an isolated read-only workflow worker. Use only the provided read-only repository tools for evidence. Do not assume access to a parent conversation. You must finish by calling return_artifact exactly once with a value matching this JSON Schema:\n{\"type\":\"object\"}",
+      "tools": [
+        "read_file",
+        "glob",
+        "return_artifact"
+      ],
+      "value": {}
+    }
+  ]
+}
