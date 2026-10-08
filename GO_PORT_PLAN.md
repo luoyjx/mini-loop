@@ -1,5 +1,62 @@
 # Go port plan
 
+## 2026-10-08 native MCP stdio client library
+
+Baseline bb069d3 (Source snapshot 140). The dependency-free mcp package owns a
+native argv child, detached passthrough settings, bounded stdout framing and
+serialized JSON-RPC request ownership. A named ToolDescription carries inert
+closed discovery variants; arguments must be closed JSON objects. Unsupported
+non-text tool names fail at the discovery boundary. No domain any/interface{},
+map[string]any or RawMessage, Python runtime invocation or new dependency added.
+
+The Source initialization version/clientInfo and initialized notification are
+explicit. Notifications and mismatched numeric IDs are skipped. Request IDs
+remain monotonic across restart. Live children are reused; dead children are
+reaped and restarted on the next operation, without retrying a failed effect.
+Handshake/list waits use the configured timeout; tools/call uses its context.
+Read timeout retains a live child and later RPCs skip its late response. A blocked
+pipe-write cancellation kills/reaps the child instead of abandoning partial bytes;
+this native cleanup detail is explicit, not claimed as exact asyncio cancellation.
+Close sends SIGTERM, escalates after two seconds and allows later restart.
+
+Registered names are withheld from the child unless explicitly passed through,
+including names absent from the parent environment in the detached withheld view.
+Null registry retains the Source deployment default. Eight-MiB framing discards an
+oversized line and can resume; text caps count Source characters, while fallback
+JSON is capped before the truncation-notice check. isError does not rewrite text.
+
+Sixteen actual Source discovery/result cases compare complete output hashes and
+character counts; small outputs also compare exact text. Native child-process
+tests verify live reuse, failed effect once, restart/close handshakes and IDs,
+registered-secret isolation, explicit passthrough, detached snapshots, handshake
+and list timeout, late responses, RPC faults, oversized-line recovery and twelve
+concurrent calls without crossed responses. Source failure classes are recorded;
+native errors preserve failure, not exact Python exception bodies.
+
+Validation: focused native MCP race tests and final full go test ./... / full
+go test -race ./... (-count=1 -timeout=180s) / go vet ./... pass. Final Go log/exit
+0: /tmp/mini-loop-mcp-go-final.{log,exit}. All 140 Source exports and all 19 scanner
+anchors pass. Full Python regression passes separately: 2,155 passed, 28 skipped,
+24 subtests, three warnings in 70.30s (/tmp/mini-loop-mcp-python-serial.{log,exit}).
+The earlier concurrent run failed the existing 40-turn 0.5s timing gate at 0.69s;
+no runtime/test threshold change was made. README outline and git diff --check pass.
+No Python runtime modules/guards changed, so invariant/guard sweeps are not rerun.
+Coverage was not refreshed; 90.23% belongs to 721b413, not this implementation.
+
+README baseline/canonical Mermaid/boundary and extension seam are updated. The
+interactive architecture records the operator library in its Language layout card;
+existing diagram geometry is retained after new-node routing conflicts. Archify
+delivery passes 9/9 showcase checks with zero errors/warnings; visual review remains
+skipped after prior access denial. Specification SHA256
+eb47d25a0f107ef8868464dbc9788a1f1954f88bbf8f541af49d7ff37949a47d;
+HTML SHA256 2e716ab92fa65dcfb7aa7e3259fff4607b05c123890fe84d0fa148534068fef6.
+
+This library is not yet registered through ToolGate, pinned catalogue publication,
+connect_mcp, manager cleanup or launcher configuration. Those paths, InProcessMCP,
+remaining timing/input/output and model/tool scalar/transport profiles, native
+session SQLite and full G7 remain open. SQLite driver approval is still unanswered;
+no dependency added. The complete Python-to-Go objective remains open.
+
 ## 2026-10-08 MCP stdio contract preparation
 
 Baseline 721b413. Snapshot 140 captures sixteen actual Python StdioMCP

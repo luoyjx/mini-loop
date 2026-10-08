@@ -2694,3 +2694,27 @@ manager normalization captures them before service construction. Model/tool pool
 journal, readonly worker resolver and shutdown ownership use existing manager seams.
 The independent selector does not activate the comprehensive MINILOOP_FEATURES bundle
 or widen authority on general HTTP messages. Defaults remain disabled.
+
+## Go MCP stdio library seam
+
+`mcp.NewStdio(StdioConfig)` owns a detached argv/passthrough configuration and
+uses only the Go standard library. `SecretEnvironment` accepts the existing
+`secrets.Registry` or `secrets.Null`; `Withheld()` returns a detached sorted
+snapshot, including registered names absent from the parent environment.
+`ListTools(ctx)` applies the configured startup/discovery timeout; `CallTool(ctx,
+name, arguments)` requires a closed JSON object and uses the caller's deadline.
+`ToolDescription` retains inert description/schema/annotation variants; admission
+must lower these values to supported schemas. A readOnlyHint never grants trust.
+
+RPCs are serialized and IDs remain monotonic across child restarts. Initialization
+uses the Source protocolVersion 2024-11-05 and initialized notification. Notifications
+and mismatched IDs are skipped; result text uses Source character caps and fallback
+JSON formatting. Timed-out reads can leave the live child available: a later call
+skips any late response. Cancelling a blocked pipe write kills the child so that
+partial bytes cannot corrupt the next request. Failed handshakes are killed/reaped.
+`Close()` terminates/reaps the child, escalates after two seconds, and permits a
+later start. Failed tool calls are never replayed.
+
+This is an operator library seam. Dynamic registration, collision ownership,
+connect_mcp inputs, pinned catalogue publication, manager lifetime and launcher
+selection remain open. No default tool, permission policy or execution gate changes.
