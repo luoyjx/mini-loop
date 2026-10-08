@@ -2931,5 +2931,23 @@ that same unavailable notice rather than borrowing the parent's store. Managed
 restoration tests search superseded own history and exclude another owner's rows;
 the test backend is not proof of native SQLite restart. The adapter uses existing
 typed stored Message content and retains its encoded member order. Arbitrary Source
-archival content, request reconstruction and independent launcher/CLI selection
-remain open. Backend close remains operator-owned.
+archival content and request reconstruction remain open. Independent launcher/CLI
+selection is described below. Backend close remains operator-owned.
+
+## Go transcript-search launcher selection
+
+`launcher.Options.SessionQueryTools` and `--session-query-tools` independently
+select the optional read-only tool. `Report.SessionQueryTools` records selection;
+Inspect/--dump-config remain free of runtime/storage effects. The launcher still
+constructs process-local state with no persisted transcript reader, so selected
+search returns Source's Null-store no-match text. This option does not activate
+SQLite or accept the incomplete MINILOOP_FEATURES bundle. Raw managed deployments
+can separately inject the StateStore through ManagerServices.
+
+Source snapshot 148 executes real model turns with actual SQLite, including a
+live transcript rewrite and foreign-session history; native injected-store turns
+compare exact tool text, ordered catalogues and current epochs. The Source fake
+omits caller metadata, so native fixture replies preserve omission instead of
+adding caller=null. Two Source/native HTTP recipes compare defaults and selection.
+These observations do not establish native SQLite durability, arbitrary archival
+content parity or request reconstruction.

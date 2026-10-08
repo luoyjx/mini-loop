@@ -1,5 +1,43 @@
 # Go port plan
 
+## 2026-10-08 transcript-search launcher and actual runtime replay
+
+Baseline 8c2cf7e (Source snapshot 148). launcher.Options.SessionQueryTools and
+standalone --session-query-tools independently select the implemented read-only
+search tool. Report.SessionQueryTools exposes that choice without startup effects.
+The launcher remains process-local with a no-op transcript reader; selecting search
+does not add a native state backend or widen MINILOOP_FEATURES support. CLI tests
+prove dump purity and comprehensive-setting refusal before workspace creation.
+
+Native replay compares both actual Source SQLite-backed manager/model recipes:
+ordered catalogues, exact search text, final outputs and current epoch, including
+the current captured tool_use query and superseded own history after a live rewrite.
+Another session's history is excluded. Source Fake ToolUseBlock omits caller;
+native fixture replies preserve omission rather than inserting null into searched
+stored text. The idle live rewrite goes through normal persistence guards and event
+capture, without changing stored counters or bypassing admission. Native tests use
+an injected typed backend, not SQLite. Two actual HTTP compositions compare the
+default-ten versus selected query catalogues, ordered results and final text through
+a real native listener/provider adapter. Null storage gives no matches in both.
+
+Validation: focused agent/launcher/CLI search race tests; full go test ./... -count=1
+-timeout=180s, full go test -race ./... -count=1 -timeout=180s and go vet ./...
+passed. Source export --check passes all 148 files; all 19 scanning guards remain
+anchored. Python regression: 2155 passed, 28 skipped, 3 dependency warnings and
+24 subtests in 92.64s. No Source runtime modules changed; separate invariant verifier,
+Source mutation sweep and coverage were not rerun. Previous coverage is not a
+current-tree or migration-completion measurement. README outline/diff checks pass.
+
+README review baseline, canonical entry/state boundary and extension/hardening notes
+are updated. Generated architecture passes 9/9 showcase checks with no errors or
+warnings. Visual inspection remains skipped after prior access denial. Spec SHA256:
+55096ea0cc9de403dd63dfb2f69e95548d10952018708277befbff9145eccb49;
+HTML SHA256: d15835444681f1ff18f4873e172384a15bf18e7fa2b9edcadb427ccee4befef4.
+Request reconstruction, arbitrary archival/scalar profiles, native SQLite driver
+approval, other missing full-registry services, full activation and G7 remain open.
+Next port the session_query reconstruction function and remaining full-registry
+service boundaries. The complete Python-to-Go objective remains active.
+
 ## 2026-10-08 transcript-search runtime Source contracts
 
 Baseline b9c4603. Snapshot 148 captures two actual FastAPI/manager/model compositions

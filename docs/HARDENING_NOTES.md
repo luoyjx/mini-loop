@@ -7868,3 +7868,14 @@ children receive fresh unbound state rather than the parent's transcript store.
 Missing bare state and manager Null storage remain different textual outcomes.
 Native tests use an injected typed backend; SQLite and arbitrary archival-row parity
 remain open. Read errors are faults through the existing gate, not empty success.
+
+### Go migration — transcript-search startup selection
+
+The standalone search option selects a read tool without granting storage durability
+or accepting the incomplete full feature bundle. Dump/inspection only report the
+boolean selection and process-local backend; refusal precedes workspace effects.
+Actual Source/native model-turn results include the captured current tool-use query
+and superseded own history after a rewrite, excluding foreign session history.
+Caller absence/null stays a wire fact and must not be normalized while generating
+searchable stored text. Native HTTP matches Source Null-store outcomes; durable
+SQLite restart evidence and arbitrary archival profiles remain open.

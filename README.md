@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `07f19da` plus explicit session-bound transcript_search
+Runtime review baseline: `8c2cf7e` plus independent transcript-search launcher/CLI
+selection and actual Source runtime replay, plus explicit session-bound transcript_search
 and the typed bounded transcript-search library
 and Source-selected task-child MCP binding
 and parent-retained connection cleanup, plus typed native InProcessMCP handlers and
@@ -375,7 +376,7 @@ flowchart LR
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
@@ -914,8 +915,16 @@ and trusted session identity; a manager without storage returns empty history,
 while bare/explicitly selected child tools retain Source's unavailable notice.
 Query inputs cannot name an owner or session. The adapter projects existing typed
 stored messages; it does not widen the storage contract to arbitrary archival rows.
-Request reconstruction, launcher selection, native SQLite and historical
-nonfinite/surrogate search profiles remain open.
+Snapshot 148 now compares actual model turns through Source SQLite and native
+injected stores, including the current tool-use query and old history after a live
+rewrite. Source fake caller omission is preserved; ordered catalogues, exact results
+and epochs match. Two real HTTP recipes match default versus selected tool names
+and Null-store results. `launcher.Options.SessionQueryTools` and standalone
+`--session-query-tools` select the tool independently; inspection reports selection
+without starting runtime or widening MINILOOP_FEATURES support. The launcher still
+has no native state backend and returns an empty search over its no-op reader.
+Request reconstruction, native SQLite and historical nonfinite/surrogate search
+profiles remain open.
 
 `ManagedSession.ReadTranscript(ctx, selection)` returns a detached persisted epoch,
 including old compaction inputs and unfinished crash tails. Current selection is

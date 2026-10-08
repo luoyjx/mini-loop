@@ -62,28 +62,29 @@ const (
 )
 
 type Report struct {
-	MCPTools        bool                        `json:"mcp_tools"`
-	WorkflowTools   bool                        `json:"workflow_tools"`
-	TeamTools       bool                        `json:"team_tools"`
-	MemoryBackend   MemoryBackend               `json:"memory_backend"`
-	MemoryTools     bool                        `json:"memory_tools"`
-	MemoryAuto      bool                        `json:"memory_auto"`
-	DecisionBackend DecisionBackend             `json:"decision_backend"`
-	SelfAuditTools  bool                        `json:"self_audit_tools"`
-	GoalTools       bool                        `json:"goal_tools"`
-	PlanModeTools   bool                        `json:"plan_mode_tools"`
-	CronTools       bool                        `json:"cron_tools"`
-	BackgroundTools bool                        `json:"background_tools"`
-	Kind            string                      `json:"kind"`
-	Settings        config.Snapshot             `json:"settings"`
-	Server          config.ServerSettings       `json:"server"`
-	Provider        ProviderStatus              `json:"provider"`
-	Authenticated   bool                        `json:"authenticated"`
-	Build           BuildIdentity               `json:"build"`
-	Unsupported     []config.UnsupportedSetting `json:"unsupported"`
-	StateStore      string                      `json:"state_store"`
-	Sandbox         string                      `json:"sandbox"`
-	DotEnvDiscovery bool                        `json:"dotenv_discovery"`
+	SessionQueryTools bool                        `json:"session_query_tools"`
+	MCPTools          bool                        `json:"mcp_tools"`
+	WorkflowTools     bool                        `json:"workflow_tools"`
+	TeamTools         bool                        `json:"team_tools"`
+	MemoryBackend     MemoryBackend               `json:"memory_backend"`
+	MemoryTools       bool                        `json:"memory_tools"`
+	MemoryAuto        bool                        `json:"memory_auto"`
+	DecisionBackend   DecisionBackend             `json:"decision_backend"`
+	SelfAuditTools    bool                        `json:"self_audit_tools"`
+	GoalTools         bool                        `json:"goal_tools"`
+	PlanModeTools     bool                        `json:"plan_mode_tools"`
+	CronTools         bool                        `json:"cron_tools"`
+	BackgroundTools   bool                        `json:"background_tools"`
+	Kind              string                      `json:"kind"`
+	Settings          config.Snapshot             `json:"settings"`
+	Server            config.ServerSettings       `json:"server"`
+	Provider          ProviderStatus              `json:"provider"`
+	Authenticated     bool                        `json:"authenticated"`
+	Build             BuildIdentity               `json:"build"`
+	Unsupported       []config.UnsupportedSetting `json:"unsupported"`
+	StateStore        string                      `json:"state_store"`
+	Sandbox           string                      `json:"sandbox"`
+	DotEnvDiscovery   bool                        `json:"dotenv_discovery"`
 }
 
 func Inspect(settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator) Report {
@@ -93,21 +94,22 @@ func Inspect(settings config.Settings, server config.ServerSettings, auth httpap
 // Options selects individual implemented Go services. The comprehensive Python
 // MINILOOP_FEATURES setting remains unsupported until its complete bundle exists.
 type Options struct {
-	MCPTools         bool
-	MCPServers       []agent.ManagedMCPServer
-	WorkflowTools    bool
-	TeamTools        bool
-	MemoryTools      bool
-	MemoryAuto       *bool
-	DecisionTools    bool
-	DecisionProvider decisions.Provider
-	DecisionLLM      agent.DecisionLLMConfig
-	SelfAuditTools   bool
-	GoalTools        bool
-	PlanModeTools    bool
-	PlanApprover     agent.PlanApprover
-	CronTools        bool
-	BackgroundTools  bool
+	SessionQueryTools bool
+	MCPTools          bool
+	MCPServers        []agent.ManagedMCPServer
+	WorkflowTools     bool
+	TeamTools         bool
+	MemoryTools       bool
+	MemoryAuto        *bool
+	DecisionTools     bool
+	DecisionProvider  decisions.Provider
+	DecisionLLM       agent.DecisionLLMConfig
+	SelfAuditTools    bool
+	GoalTools         bool
+	PlanModeTools     bool
+	PlanApprover      agent.PlanApprover
+	CronTools         bool
+	BackgroundTools   bool
 }
 
 func InspectWithOptions(settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) Report {
@@ -129,7 +131,7 @@ func InspectWithOptions(settings config.Settings, server config.ServerSettings, 
 		backend = OwnerMemory
 	}
 	auto := options.MemoryAuto == nil || *options.MemoryAuto
-	return Report{MCPTools: options.MCPTools, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
+	return Report{SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
 }
 
 type boundBashFactory struct{ timeout time.Duration }
@@ -284,7 +286,7 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 		TeamIdlePoll: settings.TeamIdlePoll.Duration(), TeamIdleTimeout: settings.TeamIdleTimeout.Duration(),
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
-		Services: agent.ManagerServices{MCPTools: options.MCPTools, MCPServers: options.MCPServers, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, WorkflowCaps: &workflows.DefinitionCaps{MaxConcurrentAgents: settings.WorkflowMaxConcurrentAgents, MaxAgents: settings.WorkflowMaxAgents, MaxRounds: settings.WorkflowMaxRounds, WallTimeSeconds: float64(settings.WorkflowWallTimeSeconds)}, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, SelfAuditView: auditView, Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
+		Services: agent.ManagerServices{SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, MCPServers: options.MCPServers, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, WorkflowCaps: &workflows.DefinitionCaps{MaxConcurrentAgents: settings.WorkflowMaxConcurrentAgents, MaxAgents: settings.WorkflowMaxAgents, MaxRounds: settings.WorkflowMaxRounds, WallTimeSeconds: float64(settings.WorkflowWallTimeSeconds)}, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, SelfAuditView: auditView, Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
 	if err != nil {
 		if transport != nil {
 			transport.CloseIdleConnections()

@@ -239,3 +239,25 @@ func TestMCPFlagReportsSelectionWithoutStartingRuntime(t *testing.T) {
 		t.Fatal("inspection started runtime")
 	}
 }
+
+func TestSessionQueryFlagReportsSelectionWithoutStartingRuntime(t *testing.T) {
+	env := map[string]string{"MINILOOP_WORKSPACE_ROOT": filepath.Join(t.TempDir(), "ws"), "MINILOOP_FEATURES": "1"}
+	var out, errout bytes.Buffer
+	if code := execute(context.Background(), []string{"--session-query-tools", "--dump-config"}, env, &out, &errout); code != 0 {
+		t.Fatal(code, errout.String())
+	}
+	var report launcher.Report
+	if err := json.Unmarshal(out.Bytes(), &report); err != nil || !report.SessionQueryTools || len(report.Unsupported) != 1 || report.StateStore != "process-local" {
+		t.Fatal(report, err)
+	}
+	if _, err := os.Stat(env["MINILOOP_WORKSPACE_ROOT"]); !os.IsNotExist(err) {
+		t.Fatal("inspection started runtime")
+	}
+	out.Reset()
+	if code := execute(context.Background(), []string{"--session-query-tools"}, env, &out, &errout); code == 0 {
+		t.Fatal("comprehensive unsupported setting was accepted")
+	}
+	if _, err := os.Stat(env["MINILOOP_WORKSPACE_ROOT"]); !os.IsNotExist(err) {
+		t.Fatal("refusal created workspace")
+	}
+}
