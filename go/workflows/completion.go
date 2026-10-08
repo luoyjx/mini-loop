@@ -1,9 +1,7 @@
 package workflows
 
 import (
-	"cmp"
 	"fmt"
-	"slices"
 
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 )
@@ -241,6 +239,7 @@ func (s *InMemoryStore) FinalizeRun(id RunID, expected RecordVersion, artifact A
 	r.Status, r.Version, r.EndedAt, r.FinalArtifactID, r.ActiveNodeIDs = RunCompleted, version, &now, &artifact, []NodeID{}
 	s.runs[id] = r
 	s.outbox[message.MessageID] = message
+	s.outboxOrder = append(s.outboxOrder, message.MessageID)
 	s.outboxKeys[outboxKey{id, message.Kind}] = message.MessageID
 	return r.Clone(), nil
 }
@@ -267,11 +266,6 @@ func (s *InMemoryStore) ListOutbox(filter OutboxFilter) []OutboxSnapshot {
 		}
 		out = append(out, m.Clone())
 	}
-	slices.SortFunc(out, func(a, b OutboxSnapshot) int {
-		if order := cmp.Compare(a.CreatedAt, b.CreatedAt); order != 0 {
-			return order
-		}
-		return cmp.Compare(a.MessageID, b.MessageID)
-	})
+	sortOutbox(out)
 	return out
 }

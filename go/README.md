@@ -2130,7 +2130,8 @@ and three canonical hash refusals. Native race tests exercise 24 concurrent laun
 calls and claim CAS contenders, pointer isolation, first-start retention, UUIDv4
 prefixes, tie ordering and atomic overflow refusal. Store does not authorize launch,
 check argument schemas or schedule dependencies/concurrency; service/engine owns
-those checks. Attempt settlement and artifact binding are described below; outbox, retention and live
+those checks. Attempt settlement, artifact binding and outbox leases are described
+below; retention and live
 manager/tools/HTTP installation remain open. No workflow persistence ships.
 
 ### Workflow attempt settlement
@@ -2144,7 +2145,8 @@ verification-truth check is added. The source invalid verification conversion oc
 late and leaves partial attempt/artifact state. Native reproduces that operator-input
 quirk; use validated VerificationStatus values. Nil selects the source default.
 Overflow checks precede publication; race tests elect one start/commit CAS winner.
-Cancellation and final completion/outbox generation are described below; delivery,
+Cancellation, final completion and outbox lease settlement are described below;
+external delivery,
 retention and live service/engine installation remain open. This store is still process-local.
 
 ### Workflow cancellation and completion
@@ -2161,5 +2163,27 @@ returning detached records sorted by creation time and message ID.
 Snapshot 118 compares 131 actual source profiles and repeated full graph projections.
 Native tests cover cancellation with started/unstarted tasks, concurrent request and
 finalization CAS, single notification creation, counter overflow admission, delivery
-filters and timestamp isolation. Outbox leasing/ack/release, whole graph pruning,
+filters and timestamp isolation. Outbox leasing/ack/release is described below;
+whole graph pruning,
 engine/service/trusted origins/tools/HTTP and manager installation remain open.
+
+### Workflow outbox leases and receipts
+
+EnqueueOutbox deduplicates run/kind and preserves the existing payload/state on
+replay. New payloads must be closed immutable objects. ClaimOutbox returns a fresh
+OutboxLease token, selects messages in insertion order subject to session/run filters
+and limit, then sorts the selected records by timestamp/ID. Nil run IDs admit all;
+an empty list admits none. Nil lease duration selects 30 seconds. Lease age uses
+the current caller's duration; source NaN/positive-infinity comparison quirks remain.
+Claiming does not deliver. AcknowledgeOutbox/ReleaseOutbox use SettleOutboxInput and
+require session-matching messages and the current token before mutation. Delivered
+records no-op after session admission. Acknowledgment requires nonempty token,
+while release can match an explicitly stored empty token. Batches retain earlier
+effects on a later refusal, and duplicate acknowledgment returns duplicate records.
+Callers append before acknowledgment and release on append failure; there is no
+external delivery or durable/exactly-once guarantee in this process-local store.
+Snapshot 119 compares 106 actual source profiles and repeated complete outbox
+projections. Native race tests cover concurrent claims, stale-token fencing after
+expiry, projection isolation, concurrent enqueue deduplication, release/retry/ack
+and finalization's insertion/key indexes. Whole graph retention, live service/engine,
+trusted origins/tools/HTTP and manager composition remain open.

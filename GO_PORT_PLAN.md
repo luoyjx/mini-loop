@@ -1,5 +1,63 @@
 # Go port plan
 
+## 2026-10-08 workflow outbox enqueue, leasing and settlement
+
+Baseline bb726d1. W3C1 adds named EnqueueOutboxInput, ClaimOutboxInput, OutboxLease
+and SettleOutboxInput with EnqueueOutbox/ClaimOutbox/AcknowledgeOutbox/ReleaseOutbox.
+The store tracks outbox insertion order for claim selection; both explicit enqueue
+and final completion add that index. Shared response sorting preserves created_at/ID
+order without changing limited insertion-order selection. Enqueue checks kind before
+run lookup, then run/kind deduplication before new immutable object payload admission.
+Existing completion messages retain their original payload and delivery projections.
+
+Nil run filters mean any run; explicit empty slices mean none. Nil lease duration
+selects 30 seconds; nil limit is unbounded, nonpositive limits return no messages.
+Every successful claim returns a fresh token, including empty selections. Source
+lease age uses the current caller's duration rather than a saved expiry; native keeps
+nonpositive refusal and operator NaN/positive-infinity comparison behavior. Clock
+reads and UUID allocation precede the lock, as in source. Claiming does not deliver.
+Acknowledgment admits nonempty tokens before lookup; release has no such admission.
+Missing/foreign-session messages return NotFound before delivery/lease checks.
+Delivered records no-op after session admission. Unacknowledged records require a
+matching nonnull token; cleared nil token differs from explicitly stored empty text.
+Batch settlement follows caller ID order and can retain earlier effects on a later
+refusal. Duplicate acknowledgment IDs return duplicate records; duplicate release
+can conflict after its first clears the lease. Returned dates/tokens are detached.
+
+Snapshot 119 executes four actual source methods over 106 profiles, repeating each
+operation and comparing full record fields, returned projections/tokens and refusal
+kinds/details. Initial lease timestamps and insertion-vs-sort differences are
+explicit fixtures, using the real source clock with generous age margins. Native
+tests cover 16 claim contenders without duplicate active leases, expired re-lease
+and old-token fencing, 16 run/kind enqueue contenders with one message, release/
+retry/ack, immutable object admission, detached timestamps and finalization indexes.
+Focused workflow race passed. No dependencies or Python runtime modules changed.
+
+Validation: `go test ./... -count=1 -timeout=180s`, `go vet ./...` and
+`go test -race ./... -count=1 -timeout=180s` passed, alongside focused workflow race.
+All 119 source exports are current; export execution emitted dependency deprecations
+and an unknown-child return-code-255 warning but exited successfully. All 19 scan
+guards are anchored. Full Python regression passed: 2,155 tests, 28 skips,
+24 subtests and 3 dependency deprecation warnings in 94.96 seconds.
+`git diff --check` and README outline passed. Python package invariants/guard checks
+were not rerun because no package module or guarded Python runtime behavior changed.
+Architecture regeneration passed all 9 checks with zero errors/warnings; visual
+review remains skipped after the previous access denial, and no visual approval
+is claimed. Specification SHA256:
+`934fdf1bbd8e7371db2c13bc0fb67abfaf69eb708e46a0f8f2a56c57ad1edbe3`;
+HTML SHA256: `40fdb7c9610e6c9ec9207d602fb697ebfdceff44ee87945a232c8494ce443bd9`.
+README runtime
+topology reviewed; the library is not installed in manager/model/HTTP/parent append
+flows. Overall coverage is not refreshed in this slice; the previous 90.47% figure
+belongs to d696498 and does not measure current statement coverage.
+
+Next W3C2 adds terminal-and-drained whole graph retention, cascading run/node/attempt/
+artifact/outbox/key/launch maps and both insertion indexes. W4-W6 trusted live origin,
+engine/service/tools/HTTP/manager activation, MCP, native session SQLite, runtime
+profiles and full G7 remain open. The complete Python-to-Go port is unfinished.
+No durable workflow storage, restart-resume or exactly-once delivery is inferred.
+
+
 ## 2026-10-08 workflow cancellation and final completion
 
 Baseline d696498. W3B2 adds CancelClaimedAttempts, RequestCancel,

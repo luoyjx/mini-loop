@@ -1,5 +1,25 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow outbox enqueue and lease settlement
+
+Snapshot 119 executes source enqueue_outbox, claim_outbox, acknowledge_outbox and
+release_outbox across 106 profiles with repeated outcomes and full outbox state.
+Explicit fixture state seeds cover active/expired/future/incomplete/empty-token
+leases, delivered records, session/run filters, omitted/empty run sets, bounded and
+nonpositive limits, nonpositive/NaN/infinite caller lease windows, deduplication,
+duplicate IDs and partial effects on missing/foreign/mismatched later IDs. Generated
+IDs and time values are normalized; age checks run against the real source clock
+with five-/sixty-second margins. Selection is insertion-ordered before response sort.
+Acknowledgment requires nonempty token but delivered no-ops bypass lease comparison;
+release has no nonempty-token admission. Both hide foreign-session messages as 404.
+Native tests cover 16 claim and 16 enqueue contenders, expiry re-lease/stale-token
+fencing, release/retry/ack, detached timestamps and finalization insertion indexes.
+New native enqueue payloads must be immutable closed objects; source broad dict
+conversion is outside this typed boundary. No external parent append is installed.
+Whole terminal-and-drained graph retention, trusted origins, workflow engine/service,
+tools/HTTP and manager activation remain open; no durable delivery is claimed.
+
+
 ## 2026-10-08 workflow cancellation and completion outbox creation
 
 Snapshot 118 runs actual cancel_claimed_attempts, request_cancel, finish_cancellation,

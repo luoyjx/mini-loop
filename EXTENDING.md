@@ -2411,7 +2411,21 @@ FinalizeRun checks run CAS/RUNNING, artifact existence and successful node state
 then publishes completion and one WorkflowCompleted OutboxSnapshot together.
 It does not bind final artifact ownership/return-node provenance; callers own that
 check. ListOutbox takes a named OutboxFilter and returns detached records ordered by
-creation time/ID. No claim, acknowledgment or external append occurs here.
+creation time/ID. EnqueueOutboxInput supplies named run/kind and immutable object
+payload; an existing run/kind returns the current message before checking a new
+payload. ClaimOutboxInput supplies session, optional run IDs (nil means any; an
+explicit empty list means none), lease seconds (nil selects 30) and optional limit.
+OutboxLease returns a fresh named token even with no selected messages. Selection
+uses insertion order before sorting the response, and checks lease age using the
+current caller's duration. As in source, nonpositive durations fail; operator NaN
+and positive infinity retain Python comparison behavior. No saved expiry is minted.
+SettleOutboxInput identifies session, message IDs and token. AcknowledgeOutbox
+requires a nonempty token; ReleaseOutbox retains source empty-token matching.
+Both use session isolation and preserve earlier sequential effects on a later
+missing/foreign/lease-mismatch refusal. Duplicate acknowledgments retain duplicate
+return records; repeated release can conflict after the first clears the lease.
+Delivered acknowledgment/release is a no-op after session admission. Only caller
+append success justifies acknowledgment; this store does not append externally.
 Native counter/ID allocation admission precedes publication; overflow does not
-publish partial cancellation/finalization. Delivery/pruning and trusted live origin
-adaptation remain open; retention must remove attempt insertion indexes with the graph.
+publish partial cancellation/finalization. Pruning and trusted live origin adaptation
+remain open; retention must remove attempt/outbox insertion indexes with the graph.

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `d696498` plus workflow cancellation/finalization and completion outbox creation;
+reviewed **2026-10-08** (Go baseline `bb726d1` plus workflow outbox enqueue/lease/acknowledgment/release;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1443,7 +1443,12 @@ Unstarted attempts settle in claim insertion order. Cancellation retains source
 reason/refusal effects and the two-version RUNNING-to-CANCELLED path without active
 nodes. FinalizeRun requires successful nodes and an existing artifact, then creates
 one typed completion outbox record; artifact ownership remains an upper-layer check.
-Outbox reads are detached and ordered. Delivery claims/ack/release, retention pruning,
+Outbox reads are detached and ordered. Snapshot 119 compares 106 actual outbox
+enqueue/lease/acknowledgment/release profiles and repeated state projections.
+Enqueue deduplicates run/kind; bounded claims select in insertion order before
+sorting results and do not mark delivery. Session-scoped acknowledgment/release
+retain source sequential effects on a later refusal. Caller append must precede
+acknowledgment; this store does not perform external delivery. Retention pruning,
 execution and trusted live workflow launch adaptation remain pending. This library is
 not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and

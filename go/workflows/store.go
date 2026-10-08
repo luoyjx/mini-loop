@@ -68,6 +68,7 @@ type InMemoryStore struct {
 	attemptOrder     []AttemptID
 	artifacts        map[ArtifactID]Artifact
 	outbox           map[OutboxID]OutboxSnapshot
+	outboxOrder      []OutboxID
 	outboxKeys       map[outboxKey]OutboxID
 	launches         map[launchKey]launchEntry
 }

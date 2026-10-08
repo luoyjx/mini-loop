@@ -6755,6 +6755,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-store-core.json": _json_bytes(_workflow_store_contracts()),
         "python-workflow-attempts.json": _json_bytes(_workflow_attempt_contracts()),
         "python-workflow-completion.json": _json_bytes(_workflow_completion_contracts()),
+        "python-workflow-outbox.json": _json_bytes(_workflow_outbox_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -9595,6 +9596,140 @@ def _workflow_completion_contracts() -> dict:
         repeated = invoke(repeated=True)
         rows.append(dict(recipe=recipe, output_json=json.dumps(state), repeat=repeated,
                          repeat_json=json.dumps(project()), **outcome))
+    return dict(rows=rows)
+
+
+def _workflow_outbox_contracts() -> dict:
+    """Actual outbox enqueue/lease/settlement, including sequential refusal effects."""
+    import dataclasses
+    import time
+    from mini_loop.run_context import RunContext
+    from mini_loop.workflows.models import WorkflowDefinition, RunStatus
+    from mini_loop.workflows.store import InMemoryWorkflowStore
+
+    recipes = [
+        dict(op="enqueue", kind="a"), dict(op="enqueue", kind="new"),
+        dict(op="enqueue", kind="new", terminal=True),
+        dict(op="enqueue", kind=""), dict(op="enqueue", kind="", missing=True),
+        dict(op="enqueue", kind="new", missing=True), dict(op="enqueue", kind=" "),
+    ]
+    for state in ("fresh", "active", "expired", "no-time", "no-token", "delivered", "future", "empty-token"):
+        for limit in (None, -1, 0, 1, 2):
+            recipes.append(dict(op="claim", state=state, limit=limit))
+    recipes.extend([
+        dict(op="claim", run_ids=[]), dict(op="claim", run_ids=["b"]),
+        dict(op="claim", run_ids=["foreign"]), dict(op="claim", session="foreign"),
+        dict(op="claim", session=""), dict(op="claim", lease_seconds=0),
+        dict(op="claim", lease_seconds=-1), dict(op="claim", state="active", lease_seconds=1),
+        dict(op="claim", state="expired", lease_seconds=100),
+        dict(op="claim", state="active", lease_kind="nan"),
+        dict(op="claim", state="expired", lease_kind="inf"),
+    ])
+    for op in ("ack", "release"):
+        for state in ("active", "expired", "delivered", "fresh", "empty-token"):
+            for token in ("old", "wrong", ""):
+                recipes.append(dict(op=op, state=state, token=token, messages=["a", "b"]))
+        for messages in ([], ["a", "a"], ["a", "foreign"], ["a", "missing"], ["missing"], ["foreign"]):
+            recipes.append(dict(op=op, state="active", messages=messages, token="old"))
+        recipes.extend([
+            dict(op=op, state="active", messages=["a", "b"], token="old", mismatch_b=True),
+            dict(op=op, state="active", messages=[], token=""),
+            dict(op=op, state="delivered", messages=["a"], token="old", session="foreign"),
+        ])
+
+    rows = []
+    for recipe in recipes:
+        store = InMemoryWorkflowStore()
+        store.register_definition(WorkflowDefinition.from_dict(dict(
+            name="wf", revision="base", return_from="a", nodes=[dict(id="a", kind="agent")],
+        )))
+        runs, messages, ids = {}, {}, {}
+        for key, session, created in (("a", "s", 30), ("b", "s", 10), ("foreign", "foreign", 20)):
+            run = store.create_run(
+                definition_revision="base", session_id=session, idempotency_key=key, args={},
+                run_context=RunContext(message_id="msg"),
+            )
+            runs[key] = run.run_id
+            ids[run.run_id] = "<run-" + key + ">"
+            message = store.enqueue_outbox(run.run_id, kind=key, payload={"value": key})
+            messages[key] = message.message_id
+            ids[message.message_id] = "<message-" + key + ">"
+            store._outbox[message.message_id] = dataclasses.replace(message, created_at=created)
+        if recipe.get("terminal"):
+            store._runs[runs["a"]].status = RunStatus.COMPLETED
+        now = time.time()
+        for key in ("a", "b"):
+            message = store._outbox[messages[key]]
+            state = recipe.get("state", "fresh")
+            token, claimed, delivered = None, None, None
+            if state in ("active", "expired", "no-time", "future", "empty-token"):
+                token = "" if state == "empty-token" else "old"
+                if state != "no-time":
+                    claimed = now + 60 if state == "future" else now - (60 if state == "expired" else 5)
+            if state == "no-token":
+                claimed = now - 5
+            if state == "delivered":
+                delivered = 1.0
+            if key == "b" and recipe.get("mismatch_b"):
+                token = "other"
+            store._outbox[message.message_id] = dataclasses.replace(
+                message, claim_token=token, claimed_at=claimed, delivered_at=delivered,
+            )
+
+        def clean(value):
+            if dataclasses.is_dataclass(value):
+                value = dataclasses.asdict(value)
+                for stamp in ("created_at", "claimed_at", "delivered_at"):
+                    if value.get(stamp) is not None:
+                        value[stamp] = 0
+            if isinstance(value, dict):
+                return {key: clean(child) for key, child in value.items()}
+            if isinstance(value, (list, tuple)):
+                return [clean(child) for child in value]
+            if isinstance(value, str):
+                return ids.get(value, value)
+            return value
+
+        def invoke(repeated=False):
+            try:
+                op = recipe["op"]
+                result, token = [], None
+                if op == "enqueue":
+                    target = "missing" if recipe.get("missing") else runs["a"]
+                    message = store.enqueue_outbox(target, kind=recipe["kind"], payload={"changed": True})
+                    ids.setdefault(message.message_id, "<message-new>")
+                    result = [message]
+                elif op == "claim":
+                    kwargs = {}
+                    if "run_ids" in recipe:
+                        kwargs["run_ids"] = {runs[key] for key in recipe["run_ids"]}
+                    if "lease_seconds" in recipe:
+                        kwargs["lease_seconds"] = recipe["lease_seconds"]
+                    if "lease_kind" in recipe:
+                        kwargs["lease_seconds"] = float(recipe["lease_kind"])
+                    token, result = store.claim_outbox(
+                        session_id=recipe.get("session", "s"), limit=recipe.get("limit"), **kwargs,
+                    )
+                    ids[token] = "<claim-repeat>" if repeated else "<claim>"
+                else:
+                    kwargs = dict(session_id=recipe.get("session", "s"), claim_token=recipe["token"],
+                                  message_ids=[messages.get(key, "missing") for key in recipe["messages"]])
+                    if op == "ack":
+                        result = store.acknowledge_outbox(**kwargs)
+                    else:
+                        store.release_outbox(**kwargs)
+                return dict(error="", detail="", token=clean(token), result_json=json.dumps(clean(result)))
+            except Exception as error:
+                detail = str(error)
+                for raw, label in ids.items():
+                    detail = detail.replace(raw, label)
+                return dict(error=type(error).__name__, detail=detail, token=None, result_json="[]")
+
+        outcome = invoke()
+        state = json.dumps(clean(store.list_outbox()))
+        repeated = invoke(True)
+        rows.append(dict(recipe=recipe, output_json=state, repeat=repeated,
+                         repeat_json=json.dumps(clean(store.list_outbox())), **outcome))
     return dict(rows=rows)
 
 
