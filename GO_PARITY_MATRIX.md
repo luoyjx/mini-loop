@@ -1,5 +1,59 @@
 # Python to Go parity matrix
 
+## 2026-10-09 shared observation lifecycle admission
+
+Baseline 08ef321. ObservationPipeline clones now share a lifecycle coordinator,
+per-component serialization, cached initialize/close reports and a call-drain event.
+Initialize excludes new observation calls and runs enabled hooks in order; optional
+synchronous health excludes concurrent observations and returns bounded typed
+reports. Close fences new admission before draining all admitted calls (including
+queued reducer calls and health), then invokes enabled hooks in reverse order.
+Drain/lock deadline failure is not cached, so teardown can be retried after drain.
+Completed close reports are cached even when hooks fail. Hook cancellation escapes;
+initialization cancellation clears its temporary gate and leaves no partial cache.
+Ordinary errors/panics retain safe class-only details and do not abort later hooks.
+Busy/closed observation receipts cover all bindings, including effectively off ones.
+
+LifecycleServices exposes an explicit caller-owned RawStore reference; close hooks
+receive detached positive finite deadline seconds. No generic service object or
+new dependency is introduced. Typed health/records/reports validate closed enums,
+machine codes and elapsed time and detach record projections. Cooperative hooks
+must honor context; synchronous health must return promptly. No detached worker is
+used and this component lifecycle does not close caller-owned raw artifacts.
+
+Nine real Source lifecycle recipes match normalized reports, health states,
+closed observation receipts and event order. Native tests also verify clone-shared
+admission, canceled initialization/retry, concurrent close-once, timed drain/retry,
+health exclusion/drain, canceled calls/close, close-before-initialize, reverse hook
+budgets/error caching, panic isolation and immutable report projections.
+
+This closes observation-stage lifecycle orchestration only. E5 multi-stage identity
+registration/deduplication, E3 request optimizers, E4 response policies and E6 Agent/
+Manager/default composition remain open. Cross-root component ownership and extreme
+Source timeout/float/Unicode or annotation-violating plugin profiles are not claimed.
+MINILOOP_TOKEN_EFFICIENCY_MODE/non-normal response startup refusal remains intact.
+
+Validation: targeted efficiency race, full go test ./... -p=1 -count=1 -timeout=180s,
+serialized full go test -race ./... -p=1 -count=1 -timeout=180s and go vet ./... pass.
+The initial concurrent-package normal run crossed a real minute boundary in
+TestImprovementHTTPAdmissionAndNoRateSpending (200 instead of expected 429).
+The unchanged test passed 10 isolated repetitions; the test now pins its existing
+Config.Now seam and passes 10 race repetitions (separate test-only commit).
+The first serialized full race run then timed out in the unrelated 144-case live
+personal-skill depth fixture test: the test normalizer repeatedly decoded/marshaled
+every nested subtree. A separate test-only commit changes it to one UseNumber decode,
+one traversal and one encode, with large/lexical-number, deep-shape and replacement
+regressions. The depth race test passes in 26.508s; the complete HTTP race package
+passes in 42.040s. All other packages passed the earlier full race run.
+Final serialized full normal/race gates are rerun after both test repairs.
+Source lifecycle capture committed separately after 48 focused efficiency tests,
+170-file exporter check and all 19 scan guards. README outline and git diff --check
+pass. Archify delivery passes 9/9 with zero errors/warnings: specification SHA256
+31873f78b8568602080fd634f13cf14441e022cee6c04a96603d9de4385ad6b6; HTML
+230eed00f99cfb3bb99f17da3ff995b05f880af2061768a468753ebcd5d8194a.
+Visual inspection remains skipped after prior browser access denial. Full Python
+regression, coverage and mutation sweep are not refreshed. Evidence: Darwin arm64.
+
 ## 2026-10-09 efficiency lifecycle Source contracts
 
 Baseline 54c42b0. Nine real TokenEfficiencyRuntime recipes capture ordered enabled

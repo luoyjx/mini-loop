@@ -3341,9 +3341,23 @@ WithRawStore shares component serialization and synchronized token-counter pairs
 while changing only the explicit store binding. The caller still owns raw storage.
 Very large timeout scheduling saturates Go duration; Source overflow/scheduler
 profiles and cross-root component identity admission remain pending migration gates.
-This library does not initialize/health-check/close plugins or mask their content.
+ObservationPipeline now supports Initialize(ctx, LifecycleServices), synchronous
+Health() and Close(ctx, LifecycleCloseOptions) through three optional named hook
+interfaces. LifecycleServices exposes an explicit RawStore reference; components
+never receive an untyped service bag. Close options detach a positive finite seconds
+deadline. Clones share lifecycle/call gates, cached immutable reports and component
+serialization. Initialization excludes new calls; health excludes concurrent calls;
+close fences admission before draining. A drain/lock timeout returns deadline_exceeded
+without caching teardown, allowing a later retry. Completed hook-error reports are
+cached. Cancellation escapes and clears temporary initialization admission. Hook
+timeouts are cooperative and synchronous health hooks must return promptly. No
+detached worker outlives teardown. Caller-owned raw storage is not auto-closed.
+NewLifecycleHealth/Record/Report validate closed enums and bounded machine codes;
+projections copy record slices. Source malformed/async health values map to typed
+ComponentFaults at a plugin adapter; dynamic Python service objects stay outside this
+explicit service seam. This library does not mask plugin content.
 
-No multi-stage registry, full component lifecycle or default efficiency
+No multi-stage registry, full multi-stage component lifecycle or default efficiency
 runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin
 objects and broader Unicode/numeric wire profiles are not claimed by this foundation.

@@ -84,8 +84,8 @@ type observationBinding struct {
 	serial     chan struct{}
 }
 
-// ObservationPipeline is an immutable observation-stage library. Root component
-// lifecycle/health admission and Agent composition are separate migration stages.
+// ObservationPipeline is an immutable observation-stage library. Component
+// lifecycle admission is shared by clones; Agent composition remains separate.
 // Clones share reducer serialization, while raw storage stays explicitly bound.
 type observationCounter struct {
 	mu   sync.Mutex
@@ -97,6 +97,7 @@ type ObservationPipeline struct {
 	rawStore          *RawStore
 	inflation, double bool
 	counter           *observationCounter
+	lifecycle         *lifecycleState
 }
 
 func NewObservationPipeline(c ObservationPipelineConfig) (*ObservationPipeline, error) {
@@ -106,7 +107,7 @@ func NewObservationPipeline(c ObservationPipelineConfig) (*ObservationPipeline, 
 	if c.TokenCounter == nil {
 		return nil, errors.New("token_counter must be callable")
 	}
-	p := &ObservationPipeline{rawStore: c.RawStore, inflation: c.InflationGuard, double: c.PreventDoubleReduction, counter: &observationCounter{call: c.TokenCounter}}
+	p := &ObservationPipeline{lifecycle: newLifecycleState(), rawStore: c.RawStore, inflation: c.InflationGuard, double: c.PreventDoubleReduction, counter: &observationCounter{call: c.TokenCounter}}
 	seen := make(map[string]bool)
 	for _, entry := range c.Bindings {
 		if entry.Reducer == nil {
@@ -264,6 +265,22 @@ func putObservationRaw(store *RawStore, text string) (pointer ArtifactPointer, e
 	return store.PutMasked(text)
 }
 func (p *ObservationPipeline) ReduceObservation(ctx context.Context, observation MaskedObservation, options ReductionOptions, persistMaskedRaw bool) (ObservationOutcome, error) {
+	if reason := p.lifecycle.enter(false); reason != "" {
+		current, err := observation.Snapshot()
+		if err != nil {
+			return ObservationOutcome{}, err
+		}
+		outcome := ObservationOutcome{observation: observation, receipts: []Receipt{}, warnings: []string{reason}}
+		for _, b := range p.bindings {
+			receipt, err := p.receipt(b, Passthrough, reason, current.Content, current.Content, current, []string{reason}, 0)
+			if err != nil {
+				return ObservationOutcome{}, err
+			}
+			outcome.receipts = append(outcome.receipts, receipt)
+		}
+		return outcome, nil
+	}
+	defer p.lifecycle.leave(false)
 	options.Query = copyText(options.Query)
 	options.BudgetTokens = copyInteger(options.BudgetTokens)
 	current, err := observation.Snapshot()

@@ -2545,6 +2545,11 @@ projection and recoverable raw-store requirements. Safe immutable receipts retai
 last-good fallback and downstream storage-warning propagation; cancellation escapes.
 WithRawStore shares serialized component calls and synchronized token-counter pairs.
 Thirty-eight real Source runtime outcomes match projections, receipts, call arguments
-and recovered masked text. This remains an explicit library: full lifecycle admission,
-Agent masking/event/journal composition and default activation are not installed.
+and recovered masked text. The observation library now includes clone-shared Initialize/Health/Close admission,
+cached immutable reports, ordered/reverse hooks, drain deadlines/retry and contained
+faults. LifecycleServices and LifecycleCloseOptions are explicit typed seams.
+Nine real Source lifecycle recipes match reports, closed receipts and hook order;
+native concurrency tests verify admission, cancellation, health exclusion and drain.
+Agent masking/event/journal composition, multi-stage registration and default
+activation are not installed.
 Source extremely large timeout/overflow and cross-root identity profiles remain open.
