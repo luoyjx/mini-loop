@@ -1,0 +1,881 @@
+{
+  "arrays": [
+    {
+      "input": [
+        "one"
+      ],
+      "label": "symbols",
+      "name": "single",
+      "output": [
+        "one"
+      ]
+    },
+    {
+      "input": [
+        "one",
+        "one"
+      ],
+      "label": "symbols",
+      "name": "duplicates",
+      "output": [
+        "one",
+        "one"
+      ]
+    },
+    {
+      "input": [
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one"
+      ],
+      "label": "symbols",
+      "name": "maximum-count",
+      "output": [
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one"
+      ]
+    },
+    {
+      "error": "symbols must contain at most 64 items",
+      "error_class": "ValueError",
+      "input": [
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one",
+        "one"
+      ],
+      "label": "symbols",
+      "name": "too-many"
+    },
+    {
+      "error": "symbols must be a non-empty array of strings",
+      "error_class": "ValueError",
+      "input": [],
+      "label": "symbols",
+      "name": "empty"
+    },
+    {
+      "error": "symbols must be a non-empty array of strings",
+      "error_class": "ValueError",
+      "input": "one",
+      "label": "symbols",
+      "name": "scalar"
+    },
+    {
+      "error": "symbols must be a non-empty array of strings",
+      "error_class": "ValueError",
+      "input": [
+        42
+      ],
+      "label": "symbols",
+      "name": "numeric"
+    },
+    {
+      "error": "symbols must be a non-empty array of strings",
+      "error_class": "ValueError",
+      "input": [
+        null
+      ],
+      "label": "symbols",
+      "name": "null"
+    },
+    {
+      "error": "symbols must be a non-empty array of strings",
+      "error_class": "ValueError",
+      "input": [
+        "\u0000"
+      ],
+      "label": "symbols",
+      "name": "nul"
+    },
+    {
+      "error": "symbols must be a non-empty array of strings",
+      "error_class": "ValueError",
+      "input": [
+        ""
+      ],
+      "label": "symbols",
+      "name": "empty-item"
+    },
+    {
+      "input": [
+        "αααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααα"
+      ],
+      "label": "symbols",
+      "name": "max-unicode",
+      "output": [
+        "αααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααα"
+      ]
+    },
+    {
+      "error": "symbols entries must be at most 2048 characters",
+      "error_class": "ValueError",
+      "input": [
+        "ααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααα"
+      ],
+      "label": "symbols",
+      "name": "too-long"
+    }
+  ],
+  "files": [
+    {
+      "path": "code.py",
+      "text": "source\n"
+    },
+    {
+      "path": "space name.py",
+      "text": "source\n"
+    },
+    {
+      "path": "src/a.py",
+      "text": "source\n"
+    },
+    {
+      "path": "src/b.PY",
+      "text": "source\n"
+    },
+    {
+      "path": "src/α.py",
+      "text": "source\n"
+    },
+    {
+      "path": "src/.hidden.py",
+      "text": "source\n"
+    },
+    {
+      "path": "src/bracket[.py",
+      "text": "source\n"
+    },
+    {
+      "path": "src/back\\slash.py",
+      "text": "source\n"
+    },
+    {
+      "path": "src/readme.md",
+      "text": "source\n"
+    },
+    {
+      "directory": true,
+      "path": "src/directory.py"
+    },
+    {
+      "directory": true,
+      "path": "empty"
+    },
+    {
+      "path": "home/home.py",
+      "text": "source\n"
+    },
+    {
+      "path": "link.py",
+      "symlink": "code.py"
+    },
+    {
+      "path": "linked",
+      "symlink": "src"
+    },
+    {
+      "path": "escape",
+      "symlink": "<outside>"
+    },
+    {
+      "path": "outside.py",
+      "symlink": "<outside>/secret.py"
+    },
+    {
+      "path": "broken.py",
+      "symlink": "absent.py"
+    },
+    {
+      "path": "loop.py",
+      "symlink": "loop.py"
+    },
+    {
+      "fifo": true,
+      "path": "src/pipe.py"
+    }
+  ],
+  "limits": {
+    "characters": 2048,
+    "glob_entries": 10000,
+    "items": 64
+  },
+  "selections": [
+    {
+      "input": "code.py",
+      "name": "relative-file",
+      "operation": "path",
+      "output": "<workspace>/code.py"
+    },
+    {
+      "input": ".",
+      "name": "root",
+      "operation": "path",
+      "output": "<workspace>"
+    },
+    {
+      "input": "<workspace>/code.py",
+      "name": "absolute-file",
+      "operation": "path",
+      "output": "<workspace>/code.py"
+    },
+    {
+      "input": "new/nested/code.py",
+      "name": "missing-suffix",
+      "operation": "path",
+      "output": "<workspace>/new/nested/code.py"
+    },
+    {
+      "input": "code.py/missing.py",
+      "name": "file-as-parent",
+      "operation": "path",
+      "output": "<workspace>/code.py/missing.py"
+    },
+    {
+      "input": "link.py",
+      "name": "internal-symlink",
+      "operation": "path",
+      "output": "<workspace>/code.py"
+    },
+    {
+      "input": "linked/a.py",
+      "name": "internal-directory-link",
+      "operation": "path",
+      "output": "<workspace>/src/a.py"
+    },
+    {
+      "input": "linked/../code.py",
+      "name": "link-dotdot-order",
+      "operation": "path",
+      "output": "<workspace>/code.py"
+    },
+    {
+      "input": "broken.py",
+      "name": "broken-symlink",
+      "operation": "path",
+      "output": "<workspace>/absent.py"
+    },
+    {
+      "error": "path resolves outside workspace: outside.py",
+      "error_class": "ValueError",
+      "input": "outside.py",
+      "name": "outside-link",
+      "operation": "path"
+    },
+    {
+      "error": "path resolves outside workspace: escape/secret.py",
+      "error_class": "ValueError",
+      "input": "escape/secret.py",
+      "name": "outside-static",
+      "operation": "path"
+    },
+    {
+      "input": "escape/../workspace/code.py",
+      "name": "outside-dotdot",
+      "operation": "path",
+      "output": "<workspace>/code.py"
+    },
+    {
+      "error": "Symlink loop from '<workspace>/loop.py'",
+      "error_class": "RuntimeError",
+      "input": "loop.py",
+      "name": "loop",
+      "operation": "path"
+    },
+    {
+      "error": "path resolves outside workspace: <outside>/secret.py",
+      "error_class": "ValueError",
+      "input": "<outside>/secret.py",
+      "name": "absolute-outside",
+      "operation": "path"
+    },
+    {
+      "error": "path resolves outside workspace: ../outside/secret.py",
+      "error_class": "ValueError",
+      "input": "../outside/secret.py",
+      "name": "parent-outside",
+      "operation": "path"
+    },
+    {
+      "input": "space name.py",
+      "name": "spaces-preserved",
+      "operation": "path",
+      "output": "<workspace>/space name.py"
+    },
+    {
+      "input": "~/home.py",
+      "name": "home-file",
+      "operation": "path",
+      "output": "<workspace>/home/home.py"
+    },
+    {
+      "input": "~",
+      "name": "home-root",
+      "operation": "path",
+      "output": "<workspace>/home"
+    },
+    {
+      "error": "glob syntax is accepted only by show_symbol's bounded basename matcher",
+      "error_class": "ValueError",
+      "input": "*.py",
+      "name": "wildcard-refusal",
+      "operation": "path"
+    },
+    {
+      "error": "glob syntax is accepted only by show_symbol's bounded basename matcher",
+      "error_class": "ValueError",
+      "input": "src/bracket[.py",
+      "name": "bracket-refusal",
+      "operation": "path"
+    },
+    {
+      "input": "*.py",
+      "name": "root-files",
+      "operation": "glob",
+      "output": [
+        "<workspace>/code.py",
+        "<workspace>/space name.py"
+      ]
+    },
+    {
+      "input": "src/*.py",
+      "name": "nested-files",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/a.py",
+        "<workspace>/src/back\\slash.py",
+        "<workspace>/src/bracket[.py",
+        "<workspace>/src/α.py"
+      ]
+    },
+    {
+      "input": "<workspace>/src/*.py",
+      "name": "absolute-glob",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/a.py",
+        "<workspace>/src/back\\slash.py",
+        "<workspace>/src/bracket[.py",
+        "<workspace>/src/α.py"
+      ]
+    },
+    {
+      "input": "src/?.py",
+      "name": "unicode-question",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/a.py",
+        "<workspace>/src/α.py"
+      ]
+    },
+    {
+      "input": "src/[aα].py",
+      "name": "bracket-class",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/a.py",
+        "<workspace>/src/α.py"
+      ]
+    },
+    {
+      "input": "src/[!a].py",
+      "name": "negated-class",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/α.py"
+      ]
+    },
+    {
+      "input": "src/[z-a].py",
+      "name": "descending-class",
+      "operation": "glob",
+      "output": []
+    },
+    {
+      "input": "src/bracket[.py",
+      "name": "malformed-bracket-literal",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/bracket[.py"
+      ]
+    },
+    {
+      "input": "src/back\\*.py",
+      "name": "literal-backslash",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/back\\slash.py"
+      ]
+    },
+    {
+      "input": "src/.*.py",
+      "name": "explicit-hidden",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/.hidden.py"
+      ]
+    },
+    {
+      "input": "src/[.]*.py",
+      "name": "class-does-not-expose-hidden",
+      "operation": "glob",
+      "output": []
+    },
+    {
+      "input": "src/*.PY",
+      "name": "case-sensitive",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/b.PY"
+      ]
+    },
+    {
+      "input": "src/*.rs",
+      "name": "no-match",
+      "operation": "glob",
+      "output": []
+    },
+    {
+      "input": "empty/*.py",
+      "name": "empty-directory",
+      "operation": "glob",
+      "output": []
+    },
+    {
+      "error": "glob static directory is unavailable or outside workspace: linked/*.py",
+      "error_class": "ValueError",
+      "input": "linked/*.py",
+      "name": "internal-directory-link-refusal",
+      "operation": "glob"
+    },
+    {
+      "error": "glob static directory is unavailable or outside workspace: escape/*.py",
+      "error_class": "ValueError",
+      "input": "escape/*.py",
+      "name": "outside-directory-link-refusal",
+      "operation": "glob"
+    },
+    {
+      "error": "glob static directory is unavailable or outside workspace: missing/*.py",
+      "error_class": "ValueError",
+      "input": "missing/*.py",
+      "name": "missing-static-directory",
+      "operation": "glob"
+    },
+    {
+      "error": "glob static directory is unavailable or outside workspace: code.py/*.py",
+      "error_class": "ValueError",
+      "input": "code.py/*.py",
+      "name": "file-static-directory",
+      "operation": "glob"
+    },
+    {
+      "input": "missing/../src/*.py",
+      "name": "clean-static-dotdot",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/a.py",
+        "<workspace>/src/back\\slash.py",
+        "<workspace>/src/bracket[.py",
+        "<workspace>/src/α.py"
+      ]
+    },
+    {
+      "input": "escape/../src/*.py",
+      "name": "clean-symlink-dotdot",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/a.py",
+        "<workspace>/src/back\\slash.py",
+        "<workspace>/src/bracket[.py",
+        "<workspace>/src/α.py"
+      ]
+    },
+    {
+      "error": "glob resolves outside workspace: ../outside/*.py",
+      "error_class": "ValueError",
+      "input": "../outside/*.py",
+      "name": "parent-outside",
+      "operation": "glob"
+    },
+    {
+      "error": "glob resolves outside workspace: <outside>/*.py",
+      "error_class": "ValueError",
+      "input": "<outside>/*.py",
+      "name": "absolute-outside",
+      "operation": "glob"
+    },
+    {
+      "error": "recursive glob '**' is not allowed",
+      "error_class": "ValueError",
+      "input": "src/**/*.py",
+      "name": "recursive-refusal",
+      "operation": "glob"
+    },
+    {
+      "error": "glob wildcards are allowed only in the final path component",
+      "error_class": "ValueError",
+      "input": "s*/a.py",
+      "name": "intermediate-refusal",
+      "operation": "glob"
+    },
+    {
+      "error": "glob wildcards are allowed only in the final path component",
+      "error_class": "ValueError",
+      "input": "*/../a.py",
+      "name": "dotdot-after-glob",
+      "operation": "glob"
+    },
+    {
+      "input": "src/*.py/",
+      "name": "trailing-slash",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/a.py",
+        "<workspace>/src/back\\slash.py",
+        "<workspace>/src/bracket[.py",
+        "<workspace>/src/α.py"
+      ]
+    },
+    {
+      "input": "src/*.py/.",
+      "name": "trailing-dot",
+      "operation": "glob",
+      "output": [
+        "<workspace>/src/a.py",
+        "<workspace>/src/back\\slash.py",
+        "<workspace>/src/bracket[.py",
+        "<workspace>/src/α.py"
+      ]
+    },
+    {
+      "input": "~/*.py",
+      "name": "home-files",
+      "operation": "glob",
+      "output": [
+        "<workspace>/home/home.py"
+      ]
+    },
+    {
+      "error": "paths must be non-empty strings without NUL bytes",
+      "error_class": "ValueError",
+      "input": "",
+      "name": "empty",
+      "operation": "path"
+    },
+    {
+      "error": "paths must be non-empty strings without NUL bytes",
+      "error_class": "ValueError",
+      "input": "code\u0000.py",
+      "name": "nul",
+      "operation": "path"
+    },
+    {
+      "error": "paths must be non-empty strings without NUL bytes",
+      "error_class": "ValueError",
+      "input": 42,
+      "name": "numeric",
+      "operation": "path"
+    },
+    {
+      "error": "paths must be non-empty strings without NUL bytes",
+      "error_class": "ValueError",
+      "input": null,
+      "name": "null",
+      "operation": "path"
+    },
+    {
+      "error": "paths must be at most 2048 characters",
+      "error_class": "ValueError",
+      "input": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "name": "too-long-ascii",
+      "operation": "path"
+    },
+    {
+      "input": "αααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααα",
+      "name": "unicode-character-bound",
+      "operation": "path",
+      "output": "<workspace>/αααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααα"
+    },
+    {
+      "error": "paths must be non-empty strings without NUL bytes",
+      "error_class": "ValueError",
+      "input": "",
+      "name": "empty",
+      "operation": "glob"
+    },
+    {
+      "error": "paths must be non-empty strings without NUL bytes",
+      "error_class": "ValueError",
+      "input": "code\u0000.py",
+      "name": "nul",
+      "operation": "glob"
+    },
+    {
+      "error": "paths must be non-empty strings without NUL bytes",
+      "error_class": "ValueError",
+      "input": 42,
+      "name": "numeric",
+      "operation": "glob"
+    },
+    {
+      "error": "paths must be non-empty strings without NUL bytes",
+      "error_class": "ValueError",
+      "input": null,
+      "name": "null",
+      "operation": "glob"
+    },
+    {
+      "error": "paths must be at most 2048 characters",
+      "error_class": "ValueError",
+      "input": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "name": "too-long-ascii",
+      "operation": "glob"
+    },
+    {
+      "input": "ααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααααα*",
+      "name": "unicode-character-bound",
+      "operation": "glob",
+      "output": []
+    },
+    {
+      "error": "glob directory contains more than 2 entries",
+      "error_class": "ValueError",
+      "input": "src/*.rs",
+      "max_entries": 2,
+      "name": "all-entries-before-filter",
+      "operation": "glob",
+      "timeout_seconds": 15
+    },
+    {
+      "error": "ast-outline glob expansion exceeded 1e-09s",
+      "error_class": "ValueError",
+      "input": "src/*.py",
+      "max_entries": 10000,
+      "name": "real-deadline",
+      "operation": "glob",
+      "timeout_seconds": 1e-09
+    },
+    {
+      "input": "empty/*.py",
+      "max_entries": 10000,
+      "name": "empty-directory-deadline",
+      "operation": "glob",
+      "output": [],
+      "timeout_seconds": 1e-09
+    }
+  ],
+  "workspaces": [
+    {
+      "input": "<workspace>",
+      "name": "root",
+      "output": "<workspace>"
+    },
+    {
+      "input": "<workspace>/linked",
+      "name": "directory-link",
+      "output": "<workspace>/src"
+    },
+    {
+      "error": "workspace is not a directory: <workspace>/code.py",
+      "error_class": "ValueError",
+      "input": "<workspace>/code.py",
+      "name": "file"
+    },
+    {
+      "error": "workspace is not a directory: <workspace>/missing",
+      "error_class": "ValueError",
+      "input": "<workspace>/missing",
+      "name": "missing"
+    },
+    {
+      "input": "~",
+      "name": "home",
+      "output": "<workspace>/home"
+    }
+  ]
+}

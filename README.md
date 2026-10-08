@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `626c759` plus full private AST source snapshot construction,
+Runtime review baseline: `7802901` plus AST path-selection Source contracts,
+plus full private AST source snapshot construction,
 plus anchored AST snapshot filesystem primitives,
 plus native three-state AST ignore matching
 and control decoding, plus AST ignore Source contracts,

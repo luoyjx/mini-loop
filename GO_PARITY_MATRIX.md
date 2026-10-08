@@ -1,5 +1,31 @@
 # Python to Go parity matrix
 
+## 2026-10-08 AST path-selection Source contracts
+
+Baseline 7802901. Export 155 captures 63 actual Source exact/glob selections,
+five workspace resolutions and twelve string-array admissions. The helper builds
+real files, directories, local/outside/broken/looping links and a POSIX FIFO, with
+operator HOME isolated to a prepared workspace directory. Results include missing
+suffixes, file-as-parent paths, symlink-before-dot-dot resolution, literal spaces,
+Unicode character lengths, hidden-name rules, Python fnmatch bracket/backslash
+semantics and malformed/descending character classes. Errors retain Source text.
+
+Only capacity/deadline configuration changes in three recipes; actual glob
+traversal and matching are not replaced. A real directory exceeding a tiny entry
+limit refuses even when nothing matches; a real 1ns deadline fails on entries,
+while an empty directory returns no matches because Source checks deadline during
+iteration. Ordinary paths follow canonical internal links; basename-glob static
+parents reject all symlinks. Public model handlers choose these branches; neither
+this fixture nor private selectors install semantic tools or execute a CLI.
+
+Native selection is the next implementation slice. Complete migration, AST payloads/
+runtime wiring, SQLite, diagnostics parser selection and G7 remain open.
+Validation: 155 Source exports current; all 41 AST-context tests pass; all 19
+scanning guards anchored; all 77 package modules state invariant posture.
+README outline and git diff --check pass. No runtime/module/default change was made;
+Go gates, full Python regression, mutation sweep and coverage were not refreshed.
+
+
 ## 2026-10-08 complete private AST source snapshot builder
 
 Baseline 626c759. Adapter.withSnapshot now combines the anchored filesystem layer
