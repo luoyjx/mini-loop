@@ -6756,6 +6756,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-attempts.json": _json_bytes(_workflow_attempt_contracts()),
         "python-workflow-completion.json": _json_bytes(_workflow_completion_contracts()),
         "python-workflow-outbox.json": _json_bytes(_workflow_outbox_contracts()),
+        "python-workflow-retention.json": _json_bytes(_workflow_retention_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -9731,6 +9732,135 @@ def _workflow_outbox_contracts() -> dict:
         rows.append(dict(recipe=recipe, output_json=state, repeat=repeated,
                          repeat_json=json.dumps(clean(store.list_outbox())), **outcome))
     return dict(rows=rows)
+
+
+def _workflow_retention_contracts() -> dict:
+    """Actual whole graph retention and bounded launch deduplication."""
+    import dataclasses
+    from mini_loop.run_context import RunContext
+    from mini_loop.workflows.models import Artifact, AttemptClaim, RunStatus, WorkflowDefinition, NodeStatus
+    from mini_loop.workflows.store import InMemoryWorkflowStore, MAX_TERMINAL_RUNS
+
+    definition = WorkflowDefinition.from_dict(dict(
+        name="wf", revision="base", return_from="a", nodes=[dict(id="a", kind="agent")],
+    ))
+    recipes = [dict(status=status.value, notice=notice, keep=0)
+               for status in RunStatus for notice in ("none", "pending", "claimed", "delivered")]
+    recipes.extend(dict(status="COMPLETED", notice=notice, keep=keep)
+                   for keep in (-1, 1, 2, 4, 100) for notice in ("delivered", "pending"))
+    recipes.extend([
+        dict(status="COMPLETED", notice="delivered", keep=0, node_status="RUNNING"),
+        dict(status="FAILED", notice="delivered", keep=0, node_status="PENDING"),
+        dict(status="COMPLETED", notice="expired", keep=0),
+    ])
+    rows = []
+    for recipe in recipes:
+        store = InMemoryWorkflowStore()
+        store.register_definition(definition)
+        runs, attempts, artifacts, ids = {}, {}, {}, {}
+        inputs = {}
+        for key, session, created in (("a", "s", 20), ("b", "s", 30), ("c", "s", 10), ("d", "foreign", 40)):
+            inputs[key] = dict(definition_revision="base", session_id=session, idempotency_key=key,
+                               args={}, run_context=RunContext(message_id="msg"))
+            if key == "d":
+                inputs[key]["parent_run_id"] = runs["a"]
+            run = store.create_run(**inputs[key])
+            runs[key] = run.run_id
+            ids[run.run_id] = "<run-" + key + ">"
+            store.transition_run(run.run_id, expected_version=0, to_status="RUNNING")
+            attempt = store.claim_nodes(run.run_id, [AttemptClaim(node_id="a", agent_id="worker", spawn_index=0)], expected_version=1)[0]
+            attempts[key] = attempt.attempt_id
+            ids[attempt.attempt_id] = "<attempt-" + key + ">"
+            store.start_attempt(attempt.attempt_id, expected_version=0)
+            artifact = Artifact.create(run_id=run.run_id, node_id="a", attempt_id=attempt.attempt_id,
+                                       value={"key": key}, schema={})
+            artifacts[key] = artifact.artifact_id
+            ids[artifact.artifact_id] = "<artifact-" + key + ">"
+            store.commit_attempt(attempt.attempt_id, expected_version=1, attempt_status="SUCCEEDED",
+                                 node_status="SUCCEEDED", artifact=artifact)
+            store.finalize_run(run.run_id, expected_version=3, final_artifact_id=artifact.artifact_id)
+            message = store.list_outbox(run_id=run.run_id)[0]
+            ids[message.message_id] = "<outbox-" + key + ">"
+            notice = recipe["notice"] if key == "a" else "delivered"
+            if notice == "none":
+                del store._outbox[message.message_id]
+                del store._outbox_keys[(run.run_id, message.kind)]
+            elif notice in ("claimed", "delivered", "expired"):
+                token, leased = store.claim_outbox(session_id=session, run_ids={run.run_id})
+                ids[token] = "<claim-" + key + ">"
+                if notice == "delivered":
+                    store.acknowledge_outbox(session_id=session, message_ids=[leased[0].message_id], claim_token=token)
+                elif notice == "expired":
+                    store._outbox[message.message_id] = dataclasses.replace(store._outbox[message.message_id], claimed_at=0)
+            stored = store._runs[run.run_id]
+            stored.created_at = created
+            stored.status = RunStatus(recipe["status"] if key == "a" else "RUNNING" if key == "c" else "COMPLETED")
+            store._outbox.update({mid: dataclasses.replace(m, created_at=created)
+                                 for mid, m in store._outbox.items() if m.run_id == run.run_id})
+        if "node_status" in recipe:
+            store._nodes[(runs["a"], "a")].status = NodeStatus(recipe["node_status"])
+
+        def clean(value):
+            if dataclasses.is_dataclass(value):
+                value = dataclasses.asdict(value)
+                for stamp in ("created_at", "started_at", "ended_at", "heartbeat_at", "claimed_at", "delivered_at"):
+                    if stamp in value and value[stamp] is not None:
+                        value[stamp] = 0
+            if isinstance(value, dict):
+                return {key: clean(child) for key, child in value.items()}
+            if isinstance(value, (list, tuple)):
+                return [clean(child) for child in value]
+            if isinstance(value, str):
+                return ids.get(value, value)
+            return value
+
+        def project():
+            return clean(dict(
+                runs=store.list_runs(),
+                nodes=[store.get_node(runs[key], "a") for key in runs if runs[key] in store._runs],
+                attempts=[store.get_attempt(attempts[key]) for key in attempts if attempts[key] in store._attempts],
+                artifacts=[store.get_artifact(artifacts[key]) for key in artifacts if artifacts[key] in store._artifacts],
+                outbox=store.list_outbox(),
+                launches=[[key, ids[store._launches[(inputs[key]["session_id"], key)][1]]]
+                          for key in inputs if (inputs[key]["session_id"], key) in store._launches],
+                outbox_keys=sorted([[ids[run], kind, ids[mid]] for (run, kind), mid in store._outbox_keys.items()]),
+                definitions=sorted(store._definitions), hashes=sorted(store._definition_hashes),
+            ))
+
+        pruned = store.prune_terminal_runs(keep=recipe["keep"])
+        state = project()
+        repeat = store.prune_terminal_runs(keep=recipe["keep"])
+        replay = store.create_run(**inputs["a"])
+        fresh = replay.run_id != runs["a"]
+        changed_error = ""
+        try:
+            store.create_run(**(inputs["a"] | {"args": {"changed": True}}))
+        except Exception as error:
+            changed_error = type(error).__name__
+        rows.append(dict(recipe=recipe, pruned=clean(pruned), output_json=json.dumps(state),
+                         repeat=clean(repeat), fresh_replay=fresh, replay_status=replay.status.value,
+                         changed_error=changed_error))
+
+    store = InMemoryWorkflowStore()
+    store.register_definition(definition)
+    first = None
+    for index in range(MAX_TERMINAL_RUNS + 1):
+        run = store.create_run(definition_revision="base", session_id="s", idempotency_key=str(index),
+                               args={}, run_context=RunContext(message_id="msg"))
+        stored = store._runs[run.run_id]
+        stored.status, stored.created_at = RunStatus.FAILED, index
+        if first is None:
+            first = run.run_id
+    pruned = store.prune_terminal_runs()
+    default = dict(limit=MAX_TERMINAL_RUNS, removed_first=pruned == [first], remaining=len(store._runs),
+                   repeat_count=len(store.prune_terminal_runs()), launch_first_retained=("s", "0") in store._launches)
+
+    # Stable IDs make source's timestamp tie-break observable without UUID noise.
+    store = InMemoryWorkflowStore()
+    store._runs = {key: dataclasses.replace(run, run_id=key, status=RunStatus.FAILED, created_at=1)
+                   for key in ("z", "a", "b")}
+    ties = store.prune_terminal_runs(keep=1)
+    return dict(rows=rows, default=default, ties=ties)
 
 
 if __name__ == "__main__":

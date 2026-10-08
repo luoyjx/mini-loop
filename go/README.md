@@ -2131,7 +2131,7 @@ calls and claim CAS contenders, pointer isolation, first-start retention, UUIDv4
 prefixes, tie ordering and atomic overflow refusal. Store does not authorize launch,
 check argument schemas or schedule dependencies/concurrency; service/engine owns
 those checks. Attempt settlement, artifact binding and outbox leases are described
-below; retention and live
+below; retention is described in its own section, and live
 manager/tools/HTTP installation remain open. No workflow persistence ships.
 
 ### Workflow attempt settlement
@@ -2146,8 +2146,8 @@ late and leaves partial attempt/artifact state. Native reproduces that operator-
 quirk; use validated VerificationStatus values. Nil selects the source default.
 Overflow checks precede publication; race tests elect one start/commit CAS winner.
 Cancellation, final completion and outbox lease settlement are described below;
-external delivery,
-retention and live service/engine installation remain open. This store is still process-local.
+external delivery and live service/engine installation remain open. Retention is
+described below. This store is still process-local.
 
 ### Workflow cancellation and completion
 
@@ -2164,8 +2164,8 @@ Snapshot 118 compares 131 actual source profiles and repeated full graph project
 Native tests cover cancellation with started/unstarted tasks, concurrent request and
 finalization CAS, single notification creation, counter overflow admission, delivery
 filters and timestamp isolation. Outbox leasing/ack/release is described below;
-whole graph pruning,
-engine/service/trusted origins/tools/HTTP and manager installation remain open.
+whole graph retention is described below. Engine/service/trusted origins/tools/HTTP
+and manager installation remain open.
 
 ### Workflow outbox leases and receipts
 
@@ -2185,5 +2185,22 @@ external delivery or durable/exactly-once guarantee in this process-local store.
 Snapshot 119 compares 106 actual source profiles and repeated complete outbox
 projections. Native race tests cover concurrent claims, stale-token fencing after
 expiry, projection isolation, concurrent enqueue deduplication, release/retry/ack
-and finalization's insertion/key indexes. Whole graph retention, live service/engine,
-trusted origins/tools/HTTP and manager composition remain open.
+and finalization's insertion/key indexes. Whole graph retention is described below;
+live service/engine, trusted origins/tools/HTTP and manager composition remain open.
+
+### Workflow terminal graph retention
+
+PruneTerminalRuns accepts an optional TerminalRunLimit; nil retains the newest
+MaxTerminalRuns (500) eligible runs, by creation timestamp and run ID. Eligibility
+requires terminal status and no undelivered notification, even if its claim expired.
+Negative source limits evict all eligible runs. The mutex protects removal of owned
+run/node/attempt/artifact/outbox records, launch/outbox keys and both insertion indexes.
+Definition/hash indexes and surviving parent references remain. A replayed evicted
+launch starts fresh; retained launch identities still reject changed payloads.
+Returned run IDs let a future service remove its own bookkeeping. No automatic
+retention hook is installed yet. Snapshot 120 compares 65 full graph profiles,
+default-500 eviction, timestamp ties and replay outcomes against actual source.
+Native race tests cover acknowledgment versus pruning, index completeness, active/
+unread retention and minimum native integer handling. Live origin/service/engine,
+tools/HTTP/parent append and manager activation remain open; no durable workflow
+backend or restart-resume guarantee ships.

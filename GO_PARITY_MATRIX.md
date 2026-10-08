@@ -1,5 +1,24 @@
 # Python to Go parity matrix
 
+## 2026-10-08 terminal-and-drained workflow graph retention
+
+Snapshot 120 executes prune_terminal_runs over 65 actual full graph profiles,
+default-500 eviction and stable-ID timestamp ties. Graphs are built through public
+registration/create/transition/claim/start/commit/finalize/outbox methods; status,
+notice removal, node state, timestamps and tie IDs are explicit fixture seeds.
+All finite run statuses, absent/pending/claimed/delivered/expired unread notices,
+negative/zero/positive bounds, repeated pruning and retained/evicted launch replay
+are compared. Full run/node/attempt/artifact/outbox/key/definition projections match.
+Native also removes its attempt/outbox insertion indexes, preserving survivor order.
+Definitions/hashes and other runs' parent metadata are retained, matching owner-based
+source cascading. Native minimum-int handling avoids overflow while preserving
+source negative-limit slicing. Race tests cover acknowledgment versus cleanup and
+assert every owned map/index remains complete. Returned IDs expose service cleanup;
+automatic service invocation, trusted live origins, engine/service/tools/HTTP,
+parent append and manager activation remain open. This is process-local retention,
+not durable storage or full migration completion.
+
+
 ## 2026-10-08 workflow outbox enqueue and lease settlement
 
 Snapshot 119 executes source enqueue_outbox, claim_outbox, acknowledge_outbox and

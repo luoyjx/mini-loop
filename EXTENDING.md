@@ -2393,7 +2393,7 @@ expected run version. Claims validate the entire batch before mutation and retai
 source budget/refusal order; dependency/concurrency scheduling is engine-owned.
 StoreError exposes finite source kinds/details; NativeRecordOverflow refuses int64
 version wrap before mutation. This store is not durable and does not authorize launch,
-check argument schemas, execute workers, deliver outbox messages or prune graphs yet.
+check argument schemas, execute workers or append external outbox messages.
 StartAttempt gates CLAIMED -> RUNNING by attempt version. CommitAttemptInput binds
 the attempt ID/version, two terminal enums, optional immutable Artifact, optional
 VerificationStatus and error. Nil verification selects not_applicable; an explicit
@@ -2427,5 +2427,13 @@ return records; repeated release can conflict after the first clears the lease.
 Delivered acknowledgment/release is a no-op after session admission. Only caller
 append success justifies acknowledgment; this store does not append externally.
 Native counter/ID allocation admission precedes publication; overflow does not
-publish partial cancellation/finalization. Pruning and trusted live origin adaptation
-remain open; retention must remove attempt/outbox insertion indexes with the graph.
+publish partial cancellation/finalization. PruneTerminalRuns accepts optional named
+TerminalRunLimit; nil selects MaxTerminalRuns (500). It retains newest terminal
+runs whose outbox is fully delivered; pending/claimed/expired-but-unacknowledged
+notifications spare the run. Negative source limits remove all eligible runs.
+Pruning atomically removes owned maps, launch/outbox keys and both insertion indexes,
+then returns run IDs for service bookkeeping. Ownership is by run_id, not parent
+references; surviving child metadata and reusable definition/hash indexes remain.
+Replaying an evicted session/key starts fresh; replaying a retained one preserves
+its payload conflict boundary. Service installation and trusted live origin adaptation
+remain open; this callable library does not schedule pruning automatically.

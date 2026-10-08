@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `bb726d1` plus workflow outbox enqueue/lease/acknowledgment/release;
+reviewed **2026-10-08** (Go baseline `d593d14` plus terminal-and-drained workflow graph retention;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1448,7 +1448,12 @@ enqueue/lease/acknowledgment/release profiles and repeated state projections.
 Enqueue deduplicates run/kind; bounded claims select in insertion order before
 sorting results and do not mark delivery. Session-scoped acknowledgment/release
 retain source sequential effects on a later refusal. Caller append must precede
-acknowledgment; this store does not perform external delivery. Retention pruning,
+acknowledgment; this store does not perform external delivery. Snapshot 120 compares
+65 whole graph retention profiles, the default 500-run bound and timestamp ties.
+PruneTerminalRuns evicts only terminal runs without unread notifications, removing
+owned nodes/attempts/artifacts/outbox/keys/launches and both insertion indexes under
+one mutex. Parent references in surviving runs remain historical metadata. Evicted
+launch keys start fresh on replay, making deduplication a retention window. Live
 execution and trusted live workflow launch adaptation remain pending. This library is
 not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and

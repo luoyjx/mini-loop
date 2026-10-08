@@ -1,5 +1,65 @@
 # Go port plan
 
+## 2026-10-08 terminal-and-drained workflow graph retention
+
+Baseline d593d14. W3C2 adds named TerminalRunLimit, MaxTerminalRuns (500) and
+PruneTerminalRuns. Nil keeps the default; explicit negative limits preserve source
+all-eligible eviction while avoiding native minimum-int subtraction overflow.
+Eligibility is terminal status plus no undelivered outbox, independent of lease age
+or node status. Timestamp/ID ordering determines oldest eligible runs. One mutex
+covers selection and complete removal of run/node/attempt/artifact/outbox records,
+outbox/launch keys and native attempt/outbox insertion indexes. Cascading scans
+each owned map once rather than once per evicted run; survivor order is preserved.
+Definition/hash indexes remain reusable. Parent references in other runs remain
+historical metadata; ownership is exact run_id, not recursive parent traversal.
+Evicted launch keys start a fresh run on replay; retained keys still reject changed
+payloads. Returned IDs let a future service clear its parallel launch-turn bookkeeping.
+No automatic service pruning hook or live workflow runtime is installed yet.
+
+Snapshot 120 builds graphs using actual source public methods, then applies explicit
+status/node/notice/time seeds. Sixty-five profiles compare full run/node/attempt/
+artifact/outbox/launch/outbox-key/definition/hash projections, pruned ID order,
+repeated cleanup and retained/evicted replay/conflict outcomes. A source 501-run
+profile verifies the default 500 bound and launch-key removal; stable-ID thin records
+make equal timestamp ordering observable without UUID noise. Native tests additionally
+cover both insertion indexes, getter behavior after eviction, minimum native limit,
+and concurrent acknowledgment/pruning without removing unread or active runs.
+Focused workflow race passed; no dependencies or Python runtime modules changed.
+
+Validation: `go test ./... -count=1 -timeout=180s`, `go vet ./...` and
+`go test -race ./... -count=1 -timeout=180s` all passed, alongside focused workflow
+race. All 120 source exports are current (dependency deprecation warnings only);
+all 19 scan guards are anchored. Full Python regression passed: 2,155 tests,
+28 skips, 24 subtests and 3 dependency deprecation warnings in 97.41 seconds.
+`git diff --check` and README outline passed. Python package invariants/guard checks
+were not rerun: no package module or guarded Python runtime behavior changed.
+Architecture regeneration passed all 9 checks, zero errors/warnings. Visual review
+remains skipped after the previous access denial; no visual approval is claimed.
+Specification SHA256: `1adfda0ba39597381ea5a3a570f7eb1215b863348ba0bdad1edad54cc97f66e2`;
+HTML SHA256: `5d49f8b0bb29415c8647c0bae3ef1d92a7f0005141e40fefd88a241a24c0ce96`.
+README canonical
+runtime topology reviewed: this remains an uninstalled process-local library.
+Overall coverage was not refreshed; the prior 90.47% statement figure belongs to
+d696498 and does not establish current coverage or migration completion.
+
+Next W4-W6 ports trusted live origins, scheduler/engine/controller workers, workflow
+service/tools/HTTP/parent notification append and manager activation. MCP, native
+session SQLite, runtime profiles and full G7 remain open. The complete Python-to-Go
+port is unfinished; no durable workflow backend or restart-resume is inferred.
+
+The current source structure narrows the next implementation sequence:
+
+- W4A: lower WorkflowRunner and engine `_inputs_for`, `_execute_locked` and
+  `_execute_attempt` into closed input/submission records, then differential
+  scheduling, attempt-semaphore, cancellation and settlement contracts.
+- W4B: adapt FreshAgentRunner's isolated read_file/glob/return_artifact catalog
+  and live context_resolver; decoded runmeta snapshots must not mint authority.
+- W5: port owned launch/status/wait/cancel and parent notification append/receipt
+  flow, including pruning returned IDs from parallel launch-turn bookkeeping.
+- W6: install optional workflow service/tools/HTTP in manager composition with
+  truthful defaults and cross-language end-to-end evidence.
+
+
 ## 2026-10-08 workflow outbox enqueue, leasing and settlement
 
 Baseline bb726d1. W3C1 adds named EnqueueOutboxInput, ClaimOutboxInput, OutboxLease
