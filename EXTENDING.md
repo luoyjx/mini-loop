@@ -2628,8 +2628,13 @@ Native producers still emit twelve named variants. SessionEventRecord's explicit
 MarshalWorkflowArchiveJSON encoder preserves Source's escaped archival/SSE scalar
 vocabulary and masks decoded keys/values before escaping. Standard MarshalJSON stays
 strict. Owned SSE catch-up re-decodes these records before delivery, preserving scope
-and sequence validation. Permissive constructor metadata, trajectory scalar fidelity
-and native SQLite remain pending. Owned result injection and
+and sequence validation. TrajectoryRecord.MarshalArchiveJSON passes inert historical
+payloads to the concrete writer, which applies content privacy before legacy UTF-8
+encoding. Redacted surrogate text may disappear; surviving surrogate text/keys fail
+the append. Native scanners and filtered iterators retain nonfinite payloads.
+Owned JSON downloads use archival encoding; ordinary JSON details remain strict.
+Permissive constructor metadata, legacy ledger/HTML readers and native SQLite remain
+pending. Owned result injection and
 workflow HTTP routes are described below. Stores and callbacks retain their existing
 cooperative and ownership requirements; an injected store is not proof of native SQLite support.
 

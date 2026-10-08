@@ -24,6 +24,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/luoyjx/mini-loop/go/agent"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/workspace"
 )
 
@@ -153,14 +154,19 @@ func (s *Store) write(id agent.TrajectoryID, payload []byte) error {
 	if err != nil {
 		return err
 	}
-	if !utf8.Valid(payload) || !json.Valid(payload) {
+	if !utf8.Valid(payload) {
+		return ErrInvalid
+	}
+	value, err := jsonvalue.Decode(string(payload))
+	if err != nil {
 		return ErrInvalid
 	}
 	if !s.capture {
-		payload, err = protect(payload, "")
-		if err != nil {
-			return err
-		}
+		value = protectValue(value, "")
+	}
+	payload, err = value.MarshalLegacyUTF8()
+	if err != nil {
+		return err
 	}
 	if len(payload) > MaxRecordBytes {
 		return fmt.Errorf("record exceeds %d bytes", MaxRecordBytes)
@@ -203,7 +209,7 @@ func (s *Store) Start(start agent.TrajectoryStart) (agent.TrajectoryID, error) {
 	return id, nil
 }
 func (s *Store) Append(id agent.TrajectoryID, event agent.TrajectoryRecord) error {
-	payload, err := json.Marshal(event)
+	payload, err := event.MarshalArchiveJSON()
 	if err != nil {
 		return err
 	}
@@ -284,7 +290,11 @@ func (s *Store) scanBounded(id agent.TrajectoryID, visit func([]byte, string) er
 		if !utf8.Valid(line) {
 			return start, end, counts, partial, ErrInvalid
 		}
-		if !json.Valid(line) {
+		classification, decodeErr := scanEnvelope(line)
+		if decodeErr != nil {
+			if errors.Is(decodeErr, ErrInvalid) {
+				return start, end, counts, partial, ErrInvalid
+			}
 			partial = true
 			continue
 		}
@@ -295,7 +305,7 @@ func (s *Store) scanBounded(id agent.TrajectoryID, visit func([]byte, string) er
 			Error      json.RawMessage `json:"error"`
 			Denied     bool            `json:"denied"`
 		}
-		if err = json.Unmarshal(line, &envelope); err != nil {
+		if err = json.Unmarshal(classification, &envelope); err != nil {
 			return start, end, counts, partial, ErrInvalid
 		}
 		if !found {
@@ -464,7 +474,7 @@ func (s *Store) JSON(id agent.TrajectoryID, limit int64) ([]byte, error) {
 		return nil, ErrTooLarge
 	}
 	metadataJSON := json.RawMessage(`{}`)
-	events := make([]json.RawMessage, 0)
+	events := make([]jsonvalue.Value, 0)
 	seen := int64(0)
 	start, end, counts, partial, err := s.scanBounded(id, func(line []byte, kind string) error {
 		seen += int64(len(line) + 1)
@@ -480,7 +490,11 @@ func (s *Store) JSON(id agent.TrajectoryID, limit int64) ([]byte, error) {
 			}
 		}
 		if kind == "event" {
-			events = append(events, append(json.RawMessage(nil), line...))
+			value, err := jsonvalue.Decode(string(line))
+			if err != nil {
+				return err
+			}
+			events = append(events, value)
 		}
 		return nil
 	}, limit)
@@ -494,7 +508,7 @@ func (s *Store) JSON(id agent.TrajectoryID, limit int64) ([]byte, error) {
 		detail = end.Error
 	}
 	// This DTO only encodes an HTTP/file JSON document, never live event state.
-	return json.Marshal(struct {
+	encoded, err := json.Marshal(struct {
 		Schema       string                  `json:"schema_version"`
 		ID           agent.TrajectoryID      `json:"id"`
 		TrajectoryID agent.TrajectoryID      `json:"trajectory_id"`
@@ -512,9 +526,25 @@ func (s *Store) JSON(id agent.TrajectoryID, limit int64) ([]byte, error) {
 		Error        *string                 `json:"error"`
 		Metadata     json.RawMessage         `json:"metadata"`
 		Metrics      agent.TrajectoryMetrics `json:"metrics"`
-		Events       []json.RawMessage       `json:"events"`
+		Events       []jsonvalue.Value       `json:"events"`
 		Partial      bool                    `json:"partial"`
-	}{start.Schema, id, id, start.Trace, start.Group, start.Session, start.Owner, start.RunIndex, summary.Status, start.StartedAt, summary.EndedAt, summary.DurationMS, start.Input, output, detail, metadataJSON, summary.Metrics, events, summary.Partial})
+	}{start.Schema, id, id, start.Trace, start.Group, start.Session, start.Owner, start.RunIndex, summary.Status, start.StartedAt, summary.EndedAt, summary.DurationMS, start.Input, output, detail, metadataJSON, summary.Metrics, []jsonvalue.Value{}, summary.Partial})
+	if err != nil {
+		return nil, err
+	}
+	document, err := jsonvalue.Decode(string(encoded))
+	if err != nil {
+		return nil, err
+	}
+	fields := make([]jsonvalue.Field, 0, len(document.Keys()))
+	for _, name := range document.Keys() {
+		child, _ := document.Lookup(name)
+		if name == "events" {
+			child = jsonvalue.ArrayValue(events)
+		}
+		fields = append(fields, jsonvalue.Field{Name: name, Value: child})
+	}
+	return jsonvalue.ObjectValue(fields).MarshalLegacyUTF8()
 }
 func (s *Store) Stream(ctx context.Context, id agent.TrajectoryID, out io.Writer) error {
 	path, err := s.path(id)

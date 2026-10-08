@@ -1,5 +1,50 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native workflow trajectory scalar files
+
+Baseline 50715c8 (Source snapshot 135 preparation). TrajectoryRecord.MarshalArchiveJSON
+now hands immutable historical workflow payloads to the real file writer. The writer
+applies content privacy before legacy UTF-8 encoding: nonfinite numbers survive;
+redacted surrogate text can disappear; surviving surrogate text/keys fail without
+appending a record. Ordinary strict JSON encoders remain unchanged.
+
+Native scanners classify records from closed values while retaining original event
+bytes. Summary metrics, document assembly, streaming export and filtered iteration
+now retain nonfinite payloads instead of silently skipping valid Source records.
+The privacy transform uses the closed Value variants, preserving integer/float
+identity and Source redaction labels, including floats and surrogate character counts.
+Owned JSON downloads use archival UTF-8 semantics; ordinary JSON details remain
+strict. Size, ownership, sequence/provenance and append-lock boundaries remain in place.
+
+Actual native files are compared against all ten Source privacy/write recipes,
+including append failure, completed JSONL records, full documents, summaries and
+filtered iteration. Forty actual Source HTTP outcomes match native routes: ordinary
+nonfinite details fail with 500; downloads remain available; foreign owners get 404.
+Successful native JSON HTTP bodies are also compared with the Source document.
+These are real native trajectory file tests, not proof of native session SQLite.
+
+Validation: focused trajectory/scalar/UTF-8 race tests; full Go tests with shared
+coverage; full Go race tests (-count=1 -timeout=180s); go vet ./... passed. Strengthened
+HTTP document equality assertions passed their focused race gate after full gates.
+All 135 Source exports current; all 19 scan guards anchored; full Python regression:
+2,155 passed, 28 skipped, 24 subtests, three dependency warnings in 72.34s.
+README outline and git diff --check passed. No dependencies or Python runtime modules
+changed; Python invariant/guard sweeps were not rerun.
+
+Fresh Go statement coverage: 20,997/23,272 (90.22%), merging duplicate source blocks
+by maximum hit count across -coverpkg=./... test binaries. Profile:
+/tmp/mini-loop-workflow-trajectory-coverage.out. Python coverage was not refreshed;
+these statement percentages do not measure feature migration completion.
+Architecture baseline, canonical Mermaid, boundary text and generated map are updated.
+Archify passed 9/9 showcase checks with zero errors/warnings. Specification SHA256
+48e047ea58cbadbfcd55e023b899daa7b55bfca5b7bd633a9ecad98afc68633e;
+HTML SHA256 794747982f5277915bf63e06824ea457f3d98bb09ec2a6cc29f70e416c3c7d65.
+Visual review remains skipped after prior access denial. Legacy ledger/HTML consumers,
+permissive trajectory/workflow metadata and historical escaped-surrogate seed profiles,
+remaining malformed/transport profiles, MCP, native session SQLite and full G7 remain
+pending. Next archive slice must compare Source ledger/view behavior for these payloads.
+The complete Python-to-Go port stays open.
+
 ## 2026-10-08 workflow trajectory contract preparation
 
 Baseline 164d5c8. Source snapshot 135 records ten actual trajectory file/privacy

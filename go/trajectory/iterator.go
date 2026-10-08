@@ -3,9 +3,9 @@ package trajectory
 import (
 	"bufio"
 	"context"
-	"encoding/json"
 	"errors"
 	"github.com/luoyjx/mini-loop/go/agent"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"os"
 	"unicode/utf8"
 )
@@ -44,15 +44,14 @@ func (s *Store) VisitRecords(ctx context.Context, id agent.TrajectoryID, query a
 		if !utf8.Valid(line) {
 			return ErrInvalid
 		}
-		if !json.Valid(line) {
+		value, decodeErr := jsonvalue.Decode(string(line))
+		if decodeErr != nil {
 			continue
 		}
 		if query.Types != nil {
-			var record struct{ Type *string }
-			if json.Unmarshal(line, &record) != nil {
-				return ErrInvalid
-			}
-			if record.Type == nil || !selected[*record.Type] {
+			typeValue, _ := value.Lookup("type")
+			kind, ok := typeValue.Text()
+			if !ok || !selected[kind] {
 				continue
 			}
 		}

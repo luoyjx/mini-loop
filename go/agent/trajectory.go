@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/protocol"
 )
 
@@ -143,6 +144,33 @@ type TrajectoryRecord struct {
 	Record  SessionEventRecord
 	details trajectoryDetails
 	masker  TextMasker
+}
+
+// MarshalArchiveJSON prepares observational payloads for the trajectory writer.
+// Historical scalars survive until that writer applies privacy and UTF-8 policy.
+func (record TrajectoryRecord) MarshalArchiveJSON() ([]byte, error) {
+	if record.Record.Event.workflow.observation == nil {
+		return record.MarshalJSON()
+	}
+	var mask func(string) string
+	if record.masker != nil {
+		mask = record.masker.MaskText
+	}
+	data, err := record.Record.MarshalWorkflowArchiveJSON(mask)
+	if err != nil {
+		return nil, err
+	}
+	value, err := jsonvalue.Decode(string(data))
+	if err != nil {
+		return nil, err
+	}
+	fields := make([]jsonvalue.Field, 0, len(value.Keys())+1)
+	for _, name := range value.Keys() {
+		child, _ := value.Lookup(name)
+		fields = append(fields, jsonvalue.Field{Name: name, Value: child})
+	}
+	fields = append(fields, jsonvalue.Field{Name: "record_type", Value: jsonvalue.TextValue("event")})
+	return jsonvalue.AppendLegacyDefault(jsonvalue.ObjectValue(fields))
 }
 
 func (record TrajectoryRecord) MarshalJSON() ([]byte, error) {

@@ -2404,8 +2404,13 @@ SessionEventRecord.MarshalWorkflowArchiveJSON encoder supplies Source SSE/archiv
 vocabulary; standard MarshalJSON stays strict. Owned catch-up still validates
 session/order and re-decodes every row before emitting escaped TCP SSE data.
 Source SQLite accepts nonfinite values, while surrogate writes degrade without
-preventing escaped SSE publication. Native SQL behavior, trajectory scalar fidelity
-and permissive header profiles remain pending. Owned later-turn injection is described
+preventing escaped SSE publication. Snapshot 135 adds ten actual Source trajectory
+file/privacy recipes and forty HTTP outcomes. Concrete native files now apply content
+privacy before legacy UTF-8 encoding, preserve nonfinite payloads through scan/summary,
+JSON assembly and filtered iteration, and refuse surviving surrogate text/keys.
+Source-compatible JSON downloads accept archival scalars while ordinary JSON details
+stay strict. Native SQL behavior, legacy ledger/HTML consumers and permissive header
+profiles remain pending. Owned later-turn injection is described
 below. Defaults remain off.
 
 

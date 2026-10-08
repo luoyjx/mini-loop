@@ -261,8 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `3b3a0be` plus legacy workflow payload decoding
-and Source-compatible archive/SSE scalar output,
+Runtime review baseline: `50715c8` plus workflow scalar trajectory files,
+privacy-before-UTF-8 encoding and archival JSON downloads,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -377,7 +377,7 @@ flowchart LR
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>escaped inspectors · embedded CSS / filter JS"]
-        GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>append-only files · no session restore"]
+        GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival scalars<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
@@ -1537,7 +1537,13 @@ key collisions through actual Source session capture, SQLite and the observe rou
 Go restores these inert payload values and emits them through owned TCP SSE catch-up;
 standard JSON serialization still refuses historical scalars. Source SQLite accepts
 nonfinite values but degrades surrogate writes while SSE can publish escaped text.
-Native Go SQLite, trajectory scalar fidelity and permissive header profiles remain pending.
+Snapshot 135 compares ten Source trajectory file/privacy recipes and forty actual
+HTTP outcomes. Native file append, scanning, summaries, JSON assembly and filtered
+iteration preserve nonfinite payloads. Content privacy runs before UTF-8 encoding;
+redacted surrogate text can be written, while surviving surrogate keys/text fail
+without appending bytes. Owned JSON downloads retain archival scalars, while ordinary
+JSON details stay strict. Native Go SQLite, legacy ledger/HTML consumers and
+permissive header profiles remain pending.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

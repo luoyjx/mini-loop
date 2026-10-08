@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/luoyjx/mini-loop/go/agent"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/trajectory"
 )
 
@@ -153,7 +154,11 @@ func (s *Server) trajectoryDocument(w http.ResponseWriter, r *http.Request, expo
 		}
 		return
 	}
-	data, err = recordingJSON(s, json.RawMessage(data))
+	if export {
+		data, err = trajectoryExportJSON(s, data)
+	} else {
+		data, err = recordingJSON(s, json.RawMessage(data))
+	}
 	if err != nil {
 		writeJSON(s, w, 500, ErrorResponse{"recording projection failed"})
 		return
@@ -163,6 +168,25 @@ func (s *Server) trajectoryDocument(w http.ResponseWriter, r *http.Request, expo
 		w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.json\"", id))
 	}
 	w.Write(data)
+}
+
+// Source downloads use archival json.dumps semantics, while ordinary detail
+// responses retain their strict JSON boundary. Both mask before escaping.
+func trajectoryExportJSON(s *Server, data []byte) (result []byte, err error) {
+	defer func() {
+		if recover() != nil {
+			result = nil
+			err = fmt.Errorf("trajectory export projection failed")
+		}
+	}()
+	value, err := jsonvalue.Decode(string(data))
+	if err != nil {
+		return nil, err
+	}
+	if masker := s.manager.RecordingMasker(); masker != nil {
+		value = value.MapStrings(masker.MaskText)
+	}
+	return value.MarshalLegacyUTF8()
 }
 func commaBytes(size int64) string {
 	text := strconv.FormatInt(size, 10)

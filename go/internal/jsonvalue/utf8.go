@@ -3,8 +3,13 @@ package jsonvalue
 // MarshalUTF8 matches Python ensure_ascii=False with compact separators. It
 // preserves integer/float identity and rejects nonfinite and surrogate values.
 // Existing ASCII archival renderers remain unchanged.
-func (v Value) MarshalUTF8() ([]byte, error) { return appendUTF8(nil, v) }
-func appendUTF8(out []byte, v Value) ([]byte, error) {
+func (v Value) MarshalUTF8() ([]byte, error) { return appendUTF8(nil, v, false) }
+
+// MarshalLegacyUTF8 matches Python archival ensure_ascii=False: nonfinite
+// numbers are retained, but unpaired surrogate text cannot become UTF-8 bytes.
+func (v Value) MarshalLegacyUTF8() ([]byte, error) { return appendUTF8(nil, v, true) }
+
+func appendUTF8(out []byte, v Value, legacy bool) ([]byte, error) {
 	switch v.kind {
 	case Text:
 		if surrogateText(v.text) {
@@ -18,7 +23,7 @@ func appendUTF8(out []byte, v Value) ([]byte, error) {
 				out = append(out, ',')
 			}
 			var err error
-			out, err = appendUTF8(out, item)
+			out, err = appendUTF8(out, item, legacy)
 			if err != nil {
 				return nil, err
 			}
@@ -36,14 +41,14 @@ func appendUTF8(out []byte, v Value) ([]byte, error) {
 			out = appendTextUTF8(out, m.name)
 			out = append(out, ':')
 			var err error
-			out, err = appendUTF8(out, m.value)
+			out, err = appendUTF8(out, m.value, legacy)
 			if err != nil {
 				return nil, err
 			}
 		}
 		return append(out, '}'), nil
 	default:
-		return appendValue(out, v, false)
+		return appendValue(out, v, legacy)
 	}
 }
 func appendTextUTF8(out []byte, text string) []byte {
