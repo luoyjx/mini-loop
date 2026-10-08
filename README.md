@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `60dbc6e` plus AST decimal conversion Source contracts,
+Runtime review baseline: `60a1ce3` plus native AST decimal conversion faults,
+plus AST decimal conversion Source contracts,
 plus AST Launcher environment selection,
 plus AST HTTP Source contracts,
 plus explicit runtime AST model tools,
@@ -1299,8 +1300,13 @@ metrics and partial/ambiguity/no-match precedence. All 65 actual Source observat
 replay: 61 compare exact ASCII/UTF-8 JSON and four preserve ordinary TypeError text.
 Detached records/warnings and strict standard-JSON nonfinite refusal are tested.
 Actual semantic subprocess execution, explicit model-tool runtime selection and
-Launcher configuration are implemented below. Extreme CPython recursion/digit-fault wording and
-lone-surrogate string projection still need final profile work; current ToJSON enforces a UTF-8 boundary.
+Launcher configuration are implemented below. CPython recursion/stack limits and lone-surrogate string projection still need final
+profile work; current ToJSON enforces a UTF-8 boundary. AST decimal integer failures
+now preserve Source ValueError wording and digit counts. Exact metric sums exceeding
+4300 output digits fail before warning publication. Twelve Source invocation/public
+recipes exercise precedence and error text; native public operations clean frozen
+snapshots before returning Source no-probe error results. Shared decoder profiles
+remain unchanged.
 
 Native astcontext Adapter now implements RepoMap, FileOutline, ShowSymbol and
 SymbolReferences using closed density/view/reference-kind options and typed request

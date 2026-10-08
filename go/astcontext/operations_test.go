@@ -66,6 +66,14 @@ func operationTestChild() {
 			os.Exit(14)
 		}
 	}
+	if payload := os.Getenv("AST_PAYLOAD_FILE"); payload != "" {
+		data, err := os.ReadFile(payload)
+		if err != nil {
+			os.Exit(15)
+		}
+		_, _ = os.Stdout.Write(data)
+		return
+	}
 	_, _ = fmt.Fprintf(os.Stdout, `{"tool":"ast-outline","schema_version":1,"command":%q,"files":[],"results":[]}`, os.Args[1])
 }
 func TestPublicOperationsReplayActualSourceContracts(t *testing.T) {

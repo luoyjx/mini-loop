@@ -258,7 +258,11 @@ func classifyPayload(op Operation, probe Probe, process processResult, includeIm
 	}
 	if failure := jsonsyntax.Scan([]byte(process.stdout), jsonsyntax.Limits{Containers: 1000, IntegerDigits: 4300}); failure != nil {
 		if failure.Code() == jsonsyntax.IntegerLimit {
-			return Result{}, jsonvalue.ErrInteger
+			prefix := jsonvalue.TextPrefix(process.stdout, failure.Position())
+			raw := process.stdout[len(prefix):]
+			length := jsonsyntax.NumberLength([]byte(raw))
+			digits := len(strings.TrimPrefix(raw[:length], "-"))
+			return Result{}, PayloadIntegerError{digits: digits}
 		}
 		if failure.Code() == jsonsyntax.NestingLimit {
 			return Result{}, jsonvalue.ErrDepth
@@ -334,10 +338,18 @@ func classifyPayload(op Operation, probe Probe, process processResult, includeIm
 	parseErrors := metricTotal(v, "error_count", "parse_errors")
 	truncated := metricTotal(v, "truncated_count")
 	if parseErrors.Sign() != 0 {
-		p.Warnings = append(p.Warnings, "ast_parse_errors:"+parseErrors.String())
+		text, err := metricText(parseErrors)
+		if err != nil {
+			return Result{}, err
+		}
+		p.Warnings = append(p.Warnings, "ast_parse_errors:"+text)
 	}
 	if truncated.Sign() != 0 {
-		p.Warnings = append(p.Warnings, "ast_matches_truncated:"+truncated.String())
+		text, err := metricText(truncated)
+		if err != nil {
+			return Result{}, err
+		}
+		p.Warnings = append(p.Warnings, "ast_matches_truncated:"+text)
 	}
 	p.Status = Applied
 	if parseErrors.Sign() != 0 || truncated.Sign() != 0 {

@@ -1,5 +1,35 @@
 # Go port plan
 
+## 2026-10-08 native AST decimal conversion faults
+
+Baseline 60a1ce3. PayloadIntegerError now preserves the Source ValueError text for
+oversized decimal JSON integers, including the unsigned digit count and Unicode
+scanner offsets. It unwraps the existing typed jsonvalue.ErrInteger cause. AST
+metric totals remain exact big.Int values; converting warning totals above 4300
+digits fails with the distinct CPython output-conversion message. Error-envelope
+precedence and ignored negative/float metrics are retained. Shared JSON decoding
+and other callers' profiles are unchanged. Public operations convert these faults
+to the Source no-probe error result after private snapshot cleanup.
+
+Twelve export-160 cases compare exact invocation error class/text or ASCII result,
+and execute real native public file_outline children with original cwd, immutable
+0400 copies and post-fault snapshot removal. Tests retain the admitted maximum,
+signed/nested parsing, Unicode prefixes, syntax/error-envelope precedence, both
+metric-warning families and large float tokens. Integer handling is kept in its
+own file; no host-interface domain or service fields were introduced.
+
+Validation: full Go tests and vet pass; twelve focused conversions pass, including
+focused race/vet after the source-only move into integer.go. Full
+go test -race ./... -count=1 -timeout=180s passes. Exporter --check confirms
+160 files; all 19 scan guards pass.
+README outline and git diff --check pass. Runtime topology, ownership, authority,
+defaults and public tool declarations are unchanged, so the architecture specification
+and generated HTML remain at the previous validated delivery. Python full regression,
+coverage and mutation sweep are not refreshed. The previous Go coverage is 90.03%
+and predates this slice. Exact CPython recursion/stack limits and lone-surrogate
+text projection remain open alongside SQLite, diagnostic parser selection and G0-G7.
+
+
 ## 2026-10-08 AST decimal conversion Source contracts
 
 Baseline 60dbc6e. Export 160 captures twelve real AST CLI-output recipes at the

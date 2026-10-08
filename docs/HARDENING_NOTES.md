@@ -8097,3 +8097,13 @@ output cap use Source settings rather than library defaults. No test passthrough
 variables enter production configuration. Exact HTTP replay covers disabled
 catalogues and readonly path/integrity/version/output/timeout failure outcomes.
 The existing per-call integrity check is not an atomic executable pin.
+
+### Go migration — AST decimal conversion failures retain cleanup
+
+AST oversized JSON integers preserve Source ValueError text through a named error
+that unwraps the internal integer-limit cause. Exact positive metric sums can cross
+the 4300-digit output boundary even when each input integer was admitted; warning
+publication then fails with the Source output-conversion message. Public operations
+catch both conversion failures only after callback-scoped snapshot cleanup, returning
+a no-probe error result. Error-envelope and syntax precedence remain Source-shaped.
+Other decoder profiles and maximum capture limits are unchanged.
