@@ -419,3 +419,35 @@ func TestRetentionConcurrentAckAndPrune(t *testing.T) {
 	}
 	checkRetentionIndexes(t, s)
 }
+
+func TestRetentionPinsProtectWholeGraphUntilReleased(t *testing.T) {
+	seed := retentionStore(t, retentionRecipe{Status: RunCompleted, Notice: "delivered"})
+	id := seed.Runs["a"]
+	views, err := NewServiceViews(seed.Store)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := views.RecordLaunchTurn(id, 2); err != nil {
+		t.Fatal(err)
+	}
+	keep := TerminalRunLimit(0)
+	views.PruneTerminalRunsExcept(&keep, []RunID{id, id, "missing"})
+	if _, err := views.Status(id, nil); err != nil {
+		t.Fatal("pinned graph was removed:", err)
+	}
+	if _, err := seed.Store.GetArtifact(seed.Artifacts["a"]); err != nil {
+		t.Fatal("pinned artifact was removed:", err)
+	}
+	if _, ok := views.launchTurns[id]; !ok {
+		t.Fatal("pinned launch bookkeeping was removed")
+	}
+	checkRetentionIndexes(t, seed.Store)
+	views.PruneTerminalRuns(&keep)
+	if _, err := seed.Store.GetRun(id); err == nil {
+		t.Fatal("released terminal graph survived pruning")
+	}
+	if _, ok := views.launchTurns[id]; ok {
+		t.Fatal("released launch bookkeeping survived pruning")
+	}
+	checkRetentionIndexes(t, seed.Store)
+}

@@ -1,5 +1,20 @@
 # Go port plan
 
+## 2026-10-08 workflow publication retention pins
+
+Baseline b4aac9e. Store and ServiceViews now expose PruneTerminalRunsExcept
+with named RunID exclusions. Native service tasks can retain their whole graph
+until terminal event/outbox publication has joined. Unpinned records retain the
+source terminal-and-drained predicates, ordering and default limits. Duplicate or
+unknown pins are harmless; releasing a pin permits normal cascade cleanup and
+removes parallel launch-turn bookkeeping. This is process-local retention only.
+
+Validation: focused retention tests and race tests passed, including whole-graph
+pin/release and bookkeeping cleanup. Runtime topology and feature defaults are
+unchanged; no new source fixture or dependency. Owned service composition remains
+the next unit. README architecture baseline reviewed in this commit.
+
+
 ## 2026-10-08 typed workflow tool inputs and journal contracts
 
 Baseline 640aace. W5B2 extends the closed ToolInput union with concrete WorkflowInput

@@ -13,6 +13,13 @@ const MaxTerminalRuns TerminalRunLimit = 500
 // Nil selects MaxTerminalRuns. Source negative limits evict every eligible run.
 // Returned IDs let a service remove its parallel per-run bookkeeping.
 func (s *InMemoryStore) PruneTerminalRuns(keep *TerminalRunLimit) []RunID {
+	return s.PruneTerminalRunsExcept(keep, nil)
+}
+
+// PruneTerminalRunsExcept keeps graph records still owned by a native service
+// task through terminal event/outbox publication. Source predicates and ordering
+// are unchanged for the remaining records; exclusions are process-local pins.
+func (s *InMemoryStore) PruneTerminalRunsExcept(keep *TerminalRunLimit, pinned []RunID) []RunID {
 	limit := MaxTerminalRuns
 	if keep != nil {
 		limit = *keep
@@ -24,6 +31,9 @@ func (s *InMemoryStore) PruneTerminalRuns(keep *TerminalRunLimit) []RunID {
 		return pruned
 	}
 	unread := map[RunID]bool{}
+	for _, id := range pinned {
+		unread[id] = true
+	}
 	for _, m := range s.outbox {
 		if m.DeliveredAt == nil {
 			unread[m.RunID] = true

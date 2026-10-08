@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `ad71e05` plus the Python directory split, its
+Runtime review baseline: `b4aac9e` plus process-local workflow retention pins and the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
 model requests, token metering, four-layer context compaction and typed subagent

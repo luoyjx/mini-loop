@@ -130,9 +130,13 @@ func (v *ServiceViews) RecordLaunchTurn(id RunID, turn ParentTurn) error {
 	return nil
 }
 func (v *ServiceViews) PruneTerminalRuns(limit *TerminalRunLimit) []RunID {
+	return v.PruneTerminalRunsExcept(limit, nil)
+}
+
+func (v *ServiceViews) PruneTerminalRunsExcept(limit *TerminalRunLimit, pinned []RunID) []RunID {
 	v.mu.Lock()
 	defer v.mu.Unlock()
-	removed := v.store.PruneTerminalRuns(limit)
+	removed := v.store.PruneTerminalRunsExcept(limit, pinned)
 	for _, id := range removed {
 		delete(v.launchTurns, id)
 	}
