@@ -1,0 +1,184 @@
+{
+  "rows": [
+    {
+      "created": 1,
+      "factory": false,
+      "fork": false,
+      "second_initial": {
+        "connected": {},
+        "names": [
+          "connect_mcp"
+        ]
+      },
+      "steps": [
+        {
+          "closed": [],
+          "point": "connected"
+        },
+        {
+          "closed": [],
+          "point": "first_deleted"
+        },
+        {
+          "closed": [
+            0
+          ],
+          "point": "second_deleted"
+        },
+        {
+          "closed": [
+            0
+          ],
+          "point": "stopped"
+        }
+      ],
+      "stop_only": false
+    },
+    {
+      "created": 1,
+      "factory": false,
+      "fork": false,
+      "second_initial": {
+        "connected": {},
+        "names": [
+          "connect_mcp"
+        ]
+      },
+      "steps": [
+        {
+          "closed": [],
+          "point": "connected"
+        },
+        {
+          "closed": [
+            0
+          ],
+          "point": "stopped"
+        }
+      ],
+      "stop_only": true
+    },
+    {
+      "created": 2,
+      "factory": true,
+      "fork": false,
+      "second_initial": {
+        "connected": {},
+        "names": [
+          "connect_mcp"
+        ]
+      },
+      "steps": [
+        {
+          "closed": [],
+          "point": "connected"
+        },
+        {
+          "closed": [
+            0
+          ],
+          "point": "first_deleted"
+        },
+        {
+          "closed": [
+            0,
+            1
+          ],
+          "point": "second_deleted"
+        },
+        {
+          "closed": [
+            0,
+            1
+          ],
+          "point": "stopped"
+        }
+      ],
+      "stop_only": false
+    },
+    {
+      "created": 2,
+      "factory": true,
+      "fork": false,
+      "second_initial": {
+        "connected": {},
+        "names": [
+          "connect_mcp"
+        ]
+      },
+      "steps": [
+        {
+          "closed": [],
+          "point": "connected"
+        },
+        {
+          "closed": [
+            0,
+            1
+          ],
+          "point": "stopped"
+        }
+      ],
+      "stop_only": true
+    },
+    {
+      "created": 1,
+      "factory": false,
+      "fork": true,
+      "second_initial": {
+        "connected": {},
+        "names": [
+          "connect_mcp"
+        ]
+      },
+      "steps": [
+        {
+          "closed": [],
+          "point": "connected"
+        },
+        {
+          "closed": [],
+          "point": "first_deleted"
+        },
+        {
+          "closed": [
+            0
+          ],
+          "point": "second_deleted"
+        },
+        {
+          "closed": [
+            0
+          ],
+          "point": "stopped"
+        }
+      ],
+      "stop_only": false
+    },
+    {
+      "created": 2,
+      "factory": true,
+      "fork": true,
+      "second_initial": {
+        "connected": {},
+        "names": [
+          "connect_mcp"
+        ]
+      },
+      "steps": [
+        {
+          "closed": [],
+          "point": "connected"
+        },
+        {
+          "closed": [
+            0,
+            1
+          ],
+          "point": "stopped"
+        }
+      ],
+      "stop_only": true
+    }
+  ]
+}

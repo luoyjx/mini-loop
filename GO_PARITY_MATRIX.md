@@ -1,5 +1,17 @@
 # Python to Go parity matrix
 
+## 2026-10-08 MCP manager lifecycle Source contracts
+
+Baseline 4bd7041. Snapshot 143 runs six actual Source SessionManager recipes,
+using real connect_mcp Agent turns, shared concrete clients or per-session
+factories, completed-boundary forks, deletion cleanup drains and repeated stop.
+It records close identities after each operation, created-client counts and the
+second session's initial MCP catalogue/connected state. Shared clients survive
+first deletion and close with the last holder; stop deduplicates client identity.
+Forks start with unconnected manager tools rather than inherited live clients.
+`export_go_contracts.py --check` verified all 143 files. Native managed connection
+ownership is the next implementation slice; no Source runtime modules changed.
+
 ## 2026-10-08 native raw-session MCP connection and inventory publication
 
 Baseline 1c77855 (Source snapshot 142). RuntimeConfig.MCPTools explicitly adds the
