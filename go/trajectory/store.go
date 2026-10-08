@@ -32,6 +32,8 @@ const MaxRecordBytes = 64 * 1024 * 1024
 
 var ErrMissing = errors.New("trajectory not found")
 var ErrInvalid = errors.New("invalid trajectory")
+var ErrMetadataShape = errors.New("historical trajectory metadata is not an object")
+
 var ErrTooLarge = errors.New("trajectory exceeds JSON size limit")
 var idPattern = regexp.MustCompile(`^traj_[0-9a-f]{24}$`)
 
@@ -52,31 +54,35 @@ type Store struct {
 	newID          func() (agent.TrajectoryID, error)
 }
 type header struct {
-	RecordType string                   `json:"record_type"`
-	Schema     string                   `json:"schema_version"`
-	ID         agent.TrajectoryID       `json:"trajectory_id"`
-	Trace      agent.TrajectoryID       `json:"trace_id"`
-	Group      agent.SessionID          `json:"group_id"`
-	Session    agent.SessionID          `json:"session"`
-	Owner      *agent.OwnerID           `json:"owner"`
-	RunIndex   int                      `json:"run_index"`
-	StartedAt  float64                  `json:"started_at"`
-	Input      *string                  `json:"input"`
-	Metadata   agent.TrajectoryMetadata `json:"metadata"`
+	RecordType           string                          `json:"record_type"`
+	Schema               string                          `json:"schema_version"`
+	ID                   agent.TrajectoryID              `json:"trajectory_id"`
+	Trace                agent.TrajectoryID              `json:"trace_id"`
+	Group                agent.SessionID                 `json:"group_id"`
+	Session              agent.SessionID                 `json:"session"`
+	Owner                *agent.OwnerID                  `json:"owner"`
+	RunIndex             int                             `json:"run_index"`
+	StartedAt            float64                         `json:"started_at"`
+	Input                *string                         `json:"input"`
+	Metadata             agent.TrajectoryMetadata        `json:"metadata"`
+	Archive              *agent.TrajectorySummaryArchive `json:"-"`
+	MetadataShapeInvalid bool                            `json:"-"`
 }
 type terminal struct {
-	RecordType string                   `json:"record_type"`
-	ID         agent.TrajectoryID       `json:"trajectory_id"`
-	Trace      agent.TrajectoryID       `json:"trace_id"`
-	Group      agent.SessionID          `json:"group_id"`
-	Session    agent.SessionID          `json:"session"`
-	Owner      *agent.OwnerID           `json:"owner"`
-	Status     agent.TrajectoryStatus   `json:"status"`
-	EndedAt    *float64                 `json:"ended_at"`
-	DurationMS *float64                 `json:"duration_ms"`
-	Output     *string                  `json:"output"`
-	Error      *string                  `json:"error"`
-	Metrics    *agent.TrajectoryMetrics `json:"metrics"`
+	RecordType        string                          `json:"record_type"`
+	ID                agent.TrajectoryID              `json:"trajectory_id"`
+	Trace             agent.TrajectoryID              `json:"trace_id"`
+	Group             agent.SessionID                 `json:"group_id"`
+	Session           agent.SessionID                 `json:"session"`
+	Owner             *agent.OwnerID                  `json:"owner"`
+	Status            agent.TrajectoryStatus          `json:"status"`
+	EndedAt           *float64                        `json:"ended_at"`
+	DurationMS        *float64                        `json:"duration_ms"`
+	Output            *string                         `json:"output"`
+	Error             *string                         `json:"error"`
+	Metrics           *agent.TrajectoryMetrics        `json:"metrics"`
+	Archive           *agent.TrajectorySummaryArchive `json:"-"`
+	HasArchiveMetrics bool                            `json:"-"`
 }
 
 func New(config Config) (*Store, error) {
@@ -196,7 +202,7 @@ func (s *Store) Start(start agent.TrajectoryStart) (agent.TrajectoryID, error) {
 	}
 	owner := start.Owner
 	input := start.Input
-	payload, err := json.Marshal(header{"trajectory_start", agent.TrajectorySchema, id, id, start.Session, start.Session, &owner, start.RunIndex, s.now(), &input, start.Metadata})
+	payload, err := json.Marshal(header{RecordType: "trajectory_start", Schema: agent.TrajectorySchema, ID: id, Trace: id, Group: start.Session, Session: start.Session, Owner: &owner, RunIndex: start.RunIndex, StartedAt: s.now(), Input: &input, Metadata: start.Metadata})
 	if err != nil {
 		return "", err
 	}
@@ -232,7 +238,7 @@ func (s *Store) Finish(id agent.TrajectoryID, finish agent.TrajectoryFinish) err
 		}
 		duration = &rounded
 	}
-	payload, err := json.Marshal(terminal{"trajectory_end", id, id, start.Group, start.Session, start.Owner, finish.Status, &now, duration, finish.Output, finish.Error, &counts})
+	payload, err := json.Marshal(terminal{RecordType: "trajectory_end", ID: id, Trace: id, Group: start.Group, Session: start.Session, Owner: start.Owner, Status: finish.Status, EndedAt: &now, DurationMS: duration, Output: finish.Output, Error: finish.Error, Metrics: &counts})
 	if err != nil {
 		return err
 	}
@@ -316,6 +322,26 @@ func (s *Store) scanBounded(id agent.TrajectoryID, visit func([]byte, string) er
 			if decodeErr != nil || json.Unmarshal(typed, &start) != nil {
 				return start, end, counts, partial, ErrInvalid
 			}
+			archival, decodeErr := jsonvalue.Decode(string(line))
+			if decodeErr != nil {
+				return start, end, counts, partial, ErrInvalid
+			}
+			metadata, _ := archival.Lookup("metadata")
+			start.MetadataShapeInvalid = metadata.Truth() && metadata.Kind() != jsonvalue.Object
+			start.Archive = &agent.TrajectorySummaryArchive{}
+			start.Archive.Model, _ = metadata.Lookup("model")
+			start.Archive.Workspace, _ = metadata.Lookup("workspace")
+			start.Archive.Build, _ = metadata.Lookup("build")
+			start.Archive.StartedAt, _ = archival.Lookup("started_at")
+			text := func(value jsonvalue.Value) *string {
+				if text, ok := value.Text(); ok {
+					return &text
+				}
+				return nil
+			}
+			start.Metadata.Model = text(start.Archive.Model)
+			start.Metadata.Workspace = text(start.Archive.Workspace)
+			start.Metadata.Build = text(start.Archive.Build)
 			var members map[string]json.RawMessage
 			json.Unmarshal(typed, &members)
 			if _, ok := members["owner"]; !ok {
@@ -338,6 +364,14 @@ func (s *Store) scanBounded(id agent.TrajectoryID, visit func([]byte, string) er
 			if decodeErr != nil || json.Unmarshal(typed, &value) != nil {
 				return start, end, counts, partial, ErrInvalid
 			}
+			archival, decodeErr := jsonvalue.Decode(string(line))
+			if decodeErr != nil {
+				return start, end, counts, partial, ErrInvalid
+			}
+			value.Archive = &agent.TrajectorySummaryArchive{}
+			value.Archive.Metrics, value.HasArchiveMetrics = archival.Lookup("metrics")
+			value.Archive.EndedAt, _ = archival.Lookup("ended_at")
+			value.Archive.DurationMS, _ = archival.Lookup("duration_ms")
 			if value.Status == "" {
 				value.Status = agent.TrajectoryCompleted
 			}
@@ -407,12 +441,34 @@ func (s *Store) summary(id agent.TrajectoryID, start header, end *terminal, coun
 			preview = &text
 		}
 	}
-	return agent.TrajectorySummary{ID: id, TrajectoryID: id, TraceID: start.Trace, GroupID: start.Group, Session: start.Session, Owner: start.Owner, RunIndex: start.RunIndex, Status: status, StartedAt: start.StartedAt, EndedAt: ended, DurationMS: duration, Metrics: counts, Partial: partial || end == nil, InputPreview: preview, Model: start.Metadata.Model, Workspace: start.Metadata.Workspace, Build: start.Metadata.Build}
+	var archive *agent.TrajectorySummaryArchive
+	if start.Archive != nil {
+		copy := *start.Archive
+		archive = &copy
+		archive.Metrics = jsonvalue.ObjectValue([]jsonvalue.Field{
+			{Name: "event_count", Value: jsonvalue.IntegerValue(int64(counts.EventCount))},
+			{Name: "model_calls", Value: jsonvalue.IntegerValue(int64(counts.ModelCalls))},
+			{Name: "tool_calls", Value: jsonvalue.IntegerValue(int64(counts.ToolCalls))},
+			{Name: "tool_errors", Value: jsonvalue.IntegerValue(int64(counts.ToolErrors))},
+			{Name: "errors", Value: jsonvalue.IntegerValue(int64(counts.Errors))},
+		})
+		if end != nil && end.Archive != nil {
+			archive.EndedAt = end.Archive.EndedAt
+			archive.DurationMS = end.Archive.DurationMS
+			if end.HasArchiveMetrics {
+				archive.Metrics = end.Archive.Metrics
+			}
+		}
+	}
+	return agent.TrajectorySummary{ID: id, TrajectoryID: id, TraceID: start.Trace, GroupID: start.Group, Session: start.Session, Owner: start.Owner, RunIndex: start.RunIndex, Status: status, StartedAt: start.StartedAt, EndedAt: ended, DurationMS: duration, Metrics: counts, Partial: partial || end == nil, InputPreview: preview, Model: start.Metadata.Model, Workspace: start.Metadata.Workspace, Build: start.Metadata.Build, Archive: archive}
 }
 func (s *Store) Summary(id agent.TrajectoryID) (agent.TrajectorySummary, error) {
 	start, end, counts, partial, err := s.scan(id, nil)
 	if err != nil {
 		return agent.TrajectorySummary{}, err
+	}
+	if start.MetadataShapeInvalid {
+		return agent.TrajectorySummary{}, ErrMetadataShape
 	}
 	return s.summary(id, start, end, counts, partial), nil
 }
@@ -425,6 +481,9 @@ func (s *Store) List(query agent.TrajectoryQuery) ([]agent.TrajectorySummary, er
 	for _, path := range paths {
 		id := agent.TrajectoryID(strings.TrimSuffix(filepath.Base(path), ".jsonl"))
 		row, err := s.Summary(id)
+		if errors.Is(err, ErrMetadataShape) {
+			return nil, err
+		}
 		if errors.Is(err, ErrMissing) {
 			continue
 		}

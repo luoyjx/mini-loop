@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"errors"
 	"fmt"
 	"github.com/luoyjx/mini-loop/go/traceview"
 	"net/http"
@@ -80,11 +81,34 @@ func (s *Server) listTrajectories(w http.ResponseWriter, r *http.Request) {
 			owned = append(owned, row)
 		}
 	}
-	writeJSON(s, w, 200, owned)
+	values := make([]jsonvalue.Value, 0, len(owned))
+	for _, row := range owned {
+		value, err := row.ArchiveValue()
+		if err != nil {
+			writeJSON(s, w, 500, ErrorResponse{"trajectory listing failed"})
+			return
+		}
+		values = append(values, value)
+	}
+	data, err := jsonvalue.AppendLegacy(nil, jsonvalue.ArrayValue(values))
+	if err == nil {
+		data, err = trajectoryDetailJSON(s, data)
+	}
+	if err != nil {
+		writeJSON(s, w, 500, ErrorResponse{"response encoding failed"})
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	w.Write(data)
 }
 func (s *Server) ownedTrajectory(w http.ResponseWriter, r *http.Request, store agent.TrajectoryReader) (agent.TrajectoryID, bool) {
 	id := agent.TrajectoryID(r.PathValue("trajectory_id"))
 	row, err := store.Summary(id)
+	if errors.Is(err, trajectory.ErrMetadataShape) {
+		writeJSON(s, w, 500, ErrorResponse{"trajectory summary failed"})
+		return "", false
+	}
 	if err != nil {
 		writeJSON(s, w, 404, ErrorResponse{fmt.Sprintf("No trajectory '%s'", id)})
 		return "", false

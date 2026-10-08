@@ -141,7 +141,7 @@ func Build(document []byte) (Ledger, error) {
 	if !present {
 		metrics, _ = value.Lookup("Metrics")
 	}
-	if metrics.Kind() != jsonvalue.Null && metrics.Kind() != jsonvalue.Object {
+	if metrics.Truth() && metrics.Kind() != jsonvalue.Object {
 		return out, ErrDocument
 	}
 	fields = append(fields, jsonvalue.Field{Name: "metrics", Value: metrics.Select("event_count", "model_calls", "tool_calls", "tool_errors", "errors")})

@@ -2641,8 +2641,14 @@ projection; embedding callers must choose strict JSON, archival download or fina
 encoding. Historical streaming summaries decode only their used fields; complete
 metadata/metrics and original scalar identities remain in the archival document.
 Ledger/file readers discard unused header fields before typed decoding. Source snapshot
-137 covers eleven legacy metadata recipes and fifty-five HTTP outcomes. Known metadata
-field types, constructor profiles and native SQLite remain pending. Owned result injection and
+137 covers eleven legacy metadata recipes and fifty-five HTTP outcomes. Snapshot 138
+adds forty summary recipes and 280 HTTP outcomes. TrajectorySummaryArchive keeps named
+closed observational metadata, metrics and timestamps beside concrete native producer
+settings/counters. ArchiveValue exposes an inert wire projection; standard MarshalJSON
+is strict. Lists filter owned rows before masking and strict UTF-8 encoding. Historical
+non-object metadata shape errors propagate from summary/list and owned admission;
+direct archive documents remain readable. Ledger metric conversions, constructor and
+timing/input/output profiles and native SQLite remain pending. Owned result injection and
 workflow HTTP routes are described below. Stores and callbacks retain their existing
 cooperative and ownership requirements; an injected store is not proof of native SQLite support.
 

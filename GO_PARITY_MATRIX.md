@@ -1,5 +1,55 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native historical summary field variants
+
+Baseline 801584b (Source snapshot 138). TrajectorySummaryArchive adds named closed
+model/workspace/build, metrics and timestamp values to read-side summaries. Writer
+metadata remains concretely typed. Native text projections and bounded integer
+counters remain available; full historical values use ArchiveValue. Standard summary
+MarshalJSON is strict, and HTTP owned lists filter before recursive recording masks
+and final strict UTF-8 encoding. Observations never configure model/workspace/build
+execution authority. No domain any/interface/map[string]any or RawMessage was added.
+
+Streaming scans retain only summary-relevant fields and terminal metrics, preserving
+source scalar identity without materializing event bodies. Invalid truthy non-object
+metadata is a distinct summary error: summary/list and owned admission fail as in
+Source, while direct document reads still succeed. Empty legacy metrics render with
+zero ledger totals; truthy non-object metrics retain their archive/list values but
+fail ledger construction. Existing JSON/HTML download policies and ownership/size/
+append-lock boundaries remain in place. Source errors propagate with native error
+messages; exhaustive error-body/exception-class parity is not claimed.
+
+Native tests compare forty complete Source documents, summaries/lists or their shape
+failures, direct HTML hashes and 280 actual Source HTTP outcomes. Successful list
+bodies and complete owned HTML response hashes match. Historical files are explicit
+seeds; this is not runtime-generated metadata or native session SQLite evidence.
+
+Validation: focused summary/metadata/archive/ledger race tests; full go test ./...
+with shared coverage; full race suite (-count=1 -timeout=180s); go vet ./... passed.
+The direct-page test passed its focused race gate after full gates. Original full
+validation handles became unavailable with no live processes; rerun gates have logs
+and exit code 0 in /tmp/mini-loop-summary-{go,python}-validation.{log,exit}.
+All 138 Source exports are current; all 19 source scan guards anchored. Full Python
+regression: 2,155 passed, 28 skipped, 24 subtests, three dependency warnings in 79.24s.
+README outline and git diff --check passed. No dependencies or Python runtime modules
+changed; Python invariant/guard sweeps were not rerun.
+
+Fresh Go statement coverage: 21,176/23,456 (90.28%), merging duplicate source blocks
+by maximum hit count across -coverpkg=./... test binaries. Profile:
+/tmp/mini-loop-trajectory-summary-coverage.out. Python coverage was not refreshed;
+statement coverage does not measure feature migration completion.
+
+README baseline, canonical Mermaid, boundary text, extension map and interactive
+architecture source/generated HTML are updated. Archify passed 9/9 showcase checks
+with zero errors/warnings. Specification SHA256:
+1c439f7adf6ae81b6a53be413ccf16293cc0cafe0b532718b35966b3eb5e5443.
+HTML SHA256: 6eb144818c64cf01de4455657d963eb63b73036b0c0e829f2c264f4e39490cb1.
+Visual review remains skipped after prior access denial. Ledger metric integer
+conversion/overflow profiles, permissive timing/input/output, model/tool scalar and
+transport profiles, MCP, native session SQLite and full G7 remain open. Next capture
+actual Source ledger metric conversions and timing/output behavior before extending
+those read-side fields. The complete Python-to-Go objective stays open.
+
 ## 2026-10-08 historical summary field contract preparation
 
 Baseline 4c48db4. Source snapshot 138 executes forty historical file recipes:

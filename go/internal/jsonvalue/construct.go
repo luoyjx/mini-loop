@@ -1,5 +1,7 @@
 package jsonvalue
 
+import "strconv"
+
 // Field is a named object member. Object construction retains insertion order;
 // repeated keys replace their value at the first key's position, as Python does.
 type Field struct {
@@ -10,6 +12,7 @@ type Field struct {
 func NullValue() Value               { return Value{} }
 func TextValue(text string) Value    { return Value{kind: Text, text: text} }
 func BoolValue(value bool) Value     { return Value{kind: Boolean, boolean: value} }
+func IntegerValue(value int64) Value { return Value{kind: Integer, text: strconv.FormatInt(value, 10)} }
 func FloatValue(value float64) Value { return Value{kind: Float, number: value} }
 func ArrayValue(items []Value) Value { return Value{kind: Array, items: append([]Value{}, items...)} }
 func ObjectValue(fields []Field) Value {

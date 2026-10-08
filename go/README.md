@@ -2424,7 +2424,14 @@ Streaming summaries select only used fields; archival JSON retains complete meta
 unknown metrics and original scalar identity. Ledger/file readers ignore unused root,
 header and terminal fields before typed decoding. Empty legacy metadata values and
 arbitrary inert metadata members match Source rendering and owned encoding boundaries.
-Known metadata field types and timing/input/output profiles still need further parity.
+Snapshot 138 compares forty historical summary field recipes and 280 HTTP outcomes.
+TrajectorySummaryArchive retains named closed metadata, metrics and timestamp values;
+producer settings and native scan counters keep their concrete types. Full archived
+summaries and lists preserve Source values, including unknown metrics. Owned lists
+filter rows before their masked strict UTF-8 projection. Truthy non-object metadata
+fails summary/list and owned admission while direct document reads remain available.
+Direct page and successful HTTP page/list contents match Source. Ledger metric
+conversion, timing/input/output profiles, native SQLite and full G7 remain pending.
 
 
 ## Owned workflow result injection

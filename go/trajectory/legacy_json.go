@@ -1,6 +1,10 @@
 package trajectory
 
-import "github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+import (
+	"encoding/json"
+
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+)
 
 // Only fields needed by a streaming classification enter its typed envelope.
 // The original record bytes remain available to visitors and document assembly.
@@ -42,13 +46,24 @@ func scanTypedRecord(line []byte, start bool) ([]byte, error) {
 	for _, name := range projection.Keys() {
 		child, _ := projection.Lookup(name)
 		if name == "metadata" {
-			if child.Kind() != jsonvalue.Object && child.Truth() {
-				return nil, ErrInvalid
-			}
-			child = child.Select("model", "workspace", "build")
+			// Historical summary fields are retained separately, not decoded into
+			// producer settings. Native text fields are restored from closed text.
+			continue
 		}
-		if name == "metrics" && child.Kind() == jsonvalue.Object {
-			child = child.Select("event_count", "model_calls", "tool_calls", "tool_errors", "errors")
+		if name == "metrics" {
+			counters := []jsonvalue.Field{}
+			for _, key := range []string{"event_count", "model_calls", "tool_calls", "tool_errors", "errors"} {
+				count, _ := child.Lookup(key)
+				if count.Kind() == jsonvalue.Integer {
+					if encoded, err := count.MarshalJSON(); err == nil {
+						var native int
+						if json.Unmarshal(encoded, &native) == nil {
+							counters = append(counters, jsonvalue.Field{Name: key, Value: count})
+						}
+					}
+				}
+			}
+			child = jsonvalue.ObjectValue(counters)
 		}
 		fields = append(fields, jsonvalue.Field{Name: name, Value: child})
 	}

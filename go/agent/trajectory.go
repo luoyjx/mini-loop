@@ -57,31 +57,33 @@ type TrajectoryMetrics struct {
 	Errors     int `json:"errors"`
 }
 type TrajectorySummary struct {
-	ID           TrajectoryID      `json:"id"`
-	TrajectoryID TrajectoryID      `json:"trajectory_id"`
-	TraceID      TrajectoryID      `json:"trace_id"`
-	GroupID      SessionID         `json:"group_id"`
-	Session      SessionID         `json:"session"`
-	Owner        *OwnerID          `json:"owner"`
-	RunIndex     int               `json:"run_index"`
-	Status       TrajectoryStatus  `json:"status"`
-	StartedAt    float64           `json:"started_at"`
-	EndedAt      *float64          `json:"ended_at"`
-	DurationMS   *float64          `json:"duration_ms"`
-	Metrics      TrajectoryMetrics `json:"metrics"`
-	Partial      bool              `json:"partial"`
-	InputPreview *string           `json:"input_preview"`
-	Model        *string           `json:"model"`
-	Workspace    *string           `json:"workspace"`
-	Build        *string           `json:"build"`
+	ID           TrajectoryID              `json:"id"`
+	TrajectoryID TrajectoryID              `json:"trajectory_id"`
+	TraceID      TrajectoryID              `json:"trace_id"`
+	GroupID      SessionID                 `json:"group_id"`
+	Session      SessionID                 `json:"session"`
+	Owner        *OwnerID                  `json:"owner"`
+	RunIndex     int                       `json:"run_index"`
+	Status       TrajectoryStatus          `json:"status"`
+	StartedAt    float64                   `json:"started_at"`
+	EndedAt      *float64                  `json:"ended_at"`
+	DurationMS   *float64                  `json:"duration_ms"`
+	Metrics      TrajectoryMetrics         `json:"metrics"`
+	Partial      bool                      `json:"partial"`
+	InputPreview *string                   `json:"input_preview"`
+	Model        *string                   `json:"model"`
+	Workspace    *string                   `json:"workspace"`
+	Build        *string                   `json:"build"`
+	Archive      *TrajectorySummaryArchive `json:"-"`
 }
 type TrajectoryQuery struct {
 	Session *SessionID
 	Limit   int
 }
 
-// Writer accepts masked, concrete records. Reader returns encoded JSON only at
-// the serialization boundary; no dynamic event payload is retained by a service.
+// Writer accepts masked, concrete records. Reader returns named summaries with
+// optional inert archive variants and encoded JSON at serialization boundaries.
+// Archived observations never enter executable settings or trusted context.
 type TrajectoryWriter interface {
 	Start(TrajectoryStart) (TrajectoryID, error)
 	Append(TrajectoryID, TrajectoryRecord) error
