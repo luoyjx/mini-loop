@@ -6495,6 +6495,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.workflow_launcher_contracts import workflow_launcher_contracts
     from tools.workflow_archive_contracts import workflow_archive_contracts
     from tools.workflow_legacy_archive_contracts import workflow_legacy_archive_contracts
+    from tools.workflow_trajectory_contracts import workflow_trajectory_contracts
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
         # composition root too, before importing the module.
@@ -6779,6 +6780,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-launcher.json": _json_bytes(workflow_launcher_contracts()),
         "python-workflow-archive.json": _json_bytes(workflow_archive_contracts()),
         "python-workflow-legacy-archive.json": _json_bytes(workflow_legacy_archive_contracts()),
+        "python-workflow-trajectory.json": _json_bytes(workflow_trajectory_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

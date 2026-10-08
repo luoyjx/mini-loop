@@ -1,5 +1,16 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow trajectory contract preparation
+
+Baseline 164d5c8. Source snapshot 135 records ten actual trajectory file/privacy
+recipes and forty FastAPI HTTP outcomes. Nonfinite payloads, surrogate text/keys,
+privacy-eliminated surrogates and nonfinite redaction labels are checked against
+real append results, summaries, documents, filtered iteration and completed files.
+Header timestamps and IDs are normalized; integer/float payload identity remains
+intact. The Source corpus proves JSONL/JSON downloads can retain archival numbers
+while ordinary detail responses reject them. It prepares the following native file
+implementation without claiming native session SQLite or complete G7 parity.
+
 ## 2026-10-08 historical workflow scalars and owned SSE
 
 Baseline 3b3a0be. Source snapshot 134 runs five actual WorkflowEvent recipes through
