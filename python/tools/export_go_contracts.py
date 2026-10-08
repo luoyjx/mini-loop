@@ -1397,7 +1397,7 @@ def _manager_contracts(scratch: Path) -> dict[str, object]:
             target.delete(session.id)
     core = manager("core")
     first, second = core.create(owner="first"), core.create(owner="second")
-    fields = ["status", "activity", "busy", "run_count", "permission_mode", "workspace_bound", "model", "message_count", "todos", "subscribers", "sink_error"]
+    fields = ["status", "activity", "busy", "run_count", "permission_mode", "workspace_bound", "model", "message_count", "todos", "subscribers", "sink_error", "workflows"]
     initial = {key: first.info()[key] for key in fields}
     shared = {"model": first.agent.semaphore is second.agent.semaphore,
               "tools": first.agent.tool_semaphore is second.agent.tool_semaphore,
@@ -1585,7 +1585,7 @@ def _fork_contracts(scratch: Path) -> dict[str, object]:
         history = copy.deepcopy(child.agent.messages)
         initial_state = {key:initial[key] for key in ("status", "activity", "busy", "cancel_reason",
                          "run_count", "permission_mode", "pending_steering", "workspace_bound",
-                         "model", "message_count", "todos", "subscribers", "forked_from")}
+                         "model", "message_count", "todos", "subscribers", "forked_from", "workflows")}
         initial_state["forked_from"] = lineage
         await child.run("what was the codeword?")
         source_events = [{"type":e["type"], "child":"child", "message_count":e["message_count"]}
@@ -6489,6 +6489,7 @@ def _manager_skill_commit_contracts(scratch: Path) -> dict:
 def _snapshot() -> dict[str, bytes]:
     from tools.workflow_tool_contracts import workflow_bound_tool_contracts
     from tools.manager_workflow_contracts import manager_workflow_contracts
+    from tools.workflow_session_contracts import workflow_session_contracts
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
         # composition root too, before importing the module.
@@ -6767,6 +6768,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-service.json": _json_bytes(_workflow_service_contracts()),
         "python-workflow-bound-tools.json": _json_bytes(workflow_bound_tool_contracts()),
         "python-manager-workflows.json": _json_bytes(manager_workflow_contracts()),
+        "python-workflow-session-events.json": _json_bytes(workflow_session_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

@@ -224,6 +224,7 @@
     "status": "idle",
     "subscribers": 0,
     "todos": [],
+    "workflows": [],
     "workspace_bound": false
   },
   "rows_independent": true,

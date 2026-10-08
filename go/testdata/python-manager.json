@@ -96,6 +96,7 @@
     "status": "idle",
     "subscribers": 0,
     "todos": [],
+    "workflows": [],
     "workspace_bound": false
   },
   "max_owners": 10000,
