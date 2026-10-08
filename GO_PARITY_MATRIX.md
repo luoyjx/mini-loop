@@ -1,5 +1,31 @@
 # Python to Go parity matrix
 
+## 2026-10-09 Agent observation adoption Source contracts
+
+Baseline `ef26580`. A separate helper captures 17 actual Agent._exec_tool calls
+through the real registry, efficiency runtime, hooks, action journal and masked RAM
+artifact store. The snapshots retain reducer inputs/query/budget, complete public
+receipt metrics, returned/display/observer outputs, call order, journal authority,
+remaining raw artifacts and cancellation. Only artifact entropy, receipt elapsed
+time and tool parent-span identity are fixed; no dispatcher or reducer runtime is
+replaced. Replay uses the same explicit message/tool identity.
+
+The corpus covers lossless/recoverable reduction, recovery-envelope inflation and
+discard, readonly/no-persistence/no-recovery-tool refusal, shadow/off, secret-emitting
+candidates/warnings, journal replay, denial, structured nonzero-exit command output,
+JSON/malformed JSON classification, component failure, cancellation and recovery-tool
+bypass. Journal results retain full masked authority; observers receive projections.
+The envelope guard rewrites applied receipt metrics to the actual final masked
+provider output and discards unused refs when the envelope is not smaller.
+Cancellation at this post-mask stage propagates while Source leaves the journal
+started; this behavior is captured, not silently changed by the fixture.
+
+Validation: 74 targeted Python efficiency tests, all 19 scan guards and the complete
+177-file exporter check pass. git diff --check passes. Python package modules and
+mutation anchors were unchanged; full Python regression and coverage were not
+refreshed. Native E6.3 observation adoption and E6.4 defaults/lifecycle remain open.
+
+
 ## 2026-10-09 typed Agent request guard and projection ledger
 
 Baseline `b9fe20f`. Session now runs the explicit request optimizer between response

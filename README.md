@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `b9fe20f` plus typed Agent request guard/projection ledger,
+Runtime review baseline: `ef26580` plus actual Agent observation adoption Source contracts,
 plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,
