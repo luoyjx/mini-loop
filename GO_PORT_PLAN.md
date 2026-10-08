@@ -1,5 +1,25 @@
 # Go port plan
 
+## 2026-10-09 AST text and provider encoding Source contracts
+
+Baseline 92b6536. Export 161 adds eight actual Source public AST operations and
+installed Tool.run observations. CLI JSON carries escaped lone high/low surrogates
+in fields, keys, warnings and error hints; paired emoji, Unicode/control characters
+and nonfinite numbers establish the admitted profile. Captures retain exact ASCII
+result JSON and the result string as surrogatepass hex, plus original cwd/argv and
+post-tool snapshot cleanup. Source to_json succeeds as a Python string in all eight
+cases. Strict UTF-8 encoding rejects five lone-surrogate cases.
+
+Each result is submitted through the actual AsyncAnthropic SDK and an in-memory
+HTTP transport. Lone surrogates raise UnicodeEncodeError before transport (zero
+requests); ordinary Unicode/nonfinite result text sends once. No network credentials
+or live model calls are involved. The first full export check flagged the existing
+unrelated child-background snapshot; an isolated child-background capture matches,
+and the repeated full --check passes all 161 exports. All 19 scan guards, README
+outline and git diff --check pass.
+Source runtime behavior is unchanged. Go text and byte-boundary alignment follows.
+
+
 ## 2026-10-08 native AST decimal conversion faults
 
 Baseline 60a1ce3. PayloadIntegerError now preserves the Source ValueError text for

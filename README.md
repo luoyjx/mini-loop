@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `60a1ce3` plus native AST decimal conversion faults,
+Runtime review baseline: `92b6536` plus AST text/provider encoding Source contracts,
+plus native AST decimal conversion faults,
 plus AST decimal conversion Source contracts,
 plus AST Launcher environment selection,
 plus AST HTTP Source contracts,

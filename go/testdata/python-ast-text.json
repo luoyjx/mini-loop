@@ -1,0 +1,220 @@
+{
+  "invocations": [
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "name": "high-surrogate",
+      "provider_calls": 0,
+      "provider_error": "UnicodeEncodeError",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"text\":\"\\ud800\"},\"output_bytes\":90}",
+      "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"text\":\"\\ud800\"}",
+      "text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c2274657874223a22eda080227d2c226f75747075745f6279746573223a39307d",
+      "text_json": "\"{\\\"status\\\":\\\"applied\\\",\\\"operation\\\":\\\"file_outline\\\",\\\"warnings\\\":[],\\\"probe\\\":{\\\"status\\\":\\\"applied\\\",\\\"version\\\":\\\"1.9.0\\\",\\\"homepage\\\":\\\"https://github.com/ast-outline/ast-outline\\\",\\\"schema_version\\\":1},\\\"data\\\":{\\\"tool\\\":\\\"ast-outline\\\",\\\"schema_version\\\":1,\\\"command\\\":\\\"outline\\\",\\\"files\\\":[{}],\\\"text\\\":\\\"\\ud800\\\"},\\\"output_bytes\\\":90}\"",
+      "utf8": false
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "name": "low-surrogate",
+      "provider_calls": 0,
+      "provider_error": "UnicodeEncodeError",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"text\":\"\\udfff\"},\"output_bytes\":90}",
+      "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"text\":\"\\udfff\"}",
+      "text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c2274657874223a22edbfbf227d2c226f75747075745f6279746573223a39307d",
+      "text_json": "\"{\\\"status\\\":\\\"applied\\\",\\\"operation\\\":\\\"file_outline\\\",\\\"warnings\\\":[],\\\"probe\\\":{\\\"status\\\":\\\"applied\\\",\\\"version\\\":\\\"1.9.0\\\",\\\"homepage\\\":\\\"https://github.com/ast-outline/ast-outline\\\",\\\"schema_version\\\":1},\\\"data\\\":{\\\"tool\\\":\\\"ast-outline\\\",\\\"schema_version\\\":1,\\\"command\\\":\\\"outline\\\",\\\"files\\\":[{}],\\\"text\\\":\\\"\\udfff\\\"},\\\"output_bytes\\\":90}\"",
+      "utf8": false
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "name": "surrogate-key",
+      "provider_calls": 0,
+      "provider_error": "UnicodeEncodeError",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"\\ud800\":\"value\"},\"output_bytes\":91}",
+      "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"\\ud800\":\"value\"}",
+      "text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c22eda080223a2276616c7565227d2c226f75747075745f6279746573223a39317d",
+      "text_json": "\"{\\\"status\\\":\\\"applied\\\",\\\"operation\\\":\\\"file_outline\\\",\\\"warnings\\\":[],\\\"probe\\\":{\\\"status\\\":\\\"applied\\\",\\\"version\\\":\\\"1.9.0\\\",\\\"homepage\\\":\\\"https://github.com/ast-outline/ast-outline\\\",\\\"schema_version\\\":1},\\\"data\\\":{\\\"tool\\\":\\\"ast-outline\\\",\\\"schema_version\\\":1,\\\"command\\\":\\\"outline\\\",\\\"files\\\":[{}],\\\"\\ud800\\\":\\\"value\\\"},\\\"output_bytes\\\":91}\"",
+      "utf8": false
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "name": "warning-surrogate",
+      "provider_calls": 0,
+      "provider_error": "UnicodeEncodeError",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[\"\\ud800\"],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":[\"\\ud800\"]},\"output_bytes\":93}",
+      "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"notes\":[\"\\ud800\"]}",
+      "text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b22eda080225d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c226e6f746573223a5b22eda080225d7d2c226f75747075745f6279746573223a39337d",
+      "text_json": "\"{\\\"status\\\":\\\"applied\\\",\\\"operation\\\":\\\"file_outline\\\",\\\"warnings\\\":[\\\"\\ud800\\\"],\\\"probe\\\":{\\\"status\\\":\\\"applied\\\",\\\"version\\\":\\\"1.9.0\\\",\\\"homepage\\\":\\\"https://github.com/ast-outline/ast-outline\\\",\\\"schema_version\\\":1},\\\"data\\\":{\\\"tool\\\":\\\"ast-outline\\\",\\\"schema_version\\\":1,\\\"command\\\":\\\"outline\\\",\\\"files\\\":[{}],\\\"notes\\\":[\\\"\\ud800\\\"]},\\\"output_bytes\\\":93}\"",
+      "utf8": false
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "name": "error-hint-surrogate",
+      "provider_calls": 0,
+      "provider_error": "UnicodeEncodeError",
+      "result_json": "{\"status\":\"error\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"message\":\"\\udfff\",\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error\":{\"hint\":\"\\udfff\"}},\"output_bytes\":100}",
+      "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"error\":{\"hint\":\"\\udfff\"}}",
+      "text_hex": "7b22737461747573223a226572726f72222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c226d657373616765223a22edbfbf222c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c226572726f72223a7b2268696e74223a22edbfbf227d7d2c226f75747075745f6279746573223a3130307d",
+      "text_json": "\"{\\\"status\\\":\\\"error\\\",\\\"operation\\\":\\\"file_outline\\\",\\\"warnings\\\":[],\\\"probe\\\":{\\\"status\\\":\\\"applied\\\",\\\"version\\\":\\\"1.9.0\\\",\\\"homepage\\\":\\\"https://github.com/ast-outline/ast-outline\\\",\\\"schema_version\\\":1},\\\"message\\\":\\\"\\udfff\\\",\\\"data\\\":{\\\"tool\\\":\\\"ast-outline\\\",\\\"schema_version\\\":1,\\\"command\\\":\\\"outline\\\",\\\"files\\\":[{}],\\\"error\\\":{\\\"hint\\\":\\\"\\udfff\\\"}},\\\"output_bytes\\\":100}\"",
+      "utf8": false
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "name": "paired-emoji",
+      "provider_calls": 1,
+      "provider_error": "",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"text\":\"\\ud83d\\ude00\"},\"output_bytes\":96}",
+      "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"text\":\"\\ud83d\\ude00\"}",
+      "text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c2274657874223a22f09f9880227d2c226f75747075745f6279746573223a39367d",
+      "text_json": "\"{\\\"status\\\":\\\"applied\\\",\\\"operation\\\":\\\"file_outline\\\",\\\"warnings\\\":[],\\\"probe\\\":{\\\"status\\\":\\\"applied\\\",\\\"version\\\":\\\"1.9.0\\\",\\\"homepage\\\":\\\"https://github.com/ast-outline/ast-outline\\\",\\\"schema_version\\\":1},\\\"data\\\":{\\\"tool\\\":\\\"ast-outline\\\",\\\"schema_version\\\":1,\\\"command\\\":\\\"outline\\\",\\\"files\\\":[{}],\\\"text\\\":\\\"\\ud83d\\ude00\\\"},\\\"output_bytes\\\":96}\"",
+      "utf8": true
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "name": "unicode-controls",
+      "provider_calls": 1,
+      "provider_error": "",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"text\":\"\\u754c<>&\\u2028\\n\\u0000\\t\\\"\\\\\"},\"output_bytes\":113}",
+      "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"text\":\"\\u754c<>&\\u2028\\n\\u0000\\t\\\"\\\\\"}",
+      "text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c2274657874223a22e7958c3c3e26e280a85c6e5c75303030305c745c225c5c227d2c226f75747075745f6279746573223a3131337d",
+      "text_json": "\"{\\\"status\\\":\\\"applied\\\",\\\"operation\\\":\\\"file_outline\\\",\\\"warnings\\\":[],\\\"probe\\\":{\\\"status\\\":\\\"applied\\\",\\\"version\\\":\\\"1.9.0\\\",\\\"homepage\\\":\\\"https://github.com/ast-outline/ast-outline\\\",\\\"schema_version\\\":1},\\\"data\\\":{\\\"tool\\\":\\\"ast-outline\\\",\\\"schema_version\\\":1,\\\"command\\\":\\\"outline\\\",\\\"files\\\":[{}],\\\"text\\\":\\\"\\u754c<>&\\u2028\\\\n\\\\u0000\\\\t\\\\\\\"\\\\\\\\\\\"},\\\"output_bytes\\\":113}\"",
+      "utf8": true
+    },
+    {
+      "calls": [
+        {
+          "args": [
+            "--version"
+          ],
+          "cwd": "<workspace>"
+        },
+        {
+          "args": [
+            "outline",
+            "--json",
+            "--",
+            "<snapshot>/code.py"
+          ],
+          "cwd": "<workspace>"
+        }
+      ],
+      "name": "nonfinite",
+      "provider_calls": 1,
+      "provider_error": "",
+      "result_json": "{\"status\":\"applied\",\"operation\":\"file_outline\",\"warnings\":[],\"probe\":{\"status\":\"applied\",\"version\":\"1.9.0\",\"homepage\":\"https://github.com/ast-outline/ast-outline\",\"schema_version\":1},\"data\":{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"value\":NaN,\"nested\":[Infinity,-Infinity]},\"output_bytes\":116}",
+      "stdout": "{\"tool\":\"ast-outline\",\"schema_version\":1,\"command\":\"outline\",\"files\":[{}],\"value\":NaN,\"nested\":[Infinity,-Infinity]}",
+      "text_hex": "7b22737461747573223a226170706c696564222c226f7065726174696f6e223a2266696c655f6f75746c696e65222c227761726e696e6773223a5b5d2c2270726f6265223a7b22737461747573223a226170706c696564222c2276657273696f6e223a22312e392e30222c22686f6d6570616765223a2268747470733a2f2f6769746875622e636f6d2f6173742d6f75746c696e652f6173742d6f75746c696e65222c22736368656d615f76657273696f6e223a317d2c2264617461223a7b22746f6f6c223a226173742d6f75746c696e65222c22736368656d615f76657273696f6e223a312c22636f6d6d616e64223a226f75746c696e65222c2266696c6573223a5b7b7d5d2c2276616c7565223a4e614e2c226e6573746564223a5b496e66696e6974792c2d496e66696e6974795d7d2c226f75747075745f6279746573223a3131367d",
+      "text_json": "\"{\\\"status\\\":\\\"applied\\\",\\\"operation\\\":\\\"file_outline\\\",\\\"warnings\\\":[],\\\"probe\\\":{\\\"status\\\":\\\"applied\\\",\\\"version\\\":\\\"1.9.0\\\",\\\"homepage\\\":\\\"https://github.com/ast-outline/ast-outline\\\",\\\"schema_version\\\":1},\\\"data\\\":{\\\"tool\\\":\\\"ast-outline\\\",\\\"schema_version\\\":1,\\\"command\\\":\\\"outline\\\",\\\"files\\\":[{}],\\\"value\\\":NaN,\\\"nested\\\":[Infinity,-Infinity]},\\\"output_bytes\\\":116}\"",
+      "utf8": true
+    }
+  ]
+}
