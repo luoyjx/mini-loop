@@ -1,5 +1,74 @@
 # Go port plan
 
+## 2026-10-08 workflow store registration/admission/CAS/claim core
+
+Baseline 23e208e. W3A adds NewInMemoryStore and finite StoreError kinds/details.
+Named revision/hash, run/node/attempt and session-key maps sit behind one mutex.
+Definition validation precedes deduplication: conflicting revisions fail; a semantic
+alias returns the first registered definition without installing a new alias key.
+Immutable definition projections need no shared mutable clones.
+
+CreateRunInput retains named definition/session/key/parent/action/policy and inert
+provenance fields with immutable object args. Required session/key errors precede
+missing definitions. Launch identity hashes exact source canonical payload fields;
+closed-value hashing retains integer/float identity and strictly rejects nonfinite
+or surrogate data without encoding/json repair. Same session/key+payload returns
+the latest stored run; different payload fails. Newly supplied contexts materialize
+omitted capabilities as the source empty tuple/list; archival Snapshot.Clone retains
+nulls. The added constructor profile verifies this new-launch boundary.
+Run/node/attempt reads and write inputs detach mutable pointers/slices; run lists sort by creation time/ID, node
+lists by definition order, attempts by spawn index/ID.
+
+TransitionRun validates target before lookup, checks expected version before a
+same-state no-op, preserves first start time and stamps terminal time. ClaimNodes
+checks run/version/status, attempt budget, duplicates and every node before any
+mutation. It does not check DAG readiness or max_concurrent_agents; engine owns
+those constraints. Empty claims still increment run version and recompute active
+IDs. Returned claims follow request order; active IDs follow definition order.
+Native allocation/version checks are staged before commits; int64 overflow returns
+NativeRecordOverflow without state changes rather than wrapping source counters.
+
+Snapshot 116 executes actual source methods: 53 sequential operations, the complete
+13x13 run transition matrix and three canonical refusal profiles. Random IDs and
+generated wall times are normalized only in output. Matrix initial state/version
+seeding is an explicit trusted fixture, not evidence of a public restore API. Tests
+compare exact source kinds/details, canonical launch digests, all record effects
+and refusal ordering. The first focused run found a missing quote in the source
+invalid-status ValueError; Python repr rendering fixed it and the focused race
+suite passed afterward. Native tests also cover 24 concurrent launch calls, 24
+claim contenders with exactly one CAS winner, deep isolation, resume start retention,
+UUIDv4 prefix shape, sort ties and atomic overflow failures.
+
+Validation: focused workflows race and full Go test/race/vet passed. Final full
+Go gates and source --check repeated after adding the omitted-capability constructor
+case; all 116 snapshots are current. All 19 source scan guards anchored. The first
+exporter check reported an ignored subprocess destructor/Event loop is closed
+exception while still exiting zero; the final fresh check passed with only its
+dependency deprecations. Full Python regression ran after final Go gates finished:
+2,155 passed, 28 skipped, 24 subtests, three dependency warnings in 70.10s.
+No implementation changed after those final gates. Overall coverage was not
+refreshed. Package-module invariants and mutation guards were not rerun because
+Python package modules and guarded behavior/anchors did not change. Diff check
+and README outline passed.
+
+Interactive architecture regenerated from JSON with showcase 9/9 and zero
+errors/warnings. Spec SHA256
+7ed5e7b2141744828d4e6b090fafed85166741be0b4f8b11fb45c7448189fef0;
+HTML SHA256 fd704c632bf96eb3c487dc15bb00fa5a98596a0c1bfb201795e989f92802ec8c.
+Visual review remains skipped after prior denial, without retry/bypass.
+No dependencies or Python runtime/package modules were changed. README canonical
+Mermaid reviewed: active topology remains unchanged because the store is not
+installed. Boundary, extension, parity and package docs are updated. Source shared
+workflow retention invariants in HARDENING_NOTES 8dw were reviewed; retention is
+still W3C, not silently omitted from the remaining plan.
+
+Next W3B ports attempt start/settlement, artifacts, cancellation and finalization;
+W3C ports outbox/pruning with terminal-and-drained whole-graph eviction. W4-W6
+engine, live origin policy and service/tools/HTTP/manager activation remain open.
+MCP, native session SQLite, remaining profiles and full G7 are still open. Workflow
+store state remains process-local and no restart-resume claim is made.
+
+
 ## 2026-10-08 workflow runtime records
 
 Baseline 3fb1e91. W1B data projections now port WorkflowRun, NodeState,

@@ -1,0 +1,2253 @@
+{
+  "canonical_errors": [
+    {
+      "actor_json": "\"owner\"",
+      "args_json": "NaN",
+      "error": "ValueError"
+    },
+    {
+      "actor_json": "\"owner\"",
+      "args_json": "{\"x\":Infinity}",
+      "error": "ValueError"
+    },
+    {
+      "actor_json": "\"\\ud800\"",
+      "args_json": "{}",
+      "error": "UnicodeEncodeError"
+    }
+  ],
+  "matrix": [
+    {
+      "before": "CREATED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "new",
+      "target": "PLANNING",
+      "version": 8
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> CANCELLED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "CANCELLED",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "CREATED",
+      "detail": "CREATED -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CREATED",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "new",
+      "target": "AWAITING_APPROVAL",
+      "version": 8
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> CANCELLED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "CANCELLED",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "PLANNING -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PLANNING",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "PLANNING",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "new",
+      "target": "FAILED",
+      "version": 8
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "AWAITING_APPROVAL -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "AWAITING_APPROVAL -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "new",
+      "target": "QUEUED",
+      "version": 8
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "AWAITING_APPROVAL -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "AWAITING_APPROVAL -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "AWAITING_APPROVAL -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "AWAITING_APPROVAL -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "AWAITING_APPROVAL -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "new",
+      "target": "CANCELLED",
+      "version": 8
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "new",
+      "target": "REJECTED",
+      "version": 8
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "AWAITING_APPROVAL -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "AWAITING_APPROVAL",
+      "detail": "AWAITING_APPROVAL -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "AWAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": true,
+      "status": "RUNNING",
+      "stored_error": "new",
+      "target": "RUNNING",
+      "version": 8
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "new",
+      "target": "CANCELLED",
+      "version": 8
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "QUEUED",
+      "detail": "QUEUED -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "RUNNING",
+      "detail": "RUNNING -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "RUNNING",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "RUNNING",
+      "detail": "RUNNING -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "RUNNING",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "RUNNING",
+      "detail": "RUNNING -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "RUNNING",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "RUNNING",
+      "detail": "RUNNING -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "RUNNING",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "RUNNING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "RUNNING",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "RUNNING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "new",
+      "target": "PAUSING",
+      "version": 8
+    },
+    {
+      "before": "RUNNING",
+      "detail": "RUNNING -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "RUNNING",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "RUNNING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "new",
+      "target": "WAITING_APPROVAL",
+      "version": 8
+    },
+    {
+      "before": "RUNNING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "new",
+      "target": "CANCELLING",
+      "version": 8
+    },
+    {
+      "before": "RUNNING",
+      "detail": "RUNNING -> CANCELLED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "RUNNING",
+      "stored_error": "old",
+      "target": "CANCELLED",
+      "version": 7
+    },
+    {
+      "before": "RUNNING",
+      "detail": "RUNNING -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "RUNNING",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "RUNNING",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "new",
+      "target": "COMPLETED",
+      "version": 8
+    },
+    {
+      "before": "RUNNING",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "new",
+      "target": "FAILED",
+      "version": 8
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "new",
+      "target": "PAUSED",
+      "version": 8
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "new",
+      "target": "CANCELLING",
+      "version": 8
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> CANCELLED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "CANCELLED",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "PAUSING",
+      "detail": "PAUSING -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSING",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "QUEUED",
+      "stored_error": "new",
+      "target": "QUEUED",
+      "version": 8
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "new",
+      "target": "CANCELLED",
+      "version": 8
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "PAUSED",
+      "detail": "PAUSED -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "PAUSED",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "WAITING_APPROVAL -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "WAITING_APPROVAL -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "WAITING_APPROVAL -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "WAITING_APPROVAL -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": true,
+      "status": "RUNNING",
+      "stored_error": "new",
+      "target": "RUNNING",
+      "version": 8
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "WAITING_APPROVAL -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "WAITING_APPROVAL -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "WAITING_APPROVAL -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "new",
+      "target": "CANCELLED",
+      "version": 8
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "new",
+      "target": "REJECTED",
+      "version": 8
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "WAITING_APPROVAL -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "WAITING_APPROVAL",
+      "detail": "WAITING_APPROVAL -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "WAITING_APPROVAL",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "",
+      "ended": true,
+      "error": "",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "new",
+      "target": "CANCELLED",
+      "version": 8
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLING",
+      "detail": "CANCELLING -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLING",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "CANCELLED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "CANCELLED",
+      "detail": "CANCELLED -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "CANCELLED",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> CANCELLED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "CANCELLED",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "REJECTED",
+      "detail": "REJECTED -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "REJECTED",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> CANCELLED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "CANCELLED",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "COMPLETED",
+      "detail": "COMPLETED -> FAILED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "COMPLETED",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> CREATED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "CREATED",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> PLANNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "PLANNING",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> AWAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "AWAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> QUEUED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "QUEUED",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> RUNNING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "RUNNING",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> PAUSING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "PAUSING",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> PAUSED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "PAUSED",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> WAITING_APPROVAL",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "WAITING_APPROVAL",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> CANCELLING",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "CANCELLING",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> CANCELLED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "CANCELLED",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> REJECTED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "REJECTED",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "FAILED -> COMPLETED",
+      "ended": false,
+      "error": "InvalidTransition",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "COMPLETED",
+      "version": 7
+    },
+    {
+      "before": "FAILED",
+      "detail": "",
+      "ended": false,
+      "error": "",
+      "started": false,
+      "status": "FAILED",
+      "stored_error": "old",
+      "target": "FAILED",
+      "version": 7
+    }
+  ],
+  "steps": [
+    {
+      "command_json": "{\"op\": \"register\", \"definition\": {\"name\": \"wf\", \"revision\": \"base\", \"definition_id\": \"stable\", \"return_from\": \"a\", \"input_schema\": {\"type\": \"object\", \"required\": [\"must\"]}, \"nodes\": [{\"id\": \"b\", \"kind\": \"agent\", \"needs\": [\"a\"]}, {\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_agents\": 3, \"max_concurrent_agents\": 1}}}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\", \"required\": [\"must\"]}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 1, \"max_agents\": 3, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"b\", \"kind\": \"agent\", \"needs\": [\"a\"], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}, {\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"stable\", \"revision\": \"base\", \"parent_revision\": null, \"definition_hash\": \"wfdef:35b2c6308245f081bc22f46acca79b7451ed514bfbbee7e8cb8b727305a64667\"}"
+    },
+    {
+      "command_json": "{\"op\": \"register\", \"definition\": {\"name\": \"wf\", \"revision\": \"alias\", \"definition_id\": \"other\", \"return_from\": \"a\", \"input_schema\": {\"type\": \"object\", \"required\": [\"must\"]}, \"nodes\": [{\"id\": \"b\", \"kind\": \"agent\", \"needs\": [\"a\"]}, {\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_agents\": 3, \"max_concurrent_agents\": 1}, \"parent_revision\": \"parent\"}}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\", \"required\": [\"must\"]}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 1, \"max_agents\": 3, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"b\", \"kind\": \"agent\", \"needs\": [\"a\"], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}, {\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"stable\", \"revision\": \"base\", \"parent_revision\": null, \"definition_hash\": \"wfdef:35b2c6308245f081bc22f46acca79b7451ed514bfbbee7e8cb8b727305a64667\"}"
+    },
+    {
+      "command_json": "{\"op\": \"definition\", \"revision\": \"alias\"}",
+      "detail": "definition alias not found",
+      "error": "NotFoundError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"definition\", \"revision\": \"base\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\", \"required\": [\"must\"]}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 1, \"max_agents\": 3, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"b\", \"kind\": \"agent\", \"needs\": [\"a\"], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}, {\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"stable\", \"revision\": \"base\", \"parent_revision\": null, \"definition_hash\": \"wfdef:35b2c6308245f081bc22f46acca79b7451ed514bfbbee7e8cb8b727305a64667\"}"
+    },
+    {
+      "command_json": "{\"op\": \"register\", \"definition\": {\"name\": \"different\", \"revision\": \"base\", \"definition_id\": \"stable\", \"return_from\": \"a\", \"input_schema\": {\"type\": \"object\", \"required\": [\"must\"]}, \"nodes\": [{\"id\": \"b\", \"kind\": \"agent\", \"needs\": [\"a\"]}, {\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_agents\": 3, \"max_concurrent_agents\": 1}}}",
+      "detail": "definition revision base has different content",
+      "error": "IdempotencyConflict",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"register\", \"definition\": {\"name\": \"wf\", \"revision\": \"base\", \"definition_id\": \"stable\", \"return_from\": \"a\", \"input_schema\": {\"type\": \"object\", \"required\": [\"must\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"map\"}], \"budget\": {\"max_agents\": 3, \"max_concurrent_agents\": 1}}}",
+      "detail": "node kind map is not implemented by the MVP engine",
+      "error": "WorkflowValidationError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"save\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "launch:8279209ad53c66489029d9a78c8b53f72d1d3e5d006b6bd08a7c34ac7f7eceac",
+      "output_json": "{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"save\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "launch:8279209ad53c66489029d9a78c8b53f72d1d3e5d006b6bd08a7c34ac7f7eceac",
+      "output_json": "{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"args_json\": \"{\\\"changed\\\":1}\"}",
+      "detail": "idempotency key was already used with a different payload",
+      "error": "IdempotencyConflict",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"other\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}}",
+      "detail": "idempotency key was already used with a different payload",
+      "error": "IdempotencyConflict",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"parent\": \"parent\"}",
+      "detail": "idempotency key was already used with a different payload",
+      "error": "IdempotencyConflict",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"action\": \"action\"}",
+      "detail": "idempotency key was already used with a different payload",
+      "error": "IdempotencyConflict",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"policy\": \"policy\"}",
+      "detail": "idempotency key was already used with a different payload",
+      "error": "IdempotencyConflict",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"save\": \"r2\", \"session\": \"other\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "launch:8279209ad53c66489029d9a78c8b53f72d1d3e5d006b6bd08a7c34ac7f7eceac",
+      "output_json": "{\"run_id\": \"<run-2>\", \"definition_revision\": \"base\", \"session_id\": \"other\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"save\": \"r3\", \"session\": \"third\", \"context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null}}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "launch:8279209ad53c66489029d9a78c8b53f72d1d3e5d006b6bd08a7c34ac7f7eceac",
+      "output_json": "{\"run_id\": \"<run-3>\", \"definition_revision\": \"base\", \"session_id\": \"third\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"session\": \"\", \"revision\": \"missing\"}",
+      "detail": "session_id and idempotency_key are required",
+      "error": "ValueError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"key\": \"\", \"revision\": \"missing\"}",
+      "detail": "session_id and idempotency_key are required",
+      "error": "ValueError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"revision\": \"missing\"}",
+      "detail": "definition missing not found",
+      "error": "NotFoundError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"runs\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, {\"run_id\": \"<run-2>\", \"definition_revision\": \"base\", \"session_id\": \"other\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, {\"run_id\": \"<run-3>\", \"definition_revision\": \"base\", \"session_id\": \"third\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}]"
+    },
+    {
+      "command_json": "{\"op\": \"runs\", \"session\": \"other\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[{\"run_id\": \"<run-2>\", \"definition_revision\": \"base\", \"session_id\": \"other\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}]"
+    },
+    {
+      "command_json": "{\"op\": \"runs\", \"session\": \"\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[]"
+    },
+    {
+      "command_json": "{\"op\": \"run\", \"run\": \"missing\"}",
+      "detail": "run missing not found",
+      "error": "NotFoundError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"nodes\", \"run\": \"missing\"}",
+      "detail": "run missing not found",
+      "error": "NotFoundError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"node\", \"run\": \"missing\", \"node\": \"a\"}",
+      "detail": "node missing/a not found",
+      "error": "NotFoundError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"claim\", \"run\": \"r1\", \"claims\": [], \"expected\": 0}",
+      "detail": "cannot claim nodes while run is QUEUED",
+      "error": "InvalidTransition",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"transition\", \"run\": \"missing\", \"expected\": 0, \"status\": \"bad\"}",
+      "detail": "'bad' is not a valid RunStatus",
+      "error": "ValueError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"transition\", \"run\": \"r1\", \"expected\": 99, \"status\": \"RUNNING\"}",
+      "detail": "run <run-1> expected version 99, found 0",
+      "error": "VersionConflict",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"transition\", \"run\": \"r1\", \"expected\": 0, \"status\": \"RUNNING\", \"detail\": \"first\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"RUNNING\", \"version\": 1, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"first\", \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"transition\", \"run\": \"r1\", \"expected\": 0, \"status\": \"RUNNING\"}",
+      "detail": "run <run-1> expected version 0, found 1",
+      "error": "VersionConflict",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"transition\", \"run\": \"r1\", \"expected\": 1, \"status\": \"RUNNING\", \"detail\": \"ignored\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"RUNNING\", \"version\": 1, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"first\", \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"claim\", \"run\": \"r1\", \"claims\": [{\"node_id\": \"a\", \"agent_id\": \"worker\", \"spawn_index\": 0, \"parent_agent_id\": \"parent\"}, {\"node_id\": \"missing\", \"agent_id\": \"worker\", \"spawn_index\": 0, \"parent_agent_id\": \"parent\"}], \"expected\": 1}",
+      "detail": "node <run-1>/missing not found",
+      "error": "NotFoundError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"nodes\", \"run\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[{\"run_id\": \"<run-1>\", \"node_id\": \"b\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}, {\"run_id\": \"<run-1>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}]"
+    },
+    {
+      "command_json": "{\"op\": \"run\", \"run\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"RUNNING\", \"version\": 1, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"first\", \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"attempts\", \"run\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[]"
+    },
+    {
+      "command_json": "{\"op\": \"claim\", \"run\": \"r1\", \"claims\": [{\"node_id\": \"a\", \"agent_id\": \"worker\", \"spawn_index\": 0, \"parent_agent_id\": \"parent\"}, {\"node_id\": \"a\", \"agent_id\": \"worker\", \"spawn_index\": 0, \"parent_agent_id\": \"parent\"}], \"expected\": 1}",
+      "detail": "duplicate node claim",
+      "error": "WorkflowStoreError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"claim\", \"run\": \"r1\", \"claims\": [], \"expected\": 1}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[]"
+    },
+    {
+      "command_json": "{\"op\": \"claim\", \"run\": \"r1\", \"claims\": [{\"node_id\": \"a\", \"agent_id\": \"worker\", \"spawn_index\": 2, \"parent_agent_id\": \"parent\"}, {\"node_id\": \"b\", \"agent_id\": \"worker\", \"spawn_index\": 1, \"parent_agent_id\": \"parent\"}], \"expected\": 2}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[{\"attempt_id\": \"<attempt-1>\", \"run_id\": \"<run-1>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 2, \"status\": \"CLAIMED\", \"version\": 0, \"parent_agent_id\": \"parent\", \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, {\"attempt_id\": \"<attempt-2>\", \"run_id\": \"<run-1>\", \"node_id\": \"b\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 1, \"status\": \"CLAIMED\", \"version\": 0, \"parent_agent_id\": \"parent\", \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}]"
+    },
+    {
+      "command_json": "{\"op\": \"nodes\", \"run\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[{\"run_id\": \"<run-1>\", \"node_id\": \"b\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt-2>\"], \"result_artifact_ids\": [], \"error\": null}, {\"run_id\": \"<run-1>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt-1>\"], \"result_artifact_ids\": [], \"error\": null}]"
+    },
+    {
+      "command_json": "{\"op\": \"run\", \"run\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"b\", \"a\"], \"event_cursor\": 0, \"attempts_used\": 2, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"first\", \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"attempts\", \"run\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[{\"attempt_id\": \"<attempt-2>\", \"run_id\": \"<run-1>\", \"node_id\": \"b\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 1, \"status\": \"CLAIMED\", \"version\": 0, \"parent_agent_id\": \"parent\", \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, {\"attempt_id\": \"<attempt-1>\", \"run_id\": \"<run-1>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 2, \"status\": \"CLAIMED\", \"version\": 0, \"parent_agent_id\": \"parent\", \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}]"
+    },
+    {
+      "command_json": "{\"op\": \"attempt\", \"attempt\": \"<attempt-1>\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"attempt_id\": \"<attempt-1>\", \"run_id\": \"<run-1>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 2, \"status\": \"CLAIMED\", \"version\": 0, \"parent_agent_id\": \"parent\", \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"attempt\", \"attempt\": \"missing\"}",
+      "detail": "attempt missing not found",
+      "error": "NotFoundError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"attempts\", \"run\": \"missing\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[]"
+    },
+    {
+      "command_json": "{\"op\": \"claim\", \"run\": \"r1\", \"claims\": [{\"node_id\": \"a\", \"agent_id\": \"worker\", \"spawn_index\": 0, \"parent_agent_id\": \"parent\"}], \"expected\": 3}",
+      "detail": "node a is RUNNING, not pending",
+      "error": "InvalidTransition",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"claim\", \"run\": \"r1\", \"claims\": [{\"node_id\": \"missing\", \"agent_id\": \"worker\", \"spawn_index\": 0, \"parent_agent_id\": \"parent\"}], \"expected\": 3}",
+      "detail": "node <run-1>/missing not found",
+      "error": "NotFoundError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"claim\", \"run\": \"r1\", \"claims\": [{\"node_id\": \"missing\", \"agent_id\": \"worker\", \"spawn_index\": 0, \"parent_agent_id\": \"parent\"}, {\"node_id\": \"missing\", \"agent_id\": \"worker\", \"spawn_index\": 0, \"parent_agent_id\": \"parent\"}], \"expected\": 3}",
+      "detail": "workflow attempt budget exhausted",
+      "error": "WorkflowStoreError",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"claim\", \"run\": \"r1\", \"claims\": [], \"expected\": 3}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[]"
+    },
+    {
+      "command_json": "{\"op\": \"transition\", \"run\": \"r1\", \"expected\": 4, \"status\": \"COMPLETED\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"COMPLETED\", \"version\": 5, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [\"b\", \"a\"], \"event_cursor\": 0, \"attempts_used\": 2, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"transition\", \"run\": \"r1\", \"expected\": 5, \"status\": \"RUNNING\"}",
+      "detail": "COMPLETED -> RUNNING",
+      "error": "InvalidTransition",
+      "launch_hash": "",
+      "output_json": "null"
+    },
+    {
+      "command_json": "{\"op\": \"run\", \"run\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"COMPLETED\", \"version\": 5, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [\"b\", \"a\"], \"event_cursor\": 0, \"attempts_used\": 2, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"runs\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"COMPLETED\", \"version\": 5, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [\"b\", \"a\"], \"event_cursor\": 0, \"attempts_used\": 2, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, {\"run_id\": \"<run-2>\", \"definition_revision\": \"base\", \"session_id\": \"other\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, {\"run_id\": \"<run-3>\", \"definition_revision\": \"base\", \"session_id\": \"third\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"QUEUED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}]"
+    },
+    {
+      "command_json": "{\"op\": \"create\", \"save\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "launch:8279209ad53c66489029d9a78c8b53f72d1d3e5d006b6bd08a7c34ac7f7eceac",
+      "output_json": "{\"run_id\": \"<run-1>\", \"definition_revision\": \"base\", \"session_id\": \"session\", \"run_context\": {\"message_id\": \"msg_fixed\", \"origin\": \"api\", \"actor_id\": \"owner\", \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"key\", \"args\": {\"choice\": [true, 1.0], \"\\u4e2d\\u6587\": \"\\u503c\"}, \"status\": \"COMPLETED\", \"version\": 5, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [\"b\", \"a\"], \"event_cursor\": 0, \"attempts_used\": 2, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}"
+    },
+    {
+      "command_json": "{\"op\": \"nodes\", \"run\": \"r1\"}",
+      "detail": "",
+      "error": "",
+      "launch_hash": "",
+      "output_json": "[{\"run_id\": \"<run-1>\", \"node_id\": \"b\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt-2>\"], \"result_artifact_ids\": [], \"error\": null}, {\"run_id\": \"<run-1>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt-1>\"], \"result_artifact_ids\": [], \"error\": null}]"
+    }
+  ]
+}

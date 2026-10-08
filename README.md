@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `3fb1e91` plus typed workflow runtime records;
+reviewed **2026-10-08** (Go baseline `23e208e` plus process-local workflow admission/CAS/claims;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1425,7 +1425,14 @@ closed immutable object args/payload and detached optional/slice fields. Strict
 record decoders retain source defaults, array order, empty identities and negative
 counters; null or invalid status values cannot acquire default execution states.
 Historical provenance remains inert data, including unrecognized authority text.
-Storage, execution and trusted live workflow launch adaptation remain pending. This library is
+Snapshot 116 now compares 53 actual store operations, the full 169-entry run
+transition matrix and three canonical hash refusals. InMemoryStore registers immutable
+definitions, deduplicates session/key launches, keeps detached reads and performs
+versioned transitions and atomic claims under one process-local mutex. Empty claims
+increment the version; active nodes follow definition order. Dependency readiness
+and concurrency scheduling remain engine-owned. This core neither authorizes launch
+nor validates argument schemas. Settlement, artifacts, outbox, retention pruning,
+execution and trusted live workflow launch adaptation remain pending. This library is
 not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four

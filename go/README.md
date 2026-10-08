@@ -2116,4 +2116,19 @@ Snapshot 115 compares 46 actual source constructors and eight invalid state case
 Empty identities, negative counters and extensible outbox kinds survive; store
 admission and scheduler budgets remain separate. Unrecognized recorded provenance
 is retained as inert metadata, never restored as a trusted agent.RunContext.
-No workflow store, scheduler or live service binding is installed yet.
+No scheduler or live service binding is installed yet; the process-local store core
+below is available as an uninstalled library.
+
+### Process-local workflow store core
+
+NewInMemoryStore provides immutable definition registration, session-key idempotent
+launch admission, detached run/node/attempt reads, run CAS and atomic node claims.
+CreateRunInput carries named metadata and closed object args. StoreError retains
+source failure kinds/details; int64 version overflow is additionally refused.
+Snapshot 116 covers 53 actual Python operations, all 169 run transition combinations
+and three canonical hash refusals. Native race tests exercise 24 concurrent launch
+calls and claim CAS contenders, pointer isolation, first-start retention, UUIDv4
+prefixes, tie ordering and atomic overflow refusal. Store does not authorize launch,
+check argument schemas or schedule dependencies/concurrency; service/engine owns
+those checks. Attempt settlement, artifact binding, outbox, retention and live
+manager/tools/HTTP installation remain open. No workflow persistence ships.

@@ -2382,4 +2382,16 @@ Nested provenance is an already materialized snapshot; decoding never stamps mis
 caller fields, normalizes historical grants or reconstructs a trusted live context.
 Native counters are bounded machine integers (versions/cursors use int64), and
 wall timestamps are float64; Python arbitrary live objects are not admitted.
-Trusted live origin adaptation and storage remain the next separate slices.
+NewInMemoryStore supplies the process-local registration/admission/transition/claim
+core. CreateRunInput uses named identities, inert provenance and closed object args.
+RegisterDefinition validates before deduplicating revision/content; semantic aliases
+return the existing revision without registering the supplied alias. CreateRun hashes
+definition/args/provenance/parent/action/policy for a session-key launch identity and
+returns the latest detached run on replay. New launch contexts materialize omitted
+capabilities as an empty list; archival Snapshot.Clone still retains nulls. TransitionRun and ClaimNodes require the
+expected run version. Claims validate the entire batch before mutation and retain
+source budget/refusal order; dependency/concurrency scheduling is engine-owned.
+StoreError exposes finite source kinds/details; NativeRecordOverflow refuses int64
+version wrap before mutation. This store is not durable and does not authorize launch,
+check argument schemas, execute workers, deliver outbox messages or prune graphs yet.
+Settlement/artifacts/outbox/pruning and trusted live origin adaptation remain open.

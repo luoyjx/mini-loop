@@ -1,5 +1,26 @@
 # Python to Go parity matrix
 
+## 2026-10-08 process-local workflow store admission and claims
+
+Snapshot 116 executes actual InMemoryWorkflowStore methods: 53 sequential
+registration/admission/read/CAS/claim operations, all 169 run-status pairs and
+three canonical hash refusals. Only generated IDs/timestamps are normalized;
+transition matrix initial statuses/versions are an explicit trusted fixture.
+Native definition validation/deduplication, launch identity hashes, refusal kinds
+and details, final effects, replay of latest state, clone isolation, source sorting,
+same-state CAS ordering, empty-claim version increments and atomic batch validation
+match these profiles. Definitions preserve first registered semantic revision;
+returned semantic aliases are not registered under the supplied revision.
+Native tests add 24 concurrent launch/claim contenders, pointer isolation, resume
+start retention, UUIDv4 prefix shape, sort ties and int64 overflow refusal. Payload
+hashing uses closed values directly so nonfinite/surrogate data cannot be silently
+repaired by encoding/json. Object args are a native typed boundary; source arbitrary
+live objects are not admitted. The store does not check argument schemas or grant
+launch authority. Dependencies/concurrency remain engine-owned. This is an
+uninstalled process-local core; settlement/artifacts/outbox/pruning, trusted origin,
+engine, service/tools/HTTP and native workflow durability are not implemented.
+
+
 ## 2026-10-08 workflow runtime record projections
 
 Snapshot 115 executes actual Python WorkflowRun, NodeState, AttemptClaim,

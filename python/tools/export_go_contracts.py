@@ -6752,6 +6752,7 @@ def _snapshot() -> dict[str, bytes]:
 
         "python-workflow-validation.json": _json_bytes(_workflow_validation_contracts()),
         "python-workflow-records.json": _json_bytes(_workflow_record_contracts()),
+        "python-workflow-store-core.json": _json_bytes(_workflow_store_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -9273,6 +9274,112 @@ def _workflow_record_contracts() -> dict:
         try: execute("attempt",recipe)
         except Exception as error: errors.append(dict(kind="attempt",input=recipe,error=type(error).__name__))
     return dict(cases=cases,errors=errors)
+
+
+def _workflow_store_contracts() -> dict:
+    """Actual process-local registration/admission/CAS/claims; matrix seeds are explicit."""
+    import copy
+    import dataclasses
+    from mini_loop.run_context import RunContext
+    from mini_loop.workflows.models import WorkflowDefinition, AttemptClaim, RunStatus
+    from mini_loop.workflows.store import InMemoryWorkflowStore
+    context=dataclasses.asdict(RunContext(message_id="msg_fixed",actor_id="owner"))
+    definition=dict(name="wf",revision="base",definition_id="stable",return_from="a",
+        input_schema={"type":"object","required":["must"]},
+        nodes=[dict(id="b",kind="agent",needs=["a"]),dict(id="a",kind="agent")],
+        budget={"max_agents":3,"max_concurrent_agents":1})
+    store=InMemoryWorkflowStore(); refs={}; ids={}; attempt_ids={}; rows=[]
+    def normalized(value):
+        if dataclasses.is_dataclass(value):
+            value=dataclasses.asdict(value)
+            for key in ("created_at","started_at","ended_at"):
+                if key in value and value[key] is not None: value[key]=0
+        if isinstance(value,dict): return {key:normalized(item) for key,item in value.items()}
+        if isinstance(value,(list,tuple)): return [normalized(item) for item in value]
+        if isinstance(value,str): return ids.get(value,attempt_ids.get(value,value))
+        return value
+    def ref(label): return refs.get(label,label)
+    def step(op,**params):
+        command=dict(op=op,**params); output=None; error="";detail="";launch_hash=""
+        try:
+            if op=="register": output=store.register_definition(WorkflowDefinition.from_dict(params["definition"])).to_dict()
+            elif op=="definition": output=store.get_definition(params["revision"]).to_dict()
+            elif op=="create":
+                output=store.create_run(definition_revision=params.get("revision","base"),
+                    session_id=params.get("session","session"),idempotency_key=params.get("key","key"),
+                    args=json.loads(params.get("args_json",'{"choice":[true,1.0],"中文":"值"}')),
+                    run_context=RunContext(**params.get("context",context)),
+                    parent_run_id=params.get("parent"),launch_action_id=params.get("action"),
+                    policy_snapshot_hash=params.get("policy",""))
+                if output.run_id not in ids: ids[output.run_id]="<run-"+str(len(ids)+1)+">"
+                if "save" in params: refs[params["save"]]=output.run_id
+                launch_hash=store._launches[(output.session_id,output.idempotency_key)][0]
+            elif op=="run": output=store.get_run(ref(params["run"]))
+            elif op=="runs": output=store.list_runs(session_id=params.get("session"))
+            elif op=="nodes": output=store.list_nodes(ref(params["run"]))
+            elif op=="node": output=store.get_node(ref(params["run"]),params["node"])
+            elif op=="transition": output=store.transition_run(ref(params["run"]),expected_version=params["expected"],to_status=params["status"],error=params.get("detail"))
+            elif op=="claim":
+                output=store.claim_nodes(ref(params["run"]),[AttemptClaim(**c) for c in params["claims"]],expected_version=params["expected"])
+                for a in output: attempt_ids[a.attempt_id]="<attempt-"+str(len(attempt_ids)+1)+">"
+            elif op=="attempts": output=store.list_attempts(ref(params["run"]))
+            elif op=="attempt": output=store.get_attempt(next((a for a,label in attempt_ids.items() if label==params["attempt"]),params["attempt"]))
+        except Exception as e: error=type(e).__name__;detail=str(e)
+        for raw,label in {**ids,**attempt_ids}.items(): detail=detail.replace(raw,label)
+        rows.append(dict(command_json=json.dumps(command),output_json=json.dumps(normalized(output)),error=error,detail=detail,launch_hash=launch_hash))
+    step("register",definition=definition)
+    step("register",definition={**definition,"revision":"alias","definition_id":"other","parent_revision":"parent"})
+    step("definition",revision="alias");step("definition",revision="base")
+    step("register",definition={**definition,"name":"different"})
+    step("register",definition={**definition,"nodes":[dict(id="a",kind="map")]})
+    step("create",save="r1");step("create",save="r1")
+    for patch in [dict(args_json='{"changed":1}'),dict(context={**context,"actor_id":"other"}),dict(parent="parent"),dict(action="action"),dict(policy="policy")]: step("create",**patch)
+    step("create",save="r2",session="other")
+    step("create",save="r3",session="third",context={key:value for key,value in context.items() if key!="approved_capabilities"})
+    step("create",session="",revision="missing");step("create",key="",revision="missing");step("create",revision="missing")
+    step("runs");step("runs",session="other");step("runs",session="")
+    step("run",run="missing");step("nodes",run="missing");step("node",run="missing",node="a")
+    step("claim",run="r1",claims=[],expected=0)
+    step("transition",run="missing",expected=0,status="bad")
+    step("transition",run="r1",expected=99,status="RUNNING")
+    step("transition",run="r1",expected=0,status="RUNNING",detail="first")
+    step("transition",run="r1",expected=0,status="RUNNING")
+    step("transition",run="r1",expected=1,status="RUNNING",detail="ignored")
+    c=lambda node,index=0:dict(node_id=node,agent_id="worker",spawn_index=index,parent_agent_id="parent")
+    step("claim",run="r1",claims=[c("a"),c("missing")],expected=1)
+    step("nodes",run="r1");step("run",run="r1");step("attempts",run="r1")
+    step("claim",run="r1",claims=[c("a"),c("a")],expected=1)
+    step("claim",run="r1",claims=[],expected=1)
+    step("claim",run="r1",claims=[c("a",2),c("b",1)],expected=2)
+    step("nodes",run="r1");step("run",run="r1");step("attempts",run="r1")
+    step("attempt",attempt="<attempt-1>");step("attempt",attempt="missing");step("attempts",run="missing")
+    step("claim",run="r1",claims=[c("a")],expected=3)
+    step("claim",run="r1",claims=[c("missing")],expected=3)
+    step("claim",run="r1",claims=[c("missing"),c("missing")],expected=3)
+    step("claim",run="r1",claims=[],expected=3)
+    step("transition",run="r1",expected=4,status="COMPLETED")
+    step("transition",run="r1",expected=5,status="RUNNING")
+    step("run",run="r1");step("runs")
+    step("create",save="r1");step("nodes",run="r1")
+    matrix=[]
+    for before in RunStatus:
+        for target in RunStatus:
+            probe=InMemoryWorkflowStore();probe.register_definition(WorkflowDefinition.from_dict(definition))
+            run=probe.create_run(definition_revision="base",session_id="s",idempotency_key="k",args={},run_context=RunContext(message_id="msg"))
+            # Explicit trusted state fixture, not a public initial-state transition.
+            seeded=probe._runs[run.run_id];seeded.status=before;seeded.version=7;seeded.error="old"
+            error="";detail=""
+            try: probe.transition_run(run.run_id,expected_version=7,to_status=target,error="new")
+            except Exception as e: error=type(e).__name__;detail=str(e)
+            current=probe.get_run(run.run_id)
+            matrix.append(dict(before=before.value,target=target.value,error=error,detail=detail,
+                status=current.status.value,version=current.version,started=current.started_at is not None,
+                ended=current.ended_at is not None,stored_error=current.error))
+    canonical_errors=[]
+    for args_json,actor_json in [("NaN",'"owner"'),('{"x":Infinity}','"owner"'),('{}','"\\ud800"')]:
+        try: store.create_run(definition_revision="base",session_id="s",idempotency_key="bad",args=json.loads(args_json),run_context=RunContext(message_id="msg",actor_id=json.loads(actor_json)))
+        except Exception as e: canonical_errors.append(dict(args_json=args_json,actor_json=actor_json,error=type(e).__name__))
+    return dict(steps=rows,matrix=matrix,canonical_errors=canonical_errors)
 
 
 if __name__ == "__main__":
