@@ -2813,5 +2813,31 @@ close, with context cancellation; a reusable client may restart afterwards.
 Client Close must drain the client, and cannot recursively acquire its own handle.
 Retained catalogues do not extend managed lifetime past session deletion.
 
-Raw `RuntimeConfig.MCPServers` remains operator-owned. Launcher activation,
-task-subagent MCP scope and native InProcessMCP are separate pending slices.
+Raw `RuntimeConfig.MCPServers` remains operator-owned. Launcher selection is
+available through the seam below; task-subagent MCP scope and native InProcessMCP
+remain pending.
+
+## Go MCP launcher selection
+
+Set `launcher.Options.MCPTools` to install connect_mcp, and supply ordered
+`MCPServers []agent.ManagedMCPServer` through the same options. The launcher
+forwards the concrete handles/factories to manager composition; discovery and
+subprocess launch remain lazy behind the existing external permission gate.
+The manager detaches entries at construction and drains last-holder ownership
+on App.Stop/Serve shutdown. Inspection reports only the `mcp_tools` selector;
+it does not invoke factories or serialize server aliases, commands or credentials.
+
+The executable exposes `--mcp-tools`. Its default list is empty, matching Python
+CLI/server composition; Python has no built-in server-list environment loader.
+Configured servers enter through embedding operator code. For stdio, construct
+`mcp.NewStdio(mcp.StdioConfig{...})`, wrap it with `agent.NewMCPConnection`, then
+pass the handle or a typed lazy factory in the options. An explicitly supplied
+SecretEnvironment controls registered credential scrub and env passthrough.
+The Null registry intentionally inherits the environment, matching Source.
+
+This independent selector preserves the comprehensive MINILOOP_FEATURES refusal.
+Source snapshot 144 compares real HTTP compositions with individual registry
+toggles. Native HTTP tests compare the MCP catalogue, ordered outputs and lifecycle
+counts, and a real native stdio subprocess test proves lazy start, registered
+credential scrub and child reap on app shutdown. Task-child scope and InProcessMCP
+remain separate pending slices; no session persistence or OS sandbox is added.

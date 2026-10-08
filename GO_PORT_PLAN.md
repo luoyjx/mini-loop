@@ -1,5 +1,53 @@
 # Go port plan
 
+## 2026-10-08 native MCP launcher selection and operator configuration
+
+Baseline 4f6b2a5 (Source snapshot 144). launcher.Options now carries MCPTools and
+ordered []agent.ManagedMCPServer, forwarding trusted handles/factories to manager
+composition. The independent --mcp-tools flag installs the connector with an empty
+server list unless embedding code supplies servers. Python default CLI/server has
+no server-list environment loader; servers enter through operator composition.
+Inspection reports only mcp_tools, without invoking factories, allocating a
+workspace or disclosing aliases/commands. No default feature activation, new
+configuration parser or dependency was introduced. Full MINILOOP_FEATURES remains
+unsupported until its complete bundle is implemented.
+
+Native tests run the actual launcher/listener and compare three Source HTTP
+recipes: disabled/configured, enabled/empty and enabled/configured. They compare
+MCP catalogue projections, exact ordered results (including same-batch calls),
+model output and list/call/close counts, and verify detached caller options.
+The request fixture reads SDK message content through immutable closed values,
+including cache_control annotations, rather than the stricter core message decoder.
+A real native test-binary MCP child exercises launcher -> manager -> connector ->
+stdio discovery/call and shutdown. Construction leaves the child unstarted;
+authorized connection starts it, an explicitly registered credential is scrubbed,
+its PID remains live until App.Stop and the child is reaped afterwards. Null
+registry environment inheritance is preserved, matching Source; unregistered
+credentials are not implicitly scrubbed. Separate tests preserve pure inspection
+and comprehensive-feature refusal, including command-line dump selection.
+
+Validation: focused launcher/CLI race tests; full go test ./... -count=1
+-timeout=180s, full go test -race ./... -count=1 -timeout=180s and go vet ./...
+passed against final native code. Python full regression: 2155 passed, 28 skipped,
+3 dependency warnings and 24 subtests in 92.20 seconds. All 144 Source exports are
+current; 19 scan anchors and 10 selected MCP guards passed. The unrelated full
+mutation sweep and separate invariant verifier were not rerun; no Python runtime
+package modules changed. README outline and git diff --check passed. Coverage was
+not refreshed; 90.23% (21,311/23,618) belongs to 721b413 before MCP implementation,
+not to the current tree or migration completion. Python coverage was not refreshed.
+
+README baseline, canonical launcher selection edge, boundary text, extension seam
+and hardening note are updated. The interactive Language layout card records the
+new forwarding and real subprocess evidence. Archify deliver: 9/9 showcase checks,
+zero errors/warnings. Visual inspection remains skipped after prior access denial.
+Spec SHA256 17508d7978780a34bb0257bb0bc8116a1145946a27d0047e5b2ecefd0f452d75;
+HTML SHA256 fb4b31842e3722021d5a1f7e5e630dea546bd313b47b2c7691453bf2288903e1.
+
+Next: actual task-child MCP capability/lifetime composition and InProcessMCP.
+Malformed/archival arguments, remaining model/tool scalar/transport and timing/input/
+output profiles and full G7 remain open. Native SQLite still awaits approved driver
+selection. The complete Python-to-Go objective remains active.
+
 ## 2026-10-08 MCP HTTP launcher Source contracts
 
 Baseline 2cce6c8. Snapshot 144 runs real Source create_app manager_factory

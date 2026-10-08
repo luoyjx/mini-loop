@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `447c9a3` plus default-off managed MCP connections,
+Runtime review baseline: `4f6b2a5` plus explicit MCP launcher selection and
+operator server forwarding, plus default-off managed MCP connections,
 identity-based last-holder close after turn drain, fresh fork connection state,
 and default-off raw-session connect_mcp
 and exclusive inventory publication, plus immutable MCP registration snapshots
@@ -385,10 +386,11 @@ flowchart LR
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
-        GoMCP["Go MCP connect_mcp / registration / stdio<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>launcher / task-child composition pending"]
+        GoMCP["Go MCP connect_mcp / registration / stdio<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>launcher selection<br/>task-child composition / InProcess pending"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
         GoManager -. explicit shared handles / last-holder drain and close .-> GoMCP
+        GoLaunch -. explicit MCPTools / MCPServers selection .-> GoMCP
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
@@ -1598,7 +1600,7 @@ the existing model-request/gate path; default tools are unchanged. Client lifeti
 is still operator-owned. Nonfinite/surrogate argument profiles remain unsupported
 at the strict protocol boundary; the stdio library's archival values do not expand it.
 Timing/input/output, remaining model/tool scalar profiles, native SQLite, MCP
-launcher activation, task-child composition, InProcessMCP and full G7 remain pending.
+task-child composition, InProcessMCP and full G7 remain pending.
 Snapshot 142 runs five real Source Agent batches: aliases versus raw server names,
 lazy factories, idempotent connection, same-batch discovered tool calls, same raw
 server replacement through another alias, cross-server collision refusal, empty
@@ -1620,8 +1622,19 @@ retained before discovery, including failed registrations and old raw-name
 replacements, so cleanup cannot lose a created connection. These failure-path
 retentions strengthen Source cleanup rather than claim identical historical leaks.
 Close failures become bounded cleanup diagnostics. Reacquisition waits for an
-in-progress close; reusable clients may then restart. Launcher configuration, task
-children and InProcessMCP remain pending. No default activation or durable claim.
+in-progress close; reusable clients may then restart. Snapshot 144 runs three
+actual Source HTTP configurations through manager_factory and individual registry
+toggles. Go `launcher.Options.MCPTools/MCPServers` forwards trusted named servers
+into the managed lifetime, and standalone `--mcp-tools` selects the connector.
+The default executable has no configured servers, matching Source default CLI
+composition; server definitions come from embedding operator code. Inspection
+reports the selector without invoking factories or exposing aliases/commands.
+Native tests compare MCP catalogues, outputs and close counts through real HTTP,
+and execute a real Go stdio child that starts only on authorized connection and
+is reaped on App.Stop. Explicitly registered credentials are scrubbed; the default
+Null registry inherits the environment as in Source. Full MINILOOP_FEATURES stays
+unsupported; task children and InProcessMCP remain pending. No default activation
+or durable claim.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

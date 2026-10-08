@@ -7807,3 +7807,16 @@ workspace/client retention until return, failed factories, old raw-name replacem
 retention, alias deduplication, panic isolation and serialized close/reuse. Failure
 retention deliberately repairs Source registered-map ownership gaps; it is not a
 claim of exact leak parity. Launcher and task-child MCP composition remain open.
+
+### Go migration — MCP launcher forwarding
+
+The explicit launcher selector installs the external-risk connector without
+calling an operator factory during inspect or startup. Ordered named servers
+reach manager composition and the existing exclusive gate; model arguments only
+select configured aliases. Source HTTP differential recipes cover disabled,
+enabled-empty and enabled-configured catalogues, same-batch results and shutdown
+close counts. A native real-subprocess test verifies that construction does not
+start the child, explicitly registered credentials are scrubbed and App.Stop
+reaps it after the admitted turn. Null secret behavior remains Source environment
+inheritance; no implicit registration or comprehensive feature activation occurs.
+Task-child MCP scope and the full feature bundle remain open.

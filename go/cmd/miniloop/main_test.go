@@ -224,3 +224,18 @@ func TestWorkflowSelectionDumpIsPureAndSupportsSourceEnvironment(t *testing.T) {
 		t.Fatal(code, errout.String())
 	}
 }
+
+func TestMCPFlagReportsSelectionWithoutStartingRuntime(t *testing.T) {
+	env := map[string]string{"MINILOOP_WORKSPACE_ROOT": filepath.Join(t.TempDir(), "ws"), "MINILOOP_FEATURES": "1"}
+	var out, errout bytes.Buffer
+	if code := execute(context.Background(), []string{"--mcp-tools", "--dump-config"}, env, &out, &errout); code != 0 {
+		t.Fatal(code, errout.String())
+	}
+	var report launcher.Report
+	if err := json.Unmarshal(out.Bytes(), &report); err != nil || !report.MCPTools || len(report.Unsupported) != 1 {
+		t.Fatal(report, err)
+	}
+	if _, err := os.Stat(env["MINILOOP_WORKSPACE_ROOT"]); !os.IsNotExist(err) {
+		t.Fatal("inspection started runtime")
+	}
+}
