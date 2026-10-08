@@ -8107,3 +8107,14 @@ publication then fails with the Source output-conversion message. Public operati
 catch both conversion failures only after callback-scoped snapshot cleanup, returning
 a no-probe error result. Error-envelope and syntax precedence remain Source-shaped.
 Other decoder profiles and maximum capture limits are unchanged.
+
+### Go migration — AST text survives until explicit wire encoding
+
+Source AST JSON output can contain escaped lone surrogate code points. Result.ToJSON
+preserves them as a Python string projection; final byte encoders remain strict.
+Tool-result block JSON checks its named wire text variant so encoding fails before
+provider transport, rather than silently replacing characters. Exact Source Tool.run
+and SDK observations cover text fields, keys, warnings, error hints and valid paired
+Unicode. Runtime readonly tools retain the string; direct/streaming requests refuse
+without HTTP. This establishes the AST/tool-result boundary, not every Unicode field
+or full SSE/recording lifecycle parity. Per-call snapshot cleanup remains unchanged.

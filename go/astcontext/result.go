@@ -142,12 +142,12 @@ func (r Result) MarshalJSON() ([]byte, error) {
 	return v.MarshalJSON()
 }
 
-// ToJSON retains Source's historical nonfinite values at the final UTF-8 boundary.
+// ToJSON matches Source's string projection, including historical nonfinite and
+// surrogatepass values. Strict byte publication remains a separate boundary.
 func (r Result) ToJSON() (string, error) {
 	v, err := r.Value()
 	if err != nil {
 		return "", err
 	}
-	raw, err := v.MarshalLegacyUTF8()
-	return string(raw), err
+	return v.LegacyString()
 }

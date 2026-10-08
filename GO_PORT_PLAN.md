@@ -1,5 +1,45 @@
 # Go port plan
 
+## 2026-10-09 native AST text and final tool-result encoding
+
+Baseline bc51cc7. jsonvalue.LegacyString now renders compact ensure_ascii=False
+Python strings through the existing surrogatepass character representation. AST
+Result.ToJSON uses that string profile; lone surrogate fields/keys/warnings/hints
+remain observable and no longer fail before the tool returns. Result.MarshalJSON,
+MarshalUTF8 and MarshalLegacyUTF8 retain their existing strict byte profiles.
+Nonfinite values are preserved inside the returned result text, as in Source.
+
+Tool-result block JSON encoding now checks the named wireResultText variant for
+valid UTF-8 before encoding. It returns ErrResultUTF8 rather than replacing lone
+surrogates with U+FFFD. Normal wire field order, omission and cache-control behavior
+are unchanged. Actual direct and streaming provider paths refuse before transport;
+Go retains its typed FailureProtocol category, while Source SDK raises UnicodeEncodeError.
+This does not claim exact exception text or all transcript/SSE/recording Unicode
+profiles. In-memory fake-model tool results remain observable as Source text.
+
+Eight Source public-operation/Tool.run/SDK recipes replay exact surrogatepass text
+and ASCII data projections through native CLI calls. Tests check original cwd,
+0400 copied sources and cleanup. Actual readonly runtime AST model execution retains
+all eight strings; direct provider tests preserve admitted text on the actual request
+wire and reject five malformed-Unicode results without HTTP calls. Streaming refusal
+shares that tested block serializer. No host interfaces enter domain/service fields.
+
+Validation: full go test ./... -count=1 -timeout=180s, full go test -race ./...
+-count=1 -timeout=180s and go vet ./... pass. Additional runtime-model and exact
+provider-wire assertions pass focused race; agent vet also passes after new tests.
+The first exporter check flagged an existing child-background timing discrepancy;
+its isolated capture matches and a repeated full --check confirms all 161 exports.
+All 19 scan guards pass. README outline and git diff --check pass. Archify
+delivery passes 9/9, zero errors/warnings. Specification SHA256
+25c8fc54ebd8ab31d8374d69c9022a3b8fb09113b8de6bb334865d506a53ceaa; artifact
+33a3a7611d028e1eb21ac8198de791da35cc037d284d4ce1c4d15b878a73bd40. Visual
+inspection remains skipped after prior browser denial. Native runtime evidence
+is Darwin arm64. Full Python regression, coverage and mutation
+sweep are not refreshed. The last Go coverage remains the earlier 90.03% snapshot.
+CPython recursion/stack limits, broader Unicode lifecycle profiles, native SQLite,
+diagnostic parser selection and G0-G7 remain open.
+
+
 ## 2026-10-09 AST text and provider encoding Source contracts
 
 Baseline 92b6536. Export 161 adds eight actual Source public AST operations and

@@ -3258,3 +3258,12 @@ library defaults with Source timeout 10 seconds and output cap 1,000,000 bytes.
 Inspect and --dump-config describe selection without probing. Executable availability
 and per-invocation integrity checks remain in the AST adapter, beneath ToolGate.
 No model arguments can select the binary, environment or process limits.
+
+### Go AST text versus result wire bytes
+
+Result.ToJSON is a Source string projection, using closed jsonvalue.LegacyString
+with surrogatepass code points and historical nonfinite values. It is not a strict
+UTF-8 byte encoder. Keep MarshalJSON/MarshalUTF8/MarshalLegacyUTF8 strict. Tool-result
+block encoding checks wireResultText and returns ErrResultUTF8 before provider HTTP;
+in-memory models can still observe the original string. Do not replace characters
+at this boundary. Go provider failures retain their existing typed protocol category.

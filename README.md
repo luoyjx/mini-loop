@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `92b6536` plus AST text/provider encoding Source contracts,
+Runtime review baseline: `bc51cc7` plus native AST text/final tool-result encoding,
+plus AST text/provider encoding Source contracts,
 plus native AST decimal conversion faults,
 plus AST decimal conversion Source contracts,
 plus AST Launcher environment selection,
@@ -408,7 +409,7 @@ flowchart LR
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · AST / workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
-        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
+        GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
         GoManager["Go SessionManager<br/>owner lookup · resource snapshots / default scoped memory<br/>workspace policy · delete / stop drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
@@ -1301,8 +1302,8 @@ metrics and partial/ambiguity/no-match precedence. All 65 actual Source observat
 replay: 61 compare exact ASCII/UTF-8 JSON and four preserve ordinary TypeError text.
 Detached records/warnings and strict standard-JSON nonfinite refusal are tested.
 Actual semantic subprocess execution, explicit model-tool runtime selection and
-Launcher configuration are implemented below. CPython recursion/stack limits and lone-surrogate string projection still need final
-profile work; current ToJSON enforces a UTF-8 boundary. AST decimal integer failures
+Launcher configuration are implemented below. CPython recursion/stack limits still need final profile work. Source result strings
+and final UTF-8 wire encoding are separate boundaries, implemented below. AST decimal integer failures
 now preserve Source ValueError wording and digit counts. Exact metric sums exceeding
 4300 output digits fail before warning publication. Twelve Source invocation/public
 recipes exercise precedence and error text; native public operations clean frozen
@@ -1322,7 +1323,8 @@ The child independently verifies external 0400 source copies; a mutation of the 
 workspace during child execution still reads original bytes. Workspace executables
 are refused before side effects and caller cancellation remains a Go error.
 Four model-tool registrations and explicit runtime selection are implemented below. Final extreme
-numeric/recursion wording and lone-surrogate projection profiles remain open.
+recursion/stack profiles remain open; decimal faults and lone-surrogate result
+strings are implemented below.
 
 Native protocol now declares four AST ToolInput variants with named density,
 view and reference-kind enums, detached required arrays and optional presence
@@ -1991,6 +1993,15 @@ The Mermaid block above remains the canonical GitHub view.
   HTML.
 
 </details>
+
+AST Result.ToJSON now matches Source compact result strings, preserving lone
+surrogates through the closed value's existing surrogatepass representation. Strict
+JSON/UTF-8 byte encoders remain separate. Tool-result block wire encoding refuses
+invalid UTF-8 before direct/streaming provider HTTP, preserving the Source SDK's
+zero-transport outcome instead of replacing text. Eight Source operations/Tool.run/SDK
+recipes match native output and cleanup; readonly runtime execution keeps the exact
+result text. Go provider errors retain FailureProtocol; exact Python exception text
+and broader transcript/SSE/recording Unicode profiles are not claimed aligned.
 
 The Go Launcher forwards MINILOOP_AST_OUTLINE_ENABLED/BINARY/SHA256/TIMEOUT/
 MAX_OUTPUT_BYTES into the managed AST adapter. Selection is default off; activation

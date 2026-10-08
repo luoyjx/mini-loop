@@ -51,6 +51,14 @@ func init() {
 	if strings.HasPrefix(selected, cwd+string(filepath.Separator)) {
 		os.Exit(5)
 	}
+	if payload := os.Getenv("AST_AGENT_PAYLOAD"); payload != "" {
+		data, err := os.ReadFile(payload)
+		if err != nil {
+			os.Exit(6)
+		}
+		_, _ = os.Stdout.Write(data)
+		os.Exit(0)
+	}
 	_ = json.NewEncoder(os.Stdout).Encode(struct {
 		Tool    string `json:"tool"`
 		Schema  int    `json:"schema_version"`
@@ -85,7 +93,7 @@ func nativeASTConfig(t *testing.T) (astcontext.Config, string) {
 	t.Setenv("GORACE", "atexit_sleep_ms=0")
 	p := astcontext.DefaultParameters()
 	p.Binary = binary
-	p.EnvPassthrough = []string{"AST_AGENT_CHILD", "AST_AGENT_LOG", "GORACE"}
+	p.EnvPassthrough = []string{"AST_AGENT_CHILD", "AST_AGENT_LOG", "AST_AGENT_PAYLOAD", "GORACE"}
 	config, err := astcontext.NewConfig(p)
 	if err != nil {
 		t.Fatal(err)

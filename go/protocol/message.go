@@ -227,10 +227,12 @@ func (b Block) marshalWithCache(control *CacheControl) ([]byte, error) {
 		}{BlockToolUse, b.toolUse.ID, b.toolUse.Name, b.toolUse.Input, caller, control})
 	case BlockToolResult:
 		return json.Marshal(struct {
-			Type BlockKind `json:"type"`
-			ToolResultBlock
-			CacheControl *CacheControl `json:"cache_control,omitempty"`
-		}{BlockToolResult, *b.toolResult, control})
+			Type         BlockKind      `json:"type"`
+			ToolUseID    string         `json:"tool_use_id"`
+			Content      wireResultText `json:"content"`
+			IsError      bool           `json:"is_error,omitempty"`
+			CacheControl *CacheControl  `json:"cache_control,omitempty"`
+		}{BlockToolResult, b.toolResult.ToolUseID, wireResultText(b.toolResult.Content), b.toolResult.IsError, control})
 	default:
 		return nil, fmt.Errorf("unsupported block type %q", b.kind)
 	}
