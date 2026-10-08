@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `1e9240a` plus managed stored-request reconstruction
+Runtime review baseline: `79f9931` plus diagnostics Source contract capture
+(Go diagnostics remains pending), managed stored-request reconstruction
 and typed historical request reconstruction
 and independent transcript-search launcher/CLI
 selection and actual Source runtime replay, plus explicit session-bound transcript_search

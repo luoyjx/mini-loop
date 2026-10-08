@@ -1,5 +1,42 @@
 # Python to Go parity matrix
 
+## 2026-10-08 diagnostics Source contracts
+
+Reviewed baseline 79f9931. Source snapshot 150 adds python-diagnostics.json from
+actual PythonSyntaxDiagnostics scans and installed diagnostics tool invocations,
+not a replacement formatter. CPython 3.11.3 is recorded because ast.parse exception
+classes and diagnostic messages are interpreter behavior. All three actual limits
+(200 files, 1,000,000 bytes per file, 50 reports) and the schema/read/parallel traits
+are captured. Twenty-nine file/tool recipes and six injected-provider recipes cover
+sorted/hidden trees, exact and exceeded bounds, explicit targets, absent/null/empty
+paths, UTF-8 replacement, NUL parse failure, filesystem warnings, unknown arguments,
+provider failure, exact-cap rendering and refusal before provider invocation.
+
+Source confines explicit safe_path selections, including outside symlink targets;
+its root.rglob tree scan does not resolve each symlink file through safe_path and
+therefore diagnoses outside file contents. Symlink directories are not traversed.
+Both observed behaviors are retained as distinct fixtures; no blanket confinement
+claim or silently corrected implementation is made. The file-count bound applies
+to the sorted selected files, not the preceding whole-tree enumeration. The byte
+warning is present only above the exact limit; exact 50 reports already print the
+cap caveat. Missing non-.py targets return No diagnostics without stat. NUL source
+raises ValueError in the pinned interpreter instead of becoming a SyntaxError row.
+
+Go runtime/provider/default activation is unchanged. Next implement the named
+Diagnostic/Provider and typed optional-path tool seam against these actual outputs,
+then the default Python syntax backend with explicit parser fidelity evidence;
+a regex or a Go-language parser cannot establish the Python syntax contract.
+Native SQLite, diagnostics default backend, wider archival profiles, full activation
+and G7 remain open. No dependency was added. The full port objective stays active.
+
+Validation: all 150 Source exports pass --check; all 19 scanning guards remain
+anchored; focused Python diagnostics/query tests pass (8 tests). Full Go tests
+(go test ./... -count=1 -timeout=180s) and go vet ./... pass; README outline and
+git diff --check pass. Python runtime/package modules and Go runtime code did not
+change, so full Python/race, invariant/mutation sweeps and coverage were not rerun.
+Canonical topology and interactive map are unchanged; this is contract preparation,
+not diagnostics runtime activation.
+
 ## 2026-10-08 managed historical request reconstruction
 
 Baseline 1e9240a (Source snapshot 149). ManagedSession.ReconstructRequest now
