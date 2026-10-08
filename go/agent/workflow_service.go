@@ -51,6 +51,7 @@ type WorkflowServiceConfig struct {
 	WorkerFactory WorkflowWorkerFactory
 }
 type WorkflowLaunchRequest struct {
+	parent     *ManagedSession
 	SessionID  SessionID
 	Input      protocol.WorkflowInput
 	Context    RunContext
@@ -131,7 +132,7 @@ func NewWorkflowService(config WorkflowServiceConfig) (*WorkflowService, error) 
 	if err != nil {
 		return nil, err
 	}
-	if config.Caps.WallTimeSeconds < 1/float64(time.Second) || config.Caps.WallTimeSeconds >= float64(math.MaxInt64)/float64(time.Second) {
+	if !validWorkflowWallTime(config.Caps.WallTimeSeconds) {
 		return nil, errors.New("workflow wall-time policy exceeds Go duration range")
 	}
 	if config.Journal == nil || config.ResolveParent == nil {
@@ -168,6 +169,22 @@ func NewWorkflowService(config WorkflowServiceConfig) (*WorkflowService, error) 
 	}
 	return s, nil
 }
+
+func validWorkflowWallTime(seconds float64) bool {
+	return seconds >= 1/float64(time.Second) && seconds < float64(math.MaxInt64)/float64(time.Second)
+}
+
+func (s *WorkflowService) sessionTasks(session workflows.SessionID) []*workflowServiceTask {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	tasks := []*workflowServiceTask{}
+	for id, task := range s.tasks {
+		if run, err := s.store.GetRun(id); err == nil && run.SessionID == session {
+			tasks = append(tasks, task)
+		}
+	}
+	return tasks
+}
 func (s *WorkflowService) Store() *workflows.InMemoryStore { return s.store }
 func (s *WorkflowService) Views() *workflows.ServiceViews  { return s.views }
 func (s *WorkflowService) Get(id workflows.RunID) (workflows.WorkflowRun, error) {
@@ -193,6 +210,14 @@ func (s *WorkflowService) Launch(ctx context.Context, request WorkflowLaunchRequ
 	s.mu.Unlock()
 	if closed {
 		return WorkflowLaunchResult{}, workflowServiceError(WorkflowRuntimeError, "workflow service is closed")
+	}
+	if request.parent != nil {
+		request.parent.mu.Lock()
+		err := request.parent.admissionError()
+		request.parent.mu.Unlock()
+		if err != nil {
+			return WorkflowLaunchResult{}, err
+		}
 	}
 	if request.Context.Authority() != AuthorityExplicitHuman || request.Context.Validate() != nil {
 		return WorkflowLaunchResult{}, workflowServiceError(WorkflowPermissionError, "Workflow launch requires an explicit_human trusted local context")
@@ -431,12 +456,28 @@ func (s *WorkflowService) HasActive(session workflows.SessionID) bool {
 	return false
 }
 func (s *WorkflowService) CancelSession(ctx context.Context, session workflows.SessionID) error {
+	// Serialize the deletion snapshot with admission: a launch that already
+	// resolved its parent must register its task before cleanup can pass.
+	s.admissionMu.Lock()
+	runs := s.store.ListRuns(&session)
+	s.admissionMu.Unlock()
 	var first error
-	for _, run := range s.store.ListRuns(&session) {
+	for _, run := range runs {
 		if !run.Terminal() {
 			_, err := s.Cancel(ctx, run.RunID, &session, "parent session deleted")
 			if err != nil && first == nil {
 				first = err
+			}
+		}
+	}
+	// Terminal state can precede observer/outbox publication. Join those tasks too.
+	for _, task := range s.sessionTasks(session) {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-task.done:
+			if task.err != nil && first == nil {
+				first = task.err
 			}
 		}
 	}

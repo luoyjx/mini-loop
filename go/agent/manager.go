@@ -33,6 +33,8 @@ const (
 // transcripts or leases; state is restored through the injected store consumer.
 // Public lookups require an already established owner identity.
 type SessionManager struct {
+	workflows                      *WorkflowService
+	workflowRetentions             map[SessionID]string
 	teamReservations               map[teams.Identity]bool
 	teamProtocols                  *teams.Coordinator
 	teams                          *teams.Bus
@@ -106,6 +108,9 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		config.DeleteGrace = DefaultDeleteGrace
 	}
 	services := &config.Services
+	if err := normalizeManagerWorkflows(services); err != nil {
+		return nil, err
+	}
 	decisionLLM, err := services.DecisionLLM.normalized()
 	if err != nil {
 		return nil, err
@@ -218,6 +223,10 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 	}
 	manager.cron, err = cron.New(cron.Config{Resolver: managerCronResolver{manager}, DurablePath: filepath.Join(root, ".cron.json"), Secrets: cronMasker{services.Secrets}})
 	if err != nil {
+		return nil, err
+	}
+	if err := manager.initializeWorkflows(); err != nil {
+		manager.restoreCancel()
 		return nil, err
 	}
 	return manager, nil
@@ -438,6 +447,7 @@ func (manager *SessionManager) baseManagedRuntimeConfig(id SessionID, owner Owne
 	}
 	runtime := RuntimeConfig{DecisionTools: services.DecisionTools, DecisionProvider: services.DecisionProvider, DecisionLLM: services.DecisionLLM, GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
 	runtime.team = &teams.Identity{Team: teams.TeamID(id), Name: "lead"}
+	runtime.WorkflowService, runtime.workflowManager = manager.workflows, manager
 	runtime.Label = "main"
 	runtime.TeamTools = services.TeamTools
 	runtime.teamManager = manager
@@ -562,8 +572,10 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 	}
 	manager.cronMu.Unlock()
 	manager.config.Services.Approvals.CancelSession(id)
+	workflowDrain := manager.beginWorkflowDeletion(id)
 	cleanup := func() {
 		manager.drainSession(session, "session deleted", manager.config.DeleteGrace)
+		workflowSafe := manager.finishWorkflowDeletion(session, workflowDrain, !options.PreserveWorkspace && !session.workspaceBound)
 		if options.RemoveTrajectories && manager.config.Services.Trajectories != nil {
 			if err := trajectoryFault(func() error { _, err := manager.config.Services.Trajectories.DeleteForSession(id); return err }); err != nil {
 				manager.recordCleanupError(id, "trajectories", err)
@@ -574,11 +586,11 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 		// Retire this reference before allowing another cleanup to check for
 		// survivors. Otherwise two drained handles can both skip reclamation.
 		defer manager.finishCleanup(id)
-		if !options.PreserveWorkspace && !session.workspaceBound {
+		if workflowSafe && !options.PreserveWorkspace && !session.workspaceBound {
 			manager.reclaimUnusedWorkspace(id, session.core.workspace)
 		}
 	}
-	if session.teamRun != nil || session.Info().Busy || session.hasPersonalSkillOperation() || session.core.backgroundInitialized() {
+	if workflowDrain != nil || session.teamRun != nil || session.Info().Busy || session.hasPersonalSkillOperation() || session.core.backgroundInitialized() {
 		go cleanup()
 	} else {
 		cleanup()
@@ -633,6 +645,12 @@ func (manager *SessionManager) reclaimUnusedWorkspace(id SessionID, path string)
 	}
 	for retiringID, session := range manager.retiring {
 		if retiringID != id && session.core.workspace == path {
+			shared = true
+			break
+		}
+	}
+	for _, retained := range manager.workflowRetentions {
+		if retained == path {
 			shared = true
 			break
 		}
@@ -719,7 +737,11 @@ func (manager *SessionManager) shutdown(sessions []*ManagedSession, creating <-c
 	if err := manager.cron.Stop(context.Background()); err != nil {
 		manager.recordCleanupError("", filepath.Join(manager.config.WorkspaceRoot, ".cron.json"), err)
 	}
+	if manager.workflows != nil {
+		manager.recordCleanupError("", "workflows", manager.workflows.Close(context.Background()))
+	}
 	manager.WaitCleanup(context.Background())
+	manager.retryWorkflowRetentions()
 	manager.mu.Lock()
 	manager.state = ManagerStopped
 	close(manager.stopped)

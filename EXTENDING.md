@@ -2571,5 +2571,35 @@ WorkflowInput for Begin/AttachWorkflow and requires a journaled ToolCall. Status
 and cancel use the bound session filter; cancel joins with reason "cancelled by
 trusted parent". Responses preserve source sorted, spaced UTF-8 JSON. Custom
 service resolution/event sinks remain operator seams. Runtime construction does
-not own the injected service's shutdown. Fleet manager binding/delete/shutdown,
-automatic notification injection and HTTP/SSE/archive integration remain pending.
+not own the injected service's shutdown; SessionManager does as described below.
+Automatic notification injection and HTTP/SSE/archive integration remain pending.
+
+
+### Go manager-owned workflow lifetime
+
+ManagerServices.WorkflowTools enables one owned WorkflowService with captured
+WorkflowCaps (nil selects defaults). Injected WorkflowService implies activation
+and supplies the manager journal and attempt pool. A conflicting explicitly supplied
+WorkflowAttemptPool is refused by identity. Worker construction inherits provider,
+model budgets, skills, secrets, role policy, recovery/cache/stuck seams and shared
+model/tool permits. The default live parent resolver accepts only current active
+manager sessions. New, forked and restored sessions bind the same service; teammates
+remove the three tools. Workflows() is an operator seam, not owner authentication.
+
+Native bound guards reject deleted/stopping manager handles before journal replay.
+The private managed-parent admission check occurs under the service admission lock;
+CancelSession takes the same barrier before recording its deletion snapshot. Launches
+already in admission register tasks before deletion joins, and closed parents cannot
+admit later tool launches even with an injected custom resolver. Cancellation joins
+terminal publication tasks too. Injected resolvers/callbacks remain trusted operator
+seams and must cooperate; direct operator requests have their own lifetime policy.
+
+Delete owns asynchronous workflow cancellation alongside existing turn/background
+cleanup. Scratch reclamation waits for both; preserve/bound policies remain in force.
+Cancellation errors or remaining work prevent removal and pin the workspace against
+other shared-session cleanups. Shutdown retries eligible pins after service closure
+and cleanup joins, retaining paths still used by surviving sessions. Stop callers
+may cancel their wait while background shutdown still owns drainage. No durable
+worker restart, cross-process fencing or exactly-once effects are implied. Session
+workflow event/SSE/archive projection, summaries, notifications and HTTP remain
+separate pending integrations.

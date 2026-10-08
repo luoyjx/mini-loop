@@ -1,5 +1,70 @@
 # Go port plan
 
+## 2026-10-08 manager-owned workflow composition
+
+Baseline 09bde07. W6B adds optional ManagerServices workflow construction and owned
+lifetime. WorkflowTools captures typed caps and creates one service; injecting a
+WorkflowService enables the tools and selects its action journal and attempt pool.
+An explicitly conflicting pool is refused before workspace allocation. Default fresh
+readonly workers inherit provider/model budgets, skills/secrets/role policy,
+recovery/cache/stuck seams and shared model/tool permits. New, forked and restored
+sessions bind the same service; autonomous teammates omit all three workflow tools.
+Workflows() is an operator API and does not establish owner admission.
+
+The default parent resolver accepts only current active manager sessions. Native
+identity guards reject deleted or stopping manager handles before journal replay.
+Managed launches carry a private parent handle, checked under service admission;
+CancelSession snapshots runs through the same barrier and joins terminal publication
+as well as active engine tasks. An already-admitted launch cannot escape deletion
+cleanup, including when an injected resolver still recognizes the old parent.
+Direct operator requests and custom cooperative callbacks retain operator policy.
+
+Delete owns asynchronous cancellation and existing session cleanup before scratch
+reclamation. Enabled idle deletion now also uses the owned background cleanup path;
+this native timing extension is separate from the source final-state comparison.
+Preserved and bound workspaces remain. Cancellation failure or remaining work pins
+paths against other shared-session cleanup; shutdown retries eligible drained pins.
+Stop closes the service and joins cleanup even after its initiating caller cancels.
+No durable worker recovery, cross-process fencing or exactly-once effects are implied.
+
+Snapshot 128 compares 12 actual Python SessionManager/service/engine/store/journal
+profiles: disabled, complete, custom caps, injected/same/conflicting pool, running and
+idle deletion, preserved deletion, shutdown, fork and teammate catalogue. Only worker
+execution is replaced. Native tests additionally exercise real fresh workers, captured
+caps, shared permits, deleted replay refusal, blocked admission versus deletion,
+terminal observer publication, caller timeout and injected cleanup-failure retention.
+The failure test is a native fault injection, not a source cancellation-failure profile.
+
+Fresh full shared-package Go statement coverage is 90.23% (20,568/22,796),
+using go test ./... -count=1 -timeout=180s -coverpkg=./... and merging identical
+source blocks across package test binaries by maximum hit count. This measures
+executed statements, not full Python feature parity. The previous 90.20% profile
+belongs to def5cec. Coverage tests passed; the final gates follow below. The initial full Go run
+found that capacity-zero rejection broke initialized wait-only pools in existing
+cancellation tests. Validation now rejects only an uninitialized nil-channel pool;
+the focused engine/manager race suite passes, retaining source permit-wait behavior.
+The README architecture baseline and canonical Mermaid now describe manager-owned
+workflows; the interactive specification and generated HTML pass all 9 showcase
+checks with zero errors/warnings. Visual inspection remains skipped after prior
+access denial. No dependencies or ambiguous Go domain types were added.
+
+Final gates: full go test ./..., go test -race ./... and go vet ./... passed;
+all 128 source export files passed --check and all 19 scan guards remain anchored.
+Full Python regression passed on the second run: 2,155 passed, 28 skipped,
+24 subtests, three dependency deprecation warnings in 85.34s. The first run had
+2,154 passes and one existing 40-turn timing assertion at 0.535s versus 0.5s;
+the entire double-cost test file then passed (12 tests) before the full rerun.
+No Python runtime package or guarded behavior changed, so invariant/guard sweeps
+were not rerun. git diff --check and README outline passed. Architecture specification
+SHA256 82ba01ebf1d97e26e16b24b46f6e7164282e81792a46cbeb0bb647a3ea40ce8c;
+HTML SHA256 b523a9908999de9276d2274fa50aba55b266784665afd03a97610d8458f6bb85.
+
+W6C remains: live parent event/SSE/archive integration, summaries and later-turn
+notification injection. Workflow HTTP/launcher activation, MCP, native session
+SQLite, remaining differential profiles and full G7 are still open. The full
+Python-to-Go port is unfinished; defaults remain off and storage is process-local.
+
+
 ## 2026-10-08 bound workflow model tools
 
 Baseline def5cec. W6A installs concrete Workflow/WorkflowStatus/WorkflowCancel

@@ -131,6 +131,8 @@ func (manager *SessionManager) SpawnTeammate(ctx context.Context, owner OwnerID,
 		return spawn, err
 	}
 	runtime := manager.baseManagedRuntimeConfig(id, owner, path, ModeInteractive, manager.config.Defaults.Model, nil, bash)
+	// Autonomous teammates cannot recursively launch or manage workflows.
+	runtime.WorkflowService, runtime.WorkflowTools, runtime.workflowManager = nil, false, nil
 	runtime.Skills = parent.core.skills
 	runtime.Memory = parent.core.memory
 	runtime.UserResources = clonePointer(parent.core.ownerResources)

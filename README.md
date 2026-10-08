@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `def5cec` plus optional bound workflow model tools,
+Runtime review baseline: `e0fd85d` plus optional owned manager workflows,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -409,6 +409,8 @@ flowchart LR
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · operator create-only publication"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
+        GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join"]
+        GoGate -. explicit-human workflow tools .-> GoWorkflow
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
@@ -1502,8 +1504,18 @@ WorkflowTools alone exposes the source unavailable-service boundary. Managed
 launch captures the real parent turn and original model input. Trusted launch/manage
 capabilities and immutable identity/workspace guards run before cached results.
 Tools retain sorted spaced UTF-8 JSON, source session filtering and cancel reason.
-The GoResources node includes this explicit runtime surface; fleet/HTTP/default
-activation and automatic notifications are still pending.
+The GoResources node includes this explicit runtime surface. Snapshot 128 compares
+12 actual Python manager composition/cleanup profiles. ManagerServices.WorkflowTools
+or an injected WorkflowService now activates one fleet-owned service, captured caps,
+its journal and a shared attempt pool. Default workers inherit model/tool pools and
+readonly seams. Normal creation, fork and restore bind the service; autonomous
+teammates omit all three tools. Delete revokes lookup/admission and joins workflows
+through terminal publication before scratch reclamation; failed cleanup pins shared
+workspace paths for shutdown retry. Stop owns service closure even if its caller
+cancels. Managed launch and cancellation snapshot share an admission barrier, so
+a pending launch cannot escape deletion cleanup. Defaults remain off. Live parent
+notifications, typed session event/SSE/archive integration, summaries, HTTP and
+launcher activation remain pending.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

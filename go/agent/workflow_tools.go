@@ -49,6 +49,7 @@ func (g workflowAuthorityGuard) GuardTool(ctx context.Context, authority ToolAut
 	h := g.handler
 	h.mu.Lock()
 	binding := h.binding
+	manager := h.workflowManager
 	h.mu.Unlock()
 	if authority.SessionID != binding.SessionID || authority.OwnerID != binding.OwnerID {
 		return "Error: runtime handler identity does not match bound session", true, nil
@@ -56,6 +57,14 @@ func (g workflowAuthorityGuard) GuardTool(ctx context.Context, authority ToolAut
 	root, err := workspace.ResolvePath(authority.Workspace)
 	if err != nil || root != binding.Workspace {
 		return "Error: runtime handler workspace does not match bound session", true, nil
+	}
+	if manager != nil {
+		if _, err := manager.Get(binding.OwnerID, binding.SessionID); err != nil {
+			return "Error: " + err.Error(), true, nil
+		}
+		if manager.State() != ManagerActive {
+			return "Error: " + ErrManagerStopped.Error(), true, nil
+		}
 	}
 	if err := requireWorkflowCapability(authority.RunContext, call.Name()); err != nil {
 		return "Error: " + err.Error(), true, nil
@@ -88,7 +97,7 @@ func (h *runtimeHandler) executeWorkflow(ctx context.Context, authority ToolAuth
 		h.workflowParent.mu.Lock()
 		turn := h.workflowParent.runCount
 		h.workflowParent.mu.Unlock()
-		result, err := h.workflows.Launch(ctx, WorkflowLaunchRequest{SessionID: authority.SessionID, Input: value, Context: authority.RunContext, ActionID: authority.ActionID, ToolUseID: authority.ToolUseID, LaunchTurn: workflows.ParentTurn(turn), ActionInput: &value})
+		result, err := h.workflows.Launch(ctx, WorkflowLaunchRequest{parent: h.workflowParent, SessionID: authority.SessionID, Input: value, Context: authority.RunContext, ActionID: authority.ActionID, ToolUseID: authority.ToolUseID, LaunchTurn: workflows.ParentTurn(turn), ActionInput: &value})
 		if err != nil {
 			return "", err
 		}

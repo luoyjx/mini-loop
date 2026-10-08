@@ -10,6 +10,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/spill"
 	"github.com/luoyjx/mini-loop/go/userresources"
+	"github.com/luoyjx/mini-loop/go/workflows"
 	"github.com/luoyjx/mini-loop/go/worktrees"
 )
 
@@ -48,7 +49,11 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
-	TeamTools bool
+	WorkflowTools       bool
+	WorkflowService     *WorkflowService
+	WorkflowCaps        *workflows.DefinitionCaps
+	WorkflowAttemptPool *workflows.AttemptPool
+	TeamTools           bool
 	// Memory is the shared fallback when no owner resource resolver is configured.
 	// Nil creates WorkspaceRoot/.memory during manager construction.
 	// Managed runtimes always receive an owner-bound view of this store.

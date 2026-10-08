@@ -71,6 +71,16 @@ func executionErrorReason(err error) string {
 }
 
 type AttemptPool struct{ tokens chan struct{} }
+
+func (p *AttemptPool) Capacity() int {
+	if p == nil {
+		return 0
+	}
+	return cap(p.tokens)
+}
+
+func (p *AttemptPool) Initialized() bool { return p != nil && p.tokens != nil }
+
 type AttemptPermit struct {
 	pool *AttemptPool
 	once sync.Once
@@ -129,6 +139,9 @@ func NewWorkflowEngine(store *InMemoryStore, runner WorkflowRunner, options Engi
 		return nil, &ExecutionError{"workflow store and runner are required"}
 	}
 	pool := options.AttemptPool
+	if pool != nil && !pool.Initialized() {
+		return nil, &ExecutionError{"workflow attempt pool is uninitialized"}
+	}
 	if pool == nil {
 		pool, _ = NewAttemptPool(limit)
 	}

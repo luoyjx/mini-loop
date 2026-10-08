@@ -60,6 +60,7 @@ type Questioner interface {
 type RuntimeConfig struct {
 	WorkflowTools   bool
 	WorkflowService *WorkflowService
+	workflowManager *SessionManager
 	teamMember      bool
 	taskStore       *tasks.Store
 	TeamTools       bool
@@ -135,6 +136,7 @@ type RuntimeConfig struct {
 
 type runtimeHandler struct {
 	workflows            *WorkflowService
+	workflowManager      *SessionManager
 	workflowParent       *ManagedSession
 	teamManager          *SessionManager
 	selfAudit            selfAuditBinding
@@ -389,6 +391,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
 	handler.workflows = config.WorkflowService
+	handler.workflowManager = config.workflowManager
 	if config.WorkflowTools {
 		for _, schema := range protocol.WorkflowToolSchemas() {
 			definition, err := NewToolDefinitionWithSchema(schema, workflowToolTraits(schema.Name), handler)

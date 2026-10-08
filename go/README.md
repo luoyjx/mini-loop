@@ -2302,7 +2302,7 @@ eight input/action identities, 20 advertised-shape refusals, three schemas and 1
 actual Python memory/SQLite journal profiles. Native injected-store effects are
 compared to SQLite source, without claiming a native SQLite implementation.
 Background launch/wait/cancel/events are implemented by the owned service below;
-Explicit runtime tools are described below; manager activation remains pending.
+Explicit runtime tools are described below; Manager composition is described below; HTTP/launcher activation remains pending.
 
 
 ## Owned workflow service
@@ -2328,7 +2328,7 @@ conflicting payload, observer failure and ordered admission refusals. Native rac
 tests additionally cover concurrent replay/cancel, cleanup after caller timeout,
 publication retention, deleted parents, context isolation, actual fresh workers
 and bounded detached observer errors. Native callbacks must cooperate; duration
-limits are explicitly validated. Manager/HTTP, SSE/archive integration and
+limits are explicitly validated. HTTP, SSE/archive integration and
 automatic notification append remain pending. No native SQLite backend is added.
 
 
@@ -2348,4 +2348,24 @@ refusal. Bare Session cannot launch. The operator owns the injected service life
 Snapshot 127 covers 21 actual Python tool handler profiles plus traits; native tests
 cover a real managed model launch/cancel, readonly backstop, raw journal binding,
 matching service journal selection, same-turn notification suppression and replay
-fences. Manager/HTTP composition and automatic notifications remain pending.
+fences. Manager composition is described below; HTTP and automatic notifications remain pending.
+
+
+## Manager-owned workflows
+
+Enable ManagerServices.WorkflowTools or inject WorkflowService. Optional WorkflowCaps
+is captured by value; WorkflowAttemptPool shares aggregate permits and must match an
+injected service by identity. The injected journal is authoritative. New/fork/restored
+sessions bind the service; autonomous teammates omit workflow tools. Default workers
+use real fresh readonly sessions with the manager provider, captured budgets and shared
+model/tool pools. Workflows() exposes only an operator API, without owner admission.
+
+Delete and Stop revoke parent admission and own cancellation/joins. Delete waits for
+terminal publication and in-flight launch admission before reclaiming scratch; bound
+or explicitly preserved workspaces remain. Failures pin shared paths and report bounded
+cleanup errors; shutdown retries safe pins. A cancelled Stop caller does not abandon
+background drainage. Snapshot 128 compares 12 actual Python manager profiles plus
+native tests of real workers, captured caps, deleted replay, partial-admission races,
+terminal publication, failure retention and caller cancellation. Defaults remain off.
+Live parent notifications, session events/summaries, HTTP and launcher selection are
+still pending; process-local workflow graphs do not provide durable recovery.
