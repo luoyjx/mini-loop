@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `09f66e4` plus manager-owned per-action Guardian binding,
+Runtime review baseline: `770e997` plus Guardian HTTP Source contracts,
+plus manager-owned per-action Guardian binding,
 plus manager-selected Guardian Source contracts,
 plus native readonly Guardian/explicit reviewer,
 plus Guardian Source review/adapter contracts,

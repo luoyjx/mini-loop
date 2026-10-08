@@ -1,0 +1,566 @@
+{
+  "http": [
+    {
+      "answer": "ALLOW reviewed",
+      "canary_exists": false,
+      "command": "rm fixture-canary.txt",
+      "enabled": false,
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": true,
+      "mode": "interactive",
+      "name": "off-human-allow",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "(no output)"
+      ],
+      "parked": true,
+      "review_names": [],
+      "review_prompts": [],
+      "review_results": []
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "canary_exists": true,
+      "command": "rm fixture-canary.txt",
+      "enabled": false,
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "mode": "interactive",
+      "name": "off-human-deny",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "Permission denied: Potentially destructive shell command"
+      ],
+      "parked": true,
+      "review_names": [],
+      "review_prompts": [],
+      "review_results": []
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "canary_exists": false,
+      "command": "rm fixture-canary.txt",
+      "enabled": true,
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "mode": "interactive",
+      "name": "automatic-allow",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "(no output)"
+      ],
+      "parked": false,
+      "review_names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "review_prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: destructive-shell -- Potentially destructive shell command\nArguments (already redacted): {\"command\": \"rm fixture-canary.txt\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "review_results": []
+    },
+    {
+      "answer": "DENY reviewed",
+      "canary_exists": true,
+      "command": "rm fixture-canary.txt",
+      "enabled": true,
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "mode": "interactive",
+      "name": "automatic-deny",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "Permission denied: Potentially destructive shell command"
+      ],
+      "parked": false,
+      "review_names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "review_prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: destructive-shell -- Potentially destructive shell command\nArguments (already redacted): {\"command\": \"rm fixture-canary.txt\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "review_results": []
+    },
+    {
+      "answer": "DEFER uncertain",
+      "canary_exists": false,
+      "command": "rm fixture-canary.txt",
+      "enabled": true,
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": true,
+      "mode": "interactive",
+      "name": "defer-human-allow",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "(no output)"
+      ],
+      "parked": true,
+      "review_names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "review_prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: destructive-shell -- Potentially destructive shell command\nArguments (already redacted): {\"command\": \"rm fixture-canary.txt\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "review_results": []
+    },
+    {
+      "answer": "DEFER uncertain",
+      "canary_exists": true,
+      "command": "rm fixture-canary.txt",
+      "enabled": true,
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "mode": "interactive",
+      "name": "defer-human-deny",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "Permission denied: Potentially destructive shell command"
+      ],
+      "parked": true,
+      "review_names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "review_prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: destructive-shell -- Potentially destructive shell command\nArguments (already redacted): {\"command\": \"rm fixture-canary.txt\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "review_results": []
+    },
+    {
+      "answer": "DENY reviewed",
+      "canary_exists": true,
+      "command": "rm fixture-canary.txt",
+      "enabled": true,
+      "fault": false,
+      "file_exists": false,
+      "hostile": true,
+      "human": false,
+      "mode": "interactive",
+      "name": "hostile-review-deny",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "Permission denied: Potentially destructive shell command"
+      ],
+      "parked": false,
+      "review_names": [
+        [
+          "read_file",
+          "glob"
+        ],
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "review_prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: destructive-shell -- Potentially destructive shell command\nArguments (already redacted): {\"command\": \"rm fixture-canary.txt\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: destructive-shell -- Potentially destructive shell command\nArguments (already redacted): {\"command\": \"rm fixture-canary.txt\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "review_results": [
+        "Unknown tool: write_file"
+      ]
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "canary_exists": true,
+      "command": "rm fixture-canary.txt",
+      "enabled": true,
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "mode": "readonly",
+      "name": "readonly-denial",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "Permission denied: this session is read-only (tool risk: exec)"
+      ],
+      "parked": false,
+      "review_names": [],
+      "review_prompts": [],
+      "review_results": []
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "canary_exists": true,
+      "command": "rm -rf /",
+      "enabled": true,
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "mode": "interactive",
+      "name": "immutable-denial",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "Permission denied: 'rm -rf /' is blocked"
+      ],
+      "parked": false,
+      "review_names": [],
+      "review_prompts": [],
+      "review_results": []
+    },
+    {
+      "answer": "fixture provider fault",
+      "canary_exists": false,
+      "command": "rm fixture-canary.txt",
+      "enabled": true,
+      "fault": true,
+      "file_exists": false,
+      "hostile": false,
+      "human": true,
+      "mode": "interactive",
+      "name": "provider-error-defer",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "(no output)"
+      ],
+      "parked": true,
+      "review_names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "review_prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: destructive-shell -- Potentially destructive shell command\nArguments (already redacted): {\"command\": \"rm fixture-canary.txt\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "review_results": []
+    },
+    {
+      "answer": "ALLOW provider fault",
+      "canary_exists": false,
+      "command": "rm fixture-canary.txt",
+      "enabled": true,
+      "fault": true,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "mode": "interactive",
+      "name": "provider-error-verdict",
+      "output": "done",
+      "parent_names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "parent_results": [
+        "(no output)"
+      ],
+      "parked": false,
+      "review_names": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "review_prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: destructive-shell -- Potentially destructive shell command\nArguments (already redacted): {\"command\": \"rm fixture-canary.txt\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "review_results": []
+    }
+  ]
+}

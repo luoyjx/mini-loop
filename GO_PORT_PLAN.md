@@ -1,5 +1,26 @@
 # Go port plan
 
+## 2026-10-09 Guardian HTTP Source contracts
+
+Baseline 770e997. Export 164 adds eleven real FastAPI lifespan/session/message/
+approval recipes using the actual Source manager and Guardian. Only the model
+responder is controlled; the normal permission stack, reviewer, HTTP resolution
+and host shell execute normally in fresh temporary workspaces. A canary records the
+actual approved shell effect, and hostile auditors must leave no planted file.
+
+The recipes cover default-off human allow/deny, automatic allow/deny, defer to both
+human answers, hostile review writes, readonly/immutable denials before review,
+and ordinary provider faults with and without verdict words. Captures retain exact
+parent/review catalogues, prompts and tool-result strings, human parking, final
+response and canary existence. The ALLOW-word provider fault actually deletes the
+canary, pinning the previously observed Source text-parsing behavior end to end.
+
+Validation: eleven isolated HTTP captures; full Source exporter --check confirms
+164 files; all 19 scanning guards pass; README outline and git diff --check pass.
+No Python runtime or Go implementation included in this contract commit. Native
+Launcher forwarding and HTTP comparison follow; full Go/Python, race, coverage and
+mutation sweeps are not refreshed for this Source contract slice.
+
 ## 2026-10-09 native manager-owned per-action Guardian binding
 
 Baseline 09f66e4. ManagerServices.GuardianEnabled now forwards an explicit boolean
