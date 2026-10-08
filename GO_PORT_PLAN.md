@@ -1,5 +1,55 @@
 # Go port plan
 
+## 2026-10-09 typed observation orchestration library
+
+Baseline 91137e3. ObservationPipeline accepts explicit ordered ReducerBindingConfig
+and immutable mode/descriptor snapshots, named TokenCounter and optional RawStore.
+It rejects duplicate component IDs/non-observation stages and reports whether any
+binding is enforced. ReduceObservation preserves off-before-double ordering, MIME/
+input byte guards, unchanged passthrough, shadow-before-inflation, byte/token
+inflation and first-owner reduction. Source-compatible recoverable admission stores
+only the current already-masked text before adoption; unavailable/failing storage
+keeps the last good observation and propagates storage warnings to later receipts.
+Existing recovery refs are retained. Outcome projections detach metrics/references.
+
+Ordinary component faults produce bounded class-only reasons and unchanged receipt
+payloads; unsafe class names project to component_error. Invalid concrete results
+fail open as TypeError, invalid candidates/warnings as their named faults, and
+cooperative context timeout projects TimeoutError. Cancellation escapes instead of
+being converted into a successful fallback. Counters retain unbounded integer metrics
+and fall back on error/negative/nil/panic. WithRawStore clones share per-component
+serialization and synchronized counter pairs while pinning separate raw stores.
+
+All 38 actual Source runtime recipes match full projections, receipt fields (only
+elapsed_ms normalized), call order/arguments, enforced state and recovered masked
+text. Native tests confirm frozen caller modes/bindings, clone serialization,
+confirmed queued cancellation, stateful shared counters, copied outcome projections,
+constructor refusal, counter-panic fallback and argument snapshots before counters
+can mutate caller-owned pointers. Source only controls reducer SPI,
+raw entropy/store clock; its runtime orchestration and store remain real.
+
+This is an explicit observation-stage library, not the full TokenEfficiencyRuntime
+or Agent activation. E5 initialize/health/close admission/drain, cross-root component
+identity and extremely large Source timeout/overflow scheduler profiles remain open.
+Large Go duration scheduling saturates while descriptor metadata stays unbounded;
+no parity is claimed for that scheduler boundary. Agent masking before/after reducers,
+privacy-safe event/journal/trajectory projections, automatic session store binding and
+E3-E6 remain open. Unsupported efficiency mode/style startup checks remain intact.
+No dependency or any/interface{}/generic domain map is introduced.
+
+Validation: full go test ./... -count=1 -timeout=180s, full go test -race ./...
+-p=1 -count=1 -timeout=180s and go vet ./... pass; focused pipeline race passes.
+The initial concurrent-package race run hit the pre-existing AST Launcher 1-second
+probe timing failure under load; its isolated race rerun and serialized full race
+pass. No AST behavior/fixture change is included.
+Source exporter --check confirms 169 files, all 19 scan guards pass and Source
+tools/efficiency suite passes 52 tests. README outline and git diff --check pass.
+Archify delivery passes 9/9 with zero errors/warnings; spec SHA256
+2ac6791db1520cda303ec1b41351771b45fae15893fed0d4b82b799728a5c28e;
+HTML 8741dde1cfb9286705b02ce1fdaa80390cfe3c8d4ec1e4c2b0bf4ae9b756789e.
+Visual inspection remains skipped after prior browser access denial. Full Python
+regression, coverage and mutation sweep are not refreshed. Evidence is Darwin arm64.
+
 ## 2026-10-09 observation pipeline Source contracts
 
 Baseline dbfe672. Export 169 captures 38 real TokenEfficiencyRuntime observation
@@ -280,7 +330,7 @@ including optional/custom components, is still required for the port.
   Source-safe event projections. Capture constructor/receipt behavior before wiring.
 - E1 (native store/recovery tool delivered; default activation/lifecycle pending): scoped masked raw-artifact memory store, opaque refs, trusted monotonic TTL,
   per-item/total capacity, integrity checks, discard/sweep/clear/close and tools.
-- E2 (typed observations/builtin reducers delivered; runtime pipeline pending): observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
+- E2 (observation orchestration library delivered; Agent masking/adoption pending): observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
   single ownership, no inflation, recoverable storage and fail-open fault receipts.
 - E3: detached typed request projection, frozen-prefix/identity/envelope guards,
   optimizer admission, budgets and cache-order/transcript preservation.

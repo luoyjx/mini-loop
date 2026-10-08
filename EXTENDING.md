@@ -3329,7 +3329,21 @@ are stateless explicit library implementations. The latter removes ANSI and fold
 noncritical duplicates/blank runs using pinned Python diagnostic/Unicode predicates.
 These reducers do not perform masking or install runtime optimization.
 
-No reducer/optimizer/policy registry, shared component lifecycle or default efficiency
+DefaultObservationPipelineConfig/NewObservationPipeline accept ordered
+ReducerBindingConfig entries, per-component/default modes, explicit masked RawStore,
+inflation/double-reduction flags and a named TokenCounter returning *big.Int/error.
+Bindings pin detached descriptors/modes; duplicate IDs and non-observation stages
+are refused. ReduceObservation preserves off/shadow/enforce and emits immutable
+ObservationOutcome snapshots. ComponentFault separates safe exception-class reasons
+from private diagnostics. Ordinary faults and raw-storage failures retain the last
+good projection; cancellation escapes. Deadlines are cooperative context deadlines.
+WithRawStore shares component serialization and synchronized token-counter pairs
+while changing only the explicit store binding. The caller still owns raw storage.
+Very large timeout scheduling saturates Go duration; Source overflow/scheduler
+profiles and cross-root component identity admission remain pending migration gates.
+This library does not initialize/health-check/close plugins or mask their content.
+
+No multi-stage registry, full component lifecycle or default efficiency
 runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin
 objects and broader Unicode/numeric wire profiles are not claimed by this foundation.

@@ -2535,4 +2535,16 @@ ObservationReducer has named ReductionOptions and concrete ObservationReduction.
 The two stateless builtin reducers match Source descriptors and 69 full-content/
 warning recipes, including ANSI OSC greediness, Unicode-14 word/decimal classes and
 Python ASCII-range IGNORECASE extensions. Shared concurrent calls retain independent
-results. E2 mode/admission/inflation/recovery/fault pipeline remains pending.
+results. Observation orchestration is described below; full lifecycle and Agent
+adoption remain pending.
+
+
+ObservationPipeline now applies ordered typed reducer bindings and per-component/
+default modes, content/input guards, byte/token inflation guards, single-owner
+projection and recoverable raw-store requirements. Safe immutable receipts retain
+last-good fallback and downstream storage-warning propagation; cancellation escapes.
+WithRawStore shares serialized component calls and synchronized token-counter pairs.
+Thirty-eight real Source runtime outcomes match projections, receipts, call arguments
+and recovered masked text. This remains an explicit library: full lifecycle admission,
+Agent masking/event/journal composition and default activation are not installed.
+Source extremely large timeout/overflow and cross-root identity profiles remain open.
