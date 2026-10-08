@@ -3188,3 +3188,24 @@ Result.Value retains Source field order; ToJSON permits archival nonfinite numbe
 while standard MarshalJSON rejects nonfinite values. Neither projection grants
 executable/path authority. Actual Adapter operations must probe and execute through
 the existing admitted process/snapshot boundaries before classifying output.
+
+### Go standalone AST semantic reads
+
+Native astcontext Adapter now implements RepoMap, FileOutline, ShowSymbol and
+SymbolReferences using closed density/view/reference-kind options and typed request
+records. Every operation canonicalizes/validates paths, builds the existing bounded
+no-follow snapshot, probes the operator executable in the original workspace, then
+executes direct CLI argv and classifies output before snapshot cleanup. Leading-dash
+patterns use attached --expression values; show preserves signature flags and bounded
+glob early returns (32 visible matches/16384 UTF-8 bytes), without executing a probe.
+All 26 public Source contracts compare exact ordered result JSON, probe/command argv,
+original cwd and removal of private snapshots through actual native CLI children.
+The child independently verifies external 0400 source copies; a mutation of the live
+workspace during child execution still reads original bytes. Workspace executables
+are refused before side effects and caller cancellation remains a Go error.
+Four model-tool registrations and runtime selection remain next. Final extreme
+numeric/recursion wording and lone-surrogate projection profiles remain open.
+Each method returns (Result, error): ordinary input/filesystem failures produce the
+Source-shaped Error result; caller cancellation and ordinary payload iteration faults
+remain errors. No public arbitrary argv or model-selected environment is exposed.
+The Adapter is request-stateless and can be reused for independent calls.

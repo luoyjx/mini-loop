@@ -27,6 +27,8 @@ func init() {
 		_ = os.WriteFile(marker, []byte("started"), 0600)
 	}
 	switch os.Getenv("AST_MODE") {
+	case "operation":
+		operationTestChild()
 	case "hang":
 		time.Sleep(10 * time.Second)
 	case "closed-pipes":

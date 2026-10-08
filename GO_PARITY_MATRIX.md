@@ -1,5 +1,36 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native AST semantic operations
+
+Baseline f77182e. Native astcontext Adapter now implements RepoMap, FileOutline, ShowSymbol and
+SymbolReferences using closed density/view/reference-kind options and typed request
+records. Every operation canonicalizes/validates paths, builds the existing bounded
+no-follow snapshot, probes the operator executable in the original workspace, then
+executes direct CLI argv and classifies output before snapshot cleanup. Leading-dash
+patterns use attached --expression values; show preserves signature flags and bounded
+glob early returns (32 visible matches/16384 UTF-8 bytes), without executing a probe.
+All 26 public Source contracts compare exact ordered result JSON, probe/command argv,
+original cwd and removal of private snapshots through actual native CLI children.
+The child independently verifies external 0400 source copies; a mutation of the live
+workspace during child execution still reads original bytes. Workspace executables
+are refused before side effects and caller cancellation remains a Go error.
+Four model-tool registrations and runtime selection remain next. Final extreme
+numeric/recursion wording and lone-surrogate projection profiles remain open.
+
+Validation: all 26 actual public Source recipes replay against real native children;
+workspace mutation during child execution, pre-probe workspace executable refusal,
+caller cancellation and both visible ambiguity limits pass. The focused AST race
+suite passes after adding the final ambiguity-bound cases. Full go test ./...
+-count=1 -timeout=180s, go test -race ./... -count=1 -timeout=180s and go vet ./...
+pass for the implementation. Source exports 157, AST tests 41 and scan guards 19
+passed in the preceding capture step. README outline and git diff --check pass.
+Archify delivery passes 9/9 with zero errors/warnings; specification SHA256
+1fdf69fe8d70e8483c5e5c1c0a7f11ac8892c5b6ce4f466449817f5f31f15399,
+artifact 1ac09390f2ca545e3fc6c018b2f823280d78948df983835b6dcea3c7e881e0d3.
+Native evidence is Darwin arm64. Visual inspection remains skipped after prior
+browser access denial; full Python regression, mutation sweep and coverage were
+not refreshed. Native SQLite, diagnostic parser selection and G0-G7 stay open.
+
 ## 2026-10-08 AST public-operation Source contracts
 
 Baseline d051052. Export 157 records 26 actual public Source operations against

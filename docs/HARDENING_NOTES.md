@@ -8057,3 +8057,14 @@ members when explicitly disabled. Malformed non-iterable collections preserve ty
 faults rather than clean results. Partial classification precedes show ambiguity and
 empty matches. Probe failure short-circuits captured output; actual executable and
 frozen-source admission are still the future operation caller's responsibility.
+
+### Go migration — semantic AST reads retain snapshot and probe ownership
+
+Native semantic methods execute only after anchored snapshot preparation. The child
+receives private snapshot paths but runs in the canonical original workspace, so
+executable-integrity checks still refuse model-writable binaries before version
+probing and again before the operation. Exact paths and basename globs retain existing
+checks; a selected show target must be a regular file in the private tree. Glob
+ambiguity returns bounded names before any process side effect. Result interpretation
+occurs while the snapshot is alive; removal follows success and faults. No tool
+registry installation or runtime default changes occur in this library slice.

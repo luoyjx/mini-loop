@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `d051052` plus AST public-operation Source contracts,
+Runtime review baseline: `f77182e` plus native AST semantic operations,
+plus AST public-operation Source contracts,
 plus native AST results and captured payload classification,
 plus shared CPython JSON syntax diagnostics,
 plus AST payload invocation Source contracts,
@@ -423,7 +424,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed payload classification · semantic calls / tools pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic adapters · model tools pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1293,9 +1294,24 @@ path rewriting, error-before-import handling, iterable warnings/errors, arbitrar
 metrics and partial/ambiguity/no-match precedence. All 65 actual Source observations
 replay: 61 compare exact ASCII/UTF-8 JSON and four preserve ordinary TypeError text.
 Detached records/warnings and strict standard-JSON nonfinite refusal are tested.
-Actual semantic subprocess execution, four model tools and runtime selection remain
-pending. Extreme CPython recursion/digit-fault wording and lone-surrogate string
-projection still need final profile work; current ToJSON enforces a UTF-8 boundary.
+Actual semantic subprocess execution is implemented below; four model tools and
+runtime selection remain pending. Extreme CPython recursion/digit-fault wording and
+lone-surrogate string projection still need final profile work; current ToJSON enforces a UTF-8 boundary.
+
+Native astcontext Adapter now implements RepoMap, FileOutline, ShowSymbol and
+SymbolReferences using closed density/view/reference-kind options and typed request
+records. Every operation canonicalizes/validates paths, builds the existing bounded
+no-follow snapshot, probes the operator executable in the original workspace, then
+executes direct CLI argv and classifies output before snapshot cleanup. Leading-dash
+patterns use attached --expression values; show preserves signature flags and bounded
+glob early returns (32 visible matches/16384 UTF-8 bytes), without executing a probe.
+All 26 public Source contracts compare exact ordered result JSON, probe/command argv,
+original cwd and removal of private snapshots through actual native CLI children.
+The child independently verifies external 0400 source copies; a mutation of the live
+workspace during child execution still reads original bytes. Workspace executables
+are refused before side effects and caller cancellation remains a Go error.
+Four model-tool registrations and runtime selection remain next. Final extreme
+numeric/recursion wording and lone-surrogate projection profiles remain open.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
