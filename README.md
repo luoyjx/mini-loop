@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `770e997` plus Guardian HTTP Source contracts,
+Runtime review baseline: `cfb5304` plus Guardian Launcher activation,
+plus Guardian HTTP Source contracts,
 plus manager-owned per-action Guardian binding,
 plus manager-selected Guardian Source contracts,
 plus native readonly Guardian/explicit reviewer,
@@ -411,7 +412,7 @@ flowchart LR
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · AST / workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · Guardian / AST / workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
@@ -434,7 +435,7 @@ flowchart LR
         GoLaunch -. explicit MCPTools / MCPServers selection .-> GoMCP
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
-        GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · opt-in readonly Guardian · typed store seam"]
+        GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · MINILOOP_GUARDIAN readonly review · typed store seam"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
@@ -2015,8 +2016,12 @@ still answer first. Native manager tests match the seventeen Source recipes' app
 approval outcomes/receipts and refusal boundaries, plus concurrent full owned turns.
 Ordinary provider faults remain Source-style error text and can contain a parsed
 verdict; constructor faults abstain through broker containment. Cancellation escapes
-without parking a human. Launcher MINILOOP_GUARDIAN forwarding remains pending;
-the default human path is unchanged.
+without parking a human. Launcher now forwards MINILOOP_GUARDIAN to this owned
+binding and reports guardian_enabled during side-effect-free inspection. The flag is
+accepted independently of the still-unsupported comprehensive feature bundle.
+Eleven real Source/Go HTTP turns match model-visible catalogues, review prompts,
+tool results, human parking and actual canary-file effects. The default human path
+is unchanged; shared model/tool pools retain their existing nesting behavior.
 
 AST Result.ToJSON now matches Source compact result strings, preserving lone
 surrogates through the closed value's existing surrogatepass representation. Strict

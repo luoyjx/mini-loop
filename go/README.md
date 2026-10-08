@@ -668,7 +668,7 @@ trajectory root failure refuses startup. The launcher best-effort constructs the
 spill store at `MINILOOP_SPILL_DIR` (default `./var/spill`; empty disables it).
 A root construction failure disables preservation while startup continues, matching
 Python. The launcher also refuses enabled
-comprehensive feature/guardian/token-efficiency/AST integrations.
+comprehensive feature/token-efficiency integrations.
 Implemented decision providers and memory roots have independent selections. Inactive optional settings remain typed and validated.
 Ordinary workspace compaction artifacts remain separate from the private store.
 The default structured Bash tool currently bypasses string-output preservation in
@@ -1922,7 +1922,7 @@ transport and no spill. `httpapi.Config.BenchmarkSkillsDir` captures the deploym
 path; empty selects compiled builtin data. External catalogue files are read
 fresh for every arm. Launcher passes its actual configured skills path. Explicit
 external memory/trajectory paths retain their configured effects. Unsupported
-comprehensive features, workflows, guardian, token-efficiency and AST activation
+comprehensive features and token-efficiency activation
 fail privately; native profile validation limits remain explicit differences.
 Snapshot 93 compares five actual source HTTP profiles with only nondeterministic
 durations/derived warnings omitted. This is instrument validation, not model
@@ -2476,3 +2476,25 @@ TCP tests use the real model adapter and readonly FreshWorkflowRunner for artifa
 completion, refuse model launch from ordinary HTTP messages, and cancel/join an
 active worker request on shutdown. Workflow state remains process-local. Native
 session SQLite, reserved events, archival fidelity and full G7 remain pending.
+
+## Readonly Guardian approvals
+
+MINILOOP_GUARDIAN=1 enables per-action readonly review in the standalone launcher;
+it stays off when unset. Config inspection reports guardian_enabled without creating
+a manager, workspace or provider request. This selection is independent of optional
+model tools and does not enable the comprehensive MINILOOP_FEATURES bundle.
+
+Managed tool turns derive each fresh auditor from current typed parent authority,
+workspace and capability-selected explore tools. The approval broker honors remembered
+human grants first. A decisive review replaces only that action's human answer;
+DEFER/unparsed replies and construction faults park the ordinary human question.
+Cancellation escapes without approval or human parking. The Source/native child loop
+returns ordinary provider faults as error text, and Guardian still parses verdict
+words in that text; the HTTP contract corpus includes this actual behavior.
+
+Explicit library consumers can set ManagerServices.GuardianEnabled or bind
+GuardianReviewer to ApprovalBrokerConfig.Reviewer. Session.Guardian must be called
+outside the parent's held turn; automatic runtime dispatch instead captures its
+current immutable environment without reacquiring the parent mutex. The fake-only
+benchmark composition forwards the same setting to its independent managers.
+Shared concurrency pools remain inherited; this slice adds no nested-pool bypass.

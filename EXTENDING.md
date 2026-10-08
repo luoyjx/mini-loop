@@ -3282,5 +3282,6 @@ ManagerServices.GuardianEnabled or RuntimeConfig.GuardianEnabled (with Approvals
 selects automatic per-action binding from the current owned turn. The private path
 clones the surface and captures its parent environment without locking the parent
 again or modifying a shared broker/policy. Direct broker/gate embedding does not
-synthesize a parent. Launcher selection remains pending. Never call Session.Guardian
+synthesize a parent. Launcher selects this path with MINILOOP_GUARDIAN; inspection
+reports guardian_enabled without constructing a manager. Never call Session.Guardian
 recursively under an already locked parent tool turn.

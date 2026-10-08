@@ -1,5 +1,49 @@
 # Python to Go parity matrix
 
+## 2026-10-09 native Guardian Launcher activation and HTTP effects
+
+Baseline cfb5304. The standalone Launcher now forwards Settings.GuardianEnabled to
+ManagerServices.GuardianEnabled, accepts MINILOOP_GUARDIAN independently of the
+still-unsupported comprehensive feature bundle, and reports guardian_enabled in
+side-effect-free inspection. Unset stays false. Runtime owned-action binding,
+readonly construction and the normal broker semantics remain the preceding slice.
+The separate fake-benchmark composition also forwards this shared setting rather
+than silently accepting an inactive flag after the global unsupported entry is removed.
+A real fake-factory manager turn with controlled model responses proves that its
+Guardian denies the action, preserves the canary and avoids a human pending question.
+
+Eleven actual Go Launcher/provider-HTTP/session-message/approval runs match the real
+Source HTTP captures: parent/review tool catalogues, prompts and tool-result text,
+final response, human parking and canary deletion/preservation. Cases cover default
+human routing, automatic allow/deny, defer, hostile readonly reviewers, immutable/
+readonly pre-review refusal and provider errors both with/without a verdict word.
+Native tests use a loopback HTTP model adapter rather than replacing the Guardian,
+gate or broker; file effects occur in isolated temporary workspaces. Source responder
+RuntimeError and native upstream HTTP 400 are distinct provider faults; the captured
+comparison proves the resulting review/approval/effect paths, not exception-text or
+provider-status equivalence. Caller-owned model/test services make no remote calls.
+
+MINILOOP_GUARDIAN=yes inspection proves activation without allocating a workspace;
+actual go run ./cmd/miniloop --dump-config confirms the same CLI behavior. Guardian
+cannot bypass MINILOOP_FEATURES refusal. No dependency or ambiguous domain field
+added. Shared concurrency pools retain existing nested admission; broader optional
+harness, nested-pool profiles and full G6 are not claimed closed. SQLite, diagnostics
+backend choice, token-efficiency policies/bundle selection and G0-G7 remain open.
+
+Validation: full go test ./... -count=1 -timeout=180s passes on rerun. The first
+full normal run observed an AST timeout fixture's version probe timing out before
+its operation (expected an applied probe); no AST code was changed. A later complete
+run passed after the earlier concurrent jobs ended. Full go test -race ./... -count=1
+-timeout=180s passes; final focused benchmark/launcher Guardian race passes after
+fake-composition forwarding and its new owned-turn test. Final go vet ./... passes.
+Source exporter --check confirms 164 files and all 19 scan guards pass for the new
+Source contract helper. README outline and git diff --check pass. Archify delivery
+passes 9/9, zero errors/warnings; spec SHA256
+04a5a3bd6dfaa0b8ee3c0e64d80d101796c2e511d8d01c3e907cc5d7700e072e,
+HTML 46a72bbb63c603956eba30405a347a3db83a9686786367f3663d541bdfb5a96c.
+Visual inspection remains skipped after earlier browser access denial. Evidence is
+Darwin arm64; full Python regression, coverage and mutation sweep are not refreshed.
+
 ## 2026-10-09 Guardian HTTP Source contracts
 
 Baseline 770e997. Export 164 adds eleven real FastAPI lifespan/session/message/

@@ -8135,4 +8135,8 @@ captures an immutable current-parent environment per dispatch and clones its app
 surface. It never reacquires the parent's mutex or stores a shared parent handle.
 Tests cover concurrent owner-isolated full turns, current file reads, human grant
 precedence, immutable/readonly denial before review, and hostile narrow/wide auditors.
-The automatic selection is opt-in; Launcher forwarding remains pending.
+The automatic selection remains default-off. Launcher forwards MINILOOP_GUARDIAN
+independently of other services; the broad feature bundle still refuses activation.
+Eleven real HTTP comparisons prove human/auto routing and actual workspace effects,
+including the Source provider-error-text verdict behavior. Inspection allocates no
+workspace and probes no provider.

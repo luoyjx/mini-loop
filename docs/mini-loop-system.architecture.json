@@ -457,7 +457,7 @@
         280,
         76
       ],
-      "tag": "human default / store seam"
+      "tag": "human default / env Guardian"
     },
     {
       "id": "goArchives",
@@ -493,7 +493,7 @@
       "id": "goEntry",
       "type": "backend",
       "label": "Go Startup / HTTP / SSE",
-      "sublabel": "Explicit AST / diagnostics / workflows / owned HTTP / SSE",
+      "sublabel": "Guardian / AST / diagnostics / workflows / owned HTTP",
       "pos": [
         330,
         800
