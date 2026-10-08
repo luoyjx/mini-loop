@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/selfimprove"
 	"github.com/luoyjx/mini-loop/go/shell"
@@ -37,7 +39,22 @@ func DecodeStoredEvent(data []byte) (SessionEventRecord, error) {
 		return SessionEventRecord{}, fmt.Errorf("stored event exceeds %d bytes", MaxStoredEventBytes)
 	}
 	var header eventHeader
-	if err := json.Unmarshal(data, &header); err != nil {
+	headerJSON := data
+	if !json.Valid(data) {
+		value, err := jsonvalue.Decode(string(data))
+		if err != nil {
+			return SessionEventRecord{}, err
+		}
+		kind, _ := value.Lookup("type")
+		text, _ := kind.Text()
+		if workflowKind(SessionEventKind(text)) {
+			headerJSON, _, err = observationHeader(data)
+			if err != nil {
+				return SessionEventRecord{}, err
+			}
+		}
+	}
+	if err := json.Unmarshal(headerJSON, &header); err != nil {
 		return SessionEventRecord{}, err
 	}
 	// duration_ms also belongs to model/tool payloads. It alone must not create
@@ -45,7 +62,7 @@ func DecodeStoredEvent(data []byte) (SessionEventRecord, error) {
 	var terminalMarker struct {
 		Status *TrajectoryStatus `json:"trajectory_status"`
 	}
-	if err := json.Unmarshal(data, &terminalMarker); err != nil {
+	if err := json.Unmarshal(headerJSON, &terminalMarker); err != nil {
 		return SessionEventRecord{}, err
 	}
 	if terminalMarker.Status == nil {

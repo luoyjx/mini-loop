@@ -261,8 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `474ee49` plus all eighteen workflow observation variants
-and finite JSON archival payload retention,
+Runtime review baseline: `3b3a0be` plus legacy workflow payload decoding
+and Source-compatible archive/SSE scalar output,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -410,7 +410,7 @@ flowchart LR
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · operator create-only publication"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
-        GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join<br/>18 observation kinds · scoped summaries<br/>finite JSON archives · authenticated HTTP launch · owned reads / cancel"]
+        GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join<br/>18 observation kinds · scoped summaries<br/>archival scalars / SSE · authenticated HTTP launch · owned reads / cancel"]
         GoGate -. explicit-human workflow tools .-> GoWorkflow
         GoWorkflow -. events / summaries / later-turn results .-> GoSession
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
@@ -1532,7 +1532,12 @@ payloads, optional phase identity and ten constructor refusals. Historical unkno
 fields and non-approved decisions remain inert data in an immutable JSON value;
 recursive masking precedes capture. The native service still emits twelve typed
 variants. Reserved observations do not activate controllers or grant authority.
-Legacy scalar/header profiles and native SQLite remain pending.
+Snapshot 134 exercises nonfinite numbers, escaped surrogate text/keys and masked
+key collisions through actual Source session capture, SQLite and the observe route.
+Go restores these inert payload values and emits them through owned TCP SSE catch-up;
+standard JSON serialization still refuses historical scalars. Source SQLite accepts
+nonfinite values but degrades surrogate writes while SSE can publish escaped text.
+Native Go SQLite, trajectory scalar fidelity and permissive header profiles remain pending.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

@@ -1,5 +1,48 @@
 # Go port plan
 
+## 2026-10-08 historical workflow scalars and owned SSE
+
+Baseline 3b3a0be. Source snapshot 134 runs five actual WorkflowEvent recipes through
+managed capture, SQLite and the FastAPI observe-route iterator: nonfinite numbers,
+surrogate text/keys, nested combinations and masked-key collisions. It records live
+and stored projections, actual SSE frames, foreign-owner refusal and UTF-8 failures.
+Source SQLite accepts nonfinite payloads; surrogate writes degrade with
+UnicodeEncodeError while escaped SSE still publishes the event. Framing normalization
+removes only volatile session/time values and retains payload scalar identity.
+
+Go archival decoding now parses closed inert payload values before decoding typed
+metadata. DecodeStoredEvent admits legacy JSON only for known workflow observations;
+standard metadata/alias/version/session guards remain. The explicit record encoder
+MarshalWorkflowArchiveJSON preserves Source archival/SSE scalars and recursively
+masks decoded keys/values. Standard MarshalJSON remains strict. CatchUpEvents still
+validates scope/order, bounds the window and re-decodes every record before delivery.
+Owned HTTP SSE uses the legacy vocabulary for observations, without live authority.
+
+Native differential tests cover capture, masking, detached archival round trips,
+non-observational scalar refusal and Source frames over real TCP configured-store
+catch-up. Foreign ownership remains 404. Native tests use an injected backing; they
+do not prove SQLite writes or the Source surrogate-write failure in Go SQL.
+
+Validation: focused workflow/archive/catch-up race tests; full go test ./... with
+shared-package coverage; full go test -race ./... (-count=1 -timeout=180s); go vet.
+All 134 Source exports current; all 19 scan guards anchored; full Python regression:
+2,155 passed, 28 skipped, 24 subtests, three dependency warnings in 79.52s. README outline and git diff --check passed. No dependencies or
+Python runtime modules changed; invariant/guard sweeps were not rerun.
+Fresh Go statement coverage: 20,945/23,235 (90.14%), merging duplicate blocks by
+maximum hit count across -coverpkg=./... test binaries. Profile:
+/tmp/mini-loop-workflow-legacy-coverage.out. Python coverage was not refreshed;
+statement coverage is not feature migration completion.
+
+README baseline, canonical Mermaid, boundary text and generated map are updated.
+Archify passed 9/9 showcase checks with zero errors/warnings. Specification SHA256
+8d04d47bbe7b3f6ce3f023df8232ac0a4741f23440c40551d948eaa2388c55f9;
+HTML SHA256 4f65cf6f8175d972b7277dfa00229ea3b79fe3b827cf0809bde3d6f53ae3379e.
+Visual review remains skipped after prior access denial. Native trajectory scalar
+fidelity, permissive constructor metadata profiles, MCP, native session SQLite,
+remaining malformed/transport profiles and full G7 remain pending. Next archive
+slice must preserve these payload values through the real native trajectory writer,
+including Source's UTF-8 surrogate-write degradation. The complete port stays open.
+
 ## 2026-10-08 complete finite workflow observations
 
 Baseline 474ee49 (Source snapshot 133 preparation). The Go observation decoder

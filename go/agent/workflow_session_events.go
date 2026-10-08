@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/workflows"
 )
@@ -53,7 +52,13 @@ func (sink managedWorkflowEvents) EmitWorkflowEvent(_ context.Context, event Wor
 	if event.SessionID != sink.session.ID() {
 		return fmt.Errorf("workflow event belongs to a different session")
 	}
-	if _, err := event.MarshalJSON(); err != nil {
+	var err error
+	if event.observation != nil {
+		err = event.validateObservation()
+	} else {
+		_, err = event.MarshalJSON()
+	}
+	if err != nil {
 		return err
 	}
 	sink.session.emitFor(RunContext{}, SessionEvent{kind: SessionEventKind(event.Kind), workflow: event.Clone()})
@@ -71,6 +76,10 @@ func (sink managedWorkflowEvents) EmitWorkflowEvent(_ context.Context, event Wor
 // Archival data becomes only a known observational variant. It cannot reconstruct
 // the private trusted context needed to launch or manage a workflow.
 func decodeWorkflowEvent(data []byte) (WorkflowEvent, error) {
+	header, payload, err := observationHeader(data)
+	if err != nil {
+		return WorkflowEvent{}, err
+	}
 	var row struct {
 		Type          WorkflowEventKind    `json:"type"`
 		Kind          WorkflowEventKind    `json:"kind"`
@@ -87,9 +96,8 @@ func decodeWorkflowEvent(data []byte) (WorkflowEvent, error) {
 		AgentID       *workflows.AgentID   `json:"agent_id"`
 		ParentAgentID *workflows.AgentID   `json:"parent_agent_id"`
 		PhaseID       *workflows.PhaseID   `json:"phase_id"`
-		Payload       workflows.Value      `json:"payload"`
 	}
-	if err := json.Unmarshal(data, &row); err != nil {
+	if err := json.Unmarshal(header, &row); err != nil {
 		return WorkflowEvent{}, err
 	}
 	if row.Version != 1 {
@@ -101,14 +109,11 @@ func decodeWorkflowEvent(data []byte) (WorkflowEvent, error) {
 	if !workflowKind(SessionEventKind(row.Kind)) {
 		return WorkflowEvent{}, fmt.Errorf("unsupported workflow event kind: %s", row.Kind)
 	}
-	if row.Payload.Kind() != jsonvalue.Object {
-		return WorkflowEvent{}, fmt.Errorf("workflow observation requires known kind and object payload")
-	}
 	event := WorkflowEvent{Kind: row.Kind, EventID: row.EventID, OccurredAt: row.OccurredAt,
 		SessionID: row.SessionID, RunID: row.RunID, Name: row.Name, Revision: row.Revision,
 		PhaseID: row.PhaseID, NodeID: row.NodeID, AttemptID: row.AttemptID, AgentID: row.AgentID, ParentAgentID: row.ParentAgentID,
-		observation: &row.Payload}
-	_, err := event.MarshalJSON()
+		observation: &payload}
+	err = event.validateObservation()
 	return event, err
 }
 

@@ -24,7 +24,7 @@ func startSSE(w http.ResponseWriter) error {
 	return http.NewResponseController(w).Flush()
 }
 func writeEvent(s *Server, w http.ResponseWriter, record agent.SessionEventRecord, envelope bool) error {
-	data, err := recordingJSON(s, record)
+	data, err := eventStreamJSON(s, record)
 	if err != nil {
 		return err
 	}
@@ -36,6 +36,28 @@ func writeEvent(s *Server, w http.ResponseWriter, record agent.SessionEventRecor
 		return err
 	}
 	return http.NewResponseController(w).Flush()
+}
+
+// Workflow observations use Source's archival/SSE vocabulary. REST JSON keeps its
+// existing strict scalar boundary; failed masking never returns unmasked bytes.
+func eventStreamJSON(s *Server, record agent.SessionEventRecord) (data []byte, err error) {
+	defer func() {
+		if recover() != nil {
+			data = nil
+			err = fmt.Errorf("event stream projection failed")
+		}
+	}()
+	workflow, ok := record.Event.Workflow()
+	if ok {
+		if _, observation := workflow.ObservationPayload(); observation {
+			masker := s.manager.RecordingMasker()
+			if masker != nil {
+				return record.MarshalWorkflowArchiveJSON(masker.MaskText)
+			}
+			return record.MarshalWorkflowArchiveJSON(nil)
+		}
+	}
+	return recordingJSON(s, record)
 }
 func ping(w http.ResponseWriter) error {
 	if _, err := fmt.Fprint(w, ": ping\r\n\r\n"); err != nil {

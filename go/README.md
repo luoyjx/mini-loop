@@ -2397,8 +2397,16 @@ retained; native service IDs remain required. Snapshot 133 compares 22 actual So
 constructor/session/SQLite observations and ten constructor refusals. Stored provenance
 remains untrusted regardless of claimed authority in payload data. The six reserved
 kinds are observational vocabulary; native producers still emit twelve variants.
-Legacy scalar/permissive header profiles and native SQLite remain pending. Owned
-later-turn injection is described below. Defaults remain off.
+Snapshot 134 adds five actual Source legacy payload recipes through session capture,
+SQLite and the observe route. Nonfinite values and escaped surrogate text/keys remain
+observable via DecodeWorkflowObservation and DecodeStoredEvent. The explicit
+SessionEventRecord.MarshalWorkflowArchiveJSON encoder supplies Source SSE/archive
+vocabulary; standard MarshalJSON stays strict. Owned catch-up still validates
+session/order and re-decodes every row before emitting escaped TCP SSE data.
+Source SQLite accepts nonfinite values, while surrogate writes degrade without
+preventing escaped SSE publication. Native SQL behavior, trajectory scalar fidelity
+and permissive header profiles remain pending. Owned later-turn injection is described
+below. Defaults remain off.
 
 
 ## Owned workflow result injection

@@ -2618,13 +2618,18 @@ only historical untrusted provenance. The sequence field aliases the live event 
 SessionInfo.Workflows is a concrete ordered RunSummary slice, empty when disabled
 or freshly forked; the existing HTTP session wrapper preserves it and health reflects
 activation. DecodeWorkflowObservation accepts all eighteen Source observation kinds,
-validates version/identity aliases and retains complete finite JSON object payloads.
+validates version/identity aliases and retains complete JSON object payloads, including
+historical nonfinite numbers and surrogate text/keys.
 ObservationPayload returns immutable inert data; Progress only exposes native typed
 service progress. Unknown fields and historical decisions cannot reconstruct trusted
 context. PhaseID and optional empty identities are retained; Source-valid explicitly
 empty archived event IDs are accepted while native service IDs remain required.
-Native producers still emit twelve named variants. Legacy non-finite/surrogate and
-permissive constructor header profiles remain pending. Owned result injection and
+Native producers still emit twelve named variants. SessionEventRecord's explicit
+MarshalWorkflowArchiveJSON encoder preserves Source's escaped archival/SSE scalar
+vocabulary and masks decoded keys/values before escaping. Standard MarshalJSON stays
+strict. Owned SSE catch-up re-decodes these records before delivery, preserving scope
+and sequence validation. Permissive constructor metadata, trajectory scalar fidelity
+and native SQLite remain pending. Owned result injection and
 workflow HTTP routes are described below. Stores and callbacks retain their existing
 cooperative and ownership requirements; an injected store is not proof of native SQLite support.
 
