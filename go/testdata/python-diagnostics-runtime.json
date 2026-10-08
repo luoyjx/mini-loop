@@ -1,0 +1,254 @@
+{
+  "http": [
+    {
+      "calls": [],
+      "enabled": false,
+      "failure": false,
+      "input": {},
+      "name": "disabled",
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "output": "done",
+      "results": [],
+      "scope": "fixture type checker"
+    },
+    {
+      "calls": [
+        {
+          "root": "<workspace>",
+          "target": null
+        }
+      ],
+      "enabled": true,
+      "failure": false,
+      "input": {},
+      "name": "tree",
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "[scope: fixture type checker]\nmodule.py:7 [warning] fixture type issue"
+      ],
+      "scope": "fixture type checker"
+    },
+    {
+      "calls": [
+        {
+          "root": "<workspace>",
+          "target": "module.py"
+        }
+      ],
+      "enabled": true,
+      "failure": false,
+      "input": {
+        "path": "nested/../module.py"
+      },
+      "name": "target",
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "[scope: fixture type checker]\nmodule.py:7 [warning] fixture type issue"
+      ],
+      "scope": "fixture type checker"
+    },
+    {
+      "calls": [
+        {
+          "root": "<workspace>",
+          "target": null
+        }
+      ],
+      "enabled": true,
+      "failure": false,
+      "input": {
+        "path": null
+      },
+      "name": "null-target",
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "[scope: fixture type checker]\nmodule.py:7 [warning] fixture type issue"
+      ],
+      "scope": "fixture type checker"
+    },
+    {
+      "calls": [],
+      "enabled": true,
+      "failure": false,
+      "input": {
+        "path": "../outside.py"
+      },
+      "name": "escape",
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "Error: Path escapes workspace: ../outside.py. Paths are relative to the workspace root; an absolute path only works when it points inside the workspace."
+      ],
+      "scope": "fixture type checker"
+    },
+    {
+      "calls": [
+        {
+          "root": "<workspace>",
+          "target": null
+        }
+      ],
+      "enabled": true,
+      "failure": true,
+      "input": {},
+      "name": "provider-error",
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "diagnostics"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "Error: fixture diagnostic failure"
+      ],
+      "scope": "fixture type checker"
+    }
+  ]
+}

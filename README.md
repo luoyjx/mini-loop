@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `e04abd1` plus native diagnostic file scanning and
+Runtime review baseline: `5c301f4` plus diagnostics HTTP Source contracts,
+native diagnostic file scanning and
 closed parser results, plus diagnostics parser-boundary Source observations
 and explicit typed diagnostics provider/tool
 composition (default Python syntax backend pending), managed stored-request reconstruction

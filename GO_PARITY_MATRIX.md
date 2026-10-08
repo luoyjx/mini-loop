@@ -1,5 +1,29 @@
 # Python to Go parity matrix
 
+## 2026-10-08 diagnostics HTTP Source contracts
+
+Baseline 5c301f4. Source snapshot 151 adds six actual TestClient HTTP/model turns
+with an explicitly installed custom diagnostics provider. Disabled selection,
+whole-tree, resolved nested target, explicit null, escaping path and provider
+RuntimeError retain real registry/manager/gate/model behavior. Ordered model tool
+catalogues, exact paired result text, provider root/target observations and final
+output are recorded. Escaping input produces the Source refusal without invoking
+the provider; ordinary provider error produces Error text and the later model turn.
+
+The fixture does not invoke or substitute a Python syntax parser and does not
+resolve the pending parser-choice question. Next forward explicit provider handles
+through launcher.Options and verify the actual native HTTP composition against
+these six traces. Inspection must report selection without invoking callbacks or
+exposing provider data; ownership remains with the operator.
+
+Validation: all 151 export files pass --check, all 19 scanning guards remain anchored,
+eight Python diagnostics/query tests pass, full Go tests and go vet ./... pass.
+The exporter also emitted one child-process watcher notification without fixture
+byte drift. README outline and git diff --check pass. Runtime/dependencies/topology
+are unchanged; full Python/race, invariants, mutation sweeps and coverage were not
+rerun. Parser choice, native SQLite, full activation and G7 remain open.
+The complete Python-to-Go objective remains active.
+
 ## 2026-10-08 native Python diagnostic file scanner
 
 Baseline e04abd1. diagnostics.NewPythonSyntaxDiagnostics now implements native
