@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `18347a0` plus typed workflow session events and summaries,
+Runtime review baseline: `182c53b` plus owned later-turn workflow result injection,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -411,7 +411,7 @@ flowchart LR
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
         GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join<br/>typed session events · scoped summaries"]
         GoGate -. explicit-human workflow tools .-> GoWorkflow
-        GoWorkflow -. session events / summaries .-> GoSession
+        GoWorkflow -. events / summaries / later-turn results .-> GoSession
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
@@ -1519,8 +1519,12 @@ Python session capture, masking, subscriber/sink/backlog and SQLite rows. Manage
 parents route events through the common Go event bus, injected state store and active
 trajectory; archival decoding keeps provenance untrusted. Session info and existing
 owner-scoped HTTP projections expose typed workflow summaries. Workflow SSE uses
-normal resume cursors plus the source sequence alias. Live result injection, dedicated
-workflow HTTP routes and launcher activation remain pending.
+normal resume cursors plus the source sequence alias. Snapshot 130 compares the actual manager-installed workflow injector: no delivery
+in the launch turn, custom-injector ordering, later-turn append-before-ack, and no
+duplicate on a further turn. Go manager parents now install this path automatically
+when workflows are enabled; failed appends release claims. Result messages retain
+the Source untrusted-artifact-data wrapper and grant no capability. Dedicated workflow
+HTTP routes and launcher activation remain pending.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

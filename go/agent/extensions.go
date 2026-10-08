@@ -74,7 +74,7 @@ func (s *Session) injectMessages(ctx context.Context) error {
 		}
 		s.appendMessages(messages...)
 	}
-	return nil
+	return s.injectWorkflow(ctx)
 }
 
 const TodoReminder = "<reminder>Update your todos.</reminder>"

@@ -2622,3 +2622,16 @@ have concrete fields; additional arbitrary archival payload members are not reta
 by this projection and full open-payload archival parity remains pending. Automatic result injection and dedicated
 workflow routes remain pending. Stores and callbacks retain their existing cooperative
 and ownership requirements; an injected store is not proof of native SQLite support.
+
+
+## Owned workflow result injection
+
+Manager-bound workflow parents append later-turn results automatically after user
+injectors and before steering/posture. Launch-turn results remain pending. The core
+turn lock owns append; the concrete parent appender checks live session/owner/turn
+binding and cancellation. ServiceViews releases failed construction/append claims
+and acknowledges only after the message is in history. A failed acknowledgment keeps
+that append observable. The Source untrusted-artifact-data wrapper conveys data and
+grants no capability. Standalone runtimes, Fresh workers and delegated/autonomous
+children have no automatic manager delivery. This path is process-local and is not
+a durable append/ack transaction. Snapshot 130 compares actual Python managed turns.

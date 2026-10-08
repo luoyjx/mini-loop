@@ -1,5 +1,49 @@
 # Go port plan
 
+## 2026-10-08 owned later-turn workflow result injection
+
+Baseline 182c53b. W6C installs notification delivery for manager-bound workflow
+parents after custom injectors and before steering/posture. The real managed turn
+counter controls eligibility: launch-turn notifications remain pending; later real
+turns append the Source untrusted-artifact-data user message and then acknowledge.
+No new event or trusted authority is created. Bare runtimes, autonomous teammates,
+FreshWorkflowRunner and delegated children have no manager-bound delivery path.
+
+The concrete parent appender checks session/owner/turn identity, current live manager
+binding and cancellation before changing history. Construction/append failure releases
+claims through ServiceViews; acknowledgment failure retains the append effect, as in
+Source. The core turn lock owns append and the normal managed admission serializes
+turns. This is process-local live-context append-before-ack, not a durable state/outbox
+transaction or exactly-once guarantee across restart. Existing truncation, bounded
+notification batches, claim fencing and pruning semantics remain unchanged.
+
+Snapshot 130 runs the actual Python manager-installed injector with real service,
+engine, store and journal; only worker execution is replaced. It compares same-turn
+suppression, custom-injector order, exact wrapper/result text, pending/ack counts and
+nonduplication on a further real turn. Native race tests compare the same managed
+turns and verify deleted-parent refusal, unchanged history, pending messages and
+claim release for retry. Existing callable ServiceViews error-path tests retain
+construction/append/ack failure coverage.
+
+Final gates passed: focused WorkflowInbox race test; full go test ./... and
+full go test -race ./... (-count=1 -timeout=180s); go vet ./...; all 130 Source
+exports current; all 19 scan guards anchored. Full Python regression passed:
+2,155 passed, 28 skipped, 24 subtests, three dependency warnings in 86.95s.
+git diff --check and README outline passed. Python invariant/guard sweeps were
+not rerun because no Python runtime package or guarded Source behavior changed.
+Archify passed 9/9 showcase checks with zero errors/warnings. Specification SHA256:
+4e0acf764ffc207173b1f43e4254c4755c0f9e1b06d7d10d9d4cdc28c7d01226;
+HTML SHA256 2c7cc8de45778d01cc0b13576130899c539a5995a7a61f6a00a66abb57b16a13. Coverage was not refreshed; 90.23% belongs to
+99b87f3. The README architecture baseline, Mermaid/boundary explanation and generated
+interactive map describe the installed path. Visual review remains skipped after
+prior access denial. No dependencies, ambiguous Go domain types, Python runtime
+modules or guarded Source behavior changed.
+
+Dedicated workflow HTTP routes, launcher activation, six reserved event projections
+and open-payload archival fidelity remain pending, along with MCP, native session
+SQLite, remaining profiles and full G7. The full Python-to-Go port remains open.
+
+
 ## 2026-10-08 typed workflow session events and summaries
 
 Baseline 99b87f3. W6C now routes the twelve event kinds actually emitted by

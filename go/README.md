@@ -2388,5 +2388,19 @@ and fresh-fork results. Existing owner-scoped HTTP info and SSE resume projectio
 preserve these records; health reflects activation. Snapshot 129 compares actual Python
 session/SQLite capture for twelve variants, completed/fork/disabled summaries and
 shutdown publication. Native tests exercise real fresh workers and HTTP/SSE ownership.
-Six reserved Source event kinds, later-turn injection, dedicated workflow HTTP routes,
-launcher selection and native SQLite remain pending. Defaults remain off.
+Six reserved Source event kinds, dedicated workflow HTTP routes, launcher selection
+and native SQLite remain pending. Owned later-turn injection is described below.
+Defaults remain off.
+
+
+## Owned workflow result injection
+
+Manager-bound workflow parents append later-turn results automatically after user
+injectors and before steering/posture. Launch-turn results remain pending. The core
+turn lock owns append; the concrete parent appender checks live session/owner/turn
+binding and cancellation. ServiceViews releases failed construction/append claims
+and acknowledges only after the message is in history. A failed acknowledgment keeps
+that append observable. The Source untrusted-artifact-data wrapper conveys data and
+grants no capability. Standalone runtimes, Fresh workers and delegated/autonomous
+children have no automatic manager delivery. This path is process-local and is not
+a durable append/ack transaction. Snapshot 130 compares actual Python managed turns.

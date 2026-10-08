@@ -6490,6 +6490,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.workflow_tool_contracts import workflow_bound_tool_contracts
     from tools.manager_workflow_contracts import manager_workflow_contracts
     from tools.workflow_session_contracts import workflow_session_contracts
+    from tools.workflow_inbox_contracts import workflow_inbox_contracts
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
         # composition root too, before importing the module.
@@ -6769,6 +6770,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-bound-tools.json": _json_bytes(workflow_bound_tool_contracts()),
         "python-manager-workflows.json": _json_bytes(manager_workflow_contracts()),
         "python-workflow-session-events.json": _json_bytes(workflow_session_contracts()),
+        "python-workflow-inbox.json": _json_bytes(workflow_inbox_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
