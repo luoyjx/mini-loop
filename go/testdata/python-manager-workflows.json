@@ -1,0 +1,300 @@
+{
+  "rows": [
+    {
+      "child_tools": [],
+      "delete_returned": false,
+      "detail": "",
+      "enabled": false,
+      "error": "",
+      "exists_after": true,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": false,
+      "name": "disabled",
+      "pool_capacity": 0,
+      "pool_shared": false,
+      "reason": null,
+      "status": "",
+      "tools": [],
+      "worker_calls": []
+    },
+    {
+      "child_tools": [],
+      "delete_returned": false,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": true,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": true,
+      "name": "complete",
+      "pool_capacity": 4,
+      "pool_shared": true,
+      "reason": null,
+      "status": "COMPLETED",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": [
+        {
+          "model_pool_shared": true,
+          "rounds": 2,
+          "tool_pool_shared": true,
+          "workspace_bound": true
+        }
+      ]
+    },
+    {
+      "child_tools": [],
+      "delete_returned": false,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": true,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": true,
+      "name": "custom-caps",
+      "pool_capacity": 1,
+      "pool_shared": true,
+      "reason": null,
+      "status": "COMPLETED",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": [
+        {
+          "model_pool_shared": true,
+          "rounds": 2,
+          "tool_pool_shared": true,
+          "workspace_bound": true
+        }
+      ]
+    },
+    {
+      "child_tools": [],
+      "delete_returned": false,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": true,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": true,
+      "name": "injected",
+      "pool_capacity": 2,
+      "pool_shared": true,
+      "reason": null,
+      "status": "COMPLETED",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": [
+        {
+          "model_pool_shared": false,
+          "rounds": 2,
+          "tool_pool_shared": false,
+          "workspace_bound": true
+        }
+      ]
+    },
+    {
+      "child_tools": [],
+      "delete_returned": false,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": true,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": true,
+      "name": "same-pool",
+      "pool_capacity": 2,
+      "pool_shared": true,
+      "reason": null,
+      "status": "COMPLETED",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": [
+        {
+          "model_pool_shared": false,
+          "rounds": 2,
+          "tool_pool_shared": false,
+          "workspace_bound": true
+        }
+      ]
+    },
+    {
+      "detail": "workflow_attempt_semaphore conflicts with the injected WorkflowService",
+      "error": "ValueError",
+      "name": "conflicting-pool"
+    },
+    {
+      "child_tools": [],
+      "delete_returned": true,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": false,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": true,
+      "name": "delete-running",
+      "pool_capacity": 4,
+      "pool_shared": true,
+      "reason": "parent session deleted",
+      "status": "CANCELLED",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": [
+        {
+          "model_pool_shared": true,
+          "rounds": 2,
+          "tool_pool_shared": true,
+          "workspace_bound": true
+        }
+      ]
+    },
+    {
+      "child_tools": [],
+      "delete_returned": true,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": true,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": true,
+      "name": "delete-preserve",
+      "pool_capacity": 4,
+      "pool_shared": true,
+      "reason": "parent session deleted",
+      "status": "CANCELLED",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": [
+        {
+          "model_pool_shared": true,
+          "rounds": 2,
+          "tool_pool_shared": true,
+          "workspace_bound": true
+        }
+      ]
+    },
+    {
+      "child_tools": [],
+      "delete_returned": false,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": true,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": true,
+      "name": "stop-running",
+      "pool_capacity": 4,
+      "pool_shared": true,
+      "reason": "service shutdown",
+      "status": "CANCELLED",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": [
+        {
+          "model_pool_shared": true,
+          "rounds": 2,
+          "tool_pool_shared": true,
+          "workspace_bound": true
+        }
+      ]
+    },
+    {
+      "child_tools": [],
+      "delete_returned": true,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": false,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": true,
+      "name": "delete-idle",
+      "pool_capacity": 4,
+      "pool_shared": true,
+      "reason": null,
+      "status": "",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": []
+    },
+    {
+      "child_tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "delete_returned": false,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": true,
+      "exists_while_draining": true,
+      "fork_shared": true,
+      "journal_shared": true,
+      "name": "fork",
+      "pool_capacity": 4,
+      "pool_shared": true,
+      "reason": null,
+      "status": "",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": []
+    },
+    {
+      "child_tools": [],
+      "delete_returned": false,
+      "detail": "",
+      "enabled": true,
+      "error": "",
+      "exists_after": true,
+      "exists_while_draining": true,
+      "fork_shared": false,
+      "journal_shared": true,
+      "name": "teammate",
+      "pool_capacity": 4,
+      "pool_shared": true,
+      "reason": null,
+      "status": "",
+      "tools": [
+        "Workflow",
+        "WorkflowStatus",
+        "WorkflowCancel"
+      ],
+      "worker_calls": []
+    }
+  ]
+}
