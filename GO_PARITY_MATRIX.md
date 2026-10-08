@@ -1,5 +1,53 @@
 # Python to Go parity matrix
 
+## 2026-10-08 dynamic workflow definition admission
+
+Baseline 8809e24. W5B1 adds concrete DefinitionCaps, captured DefinitionAdmission
+and immutable AdmittedDefinition. Dynamic admission drops definition_hash,
+definition_id, revision, parent_revision, source and source_version before decoding,
+then forces dynamic source. Definition/schema/DAG validation precedes ordered
+process concurrency/total-agent/round/wall-time cap checks. Successful admission
+returns normalized Definition and source-compatible wfpolicy digest using the
+operator caps and definition policy, including Python float identity for seconds.
+The caller's immutable input remains intact for future action identity. Admission
+neither grants authority nor writes a run, journal or execution task.
+
+Snapshot 124 compares 20 actual Python WorkflowService._definition recipes and
+launch's canonical policy hash expression: mapping/typed definitions, arbitrary
+forged identity/provenance values, reversed tool order, retained authority policy,
+invalid definition/graph before cap refusal, duplicate/subset tools, each lowered
+cap and exact boundary, refusal priority and fractional seconds. Valid definitions
+and policy digests match in full. Unknown top-level fields are refused by both;
+Go retains its strict decoder diagnostic rather than Python constructor TypeError.
+Native tests also verify captured policy cannot be widened by caller mutation,
+metadata-insensitive identity, nil/non-object admission and invalid operator caps
+(including nonfinite seconds). Existing ValidateDefinition already enforces the
+exact read-only tool set; no redundant service-level set check is needed.
+
+Validation: focused admission tests, full `go test ./... -count=1 -timeout=180s`,
+full `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+All 124 Python exports are current; all 19 source scan guards are anchored.
+Full Python regression: 2,155 passed, 28 skipped, 24 subtests in 84.03 seconds.
+Four warnings: three dependency deprecations and an asyncio subprocess transport
+finalizer after loop closure. No tests failed. `git diff --check` and README outline
+passed. Python package invariant/guard checks were not rerun because no package
+module or guarded Python runtime changed.
+No dependencies or Python runtime modules changed. Canonical runtime Mermaid
+stays unchanged: this callable admission library is not an installed service.
+Architecture regeneration passed 9/9 showcase checks, zero errors/warnings;
+visual review remains skipped after the prior access denial. Specification SHA256:
+594b9d0cdeb154e773f0f44c8b51c5d9b03889a8beeec02dcbc69316fcc381f3;
+HTML SHA256: 29d809d101ccde756600367b3614538fae5765f8923fa5d83fe700e23d868960.
+Overall coverage was not refreshed after this implementation; the latest 90.43%
+(19,855/21,956) was measured at 8809e24 before this slice. It is test statement
+coverage, not migration completion. Python coverage was not refreshed.
+
+Next W5B2 adds concrete Workflow tool/action inputs and journal binding; W5B3 owns
+trusted live launch contexts, background execution/wait/cancel, wall-time control
+and lifecycle/progress events. W6 installs optional manager/tools/HTTP and admitted
+parent notification delivery. MCP, native session SQLite, remaining profiles and
+full G7 remain open. The full Python-to-Go port is unfinished.
+
 ## 2026-10-08 workflow state views and notification delivery
 
 Baseline 48276bc. W5A ports source status/summaries, launch-turn bookkeeping,

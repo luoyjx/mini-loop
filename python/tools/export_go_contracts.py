@@ -6760,6 +6760,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-engine.json": _json_bytes(_workflow_engine_contracts()),
         "python-workflow-runner.json": _json_bytes(_workflow_runner_contracts(scratch)),
         "python-workflow-views.json": _json_bytes(_workflow_views_contracts()),
+        "python-workflow-admission.json": _json_bytes(_workflow_admission_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -10183,6 +10184,53 @@ def _workflow_views_contracts() -> dict:
         output = clean(dict(statuses=statuses, status_error=status_error, summaries=service.summaries(recipe.get("session", "s")), notifications=notifications, message_ids=message_ids, has_token=bool(token), messages=messages, append_observed_pending=append_observed_pending, outbox=store.list_outbox()))
         return dict(recipe=recipe, error=error, detail=clean(detail), output_json=json.dumps(output, ensure_ascii=False))
     return dict(rows=[scenario(recipe) for recipe in recipes])
+
+
+
+def _workflow_admission_contracts() -> dict:
+    """Actual dynamic service admission and launch policy digest, without execution."""
+    import copy
+    from mini_loop.actions import InMemoryActionJournal
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.workflows.models import WorkflowDefinition, content_hash
+    from mini_loop.workflows.service import WorkflowService
+    base = dict(name="wf", return_from="a", nodes=[dict(id="a", kind="agent")])
+    recipes = [("default", {}, {}, False), ("typed-default", {}, {}, True),
+               ("forged-metadata", dict(definition_hash={"fake": True}, definition_id=[1], revision=42,
+                                        parent_revision=False, source="forged", source_version={}), {}, False),
+               ("tools-reversed", dict(policy=dict(allowed_tools=["glob", "read_file"])), {}, False),
+               ("authority-retained", dict(policy=dict(origin_authority_required="untrusted")), {}, False),
+               ("invalid-before-cap", dict(name="!"), dict(max_rounds=1), False),
+               ("duplicate-tools", dict(policy=dict(allowed_tools=["glob", "glob"])), {}, False),
+               ("subset-tools", dict(policy=dict(allowed_tools=["glob"])), {}, False),
+               ("unknown-field", dict(unrecognized=True), {}, False)]
+    for key, lowered in (("max_concurrent_agents", 2), ("max_agents", 16), ("max_rounds", 2), ("wall_time_seconds", 100.5)):
+        recipes.append(("cap-"+key, {}, {key: lowered}, False))
+        recipes.append(("at-"+key, dict(budget={key: lowered}), {key: lowered}, False))
+    recipes += [("cap-order", {}, dict(max_concurrent_agents=2, max_agents=16, max_rounds=2, wall_time_seconds=100.5), False),
+                ("fractional-wall", dict(budget=dict(wall_time_seconds=0.125)), dict(wall_time_seconds=0.125), False),
+                ("graph-before-cap", dict(nodes=[dict(id="a", kind="agent", needs=["a"])]), dict(max_rounds=1), False)]
+    rows = []
+    for name, patch, caps_patch, typed in recipes:
+        payload = copy.deepcopy(base)
+        payload.update(patch)
+        caps = dict(max_concurrent_agents=4, max_agents=32, max_rounds=4, wall_time_seconds=900.0)
+        caps.update(caps_patch)
+        settings = Settings(fake_llm=True, **{"workflow_"+key: value for key, value in caps.items()})
+        service = WorkflowService(settings=settings, client=FakeAsyncAnthropic(), action_journal=InMemoryActionJournal(), session_resolver=lambda _: None)
+        supplied = WorkflowDefinition.from_dict(payload) if typed else payload
+        input_payload = supplied.to_dict() if typed else payload
+        error, detail, output, digest = "", "", None, ""
+        try:
+            definition = service._definition(supplied)
+            output = definition.to_dict()
+            digest = content_hash(dict(policy=definition.policy, **caps), prefix="wfpolicy")
+        except Exception as failure:
+            error, detail = type(failure).__name__, str(failure)
+        rows.append(dict(name=name, input_json=json.dumps(input_payload, ensure_ascii=False), caps=caps,
+                         error=error, detail=detail, output_json=json.dumps(output, ensure_ascii=False), policy_hash=digest))
+    return dict(rows=rows)
 
 
 if __name__ == "__main__":

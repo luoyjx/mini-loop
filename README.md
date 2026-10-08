@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `48276bc` plus workflow state views and notification delivery;
+reviewed **2026-10-08** (Go baseline `8809e24` plus dynamic workflow definition admission;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1474,8 +1474,12 @@ claims at most 50 later-turn notices. Strict >8,000 UTF-8 bytes selects a 2,000-
 preview and retrieval hint. Run diagnostics retain source outbox fallback. An explicit
 NotificationAppender receives the untrusted-data wrapper before ack; failed construction
 or append releases claims. This callable adapter is not bound to live parent sessions.
-Owned launch/task service and manager/model/HTTP installation remain pending; the
-canonical runtime topology is unchanged.
+Snapshot 124 compares 20 actual Python dynamic-admission recipes. DefinitionAdmission
+captures concrete operator caps, strips runtime-owned identity/source fields, validates
+the definition before ordered process-cap checks and returns immutable content plus
+the source policy digest. Admission alone grants no authority. Owned launch/task
+service and manager/model/HTTP installation remain pending; the canonical runtime
+topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

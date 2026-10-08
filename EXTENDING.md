@@ -2490,3 +2490,13 @@ claims, and acknowledgment failure retains the append effect. Return count plus 
 reports that partial boundary. No durable or exactly-once delivery is implied. Caller
 owner admission and live session mutation belong to the future owned-service adapter;
 this package does not append to an agent or install an automatic injector.
+
+DefinitionAdmission captures named DefinitionCaps by value at construction. Admit
+accepts an immutable object Value, discards definition_hash/definition_id/revision/
+parent_revision/source/source_version and forces dynamic source before decoding.
+Definition and graph validation precede concurrency/agent/round/wall-time process
+caps in source order. AdmittedDefinition exposes immutable content and the canonical
+wfpolicy digest, without granting live authority or writing to the store/journal.
+Callers must retain original tool input separately for action identity. Unknown
+wire fields retain the existing native decoder refusal rather than Python constructor
+TypeError text; invalid operator caps are refused before admission.

@@ -2276,3 +2276,15 @@ append failure and a 51-notice overflow. Race tests cover concurrent unique deli
 coherent detached status during engine execution and pruning parallel bookkeeping.
 Owned launch/journal/context/task service, wall-time/events and manager/tools/HTTP
 installation remain pending. No native workflow persistence is delivered.
+
+## Dynamic workflow definition admission
+
+NewDefinitionAdmission captures explicit DefinitionCaps; DefaultDefinitionCaps
+uses 4 concurrent agents, 32 total attempts, 4 rounds and 900 seconds. Admit strips
+untrusted identity/provenance metadata, forces dynamic source, validates the DAG
+and checks process caps in source order. AdmittedDefinition returns immutable
+Definition and PolicySnapshotHash. It does not authorize launch or bind an action.
+Snapshot 124 compares 20 real Python service recipes, including typed definitions,
+forged metadata, exact/fractional limits, refusal ordering and policy hashes. Native
+unknown-field refusal uses the existing strict decoder diagnostic. Live launch,
+action-journal binding and owned task lifecycle remain the next service work.

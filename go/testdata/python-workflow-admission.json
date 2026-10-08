@@ -1,0 +1,284 @@
+{
+  "rows": [
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "default",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_adf83349003bfd76\", \"revision\": \"wfdef_adf83349003bfd76\", \"parent_revision\": null, \"definition_hash\": \"wfdef:adf83349003bfd767e50a39c2ca5ae05ed00dc335e9c18ea2e2738239e8bf240\"}",
+      "policy_hash": "wfpolicy:6ebbe521c6bf18dd869bde810313918052cade9022b40bdb3d7b884ac03f9ec4"
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_adf83349003bfd76\", \"revision\": \"wfdef_adf83349003bfd76\", \"parent_revision\": null, \"definition_hash\": \"wfdef:adf83349003bfd767e50a39c2ca5ae05ed00dc335e9c18ea2e2738239e8bf240\"}",
+      "name": "typed-default",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_adf83349003bfd76\", \"revision\": \"wfdef_adf83349003bfd76\", \"parent_revision\": null, \"definition_hash\": \"wfdef:adf83349003bfd767e50a39c2ca5ae05ed00dc335e9c18ea2e2738239e8bf240\"}",
+      "policy_hash": "wfpolicy:6ebbe521c6bf18dd869bde810313918052cade9022b40bdb3d7b884ac03f9ec4"
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"definition_hash\": {\"fake\": true}, \"definition_id\": [1], \"revision\": 42, \"parent_revision\": false, \"source\": \"forged\", \"source_version\": {}}",
+      "name": "forged-metadata",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_adf83349003bfd76\", \"revision\": \"wfdef_adf83349003bfd76\", \"parent_revision\": null, \"definition_hash\": \"wfdef:adf83349003bfd767e50a39c2ca5ae05ed00dc335e9c18ea2e2738239e8bf240\"}",
+      "policy_hash": "wfpolicy:6ebbe521c6bf18dd869bde810313918052cade9022b40bdb3d7b884ac03f9ec4"
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"policy\": {\"allowed_tools\": [\"glob\", \"read_file\"]}}",
+      "name": "tools-reversed",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"glob\", \"read_file\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_6c48015bfdce1962\", \"revision\": \"wfdef_6c48015bfdce1962\", \"parent_revision\": null, \"definition_hash\": \"wfdef:6c48015bfdce1962eaa6ff43a3b0fb3dabc2d9be420586a159419e7d70901581\"}",
+      "policy_hash": "wfpolicy:97bc49cd6595719109e47b19b6192f7c696a5190a9893a18fadd97a7fb790786"
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"policy\": {\"origin_authority_required\": \"untrusted\"}}",
+      "name": "authority-retained",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"untrusted\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_f55ac7b48acfb42c\", \"revision\": \"wfdef_f55ac7b48acfb42c\", \"parent_revision\": null, \"definition_hash\": \"wfdef:f55ac7b48acfb42cc2cedeb2946c6b218b04203b942170de4c8c433f6abed730\"}",
+      "policy_hash": "wfpolicy:b9a061a34f591bdc773628a0a8c8fe465cde07c408cf9620a810fe5ced0bea8a"
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 1,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "workflow name is invalid",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"!\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "invalid-before-cap",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "allowed_tools must not contain duplicates",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"policy\": {\"allowed_tools\": [\"glob\", \"glob\"]}}",
+      "name": "duplicate-tools",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "MVP allowed_tools must be exactly read_file and glob",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"policy\": {\"allowed_tools\": [\"glob\"]}}",
+      "name": "subset-tools",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "WorkflowDefinition.__init__() got an unexpected keyword argument 'unrecognized'",
+      "error": "TypeError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"unrecognized\": true}",
+      "name": "unknown-field",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 2,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "workflow max_concurrent_agents exceeds the process policy",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "cap-max_concurrent_agents",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 2,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_concurrent_agents\": 2}}",
+      "name": "at-max_concurrent_agents",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 2, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_f356149fd44e57b5\", \"revision\": \"wfdef_f356149fd44e57b5\", \"parent_revision\": null, \"definition_hash\": \"wfdef:f356149fd44e57b50875e2aeaef4cae6ffc1483f294bb5a38b75c26f9d3cdf2b\"}",
+      "policy_hash": "wfpolicy:da35a214ed99c089818b9379b226db76608d32f1062f21e530452a7dbe54810a"
+    },
+    {
+      "caps": {
+        "max_agents": 16,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "workflow max_agents exceeds the process policy",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "cap-max_agents",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 16,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_agents\": 16}}",
+      "name": "at-max_agents",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 16, \"max_rounds\": 4, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_dcc59cba0b048cd1\", \"revision\": \"wfdef_dcc59cba0b048cd1\", \"parent_revision\": null, \"definition_hash\": \"wfdef:dcc59cba0b048cd1cc3ce8d0ba3b7588ca170277117353d0dce6d81e4368d52e\"}",
+      "policy_hash": "wfpolicy:c61a5da4d64f5e390062a11ada4064fd9c1bb4be0e94a6348f69ac12c88ea8a7"
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 2,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "workflow max_rounds exceeds the process policy",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "cap-max_rounds",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 2,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"max_rounds\": 2}}",
+      "name": "at-max_rounds",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 2, \"wall_time_seconds\": 900.0, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_f9ed7df5b1c5f887\", \"revision\": \"wfdef_f9ed7df5b1c5f887\", \"parent_revision\": null, \"definition_hash\": \"wfdef:f9ed7df5b1c5f88704c52c51ccf33c94b9ec9aa094271520379213ae0a80b30d\"}",
+      "policy_hash": "wfpolicy:4f85f24df9da83d12b2c5a11b9edc6f70fe061bd7c0f16a36903bcba236043c7"
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 100.5
+      },
+      "detail": "workflow wall_time_seconds exceeds the process policy",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "cap-wall_time_seconds",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 100.5
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"wall_time_seconds\": 100.5}}",
+      "name": "at-wall_time_seconds",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 100.5, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_ebeb882aba26ef57\", \"revision\": \"wfdef_ebeb882aba26ef57\", \"parent_revision\": null, \"definition_hash\": \"wfdef:ebeb882aba26ef578565951bb62de037e6ca4d87d4eb3b16ba8f87c9018fe212\"}",
+      "policy_hash": "wfpolicy:2251b7634d2691c377c135ae75df851c8ac4fe21c6b6022f81713836d337a51a"
+    },
+    {
+      "caps": {
+        "max_agents": 16,
+        "max_concurrent_agents": 2,
+        "max_rounds": 2,
+        "wall_time_seconds": 100.5
+      },
+      "detail": "workflow max_concurrent_agents exceeds the process policy",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "cap-order",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 0.125
+      },
+      "detail": "",
+      "error": "",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"budget\": {\"wall_time_seconds\": 0.125}}",
+      "name": "fractional-wall",
+      "output_json": "{\"schema_version\": 1, \"name\": \"wf\", \"description\": \"\", \"source\": \"dynamic\", \"source_version\": null, \"input_schema\": {\"type\": \"object\"}, \"output_schema\": {\"type\": \"object\"}, \"budget\": {\"size_guideline\": \"small\", \"max_concurrent_agents\": 4, \"max_agents\": 32, \"max_rounds\": 4, \"wall_time_seconds\": 0.125, \"token_budget\": null}, \"policy\": {\"origin_authority_required\": \"explicit_human\", \"agent_profile\": \"workflow-readonly\", \"allowed_tools\": [\"read_file\", \"glob\"]}, \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [], \"prompt_template\": \"\", \"output_schema\": {\"type\": \"object\"}, \"items_from\": null, \"max_rounds\": null}], \"return_from\": \"a\", \"definition_id\": \"wf_d5d0233664bc8e58\", \"revision\": \"wfdef_d5d0233664bc8e58\", \"parent_revision\": null, \"definition_hash\": \"wfdef:d5d0233664bc8e58bb8437fb3b443a0a27cc0721ffebbe2bc3f20242bb3a937a\"}",
+      "policy_hash": "wfpolicy:d9fb71b0fb24ef865167d194d3dcc06c93c816f8c09b74a362356a0c7a975274"
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 1,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "a cannot depend on itself",
+      "error": "WorkflowValidationError",
+      "input_json": "{\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\", \"needs\": [\"a\"]}]}",
+      "name": "graph-before-cap",
+      "output_json": "null",
+      "policy_hash": ""
+    }
+  ]
+}
