@@ -1,5 +1,23 @@
 # Python to Go parity matrix
 
+## 2026-10-08 AST decimal conversion Source contracts
+
+Baseline 60dbc6e. Export 160 captures twelve real AST CLI-output recipes at the
+4300-digit CPython conversion boundary. Each runs both the private invocation and
+public file_outline path, recording exact ASCII result JSON or exception class/text,
+actual child argv/cwd and public snapshot cleanup. Cases cover signed/nested integer
+parsing, Unicode offsets, syntax/fault precedence, maximum admitted metrics,
+parse-error and truncation sums, error-envelope precedence, ignored negatives and
+large floating-point tokens. Private invocation ValueError becomes a no-probe public
+error result after the public OSError/ValueError catch and snapshot cleanup.
+
+This commit establishes Source observations; native integer-fault alignment follows.
+Validation: all twelve direct Source cases captured; exporter --check confirms
+160 current files and all 19 scan guards pass. README outline and git diff --check
+pass. Python runtime modules and defaults are unchanged.
+Full Python regression/coverage and mutation sweep are not refreshed.
+
+
 ## 2026-10-08 AST Launcher environment selection
 
 Baseline f921d3a. The Launcher now forwards the five existing Source AST settings

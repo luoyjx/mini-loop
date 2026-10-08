@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `f921d3a` plus AST Launcher environment selection,
+Runtime review baseline: `60dbc6e` plus AST decimal conversion Source contracts,
+plus AST Launcher environment selection,
 plus AST HTTP Source contracts,
 plus explicit runtime AST model tools,
 plus AST tool declarations and closed input variants,
