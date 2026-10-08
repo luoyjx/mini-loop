@@ -1,5 +1,23 @@
 # Go port plan
 
+## 2026-10-08 AST HTTP Source contracts
+
+Baseline 8ecc4c2. Export 159 adds fourteen actual Source HTTP-to-model AST traces:
+default-off catalogues, all four semantic operations, path escape, wrong digest,
+missing executable, incompatible version, malformed/non-object output, nonzero exit,
+output cap and command timeout. The controlled model and feature-disabled manager
+retain the real Source AST handler, probe, snapshot and subprocess implementation.
+Captured catalogues, result text, child argv/cwd and snapshot cleanup are normalized
+only for temporary paths. Timeout uses a one-second budget and a three-second child
+sleep so version startup does not decide the expected phase.
+
+This commit records the Source contract; native Launcher replay is the next slice.
+No runtime topology/default change. Validation: direct capture of all fourteen rows;
+exporter --check confirms 159 current files; all 19 scan guards pass.
+README outline and git diff --check pass.
+Full Python regression, coverage and mutation sweep are not refreshed by this capture.
+
+
 ## 2026-10-08 explicit runtime AST model tools
 
 Baseline aa18ee6. RuntimeConfig.ASTConfig and ManagerServices.ASTConfig now explicitly install the

@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `aa18ee6` plus explicit runtime AST model tools,
+Runtime review baseline: `8ecc4c2` plus AST HTTP Source contracts,
+plus explicit runtime AST model tools,
 plus AST tool declarations and closed input variants,
 plus native AST semantic operations,
 plus AST public-operation Source contracts,
