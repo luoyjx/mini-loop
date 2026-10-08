@@ -1,5 +1,21 @@
 # Go port plan
 
+## 2026-10-09 Agent response adoption Source contracts
+
+Baseline `8bb03db`. Fourteen recipes execute actual Agent._create with the real
+response runtime and actual concise policy. Captures cover purpose selection,
+opt-in, shadow/off, existing output caps, zero selecting the configured default,
+nil/empty system prompts, bounded multi-instruction guidance, failure/cancellation
+and latest user text-block task labels. A NullCachePolicy spy records annotation;
+the real fake-client transport records actual provider arguments. Policy contexts,
+cache/provider/receipt order and metrics match real methods; caller messages remain
+unchanged. Receipt wrapper identity fields are excluded, with only elapsed_ms
+normalized in the public metrics (including nullable parent_span_id).
+
+Validation: 74 focused Source efficiency tests, all 19 scan guards and the full
+174-file exporter --check pass. git diff --check passes. This capture does not
+claim Go adoption, full Python regression/coverage or a mutation sweep.
+
 ## 2026-10-09 typed multi-stage registry and shared runtime
 
 Baseline `38de135`. Registry has explicit observation/request/response registration,

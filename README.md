@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `38de135` plus typed multi-stage registry/runtime,
+Runtime review baseline: `8bb03db` plus Agent response adoption Source contracts,
+plus typed multi-stage registry/runtime,
 plus multi-stage registry Source contracts,
 plus typed response policies and settings,
 plus response policy Source contracts,
