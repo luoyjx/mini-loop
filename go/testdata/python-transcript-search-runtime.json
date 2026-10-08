@@ -1,0 +1,132 @@
+{
+  "http": [
+    {
+      "enabled": false,
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "output": "done",
+      "results": []
+    },
+    {
+      "enabled": true,
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "transcript_search"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "transcript_search"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "No matches for 'needle' in the searched transcript."
+      ]
+    }
+  ],
+  "managers": [
+    {
+      "current_epoch": 1,
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "transcript_search"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "transcript_search"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "epoch 1 #1 (assistant): ...[{\"type\": \"tool_use\", \"id\": \"search\", \"name\": \"transcript_search\", \"input\": {\"query\": \"needle\"}}]..."
+      ],
+      "rewrite": false
+    },
+    {
+      "current_epoch": 2,
+      "names": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "transcript_search"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user",
+          "transcript_search"
+        ]
+      ],
+      "output": "done",
+      "results": [
+        "epoch 1 #0 (user): ...own old needle...\nepoch 2 #2 (assistant): ...[{\"type\": \"tool_use\", \"id\": \"search\", \"name\": \"transcript_search\", \"input\": {\"query\": \"needle\"}}]..."
+      ],
+      "rewrite": true
+    }
+  ]
+}

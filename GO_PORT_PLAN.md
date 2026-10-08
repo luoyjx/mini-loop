@@ -1,5 +1,21 @@
 # Go port plan
 
+## 2026-10-08 transcript-search runtime Source contracts
+
+Baseline b9c4603. Snapshot 148 captures two actual FastAPI/manager/model compositions
+(default ten tools versus explicitly enabled session_query over Null storage), plus
+two actual SQLite-backed manager/model recipes with and without a live compaction
+rewrite. Ordered request catalogues, final outputs, exact search results and current
+epochs are retained. A durable search includes the currently captured tool_use query;
+Source Fake ToolUseBlock omits caller, which must be preserved by native replay.
+The rewrite recipe retains old own history while excluding another owner's rows.
+HTTP Null storage reports no matches, not absent-manager state or durability.
+
+Export --check passes all 148 files. No Source runtime modules/defaults changed.
+Native replay and independent launcher/CLI selection are the next delivery slice;
+request reconstruction, arbitrary archival profiles, SQLite driver approval and
+full feature activation/G7 remain open.
+
 ## 2026-10-08 native session-bound transcript_search tool
 
 Baseline 07f19da (Source snapshot 147). RuntimeConfig/ManagerServices.SessionQueryTools
