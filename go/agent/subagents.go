@@ -162,7 +162,10 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	// Built-in stateful handlers must bind the fresh child. Custom handlers
 	// receive its authority through the same gate and retain their own contract.
 	for i := range definitions {
-		if _, bound := definitions[i].handler.(*runtimeHandler); bound {
+		if previous, bound := definitions[i].handler.(*runtimeHandler); bound {
+			if definitions[i].name == protocol.ToolDiagnostics {
+				handler.diagnostics = previous.diagnostics
+			}
 			definitions[i].handler = handler
 		}
 	}

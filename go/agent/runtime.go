@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/diagnostics"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/sessionquery"
@@ -59,11 +60,14 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	SessionQueryTools bool
-	transcriptSearch  sessionquery.Reader
-	mcpLifetime       *mcpLifetime
-	MCPTools          bool
-	MCPServers        []MCPServer
+	// A nonnil provider explicitly installs diagnostics. The default Python
+	// syntax backend is not yet implemented; nil leaves the tool unregistered.
+	DiagnosticsProvider diagnostics.Provider
+	SessionQueryTools   bool
+	transcriptSearch    sessionquery.Reader
+	mcpLifetime         *mcpLifetime
+	MCPTools            bool
+	MCPServers          []MCPServer
 	// MCPCatalog is an explicitly discovered snapshot. Client lifetime remains operator-owned.
 	MCPCatalog      *ToolCatalog
 	WorkflowTools   bool
@@ -143,6 +147,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	diagnostics          diagnostics.Provider
 	transcriptSearch     sessionquery.Reader
 	mcp                  *mcpState
 	workflows            *WorkflowService
@@ -186,6 +191,9 @@ func (signal *compressionSignal) take() bool {
 }
 
 func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, error) {
+	if input.Name() == protocol.ToolDiagnostics {
+		return handler.executeDiagnostics(ctx, authority, input)
+	}
 	if input.Name() == protocol.ToolBash {
 		out, _, err := handler.executeDetailedTool(ctx, authority, input)
 		return out, err
@@ -485,6 +493,14 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		}
 	}
 	handler.transcriptSearch = config.transcriptSearch
+	handler.diagnostics = config.DiagnosticsProvider
+	if config.DiagnosticsProvider != nil {
+		definition, err := NewToolDefinitionWithSchema(protocol.DiagnosticsSchema(), ToolTraits{Risk: RiskRead, Readonly: true, ParallelSafe: true}, handler)
+		if err != nil {
+			return nil, err
+		}
+		definitions = append(definitions, definition)
+	}
 	if config.SessionQueryTools {
 		definition, err := NewToolDefinitionWithSchema(protocol.TranscriptSearchSchema(), ToolTraits{Risk: RiskRead, Readonly: true, ParallelSafe: true}, handler)
 		if err != nil {

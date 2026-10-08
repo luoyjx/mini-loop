@@ -7896,3 +7896,22 @@ Reads release persistence locks before backend IO, bypass admission and lease cl
 and preserve unrepaired foreign-lease crash tails. Nil/disabled storage returns the
 missing-start result. In-flight provider reads and old-epoch native round trips are
 tested through an injected typed store; this still does not prove native SQLite.
+
+### Go migration — explicit language diagnostics provider boundary
+
+The optional diagnostics input cannot name a provider, owner, session or root.
+Its provider sees an immutable workspace/target selection after explicit-path
+resolution and refusal. Nil configuration does not register the tool. Current
+execution bindings survive workspace entry; selected task children rebind their
+runtime while the default capability catalogue stays unchanged. Providers share
+only the explicitly configured handle, not parent grants or manager state.
+
+Provider IO runs after releasing the handler lock, with the admitted context;
+read/parallel callbacks can overlap. Cancellation preserves transcript pairing,
+ordinary provider errors are tool failures, and a parallel callback panic retains
+the existing type-only run fault and crash-tail repair. A clean report always
+names its scope. Source report order, severity vocabulary and exact-50 cap caveat
+are retained. Native malformed-input rejection is distinct from Python's dynamic
+keyword acceptance. The default Python syntax backend is still pending; injected
+provider fixtures do not prove the 29 Source AST/file scan recipes or tree-wide
+confinement. The Source tree symlink-file observation remains recorded separately.

@@ -20,6 +20,11 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 		return input
 	}
 	switch input.name {
+	case ToolDiagnostics:
+		if input.diagnostics.Path != nil {
+			value := mask(*input.diagnostics.Path)
+			input.diagnostics.Path = &value
+		}
 	case ToolConnectMCP:
 		input.connectMCP.Name = mask(input.connectMCP.Name)
 	case ToolWorkflow:

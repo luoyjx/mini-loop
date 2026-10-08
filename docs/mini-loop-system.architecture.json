@@ -358,7 +358,7 @@
       "id": "goFiles",
       "type": "backend",
       "label": "Filesystem libraries",
-      "sublabel": "files / snapshots / memory lock",
+      "sublabel": "files / snapshots / diagnostics provider",
       "pos": [
         1920,
         1360
@@ -367,7 +367,7 @@
         280,
         76
       ],
-      "tag": "files atomic / dirs private"
+      "tag": "syntax backend: pending"
     },
     {
       "id": "goResources",
@@ -1638,7 +1638,8 @@
         "SessionQueryTools now explicitly registers typed transcript_search with Source read/parallel traits. Manager construction privately binds its store and trusted session ID; model Query cannot choose owner/session. Nil manager storage gives an empty search; bare and custom-selected child tools remain unbound. Existing gate, catalogue narrowing, canonical hashing and recording masks apply. Native restored-history tests exclude foreign owner rows through an injected typed backend, not SQLite. Independent launcher/CLI activation is described below; arbitrary archival-row parity remains open.",
         "launcher.Options.SessionQueryTools and --session-query-tools independently select transcript_search, with pure inspection and unchanged full-feature refusal. The launcher remains process-local with a no-op history reader; selection gives Source Null-store empty results, not durability. Snapshot 148 matches two actual Source/native HTTP recipes and two actual SQLite-Source/injected-native model turns: ordered catalogues, exact result text, current tool-use query, old history after a live rewrite and foreign-session exclusion. Source fake caller omission remains observable in stored searchable text. Native reconstruction library is described below; SQLite and remaining archival profiles stay open.",
         "sessionquery.Reconstruct is a library-only historical reader: closed RequestEvent union, immutable RequestSequence, named RequestProjection/CapabilityProjection, and Found/MissingStart/LegacyEpoch results. Source physical order, first-start/latest-matched projection, missing/null sequence, Python truth/int and negative prefix slices are retained. Structural fingerprints compare exact integer/float/bool leaves without authority. Snapshot 149 matches 32 real SQLite recipes and original-request stability after a real Source live rewrite. Source fixture replay uses an archive reader; managed binding is described below, and native SQLite remains unproven; context/read errors and typed conversion/ordering faults remain distinct, and projected permissions cannot activate live grants.",
-        "ManagedSession.ReconstructRequest binds its own session ID to configured typed EventStore/TranscriptStore reads. The private reader preserves physical order and the stamped integer epoch; nil or disabled storage returns MissingStart. It takes no turn admission, flush, lease, repair or grant and releases persistence locks before IO. Native provider-boundary tests compare messages, cached system shape, schemas, model and token limit; old requests survive an epoch rewrite. Masked stored projections, in-flight reads, context/backing failures and foreign-lease crash tails are tested. Authorization and lifetime remain with the caller; no model tool/HTTP route or native SQLite backend is added."
+        "ManagedSession.ReconstructRequest binds its own session ID to configured typed EventStore/TranscriptStore reads. The private reader preserves physical order and the stamped integer epoch; nil or disabled storage returns MissingStart. It takes no turn admission, flush, lease, repair or grant and releases persistence locks before IO. Native provider-boundary tests compare messages, cached system shape, schemas, model and token limit; old requests survive an epoch rewrite. Masked stored projections, in-flight reads, context/backing failures and foreign-lease crash tails are tested. Authorization and lifetime remain with the caller; no model tool/HTTP route or native SQLite backend is added.",
+        "A nonnil RuntimeConfig or ManagerServices DiagnosticsProvider explicitly installs the Source read/parallel diagnostics schema and closed optional-path input. diagnostics.Provider receives immutable trusted workspace/target selections after explicit-path confinement; named Diagnostic records preserve provider scope, order and severity with an exact-50 report caveat. Callback IO releases the handler lock and honors context, supporting parallel reads. Manager handles and explicitly selected task children rebind the current execution workspace; default role catalogues remain unchanged. Six actual Source injected-provider recipes match, with native canonical/null/mask, cancellation, faults, workspace-entry and child tests. Provider lifetime and concurrent snapshots remain caller-owned. The default Python ast.parse backend, 29 file-scan recipes, launcher selection and full activation remain open; arbitrary provider tree confinement is not claimed."
       ]
     }
   ]

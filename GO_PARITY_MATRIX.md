@@ -1,5 +1,56 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native diagnostics provider and tool seam
+
+Baseline 03d02d4 (Source snapshot 150). The native diagnostics package now has
+named Diagnostic/Severity records, Source-default NewDiagnostic, immutable private
+Request selections and the explicit context-aware Provider interface. Tool applies
+workspace.Files resolution for explicit nonempty paths before callback admission;
+refusals precede provider invocation. Reports preserve scope, order and vocabulary,
+with Source's 50-report cap and caveat at exactly 50. Scope is read after Diagnose.
+Context/backing errors remain failures, never a fabricated No diagnostics result.
+
+A nonnil RuntimeConfig.DiagnosticsProvider or ManagerServices.DiagnosticsProvider
+explicitly installs the typed diagnostics schema with Source read/parallel traits.
+Nil configuration leaves it absent. Model input can choose only an optional string
+path; root/provider/session selectors and malformed JSON types are rejected.
+Omitted versus explicit null survives canonical JSON and masked recording, while
+both execute tree selection. Constructors, accessors and masks detach path pointers.
+The native strict decoder is distinct from Python's dynamic falsey-list acceptance.
+
+Runtime captures the admitted identity and current session.files under its handler
+lock, then releases that lock before provider IO. Parallel same-batch reads overlap.
+Manager-created sessions bind their own roots. Explicitly selected task children
+share the configured provider with a fresh child binding; the default capability
+role catalogue remains unchanged. Worktree entry updates later diagnostics paths.
+The caller owns provider lifetime, concurrency safety and returned snapshots. No
+manager grants, durable state, new dependencies or default parser are introduced.
+
+All six actual Source injected-provider recipes match output/fault and root/target
+selection. Native tests also prove source schema/traits, optional/null/canonical/mask
+identity, explicit symlink refusal, cancellation and transcript pairing, parallel
+reads, manager roots, workspace rebind, foreign authority refusal and actual child
+model invocation. Ordinary provider errors stay in the common tool-result pipeline;
+a callback panic keeps the existing type-only parallel run fault and repaired tail.
+
+Validation: focused diagnostics/protocol/agent race tests; full go test ./... -count=1
+-timeout=180s, go test -race ./... -count=1 -timeout=180s and go vet ./... pass.
+Source export --check passes all 150 files; Python diagnostics/query tests pass
+8 tests (0.23s). The exporter logged two child-process watcher notifications while
+still matching all fixture bytes. Python runtime/scanner modules are unchanged;
+full Python regression, separate invariants/scanner/mutation sweeps and coverage
+were not rerun for this Go-only runtime slice. README outline and git diff --check
+pass. Canonical map and interactive spec are synchronized; Archify deliver passes
+9/9 showcase checks with zero errors/warnings. Visual inspection remains skipped
+after prior access denial. Specification SHA256: 8ae346d0920400ce7e83e3d9be9b629a6d5adac7966508e467fcce254637e8c2;
+HTML SHA256: 0819b5790b24edac70a90c328deee38e609dadbcfabc392b8d9e99148ff0ac47.
+
+Next implement the default Python syntax backend against the 29 actual AST/file
+recipes, then standalone selection and activation. Injected provider replay does
+not prove those parser/tree bounds or arbitrary provider tree confinement. Native
+SQLite, wider archival profiles, full feature activation and G7 remain open.
+The complete Python-to-Go objective stays active.
+
 ## 2026-10-08 diagnostics Source contracts
 
 Reviewed baseline 79f9931. Source snapshot 150 adds python-diagnostics.json from

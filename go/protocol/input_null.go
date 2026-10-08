@@ -17,6 +17,7 @@ func (field *nullField) UnmarshalJSON(data []byte) error {
 }
 
 type inputNullFields struct {
+	DiagnosticsPath   nullField `json:"path"`
 	TeamMetadata      nullField `json:"metadata"`
 	TeamReason        nullField `json:"reason"`
 	TeamFeedback      nullField `json:"feedback"`
@@ -56,6 +57,10 @@ func (input ToolInput) marshalOptionalJSON() ([]byte, error) {
 		return nil, err
 	}
 	switch input.name {
+	case ToolDiagnostics:
+		return json.Marshal(struct {
+			Path *wireOptional[string] `json:"path,omitempty"`
+		}{optionalWire(input.diagnostics.Path, input.nulls.DiagnosticsPath)})
 	case ToolGoalCreate:
 		v := input.createGoal
 		return json.Marshal(struct {

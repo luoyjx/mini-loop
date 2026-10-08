@@ -148,6 +148,7 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
+	diagnostics       DiagnosticsInput
 	transcriptSearch  TranscriptSearchInput
 	connectMCP        ConnectMCPInput
 	mcpArguments      jsonvalue.Value
@@ -353,6 +354,8 @@ func (input ToolInput) AskUser() (AskUserInput, bool) {
 func (input ToolInput) clone() (result ToolInput) {
 	defer func() { result.nulls = input.nulls }()
 	switch input.name {
+	case ToolDiagnostics:
+		return DiagnosticsToolInput(input.diagnostics)
 	case ToolSendMessage:
 		return SendMessageToolInput(input.sendMessage)
 	case ToolRequestShutdown:
@@ -440,7 +443,7 @@ func (input ToolInput) Validate() error {
 		}
 		_, err := decisions.NewRequest(input.decision.State(), input.decision.Questions())
 		return err
-	case ToolTranscriptSearch, ToolSelfAudit, ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
+	case ToolDiagnostics, ToolTranscriptSearch, ToolSelfAudit, ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
 		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
 		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
 		return nil
@@ -497,7 +500,7 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 			return input.decisionProjection.MarshalJSON()
 		}
 		return input.decision.MarshalJSON()
-	case ToolGoalCreate, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask, ToolCreateWorktree, ToolRemoveWorktree:
+	case ToolDiagnostics, ToolGoalCreate, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolTask, ToolLoadSkill, ToolCreateTask, ToolCreateWorktree, ToolRemoveWorktree:
 		return input.marshalOptionalJSON()
 	}
 	if err := input.Validate(); err != nil {
@@ -566,6 +569,12 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	}
 	var result ToolInput
 	switch name {
+	case ToolDiagnostics:
+		var wire DiagnosticsInput
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		result = DiagnosticsToolInput(wire)
 	case ToolConnectMCP:
 		return decodeConnectMCPInput(data)
 	case ToolWorkflow, ToolWorkflowStatus, ToolWorkflowCancel:

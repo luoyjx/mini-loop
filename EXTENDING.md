@@ -2987,3 +2987,37 @@ Native event types support concrete integer epochs; broader historical scalar an
 malformed records remain the archive library's separate contract. No model tool or
 HTTP route is installed by this operator method. Native SQLite, nonfinite/surrogate
 and wider archival profiles remain unproven.
+
+## Go language diagnostics providers
+
+`diagnostics.Provider` exposes Diagnose(context.Context, diagnostics.Request) and
+Scope(). Its named Diagnostic records have path, integer line, message and provider
+severity vocabulary; NewDiagnostic supplies Source's default error severity. The
+Request has private fields and read-only Root()/Target() accessors, with an explicit
+absent target for whole-tree selection. Only the tool constructs it from a trusted
+workspace.Files and a resolved caller path. Omitted/null/empty paths select the tree;
+explicit escaping paths return Source's refusal before any provider callback.
+
+RuntimeConfig.DiagnosticsProvider and ManagerServices.DiagnosticsProvider explicitly
+install the schema/read/parallel tool when nonnil. SelectTools and role policy still
+control its visibility. The optional string input rejects provider/root/session fields
+and malformed JSON types; absent versus null survives canonical identity and masked
+recording. Input construction/accessors detach pointers. The runtime captures the
+current execution binding under its handler lock, releases that lock before Diagnose,
+and passes the unchanged context. Provider failures remain failures; clean results
+always include scope. Reports preserve provider order and labels, cap at 50, and print
+the cap caveat even at exactly 50. Scope is read after a successful Diagnose.
+
+The caller owns provider lifetime. Shared providers must honor cancellation and return
+owned snapshots safely under concurrent calls. Manager construction shares the explicit
+provider handle; a selected task child receives that provider with its fresh runtime
+binding, without expanding the default capability role catalogue. Workspace entry
+updates later calls through the current session.files snapshot. The common gate,
+permissions, result observers, paired transcript and panic recovery remain in use.
+
+No default Python syntax backend or standalone launcher selection is installed yet.
+The six Source injected-provider recipes are replayed; the 29 real Python file/AST
+recipes remain the next backend acceptance corpus. The selected provider owns its
+scope/work bounds and tree traversal semantics; explicit-target confinement does not
+prove arbitrary provider tree traversal confinement. A regex or another language's
+parser is not evidence of ast.parse parity. No dependency was added.

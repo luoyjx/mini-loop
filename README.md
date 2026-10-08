@@ -261,8 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `79f9931` plus diagnostics Source contract capture
-(Go diagnostics remains pending), managed stored-request reconstruction
+Runtime review baseline: `03d02d4` plus explicit typed diagnostics provider/tool
+composition (default Python syntax backend pending), managed stored-request reconstruction
 and typed historical request reconstruction
 and independent transcript-search launcher/CLI
 selection and actual Source runtime replay, plus explicit session-bound transcript_search
@@ -404,7 +404,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics provider · Python syntax pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1167,6 +1167,16 @@ The caller owns authorization; reads do not take turn admission, flush live mess
 claim a lease, repair crash tails or reinstall historical capabilities. Missing or
 disabled storage returns the Source missing-start result. Native provider-boundary
 and rewrite tests use an injected backend; native SQLite remains pending.
+
+A nonnil `RuntimeConfig.DiagnosticsProvider` or `ManagerServices.DiagnosticsProvider`
+explicitly installs the typed `diagnostics` tool with Source read/parallel traits.
+Its input can choose only an optional workspace path; the provider receives an
+immutable root/target selection after explicit-path confinement. Reports always name
+the provider scope and preserve its order/severity vocabulary, with the Source
+50-report cap. Manager construction and explicitly selected task children bind the
+current execution workspace. Provider IO releases the handler lock and honors context
+cancellation. The provider remains caller-owned and must support concurrent use;
+no launcher/CLI selection or default Python syntax parser is added in this slice.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The

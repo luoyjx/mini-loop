@@ -455,6 +455,7 @@ func (manager *SessionManager) baseManagedRuntimeConfig(id SessionID, owner Owne
 	runtime.TeamTools = services.TeamTools
 	runtime.teamManager = manager
 	runtime.SessionQueryTools = services.SessionQueryTools
+	runtime.DiagnosticsProvider = services.DiagnosticsProvider
 	if services.SessionQueryTools {
 		runtime.transcriptSearch = transcriptSearchReader{store: services.StateStore}
 	}
