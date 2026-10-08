@@ -1,5 +1,32 @@
 # Go port plan
 
+## 2026-10-08 transcript-search Source contracts
+
+Baseline 5af16e6. The comprehensive Source registry includes transcript_search,
+which has no native Go tool yet. A separate Source exporter executes eight search
+recipes against actual SQLiteStateStore plus four missing/null-store surfaces.
+It captures the exact schema/read/parallel metadata, epoch/message inputs, bounded
+search records and rendered tool text. Cases cover superseded/gapped epochs,
+20-epoch coverage warnings with and without matches, the 20-match cap, Unicode
+snippets and lowercase expansion, structured content, whitespace trimming, empty
+queries, diagnostic quoting and foreign-session exclusion. NullStateStore returns
+an empty search rather than the missing-durable-surface error; this distinction
+must survive native binding. Unicode lowercase expansion can shift the Source
+snippet offset because the lowercased position indexes the original string.
+
+These are actual Source search/handler observations, not native runtime or SQLite
+proof. Request reconstruction, historical nonfinite/surrogate records and native
+tool binding remain separate work. No runtime defaults, dependencies or package
+modules changed. Next implement a closed search result/reader and bind the native
+read tool through server-owned session identity; do not enable the comprehensive
+feature bundle while required tools remain absent.
+
+Validation: export --check passes all 147 contract files. The 13 focused Source
+diagnostics/query/reconstruction tests pass; all 19 scanning guards remain anchored.
+git diff --check passes. The exporter reports the existing provider-model deprecation
+warning. No Go implementation changed in this preparation slice; full Go/Python
+regression and coverage were not rerun. Native search remains the next task.
+
 ## 2026-10-08 native task-child MCP binding
 
 Baseline c9bc067 (Source snapshot 146). Explicitly selected runtime MCP connectors
