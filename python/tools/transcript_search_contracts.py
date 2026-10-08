@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import tempfile
 from pathlib import Path
 from types import SimpleNamespace
@@ -59,7 +60,9 @@ def transcript_search_contracts() -> dict:
                         store.append_messages(name, messages, epoch=epoch)
                     state = {"manager": SimpleNamespace(state_store=store), "session_id": name}
                     output = await tool.run(ToolContext(None, root, state), query=query)
-                    rows.append(dict(name=name, epochs=[dict(epoch=e, messages=m) for e, m in epochs],
+                    rows.append(dict(name=name, epochs=[dict(epoch=e, messages=m,
+                        messages_json=[json.dumps(message, ensure_ascii=False) for message in store.load_messages(name, epoch=e)])
+                        for e, m in epochs],
                         query=query, search=search_transcript(store, name, query.strip()), output=output))
                 surfaces = []
                 for name, state in [

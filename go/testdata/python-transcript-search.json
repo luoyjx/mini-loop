@@ -25,6 +25,9 @@
               "content": "old NEEDLE",
               "role": "user"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"old NEEDLE\"}"
           ]
         },
         {
@@ -39,6 +42,9 @@
               ],
               "role": "assistant"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"assistant\", \"content\": [{\"type\": \"text\", \"text\": \"new needle\"}]}"
           ]
         }
       ],
@@ -74,6 +80,9 @@
               "content": "needle only here",
               "role": "user"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"needle only here\"}"
           ]
         },
         {
@@ -83,6 +92,9 @@
               "content": "recent noise",
               "role": "user"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"recent noise\"}"
           ]
         }
       ],
@@ -105,6 +117,9 @@
               "content": "old needle",
               "role": "user"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"old needle\"}"
           ]
         },
         {
@@ -114,6 +129,9 @@
               "content": "retained needle",
               "role": "assistant"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"assistant\", \"content\": \"retained needle\"}"
           ]
         },
         {
@@ -123,6 +141,9 @@
               "content": "noise",
               "role": "user"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"noise\"}"
           ]
         }
       ],
@@ -240,6 +261,31 @@
               "content": "needle 22",
               "role": "user"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"needle 0\"}",
+            "{\"role\": \"user\", \"content\": \"needle 1\"}",
+            "{\"role\": \"user\", \"content\": \"needle 2\"}",
+            "{\"role\": \"user\", \"content\": \"needle 3\"}",
+            "{\"role\": \"user\", \"content\": \"needle 4\"}",
+            "{\"role\": \"user\", \"content\": \"needle 5\"}",
+            "{\"role\": \"user\", \"content\": \"needle 6\"}",
+            "{\"role\": \"user\", \"content\": \"needle 7\"}",
+            "{\"role\": \"user\", \"content\": \"needle 8\"}",
+            "{\"role\": \"user\", \"content\": \"needle 9\"}",
+            "{\"role\": \"user\", \"content\": \"needle 10\"}",
+            "{\"role\": \"user\", \"content\": \"needle 11\"}",
+            "{\"role\": \"user\", \"content\": \"needle 12\"}",
+            "{\"role\": \"user\", \"content\": \"needle 13\"}",
+            "{\"role\": \"user\", \"content\": \"needle 14\"}",
+            "{\"role\": \"user\", \"content\": \"needle 15\"}",
+            "{\"role\": \"user\", \"content\": \"needle 16\"}",
+            "{\"role\": \"user\", \"content\": \"needle 17\"}",
+            "{\"role\": \"user\", \"content\": \"needle 18\"}",
+            "{\"role\": \"user\", \"content\": \"needle 19\"}",
+            "{\"role\": \"user\", \"content\": \"needle 20\"}",
+            "{\"role\": \"user\", \"content\": \"needle 21\"}",
+            "{\"role\": \"user\", \"content\": \"needle 22\"}"
           ]
         }
       ],
@@ -400,6 +446,12 @@
               },
               "role": "assistant"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀NEEDLE文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文文\"}",
+            "{\"role\": \"assistant\", \"content\": \"İİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİNEEDLE后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后后\"}",
+            "{\"content\": null}",
+            "{\"role\": \"assistant\", \"content\": {\"needle\": [true, null, \"文\"]}}"
           ]
         }
       ],
@@ -453,6 +505,9 @@
               "content": "not empty",
               "role": "user"
             }
+          ],
+          "messages_json": [
+            "{\"role\": \"user\", \"content\": \"not empty\"}"
           ]
         }
       ],

@@ -27,6 +27,12 @@ git diff --check passes. The exporter reports the existing provider-model deprec
 warning. No Go implementation changed in this preparation slice; full Go/Python
 regression and coverage were not rerun. Native search remains the next task.
 
+Snapshot 147 now also retains each SQLite-loaded message as a JSON string.
+The outer export sorts object keys, so replaying its structured epoch inputs alone
+would reorder content and change searchable snippets. Native readers must decode
+messages_json to preserve actual Source stored member order. Export --check passes
+all 147 files after this correction.
+
 ## 2026-10-08 native task-child MCP binding
 
 Baseline c9bc067 (Source snapshot 146). Explicitly selected runtime MCP connectors
