@@ -1,0 +1,466 @@
+{
+  "constructor": [
+    {
+      "detail": "max_concurrent_agents must be between 1 and 4",
+      "error": "ValueError",
+      "limit": 0
+    },
+    {
+      "detail": "max_concurrent_agents must be between 1 and 4",
+      "error": "ValueError",
+      "limit": -1
+    },
+    {
+      "detail": "",
+      "error": "",
+      "limit": 1
+    },
+    {
+      "detail": "",
+      "error": "",
+      "limit": 4
+    },
+    {
+      "detail": "max_concurrent_agents must be between 1 and 4",
+      "error": "ValueError",
+      "limit": 5
+    }
+  ],
+  "rows": [
+    {
+      "detail": "run cannot execute from CREATED",
+      "error": "WorkflowExecutionError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"CREATED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-CREATED",
+        "status": "CREATED"
+      },
+      "repeat_error": "WorkflowExecutionError"
+    },
+    {
+      "detail": "run cannot execute from PLANNING",
+      "error": "WorkflowExecutionError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"PLANNING\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-PLANNING",
+        "status": "PLANNING"
+      },
+      "repeat_error": "WorkflowExecutionError"
+    },
+    {
+      "detail": "run cannot execute from AWAITING_APPROVAL",
+      "error": "WorkflowExecutionError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"AWAITING_APPROVAL\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-AWAITING_APPROVAL",
+        "status": "AWAITING_APPROVAL"
+      },
+      "repeat_error": "WorkflowExecutionError"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"not_applicable\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"node\": \"a\"}, \"content_hash\": \"artifact:9ccceaef892eae566be2dd418e9bd0bcde57f11f5da24073defa1fba3c38ea98\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "name": "entry-QUEUED",
+        "status": "QUEUED"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"not_applicable\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"node\": \"a\"}, \"content_hash\": \"artifact:9ccceaef892eae566be2dd418e9bd0bcde57f11f5da24073defa1fba3c38ea98\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "name": "entry-RUNNING",
+        "status": "RUNNING"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "run cannot execute from PAUSING",
+      "error": "WorkflowExecutionError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"PAUSING\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-PAUSING",
+        "status": "PAUSING"
+      },
+      "repeat_error": "WorkflowExecutionError"
+    },
+    {
+      "detail": "run cannot execute from PAUSED",
+      "error": "WorkflowExecutionError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"PAUSED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-PAUSED",
+        "status": "PAUSED"
+      },
+      "repeat_error": "WorkflowExecutionError"
+    },
+    {
+      "detail": "run cannot execute from WAITING_APPROVAL",
+      "error": "WorkflowExecutionError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"WAITING_APPROVAL\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-WAITING_APPROVAL",
+        "status": "WAITING_APPROVAL"
+      },
+      "repeat_error": "WorkflowExecutionError"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"CANCELLED\", \"version\": 1, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-CANCELLING",
+        "status": "CANCELLING"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"CANCELLED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-CANCELLED",
+        "status": "CANCELLED"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"REJECTED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-REJECTED",
+        "status": "REJECTED"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-COMPLETED",
+        "status": "COMPLETED"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 0, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": null, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "entry-FAILED",
+        "status": "FAILED"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"not_applicable\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"node\": \"a\"}, \"content_hash\": \"artifact:9ccceaef892eae566be2dd418e9bd0bcde57f11f5da24073defa1fba3c38ea98\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "ok",
+        "name": "agent-ok"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"verified\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"verified\"}, \"content_hash\": \"artifact:9b4e774d9d6cdf1cf4731cfdf0240a39869c0c3b39404f41b220dbc86d91183c\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"verified\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "ok",
+        "name": "verify-ok",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow node failed: a: RuntimeError: worker failed\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [], \"error\": \"RuntimeError: worker failed\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"RuntimeError: worker failed\"}], \"artifacts\": [], \"outbox\": [], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "runtime",
+        "name": "agent-runtime"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": \"RuntimeError: worker failed\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"unverified\", \"error\": \"RuntimeError: worker failed\"}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"unverified\", \"claim_id\": \"a\", \"evidence\": [], \"reason\": \"RuntimeError: worker failed\"}, \"content_hash\": \"artifact:468ad2421229055325edc35900b2797567be947015a768a583249d36192dda91\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": false, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "runtime",
+        "name": "verify-runtime",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow node failed: a: ValueError: worker failed\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [], \"error\": \"ValueError: worker failed\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"ValueError: worker failed\"}], \"artifacts\": [], \"outbox\": [], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "value-error",
+        "name": "agent-value-error"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": \"ValueError: worker failed\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"unverified\", \"error\": \"ValueError: worker failed\"}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"unverified\", \"claim_id\": \"a\", \"evidence\": [], \"reason\": \"ValueError: worker failed\"}, \"content_hash\": \"artifact:38790d50dd140bd2475e9e5476154408fd62a1fe75e34a3b8c999f2c61ace658\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": false, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "value-error",
+        "name": "verify-value-error",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow node failed: a: TypeError: worker failed\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [], \"error\": \"TypeError: worker failed\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"TypeError: worker failed\"}], \"artifacts\": [], \"outbox\": [], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "type-error",
+        "name": "agent-type-error"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": \"TypeError: worker failed\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"unverified\", \"error\": \"TypeError: worker failed\"}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"unverified\", \"claim_id\": \"a\", \"evidence\": [], \"reason\": \"TypeError: worker failed\"}, \"content_hash\": \"artifact:0da7ea206adc938a2dafa9bda95ba060b19898145b782eee6c7a134f742ce80a\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": false, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "type-error",
+        "name": "verify-type-error",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow node failed: a: ArtifactValidationError: worker must finish through the synthetic return_artifact tool\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [], \"error\": \"ArtifactValidationError: worker must finish through the synthetic return_artifact tool\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"ArtifactValidationError: worker must finish through the synthetic return_artifact tool\"}], \"artifacts\": [], \"outbox\": [], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "nil",
+        "name": "agent-nil"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": \"AttributeError: 'NoneType' object has no attribute 'value'\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"unverified\", \"error\": \"AttributeError: 'NoneType' object has no attribute 'value'\"}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"unverified\", \"claim_id\": \"a\", \"evidence\": [], \"reason\": \"AttributeError: 'NoneType' object has no attribute 'value'\"}, \"content_hash\": \"artifact:dabda3364832960529afa7bb8565b7461996a8be8d984e9554ad23c197d4f138\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": false, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "nil",
+        "name": "verify-nil",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow node failed: a: ArtifactValidationError: unexpected structured artifact tool\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [], \"error\": \"ArtifactValidationError: unexpected structured artifact tool\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"ArtifactValidationError: unexpected structured artifact tool\"}], \"artifacts\": [], \"outbox\": [], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "wrong-tool",
+        "name": "agent-wrong-tool"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": \"ArtifactValidationError: unexpected structured artifact tool\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"unverified\", \"error\": \"ArtifactValidationError: unexpected structured artifact tool\"}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"unverified\", \"claim_id\": \"a\", \"evidence\": [], \"reason\": \"ArtifactValidationError: unexpected structured artifact tool\"}, \"content_hash\": \"artifact:e58343d6f6866008435ee97bc9152af0d876f2e085bde37893a3d86d23171417\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": false, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "wrong-tool",
+        "name": "verify-wrong-tool",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow node failed: a: ArtifactValidationError: $ must have type object\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [], \"error\": \"ArtifactValidationError: $ must have type object\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"ArtifactValidationError: $ must have type object\"}], \"artifacts\": [], \"outbox\": [], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "bad-value",
+        "name": "agent-bad-value"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": \"ArtifactValidationError: $ must have type object\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"unverified\", \"error\": \"ArtifactValidationError: $ must have type object\"}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"unverified\", \"claim_id\": \"a\", \"evidence\": [], \"reason\": \"ArtifactValidationError: $ must have type object\"}, \"content_hash\": \"artifact:1a684984cee2c781abeb0b61f83ee2c1b92f7d0f2cbc65a32a6c58bdbe8595b3\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": false, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "bad-value",
+        "name": "verify-bad-value",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"verified\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"verified\"}, \"content_hash\": \"artifact:9b4e774d9d6cdf1cf4731cfdf0240a39869c0c3b39404f41b220dbc86d91183c\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"verified\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "name": "verification-verified",
+        "verification": "verified",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"refuted\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"refuted\"}, \"content_hash\": \"artifact:abf60ef8414eadb509a688b876cc3231bad813b283b8ba825ecc672744173889\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"refuted\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "name": "verification-refuted",
+        "verification": "refuted",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"unverified\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"unverified\"}, \"content_hash\": \"artifact:719a300b1222955196f505e3ec3ee9ad9899d8d6b2715128d65ccbb0442fd5de\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "name": "verification-unverified",
+        "verification": "unverified",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"unverified\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"invalid\"}, \"content_hash\": \"artifact:1f7fc5cb29d00be448b1941eb13958892627a544d134d42fc2af4e3eb4ffff4b\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "name": "verification-invalid",
+        "verification": "invalid",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 4, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"unverified\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"status\": \"\"}, \"content_hash\": \"artifact:5d883e6ab15534908d194dc02cfbbc46c57d21cdbbb08cde4b68f12044babc1b\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "name": "verification-",
+        "verification": "",
+        "verify": true
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 9, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 4, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-v>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}, {\"run_id\": \"<run>\", \"node_id\": \"b\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-b>\"], \"result_artifact_ids\": [\"<artifact-b>\"], \"error\": null}, {\"run_id\": \"<run>\", \"node_id\": \"c\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-c>\"], \"result_artifact_ids\": [\"<artifact-c>\"], \"error\": null}, {\"run_id\": \"<run>\", \"node_id\": \"v\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-v>\"], \"result_artifact_ids\": [\"<artifact-v>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"not_applicable\", \"error\": null}, {\"attempt_id\": \"<attempt-b>\", \"run_id\": \"<run>\", \"node_id\": \"b\", \"attempt\": 1, \"agent_id\": \"<agent-b>\", \"spawn_index\": 1, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-b>\", \"verification_status\": \"not_applicable\", \"error\": null}, {\"attempt_id\": \"<attempt-c>\", \"run_id\": \"<run>\", \"node_id\": \"c\", \"attempt\": 1, \"agent_id\": \"<agent-c>\", \"spawn_index\": 2, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-c>\", \"verification_status\": \"not_applicable\", \"error\": null}, {\"attempt_id\": \"<attempt-v>\", \"run_id\": \"<run>\", \"node_id\": \"v\", \"attempt\": 1, \"agent_id\": \"<agent-v>\", \"spawn_index\": 3, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": \"<agent-c>\", \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-v>\", \"verification_status\": \"verified\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"node\": \"a\"}, \"content_hash\": \"artifact:9ccceaef892eae566be2dd418e9bd0bcde57f11f5da24073defa1fba3c38ea98\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}, {\"artifact_id\": \"<artifact-b>\", \"run_id\": \"<run>\", \"node_id\": \"b\", \"attempt_id\": \"<attempt-b>\", \"value\": {\"node\": \"b\"}, \"content_hash\": \"artifact:e09bc2ff4b8a412c64c4f0c34899405042e1aa6a1f02827a49ca4a7c496e1dd5\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}, {\"artifact_id\": \"<artifact-c>\", \"run_id\": \"<run>\", \"node_id\": \"c\", \"attempt_id\": \"<attempt-c>\", \"value\": {\"node\": \"c\"}, \"content_hash\": \"artifact:692a129e7bb74363fd9e9313a0504e21c0a94e16ace6499014a07fe1f16da508\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}, {\"artifact_id\": \"<artifact-v>\", \"run_id\": \"<run>\", \"node_id\": \"v\", \"attempt_id\": \"<attempt-v>\", \"value\": {\"status\": \"verified\"}, \"content_hash\": \"artifact:9b4e774d9d6cdf1cf4731cfdf0240a39869c0c3b39404f41b220dbc86d91183c\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"verified\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-v>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}, {\"node_id\": \"b\", \"spawn_index\": 1, \"inputs\": {\"args\": {\"input\": 1}}}, {\"node_id\": \"c\", \"spawn_index\": 2, \"inputs\": {\"args\": {\"input\": 1}, \"a\": {\"node\": \"a\"}, \"b\": {\"node\": \"b\"}}}, {\"node_id\": \"v\", \"spawn_index\": 3, \"inputs\": {\"args\": {\"input\": 1}, \"c\": {\"node\": \"c\"}}}]}",
+      "recipe": {
+        "graph": "diamond",
+        "name": "diamond"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 10, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 4, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-v>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}, {\"run_id\": \"<run>\", \"node_id\": \"b\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-b>\"], \"result_artifact_ids\": [\"<artifact-b>\"], \"error\": null}, {\"run_id\": \"<run>\", \"node_id\": \"c\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-c>\"], \"result_artifact_ids\": [\"<artifact-c>\"], \"error\": null}, {\"run_id\": \"<run>\", \"node_id\": \"v\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-v>\"], \"result_artifact_ids\": [\"<artifact-v>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"not_applicable\", \"error\": null}, {\"attempt_id\": \"<attempt-b>\", \"run_id\": \"<run>\", \"node_id\": \"b\", \"attempt\": 1, \"agent_id\": \"<agent-b>\", \"spawn_index\": 1, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-b>\", \"verification_status\": \"not_applicable\", \"error\": null}, {\"attempt_id\": \"<attempt-c>\", \"run_id\": \"<run>\", \"node_id\": \"c\", \"attempt\": 1, \"agent_id\": \"<agent-c>\", \"spawn_index\": 2, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-c>\", \"verification_status\": \"not_applicable\", \"error\": null}, {\"attempt_id\": \"<attempt-v>\", \"run_id\": \"<run>\", \"node_id\": \"v\", \"attempt\": 1, \"agent_id\": \"<agent-v>\", \"spawn_index\": 3, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": \"<agent-c>\", \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-v>\", \"verification_status\": \"verified\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"node\": \"a\"}, \"content_hash\": \"artifact:9ccceaef892eae566be2dd418e9bd0bcde57f11f5da24073defa1fba3c38ea98\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}, {\"artifact_id\": \"<artifact-b>\", \"run_id\": \"<run>\", \"node_id\": \"b\", \"attempt_id\": \"<attempt-b>\", \"value\": {\"node\": \"b\"}, \"content_hash\": \"artifact:e09bc2ff4b8a412c64c4f0c34899405042e1aa6a1f02827a49ca4a7c496e1dd5\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}, {\"artifact_id\": \"<artifact-c>\", \"run_id\": \"<run>\", \"node_id\": \"c\", \"attempt_id\": \"<attempt-c>\", \"value\": {\"node\": \"c\"}, \"content_hash\": \"artifact:692a129e7bb74363fd9e9313a0504e21c0a94e16ace6499014a07fe1f16da508\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}, {\"artifact_id\": \"<artifact-v>\", \"run_id\": \"<run>\", \"node_id\": \"v\", \"attempt_id\": \"<attempt-v>\", \"value\": {\"status\": \"verified\"}, \"content_hash\": \"artifact:9b4e774d9d6cdf1cf4731cfdf0240a39869c0c3b39404f41b220dbc86d91183c\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"verified\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-v>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}, {\"node_id\": \"b\", \"spawn_index\": 1, \"inputs\": {\"args\": {\"input\": 1}}}, {\"node_id\": \"c\", \"spawn_index\": 2, \"inputs\": {\"args\": {\"input\": 1}, \"a\": {\"node\": \"a\"}, \"b\": {\"node\": \"b\"}}}, {\"node_id\": \"v\", \"spawn_index\": 3, \"inputs\": {\"args\": {\"input\": 1}, \"c\": {\"node\": \"c\"}}}]}",
+      "recipe": {
+        "concurrency": 1,
+        "graph": "diamond",
+        "name": "diamond-serial"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 5, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 2, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow node failed: a: RuntimeError: worker failed; b: RuntimeError: worker failed\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [], \"error\": \"RuntimeError: worker failed\"}, {\"run_id\": \"<run>\", \"node_id\": \"b\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt-b>\"], \"result_artifact_ids\": [], \"error\": \"RuntimeError: worker failed\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"RuntimeError: worker failed\"}, {\"attempt_id\": \"<attempt-b>\", \"run_id\": \"<run>\", \"node_id\": \"b\", \"attempt\": 1, \"agent_id\": \"<agent-b>\", \"spawn_index\": 1, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"RuntimeError: worker failed\"}], \"artifacts\": [], \"outbox\": [], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}, {\"node_id\": \"b\", \"spawn_index\": 1, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "behavior": "runtime",
+        "graph": "parallel",
+        "name": "parallel-failure"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 32, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow attempt budget exhausted\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"PENDING\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "attempts_used": 32,
+        "name": "budget-exhausted"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow graph is deadlocked\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"CANCELLED\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "deadlocked",
+        "node_before": "CANCELLED"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"return node produced no artifact\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": null}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "empty-return",
+        "node_before": "SUCCEEDED"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"FAILED\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 0, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": \"workflow node failed: a: seeded failure\", \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 0, \"attempt_ids\": [], \"result_artifact_ids\": [], \"error\": \"seeded failure\"}], \"attempts\": [], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "name": "failed-node",
+        "node_before": "FAILED"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"COMPLETED\", \"version\": 6, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 2, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": \"<artifact-a>\", \"error\": null, \"cancel_reason\": null}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"args\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-args>\"], \"result_artifact_ids\": [\"<artifact-args>\"], \"error\": null}, {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [\"<artifact-a>\"], \"error\": null}], \"attempts\": [{\"attempt_id\": \"<attempt-args>\", \"run_id\": \"<run>\", \"node_id\": \"args\", \"attempt\": 1, \"agent_id\": \"<agent-args>\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-args>\", \"verification_status\": \"not_applicable\", \"error\": null}, {\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 1, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact-a>\", \"verification_status\": \"not_applicable\", \"error\": null}], \"artifacts\": [{\"artifact_id\": \"<artifact-args>\", \"run_id\": \"<run>\", \"node_id\": \"args\", \"attempt_id\": \"<attempt-args>\", \"value\": {\"node\": \"args\"}, \"content_hash\": \"artifact:03570ca4c3dddae2a33ca2f8401471b433f3a9a6d636a0b1c3a4e9acd1cb8668\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}, {\"artifact_id\": \"<artifact-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt-a>\", \"value\": {\"node\": \"a\"}, \"content_hash\": \"artifact:9ccceaef892eae566be2dd418e9bd0bcde57f11f5da24073defa1fba3c38ea98\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"not_applicable\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}], \"outbox\": [{\"message_id\": \"<outbox>\", \"run_id\": \"<run>\", \"session_id\": \"s\", \"kind\": \"workflow_completed\", \"payload\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"artifact_id\": \"<artifact-a>\"}, \"created_at\": 0, \"claim_token\": null, \"claimed_at\": null, \"delivered_at\": null}], \"calls\": [{\"node_id\": \"args\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}, {\"node_id\": \"a\", \"spawn_index\": 1, \"inputs\": {\"args\": {\"node\": \"args\"}}}]}",
+      "recipe": {
+        "graph": "args",
+        "name": "dependency-args"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"CANCELLED\", \"version\": 5, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": \"requested\"}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"CANCELLED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [], \"error\": \"cancelled\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"CANCELLED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"cancelled\"}], \"artifacts\": [], \"outbox\": [], \"calls\": [{\"node_id\": \"a\", \"spawn_index\": 0, \"inputs\": {\"args\": {\"input\": 1}}}]}",
+      "recipe": {
+        "cancel": true,
+        "name": "cancel-running"
+      },
+      "repeat_error": ""
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {\"input\": 1}, \"status\": \"CANCELLED\", \"version\": 5, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": 0, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": \"requested\"}, \"nodes\": [{\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"CANCELLED\", \"version\": 2, \"attempt_ids\": [\"<attempt-a>\"], \"result_artifact_ids\": [], \"error\": \"cancelled\"}], \"attempts\": [{\"attempt_id\": \"<attempt-a>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"<agent-a>\", \"spawn_index\": 0, \"status\": \"CANCELLED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"cancelled\"}], \"artifacts\": [], \"outbox\": [], \"calls\": []}",
+      "recipe": {
+        "blocked": true,
+        "cancel": true,
+        "name": "cancel-permit-wait"
+      },
+      "repeat_error": ""
+    }
+  ]
+}

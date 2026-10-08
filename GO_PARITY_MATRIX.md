@@ -1,5 +1,67 @@
 # Python to Go parity matrix
 
+## 2026-10-08 typed workflow batch engine
+
+Baseline 826f7d1. W4A adds WorkflowRunner, detached AttemptExecution, finite
+RunnerError, WorkflowEngine and shared AttemptPool/AttemptPermit. Execution validates
+before terminal return, serializes each run, selects dependency-ready nodes in
+source definition order and joins each batch before selecting the next. Engine and
+definition concurrency plus remaining attempt budget bound claims. Verifier parent
+identity comes from the latest first-dependency attempt. Inputs retain scalar versus
+array artifact folding and the dependency-named-args overwrite. Permits cover runner
+calls and release before structured validation/settlement. Default capacity is four;
+zero blocks cooperatively, negative capacity is refused. Release is idempotent.
+
+Snapshot 121 executes actual Python engine/store methods across 42 profiles and
+five constructor limits. Full run/node/attempt/artifact/outbox projections, ordered
+captured runner inputs and repeat outcomes are compared. Coverage includes every
+run status, ordinary/verifier submission and runner faults, all verification folds,
+diamond/serial scheduling, parallel failure, budget exhaustion, deadlock, absent
+return artifacts, args collision and running/permit-wait cancellation. UUID/time
+are normalized; concurrent runner callback order is not asserted. Native race tests
+cover shared pools, same-run Execute serialization, cooperative cancellation,
+parent deadline settlement and cancelled lock waits with empty idle bookkeeping.
+
+Native deviations are explicit: errors outside finite RunnerError use
+NativeRunnerError; idle execution locks are reclaimed instead of accumulating;
+claim publication and cancellation tracking share a mutex. Parent context expiration
+settles attempts and returns its error but does not request run cancellation.
+Python wall-time budgets are service-owned, so no engine wall-time timer is added.
+Runner callbacks must honor context; arbitrary panics/hard interruption are outside
+this contract. Source verifier nil submissions preserve their AttributeError before
+structured validation; verifier faults produce schema-invalid unverified artifacts.
+Decoded provenance remains inert. No dependencies or Python runtime modules changed.
+
+Validation: full Go tests with per-package and shared-package coverage, full
+`go test -race ./... -count=1 -timeout=180s`, `go vet ./...`, final focused
+workflow race and vet passed. All 121 Python exports are current and all 19 scan
+guards are anchored. Full Python regression passed: 2,155 tests, 28 skips and 24 subtests in
+128.22 seconds. Four warnings: three dependency deprecations plus an asyncio
+subprocess-transport finalizer after loop closure; no test failure. `git diff --check`
+and README outline passed. No Python package module or guarded runtime changed,
+so Python package invariant/guard checks were not rerun. Architecture delivery
+passed 9/9 checks with zero errors/warnings. Specification SHA256:
+`5c8bf150d1188f451dba12496bc063f5909d18020153d39774ef5b03a648c8af`;
+HTML SHA256: `c24a1cd1d59cb168ac18b57951b89d379eac4076a5ecf3dfab73f4b990e3cb7b`.
+Topology remains unchanged because this is an uninstalled library. Visual inspection
+remains skipped after the earlier access denial; no visual approval is claimed.
+
+Fresh shared-package Go statement coverage uses `-coverpkg=./...` with duplicate
+source blocks merged by maximum execution count: overall 19,581/21,622 (90.56%),
+workflows 1,326/1,433 (92.53%) and engine 224/269 (83.27%). Profile:
+`/tmp/mini-loop-engine-shared-coverage.out`. Input object member order is compared
+byte-for-byte with source in addition to canonical full-state comparisons. These
+figures measure exercised statements, not full migration completion. Python
+coverage was not refreshed.
+
+Next W4B adapts the isolated readonly FreshAgentRunner and trusted live context
+resolver. W5 adds owned launch/status/wait/cancel, service wall-time control, parent
+notification append/receipts and retention bookkeeping. W6 installs optional
+workflow tools/HTTP and manager composition. MCP, native session SQLite, remaining
+runtime profiles and full G7 remain open. Full Python-to-Go migration is unfinished;
+no durable workflow persistence or restart-resume is inferred.
+
+
 ## 2026-10-08 terminal-and-drained workflow graph retention
 
 Snapshot 120 executes prune_terminal_runs over 65 actual full graph profiles,

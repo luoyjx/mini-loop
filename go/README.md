@@ -2088,7 +2088,7 @@ must sample at each judgment window to detect intermediate tampering.
 
 workflows supplies named finite states, immutable definition identity and artifact
 records. Actual Python model evidence lives in python-workflow-models.json (snapshot
-113). It has no workflow engine or manager/HTTP/model-tool activation yet.
+113). The engine below is callable; manager/HTTP/model-tool activation remains pending.
 
 ValidateDefinition, ValidateSchema and ValidateValue now port the actual source DAG,
 budget/tool policy and JSON Schema subset. ArtifactFromSubmission binds structured
@@ -2146,7 +2146,7 @@ late and leaves partial attempt/artifact state. Native reproduces that operator-
 quirk; use validated VerificationStatus values. Nil selects the source default.
 Overflow checks precede publication; race tests elect one start/commit CAS winner.
 Cancellation, final completion and outbox lease settlement are described below;
-external delivery and live service/engine installation remain open. Retention is
+external delivery and live service installation remain open. Retention is
 described below. This store is still process-local.
 
 ### Workflow cancellation and completion
@@ -2164,7 +2164,7 @@ Snapshot 118 compares 131 actual source profiles and repeated full graph project
 Native tests cover cancellation with started/unstarted tasks, concurrent request and
 finalization CAS, single notification creation, counter overflow admission, delivery
 filters and timestamp isolation. Outbox leasing/ack/release is described below;
-whole graph retention is described below. Engine/service/trusted origins/tools/HTTP
+whole graph retention is described below. Live service/trusted origins/tools/HTTP
 and manager installation remain open.
 
 ### Workflow outbox leases and receipts
@@ -2186,7 +2186,7 @@ Snapshot 119 compares 106 actual source profiles and repeated complete outbox
 projections. Native race tests cover concurrent claims, stale-token fencing after
 expiry, projection isolation, concurrent enqueue deduplication, release/retry/ack
 and finalization's insertion/key indexes. Whole graph retention is described below;
-live service/engine, trusted origins/tools/HTTP and manager composition remain open.
+live service, trusted origins/tools/HTTP and manager composition remain open.
 
 ### Workflow terminal graph retention
 
@@ -2201,6 +2201,29 @@ Returned run IDs let a future service remove its own bookkeeping. No automatic
 retention hook is installed yet. Snapshot 120 compares 65 full graph profiles,
 default-500 eviction, timestamp ties and replay outcomes against actual source.
 Native race tests cover acknowledgment versus pruning, index completeness, active/
-unread retention and minimum native integer handling. Live origin/service/engine,
+unread retention and minimum native integer handling. Live origin/service,
 tools/HTTP/parent append and manager activation remain open; no durable workflow
 backend or restart-resume guarantee ships.
+
+### Workflow batch engine
+
+NewWorkflowEngine uses typed WorkflowRunner and AttemptExecution contracts. Execute
+validates before terminal return, serializes each run, selects dependency-ready nodes
+in definition order and waits for complete batches. Limits combine engine/definition
+concurrency and remaining attempts. Inputs fold one dependency artifact to a scalar
+and other counts to arrays; a dependency named args overwrites the initial args.
+An explicitly shared AttemptPool bounds runner calls across engines. Default capacity
+is four; zero is a cancellable blocked pool. Permits release before settlement.
+Structured submission/schema refusal fails ordinary nodes; verifier failures produce
+source schema-invalid unverified fallback artifacts. Nil verifier submissions retain
+the source AttributeError detail. Cancel signals active contexts and settles claimed
+attempts without joining; Execute joins workers. Runner cancellation is cooperative.
+Parent deadline/cancellation returns a context error after attempt cleanup; a future
+service owns run cancellation and wall-time budgets. Idle run locks are reclaimed.
+Snapshot 121 compares 42 actual Python full-state engine profiles, captured runner
+inputs, repeats and five constructor limits. Native race tests additionally cover
+shared-pool arbitration, duplicate Execute serialization, running/blocked cancellation,
+parent deadline settlement and cancelled lock waits. RunnerError provides finite
+source-style kinds; other callback errors use NativeRunnerError. No live readonly
+FreshAgentRunner, trusted context resolver, owned service, parent append, tools/HTTP
+or manager activation is installed. The store remains process-local.

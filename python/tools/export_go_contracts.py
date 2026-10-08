@@ -6757,6 +6757,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-completion.json": _json_bytes(_workflow_completion_contracts()),
         "python-workflow-outbox.json": _json_bytes(_workflow_outbox_contracts()),
         "python-workflow-retention.json": _json_bytes(_workflow_retention_contracts()),
+        "python-workflow-engine.json": _json_bytes(_workflow_engine_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -9861,6 +9862,148 @@ def _workflow_retention_contracts() -> dict:
                    for key in ("z", "a", "b")}
     ties = store.prune_terminal_runs(keep=1)
     return dict(rows=rows, default=default, ties=ties)
+
+
+def _workflow_engine_contracts() -> dict:
+    """Actual batch scheduler, inputs and structured/fallback attempt settlement."""
+    import asyncio
+    import dataclasses
+    from mini_loop.run_context import RunContext
+    from mini_loop.workflows.artifacts import return_artifact, ArtifactSubmission
+    from mini_loop.workflows.engine import WorkflowEngine
+    from mini_loop.workflows.models import WorkflowDefinition, RunStatus, NodeStatus
+    from mini_loop.workflows.store import InMemoryWorkflowStore
+
+    recipes = []
+    for status in RunStatus:
+        recipes.append(dict(name="entry-" + status.value, status=status.value))
+    for behavior in ("ok", "runtime", "value-error", "type-error", "nil", "wrong-tool", "bad-value"):
+        recipes.append(dict(name="agent-" + behavior, behavior=behavior))
+        recipes.append(dict(name="verify-" + behavior, behavior=behavior, verify=True))
+    for verification in ("verified", "refuted", "unverified", "invalid", ""):
+        recipes.append(dict(name="verification-" + verification, verify=True, verification=verification))
+    recipes.extend([
+        dict(name="diamond", graph="diamond"),
+        dict(name="diamond-serial", graph="diamond", concurrency=1),
+        dict(name="parallel-failure", graph="parallel", behavior="runtime"),
+        dict(name="budget-exhausted", attempts_used=32),
+        dict(name="deadlocked", node_before="CANCELLED"),
+        dict(name="empty-return", node_before="SUCCEEDED"),
+        dict(name="failed-node", node_before="FAILED"),
+        dict(name="dependency-args", graph="args"),
+        dict(name="cancel-running", cancel=True),
+        dict(name="cancel-permit-wait", cancel=True, blocked=True),
+    ])
+
+    async def scenario(recipe):
+        store = InMemoryWorkflowStore()
+        nodes = [dict(id="a", kind="verify" if recipe.get("verify") else "agent", output_schema={"type": "object"})]
+        return_from = "a"
+        if recipe.get("graph") in ("diamond", "parallel"):
+            nodes = [dict(id="a", kind="agent"), dict(id="b", kind="agent")]
+            if recipe["graph"] == "diamond":
+                nodes += [dict(id="c", kind="reduce", needs=["a", "b"]), dict(id="v", kind="verify", needs=["c"])]
+                return_from = "v"
+        elif recipe.get("graph") == "args":
+            nodes = [dict(id="args", kind="agent"), dict(id="a", kind="reduce", needs=["args"])]
+        definition = WorkflowDefinition.from_dict(dict(name="wf", revision="base", return_from=return_from, nodes=nodes))
+        store.register_definition(definition)
+        run = store.create_run(definition_revision="base", session_id="s", idempotency_key="k",
+                               args={"input": 1}, run_context=RunContext(message_id="msg"))
+        stored = store._runs[run.run_id]
+        stored.status = RunStatus(recipe.get("status", "QUEUED"))
+        stored.attempts_used = recipe.get("attempts_used", 0)
+        if "node_before" in recipe:
+            node = store._nodes[(run.run_id, "a")]
+            node.status = NodeStatus(recipe["node_before"])
+            if node.status == NodeStatus.FAILED:
+                node.error = "seeded failure"
+        calls = []
+        started = asyncio.Event()
+        async def runner(attempt, node, inputs):
+            calls.append(dict(node_id=node.id, spawn_index=attempt.spawn_index, inputs=inputs))
+            if recipe.get("cancel"):
+                started.set()
+                await asyncio.Event().wait()
+            behavior = recipe.get("behavior", "ok")
+            if behavior == "runtime":
+                raise RuntimeError("worker failed")
+            if behavior == "value-error":
+                raise ValueError("worker failed")
+            if behavior == "type-error":
+                raise TypeError("worker failed")
+            if behavior == "nil":
+                return None
+            if behavior == "wrong-tool":
+                return ArtifactSubmission(value={"ok": True}, tool_name="wrong")
+            if behavior == "bad-value":
+                return return_artifact("wrong")
+            if node.kind.value == "verify":
+                return return_artifact({"status": recipe.get("verification", "verified")})
+            return return_artifact({"node": node.id})
+        engine = WorkflowEngine(store, runner, max_concurrent_agents=recipe.get("concurrency", 4),
+                                attempt_semaphore=asyncio.Semaphore(0) if recipe.get("blocked") else None)
+        error, detail = "", ""
+        try:
+            if recipe.get("cancel"):
+                task = asyncio.create_task(engine.execute(run.run_id))
+                if recipe.get("blocked"):
+                    while not any(attempt.status.value == "RUNNING" for attempt in store.list_attempts(run.run_id)):
+                        await asyncio.sleep(0)
+                else:
+                    await started.wait()
+                await engine.cancel(run.run_id)
+                await task
+            else:
+                await engine.execute(run.run_id)
+        except Exception as failure:
+            error, detail = type(failure).__name__, str(failure)
+        attempts = store.list_attempts(run.run_id)
+        ids = {run.run_id: "<run>"}
+        for attempt in attempts:
+            ids[attempt.attempt_id] = "<attempt-" + attempt.node_id + ">"
+            ids[attempt.agent_id] = "<agent-" + attempt.node_id + ">"
+        artifacts = [artifact for node in definition.nodes for artifact in store.artifacts_for_node(run.run_id, node.id)]
+        for artifact in artifacts:
+            ids[artifact.artifact_id] = "<artifact-" + artifact.node_id + ">"
+        messages = store.list_outbox(run_id=run.run_id)
+        for message in messages:
+            ids[message.message_id] = "<outbox>"
+        def clean(value):
+            if dataclasses.is_dataclass(value):
+                value = dataclasses.asdict(value)
+                for stamp in ("created_at", "started_at", "ended_at", "heartbeat_at"):
+                    if stamp in value and value[stamp] is not None:
+                        value[stamp] = 0
+            if isinstance(value, dict):
+                return {key: clean(child) for key, child in value.items()}
+            if isinstance(value, (list, tuple)):
+                return [clean(child) for child in value]
+            if isinstance(value, str):
+                return ids.get(value, value)
+            return value
+        data = clean(dict(run=store.get_run(run.run_id), nodes=store.list_nodes(run.run_id),
+                          attempts=attempts, artifacts=artifacts, outbox=messages,
+                          calls=sorted(calls, key=lambda call: call["spawn_index"])))
+        for raw, label in ids.items():
+            detail = detail.replace(raw, label)
+        repeat_error = ""
+        try:
+            await engine.execute(run.run_id)
+        except Exception as failure:
+            repeat_error = type(failure).__name__
+        return dict(recipe=recipe, output_json=json.dumps(data), error=error, detail=detail, repeat_error=repeat_error)
+
+    async def collect():
+        return [await scenario(recipe) for recipe in recipes]
+    constructor = []
+    for limit in (0, -1, 1, 4, 5):
+        try:
+            WorkflowEngine(InMemoryWorkflowStore(), lambda *_: None, max_concurrent_agents=limit)
+            constructor.append(dict(limit=limit, error="", detail=""))
+        except Exception as failure:
+            constructor.append(dict(limit=limit, error=type(failure).__name__, detail=str(failure)))
+    return dict(rows=asyncio.run(collect()), constructor=constructor)
 
 
 if __name__ == "__main__":

@@ -2437,3 +2437,22 @@ references; surviving child metadata and reusable definition/hash indexes remain
 Replaying an evicted session/key starts fresh; replaying a retained one preserves
 its payload conflict boundary. Service installation and trusted live origin adaptation
 remain open; this callable library does not schedule pruning automatically.
+
+WorkflowRunner now receives detached AttemptExecution records (attempt/node/closed
+inputs) and returns an optional structured ArtifactSubmission plus error. Its
+implementation must respect context cancellation; arbitrary panics and hard process
+termination are outside this contract. RunnerError supplies finite Python-style
+error kinds; unspecified native errors render NativeRunnerError. WorkflowEngine
+validates definitions, serializes Execute per run, folds dependency artifacts and
+claims definition-ordered batches bounded by concurrency and remaining attempts.
+AttemptPool is explicitly shareable across engines; default capacity is four,
+negative capacity is refused and zero blocks until cancellation. AttemptPermit.Release
+is idempotent; no arbitrary semaphore growth is exposed. Permits cover runner calls,
+not artifact validation/settlement. Cancel publishes run cancellation and cancels
+in-flight contexts without waiting for workers; Execute joins the batch. Callers must
+join Execute before reclaiming worker resources. Parent context expiration settles
+attempts and returns the context error; run cancellation/wall-time policy remains
+service-owned. Verifier failures retain schema-invalid unverified fallback artifacts,
+including source nil-submission AttributeError. Idle run locks are reclaimed rather
+than accumulating Source's lock table. No FreshAgentRunner, live context resolver,
+service, tool, HTTP or manager installation is supplied by this seam.

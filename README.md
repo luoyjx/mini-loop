@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `d593d14` plus terminal-and-drained workflow graph retention;
+reviewed **2026-10-08** (Go baseline `826f7d1` plus typed workflow batch execution;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1453,9 +1453,16 @@ acknowledgment; this store does not perform external delivery. Snapshot 120 comp
 PruneTerminalRuns evicts only terminal runs without unread notifications, removing
 owned nodes/attempts/artifacts/outbox/keys/launches and both insertion indexes under
 one mutex. Parent references in surviving runs remain historical metadata. Evicted
-launch keys start fresh on replay, making deduplication a retention window. Live
-execution and trusted live workflow launch adaptation remain pending. This library is
-not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
+launch keys start fresh on replay, making deduplication a retention window.
+Snapshot 121 compares 42 actual Python engine profiles and five constructor limits.
+The native engine schedules definition-ordered dependency batches through an explicit
+WorkflowRunner, shares an optional AttemptPool, serializes each run and settles
+structured artifacts, verifier fallback and cooperative cancellation. Inputs retain
+source scalar/list folding and dependency names can overwrite args. Wall-time budget
+handling remains service-owned. Idle execution locks are reclaimed; decoded provenance
+cannot supply live runner authority. Trusted live worker adaptation and service
+installation remain pending. This library is not installed in manager/model/HTTP
+paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable
