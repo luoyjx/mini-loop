@@ -2910,5 +2910,26 @@ snippet offset in original text, even when the lowercase form grows. Both APIs
 propagate cancellation/read faults. Search caps epochs and matches; loading each
 stored epoch retains Source's whole-epoch read shape. This interface supplies no
 owner authorization, lifetime management, runtime tool installation or durability.
-Binding to managed session identity is the next slice; native SQLite, request
-reconstruction and historical nonfinite/surrogate parity remain open.
+Managed runtime binding is described below; native SQLite, request reconstruction
+and historical nonfinite/surrogate parity remain open.
+
+## Go session-bound transcript_search tool
+
+`RuntimeConfig.SessionQueryTools` and `ManagerServices.SessionQueryTools` opt into
+the Source schema/read/parallel traits through the existing execution gate. The
+only model input is a required Query string. Strict decoding refuses scope fields;
+canonical hashing and recording masks preserve the concrete input variant. The
+private runtime binding carries the manager's TranscriptStore; the handler uses
+its trusted SessionID, never a session named by the model. No permission grant is
+introduced by installation, and normal catalogue selection can remove the tool.
+
+A manager with nil storage behaves as Source NullStateStore for search, returning
+empty history. A raw runtime has no manager search binding and returns the Source
+unavailable notice. Default role capability filtering excludes this empty-capability
+tool. A custom selected child rebinds the runtime handler to fresh state and receives
+that same unavailable notice rather than borrowing the parent's store. Managed
+restoration tests search superseded own history and exclude another owner's rows;
+the test backend is not proof of native SQLite restart. The adapter uses existing
+typed stored Message content and retains its encoded member order. Arbitrary Source
+archival content, request reconstruction and independent launcher/CLI selection
+remain open. Backend close remains operator-owned.

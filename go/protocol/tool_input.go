@@ -148,6 +148,7 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
+	transcriptSearch  TranscriptSearchInput
 	connectMCP        ConnectMCPInput
 	mcpArguments      jsonvalue.Value
 	workflow          WorkflowInput
@@ -439,7 +440,7 @@ func (input ToolInput) Validate() error {
 		}
 		_, err := decisions.NewRequest(input.decision.State(), input.decision.Questions())
 		return err
-	case ToolSelfAudit, ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
+	case ToolTranscriptSearch, ToolSelfAudit, ToolGoalCreate, ToolGoalStatus, ToolGoalComplete, ToolGoalBlock, ToolGoalResume, ToolEnterPlanMode, ToolExitPlanMode, ToolScheduleCron, ToolListCrons, ToolCancelCron, ToolBackgroundRun, ToolCheckBackground, ToolBash, ToolReadFile, ToolWriteFile, ToolEditFile, ToolGlob,
 		ToolCompress, ToolAskUser, ToolCreateTask, ToolListTasks, ToolGetTask, ToolClaimTask, ToolCompleteTask,
 		ToolCreateWorktree, ToolRemoveWorktree, ToolKeepWorktree, ToolListWorktrees, ToolEnterWorktree:
 		return nil
@@ -476,6 +477,8 @@ func (input ToolInput) MarshalJSON() ([]byte, error) {
 		return input.mcpArguments.MarshalJSON()
 	}
 	switch input.name {
+	case ToolTranscriptSearch:
+		return json.Marshal(input.transcriptSearch)
 	case ToolWorkflow:
 		if err := input.Validate(); err != nil {
 			return nil, err
@@ -591,6 +594,17 @@ func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 			return result, errors.New("goal_create requires objective")
 		}
 		result = CreateGoalToolInput(CreateGoalInput{Objective: *wire.Objective, MaxRounds: wire.MaxRounds})
+	case ToolTranscriptSearch:
+		var wire struct {
+			Query *string `json:"query"`
+		}
+		if err := decodeToolObject(data, &wire); err != nil {
+			return result, err
+		}
+		if wire.Query == nil {
+			return result, errors.New("transcript_search requires query")
+		}
+		result = TranscriptSearchToolInput(TranscriptSearchInput{Query: *wire.Query})
 	case ToolSelfAudit:
 		var wire SelfAuditInput
 		if err := decodeToolObject(data, &wire); err != nil {

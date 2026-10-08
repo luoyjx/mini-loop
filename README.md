@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `2110eb2` plus the typed bounded transcript-search library
+Runtime review baseline: `07f19da` plus explicit session-bound transcript_search
+and the typed bounded transcript-search library
 and Source-selected task-child MCP binding
 and parent-retained connection cleanup, plus typed native InProcessMCP handlers and
 Python result text, plus explicit MCP launcher selection and
@@ -388,7 +389,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending<br/>bounded epoch-search library · tool binding pending"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending<br/>optional session-bound search · typed reader"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
@@ -458,7 +459,7 @@ flowchart LR
         GoWorktrees -. serialized files / shell / sandbox scope .-> GoFiles
         GoWorktrees -. prepare before publishing execution scope .-> GoBash
         GoSession -. injected state / leases / restore / catch-up / epochs .-> GoActions
-        GoGate -. replay / reconcile / settle .-> GoActions
+        GoGate -. replay / search / settle .-> GoActions
         GoGate -. permission ask .-> GoApprovals
         GoResources -. textual question .-> GoApprovals
         GoApprovals -. scoped approval events .-> GoSession
@@ -907,9 +908,14 @@ an explicit read-only Reader, distinct from live protocol messages. It scans at 
 coverage warnings into its rendered text. Snapshot 147 compares eight actual SQLite
 search recipes and four absent/null-store surfaces, preserving stored object order
 and Python Unicode lowercase offsets. Reads propagate context cancellation and
-backend errors. This is a library seam: runtime tool registration, bound owner/session
-admission, request reconstruction and native SQLite remain pending. Historical
-nonfinite/surrogate search profiles are not yet established as Source parity.
+backend errors. Explicit SessionQueryTools now registers the read-only parallel
+transcript_search tool behind the gate. Managed sessions bind the configured store
+and trusted session identity; a manager without storage returns empty history,
+while bare/explicitly selected child tools retain Source's unavailable notice.
+Query inputs cannot name an owner or session. The adapter projects existing typed
+stored messages; it does not widen the storage contract to arbitrary archival rows.
+Request reconstruction, launcher selection, native SQLite and historical
+nonfinite/surrogate search profiles remain open.
 
 `ManagedSession.ReadTranscript(ctx, selection)` returns a detached persisted epoch,
 including old compaction inputs and unfinished crash tails. Current selection is

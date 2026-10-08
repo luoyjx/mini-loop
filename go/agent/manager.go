@@ -454,6 +454,10 @@ func (manager *SessionManager) baseManagedRuntimeConfig(id SessionID, owner Owne
 	runtime.Label = "main"
 	runtime.TeamTools = services.TeamTools
 	runtime.teamManager = manager
+	runtime.SessionQueryTools = services.SessionQueryTools
+	if services.SessionQueryTools {
+		runtime.transcriptSearch = transcriptSearchReader{store: services.StateStore}
+	}
 	runtime.SelfAuditTools = services.SelfAuditTools
 	runtime.SelfAuditObserver = manager
 	runtime.SelfAuditView = services.SelfAuditView

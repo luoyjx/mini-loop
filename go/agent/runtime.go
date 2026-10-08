@@ -9,6 +9,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
+	"github.com/luoyjx/mini-loop/go/sessionquery"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/spill"
@@ -58,9 +59,11 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	mcpLifetime *mcpLifetime
-	MCPTools    bool
-	MCPServers  []MCPServer
+	SessionQueryTools bool
+	transcriptSearch  sessionquery.Reader
+	mcpLifetime       *mcpLifetime
+	MCPTools          bool
+	MCPServers        []MCPServer
 	// MCPCatalog is an explicitly discovered snapshot. Client lifetime remains operator-owned.
 	MCPCatalog      *ToolCatalog
 	WorkflowTools   bool
@@ -140,6 +143,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	transcriptSearch     sessionquery.Reader
 	mcp                  *mcpState
 	workflows            *WorkflowService
 	workflowManager      *SessionManager
@@ -210,6 +214,9 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 		return handler.executeWorkflow(ctx, authority, input)
 	case protocol.ToolSpawnTeammate, protocol.ToolSendMessage, protocol.ToolReadInbox, protocol.ToolBroadcast, protocol.ToolListTeammates, protocol.ToolRequestShutdown, protocol.ToolRequestPlan, protocol.ToolSubmitPlan, protocol.ToolReviewPlan, protocol.ToolListProtocols:
 		return handler.executeTeam(ctx, authority, input)
+	case protocol.ToolTranscriptSearch:
+		value, _ := input.TranscriptSearch()
+		return sessionquery.ToolSearch(ctx, handler.transcriptSearch, sessionquery.SessionID(handler.binding.SessionID), value.Query)
 	case protocol.ToolSelfAudit:
 		return handler.selfAudit.report(ctx)
 	case protocol.ToolRemember, protocol.ToolRecall:
@@ -476,6 +483,14 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 				definitions[i].classifier = backgroundBashClassifier{}
 			}
 		}
+	}
+	handler.transcriptSearch = config.transcriptSearch
+	if config.SessionQueryTools {
+		definition, err := NewToolDefinitionWithSchema(protocol.TranscriptSearchSchema(), ToolTraits{Risk: RiskRead, Readonly: true, ParallelSafe: true}, handler)
+		if err != nil {
+			return nil, err
+		}
+		definitions = append(definitions, definition)
 	}
 	if config.SelfAuditTools {
 		definition, err := NewToolDefinitionWithSchema(protocol.SelfAuditSchema(), ToolTraits{Risk: RiskRead, Readonly: true}, handler)

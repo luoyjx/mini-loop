@@ -7856,3 +7856,15 @@ an explicit session identity and historical closed data; it grants no authority.
 Source search positions use full lowercase text but slice the original string;
 actual Unicode and object-order fixtures protect this behavior. Runtime-bound
 owner/session admission and native SQLite are not supplied by this library seam.
+
+### Go migration — session-bound transcript search
+
+The optional search tool has only a typed Query input; scope cannot come from model
+fields. Manager construction privately binds its configured store and each trusted
+session identity. Existing gate guards and read permissions apply before search.
+A restored session reads superseded own history without exposing another owner's
+rows. Default capability filtering excludes the tool, and even explicitly selected
+children receive fresh unbound state rather than the parent's transcript store.
+Missing bare state and manager Null storage remain different textual outcomes.
+Native tests use an injected typed backend; SQLite and arbitrary archival-row parity
+remain open. Read errors are faults through the existing gate, not empty success.

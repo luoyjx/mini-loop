@@ -1,5 +1,52 @@
 # Go port plan
 
+## 2026-10-08 native session-bound transcript_search tool
+
+Baseline 07f19da (Source snapshot 147). RuntimeConfig/ManagerServices.SessionQueryTools
+explicitly install transcript_search with the captured Source schema, readonly/read
+risk and parallel traits. TranscriptSearchInput is a concrete Query-only variant;
+strict decoding rejects session/owner fields, and canonical hashing and recording
+masking include the new variant without changing live arguments. Default catalogues
+and capability role filtering remain unchanged.
+
+Manager construction privately binds the configured TranscriptStore; the handler
+uses trusted per-session identity. Nil manager storage projects a no-op reader and
+returns Source's empty search. Bare runtimes and custom-selected in-process child
+tools remain unbound and return the Source unavailable notice. Children do not
+inherit a parent's transcript store. Existing guards/read permissions precede the
+handler. The adapter converts typed stored Message content into closed archival
+values in its encoded order; it does not widen the store to arbitrary Source rows.
+
+Tests compare actual Source schema/traits and bare/null text, required Query and
+scope refusals, canonical/masked input isolation, catalogue narrowing, guards before
+reads, default role exclusion, selected child isolation and read-error propagation.
+A restored-session model turn searches superseded own epochs and excludes another
+owner's history through the injected test backend. History is seeded while the old
+manager is stopped and then loaded through RestoreSessions; consistency guards are
+not bypassed. This is native typed-backend evidence, not Source runtime end-to-end
+serialization parity, SQLite durability or a new real restart benchmark. Request
+reconstruction, independent launcher selection, arbitrary archival/scalar profiles,
+native SQLite driver approval, full feature activation and full G7 remain open.
+
+Validation: focused TranscriptSearch race tests; full go test ./... -count=1
+-timeout=180s, full go test -race ./... -count=1 -timeout=180s and go vet ./...
+passed. Source export --check passes all 147 files; all 19 scanning guards are
+anchored. Python regression: 2155 passed, 28 skipped, 3 dependency warnings and
+24 subtests in 94.35s. No Source runtime package module changed, so separate
+invariant verification was not rerun. Source mutation sweep and coverage were not
+refreshed; previous coverage does not describe this tree or migration completion.
+README outline and git diff --check passed.
+
+README baseline, canonical search/state path, extension/hardening notes and
+interactive specification are updated together. Archify deliver passes 9/9 showcase
+checks without errors/warnings. Visual inspection remains skipped after prior
+access denial. Specification SHA256:
+4a4d1fa7ef8e05f68b06193b5c6a4b6050e0fe441e85d43ebb9c705df050efb0;
+HTML SHA256: 07aea339e6aad452a3fe08985427712734346b977228a0f0895e6bbb6b8e2e89.
+Next capture actual Source manager/model search observations and add independent
+launcher selection; request reconstruction remains another module function to port.
+The complete Python-to-Go objective remains active.
+
 ## 2026-10-08 native historical transcript-search library
 
 Baseline 2110eb2 (Source snapshot 147). The new sessionquery package provides named
