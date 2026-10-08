@@ -1,5 +1,59 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native InProcessMCP adapter
+
+Baseline 3f19efa (Source snapshot 145). mcp.NewInProcess accepts named
+InProcessTool definitions and context-aware InProcessHandler callbacks returning
+immutable closed values. The public InProcessValue alias makes embedding possible
+without importing internal packages; an external-package test proves the signature
+and JSON decoding path. The client implements existing discovery/call/Close seams
+without new dependencies or default feature activation.
+
+Discovery preserves definition order and duplicates, while dispatch selects the
+last handler per raw name, including nil -> unknown-tool text. Caller tool slices
+and discovery containers detach; schema/annotation values are immutable. Scalar,
+list and object results use Source Python str semantics. Ordinary callback errors
+become Error text; context cancellation/deadlines propagate. Native panic isolation
+returns type-only diagnostic text rather than leaking details or crashing the
+consumer. Close is a reusable no-op and bare result text has no stdio cap; existing
+agent recording/context limits still apply. Callbacks must honor cancellation and
+synchronize shared state. Go object arguments are explicit closed values; arbitrary
+Python objects/callable signatures are not fabricated.
+
+Tests compare all twelve actual Source results and complete captured discovery
+metadata, duplicate dispatch, nil/unknown tools, Close reuse and detached containers.
+Native tests cover active cancellation after callback entry, pre-cancelled discovery,
+panic isolation, 60,000-character bare results, invalid object arguments and public
+embedding. Real model/gate tests prove same-batch publication and execution in auto
+mode, retained external risk despite readOnlyHint, and no publication/callback
+invocation after readonly connection denial. ManagedMCPClient conformance is checked;
+existing manager/launcher lifetime tests cover composition, not a new local-client
+HTTP lifecycle fixture.
+
+Validation: focused in-process race tests; final full go test ./... -count=1
+-timeout=180s, full go test -race ./... -count=1 -timeout=180s and go vet ./... passed.
+All 145 Source exports are current; 19 scan anchors and 10 selected MCP mutation
+guards passed. Python full regression: 2155 passed, 28 skipped, 4 warnings and
+24 subtests in 93.72 seconds. Three dependency warnings and the previously observed
+asyncio subprocess destructor warning (Event loop is closed) were recorded; the
+originating subprocess remains unidentified. No Source runtime modules changed;
+the separate invariant verifier and unrelated full mutation sweep were not rerun.
+README outline and git diff --check passed. Coverage was not refreshed: the last
+90.23% (21,311/23,618) belongs to 721b413 before MCP, not the current tree or migration
+completion. Python coverage was not refreshed.
+
+README baseline, canonical adapter node, boundary text, extension seam, hardening
+note and interactive Language layout card are updated. Archify deliver passes 9/9
+showcase checks with zero errors/warnings. Visual inspection remains skipped after
+prior access denial. Spec SHA256
+89331137fdde2abcf295f8ca1fdda65766bd0002be2282df8bb9b02c104915f6;
+HTML SHA256 ddbd378b5241116a3c749e1b5f464cbc7ee776f4a46b1fa5cac00afad9d7aeb5.
+
+Next: task-child MCP capability and lifecycle composition. Remaining malformed/
+archival argument, model/tool scalar/transport and timing/input/output profiles,
+full feature activation and full G7 remain open. Native SQLite still awaits approved
+driver selection. The complete Python-to-Go objective remains active.
+
 ## 2026-10-08 InProcessMCP Source contracts
 
 Baseline 17a5ea1. Snapshot 145 runs actual Source InProcessMCP with synchronous

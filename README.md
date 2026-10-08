@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `4f6b2a5` plus explicit MCP launcher selection and
+Runtime review baseline: `3f19efa` plus typed native InProcessMCP handlers and
+Python result text, plus explicit MCP launcher selection and
 operator server forwarding, plus default-off managed MCP connections,
 identity-based last-holder close after turn drain, fresh fork connection state,
 and default-off raw-session connect_mcp
@@ -386,7 +387,7 @@ flowchart LR
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
-        GoMCP["Go MCP connect_mcp / registration / stdio<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>launcher selection<br/>task-child composition / InProcess pending"]
+        GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child composition pending"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
         GoManager -. explicit shared handles / last-holder drain and close .-> GoMCP
@@ -1600,7 +1601,7 @@ the existing model-request/gate path; default tools are unchanged. Client lifeti
 is still operator-owned. Nonfinite/surrogate argument profiles remain unsupported
 at the strict protocol boundary; the stdio library's archival values do not expand it.
 Timing/input/output, remaining model/tool scalar profiles, native SQLite, MCP
-task-child composition, InProcessMCP and full G7 remain pending.
+task-child composition and full G7 remain pending.
 Snapshot 142 runs five real Source Agent batches: aliases versus raw server names,
 lazy factories, idempotent connection, same-batch discovered tool calls, same raw
 server replacement through another alias, cross-server collision refusal, empty
@@ -1633,8 +1634,17 @@ Native tests compare MCP catalogues, outputs and close counts through real HTTP,
 and execute a real Go stdio child that starts only on authorized connection and
 is reaped on App.Stop. Explicitly registered credentials are scrubbed; the default
 Null registry inherits the environment as in Source. Full MINILOOP_FEATURES stays
-unsupported; task children and InProcessMCP remain pending. No default activation
-or durable claim.
+unsupported; task children remain pending. Snapshot 145 captures twelve actual
+Source InProcessMCP outputs, ordered definitions, duplicate dispatch and Close
+reuse. Native `mcp.NewInProcess` accepts named definitions and context-aware
+handlers returning immutable closed values through the public InProcessValue
+alias. Python str conversion preserves scalar/container text; ordinary errors
+become Source Error text, cancellation propagates, and native handler panics
+become type-only diagnostic text. Discovery snapshots detach their containers;
+duplicate definitions retain order while dispatch selects the last handler.
+Close is a reusable no-op, and bare results have no stdio result cap. The adapter
+implements managed cleanup and still crosses external permission regardless of
+readOnlyHint. No default activation or durable claim.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

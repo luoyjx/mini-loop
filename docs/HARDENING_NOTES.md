@@ -7820,3 +7820,14 @@ start the child, explicitly registered credentials are scrubbed and App.Stop
 reaps it after the admitted turn. Null secret behavior remains Source environment
 inheritance; no implicit registration or comprehensive feature activation occurs.
 Task-child MCP scope and the full feature bundle remain open.
+
+### Go migration — in-process MCP adapter
+
+Local handler execution does not lower MCP external risk. Native model/gate tests
+verify same-batch publication in auto mode and no publication/callback invocation
+in readonly mode, even with readOnlyHint. The adapter retains immutable closed
+values, ordered definitions and last-handler dispatch; Source fixture 145 checks
+all twelve outputs and Close reuse. Cancellation propagates instead of becoming
+ordinary Error text. Native panic isolation reports the type without panic details.
+Callbacks must honor cancellation and synchronize shared state; no worker sandbox
+or durable handler recovery is implied. Task-child MCP scope remains open.

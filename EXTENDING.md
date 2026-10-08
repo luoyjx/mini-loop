@@ -2814,8 +2814,7 @@ Client Close must drain the client, and cannot recursively acquire its own handl
 Retained catalogues do not extend managed lifetime past session deletion.
 
 Raw `RuntimeConfig.MCPServers` remains operator-owned. Launcher selection is
-available through the seam below; task-subagent MCP scope and native InProcessMCP
-remain pending.
+available through the seam below; task-subagent MCP scope remains pending; native InProcessMCP is described below.
 
 ## Go MCP launcher selection
 
@@ -2839,5 +2838,29 @@ This independent selector preserves the comprehensive MINILOOP_FEATURES refusal.
 Source snapshot 144 compares real HTTP compositions with individual registry
 toggles. Native HTTP tests compare the MCP catalogue, ordered outputs and lifecycle
 counts, and a real native stdio subprocess test proves lazy start, registered
-credential scrub and child reap on app shutdown. Task-child scope and InProcessMCP
-remain separate pending slices; no session persistence or OS sandbox is added.
+credential scrub and child reap on app shutdown. Task-child scope remains pending; native InProcessMCP is described below. No
+session persistence or OS sandbox is added.
+
+## Go in-process MCP handlers
+
+Construct `mcp.NewInProcess(name, []mcp.InProcessTool{...})`. Each entry has a named
+ToolDescription and InProcessHandler. The handler consumes an object and returns
+`mcp.InProcessValue`, a public alias for the immutable closed JSON value contract,
+plus an error. Embedding code can decode JSON into this public type without
+importing internal packages. Scalars and containers become Source Python str text;
+ordinary errors become Error text. Context cancellation/deadlines propagate to the
+caller, while native panics are isolated as type-only diagnostic text.
+
+Handlers must honor cancellation and be concurrency-safe when the client is
+shared. Discovery preserves duplicate definitions and detaches its container;
+dispatch takes the last handler for each raw name, including a nil handler that
+reports unknown-tool text. Close has no resources to release and allows reuse.
+Bare in-process results do not receive the stdio result limit; the agent's existing
+recording/context limits still apply. Native input is a closed object; arbitrary
+Python objects and language-specific callable signatures are not manufactured.
+
+The client implements the managed discovery/call/Close seam. Wrap it with
+`agent.NewMCPConnection` for manager/launcher ownership, or inject it through raw
+RuntimeConfig.MCPServers with operator lifetime. Registration remains external
+risk, including readOnlyHint definitions and local handlers. Default tool selection
+is unchanged. Task-child MCP composition and full feature activation remain open.
