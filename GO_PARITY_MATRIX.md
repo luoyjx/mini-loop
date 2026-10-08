@@ -1,5 +1,46 @@
 # Python to Go parity matrix
 
+## 2026-10-09 typed multi-stage registry and shared runtime
+
+Baseline `38de135`. Registry has explicit observation/request/response registration,
+global ID admission and detached membership/mode snapshots. Registration validates
+mode before descriptor stage before global duplicates and returns the same instance.
+The zero value is ready; registration and snapshots are synchronized. No package
+search, generic service payload or dependency is introduced.
+
+StageComponents names three distinct SPI binding lists. The direct construction seam
+preserves Source repeated-ID and descriptor-stage behavior rather than applying
+registry-only admission rules. Runtime combines those lists in observation/request/
+response order with one admission/lifecycle/token-counter root. Shared pointer
+instances use one call lock and the first enabled binding for lifecycle reports;
+distinct instances with equal descriptor IDs remain distinct. Stateful Go components
+must use pointer instances to retain object identity; value components are copies.
+WithRawStore clones share all root state while retaining caller-owned storage.
+Fresh runtime construction makes a separate root. Existing individual stage libraries
+remain valid independent roots.
+
+Ten actual Source recipes match registrations, refusals, snapshots, all stage calls,
+normalized full lifecycle reports, clone caches and reverse close order. Native
+concurrency tests confirm cross-stage lock identity, queued request cancellation,
+health exclusion, global close drain/retry and response fencing during teardown.
+Snapshots detach slice/mode fields; caller mutation does not disable installed work.
+Descriptors and hook capabilities are pinned on runtime construction as in existing
+stage libraries. Mutating trusted plugin descriptors after construction is not claimed.
+Agent/Manager adoption, provider capability lowering and default mode/style activation
+remain pending E4/E6. This delivery does not complete the Go port.
+
+Validation: targeted efficiency race, full go test ./... -p=1 -count=1 -timeout=180s,
+full go test -race ./... -p=1 -count=1 -timeout=180s and go vet ./... pass.
+The separately committed Source capture passed 74 focused tests, all 19 scan guards
+and the full 173-file exporter check. README outline and git diff --check pass.
+Architecture delivery passes 9/9 showcase checks with zero errors/warnings;
+specification SHA256 f56ed0e5b74da8844412adbcb454d3bb2a50b9338b431e35d80bc857d262669a;
+HTML SHA256 d208dcf8d53570eddc80f45121e298f80646909db87eaab0ab967cee4755de91.
+Visual review is skipped after prior browser access denial; correction_rounds: 0.
+Full Python regression, coverage and mutation sweep are not refreshed this slice.
+The previous coverage snapshot is pinned to 6feeba2 and excludes this implementation.
+Evidence: Darwin arm64, local execution.
+
 ## 2026-10-09 multi-stage registry Source contracts
 
 Baseline `6cd2260`. Ten recipes execute actual TokenEfficiencyRegistry and

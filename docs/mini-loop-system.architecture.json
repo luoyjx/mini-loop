@@ -397,7 +397,7 @@
         330,
         76
       ],
-      "tag": "three efficiency stages: libraries"
+      "tag": "shared three-stage runtime library"
     },
     {
       "id": "goActions",

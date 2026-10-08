@@ -2575,3 +2575,12 @@ shadow ordering and output ceilings match 19 constructor and 48 runtime recipes.
 Clone shares the existing stage coordinator; defaults and provider/runtime adoption
 remain pending. Source response does not enforce descriptor max_input_bytes or byte/
 token inflation on settings, so native response planning adds neither guard.
+
+
+Registry now groups explicit typed stage bindings and enforces global IDs. Runtime
+combines stages under one call/lifecycle/counter root. Direct NewStageComponents
+preserves repeated instances/IDs separately from registry admission; shared pointer
+instances serialize across stages and initialize/health/close once per root. WithRawStore
+clones retain global admission and explicit caller-owned store binding. Ten actual
+Source registry recipes and native queued-cancellation/drain tests cover composition.
+Agent/Manager and mode/style defaults remain pending.

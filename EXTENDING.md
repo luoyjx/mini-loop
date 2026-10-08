@@ -3340,7 +3340,8 @@ good projection; cancellation escapes. Deadlines are cooperative context deadlin
 WithRawStore shares component serialization and synchronized token-counter pairs
 while changing only the explicit store binding. The caller still owns raw storage.
 Very large timeout scheduling saturates Go duration; Source overflow/scheduler
-profiles and cross-root component identity admission remain pending migration gates.
+profiles remain pending migration gates. Runtime below shares component identities
+within one composed root; fresh roots remain independent.
 ObservationPipeline now supports Initialize(ctx, LifecycleServices), synchronous
 Health() and Close(ctx, LifecycleCloseOptions) through three optional named hook
 interfaces. LifecycleServices exposes an explicit RawStore reference; components
@@ -3396,7 +3397,17 @@ serialization and counter state; independently constructed stages remain separat
 Caller-owned content masking, provider capability lowering and Agent adoption still
 belong to the later runtime composition slice.
 
-No multi-stage registry, full multi-stage component lifecycle or default efficiency
-runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
+Registry offers RegisterObservation/RegisterRequest/RegisterResponse with global IDs,
+stage validation and detached per-binding modes. Snapshot returns immutable typed
+StageComponents membership; Runtime(DefaultRuntimeConfig) constructs a fresh shared
+root. NewStageComponents accepts StageComponentsConfig for direct typed composition:
+unlike Registry, it permits repeated IDs and descriptor-stage reuse. Pointer instances
+share one call lock and first-enabled lifecycle binding across all three stages;
+nonpointer values represent independent copies. Runtime exposes the existing three
+stage operations plus Initialize/Health/Close and WithRawStore. Clones share one
+counter/lifecycle/admission root. Close fences and drains calls across every stage;
+raw-store ownership stays with the caller. Independently constructed stage pipelines
+remain independent. No default efficiency runtime consumer is installed yet.
+MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin
 objects and broader Unicode/numeric wire profiles are not claimed by this foundation.
