@@ -1,5 +1,17 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow archive contract preparation
+
+Baseline 474f8e8. Source snapshot 133 records all eighteen WorkflowEvent kinds
+through actual constructors and managed-session masking/capture backed by Python
+SQLite. The isolated exporter module records 22 valid finite JSON observations and
+ten constructor refusals, including sparse and unknown nested payloads, optional
+phase/empty identities, an explicitly empty event ID and historical decisions.
+Timestamp/session normalization removes only nondeterministic framing; integer/float
+payload identity and large integers remain intact. These fixtures are evidence for
+the following Go archive implementation, not proof of native SQLite or execution
+authority. Legacy scalar and permissive header profiles remain outside this corpus.
+
 ## 2026-10-08 workflow launcher activation
 
 Baseline 3789ae9. The standalone launcher now supports Source's
