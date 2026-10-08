@@ -1,5 +1,16 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow trace-view contract preparation
+
+Baseline b474699. Source snapshot 136 compares fourteen actual ledgers and complete
+page hashes, JSONL file assembly, direct CLI output and seventy FastAPI HTTP outcomes.
+It reuses the ten real trajectory/privacy recipes and adds escaped surrogate text/keys,
+a fully capped surrogate tail and nonfinite Unicode/HTML payloads. Source ledger
+contents retain surrogatepass characters; final UTF-8 output fails only if they remain
+in the rendered page. CLI files stay private and empty on failed writes. These source
+fixtures prepare the following native ledger/view implementation without narrowing
+the full Python-to-Go objective or claiming permissive metadata/native SQL parity.
+
 ## 2026-10-08 native workflow trajectory scalar files
 
 Baseline 50715c8 (Source snapshot 135 preparation). TrajectoryRecord.MarshalArchiveJSON
