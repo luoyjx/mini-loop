@@ -1,5 +1,50 @@
 # Go port plan
 
+## 2026-10-09 typed Agent request guard and projection ledger
+
+Baseline `b9fe20f`. Session now runs the explicit request optimizer between response
+planning and cache annotation. Contexts contain only a detached provider message
+copy, frozen prefix count, ownership and configured token-threshold budget. A newest
+assistant freezes every row; otherwise the newest delta remains eligible. The full
+protocol shape protects message metadata/roles/count, tool IDs/input/error flags,
+thinking/signature, media/unknown blocks and cache metadata. Safe text/result payloads
+are lowered into concrete protocol variants; no domain map/any/RawMessage is added.
+
+The process-local ledger is keyed by named row index plus a fixed SHA256 digest of
+authoritative content. Live agent_turn calls reuse earlier projections before
+optimizing, prune obsolete keys on replacement/truncation and store only differing
+provider rows. Side calls do not acquire ledger or live-history/meter ownership.
+Authoritative messages, envelope/model/tools and persisted history remain unchanged.
+Malformed provider candidates retain the previous projection and emit the typed
+request_optimization_rejected event; event JSON and archival decoding support it.
+Only supported typed text/result payloads are lowered. Annotation-violating payload
+types and additional provider block variants are not claimed by this consumer.
+
+Protected side calls bypass request optimizers and cache annotation, remask detached
+selected messages and restore both message bytes and their cache annotations before
+every recovery dispatch. Personal-skill previews now use this path, matching actual
+Source immutable_messages=True. Their old cache-required test was corrected from
+source evidence. Shared runtime lifecycle ownership remains caller-controlled.
+
+Sixteen actual Agent recipes match contexts, public receipt metrics, call order,
+provider messages, authoritative histories and per-round ledger digests. Fifteen
+actual shape recipes match opaque/unknown/media/thinking/cache/nonfinite semantics.
+Native tests confirm live Run/default-cache prefix reuse, preserved authority,
+protected recovery tampering refusal and rows larger than the unrelated wire decoder
+cap. JSON object key order is compared semantically; integer/float identity remains
+observable. Broader numeric/surrogate/provider profiles remain separate audit gates.
+E6.2 is delivered for the supported provider boundary; observation adoption E6.3,
+Manager/launcher/benchmark/HTTP/default composition E6.4 and the full Go port remain
+open. No environment mode/style or manager default is enabled.
+
+Validation: full Go ordinary and race suites passed with `-p=1 -count=1
+-timeout=180s`; `go vet ./...` passed. The 74 targeted Python efficiency tests,
+all 19 scan guards and the complete 176-file Python-to-Go exporter check passed.
+`git diff --check` passed. Architecture regeneration passed 9/9 checks with no
+errors or warnings, and both file hashes matched the generation receipt. Visual
+inspection remains skipped after browser access was denied. Full Python regression
+and coverage were not refreshed; no merge or push was performed.
+
 ## 2026-10-09 Agent request projection Source contracts
 
 Baseline `01f2549`. Sixteen recipes execute actual Agent._create over the real
@@ -678,13 +723,13 @@ including optional/custom components, is still required for the port.
   per-item/total capacity, integrity checks, discard/sweep/clear/close and tools.
 - E2 (observation orchestration library delivered; Agent masking/adoption pending): observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
   single ownership, no inflation, recoverable storage and fail-open fault receipts.
-- E3 (request orchestration library delivered; Agent identity/envelope/ledger pending): detached typed request projection, frozen-prefix/identity/envelope guards,
+- E3 (request library and typed Agent protocol/ledger adoption delivered; broader profiles pending): detached typed request projection, frozen-prefix/identity/envelope guards,
   optimizer admission, budgets and cache-order/transcript preservation.
 - E4 (response library and explicit Agent response adoption delivered; default composition pending): stable typed response settings and concise policy; bounded instructions,
   existing output-cap/context-budget preservation, shadow and fault behavior.
 - E5 (three-stage registry/lifecycle delivered; session/Manager adoption pending): shared component identities, serial admission, initialize/health/close once,
   draining/deadlines/retry, per-session clone/store binding and contained failures.
-- E6 (E6.1 explicit response adoption delivered; E6.2 request ledger, E6.3 observations, E6.4 defaults/lifecycle pending): agent/manager/launcher/benchmark/HTTP composition, events/recording, independent
+- E6 (E6.1 response and E6.2 request adoption delivered; E6.3 observations and E6.4 defaults/lifecycle pending): agent/manager/launcher/benchmark/HTTP composition, events/recording, independent
   environment selection and actual Source end-to-end feature-combination tests.
 
 Each slice retains the overall port objective and gets a separate validated commit.

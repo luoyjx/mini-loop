@@ -268,6 +268,21 @@ func (s *Session) completeSideModel(ctx context.Context, request protocol.ModelR
 }
 
 func (s *Session) completeModelWithHistory(ctx context.Context, request protocol.ModelRequest, catalog *ToolCatalogSnapshot, liveHistory bool) (protocol.ModelReply, error) {
+	return s.completeProjectedModel(ctx, request, catalog, liveHistory, ordinaryModelProjection)
+}
+
+type modelProjectionMode uint8
+
+const (
+	ordinaryModelProjection modelProjectionMode = iota
+	protectedModelProjection
+)
+
+func (s *Session) completeProtectedSideModel(ctx context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+	return s.completeProjectedModel(ctx, request, nil, false, protectedModelProjection)
+}
+
+func (s *Session) completeProjectedModel(ctx context.Context, request protocol.ModelRequest, catalog *ToolCatalogSnapshot, liveHistory bool, projection modelProjectionMode) (protocol.ModelReply, error) {
 	if err := stateRunError(ctx); err != nil {
 		return protocol.ModelReply{}, err
 	}
@@ -307,7 +322,20 @@ func (s *Session) completeModelWithHistory(ctx context.Context, request protocol
 	if err != nil {
 		return protocol.ModelReply{}, err
 	}
-	request, err = s.cachePolicy.Annotate(request)
+	if projection == protectedModelProjection {
+		request = request.Clone()
+		for i, message := range request.Messages {
+			request.Messages[i], err = stateMessageProjection(message, s.secrets)
+			if err != nil {
+				return protocol.ModelReply{}, err
+			}
+		}
+	} else {
+		request, err = s.optimizeRequestProjection(ctx, request, liveHistory)
+		if err == nil {
+			request, err = s.cachePolicy.Annotate(request)
+		}
+	}
 	if err != nil {
 		return protocol.ModelReply{}, err
 	}
@@ -363,8 +391,25 @@ func (s *Session) completeModelWithHistory(ctx context.Context, request protocol
 	if liveHistory {
 		input.LiveHistory = append([]protocol.Message(nil), s.messages...)
 	}
+	call := s.limitedComplete
+	if projection == protectedModelProjection {
+		protected := request.Clone()
+		call = func(ctx context.Context, candidate protocol.ModelRequest) (protocol.ModelReply, error) {
+			candidate = candidate.Clone()
+			candidate.Messages = append([]protocol.Message(nil), protected.Messages...)
+			candidate.Cache.Messages = protected.Cache.Clone().Messages
+			for i, message := range candidate.Messages {
+				masked, err := stateMessageProjection(message, s.secrets)
+				if err != nil {
+					return protocol.ModelReply{}, err
+				}
+				candidate.Messages[i] = masked
+			}
+			return s.limitedComplete(ctx, candidate)
+		}
+	}
 	reply, err := s.recovery.Recover(ctx, input, RecoveryServices{
-		Call: s.limitedComplete,
+		Call: call,
 		Emit: func(event RecoveryEvent) { s.events.append(SessionEvent{kind: EventRecovery, recovery: event}) },
 		ReplaceHistory: func(messages []protocol.Message) error {
 			if err := protocol.ValidateTranscript(messages); err != nil {

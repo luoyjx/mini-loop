@@ -1,5 +1,50 @@
 # Python to Go parity matrix
 
+## 2026-10-09 typed Agent request guard and projection ledger
+
+Baseline `b9fe20f`. Session now runs the explicit request optimizer between response
+planning and cache annotation. Contexts contain only a detached provider message
+copy, frozen prefix count, ownership and configured token-threshold budget. A newest
+assistant freezes every row; otherwise the newest delta remains eligible. The full
+protocol shape protects message metadata/roles/count, tool IDs/input/error flags,
+thinking/signature, media/unknown blocks and cache metadata. Safe text/result payloads
+are lowered into concrete protocol variants; no domain map/any/RawMessage is added.
+
+The process-local ledger is keyed by named row index plus a fixed SHA256 digest of
+authoritative content. Live agent_turn calls reuse earlier projections before
+optimizing, prune obsolete keys on replacement/truncation and store only differing
+provider rows. Side calls do not acquire ledger or live-history/meter ownership.
+Authoritative messages, envelope/model/tools and persisted history remain unchanged.
+Malformed provider candidates retain the previous projection and emit the typed
+request_optimization_rejected event; event JSON and archival decoding support it.
+Only supported typed text/result payloads are lowered. Annotation-violating payload
+types and additional provider block variants are not claimed by this consumer.
+
+Protected side calls bypass request optimizers and cache annotation, remask detached
+selected messages and restore both message bytes and their cache annotations before
+every recovery dispatch. Personal-skill previews now use this path, matching actual
+Source immutable_messages=True. Their old cache-required test was corrected from
+source evidence. Shared runtime lifecycle ownership remains caller-controlled.
+
+Sixteen actual Agent recipes match contexts, public receipt metrics, call order,
+provider messages, authoritative histories and per-round ledger digests. Fifteen
+actual shape recipes match opaque/unknown/media/thinking/cache/nonfinite semantics.
+Native tests confirm live Run/default-cache prefix reuse, preserved authority,
+protected recovery tampering refusal and rows larger than the unrelated wire decoder
+cap. JSON object key order is compared semantically; integer/float identity remains
+observable. Broader numeric/surrogate/provider profiles remain separate audit gates.
+E6.2 is delivered for the supported provider boundary; observation adoption E6.3,
+Manager/launcher/benchmark/HTTP/default composition E6.4 and the full Go port remain
+open. No environment mode/style or manager default is enabled.
+
+Validation: full Go ordinary and race suites passed with `-p=1 -count=1
+-timeout=180s`; `go vet ./...` passed. The 74 targeted Python efficiency tests,
+all 19 scan guards and the complete 176-file Python-to-Go exporter check passed.
+`git diff --check` passed. Architecture regeneration passed 9/9 checks with no
+errors or warnings, and both file hashes matched the generation receipt. Visual
+inspection remains skipped after browser access was denied. Full Python regression
+and coverage were not refreshed; no merge or push was performed.
+
 ## 2026-10-09 Agent request projection Source contracts
 
 Baseline `01f2549`. Sixteen recipes execute actual Agent._create over the real

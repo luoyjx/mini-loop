@@ -149,8 +149,8 @@ func TestNativeSkillPreviewRecoveryAndEmptyLedger(t *testing.T) {
 	if recovery.input.LiveHistory != nil {
 		t.Fatal("preview granted live history to recovery")
 	}
-	if provider.requests[0].Cache.System == nil {
-		t.Fatal("preview bypassed configured cache policy")
+	if provider.requests[0].Cache.System != nil || len(provider.requests[0].Cache.Messages) != 0 {
+		t.Fatal("protected preview admitted cache policy projection")
 	}
 	session.mu.Lock()
 	_, err = session.previewPersonalSkillLocked(context.Background(), "recipe", "", &userresources.CaptureLedger{})

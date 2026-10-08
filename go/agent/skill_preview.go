@@ -12,7 +12,7 @@ type skillPreviewModel struct{ session *Session }
 
 func (model skillPreviewModel) CompletePersonalSkillPreview(ctx context.Context, request userresources.SkillPreviewRequest) (string, error) {
 	system := request.System()
-	reply, err := model.session.completeSideModel(ctx, protocol.ModelRequest{
+	reply, err := model.session.completeProtectedSideModel(ctx, protocol.ModelRequest{
 		Model: model.session.model, MaxTokens: request.MaxTokens(), Purpose: protocol.PurposePersonalSkillPreview,
 		System: &system, Tools: []protocol.ToolSchema{},
 		Messages: []protocol.Message{{Role: protocol.RoleUser, Content: protocol.PlainContent(request.Prompt())}},

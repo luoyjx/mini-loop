@@ -2593,4 +2593,16 @@ purposes skip planning. Typed optimization_receipt events retain metrics and war
 counts while excluding digests/warning strings/content. Record snapshots, masking and
 archival decoding support this variant. Fourteen Source Agent recipes and native live
 Run/default-cache tests cover response adoption. The caller retains runtime lifecycle
-ownership. Request/observation adoption, manager and environment defaults remain open.
+ownership. Explicit request adoption is described below; observation adoption, manager
+and environment defaults remain open.
+
+
+Explicit TokenEfficiency now adopts request optimizers between response planning
+and cache annotation. A typed protocol-shape guard fixes roles/counts/tool identities/
+inputs/errors and nontext blocks. Eligible text/result projections are lowered into
+concrete messages. The live row-index/SHA256 ledger preserves earlier provider prefix
+projections while leaving authoritative history unchanged; side calls have no ledger
+ownership. Protected personal-skill previews bypass request/cache projections and
+reassert selected masked messages/cache metadata across recovery calls. Sixteen actual
+Agent recipes, fifteen shape recipes and native live Run/large-row tests cover this
+slice. Observation, Manager/default composition and broader provider profiles remain.

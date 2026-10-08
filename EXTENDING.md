@@ -3424,5 +3424,22 @@ Provider-neutral verbosity/metadata are not forwarded, matching Source Agent.
 OptimizationReceipt returns cloned OptimizationMetrics with *big.Int counts and no
 digests, warning strings or content. Typed event JSON/masking and DecodeStoredEvent
 retain the metric-only variant; archival metrics grant no executable authority.
-The caller owns the runtime and shared initialization/close. Request/observation
-adoption and Manager/launcher/default composition remain pending; nil keeps defaults.
+The caller owns the runtime and shared initialization/close. Explicit request
+adoption is described below; observation adoption and Manager/launcher/default
+composition remain pending; nil keeps defaults.
+
+
+### Go Agent request projection and protected side calls
+
+RuntimeConfig.TokenEfficiency also applies typed request optimizers before cache
+annotation. Live agent_turn calls retain a process-local row-index/digest ledger
+of provider projections; authority stays in Session.messages and persisted history.
+Newest assistants freeze all rows. Role/count, tool input/ID/error state, thinking
+signatures and other protocol metadata are fixed before concrete text/result lowering.
+Unknown or nontext provider variants are not introduced into the named protocol.
+Rejected candidates emit a closed request_optimization_rejected variant with reason
+message_protocol_guard. Ordinary side calls optimize detached messages without
+ledger ownership. Protected side calls skip request/cache seams and reassert masked
+selected messages plus message cache metadata for each recovery dispatch; personal
+skill previews use this path. Explicit response planning retains its purpose rule.
+The caller owns the shared runtime. Observation/default composition remains pending.

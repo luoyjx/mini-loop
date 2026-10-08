@@ -40,6 +40,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	requestProjections                                map[requestProjectionKey]protocol.Message
 	tokenEfficiency                                   *efficiency.Runtime
 	conciseResponse                                   bool
 	guardianEnabled                                   bool

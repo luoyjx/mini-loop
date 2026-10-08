@@ -62,7 +62,7 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	// Explicit response-policy runtime; request/observation adoption is separate.
+	// Explicit request/response runtime; observation adoption is separate.
 	TokenEfficiency *efficiency.Runtime
 	ConciseResponse bool
 	// Explicit per-action readonly reviews require a session-bound approval broker.

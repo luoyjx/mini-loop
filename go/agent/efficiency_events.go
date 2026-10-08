@@ -82,3 +82,13 @@ func (m OptimizationMetrics) validateStored() error {
 func (event SessionEvent) OptimizationReceipt() (OptimizationMetrics, bool) {
 	return event.optimizationReceipt.clone(), event.kind == EventOptimizationReceipt
 }
+
+const EventRequestOptimizationRejected SessionEventKind = "request_optimization_rejected"
+
+type RequestOptimizationRejectedEvent struct {
+	Reason string `json:"reason"`
+}
+
+func (event SessionEvent) RequestOptimizationRejected() (RequestOptimizationRejectedEvent, bool) {
+	return event.requestRejected, event.kind == EventRequestOptimizationRejected
+}

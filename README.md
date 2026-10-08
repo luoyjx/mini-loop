@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `01f2549` plus Agent request projection Source contracts,
+Runtime review baseline: `b9fe20f` plus typed Agent request guard/projection ledger,
+plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,
 plus typed multi-stage registry/runtime,
@@ -442,7 +443,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: explicit response policy before cache"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
@@ -2099,8 +2100,12 @@ admission and snapshots; Runtime composes all three stages into one lifecycle/ca
 counter root. Same pointer instances share locks and lifecycle hooks, while distinct
 objects with equal IDs in direct StageComponents retain independent hooks. Clones
 share admission/draining with explicit caller-owned raw-store binding. Agent request
-ledger and runtime adoption remain pending.
-The optimizer library does not claim Agent role/tool-identity or envelope guards.
+ledger is now installed by explicit RuntimeConfig.TokenEfficiency; observation and
+Manager/default composition remain pending.
+The Agent consumer now guards role/count/tool identities, error flags and stable
+protocol blocks before lowering eligible payloads to named message variants. Its
+transient ledger reuses provider projections while preserving authoritative history;
+model/system/tools remain outside the request optimizer document.
 ResponsePipeline now uses named immutable response settings, ordered string-pair
 metadata and unbounded output caps. PassthroughResponsePlanner and explicit opt-in
 ConciseResponsePlanner preserve Source bounds, metadata order, dataclass-repr receipts
@@ -2112,8 +2117,10 @@ cache annotation on agent_turn purpose, using latest user text, output-cap budge
 and ConciseResponse opt-in. The provider receives appended instructions and a tighter
 cap; verbosity/metadata remain provider-neutral. Receipt events retain metrics and
 warning count while excluding digests, warning strings and content. Typed event
-masking, detached snapshots and archival replay preserve this projection. Request/
-observation adoption, Manager composition and environment defaults remain pending.
+masking, detached snapshots and archival replay preserve this projection. Request optimization now runs before cache annotation, with latest-assistant/full
+prefix freezing and cross-round projection reuse. Protected skill previews bypass
+request/cache seams and remask/refreeze selected messages for every recovery call.
+Observation adoption, Manager composition and environment defaults remain pending.
 See E0-E6 in GO_PORT_PLAN.md for the remaining sequence.
 
 ## Repository map

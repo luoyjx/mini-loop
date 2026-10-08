@@ -108,6 +108,13 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 		return event, err
 	}
 	switch kind {
+	case EventRequestOptimizationRejected:
+		v, err := storedPayload[RequestOptimizationRejectedEvent](data)
+		if err == nil && v.Reason != "message_protocol_guard" {
+			err = errors.New("invalid stored request optimization rejection")
+		}
+		event.requestRejected = v
+		return event, err
 	case EventOptimizationReceipt:
 		v, err := storedPayload[OptimizationMetrics](data)
 		if err == nil {
