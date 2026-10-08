@@ -3295,7 +3295,16 @@ Descriptor.Snapshot and Receipt.Projection return fresh copies of slices, numeri
 values and optional text; zero objects cannot marshal. The event-safe receipt
 projection contains metrics, hashes and references, with no raw content field.
 
-These are library contracts only. No reducer/optimizer/policy registry, raw store,
-lifecycle or runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
+Use DefaultRawStoreConfig(workspace) and NewRawStore for an explicitly owned RAM
+store. The trusted ArtifactClock returns seconds/error; the default uses monotonic
+time. Limits use detached *big.Int values. PutMasked asserts caller redaction and
+refuses invalid UTF-8; it cannot verify that masking ran. GetMasked/Discard resolve
+only this store's cryptographic refs; Sweep, Clear and Close erase owned records.
+NewArtifactPointer/Snapshot provide detached metadata. ArtifactError.Kind and
+errors.Is preserve expired-as-not-found and all storage faults as store errors.
+Directory is validated legacy metadata and is never used to persist content.
+
+These are library contracts only. No reducer/optimizer/policy registry, store tools,
+component lifecycle or runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin
 objects and broader Unicode/numeric wire profiles are not claimed by this foundation.

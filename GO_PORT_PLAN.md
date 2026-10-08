@@ -1,5 +1,46 @@
 # Go port plan
 
+## 2026-10-09 native scoped masked RAM store
+
+Baseline ad703dc. Package efficiency adds RawStoreConfig/ArtifactClock/RawStore,
+ArtifactPointerConfig/ArtifactPointer and named ArtifactFault/ArtifactError.
+NewRawStore validates and detaches unbounded limits, resolves workspace provenance
+and validates the legacy relative directory without using it for storage. The
+production entropy source is crypto/rand with 32 bytes per ref; default clock uses
+monotonic elapsed time. The explicit store owns masked UTF-8 strings in RAM only.
+
+PutMasked asserts caller redaction, rejects oversize before closed checks, sweeps
+expiry before total capacity, retries collisions eight times and publishes only
+validated immutable pointer metadata. GetMasked validates ref before closed state,
+checks scoped membership before reading clock, removes expired rows and verifies
+size/SHA256 before returning text. Discard does not read the clock. Sweep reads the
+clock before checking closed state; Clear and Close remain idempotent after close.
+errors.Is preserves Source expired-as-not-found and storage-fault parent categories.
+
+All twelve Source constructor profiles and fifteen operation recipes compare
+pointer fields, outcomes, exact error kind/message and closed state. Extra native
+checks cover 128 concurrent crypto refs/read/discard, detached limits/pointer
+metadata, metadata symlink with no writes, strict UTF-8 refusal, expiry overflow,
+missing workspace, nil clock and zero-pointer marshaling. Typed callback errors
+are the supported clock-fault boundary; arbitrary Python callback/duck-typed inputs,
+nonstandard workspace expansion and malformed Unicode exception text remain open.
+
+E1 store library is delivered; store tools and runtime binding remain pending.
+Observation/request/response stages, component lifecycle and E6 runtime composition
+remain open. Efficiency mode/style activation is still unsupported. No dependency
+or any/interface{}/RawMessage domain structure is added. RawMessage appears only
+at the fixture JSON decoding boundary in tests.
+
+Validation: go test ./... -count=1 -timeout=180s, go test -race ./... -count=1
+-timeout=180s, go vet ./... and focused efficiency race pass. Source exporter
+--check confirms 166 files, all 19 scan guards pass, and Source token-efficiency
+suite passes 48 tests. README outline and git diff --check pass. Archify delivery
+passes 9/9 with zero errors/warnings; spec SHA256
+9d4cc4b92269f9e43cdd6a5ecbcbcd75788eade2138bdf268e46abf9488357a1;
+HTML b3313668a4e2f1af9f92370986c46f954fc9dc3fcdad6b024d68c67fa162aeca.
+Visual inspection remains skipped after prior browser access denial. Full Python
+regression, coverage and mutation sweep are not refreshed. Evidence is Darwin arm64.
+
 ## 2026-10-09 masked raw-store Source contracts
 
 Baseline 7484fd5. Export 166 captures 12 constructor profiles and 15 real
@@ -89,7 +130,7 @@ including optional/custom components, is still required for the port.
 - E0 (native foundation delivered; broader wire/SPI profiles open): named immutable component descriptors and optimization receipts, closed stage/
   mode/status/lossiness/cost types, bounded warnings, unbounded integer metrics and
   Source-safe event projections. Capture constructor/receipt behavior before wiring.
-- E1: scoped masked raw-artifact memory store, opaque refs, trusted monotonic TTL,
+- E1 (native store library delivered; tools/runtime binding pending): scoped masked raw-artifact memory store, opaque refs, trusted monotonic TTL,
   per-item/total capacity, integrity checks, discard/sweep/clear/close and tools.
 - E2: observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
   single ownership, no inflation, recoverable storage and fail-open fault receipts.

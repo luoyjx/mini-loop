@@ -2511,6 +2511,10 @@ codes, paired raw references/digests and changed detection without carrying cont
 
 Sixty-eight actual Source constructors compare successful projections or exact
 validation messages, including 101-digit descriptor limits and a 1001-digit metric.
-No operational optimization is installed yet. E1-E6 in GO_PORT_PLAN.md cover raw
-storage, observation/request/response stages, lifecycle and actual runtime adoption.
+The explicit RawStore library now stores caller-masked text in RAM, with typed
+metadata, cryptographic references, trusted monotonic default TTL, unbounded limits,
+integrity checks and scoped lifecycle. It writes no workspace/directory content.
+Fifteen real Source operation recipes and twelve constructor profiles are captured.
+No operational optimization is installed yet. E1 store tools and E2-E6 in
+GO_PORT_PLAN.md cover observation/request/response stages, lifecycle and runtime adoption.
 Efficiency activation remains explicitly unsupported until those consumers exist.
