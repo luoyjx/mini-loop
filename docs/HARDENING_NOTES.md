@@ -8037,3 +8037,13 @@ so actual source reads must still use the no-follow snapshot kernel. A native
 select-then-symlink-swap test proves refusal before the snapshot callback. Source
 iteration deadlines and external context cancellation are separate observations.
 Private selectors do not install tools, approve paths or provide OS confinement.
+
+### Go migration — shared JSON diagnostics preserve wire profiles
+
+The shared jsonsyntax scanner returns only a closed diagnostic code/position.
+Caller-selected depth/integer policies remain fixed, and HTTP still projects the
+same failure shape with its 985/4300 profile. Source byte detection, surrogatepass
+screening, duplicate-key lowering and stricter typed service admission remain in
+the HTTP boundary. Grammar acceptance grants no authority and is not a substitute
+for closed value decoding. Actual AST malformed-output fixtures pin diagnostic
+wording/character offsets; the existing full HTTP corpus pins extraction behavior.

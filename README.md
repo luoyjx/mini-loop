@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `632f208` plus AST payload invocation Source contracts,
+Runtime review baseline: `2279dc1` plus shared CPython JSON syntax diagnostics,
+plus AST payload invocation Source contracts,
 plus native AST canonical path and bounded glob selection,
 plus AST path-selection Source contracts,
 plus full private AST source snapshot construction,
@@ -1275,6 +1276,14 @@ checked during entry iteration, retaining Source empty-directory behavior; exter
 cancellation remains an error. These are private helpers for forthcoming semantic
 operations; model tool registration, typed CLI payloads and runtime activation remain
 pending.
+
+The internal jsonsyntax scanner now supplies shared closed diagnostic codes and
+Python character offsets. HTTP retains its existing 985-container/4300-digit
+profile and wire projections; AST payload decoding can select its own profile.
+Successful JSON still lowers into existing closed value/typed request decoders.
+Eight actual malformed AST CLI outputs match Source diagnostic wording/positions;
+HTTP syntax, encoding, number, depth and surrogate regression tests remain gates.
+No AST payload interpreter or model tool is installed by this extraction.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The

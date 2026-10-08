@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"unicode/utf16"
 	"unicode/utf8"
+
+	"github.com/luoyjx/mini-loop/go/internal/jsonsyntax"
 )
 
 // requestRune accepts scalar UTF-8 and the three-byte surrogatepass spelling.
@@ -40,10 +42,13 @@ func requestRuneCount(raw []byte) int {
 
 // Lower only after the syntax pass. Duplicate values are overwritten before
 // Unicode screening, so discarded malformed strings cannot poison a request.
-type requestJSONValueReader struct{ requestJSONScanner }
+type requestJSONValueReader struct {
+	data     []byte
+	position int
+}
 
 func readRequestJSONValue(raw []byte) (ValidationInput, error) {
-	r := requestJSONValueReader{requestJSONScanner{data: raw}}
+	r := requestJSONValueReader{data: raw}
 	v, err := r.value(0)
 	if err != nil {
 		return ValidationInput{}, err
@@ -140,9 +145,9 @@ func (r *requestJSONValueReader) value(depth int) (ValidationInput, error) {
 			return ValidationInput{kind: validationBool, boolean: literal == "true"}, nil
 		}
 	}
-	if match := requestJSONNumber.FindIndex(r.data[r.position:]); match != nil {
-		number, err := readRequestJSONNumber(string(r.data[r.position : r.position+match[1]]))
-		r.position += match[1]
+	if length := jsonsyntax.NumberLength(r.data[r.position:]); length != 0 {
+		number, err := readRequestJSONNumber(string(r.data[r.position : r.position+length]))
+		r.position += length
 		return number, err
 	}
 	return ValidationInput{}, errPersonalSkillRequest
@@ -241,4 +246,15 @@ func (v ValidationInput) hasUnserializableValue() bool {
 		}
 	}
 	return false
+}
+
+func (r *requestJSONValueReader) space() {
+	for r.position < len(r.data) {
+		switch r.data[r.position] {
+		case ' ', '\t', '\n', '\r':
+			r.position++
+		default:
+			return
+		}
+	}
 }

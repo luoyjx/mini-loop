@@ -3162,3 +3162,12 @@ checks occur during iteration, so an empty directory does not expire that check.
 Always pass matches into withSnapshot before invoking an AST CLI. The selector
 alone cannot prevent a post-selection swap. Typed payloads and public operations
 must still be implemented before any tool registry/runtime activation.
+
+### Shared syntax-only JSON scanner
+
+internal/jsonsyntax.Scan owns CPython prefix-grammar diagnostics and character
+offsets. Select fixed Limits per wire profile; HTTP retains 985 containers and
+4300 integer digits. The scanner never lowers successful JSON into host values.
+HTTP's typed value reader and AST's closed payload lowering retain their own
+ownership, failure projection and publication gates. Reuse NumberLength when
+lowering a validated number prefix, rather than duplicating number grammar.

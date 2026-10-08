@@ -1,5 +1,32 @@
 # Go port plan
 
+## 2026-10-08 shared CPython JSON syntax diagnostics
+
+Baseline 2279dc1. The HTTP syntax-only scanner now lives in internal/jsonsyntax
+with closed Code/Failure/Limits records, named character-offset accessors and a
+shared number-prefix helper. HTTP retains its existing private failure projection,
+985-container/4300-digit policy and closed value lowering; only duplicated lexical
+ownership moved. Integer/depth policy remains caller-selected, not model-controlled.
+The shared scanner is a prerequisite for Source-compatible AST invalid-JSON messages.
+Eight malformed outputs from 65 actual Source CLI invocations compare exact
+messages and Python character positions. No AST payload interpreter, public
+semantic operation, tool/default activation or dependency is introduced.
+
+Validation: go test ./... -count=1 -timeout=180s (with coverprofile),
+go test -race ./... -count=1 -timeout=180s, go vet ./..., focused HTTP
+JSON/syntax/depth/number/surrogate tests, and verify_scans.py (19 guards) pass.
+Cross-package go test -coverpkg=./... -coverprofile also passes; deduplicated
+statement coverage is 90.00% (23,448 / 26,054), AST 87.35%, HTTP 89.35%,
+and shared jsonsyntax 96.33%. This measures executed Go statements, not feature
+parity or migration completion. Python full-suite coverage and the full mutation
+sweep were not refreshed; G0-G7 remain open.
+Architecture delivery passes 9/9 with zero errors/warnings; specification SHA256
+85c2ad49545df767726089b8672d942cfd2dbdd4e4adb7f0cc071bce28af62ed,
+artifact ebe79e4bcb7ab5507d28b5040b205b57de9ebe9a5729c6550351d1859cb6ea48.
+Visual inspection was skipped because prior browser access was denied.
+README outline and git diff --check pass.
+
+
 ## 2026-10-08 AST payload invocation Source contracts
 
 Baseline 632f208. Export 156 executes 65 actual Source _invoke calls against a
