@@ -1,6 +1,34 @@
 # Python to Go parity matrix
 
 
+## 2026-10-09 native child efficiency inheritance and scoped recovery
+
+Baseline: `65913d3`. SubagentParent now pins the shared three-stage runtime and
+detached raw threshold/persistence settings. Same-workspace children retain the
+store; native selected recovery handlers bind child identity. Default role policy
+remains authoritative and no recovery tool is added after filtering. Explore is
+readonly; explicit selected recovery reads existing artifacts without raw writes.
+Concise opt-in and request projection ledger start fresh; RequireOptIn=false
+policies still act through the shared root. Child completion does not close shared
+components/stores. Foreign-workspace stores detach.
+
+Eight native actual-child model runs match Source root/store identity, role
+selection, all three stage callback counts, fresh state and recovered content.
+A managed actual task test proves active child cancellation/join before Manager
+store revocation and component close. README/EXTENDING and the generated map
+are updated in this commit. Passed go test ./... -count=1 -timeout=180s,
+go test -race -p=1 ./... -count=1 -timeout=180s, go vet ./... and
+git diff --check. Architecture validation passed 9/9 with zero errors/warnings;
+source and generated artifact SHA256 match the receipt. Visual inspection was
+not repeated after the earlier browser access denial. Python Source gates:
+82 focused tests, all 19 scan guards and the complete 179-file exporter check
+passed. Full Python regression and coverage were not refreshed.
+
+E6.4c remains open for launcher/HTTP/benchmark mode/style activation and
+foreign-workspace child allocation/settings ownership. SQLite and the full port
+remain incomplete. No dependencies, merge or push.
+
+
 ## 2026-10-09 child efficiency inheritance Source contracts
 
 Baseline: `bc63773`. Added eight actual InProcessSubagents child runs, with real

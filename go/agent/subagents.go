@@ -4,10 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/big"
 	"strings"
 	"sync"
 
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/efficiency"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/userresources"
@@ -27,6 +29,8 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	tokenEfficiency                                *efficiency.Runtime
+	observationRaw                                 ObservationRawConfig
 	mcpServers                                     []MCPServer
 	selfAudit                                      selfAuditBinding
 	memoryAuto                                     bool
@@ -172,10 +176,26 @@ func newSubagent(ctx context.Context, request SubagentRequest) (*Session, RunCon
 		binding:      ToolAuthority{SessionID: id, OwnerID: parent.authority.OwnerID, Workspace: parent.authority.Workspace, Mode: mode},
 		todos:        &TodoManager{}, events: &sessionEvents{parent: parent.events, secrets: parent.secrets, sessionID: parent.events.sessionID}, skills: parent.skills, questions: questions, compression: &compressionSignal{},
 	}
+	tokenEfficiency := parent.tokenEfficiency
+	if tokenEfficiency != nil {
+		if store := tokenEfficiency.RawStore(); store != nil && store.Workspace() != handler.binding.Workspace {
+			tokenEfficiency = tokenEfficiency.WithRawStore(nil)
+		}
+	}
 	definitions := append([]ToolDefinition(nil), catalog.ordered...)
 	// Built-in stateful handlers must bind the fresh child. Custom handlers
 	// receive its authority through the same gate and retain their own contract.
 	for i := range definitions {
+		if previous, bound := definitions[i].handler.(tokenArtifactHandler); bound {
+			store := previous.store
+			if tokenEfficiency != nil {
+				store = tokenEfficiency.RawStore()
+			}
+			definitions[i], err = tokenArtifactDefinition(handler.binding, store)
+			if err != nil {
+				return nil, RunContext{}, err
+			}
+		}
 		if previous, bound := definitions[i].handler.(*runtimeHandler); bound {
 			if protocol.IsASTTool(definitions[i].name) {
 				handler.ast = previous.ast
@@ -220,6 +240,13 @@ func newSubagent(ctx context.Context, request SubagentRequest) (*Session, RunCon
 		return nil, RunContext{}, err
 	}
 	child.label, child.depth = parent.label+">"+strings.ToLower(string(request.Role)), parent.depth+1
+	child.tokenEfficiency = tokenEfficiency
+	child.observationRaw = parent.observationRaw
+	if parent.observationRaw.MinBytes != nil {
+		child.observationRaw.MinBytes = new(big.Int).Set(parent.observationRaw.MinBytes)
+	}
+	// Source children get fresh session state; the parent's concise opt-in and
+	// request projection ledger are not inherited. Policies retain shared identity.
 	child.secrets = parent.secrets
 	child.bash = nil
 	for _, definition := range definitions {
@@ -320,6 +347,8 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 // slices and binds the current workspace without reentering the parent run.
 func (s *Session) subagentParent(run RunContext) SubagentParent {
 	parent := SubagentParent{
+		tokenEfficiency:  s.tokenEfficiency,
+		observationRaw:   s.observationRaw,
 		selfAudit:        s.selfAudit,
 		memoryAuto:       s.memoryAuto,
 		memory:           s.memory,
@@ -333,6 +362,9 @@ func (s *Session) subagentParent(run RunContext) SubagentParent {
 		provider: s.provider, recovery: s.recovery, streamProgress: s.streamProgress, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
 		promptHooks: append([]UserPromptHook(nil), s.promptHooks...), injectors: append([]MessageInjector(nil), s.injectors...), modelLimiter: s.modelLimiter, toolLimiter: s.toolLimiter,
 		skills: s.skills, questions: s.questions, compactor: s.compactor, subagents: s.subagents, rolePolicy: s.rolePolicy, events: s.events, secrets: s.secrets, cachePolicy: s.cachePolicy, stuckDetector: s.stuckDetector, stopHooks: append([]StopHook(nil), s.stopHooks...),
+	}
+	if s.observationRaw.MinBytes != nil {
+		parent.observationRaw.MinBytes = new(big.Int).Set(s.observationRaw.MinBytes)
 	}
 	if s.mcp != nil {
 		parent.mcpServers = append([]MCPServer(nil), s.mcp.servers...)

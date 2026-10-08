@@ -2631,4 +2631,12 @@ once; deletion releases last holders after drain; Stop closes distinct stores
 before shared components. EfficiencyStatus returns detached lifecycle reports.
 Fourteen captured Python Manager scenarios, filtered capability admission, failed
 publication and restored-store cleanup have native tests. Launcher efficiency
-flags, HTTP/benchmark activation and child inheritance remain pending.
+flags, HTTP/benchmark activation and foreign-workspace child allocation remain pending.
+
+
+Standard in-process children share the efficiency root and matching store.
+Selected recovery tools bind child identity; role filtering stays authoritative.
+Child concise opt-in and projection ledger start fresh, raw thresholds detach,
+and child completion retains the caller-owned store. Eight Source scenarios and
+a managed task cancellation test cover these paths. Switched-workspace fresh
+store allocation remains pending.

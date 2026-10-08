@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `bc63773` plus actual child efficiency inheritance Source contracts,
+Runtime review baseline: `65913d3` plus native child efficiency inheritance and scoped recovery,
 plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,
@@ -526,7 +526,7 @@ flowchart LR
         GoApprovals -. explicit / owned Guardian review .-> GoChildren
         GoSecrets -. bind gate / context / recording / shell .-> GoSession
         GoResources -->|task / depth gate| GoChildren
-        GoChildren --> GoContext
+        GoChildren -->|shared efficiency root · matching store · fresh ledger| GoContext
         GoChildren -->|selected tools| GoGate
         GoChildren -. scoped events .-> GoSession
     end
@@ -581,7 +581,7 @@ template stores retain shared identity. Delete releases the last live session
 holder after consumers drain; Stop drains sessions, cron, workflows and cleanup,
 then closes all distinct stores before shared components. Source lifecycle reports
 and store selection are checked against 14 captured Manager scenarios. Launcher
-mode/style activation and subagent inheritance remain pending.
+mode/style activation and foreign-workspace child store allocation remain pending.
 
 
 The main diagram describes the current Python runtime under `python/`. The

@@ -3476,5 +3476,24 @@ template but get no automatic recovery tool. Delete closes the last session hold
 after drain. Failed publication releases unpublished bindings. Stop owns the drain
 even if its caller stops waiting, closes distinct stores, then closes components.
 EfficiencyStatus returns detached typed lifecycle reports with safe fault codes.
-Bare RuntimeConfig consumers retain caller-owned lifetimes. Child inheritance and
-launcher/HTTP/benchmark mode/style activation remain separate work.
+Bare RuntimeConfig consumers retain caller-owned lifetimes. Standard child
+inheritance is described below; launcher/HTTP/benchmark mode/style activation and
+foreign-workspace child store allocation remain separate work.
+
+
+### Go child efficiency inheritance
+
+SubagentParent pins the shared TokenEfficiency runtime and a detached
+ObservationRawConfig. In-process children retain the shared stage components and
+same-workspace store. Selected native read_token_artifact handlers bind the new
+child SessionID/owner/workspace; role filtering is never widened. Explore remains
+readonly and default selection excludes recovery; an explicit recovery capability
+can read existing masked artifacts without granting writes. Foreign-workspace
+stores detach; fresh child allocation in switched workspaces remains pending.
+
+Concise opt-in and request projection ledger belong to fresh child state. Shared
+policies still apply their own RequireOptIn setting. Children neither initialize
+nor close the shared root/store; the caller or Manager owns that lifetime. Eight
+actual Source child runs compare real request/response/observation invocation and
+artifact recovery. A managed task test proves Stop cancels and joins the child
+before raw-store revocation and shared component close.
