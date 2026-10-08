@@ -7831,3 +7831,17 @@ all twelve outputs and Close reuse. Cancellation propagates instead of becoming
 ordinary Error text. Native panic isolation reports the type without panic details.
 Callbacks must honor cancellation and synchronize shared state; no worker sandbox
 or durable handler recovery is implied. Task-child MCP scope remains open.
+
+### Go migration — isolated task-child MCP publication
+
+Default capability selection excludes empty-capability MCP definitions. An
+explicit custom selection binds the runtime connector to fresh child state and
+preserves existing external permissions/Explore readonly restrictions. Borrowed
+handlers retain their clients; a new child publication cannot replace parent
+handlers or aliases. Managed factory closures keep connections in the enclosing
+parent lifetime. A blocked cancellation test proves no client close or workspace
+reclaim before the child call returns. Four Source task recipes compare default
+exclusion, custom connection, parent borrowing/child replacement and Explore denial.
+Their explicit permissive operator permission seam probes binding without changing
+production defaults. Native child-factory retention strengthens Source cleanup gaps;
+no arbitrary custom-provider cleanup or durable child recovery is claimed.

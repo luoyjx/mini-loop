@@ -2814,7 +2814,8 @@ Client Close must drain the client, and cannot recursively acquire its own handl
 Retained catalogues do not extend managed lifetime past session deletion.
 
 Raw `RuntimeConfig.MCPServers` remains operator-owned. Launcher selection is
-available through the seam below; task-subagent MCP scope remains pending; native InProcessMCP is described below.
+available through the seams below, including native InProcessMCP and explicit
+task-child connector selection.
 
 ## Go MCP launcher selection
 
@@ -2838,7 +2839,8 @@ This independent selector preserves the comprehensive MINILOOP_FEATURES refusal.
 Source snapshot 144 compares real HTTP compositions with individual registry
 toggles. Native HTTP tests compare the MCP catalogue, ordered outputs and lifecycle
 counts, and a real native stdio subprocess test proves lazy start, registered
-credential scrub and child reap on app shutdown. Task-child scope remains pending; native InProcessMCP is described below. No
+credential scrub and child reap on app shutdown. Native InProcessMCP and task-child
+binding are described below. No
 session persistence or OS sandbox is added.
 
 ## Go in-process MCP handlers
@@ -2863,4 +2865,30 @@ The client implements the managed discovery/call/Close seam. Wrap it with
 `agent.NewMCPConnection` for manager/launcher ownership, or inject it through raw
 RuntimeConfig.MCPServers with operator lifetime. Registration remains external
 risk, including readOnlyHint definitions and local handlers. Default tool selection
-is unchanged. Task-child MCP composition and full feature activation remain open.
+is unchanged. Task-child binding is described below; full feature activation
+remains open.
+
+## Go task-child MCP binding
+
+Default capability role selection excludes connect_mcp and registered MCP tools,
+whose capabilities are empty, matching Source. A custom RoleToolPolicy can select
+these existing tools explicitly. The default InProcessSubagents provider binds a
+selected runtime connector to fresh child registry/connected-alias state, copying
+ordered configured servers from the pinned parent environment. Its existing child
+interactive/Explore readonly modes, peer provenance and permission pipeline apply.
+A custom selection does not grant execution approval or broaden default roles.
+
+Borrowed MCP call handlers retain their original client. Child registration updates
+only the child's inventory and owner metadata; it does not mutate parent aliases,
+handlers or schema snapshots. Manager-created factory closures retain the enclosing
+parent's handle lifetime, including connections created only by child tasks. The
+parent task joins its child; manager deletion/shutdown release handles only after
+the admitted turn drains. This supplies a cleanup owner for Source's child-only
+factory gap. Raw operator servers remain operator-owned. Nested descendants receive
+configuration through the same copy path, but the new differential corpus tests
+one child level rather than claiming a new nested/parallel MCP matrix.
+
+The Source worker runtime alias is a named protocol AgentWorker variant; Source's
+advertised Explore/general-purpose schema is retained. Wider historical role/input
+spellings remain part of the open scalar-profile work. Four real Source task
+recipes and a native blocked-cancelled-child test verify the current boundary.

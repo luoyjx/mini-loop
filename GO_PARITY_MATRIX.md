@@ -1,5 +1,39 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native task-child MCP binding
+
+Baseline c9bc067 (Source snapshot 146). Explicitly selected runtime MCP connectors
+bind fresh child registry/alias state from detached parent configuration. Default
+capability selection still excludes MCP. Borrowed handlers keep their clients;
+child registration changes only child inventory. Managed factories retain handles
+in the enclosing parent lifetime through turn drain, supplying a cleanup owner for
+Source's child-only factory gap. Raw servers remain operator-owned. AgentWorker is
+a named runtime alias; the advertised Source task schema is unchanged.
+
+Four differential recipes compare child catalogues/results, parent state/results
+and factory/list/call identities. Fresh-state behavior is checked through connection
+results and isolated parent aliases; the extra Source hook observation is not
+compared directly. A blocked cancellation test verifies client close and workspace
+reclamation wait for the child call to return. New nested/parallel MCP matrices,
+remaining archival/scalar/transport profiles, full feature activation, native SQLite
+driver approval and full G7 remain open.
+
+Validation: focused child race tests, full go test ./... -count=1 -timeout=180s,
+full go test -race ./... -count=1 -timeout=180s and go vet ./... passed. All 146
+Source exports are current. Source scans, 10 selected MCP guards and 6 selected
+subagent guards passed. Python regression: 2155 passed, 28 skipped, 3 dependency
+warnings and 24 subtests in 101.32 seconds. No Source runtime modules changed;
+separate invariant verification and the unrelated full mutation sweep were not
+rerun. Coverage was not refreshed; the last Go 90.23% measurement belongs to
+721b413 before MCP and is not a current-tree or migration-completion metric.
+
+README baseline, canonical Mermaid, boundary/seam/hardening notes and generated
+interactive architecture are updated. Archify deliver passes 9/9 showcase checks
+with zero errors/warnings. Visual inspection remains skipped after prior access
+denial. Specification SHA256:
+a12233c6531a1d3c770a703bab1fcddee035948831acd714f8a220aeff05f8ca;
+HTML SHA256: b6ebb2cba0b91ecefae6444ebde81cbcbc1ca505d52b85d379e127a382a086dd.
+
 ## 2026-10-08 task-child MCP Source contracts
 
 Baseline 2a06cc3. Snapshot 146 runs four actual Source task/model/child recipes:

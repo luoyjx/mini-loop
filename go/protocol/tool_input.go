@@ -118,6 +118,7 @@ type AgentType string
 
 const (
 	AgentExplore        AgentType = "Explore"
+	AgentWorker         AgentType = "worker"
 	AgentGeneralPurpose AgentType = "general-purpose"
 )
 
@@ -450,7 +451,7 @@ func (input ToolInput) Validate() error {
 		}
 		return nil
 	case ToolTask:
-		if input.task.AgentType != nil && *input.task.AgentType != AgentExplore && *input.task.AgentType != AgentGeneralPurpose {
+		if input.task.AgentType != nil && *input.task.AgentType != AgentExplore && *input.task.AgentType != AgentGeneralPurpose && *input.task.AgentType != AgentWorker {
 			return fmt.Errorf("invalid agent_type %q", *input.task.AgentType)
 		}
 		return nil

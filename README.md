@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `3f19efa` plus typed native InProcessMCP handlers and
+Runtime review baseline: `c9bc067` plus Source-selected task-child MCP binding
+and parent-retained connection cleanup, plus typed native InProcessMCP handlers and
 Python result text, plus explicit MCP launcher selection and
 operator server forwarding, plus default-off managed MCP connections,
 identity-based last-holder close after turn drain, fresh fork connection state,
@@ -387,7 +388,7 @@ flowchart LR
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
-        GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child composition pending"]
+        GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
         GoManager -. explicit shared handles / last-holder drain and close .-> GoMCP
@@ -1600,8 +1601,8 @@ external risk with advisory readonly hints. Existing snapshots retain old handle
 the existing model-request/gate path; default tools are unchanged. Client lifetime
 is still operator-owned. Nonfinite/surrogate argument profiles remain unsupported
 at the strict protocol boundary; the stdio library's archival values do not expand it.
-Timing/input/output, remaining model/tool scalar profiles, native SQLite, MCP
-task-child composition and full G7 remain pending.
+Timing/input/output, remaining model/tool scalar and MCP archival profiles,
+native SQLite and full G7 remain pending.
 Snapshot 142 runs five real Source Agent batches: aliases versus raw server names,
 lazy factories, idempotent connection, same-batch discovered tool calls, same raw
 server replacement through another alias, cross-server collision refusal, empty
@@ -1634,7 +1635,7 @@ Native tests compare MCP catalogues, outputs and close counts through real HTTP,
 and execute a real Go stdio child that starts only on authorized connection and
 is reaped on App.Stop. Explicitly registered credentials are scrubbed; the default
 Null registry inherits the environment as in Source. Full MINILOOP_FEATURES stays
-unsupported; task children remain pending. Snapshot 145 captures twelve actual
+unsupported. Snapshot 145 captures twelve actual
 Source InProcessMCP outputs, ordered definitions, duplicate dispatch and Close
 reuse. Native `mcp.NewInProcess` accepts named definitions and context-aware
 handlers returning immutable closed values through the public InProcessValue
@@ -1644,7 +1645,18 @@ become type-only diagnostic text. Discovery snapshots detach their containers;
 duplicate definitions retain order while dispatch selects the last handler.
 Close is a reusable no-op, and bare results have no stdio result cap. The adapter
 implements managed cleanup and still crosses external permission regardless of
-readOnlyHint. No default activation or durable claim.
+readOnlyHint. Snapshot 146 runs four actual task-child recipes. The default
+capability policy excludes MCP tools with empty capabilities; custom policies can
+select existing connectors/calls. Selected runtime connectors bind fresh child
+alias/registry state from detached parent server configuration. Borrowed call
+handlers retain their client, while child registration replaces only child tools.
+Factory closures retain the enclosing managed parent's lifetime through task drain,
+including child-only connections; deletion waits for a cancelled child call before
+close and scratch reclamation. This strengthens Source child-factory cleanup gaps.
+The typed worker runtime alias is accepted without changing Source's narrower
+advertised enum. Tests use an explicit permissive operator permission policy to
+probe binding; production defaults and Explore readonly enforcement stay intact.
+No default activation or durable claim.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

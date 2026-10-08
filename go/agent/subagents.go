@@ -26,6 +26,7 @@ type SubagentLineage struct {
 // Providers can inspect its identity/settings/catalogue or use the default
 // in-process provider, without reentering the parent's serialized run lock.
 type SubagentParent struct {
+	mcpServers                                     []MCPServer
 	selfAudit                                      selfAuditBinding
 	memoryAuto                                     bool
 	memory                                         *memory.ScopedStore
@@ -165,6 +166,17 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 			definitions[i].handler = handler
 		}
 	}
+	for _, definition := range definitions {
+		if definition.name == protocol.ToolConnectMCP && definition.handler == handler {
+			// Source binds the selected connector to fresh child state. Managed
+			// factory closures retain their enclosing parent's drained lifetime.
+			handler.mcp, err = newMCPState(parent.mcpServers)
+			if err != nil {
+				return "", err
+			}
+			break
+		}
+	}
 	catalog, err = NewToolCatalog(definitions...)
 	if err != nil {
 		return "", err
@@ -225,6 +237,7 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	child.systemBuilder = FixedSystem(fmt.Sprintf("You are a %s subagent in %s. Use tools to %s, then give a concise final summary. No preamble.", request.Role, parent.authority.Workspace, verb))
 	child.lineage = &lineage
 	handler.session = child
+	child.mcp = handler.mcp
 	for _, definition := range definitions {
 		if definition.handler == handler && (definition.name == protocol.ToolBackgroundRun || definition.name == protocol.ToolCheckBackground) {
 			child.background, err = parent.background.child(ctx, string(childContext.MessageID()))
@@ -288,6 +301,9 @@ func (s *Session) runSubagent(ctx context.Context, prompt string, role AgentRole
 		provider: s.provider, recovery: s.recovery, streamProgress: s.streamProgress, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
 		promptHooks: append([]UserPromptHook(nil), s.promptHooks...), injectors: append([]MessageInjector(nil), s.injectors...), modelLimiter: s.modelLimiter, toolLimiter: s.toolLimiter,
 		skills: s.skills, questions: s.questions, compactor: s.compactor, subagents: s.subagents, rolePolicy: s.rolePolicy, events: s.events, secrets: s.secrets, cachePolicy: s.cachePolicy, stuckDetector: s.stuckDetector, stopHooks: append([]StopHook(nil), s.stopHooks...),
+	}
+	if s.mcp != nil {
+		parent.mcpServers = append([]MCPServer(nil), s.mcp.servers...)
 	}
 	summary, err := s.subagents.RunSubagent(ctx, SubagentRequest{parent, prompt, role, run.clone()})
 	if err != nil {
