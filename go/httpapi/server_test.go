@@ -310,51 +310,61 @@ func normalizeJSON(t *testing.T, data json.RawMessage, ids, paths map[string]str
 	if len(data) == 0 {
 		return data
 	}
-	if data[0] == '{' {
-		var v map[string]json.RawMessage
-		if err := json.Unmarshal(data, &v); err != nil {
+	if data[0] != '{' && data[0] != '[' && data[0] != '"' {
+		var compact bytes.Buffer
+		if err := json.Compact(&compact, data); err != nil {
 			t.Fatal(err)
 		}
-		for k, part := range v {
-			switch k {
+		return compact.Bytes()
+	}
+	// Generic JSON is confined to this external fixture comparison. Decode once
+	// with UseNumber so lexical numeric identity survives without float rounding.
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.UseNumber()
+	var value interface{}
+	if err := decoder.Decode(&value); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := decoder.Token(); err != io.EOF {
+		t.Fatal("trailing JSON data", err)
+	}
+	value = normalizeFixtureValue(value, ids, paths)
+	result, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return result
+}
+
+func normalizeFixtureValue(value interface{}, ids, paths map[string]string) interface{} {
+	switch v := value.(type) {
+	case map[string]interface{}:
+		for key, part := range v {
+			switch key {
 			case "created_at", "pid", "started_at", "uptime_s":
-				v[k] = []byte("0")
+				v[key] = json.Number("0")
 			case "build":
-				v[k] = []byte(`"test-build"`)
+				v[key] = "test-build"
 			default:
-				v[k] = normalizeJSON(t, part, ids, paths)
+				v[key] = normalizeFixtureValue(part, ids, paths)
 			}
 		}
-		result, _ := json.Marshal(v)
-		return result
-	}
-	if data[0] == '[' {
-		var v []json.RawMessage
-		json.Unmarshal(data, &v)
-		for i := range v {
-			v[i] = normalizeJSON(t, v[i], ids, paths)
+	case []interface{}:
+		for i, part := range v {
+			v[i] = normalizeFixtureValue(part, ids, paths)
 		}
-		result, _ := json.Marshal(v)
-		return result
-	}
-	if data[0] == '"' {
-		var v string
-		json.Unmarshal(data, &v)
+	case string:
 		for path, symbol := range paths {
 			v = strings.ReplaceAll(v, path, symbol)
 		}
 		for id, symbol := range ids {
 			v = strings.ReplaceAll(v, id, symbol)
 		}
-		result, _ := json.Marshal(v)
-		return result
+		return v
 	}
-	var out bytes.Buffer
-	if err := json.Compact(&out, data); err != nil {
-		t.Fatal(err)
-	}
-	return out.Bytes()
+	return value
 }
+
 func TestActualPythonHTTPContracts(t *testing.T) {
 	f := fixture(t)
 	if len(f.Authenticated.Cases) < 20 || len(f.Anonymous.Cases) < 16 {
