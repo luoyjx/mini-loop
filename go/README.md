@@ -2572,8 +2572,8 @@ ResponsePlan with bounded concrete fields and detached snapshots. ResponsePlanne
 supports typed custom policies plus PassthroughResponsePlanner and explicit opt-in
 ConciseResponsePlanner. Exact Source dataclass-repr receipt identities, unchanged/
 shadow ordering and output ceilings match 19 constructor and 48 runtime recipes.
-Clone shares the existing stage coordinator; defaults and provider/runtime adoption
-remain pending. Source response does not enforce descriptor max_input_bytes or byte/
+Clone shares the existing stage coordinator; Manager and environment defaults
+remain pending. Explicit Agent response adoption is described below. Source response does not enforce descriptor max_input_bytes or byte/
 token inflation on settings, so native response planning adds neither guard.
 
 
@@ -2584,3 +2584,13 @@ instances serialize across stages and initialize/health/close once per root. Wit
 clones retain global admission and explicit caller-owned store binding. Ten actual
 Source registry recipes and native queued-cancellation/drain tests cover composition.
 Agent/Manager and mode/style defaults remain pending.
+
+
+Explicit agent.RuntimeConfig.TokenEfficiency now adopts response policies before
+cache annotation for agent_turn purpose. ConciseResponse selects opt-in behavior.
+Instructions and tighter caps reach provider requests without changing history; other
+purposes skip planning. Typed optimization_receipt events retain metrics and warning
+counts while excluding digests/warning strings/content. Record snapshots, masking and
+archival decoding support this variant. Fourteen Source Agent recipes and native live
+Run/default-cache tests cover response adoption. The caller retains runtime lifecycle
+ownership. Request/observation adoption, manager and environment defaults remain open.

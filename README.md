@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `8bb03db` plus Agent response adoption Source contracts,
+Runtime review baseline: `91d6634` plus explicit Agent response policy adoption,
+plus Agent response adoption Source contracts,
 plus typed multi-stage registry/runtime,
 plus multi-stage registry Source contracts,
 plus typed response policies and settings,
@@ -440,7 +441,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: shared three-stage runtime library"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: explicit response policy before cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
@@ -2105,7 +2106,13 @@ ConciseResponsePlanner preserve Source bounds, metadata order, dataclass-repr re
 and output ceilings. Unchanged settings precede ceiling checks; shadow measures
 candidates before enforce-only cap protection. Safe failures retain the prior context.
 The shared coordinator handles each response root's clone admission and draining.
-No policy is installed in Agent/Manager or enabled by default.
+RuntimeConfig.TokenEfficiency now installs explicit Agent response planning before
+cache annotation on agent_turn purpose, using latest user text, output-cap budget
+and ConciseResponse opt-in. The provider receives appended instructions and a tighter
+cap; verbosity/metadata remain provider-neutral. Receipt events retain metrics and
+warning count while excluding digests, warning strings and content. Typed event
+masking, detached snapshots and archival replay preserve this projection. Request/
+observation adoption, Manager composition and environment defaults remain pending.
 See E0-E6 in GO_PORT_PLAN.md for the remaining sequence.
 
 ## Repository map

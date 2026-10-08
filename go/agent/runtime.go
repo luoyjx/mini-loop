@@ -62,6 +62,9 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	// Explicit response-policy runtime; request/observation adoption is separate.
+	TokenEfficiency *efficiency.Runtime
+	ConciseResponse bool
 	// Explicit per-action readonly reviews require a session-bound approval broker.
 	GuardianEnabled bool
 	// A nonnil immutable operator config explicitly installs four AST read tools.
@@ -695,6 +698,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if config.ToolLimiter != nil {
 		session.toolLimiter = config.ToolLimiter
 	}
+	session.tokenEfficiency, session.conciseResponse = config.TokenEfficiency, config.ConciseResponse
 	session.bash = config.Bash
 	session.todos, session.events = handler.todos, handler.events
 	session.secrets, session.events.secrets = config.Secrets, config.Secrets

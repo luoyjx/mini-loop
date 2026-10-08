@@ -3394,8 +3394,8 @@ instruction; it retains the tighter existing/config/context limit, adds the inst
 once and replaces response_policy metadata at the end. Its instruction/output bounds
 are validated when producing StableResponseSettings. Root clones share lifecycle,
 serialization and counter state; independently constructed stages remain separate.
-Caller-owned content masking, provider capability lowering and Agent adoption still
-belong to the later runtime composition slice.
+Caller-owned content masking, request/observation adoption and default composition
+remain separate. Explicit Agent response instruction/cap adoption is described below.
 
 Registry offers RegisterObservation/RegisterRequest/RegisterResponse with global IDs,
 stage validation and detached per-binding modes. Snapshot returns immutable typed
@@ -3411,3 +3411,18 @@ remain independent. No default efficiency runtime consumer is installed yet.
 MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin
 objects and broader Unicode/numeric wire profiles are not claimed by this foundation.
+
+
+### Go explicit Agent response policy adoption
+
+Set agent.RuntimeConfig.TokenEfficiency to an explicitly constructed efficiency.Runtime
+and ConciseResponse to the opt-in flag. Session plans responses on agent_turn purpose
+before CachePolicy.Annotate, including agent_turn side calls without live transcript
+ownership. Other purposes skip response planning. Latest user text excludes tool results.
+Instructions extend a detached optional system string; output caps only tighten.
+Provider-neutral verbosity/metadata are not forwarded, matching Source Agent.
+OptimizationReceipt returns cloned OptimizationMetrics with *big.Int counts and no
+digests, warning strings or content. Typed event JSON/masking and DecodeStoredEvent
+retain the metric-only variant; archival metrics grant no executable authority.
+The caller owns the runtime and shared initialization/close. Request/observation
+adoption and Manager/launcher/default composition remain pending; nil keeps defaults.

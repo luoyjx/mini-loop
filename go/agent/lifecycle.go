@@ -303,7 +303,11 @@ func (s *Session) completeModelWithHistory(ctx context.Context, request protocol
 			s.events.append(SessionEvent{kind: EventCapabilityPlan, capabilityPlan: plan})
 		}
 	}
-	request, err := s.cachePolicy.Annotate(request)
+	request, err := s.planResponseRequest(ctx, request)
+	if err != nil {
+		return protocol.ModelReply{}, err
+	}
+	request, err = s.cachePolicy.Annotate(request)
 	if err != nil {
 		return protocol.ModelReply{}, err
 	}

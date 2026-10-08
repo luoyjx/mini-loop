@@ -1,5 +1,49 @@
 # Go port plan
 
+## 2026-10-09 explicit Agent response policy adoption
+
+Baseline `91d6634`. RuntimeConfig.TokenEfficiency accepts the typed shared runtime;
+ConciseResponse is the explicit opt-in state. Nil runtime preserves existing behavior.
+On agent_turn purpose, Session builds the response context from the latest user text,
+requested output limit, matching budget and opt-in before cache annotation. It emits
+public receipt metrics, appends instructions to a detached optional system string
+and adopts only a tighter limit. Side requests with agent_turn purpose also plan
+responses without acquiring live-history/meter ownership. Other purposes skip it.
+Verbosity/metadata are not forwarded to the provider, matching current Source Agent.
+
+OptimizationMetrics is a closed event payload with unbounded numeric metrics and
+nullable raw reference/parent span. Digests, warning strings and content have no
+fields; warning_count is retained. Event accessors, masking and record clones detach
+numeric/pointer data. JSON event encoding and archival decoding support the explicit
+optimization_receipt variant; decoding validates enum, finite duration and nonnegative
+metric boundaries. Maskable identifier/reason strings remain inert archival data.
+
+Fourteen actual Source Agent recipes match policy contexts, complete public metrics,
+cache/provider/receipt order and provider arguments, with elapsed_ms normalized.
+Caller request values remain unchanged; cancellation occurs before cache/provider.
+Native live Run tests confirm tighter caps and policy guidance in the default cache,
+no instruction accumulation across turns and no response/cache fields in history.
+Additional tests verify 101-digit metric copies, event masking, stored event round-trip
+and malformed metric rejection. No generic domain map, RawMessage or dependency added.
+
+This delivers E6.1 only. Request protocol guard/projection ledger (E6.2), masked tool
+observation adoption and authority/recovery handling (E6.3), then Manager/launcher/
+benchmark/HTTP/default composition and shared shutdown (E6.4) remain open. Runtime
+ownership stays explicit with the caller; this constructor does not initialize or
+close shared components. No environment mode/style or manager default is activated.
+
+Validation: targeted response/event/live-run race, full go test ./... -p=1 -count=1
+-timeout=180s, full go test -race ./... -p=1 -count=1 -timeout=180s and go vet ./...
+pass on the final Go files. Source capture was committed separately after 74 focused
+efficiency tests, all 19 scan guards and a full 174-file exporter --check.
+README outline and git diff --check pass. Architecture delivery passes 9/9 showcase
+checks with zero errors/warnings; specification SHA256 d01da17c968109717ff63b49e4c7ff9b5a9d8c43527f19618440534d063abdad;
+HTML SHA256 95f082470689ff4cce02b0f74003f8e181e5f99d5ba3e6ac27311ba5561a7a04.
+Visual review remains skipped after prior browser access denial; correction_rounds: 0.
+Full Python regression, coverage and mutation sweep are not refreshed. The previous
+coverage snapshot is pinned to 6feeba2 and excludes later runtime/adoption changes.
+Evidence: Darwin arm64, local execution.
+
 ## 2026-10-09 Agent response adoption Source contracts
 
 Baseline `8bb03db`. Fourteen recipes execute actual Agent._create with the real
@@ -614,11 +658,11 @@ including optional/custom components, is still required for the port.
   single ownership, no inflation, recoverable storage and fail-open fault receipts.
 - E3 (request orchestration library delivered; Agent identity/envelope/ledger pending): detached typed request projection, frozen-prefix/identity/envelope guards,
   optimizer admission, budgets and cache-order/transcript preservation.
-- E4 (response library delivered; provider/Agent adoption pending): stable typed response settings and concise policy; bounded instructions,
+- E4 (response library and explicit Agent response adoption delivered; default composition pending): stable typed response settings and concise policy; bounded instructions,
   existing output-cap/context-budget preservation, shadow and fault behavior.
 - E5 (three-stage registry/lifecycle delivered; session/Manager adoption pending): shared component identities, serial admission, initialize/health/close once,
   draining/deadlines/retry, per-session clone/store binding and contained failures.
-- E6: agent/manager/launcher/benchmark/HTTP composition, events/recording, independent
+- E6 (E6.1 explicit response adoption delivered; E6.2 request ledger, E6.3 observations, E6.4 defaults/lifecycle pending): agent/manager/launcher/benchmark/HTTP composition, events/recording, independent
   environment selection and actual Source end-to-end feature-combination tests.
 
 Each slice retains the overall port objective and gets a separate validated commit.

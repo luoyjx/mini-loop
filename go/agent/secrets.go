@@ -23,6 +23,16 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	if event.kind == EventOptimizationReceipt {
+		event.optimizationReceipt.ComponentID = mask(event.optimizationReceipt.ComponentID)
+		event.optimizationReceipt.ComponentVersion = mask(event.optimizationReceipt.ComponentVersion)
+		event.optimizationReceipt.Reason = mask(event.optimizationReceipt.Reason)
+		maskStringPointer(mask, &event.optimizationReceipt.RawRef)
+		if span := event.optimizationReceipt.ParentSpanID; span != nil {
+			v := SpanID(mask(string(*span)))
+			event.optimizationReceipt.ParentSpanID = &v
+		}
+	}
 	event.workflow = maskWorkflowEvent(event.workflow, mask)
 	event.improvementProposed.Objective = mask(event.improvementProposed.Objective)
 	event.improvementProposed.Branch = mask(event.improvementProposed.Branch)

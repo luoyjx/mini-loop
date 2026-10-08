@@ -108,6 +108,13 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 		return event, err
 	}
 	switch kind {
+	case EventOptimizationReceipt:
+		v, err := storedPayload[OptimizationMetrics](data)
+		if err == nil {
+			err = v.validateStored()
+		}
+		event.optimizationReceipt = v.clone()
+		return event, err
 	case EventImprovementProposed:
 		v, err := storedPayload[selfimprove.ProposedEvent](data)
 		event.improvementProposed = cloneProposed(v)

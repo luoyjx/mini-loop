@@ -10,6 +10,7 @@ import (
 	"sync/atomic"
 
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/efficiency"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/skills"
@@ -39,6 +40,8 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	tokenEfficiency                                   *efficiency.Runtime
+	conciseResponse                                   bool
 	guardianEnabled                                   bool
 	mcp                                               *mcpState
 	teamManager                                       *SessionManager
