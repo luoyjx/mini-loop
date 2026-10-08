@@ -7997,3 +7997,14 @@ line boundaries, while snapshot copy must preserve the original bytes. The match
 performs no filesystem access and grants no confinement or permission. Anchored
 no-follow traversal, nested-frame budgets, cancellation and private cleanup remain
 required before semantic AST tools can use it.
+
+### Go migration — anchored AST filesystem operations
+
+Private directory handles survive parent rename and external-symlink replacement.
+No-follow fstatat classifies entries before filtering; openat still refuses a later
+symlink swap. Regular opens use NONBLOCK and fstat before reading special files.
+CLOEXEC prevents retaining these handles in AST children. Components reject slash,
+NUL, dot and dot-dot; each independent scan bounds all entries before filtering.
+Context checks bracket traversal batches, not arbitrary blocking filesystem syscalls.
+This does not freeze concurrently rewritten regular-file content or grant model path
+authority. Full snapshot aggregate budgets, ignore frames and cleanup remain open.

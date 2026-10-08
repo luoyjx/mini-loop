@@ -1,5 +1,40 @@
 # Go port plan
 
+## 2026-10-08 anchored AST snapshot filesystem primitives
+
+Baseline 9716ae5. Private snapshotDirectory owns a directory handle and performs
+single-component no-follow openat/fstatat operations. Metadata classifies regular,
+directory, symlink and special entries without opening filtered source files.
+Regular opens recheck type after open and use NONBLOCK to reject FIFO reads;
+descriptors use CLOEXEC. Enumeration reopens dot with an independent offset,
+checks cancellation per batch/name and bounds every entry before filtering.
+Parent traversal closes intermediate handles. No dependency or public tool added.
+
+Native tests on Darwin arm64 prove anchored metadata/read/enumeration after rename
+and replacement by an external symlink, rejection after a metadata-to-open symlink
+swap, FIFO/special-file refusal, repeated scans, entry limits, cancellation,
+component admission, descriptor inheritance flags and independent lifetimes.
+Darwin fstatat64/openat constants come from pinned Apple XNU
+f6217f891ac0bb64f3d375211650a4c1ff8ca1ea; Linux uses Go syscall constants.
+Darwin amd64 and Linux amd64/arm64 are compile-only evidence. Other metadata
+backends fail closed rather than fall back to pathname reads.
+
+This is a prerequisite, not the complete snapshot port. Full bounded copy, ignore
+frame/counter integration, temporary lifetime cleanup, all 36 Source snapshot
+replays, semantic payloads and public/runtime AST wiring remain required. Native
+SQLite, diagnostics parser selection and G7 remain open; full migration stays active.
+
+Validation passed: go test -race ./astcontext -run Snapshot -count=1 -timeout=30s;
+go test ./... -count=1 -timeout=180s; go test -race ./... -count=1 -timeout=180s;
+go vet ./...; go test -c ./astcontext for Darwin amd64 and Linux amd64/arm64;
+README outline and git diff --check. Archify deliver passes 9/9 showcase checks
+with zero errors/warnings. Source files/export inventory did not change. Python
+regression, Source mutation sweep and coverage are not refreshed. Visual inspection
+remains skipped after prior access denial. Specification SHA256:
+91b1b45babfef1564771e75d455a815b33d35040f4d84d66ab7e2746068af951;
+HTML SHA256: 373146485120cb79e87ea42921206fa2244ca915c155a09ba5dc6ebdd14b8b77.
+
+
 ## 2026-10-08 native AST ignore policy prerequisite
 
 Baseline 8686f88. The internal ignoreSpec now compiles explicit ignore/keep/unmatched

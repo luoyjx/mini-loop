@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `8686f88` plus native three-state AST ignore matching
+Runtime review baseline: `9716ae5` plus anchored AST snapshot filesystem primitives,
+plus native three-state AST ignore matching
 and control decoding, plus AST ignore Source contracts,
 plus AST snapshot filesystem Source contracts,
 plus foreground shell start/Interrupt
@@ -415,7 +416,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · source snapshots pending<br/>AST ignore matching / control decoding"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · source snapshots pending<br/>AST ignore matching / control decoding<br/>anchored no-follow snapshot IO primitives"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1229,6 +1230,16 @@ controls drop invalid UTF-8 for matching and use Python splitlines while their r
 bytes remain available for copying. This prerequisite does not yet traverse or copy
 a source snapshot. Reversed character ranges remain compiler failures with native
 diagnostic wording; full snapshot/frame/budget and tool integration remain pending.
+
+The private AST snapshot filesystem layer now owns no-follow directory handles,
+opens children relative to those handles and reads metadata with fstatat before
+opening selected regular files. Single-component names reject traversal; scans
+count all names against a limit and reopen the directory for an independent offset.
+Close-on-exec descriptors remain anchored after pathname replacement. Darwin and
+Linux amd64/arm64 metadata backends are implemented; other backends refuse secure
+metadata access. Native tests run on Darwin arm64; cross-compilation alone does not
+prove other platforms at runtime. Complete copy/frame/budget/cleanup integration
+and replay of all 36 Source snapshot recipes remain pending.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The

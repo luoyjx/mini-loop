@@ -3124,3 +3124,13 @@ ignoreLines follows UTF-8 errors=ignore and Python splitlines; raw control bytes
 be copied independently, not replaced by decoded lines. This private component has
 no path authority, traversal, frame collection, filesystem budget or public tool.
 The anchored snapshotter must supply those boundaries before model use.
+
+### Anchored AST snapshot filesystem prerequisites
+
+snapshotDirectory is private and expects a canonical trusted root. All child names
+must be single components; never replace openat/fstatat with joined-path reads.
+Hold each directory handle across metadata/filter/open boundaries. Metadata may
+race mutation, so selected opens retain NOFOLLOW and regular-file type rechecks.
+Enumeration reopens dot rather than duplicating a shared directory offset. The
+builder must supply aggregate budgets, timeout context, ignore frames and private
+cleanup; this layer alone is not a complete snapshot or public path selector.
