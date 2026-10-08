@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `91d6634` plus explicit Agent response policy adoption,
+Runtime review baseline: `01f2549` plus Agent request projection Source contracts,
+plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,
 plus typed multi-stage registry/runtime,
 plus multi-stage registry Source contracts,

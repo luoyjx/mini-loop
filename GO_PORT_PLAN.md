@@ -1,5 +1,27 @@
 # Go port plan
 
+## 2026-10-09 Agent request projection Source contracts
+
+Baseline `01f2549`. Sixteen recipes execute actual Agent._create over the real
+request runtime, NullCachePolicy spy and fake-client transport. Inputs include
+frozen counts/budgets/ownership; outputs include complete public receipt metrics,
+provider message copies, authoritative history and ordered projection ledger digests.
+Cases cover live/side/compaction calls, off/shadow, prefix/assistant freezing, role/
+count/tool-result ID/error-bit protection, cancellation, protected queries and
+recovery message/cache-metadata tampering. The multi-round recipe grows history,
+replaces an authoritative row and drops the tail, recording reuse/pruning each time.
+
+Fifteen standalone actual _message_protocol_shape recipes cover string/array/opaque
+content, malformed roles, complete tool inputs, thinking/signature, cache metadata,
+images, unknown types, integer/float identity and legacy NaN repr fallback. These
+recipes capture the guard function separately from native provider lowering.
+Only elapsed_ms and event wrapper identity fields are normalized; JSON object key
+order is compared semantically, preserving scalar variants and all metric/digest data.
+
+Validation: 74 focused Source efficiency tests, all 19 scan guards and the full
+176-file exporter --check pass; git diff --check passes. This capture does not claim
+native adoption or full Python regression/coverage/mutation verification.
+
 ## 2026-10-09 explicit Agent response policy adoption
 
 Baseline `91d6634`. RuntimeConfig.TokenEfficiency accepts the typed shared runtime;

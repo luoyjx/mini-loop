@@ -1,0 +1,176 @@
+{
+  "rows": [
+    {
+      "input_json": "[{\"role\": \"user\", \"content\": \"hello\"}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "text",
+              "stable": null
+            }
+          ],
+          "metadata": "{\"role\":\"user\"}"
+        }
+      ]
+    },
+    {
+      "input_json": "[]",
+      "shape": []
+    },
+    {
+      "input_json": "null",
+      "shape": null
+    },
+    {
+      "input_json": "{}",
+      "shape": null
+    },
+    {
+      "input_json": "[null]",
+      "shape": null
+    },
+    {
+      "input_json": "[{\"role\": \"system\", \"content\": \"x\"}]",
+      "shape": null
+    },
+    {
+      "input_json": "[{\"role\": \"user\", \"content\": null}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "opaque-content",
+              "stable": "null"
+            }
+          ],
+          "metadata": "{\"role\":\"user\"}"
+        }
+      ]
+    },
+    {
+      "input_json": "[{\"role\": \"user\", \"content\": [5, \"opaque\", null]}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "opaque",
+              "stable": "5"
+            },
+            {
+              "kind": "opaque",
+              "stable": "\"opaque\""
+            },
+            {
+              "kind": "opaque",
+              "stable": "null"
+            }
+          ],
+          "metadata": "{\"role\":\"user\"}"
+        }
+      ]
+    },
+    {
+      "input_json": "[{\"role\": \"user\", \"content\": [{\"type\": \"text\", \"text\": \"x\", \"cache_control\": {\"type\": \"ephemeral\"}}]}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "text",
+              "stable": "{\"cache_control\":{\"type\":\"ephemeral\"},\"type\":\"text\"}"
+            }
+          ],
+          "metadata": "{\"role\":\"user\"}"
+        }
+      ]
+    },
+    {
+      "input_json": "[{\"role\": \"user\", \"content\": [{\"type\": \"tool_result\", \"tool_use_id\": \"call\", \"is_error\": false, \"content\": \"x\"}]}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "tool_result",
+              "stable": "{\"is_error\":false,\"tool_use_id\":\"call\",\"type\":\"tool_result\"}"
+            }
+          ],
+          "metadata": "{\"role\":\"user\"}"
+        }
+      ]
+    },
+    {
+      "input_json": "[{\"role\": \"assistant\", \"content\": [{\"type\": \"tool_use\", \"id\": \"call\", \"name\": \"bash\", \"input\": {\"command\": \"echo\", \"nested\": [1, 1.0]}}]}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "tool_use",
+              "stable": "{\"id\":\"call\",\"input\":{\"command\":\"echo\",\"nested\":[1,1.0]},\"name\":\"bash\",\"type\":\"tool_use\"}"
+            }
+          ],
+          "metadata": "{\"role\":\"assistant\"}"
+        }
+      ]
+    },
+    {
+      "input_json": "[{\"role\": \"assistant\", \"content\": [{\"type\": \"thinking\", \"thinking\": \"x\", \"signature\": \"signed\"}]}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "thinking",
+              "stable": "{\"signature\":\"signed\",\"thinking\":\"x\",\"type\":\"thinking\"}"
+            }
+          ],
+          "metadata": "{\"role\":\"assistant\"}"
+        }
+      ]
+    },
+    {
+      "input_json": "[{\"role\": \"user\", \"content\": [{\"type\": \"image\", \"source\": {\"type\": \"base64\", \"data\": \"abc\"}}]}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "image",
+              "stable": "{\"source\":{\"data\":\"abc\",\"type\":\"base64\"},\"type\":\"image\"}"
+            }
+          ],
+          "metadata": "{\"role\":\"user\"}"
+        }
+      ]
+    },
+    {
+      "input_json": "[{\"role\": \"user\", \"content\": [{\"type\": true, \"value\": \"unknown\"}, {\"value\": NaN}]}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "True",
+              "stable": "{\"type\":true,\"value\":\"unknown\"}"
+            },
+            {
+              "kind": "None",
+              "stable": "{'value': nan}"
+            }
+          ],
+          "metadata": "{\"role\":\"user\"}"
+        }
+      ]
+    },
+    {
+      "input_json": "[{\"role\": \"user\", \"content\": \"x\", \"name\": \"metadata\", \"extra\": [1, 1.0]}]",
+      "shape": [
+        {
+          "blocks": [
+            {
+              "kind": "text",
+              "stable": null
+            }
+          ],
+          "metadata": "{\"extra\":[1,1.0],\"name\":\"metadata\",\"role\":\"user\"}"
+        }
+      ]
+    }
+  ]
+}
