@@ -62,6 +62,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	Tools           *ToolCatalog
+	efficiencyOwner *SessionManager
 	// Explicit three-stage runtime; caller owns its component/store lifetime.
 	TokenEfficiency *efficiency.Runtime
 	ConciseResponse bool
@@ -330,6 +332,13 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 // questions plus deferred compaction to the implemented workspace tools.
 // Task delegates to a fresh child through the explicit subagent seam.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
+	constructed := false
+	defer func() {
+		if !constructed && config.efficiencyOwner != nil {
+			config.efficiencyOwner.releaseEfficiencySession(config.ID)
+		}
+	}()
+
 	observationRaw, err := normalizedObservationRaw(config.ObservationRaw)
 	if err != nil {
 		return nil, err
@@ -448,6 +457,9 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		handler.questions = surface
 	}
 	definitions := append([]ToolDefinition(nil), base.ordered...)
+	if config.Tools != nil {
+		definitions = append([]ToolDefinition(nil), config.Tools.ordered...)
+	}
 	handler.workflows = config.WorkflowService
 	handler.workflowManager = config.workflowManager
 	if config.WorkflowTools {
@@ -496,20 +508,23 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		definitions = append(definitions, definition)
 	}
 	handler.worktrees, handler.workspaceBashFactory = config.Worktrees, config.WorkspaceBashFactory
-	for _, name := range []protocol.ToolName{protocol.ToolTodoWrite, protocol.ToolTask, protocol.ToolLoadSkill, protocol.ToolCompress, protocol.ToolAskUser} {
-		traits := ToolTraits{Risk: RiskRead, Readonly: true}
-		if name == protocol.ToolTodoWrite || name == protocol.ToolCompress {
-			traits = ToolTraits{Risk: RiskWrite}
+	if config.Tools == nil {
+		for _, name := range []protocol.ToolName{protocol.ToolTodoWrite, protocol.ToolTask, protocol.ToolLoadSkill, protocol.ToolCompress, protocol.ToolAskUser} {
+			traits := ToolTraits{Risk: RiskRead, Readonly: true}
+			if name == protocol.ToolTodoWrite || name == protocol.ToolCompress {
+				traits = ToolTraits{Risk: RiskWrite}
+			}
+			if name == protocol.ToolTask {
+				traits = ToolTraits{Risk: RiskExec}
+			}
+			definition, err := NewToolDefinition(name, traits, handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
 		}
-		if name == protocol.ToolTask {
-			traits = ToolTraits{Risk: RiskExec}
-		}
-		definition, err := NewToolDefinition(name, traits, handler)
-		if err != nil {
-			return nil, err
-		}
-		definitions = append(definitions, definition)
 	}
+
 	if config.BackgroundTools {
 		native, ok := config.Bash.(*shell.Executor)
 		if !ok || native == nil || native.Workspace() != files.Root() {
@@ -664,6 +679,27 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
+	if config.efficiencyOwner != nil {
+		config.TokenEfficiency, config.TokenArtifactStore, err = config.efficiencyOwner.bindEfficiencySession(config, catalog)
+		if err != nil {
+			return nil, err
+		}
+		if config.TokenArtifactTools && config.TokenArtifactStore != nil {
+			definitions := append([]ToolDefinition(nil), catalog.ordered...)
+			for i := range definitions {
+				if _, installed := definitions[i].handler.(tokenArtifactHandler); installed {
+					definitions[i], err = tokenArtifactDefinition(handler.binding, config.TokenArtifactStore)
+					if err != nil {
+						return nil, err
+					}
+				}
+			}
+			catalog, err = NewToolCatalog(definitions...)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
 	hooks := config.Hooks
 	if config.WorkflowTools {
 		hooks.Guards = append([]GuardHook{workflowAuthorityGuard{handler}}, hooks.Guards...)
@@ -768,5 +804,6 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		compactor.TokenThreshold = session.tokenThreshold
 		session.compactor = compactor
 	}
+	constructed = true
 	return session, nil
 }

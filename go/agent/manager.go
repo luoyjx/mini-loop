@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/luoyjx/mini-loop/go/cron"
+	"github.com/luoyjx/mini-loop/go/efficiency"
 	"github.com/luoyjx/mini-loop/go/improvement"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/skills"
@@ -33,6 +34,7 @@ const (
 // transcripts or leases; state is restored through the injected store consumer.
 // Public lookups require an already established owner identity.
 type SessionManager struct {
+	efficiencyState                managerEfficiencyState
 	workflows                      *WorkflowService
 	workflowRetentions             map[SessionID]string
 	teamReservations               map[teams.Identity]bool
@@ -65,6 +67,17 @@ type SessionManager struct {
 func closedSignal() chan struct{} { signal := make(chan struct{}); close(signal); return signal }
 
 func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
+	efficiencyConfig, err := normalizeManagerEfficiency(config.Efficiency)
+	if err != nil {
+		return nil, err
+	}
+	config.Efficiency = &efficiencyConfig
+	if config.Services.TokenEfficiency == nil {
+		config.Services.TokenEfficiency, err = managerDefaultEfficiency(efficiencyConfig)
+		if err != nil {
+			return nil, err
+		}
+	}
 	if !config.Services.SelfAuditView.valid() {
 		return nil, errors.New("invalid self-audit visibility")
 	}
@@ -208,6 +221,10 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		}
 	}
 	manager := &SessionManager{teamReservations: make(map[teams.Identity]bool), restoreTurn: make(chan struct{}, 1), config: config, state: ManagerActive, sessions: make(map[SessionID]*ManagedSession), retiring: make(map[SessionID]*ManagedSession), reservations: make(map[SessionID]bool), owners: make(map[SessionID]OwnerID), createsDrained: closedSignal(), cleanupDrained: closedSignal(), stopped: make(chan struct{})}
+	manager.efficiencyState.stores = make(map[*efficiency.RawStore]*managerRawBinding)
+	if store := services.TokenEfficiency.RawStore(); store != nil {
+		manager.efficiencyState.stores[store] = &managerRawBinding{users: make(map[SessionID]bool), template: true}
+	}
 	teamRoot := filepath.Join(root, ".teams")
 	manager.teams = teams.New(teams.Config{Root: &teamRoot, Masker: services.Secrets})
 	manager.teamProtocols, err = teams.NewCoordinator(teams.CoordinatorConfig{Bus: manager.teams, Members: managerTeamDirectory{manager}})
@@ -364,6 +381,9 @@ func (manager *SessionManager) create(ctx context.Context, request CreateSession
 		if !published && pending != nil {
 			manager.recordCleanupError(id, "state", pending.core.persistence.delete())
 		}
+		if !published {
+			manager.releaseEfficiencySession(id)
+		}
 		if !published && scratch && allocated && path != "" {
 			manager.reclaimUnusedWorkspace(id, path)
 		}
@@ -453,6 +473,16 @@ func (manager *SessionManager) baseManagedRuntimeConfig(id SessionID, owner Owne
 		builder = FixedSystem(*system)
 	}
 	runtime := RuntimeConfig{GuardianEnabled: services.GuardianEnabled, DecisionTools: services.DecisionTools, DecisionProvider: services.DecisionProvider, DecisionLLM: services.DecisionLLM, GoalTools: services.GoalTools, PlanModeTools: services.PlanModeTools, PlanApprover: services.PlanApprover, StateStore: services.StateStore, StateLeaseOwner: manager.leaseOwner, StateLeaseTTL: manager.config.StateLeaseTTL, CronTools: services.CronTools, Cron: manager, BackgroundTools: services.BackgroundTools, WorktreeTools: services.WorktreeTools, Worktrees: services.Worktrees, WorkspaceBashFactory: services.BashFactory, TaskTools: services.TaskTools, Trajectories: services.Trajectories, Build: services.Build, ID: id, Owner: owner, Provider: services.Provider, Recovery: services.Recovery, Spill: services.Spill, StreamProgress: services.StreamProgress, Bash: bash, Workspace: path, Mode: mode, MaxRounds: defaults.MaxRounds, Skills: services.Skills, Approvals: services.Approvals, ActionJournal: services.ActionJournal, Secrets: services.Secrets, Hooks: services.Hooks, Model: model, MaxTokens: defaults.MaxTokens, TokenThreshold: defaults.TokenThreshold, SubagentMaxDepth: defaults.SubagentMaxDepth, SubagentMaxRounds: defaults.SubagentMaxRounds, SystemBuilder: builder, Compactor: services.Compactor, Subagents: services.Subagents, RoleToolPolicy: services.RoleToolPolicy, CachePolicy: services.CachePolicy, StuckDetector: services.StuckDetector, StopHooks: services.StopHooks, UserPromptHooks: services.UserPromptHooks, Injectors: services.Injectors, EventSink: services.EventSink, ModelLimiter: services.ModelLimiter, ToolLimiter: services.ToolLimiter}
+	runtime.Tools = services.Tools
+	runtime.TokenEfficiency = services.TokenEfficiency
+	if store := runtime.TokenEfficiency.RawStore(); store != nil && store.Workspace() != path {
+		runtime.TokenEfficiency = runtime.TokenEfficiency.WithRawStore(nil)
+	}
+	runtime.ConciseResponse = manager.config.Efficiency.ResponseStyle == EfficiencyResponseConcise
+	runtime.ObservationRaw = &ObservationRawConfig{Persist: manager.config.Efficiency.PersistRaw, MinBytes: manager.config.Efficiency.RawMinBytes}
+	runtime.efficiencyOwner = manager
+	runtime.TokenArtifactTools = services.Tools == nil && mode != ModeReadonly && runtime.TokenEfficiency.ObservationEnforced() && manager.config.Efficiency.PersistRaw
+	runtime.TokenArtifactStore = runtime.TokenEfficiency.RawStore()
 	runtime.team = &teams.Identity{Team: teams.TeamID(id), Name: "lead"}
 	runtime.WorkflowService, runtime.workflowManager = manager.workflows, manager
 	runtime.Label = "main"
@@ -590,6 +620,9 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 	cleanup := func() {
 		manager.drainSession(session, "session deleted", manager.config.DeleteGrace)
 		workflowSafe := manager.finishWorkflowDeletion(session, workflowDrain, !options.PreserveWorkspace && !session.workspaceBound)
+		if workflowSafe {
+			manager.releaseEfficiencySession(id)
+		}
 		if options.RemoveTrajectories && manager.config.Services.Trajectories != nil {
 			if err := trajectoryFault(func() error { _, err := manager.config.Services.Trajectories.DeleteForSession(id); return err }); err != nil {
 				manager.recordCleanupError(id, "trajectories", err)
@@ -757,6 +790,7 @@ func (manager *SessionManager) shutdown(sessions []*ManagedSession, creating <-c
 	}
 	manager.WaitCleanup(context.Background())
 	manager.retryWorkflowRetentions()
+	manager.closeEfficiency()
 	manager.mu.Lock()
 	manager.state = ManagerStopped
 	close(manager.stopped)

@@ -1,6 +1,38 @@
 # Python to Go parity matrix
 
 
+## 2026-10-09 Manager-owned efficiency composition and lifecycle
+
+Baseline: `50dd0a2`. The library Manager now selects default or injected shared
+runtimes, preserves caller catalogue membership, forwards raw threshold 16384 and
+allocates stores only after capability filtering. Writable enforce sessions get
+private RAM stores; readonly gets no automatic recovery tool. Same-workspace
+templates retain identity, including readonly reuse; foreign templates detach.
+New, fork, restore and teammate constructors share the managed binding. Failed
+publication unwinds store ownership. Delete waits for consumers and releases the
+last live holder; workflow cancellation faults retain stores until shutdown.
+Stop drains sessions, cron, workflows and cleanup, revokes every distinct store,
+then closes the shared component root. Start hooks run once with no service
+authority; EfficiencyStatus returns detached lifecycle reports.
+
+Native tests compare session/store selection and lifecycle reports with all 14
+Python Manager recipes, including running consumer cancellation before close.
+Additional tests cover empty capability filtering, failed state publication and
+restored-store deletion. Passed go test ./... -count=1 -timeout=180s, full
+go test -race -p=1 ./... -count=1 -timeout=180s, the final Manager tests under race,
+go vet ./... and git diff --check. Fresh Go statement coverage across ./... (duplicate blocks merged, including
+command packages) is
+25363/29145 = 87.02% from /tmp/mini-loop-manager-final-coverage.out.
+README architecture and generated map are updated; validation passed 9/9 with
+zero errors/warnings and both SHA256 hashes verified. Visual inspection was not
+repeated after the earlier browser access denial. Full Python regression was
+not rerun; there is no merge or push.
+
+E6.4c remains open: launcher/HTTP/benchmark settings activation and child
+inheritance/broader custom profiles. Existing launcher mode/style refusal remains.
+The complete Go port and SQLite backend remain unfinished.
+
+
 ## 2026-10-09 typed Manager efficiency selection helpers
 
 Baseline: `33ca813`. Added named ManagerEfficiencyConfig with off/normal defaults,

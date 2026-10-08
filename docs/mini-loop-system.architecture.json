@@ -487,7 +487,7 @@
         280,
         76
       ],
-      "tag": "owners / admitted-turn evidence / pools"
+      "tag": "owned efficiency lifecycle / raw stores"
     },
     {
       "id": "goEntry",
@@ -1677,7 +1677,8 @@
         "Go Launcher forwards the five Source MINILOOP_AST_OUTLINE_* settings to ManagerServices.ASTConfig. Default off; activation requires a trusted absolute executable and SHA-256 pin, with Source timeout/output limits. Inspection reports configured selection without probes. Fourteen Source HTTP/model traces match exact catalogues/results, native child argv/cwd and snapshot removal, including readonly path, integrity, version, output and timeout failures. Existing ToolGate and session authority remain unchanged; extreme malformed output profiles remain open.",
         "AST Result.ToJSON now preserves compact Source result strings, including surrogatepass text and nonfinite values. Strict byte encoders remain separate. The named tool-result wire text variant refuses invalid UTF-8 before direct/streaming provider transport; in-memory models retain the exact string. Eight real Source operation/Tool.run/SDK recipes match native text, readonly model execution, request-wire admission and snapshot cleanup. Other Unicode lifecycle profiles remain open.",
         "Explicit AgentGuardian creates a fresh readonly auditor through the shared typed child-construction kernel. Eighteen Source reviews match prompts, catalogues, model results and Unicode verdict/reason parsing; hostile writes are denied even with a widened catalogue. GuardianReviewer masks typed inputs before a 2000-character ASCII preview and plugs into ApprovalBrokerConfig.Reviewer. Default human review is unchanged. Manager/Launcher MINILOOP_GUARDIAN binding remains pending; pinned operator reviewers must be recaptured after workspace changes and never recursively acquire a held parent turn lock.",
-        "Explicit TokenEfficiency binds observation projection after masking and before journal settlement/observers. Full masked journal authority remains separate from provider/event/trajectory projections; replay and read_token_artifact bypass reduction. Final masked recovery envelopes must shrink, or their refs are discarded and public metrics revert to authority. Named ObservationRawConfig snapshots true/4096 defaults, with readonly/no-tool write refusal, same-store recovery binding and detached foreign workspaces. Shared component/store lifetime and default Manager composition remain pending; no dependency or default activation is added."
+        "Explicit TokenEfficiency binds observation projection after masking and before journal settlement/observers. Full masked journal authority remains separate from provider/event/trajectory projections; replay and read_token_artifact bypass reduction. Final masked recovery envelopes must shrink, or their refs are discarded and public metrics revert to authority. Named ObservationRawConfig snapshots true/4096 defaults, with readonly/no-tool write refusal, same-store recovery binding and detached foreign workspaces. Shared component/store lifetime and default Manager composition remain pending; no dependency or default activation is added.",
+        "Go Manager owns default-off efficiency roots: init once, scoped masked RAM stores, drain then store revocation then shared close; launcher and child adoption pending"
       ]
     }
   ]

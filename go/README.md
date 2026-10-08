@@ -2618,3 +2618,17 @@ persist/minimum-byte settings (true/4096 defaults); readonly and absent recovery
 forbid raw writes. Explicit runtime and recovery tool share a store; foreign workspace
 bindings are detached. Component/store lifetimes and default service composition remain
 caller-owned/pending. No dependencies or default activation are added.
+
+
+### Manager efficiency composition
+
+ManagerConfig.Efficiency accepts named library settings from
+DefaultManagerEfficiencyConfig (off/normal, raw threshold 16384). An injected
+ManagerServices.TokenEfficiency keeps its mode/components. ManagerServices.Tools
+preserves caller catalogue membership. Writable enforce sessions with selected
+recovery capability receive workspace-bound masked RAM stores. Start initializes
+once; deletion releases last holders after drain; Stop closes distinct stores
+before shared components. EfficiencyStatus returns detached lifecycle reports.
+Fourteen captured Python Manager scenarios, filtered capability admission, failed
+publication and restored-store cleanup have native tests. Launcher efficiency
+flags, HTTP/benchmark activation and child inheritance remain pending.

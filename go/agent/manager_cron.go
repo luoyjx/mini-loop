@@ -92,7 +92,18 @@ func (manager *SessionManager) cronSession(owner OwnerID, id SessionID, write bo
 
 // Start matches the source lifecycle: restored jobs start a ticker, remaining
 // disarmed. New manager construction itself never starts a goroutine.
-func (manager *SessionManager) Start() error {
+func (manager *SessionManager) Start() error { return manager.StartContext(context.Background()) }
+
+func (manager *SessionManager) StartContext(ctx context.Context) error {
+	manager.mu.Lock()
+	activeBefore := manager.state == ManagerActive
+	manager.mu.Unlock()
+	if !activeBefore {
+		return ErrManagerStopped
+	}
+	if err := manager.initializeEfficiency(ctx); err != nil {
+		return err
+	}
 	manager.cronMu.Lock()
 	defer manager.cronMu.Unlock()
 	manager.mu.Lock()

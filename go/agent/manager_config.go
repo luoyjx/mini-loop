@@ -8,6 +8,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/astcontext"
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/diagnostics"
+	"github.com/luoyjx/mini-loop/go/efficiency"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/spill"
@@ -51,6 +52,8 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	TokenEfficiency *efficiency.Runtime
+	Tools           *ToolCatalog
 	GuardianEnabled bool
 	// A nonnil immutable operator config explicitly installs four AST read tools.
 	ASTConfig           *astcontext.Config
@@ -110,6 +113,7 @@ type ManagerServices struct {
 }
 
 type ManagerConfig struct {
+	Efficiency                        *ManagerEfficiencyConfig
 	TeamIdlePoll, TeamIdleTimeout     time.Duration
 	StateLeaseTTL                     time.Duration
 	WorkspaceRoot                     string

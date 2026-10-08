@@ -3406,7 +3406,7 @@ nonpointer values represent independent copies. Runtime exposes the existing thr
 stage operations plus Initialize/Health/Close and WithRawStore. Clones share one
 counter/lifecycle/admission root. Close fences and drains calls across every stage;
 raw-store ownership stays with the caller. Independently constructed stage pipelines
-remain independent. No default efficiency runtime consumer is installed yet.
+remain independent. Manager now composes an explicit off/normal root by default; see the managed binding below.
 MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin
 objects and broader Unicode/numeric wire profiles are not claimed by this foundation.
@@ -3424,8 +3424,8 @@ OptimizationReceipt returns cloned OptimizationMetrics with *big.Int counts and 
 digests, warning strings or content. Typed event JSON/masking and DecodeStoredEvent
 retain the metric-only variant; archival metrics grant no executable authority.
 The caller owns the runtime and shared initialization/close. Explicit request
-and observation adoption are described below; Manager/launcher/default
-composition remains pending; nil keeps defaults.
+and observation adoption are described below; Manager composition is described below; launcher activation remains pending. Bare
+RuntimeConfig nil keeps defaults.
 
 
 ### Go Agent request projection and protected side calls
@@ -3441,7 +3441,7 @@ message_protocol_guard. Ordinary side calls optimize detached messages without
 ledger ownership. Protected side calls skip request/cache seams and reassert masked
 selected messages plus message cache metadata for each recovery dispatch; personal
 skill previews use this path. Explicit response planning retains its purpose rule.
-The caller owns the shared runtime. Observation/default composition remains pending.
+The caller owns the shared runtime. Manager composition is described below; launcher activation remains pending.
 
 ### Go explicit Agent observation adoption
 
@@ -3455,4 +3455,26 @@ output while observers/model results receive the remasked candidate/recovery mar
 Replay and recovery-tool calls bypass reduction. Inflation includes the marker and
 discards unused refs. Source post-mask cancellation leaves journal authority started.
 OptimizationStageError carries only a safe fault class and tool span; no plugin text.
-Manager/default composition and wider custom runtime profiles remain pending.
+Manager composition is described below; wider custom runtime profiles remain pending.
+
+
+### Go Manager efficiency ownership
+
+Use DefaultManagerEfficiencyConfig and assign ManagerConfig.Efficiency for explicit
+library selection. Off/normal, raw persistence true, threshold 16384, TTL 3600 and
+2 MB / 20 MB limits match Settings defaults. Integer limits are detached.
+ManagerServices.TokenEfficiency overrides default component/mode selection.
+ManagerServices.Tools supplies an immutable caller catalogue; the Manager does not
+automatically widen it with builtin or recovery tools. Explicit optional feature
+flags remain independent. Final ToolSelection filtering precedes store allocation.
+
+Manager Start/StartContext initializes once with empty lifecycle services. Store
+binding is per workspace; foreign template stores are detached from session roots
+and still closed at manager shutdown. New writable enforce sessions with recovery
+capability get fresh RAM stores; readonly sessions may retain an already matching
+template but get no automatic recovery tool. Delete closes the last session holder
+after drain. Failed publication releases unpublished bindings. Stop owns the drain
+even if its caller stops waiting, closes distinct stores, then closes components.
+EfficiencyStatus returns detached typed lifecycle reports with safe fault codes.
+Bare RuntimeConfig consumers retain caller-owned lifetimes. Child inheritance and
+launcher/HTTP/benchmark mode/style activation remain separate work.

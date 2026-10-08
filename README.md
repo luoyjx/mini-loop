@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `33ca813` plus typed Manager efficiency selection helpers,
+Runtime review baseline: `50dd0a2` plus Manager-owned efficiency composition and shutdown,
 plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,
@@ -439,7 +439,7 @@ flowchart LR
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
-        GoManager["Go SessionManager<br/>owner lookup · resource snapshots / default scoped memory<br/>workspace policy · delete / stop drain"]
+        GoManager["Go SessionManager<br/>owner lookup · resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
@@ -571,6 +571,18 @@ flowchart LR
     Entry -. SSE / inspect / trace view .-> Trace
 ```
 <!-- architecture-map:end -->
+
+Go Manager selects an off/normal shared efficiency root by default. Library callers
+can configure ManagerEfficiencyConfig or inject ManagerServices.TokenEfficiency;
+Start initializes once without granting service authority. Writable default
+catalogues in enforce mode receive private masked RAM stores and recovery tools;
+readonly and caller-owned catalogues are not automatically widened. Same-workspace
+template stores retain shared identity. Delete releases the last live session
+holder after consumers drain; Stop drains sessions, cron, workflows and cleanup,
+then closes all distinct stores before shared components. Source lifecycle reports
+and store selection are checked against 14 captured Manager scenarios. Launcher
+mode/style activation and subagent inheritance remain pending.
+
 
 The main diagram describes the current Python runtime under `python/`. The
 separate Go subgraph is a process-local port in progress with an embeddable

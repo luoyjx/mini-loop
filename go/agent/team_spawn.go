@@ -124,6 +124,9 @@ func (manager *SessionManager) SpawnTeammate(ctx context.Context, owner OwnerID,
 			pending.StopAccepting("teammate construction failed")
 			manager.recordCleanupError(id, "state", pending.core.persistence.delete())
 		}
+		if !published {
+			manager.releaseEfficiencySession(id)
+		}
 	}()
 	path := parent.core.workspace
 	bash, err := manager.config.Services.BashFactory.BashFor(ctx, SessionBinding{id, owner, path, ModeInteractive})

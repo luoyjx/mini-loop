@@ -188,6 +188,9 @@ func (manager *SessionManager) restoreSelected(ctx context.Context, id SessionID
 		if !published && pending != nil {
 			err = errors.Join(err, pending.core.persistence.release())
 		}
+		if !published {
+			manager.releaseEfficiencySession(id)
+		}
 	}()
 	bound := row != nil && row.WorkspaceBound
 	owner := OwnerID("anonymous")
