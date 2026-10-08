@@ -1,5 +1,42 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native AST ignore policy prerequisite
+
+Baseline 8686f88. The internal ignoreSpec now compiles explicit ignore/keep/unmatched
+variants with named pattern records and selected indices. Go standard regular
+expressions preserve Source root/basename/globstar rules, directory/file precedence,
+negation and Python final-newline decisions. Rune sets/ranges avoid interpreting
+Source POSIX-looking classes as Go POSIX syntax. Source 4096-character and two-
+variable-star-group admission remains enforced before compilation. Empty raw lines
+are removed; comments/null patterns retain compiled indices and count for later
+match-operation budgets. No dependency was added.
+
+All 35 successfully compiled Source recipes compare pattern counts and every
+include/index decision. Six Source compiler/guard refusals remain failures; five
+retain exact Source messages. Descending character ranges use native compiler text,
+so Python regex-error diagnostic compatibility remains open before full public AST
+parity. UTF-8 errors=ignore and Python splitlines control decoding replay Source
+snapshot inputs; the eventual copier must preserve the original control bytes.
+
+This is a private prerequisite of the full native snapshotter, not a path authority
+or narrowed replacement for it. Anchored no-follow descriptor traversal/copy,
+supported-name/default-ignore policy, nested frame/counter integration, shared
+snapshot cancellation/deadlines and private lifetime cleanup remain required.
+No semantic AST tool, process invocation or feature activation was added here.
+Diagnostics parser choice, native SQLite, semantic payloads/runtime wiring and G7
+remain open; the complete Python-to-Go objective stays active.
+
+Validation: focused ignore race tests, full go test ./... -count=1 -timeout=180s,
+go test -race ./... -count=1 -timeout=180s and go vet ./... pass. Source preparation
+in 8686f88 passed 154 exports, 41 AST-context tests, 19 scanning guards and package
+invariants; no Source file changed afterward. README outline and git diff --check
+pass. Canonical diagram/specification/generated HTML match; Archify passes 9/9
+showcase checks with zero errors/warnings. Visual inspection remains skipped after
+prior access denial. Full Python regression, Source mutation sweep and coverage
+were not refreshed. Specification SHA256:
+3d45fe104b89ccc746012e15ce4a71d9062fe59dacf88b7c13c34b4653f9a95d;
+HTML SHA256: dcf716a598c6c7b5a59bcc4c939ad10d82634bae20f2602c73dd86b909f3da02.
+
 ## 2026-10-08 AST ignore matcher Source contracts
 
 Baseline aff92ec. Source export 154 adds 41 actual ignore-guard/GitIgnoreSpec

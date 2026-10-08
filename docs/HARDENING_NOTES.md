@@ -7985,3 +7985,15 @@ share the tracker lock with Interrupt; startup error paths release it. Callbacks
 process waits remain outside the lock. Existing actual child-spawn/stop stress tests
 cover interruption and context cancellation; no new effect permission or background
 ownership was introduced.
+
+### Go migration — AST ignore decisions are not path authority
+
+The internal three-state matcher preserves negative rules and no-match separately.
+Collapsed empty-line indices and directory/file match precedence follow Source
+pathspec 1.1.1; star-group and character-count guards remain in force even though
+Go regular expressions avoid Python backtracking. Null patterns still contribute
+to compiled-pattern budgets. Control decoding drops invalid UTF-8 and applies Python
+line boundaries, while snapshot copy must preserve the original bytes. The matcher
+performs no filesystem access and grants no confinement or permission. Anchored
+no-follow traversal, nested-frame budgets, cancellation and private cleanup remain
+required before semantic AST tools can use it.

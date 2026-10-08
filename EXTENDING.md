@@ -3107,3 +3107,20 @@ Start returns to its parent; an interrupt observing those effects must wait for 
 publication rather than return an empty registry. Startup errors release the lock
 before failure projection. The lock is released before started callbacks, captures,
 waits and policy execution. Background spawning uses its separate owner.
+
+### Native AST ignore policy prerequisite
+
+The internal ignoreSpec represents compiled patterns with an explicit three-state
+ignoreDisposition and selected pattern index. Unmatched must continue searching outer
+frames; kept overrides an outer ignore decision. Empty raw lines are omitted, whereas
+comments/null patterns retain their compiled positions and match-budget count. The
+matcher preserves Source root-relative/globstar rules, file/directory precedence and
+final-newline behavior; character classes are emitted as literal/range rune sets to
+avoid treating Source POSIX-looking text as Go POSIX syntax. Compilation retains the
+Source 4096-character/two-star-group guards and uses standard Go regular expressions.
+Malformed descending ranges remain failures but expose native compiler wording.
+
+ignoreLines follows UTF-8 errors=ignore and Python splitlines; raw control bytes must
+be copied independently, not replaced by decoded lines. This private component has
+no path authority, traversal, frame collection, filesystem budget or public tool.
+The anchored snapshotter must supply those boundaries before model use.

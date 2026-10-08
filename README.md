@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `aff92ec` plus AST ignore Source contracts,
+Runtime review baseline: `8686f88` plus native three-state AST ignore matching
+and control decoding, plus AST ignore Source contracts,
 plus AST snapshot filesystem Source contracts,
 plus foreground shell start/Interrupt
 registration serialization, plus standalone AST executable probing and
@@ -414,7 +415,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · source snapshots pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · source snapshots pending<br/>AST ignore matching / control decoding"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1219,6 +1220,15 @@ Darwin/Linux retain the launched process-group ID to stop pipe-holding descendan
 even after the direct child exits. Other platforms have direct-child cleanup only.
 Source snapshots, structured AST payloads and semantic-read tool installation remain
 pending. Executable verification precedes launch and is not an atomic file pin.
+
+The internal AST ignore component now preserves ignore/keep/unmatched decisions,
+compiled-pattern counts and selected indices against installed Source pathspec 1.1.1.
+Root anchors, globstar, file/directory precedence, escapes and character classes use
+Go standard regular expressions; Source star/length guards remain in force. Ignore
+controls drop invalid UTF-8 for matching and use Python splitlines while their raw
+bytes remain available for copying. This prerequisite does not yet traverse or copy
+a source snapshot. Reversed character ranges remain compiler failures with native
+diagnostic wording; full snapshot/frame/budget and tool integration remain pending.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
