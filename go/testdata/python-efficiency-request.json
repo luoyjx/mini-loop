@@ -1,0 +1,2386 @@
+{
+  "rows": [
+    {
+      "calls": [],
+      "components": [],
+      "counter_calls": [],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "empty",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "off"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "off",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "off",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "mode_off",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": null
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "default-off",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "off",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "mode_off",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": null
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "default-enforce",
+      "optimized_by": [],
+      "options": {
+        "default_mode": "enforce"
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 78,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "enforce",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 78,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "shadow"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "shadow",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "shadow",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "shadow_candidate",
+            "stage": "request_context",
+            "status": "shadowed",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 78,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "same",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "unchanged",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_passthrough",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "prefix",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"x\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "prefix",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:729a50fc8a9453b87236a6b6ea4ef8b6c56b6c9ef0519a4ceb92637c4925f280",
+            "projected_bytes": 301,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "frozen_prefix_guard",
+            "stage": "request_context",
+            "status": "degraded",
+            "tokens_after_estimate": 76,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "prefix",
+          "fields": {},
+          "id": "probe",
+          "mode": "shadow"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"x\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "prefix-shadow",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "shadow",
+            "output_digest": "sha256:729a50fc8a9453b87236a6b6ea4ef8b6c56b6c9ef0519a4ceb92637c4925f280",
+            "projected_bytes": 301,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "frozen_prefix_guard",
+            "stage": "request_context",
+            "status": "degraded",
+            "tokens_after_estimate": 76,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 0,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "prefix",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"x\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"x\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 0,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "prefix-zero",
+      "optimized_by": [],
+      "options": {
+        "frozen": 0
+      },
+      "output": {
+        "frozen": 0,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:729a50fc8a9453b87236a6b6ea4ef8b6c56b6c9ef0519a4ceb92637c4925f280",
+            "projected_bytes": 301,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 76,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"x\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "remove",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "missing-messages",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:d339a205ef90b5c045bdc3747f8bd4cc179cda9111404d38d964d2f9d512321e",
+            "projected_bytes": 27,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "frozen_prefix_guard",
+            "stage": "request_context",
+            "status": "degraded",
+            "tokens_after_estimate": 7,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "clear",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "short-messages",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:d93d1b26eb2acf6dc9e40574bf658c213adf2657a8e0e97a5d6d632b33e7aa70",
+            "projected_bytes": 41,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "frozen_prefix_guard",
+            "stage": "request_context",
+            "status": "degraded",
+            "tokens_after_estimate": 11,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "large-prefix",
+      "optimized_by": [],
+      "options": {
+        "frozen": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      },
+      "output": {
+        "frozen": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "frozen_prefix_guard",
+            "stage": "request_context",
+            "status": "degraded",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 78,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "model",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"x\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"x\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "outside-prefix",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:f97a57fb82500444d095334be4909f036722d0af7a19fc1e1120764eb68320e7",
+            "projected_bytes": 295,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 74,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"x\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 0,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "role",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"changed\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"changed\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 0,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "protocol-shape-library",
+      "optimized_by": [],
+      "options": {
+        "frozen": 0
+      },
+      "output": {
+        "frozen": 0,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:84b837f8f57015a7390485fc4627780e926fcf5cdbeefae9c1df448ebe1df196",
+            "projected_bytes": 312,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "inflation_guard",
+            "stage": "request_context",
+            "status": "degraded",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "inflate",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "byte-inflation",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:1d2d5fbe4fae7c930a75b3a2ef59130aee1b2d7978be5f4ae2458dced87106cc",
+            "projected_bytes": 2109,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "inflation_guard",
+            "stage": "request_context",
+            "status": "degraded",
+            "tokens_after_estimate": 528,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "inflate",
+          "fields": {},
+          "id": "probe",
+          "mode": "shadow"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "shadow-inflation",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "shadow",
+            "output_digest": "sha256:1d2d5fbe4fae7c930a75b3a2ef59130aee1b2d7978be5f4ae2458dced87106cc",
+            "projected_bytes": 2109,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "shadow_candidate",
+            "stage": "request_context",
+            "status": "shadowed",
+            "tokens_after_estimate": 528,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "inflate",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "inflation-disabled",
+      "optimized_by": [],
+      "options": {
+        "inflation_guard": false
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:1d2d5fbe4fae7c930a75b3a2ef59130aee1b2d7978be5f4ae2458dced87106cc",
+            "projected_bytes": 2109,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 528,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "token-inflation",
+      "optimized_by": [],
+      "options": {
+        "counter": "inverse"
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "inflation_guard",
+            "stage": "request_context",
+            "status": "degraded",
+            "tokens_after_estimate": 1000,
+            "tokens_before_estimate": 1,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {
+            "max_input_bytes": 1
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "byte-cap",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "max_input_bytes_exceeded",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "model",
+          "fields": {},
+          "id": "second",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "double",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 78,
+            "warnings": [
+              "tail_changed"
+            ]
+          },
+          {
+            "changed": false,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 110,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "double_reduction_guard:probe",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 28,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        },
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "second",
+          "optimized_by": [
+            "probe"
+          ],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "model",
+          "fields": {},
+          "id": "second",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"x\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"x\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "double-disabled",
+      "optimized_by": [],
+      "options": {
+        "prevent_double_reduction": false
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe",
+          "second"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 78,
+            "warnings": [
+              "tail_changed"
+            ]
+          },
+          {
+            "changed": true,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:8896b6197f79acb28d1f601f92a60309e08ee276a6cfea5dce5810752fae7319",
+            "projected_bytes": 96,
+            "raw_bytes": 110,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 24,
+            "tokens_before_estimate": 28,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"x\"}"
+      }
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "upstream",
+      "optimized_by": [
+        "upstream",
+        "upstream"
+      ],
+      "options": {
+        "optimized_by": [
+          "upstream",
+          "upstream"
+        ]
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "upstream"
+        ],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "double_reduction_guard:upstream",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "off"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "off-before-double",
+      "optimized_by": [
+        "upstream"
+      ],
+      "options": {
+        "optimized_by": [
+          "upstream"
+        ]
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "upstream"
+        ],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "off",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "mode_off",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": {
+        "kind": "ValueError",
+        "message": "receipt reason must be a bounded machine-readable code"
+      },
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "bad-upstream",
+      "optimized_by": [
+        "private marker"
+      ],
+      "options": {
+        "optimized_by": [
+          "private marker"
+        ]
+      },
+      "output": null
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "mutate-fail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "mutating-failure",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:RuntimeError",
+            "stage": "request_context",
+            "status": "error",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "failure",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "safe-failure",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:RuntimeError",
+            "stage": "request_context",
+            "status": "error",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "unsafe",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "unsafe-failure",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error",
+            "stage": "request_context",
+            "status": "error",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "timeout",
+          "fields": {
+            "timeout_ms": 5
+          },
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "timeout",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:TimeoutError",
+            "stage": "request_context",
+            "status": "error",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "cancel",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [],
+      "error": {
+        "kind": "CancelledError",
+        "message": ""
+      },
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "cancel",
+      "optimized_by": [],
+      "options": {},
+      "output": null
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "wrong",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "wrong-result",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:TypeError",
+            "stage": "request_context",
+            "status": "error",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "warning",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "wrong-warning",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:ValueError",
+            "stage": "request_context",
+            "status": "error",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        },
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "second",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "failure",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "second",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "fallback-then-good",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "second"
+        ],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "component_error:RuntimeError",
+            "stage": "request_context",
+            "status": "error",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          },
+          {
+            "changed": true,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 78,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "broken-counter",
+      "optimized_by": [],
+      "options": {
+        "counter": "broken"
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 78,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "negative-counter",
+      "optimized_by": [],
+      "options": {
+        "counter": "negative"
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 28,
+            "tokens_before_estimate": 78,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "large-counter",
+      "optimized_by": [],
+      "options": {
+        "counter": "large"
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:3a4d544eb698f913a8c46b37e1fe7a918db52cdc17425cd3c98b2839ebdbddef",
+            "projected_bytes": 110,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            "tokens_before_estimate": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\"}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\",\"extra\":NaN}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{'messages': [{'role': 'system', 'content': 'stable π'}, {'role': 'user', 'content': 'long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long '}], 'model': 'long-model-name', 'extra': nan}",
+        "{'messages': [{'role': 'system', 'content': 'stable π'}, {'role': 'user', 'content': 'x'}], 'model': 'long-model-name', 'extra': nan}",
+        "{'messages': [{'role': 'system', 'content': 'stable π'}, {'role': 'user', 'content': 'long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long '}], 'model': 'long-model-name', 'extra': nan}",
+        "{'messages': [{'role': 'system', 'content': 'stable π'}, {'role': 'user', 'content': 'x'}], 'model': 'long-model-name', 'extra': nan}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\",\"extra\":NaN}",
+      "input_unchanged": true,
+      "name": "nonfinite-stable",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:35eb389709d76938034ddf94ff000edde1cb70771bb00fdffe9fd11734d1725c",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:b71df643e056eb754ac0398913f5eccd67a4083c393e951bfe220a8dd8dd0503",
+            "projected_bytes": 134,
+            "raw_bytes": 333,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 34,
+            "tokens_before_estimate": 84,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\",\"extra\":NaN}"
+      }
+    },
+    {
+      "calls": [
+        {
+          "budget": 1000000000000000000000000000000,
+          "frozen": 1,
+          "id": "probe",
+          "optimized_by": [],
+          "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\",\"extra\":\"\\ud800\"}"
+        }
+      ],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        }
+      ],
+      "counter_calls": [
+        "{\"extra\":\"?\",\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"extra\":\"?\",\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"extra\":\"?\",\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"extra\":\"?\",\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"x\",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\",\"extra\":\"\\ud800\"}",
+      "input_unchanged": true,
+      "name": "surrogate-stable",
+      "optimized_by": [],
+      "options": {},
+      "output": {
+        "frozen": 1,
+        "optimized_by": [
+          "probe"
+        ],
+        "receipts": [
+          {
+            "changed": true,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:8ee7328615a74e06fd515823d0313f14b92d687d0731c581eb092791e254768f",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:360d39cbb6cf8fcae3245e3b57267e26660a2f834eff63f5b4360cfb6aeac6c3",
+            "projected_bytes": 122,
+            "raw_bytes": 321,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "optimized",
+            "stage": "request_context",
+            "status": "applied",
+            "tokens_after_estimate": 31,
+            "tokens_before_estimate": 81,
+            "warnings": [
+              "tail_changed"
+            ]
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"x\"}],\"model\":\"long-model-name\",\"extra\":\"\\ud800\"}"
+      }
+    },
+    {
+      "calls": [],
+      "components": [
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "probe",
+          "mode": "enforce"
+        },
+        {
+          "action": "tail",
+          "fields": {},
+          "id": "second",
+          "mode": "off"
+        }
+      ],
+      "counter_calls": [
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}",
+        "{\"messages\":[{\"content\":\"stable π\",\"role\":\"system\"},{\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \",\"role\":\"user\"}],\"model\":\"long-model-name\"}"
+      ],
+      "error": null,
+      "frozen": 1,
+      "input_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}",
+      "input_unchanged": true,
+      "name": "closed",
+      "optimized_by": [],
+      "options": {
+        "closed": true
+      },
+      "output": {
+        "frozen": 1,
+        "optimized_by": [],
+        "receipts": [
+          {
+            "changed": false,
+            "component_id": "probe",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "enforce",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "runtime_closed",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          },
+          {
+            "changed": false,
+            "component_id": "second",
+            "component_version": "1",
+            "deterministic": true,
+            "elapsed_ms": 0,
+            "input_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "lossiness": "lossless",
+            "mode": "off",
+            "output_digest": "sha256:c67cf511c33904b5bf4ba3d938894caf0c061fdfa4a613e2f1923f59c47613f6",
+            "projected_bytes": 309,
+            "raw_bytes": 309,
+            "raw_digest": null,
+            "raw_ref": null,
+            "reason": "runtime_closed",
+            "stage": "request_context",
+            "status": "passthrough",
+            "tokens_after_estimate": 78,
+            "tokens_before_estimate": 78,
+            "warnings": []
+          }
+        ],
+        "request_json": "{\"messages\":[{\"role\":\"system\",\"content\":\"stable \\u03c0\"},{\"role\":\"user\",\"content\":\"long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long \"}],\"model\":\"long-model-name\"}"
+      }
+    }
+  ]
+}

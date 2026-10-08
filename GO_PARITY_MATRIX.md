@@ -1,5 +1,22 @@
 # Python to Go parity matrix
 
+## 2026-10-09 request optimizer Source contracts
+
+Baseline b45bc58. Thirty-nine actual TokenEfficiencyRuntime request recipes capture
+ordered off/shadow/enforce, detached plugin inputs, frozen-prefix-before-shadow,
+unbounded prefix/budget/counter integers, byte/token inflation, double ownership,
+input caps, safe fault/cancellation/timeout, malformed results/warnings, counter
+fallback, closed receipts, nonfinite repr fallback and surrogate UTF-8 replacement.
+Full receipt projections, argument order, token-counter inputs and unchanged caller
+requests are retained; only elapsed_ms is normalized. Source library protects only
+the declared message prefix: envelope changes and protocol-shape changes at zero
+prefix remain visible. Agent separately guards role/tool identities and retains its
+projection ledger; native Agent adoption is not part of this capture.
+
+Validation: 48 focused Source efficiency tests, exporter --check (171 files), all
+19 source scan guards and git diff --check. Full Python regression, coverage,
+mutation sweeps and Go gates are not refreshed by this capture-only commit.
+
 ## 2026-10-09 shared observation lifecycle admission
 
 Baseline 08ef321. ObservationPipeline clones now share a lifecycle coordinator,

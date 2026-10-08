@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `08ef321` plus shared observation component lifecycle,
+Runtime review baseline: `b45bc58` plus request optimizer Source contracts,
+plus shared observation component lifecycle,
 plus efficiency lifecycle Source contracts,
 plus typed observation orchestration library,
 plus observation-pipeline Source contracts,
