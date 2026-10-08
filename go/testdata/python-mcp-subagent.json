@@ -1,0 +1,156 @@
+{
+  "rows": [
+    {
+      "called": [
+        0
+      ],
+      "child_names": [
+        []
+      ],
+      "child_results": [],
+      "created": 1,
+      "custom": false,
+      "fresh_states": [],
+      "listed": [
+        0
+      ],
+      "output": "parent done",
+      "parent_connected": {
+        "friendly": "raw.name"
+      },
+      "parent_names": [
+        "connect_mcp",
+        "mcp__raw_name__echo"
+      ],
+      "parent_results": [
+        "Connected 'friendly'. Added tools: mcp__raw_name__echo",
+        "child done",
+        "client0"
+      ],
+      "preconnected": true,
+      "role": "worker"
+    },
+    {
+      "called": [
+        0
+      ],
+      "child_names": [
+        [
+          "connect_mcp"
+        ],
+        [
+          "connect_mcp",
+          "mcp__raw_name__echo"
+        ]
+      ],
+      "child_results": [
+        "Connected 'friendly'. Added tools: mcp__raw_name__echo",
+        "client0"
+      ],
+      "created": 1,
+      "custom": true,
+      "fresh_states": [
+        {}
+      ],
+      "listed": [
+        0
+      ],
+      "output": "parent done",
+      "parent_connected": {},
+      "parent_names": [
+        "connect_mcp"
+      ],
+      "parent_results": [
+        "child done"
+      ],
+      "preconnected": false,
+      "role": "worker"
+    },
+    {
+      "called": [
+        0,
+        1,
+        0
+      ],
+      "child_names": [
+        [
+          "connect_mcp",
+          "mcp__raw_name__echo"
+        ],
+        [
+          "connect_mcp",
+          "mcp__raw_name__echo"
+        ]
+      ],
+      "child_results": [
+        "client0",
+        "Connected 'friendly'. Added tools: mcp__raw_name__echo",
+        "client1"
+      ],
+      "created": 2,
+      "custom": true,
+      "fresh_states": [
+        {}
+      ],
+      "listed": [
+        0,
+        1
+      ],
+      "output": "parent done",
+      "parent_connected": {
+        "friendly": "raw.name"
+      },
+      "parent_names": [
+        "connect_mcp",
+        "mcp__raw_name__echo"
+      ],
+      "parent_results": [
+        "Connected 'friendly'. Added tools: mcp__raw_name__echo",
+        "child done",
+        "client0"
+      ],
+      "preconnected": true,
+      "role": "worker"
+    },
+    {
+      "called": [
+        0
+      ],
+      "child_names": [
+        [
+          "connect_mcp",
+          "mcp__raw_name__echo"
+        ],
+        [
+          "connect_mcp",
+          "mcp__raw_name__echo"
+        ]
+      ],
+      "child_results": [
+        "Permission denied: this session is read-only (tool risk: external)",
+        "Permission denied: this session is read-only (tool risk: external)"
+      ],
+      "created": 1,
+      "custom": true,
+      "fresh_states": [],
+      "listed": [
+        0
+      ],
+      "output": "parent done",
+      "parent_connected": {
+        "friendly": "raw.name"
+      },
+      "parent_names": [
+        "connect_mcp",
+        "mcp__raw_name__echo"
+      ],
+      "parent_results": [
+        "Connected 'friendly'. Added tools: mcp__raw_name__echo",
+        "child done",
+        "client0"
+      ],
+      "preconnected": true,
+      "role": "Explore"
+    }
+  ]
+}

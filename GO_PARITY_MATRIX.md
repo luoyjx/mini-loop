@@ -1,5 +1,18 @@
 # Python to Go parity matrix
 
+## 2026-10-08 task-child MCP Source contracts
+
+Baseline 2a06cc3. Snapshot 146 runs four actual Source task/model/child recipes:
+default capability exclusion, an explicitly selected fresh worker connector,
+borrowed parent tools followed by child-only re-registration, and Explore readonly
+denial. An explicit operator PermissionHook with empty rules isolates binding;
+readonly remains monotonic and production defaults are not changed. It captures
+both child request catalogues, ordered child/parent results, factory/list/call
+identities, fresh child alias observations and unchanged parent connection state.
+The recipes also prove Source accepts the worker runtime alias despite its narrower
+advertised task enum. Export --check passes all 146 files. No Source runtime changes.
+Native child binding and parent-retained cleanup are the next implementation slice.
+
 ## 2026-10-08 native InProcessMCP adapter
 
 Baseline 3f19efa (Source snapshot 145). mcp.NewInProcess accepts named
