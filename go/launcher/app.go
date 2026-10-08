@@ -16,6 +16,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/agent"
 	"github.com/luoyjx/mini-loop/go/config"
 	"github.com/luoyjx/mini-loop/go/decisions"
+	"github.com/luoyjx/mini-loop/go/diagnostics"
 	"github.com/luoyjx/mini-loop/go/httpapi"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/provider"
@@ -62,6 +63,7 @@ const (
 )
 
 type Report struct {
+	DiagnosticsTools  bool                        `json:"diagnostics_tools"`
 	SessionQueryTools bool                        `json:"session_query_tools"`
 	MCPTools          bool                        `json:"mcp_tools"`
 	WorkflowTools     bool                        `json:"workflow_tools"`
@@ -110,6 +112,10 @@ type Options struct {
 	PlanApprover      agent.PlanApprover
 	CronTools         bool
 	BackgroundTools   bool
+
+	// Explicit language provider handle; inspection never invokes it and App
+	// shutdown does not close it. Default parser/CLI selection remains separate.
+	DiagnosticsProvider diagnostics.Provider
 }
 
 func InspectWithOptions(settings config.Settings, server config.ServerSettings, auth httpapi.Authenticator, options Options) Report {
@@ -131,7 +137,7 @@ func InspectWithOptions(settings config.Settings, server config.ServerSettings, 
 		backend = OwnerMemory
 	}
 	auto := options.MemoryAuto == nil || *options.MemoryAuto
-	return Report{SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
+	return Report{DiagnosticsTools: options.DiagnosticsProvider != nil, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, MemoryBackend: backend, MemoryTools: options.MemoryTools, MemoryAuto: auto, DecisionBackend: selectedDecisionBackend(settings, options), GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Kind: "settings-and-availability", Settings: snapshot, Server: server, Provider: ProviderStatus{name, endpoint, settings.APIKey.String()}, Authenticated: auth != nil && auth.Configured(), Build: CurrentBuild(), Unsupported: settings.Unsupported(), StateStore: "process-local", Sandbox: "none", DotEnvDiscovery: false}
 }
 
 type boundBashFactory struct{ timeout time.Duration }
@@ -286,7 +292,7 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 		TeamIdlePoll: settings.TeamIdlePoll.Duration(), TeamIdleTimeout: settings.TeamIdleTimeout.Duration(),
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
-		Services: agent.ManagerServices{SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, MCPServers: options.MCPServers, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, WorkflowCaps: &workflows.DefinitionCaps{MaxConcurrentAgents: settings.WorkflowMaxConcurrentAgents, MaxAgents: settings.WorkflowMaxAgents, MaxRounds: settings.WorkflowMaxRounds, WallTimeSeconds: float64(settings.WorkflowWallTimeSeconds)}, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, SelfAuditView: auditView, Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
+		Services: agent.ManagerServices{DiagnosticsProvider: options.DiagnosticsProvider, SessionQueryTools: options.SessionQueryTools, MCPTools: options.MCPTools, MCPServers: options.MCPServers, WorkflowTools: options.WorkflowTools || settings.EnableWorkflows, WorkflowCaps: &workflows.DefinitionCaps{MaxConcurrentAgents: settings.WorkflowMaxConcurrentAgents, MaxAgents: settings.WorkflowMaxAgents, MaxRounds: settings.WorkflowMaxRounds, WallTimeSeconds: float64(settings.WorkflowWallTimeSeconds)}, TeamTools: options.TeamTools, SelfAuditTools: options.SelfAuditTools, SelfAuditView: auditView, Memory: sharedMemory, UserResources: resources, MemoryTools: options.MemoryTools, MemoryAuto: options.MemoryAuto, DecisionTools: decisionTools, DecisionProvider: decisionProvider, DecisionLLM: options.DecisionLLM, GoalTools: options.GoalTools, PlanModeTools: options.PlanModeTools, PlanApprover: options.PlanApprover, CronTools: options.CronTools, BackgroundTools: options.BackgroundTools, Trajectories: trajectories, Build: label, Spill: preservation, Provider: model, Recovery: recovery, Skills: catalog, BashFactory: boundBashFactory{timeout: time.Duration(settings.BashTimeout) * time.Second}}})
 	if err != nil {
 		if transport != nil {
 			transport.CloseIdleConnections()

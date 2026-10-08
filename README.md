@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `5c301f4` plus diagnostics HTTP Source contracts,
+Runtime review baseline: `1350998` plus explicit diagnostics launcher forwarding
+and actual HTTP/model replay, plus diagnostics HTTP Source contracts,
 native diagnostic file scanning and
 closed parser results, plus diagnostics parser-boundary Source observations
 and explicit typed diagnostics provider/tool
@@ -382,7 +383,7 @@ flowchart LR
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
-        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search selection"]
+        GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
@@ -1179,7 +1180,11 @@ the provider scope and preserve its order/severity vocabulary, with the Source
 50-report cap. Manager construction and explicitly selected task children bind the
 current execution workspace. Provider IO releases the handler lock and honors context
 cancellation. The provider remains caller-owned and must support concurrent use;
-no launcher/CLI selection or default Python syntax parser is added in this slice.
+launcher.Options.DiagnosticsProvider forwards that explicit handle into managed
+sessions. Inspection reports selection without callbacks, and shutdown does not close
+the caller-owned provider. Six actual Source HTTP/model traces cover disabled, tree,
+target, null, escaping input and provider failure. CLI/default parser selection remains
+pending.
 `diagnostics.NewPythonSyntaxDiagnostics(parser)` now implements native file selection,
 Source component sorting, stat byte warnings, UTF-8 replacement/universal newlines and
 report-stop behavior around an explicit closed-result parser interface. Source tree

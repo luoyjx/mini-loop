@@ -3015,7 +3015,13 @@ binding, without expanding the default capability role catalogue. Workspace entr
 updates later calls through the current session.files snapshot. The common gate,
 permissions, result observers, paired transcript and panic recovery remain in use.
 
-No default Python syntax backend or standalone launcher selection is installed yet.
+launcher.Options.DiagnosticsProvider forwards the caller-owned handle into managed
+sessions. InspectWithOptions reports diagnostics_tools without invoking Scope or
+Diagnose, allocating workspaces or exposing provider data. App shutdown drains its
+sessions but does not close the provider. Nil selection keeps the tool absent; an
+explicit provider does not bypass MINILOOP_FEATURES bundle refusal. Six actual Source
+HTTP/model traces compare catalogues, results and bound root/target observations.
+No default Python syntax backend or CLI selection is installed yet.
 The six Source injected-provider recipes are replayed; the expanded 37 real Python
 file/AST recipes now also record actual parser inputs/results. The selected provider owns its
 scope/work bounds and tree traversal semantics; explicit-target confinement does not
@@ -3050,4 +3056,4 @@ through a test-only parser seam. Three malformed keyword/list inputs remain nati
 strict admission refusals. This proves file/read/control-flow behavior without
 claiming a native Python grammar. The user has been asked to select an installed
 Python compiler or fully native parser; no compiler dependency/default is chosen
-before their reply. Standalone selection and full activation remain pending.
+before their reply. CLI/default parser selection and full activation remain pending.

@@ -7933,3 +7933,15 @@ tool formatting remains capped. These are not whole-tree work, atomic file-size 
 arbitrary provider confinement guarantees. Cancellation aborts enumeration/read/parser
 phases without returning a successful partial report. Backend/parser selection remains
 separate from model input and execution authority.
+
+### Go migration — diagnostics launcher lifetime
+
+The launcher forwards only an explicitly supplied diagnostics.Provider. Inspection
+reports selection without calling Scope/Diagnose or allocating a workspace. Session
+root/target authority is still established at tool execution, not by launcher options.
+Shutdown drains sessions without closing the caller-owned handle; providers remain
+responsible for context-aware concurrent callbacks. Nil selection keeps the tool absent
+and individual selection cannot bypass the unsupported full-feature bundle guard.
+Actual HTTP/model comparisons cover all six Source fixture turns, including zero
+callbacks for disabled selection and explicit path escape. Default parser/CLI selection
+remains pending.

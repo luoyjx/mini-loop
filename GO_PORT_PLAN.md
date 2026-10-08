@@ -1,5 +1,31 @@
 # Go port plan
 
+## 2026-10-08 explicit diagnostics launcher forwarding
+
+Baseline 1350998. launcher.Options.DiagnosticsProvider forwards an explicit
+caller-owned provider into managed sessions. Nil selection leaves diagnostics absent;
+InspectWithOptions reports diagnostics_tools without callbacks, provider disclosure
+or workspace allocation. App shutdown drains sessions without closing the provider.
+The unsupported MINILOOP_FEATURES bundle guard remains in force.
+
+Six actual Source HTTP/model traces match ordered tool catalogues, exact paired
+results, final output and bound workspace/target observations. Disabled and escaping
+inputs invoke no provider; ordinary provider failure reaches the later model turn.
+This slice uses an injected custom provider and does not select a Python compiler,
+CLI/default parser, dependency or full-feature activation. Parser choice, native
+SQLite and G7 remain open; the complete Python-to-Go goal is still active.
+
+Validation: go test ./... -count=1 -timeout=180s, go test -race ./...
+-count=1 -timeout=180s and go vet ./... pass. All 151 Source contract exports
+pass --check. Focused launcher diagnostics tests, README outline and git diff
+--check pass. Architecture source/generated HTML remain synchronized; Archify
+passes 9/9 showcase checks with zero errors/warnings. Visual inspection remains
+skipped after the prior access denial. Full Python regression, coverage, Python
+package invariants and mutation sweeps were not rerun for this Go-only slice.
+No Python runtime modules or scanner targets changed. Specification SHA256:
+c1e656a5f7f10e8764cde321b971ec3bc795bad898a2296d163b6b049f680f14;
+HTML SHA256: 2f72ec46df7150daa3b41ec7639f7fb180ee9efa4320f417ab11cae72e474243.
+
 ## 2026-10-08 diagnostics HTTP Source contracts
 
 Baseline 5c301f4. Source snapshot 151 adds six actual TestClient HTTP/model turns
