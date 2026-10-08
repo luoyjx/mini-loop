@@ -1,5 +1,26 @@
 # Python to Go parity matrix
 
+## 2026-10-09 observation pipeline Source contracts
+
+Baseline dbfe672. Export 169 captures 38 real TokenEfficiencyRuntime observation
+scenarios through a controlled reducer SPI. Runtime orchestration, receipts,
+warning propagation and raw-store operations remain actual Source. Only raw entropy
+and the store clock are controlled; elapsed_ms alone is normalized after capture.
+
+Cases pin default/per-component modes, shadow-before-inflation ordering, unchanged
+results, byte/token inflation, double-reduction guards and disabled guards, MIME/input
+admission, recoverable storage availability/closed/size faults, existing references,
+last-good projection fallback, downstream warning propagation, duplicate outcome
+warnings, component/unsafe class faults, invalid result/warnings, cooperative timeout,
+cancellation escape, broken/negative/unbounded counters and metadata retention.
+Captures retain full observation, receipt projections, call arguments/order, enforced
+status and recovered masked text. Native orchestration follows; lifecycle initialization,
+health/close admission and actual Agent/default selection remain separate E5/E6 gates.
+
+Validation: Source tools/efficiency suite passes 52 tests, exporter --check confirms
+169 files and all 19 scan guards pass. README outline and git diff --check pass.
+Full Python regression, coverage and mutation sweep are not refreshed.
+
 ## 2026-10-09 typed observations and builtin reducer libraries
 
 Baseline 824d130. efficiency adds ObservationConfig/MaskedObservation,

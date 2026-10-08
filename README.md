@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `824d130` plus typed observations and builtin reducers,
+Runtime review baseline: `dbfe672` plus observation-pipeline Source contracts,
+plus typed observations and builtin reducers,
 plus observation/reducer Source contracts,
 plus typed masked-artifact recovery tool,
 plus artifact-recovery Source contracts,
