@@ -1,5 +1,20 @@
 # Python to Go parity matrix
 
+## 2026-10-08 same-batch MCP connection Source contracts
+
+Baseline e87772e. Source snapshot 142 runs five actual Python Agent model/tool
+batches through install_mcp, lazy factories and register_mcp. It captures two fitted
+request tool-name lists per scenario, complete ordered result strings, connect
+schemas, alias/raw-name maps, factory/list/call counts and withheld/collision
+diagnostics. Scenarios cover missing servers, aliases versus raw client names,
+idempotent connection, same-batch discovered calls, same raw server replacement
+through another alias, cross-server refusal, empty discovery/catalogues and empty
+aliases. This proves the Source batch observes newly registered tools through
+fresh lookups; it does not pin handler identity to the initial fitted schema list.
+All 142 exports, all 19 source scan anchors and all 10 selected MCP guards pass.
+No Python runtime package module or dependency changed. Native composition and
+full regression gates are recorded in the following implementation checkpoint.
+
 ## 2026-10-08 native MCP registration and fixed runtime snapshots
 
 Baseline a008dc8 (Source snapshot 141). A concrete MCP protocol variant lowers
