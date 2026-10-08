@@ -117,6 +117,7 @@ type activeTurn struct {
 // Its underlying core is private: children use Session directly and do not
 // fabricate outer session status/done events.
 type ManagedSession struct {
+	mcpLifetime    *mcpLifetime
 	workflows      *WorkflowService
 	teamRun        *teammateRun
 	skillOperation *personalSkillOperation
@@ -157,7 +158,7 @@ func newManagedSession(config RuntimeConfig, deferState bool) (*ManagedSession, 
 	}
 	core.control = &sessionControl{mode: core.mode}
 	core.gate.modeSource = core.control
-	session := &ManagedSession{workflows: config.WorkflowService, core: core, admission: make(chan struct{}, 1), accepting: true, status: StatusIdle, createdAt: float64(time.Now().UnixMicro()) / 1e6, approvals: config.Approvals, workspaceBound: config.Workspace != ""}
+	session := &ManagedSession{mcpLifetime: config.mcpLifetime, workflows: config.WorkflowService, core: core, admission: make(chan struct{}, 1), accepting: true, status: StatusIdle, createdAt: float64(time.Now().UnixMicro()) / 1e6, approvals: config.Approvals, workspaceBound: config.Workspace != ""}
 	session.admission <- struct{}{}
 	core.runtime.workflowParent = session
 	run := &trajectoryRun{store: config.Trajectories, masker: config.Secrets}

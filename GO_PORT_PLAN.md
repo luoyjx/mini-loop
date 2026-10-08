@@ -1,5 +1,74 @@
 # Go port plan
 
+## 2026-10-08 native managed MCP connection lifetime
+
+Baseline 447c9a3 (Source snapshot 143). Explicit ManagerServices.MCPTools binds
+ordered ManagedMCPServer aliases to MCPConnection handles or typed cancellable
+MCPConnectionFactory callbacks. ManagedMCPClient extends the named discovery/call
+seam with Close() error; the existing native stdio client implements it without
+new dependencies. One stable handle represents one underlying client, separating
+object identity from raw server namespace and avoiding interface-value comparison.
+Configuration is detached and duplicate aliases, ambiguous alternatives and
+uninitialized handles are rejected before workspace allocation.
+
+The common manager composition map binds fresh state for create/fork/restore and
+teammate construction. Forks copy history, not discovered tools or connected alias
+state. Each session retains acquired handles once, even across repeated aliases.
+Delete revokes admission, asynchronously drains the admitted turn and owned work,
+then releases references before scratch reclamation. Stop drains registered
+consumers and pending deletion cleanups. Only the last acquired holder closes a
+shared handle; unacquired configured clients remain operator-owned. New acquisition
+waits for an in-progress close with context cancellation, permitting reusable
+clients to restart afterwards. Close errors/panics enter bounded manager cleanup
+diagnostics and do not stop remaining retained-client cleanup.
+
+Retention happens before discovery, including non-nil factory results accompanying
+errors and earlier raw-name replacement clients. This deliberately strengthens
+Source's registered-client-map cleanup, which can lose these objects; exact Source
+leak parity is not claimed. Factories must return created resources in their handle;
+resources hidden behind nil returns remain factory-owned. Close must drain its
+client and not recursively acquire its own handle. Raw RuntimeConfig MCPServers
+and externally retained catalogues do not acquire managed lifecycle authority.
+
+Native tests compare all six actual Source manager recipes: concrete/shared versus
+factory-created clients, first/last delete, stop deduplication, repeated stop and
+fresh fork MCP inventory/state. The custom Source base catalogue contains only
+connect_mcp; fork comparisons explicitly select the native MCP portion rather than
+claim equality of unrelated default workspace tools. Native-only tests hold
+cancelled discovery until release to prove client/workspace retention, preserve
+failed-factory cleanup, retain old same-name clients, deduplicate repeated aliases,
+isolate close panic/error diagnostics, reject invalid configuration and serialize
+close/reuse. The new stdio lifecycle seam is compile-checked; existing stdio tests
+provide subprocess-close evidence, not a new managed real-subprocess fixture.
+
+Validation: focused managed-MCP race tests; full `go test ./... -count=1
+-timeout=180s`, full `go test -race ./... -count=1 -timeout=180s` and
+`go vet ./...` passed against the final native source. All 143 Source contract
+exports are current, 19 scan anchors passed, and `verify_guards.py -k mcp` caught
+10 selected MCP mutations; the unrelated full mutation sweep was not rerun.
+Python full regression: 2155 passed, 28 skipped, 4 warnings, 24 subtests in
+101.11 seconds. Three dependency warnings plus one asyncio subprocess destructor
+warning (Event loop is closed), observed during the owner-map test; attribution to
+its originating subprocess remains unresolved. A focused owner-map rerun with
+PytestUnraisableExceptionWarning promoted to errors passed all 4 tests in 0.43s.
+No Python runtime package modules changed; the separate invariant verifier was not
+rerun. README outline and `git diff --check` passed. Coverage was not refreshed;
+the last Go statement result 90.23% (21,311/23,618) belongs to 721b413 before MCP,
+and is not migration completion. Python coverage was not refreshed.
+
+README review baseline, canonical Go manager-to-MCP ownership edge, boundary text,
+extension seam and hardening note are updated. The interactive Language layout
+card records lifecycle ownership. Archify deliver: 9/9 showcase checks, zero
+errors/warnings. Visual inspection remains skipped after prior access denial.
+Spec SHA256 235932e8cd142ac4638b158ce0938c1924b0156a5ffa59d4835c4d54b55a2e86;
+HTML SHA256 318f26baac3b169929dbce933bd6faab75be22cbe78573142b11212e7bf1e1df.
+
+Next: launcher/server configuration, task-child MCP scope and InProcessMCP.
+Manager restoration shares the composition map but native SQLite still awaits
+approved driver selection; no durable live-connection recovery is claimed.
+Remaining malformed/archival argument, model/tool scalar/transport and timing/input/
+output profiles and full G7 remain open. The full Python-to-Go objective stays open.
+
 ## 2026-10-08 MCP manager lifecycle Source contracts
 
 Baseline 4bd7041. Snapshot 143 runs six actual Source SessionManager recipes,

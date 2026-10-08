@@ -58,8 +58,9 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	MCPTools   bool
-	MCPServers []MCPServer
+	mcpLifetime *mcpLifetime
+	MCPTools    bool
+	MCPServers  []MCPServer
 	// MCPCatalog is an explicitly discovered snapshot. Client lifetime remains operator-owned.
 	MCPCatalog      *ToolCatalog
 	WorkflowTools   bool

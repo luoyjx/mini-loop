@@ -108,6 +108,9 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		config.DeleteGrace = DefaultDeleteGrace
 	}
 	services := &config.Services
+	if err := normalizeManagerMCP(services); err != nil {
+		return nil, err
+	}
 	if err := normalizeManagerWorkflows(services); err != nil {
 		return nil, err
 	}
@@ -457,6 +460,7 @@ func (manager *SessionManager) baseManagedRuntimeConfig(id SessionID, owner Owne
 	runtime.skillDrafts = manager.skillDrafts
 	runtime.MemoryTools = services.MemoryTools
 	runtime.MemoryAuto = services.MemoryAuto
+	manager.bindMCP(&runtime)
 	return runtime
 }
 
@@ -590,7 +594,7 @@ func (manager *SessionManager) Delete(owner OwnerID, id SessionID, options Delet
 			manager.reclaimUnusedWorkspace(id, session.core.workspace)
 		}
 	}
-	if workflowDrain != nil || session.teamRun != nil || session.Info().Busy || session.hasPersonalSkillOperation() || session.core.backgroundInitialized() {
+	if session.mcpLifetime != nil || workflowDrain != nil || session.teamRun != nil || session.Info().Busy || session.hasPersonalSkillOperation() || session.core.backgroundInitialized() {
 		go cleanup()
 	} else {
 		cleanup()
@@ -664,6 +668,7 @@ func (manager *SessionManager) reclaimUnusedWorkspace(id SessionID, path string)
 	}
 }
 func (manager *SessionManager) drainSession(session *ManagedSession, reason string, grace time.Duration) {
+	defer func() { manager.recordCleanupError(session.ID(), "mcp", session.mcpLifetime.close()) }()
 	// Admission was revoked by Delete/Stop. A turn can still create its lazy
 	// service during the grace window, so inspect ownership only after it drains.
 	defer func() {

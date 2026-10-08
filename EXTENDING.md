@@ -2782,3 +2782,36 @@ in the registration wrapper. Client lifecycle/reference counting, manager factor
 composition, fork/child handling, launcher configuration and InProcessMCP remain
 open. The operator must retain/close factory-produced clients, including clients
 created by an unsuccessful connection; this is not a managed lifecycle claim.
+
+## Go managed MCP connections
+
+Select `ManagerServices.MCPTools` and ordered `[]ManagedMCPServer` entries.
+Each entry contains an Alias and exactly one `*MCPConnection` or
+`MCPConnectionFactory`. Create handles with `NewMCPConnection(ManagedMCPClient)`;
+the named client contract extends discovery/call with `Close() error` and is
+implemented by `mcp.StdioClient`. Share ONE handle for each shared underlying
+client. Raw server names are namespace metadata, not client identity. Do not wrap
+the same client in multiple independent handles. Configuration is detached;
+duplicate aliases and zero/uninitialized handles are rejected before allocation.
+
+Manager create/fork/restore and teammate construction use the same composition
+map. Each session has a fresh connected-alias map and retained-handle lifetime.
+Forks copy the conversation, not discovered tools or live connection state. A
+successful or failed factory result with a non-nil handle is retained before
+registration; even failed discovery and earlier raw-name replacement clients keep
+a cleanup owner. This strengthens Source failure cleanup, whose registered-client
+map can lose these objects. Factories must report every created resource in their
+returned handle; resources hidden behind a nil return remain factory-owned.
+
+Delete revokes admission and asynchronously drains the consumer before releasing
+its handles. Stop drains consumers and waits for pending deletions. Shared handles
+close only when their final acquired session releases them; repeated aliases do
+not add duplicate holders. Configured but unacquired clients are not closed.
+Close errors/panics remain bounded manager cleanup diagnostics and do not prevent
+other retained clients from closing. A new acquisition waits for an in-progress
+close, with context cancellation; a reusable client may restart afterwards.
+Client Close must drain the client, and cannot recursively acquire its own handle.
+Retained catalogues do not extend managed lifetime past session deletion.
+
+Raw `RuntimeConfig.MCPServers` remains operator-owned. Launcher activation,
+task-subagent MCP scope and native InProcessMCP are separate pending slices.

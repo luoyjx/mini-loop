@@ -7790,3 +7790,20 @@ five real Source Agent batches, including factory idempotence, same-batch call
 visibility, owner collision refusal and withheld credentials, and exercise parent
 cancellation without connected-state publication. Automatic client close/reference
 counting and fleet/fork/child composition remain open.
+
+### Go migration — managed MCP last-holder cleanup
+
+Managed connections use explicit stable handle identity, not raw server name or
+interface-value comparison. A retained per-session holder is acquired before
+factory/discovery publication, including failure paths; last-holder release occurs
+only after admitted turns and owned teammate work drain. Delete cleanup is tracked
+and asynchronous, and Stop joins it. Shared deletion and shutdown cannot close a
+client still held by another draining session. Reacquisition waits for a previous
+Close operation rather than racing process shutdown. Close errors and panics do
+not abort remaining cleanup; they enter the bounded manager diagnostic ledger.
+Six real Source manager recipes prove shared/factory close counts and unconnected
+fork state. Native tests additionally hold discovery after cancellation, verify
+workspace/client retention until return, failed factories, old raw-name replacement
+retention, alias deduplication, panic isolation and serialized close/reuse. Failure
+retention deliberately repairs Source registered-map ownership gaps; it is not a
+claim of exact leak parity. Launcher and task-child MCP composition remain open.
