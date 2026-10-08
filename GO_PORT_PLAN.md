@@ -1,5 +1,17 @@
 # Go port plan
 
+## 2026-10-08 ledger metric conversion contract preparation
+
+Baseline b0c1111. Source snapshot 139 executes seventy-one decoded-wire recipes
+through real build_ledger/render_html and 284 FastAPI outcomes. It records build,
+metric serialization and render failures separately, complete folded metric values,
+full single/two-ledger page hashes and owned HTTP page hashes. Cases cover booleans,
+binary-float truncation, Unicode decimal text, underscores/whitespace, nonfinite and
+surrogate refusal, arbitrary integers, the 4300-digit conversion/format limit,
+unbounded token sums, pair-container normalization and Python scalar key equality.
+These fixtures prepare native metric conversion without narrowing the full port or
+claiming timing/input/output, native SQLite, MCP or full G7 completion.
+
 ## 2026-10-08 native historical summary field variants
 
 Baseline 801584b (Source snapshot 138). TrajectorySummaryArchive adds named closed
