@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `9716ae5` plus anchored AST snapshot filesystem primitives,
+Runtime review baseline: `626c759` plus full private AST source snapshot construction,
+plus anchored AST snapshot filesystem primitives,
 plus native three-state AST ignore matching
 and control decoding, plus AST ignore Source contracts,
 plus AST snapshot filesystem Source contracts,
@@ -416,7 +417,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · source snapshots pending<br/>AST ignore matching / control decoding<br/>anchored no-follow snapshot IO primitives"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>semantic tools / selectors pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1219,17 +1220,19 @@ Buffered drains preserve Source 64 KiB read-or-EOF ordering, including timeout-b
 overflow for a small over-limit writer that keeps its pipe open.
 Darwin/Linux retain the launched process-group ID to stop pipe-holding descendants
 even after the direct child exits. Other platforms have direct-child cleanup only.
-Source snapshots, structured AST payloads and semantic-read tool installation remain
-pending. Executable verification precedes launch and is not an atomic file pin.
+Private Source snapshot construction is implemented below; structured AST payloads
+and semantic-read tool installation remain pending. Executable verification precedes
+launch and is not an atomic file pin.
 
 The internal AST ignore component now preserves ignore/keep/unmatched decisions,
 compiled-pattern counts and selected indices against installed Source pathspec 1.1.1.
 Root anchors, globstar, file/directory precedence, escapes and character classes use
 Go standard regular expressions; Source star/length guards remain in force. Ignore
 controls drop invalid UTF-8 for matching and use Python splitlines while their raw
-bytes remain available for copying. This prerequisite does not yet traverse or copy
-a source snapshot. Reversed character ranges remain compiler failures with native
-diagnostic wording; full snapshot/frame/budget and tool integration remain pending.
+bytes remain available for copying. The private snapshot builder
+now supplies traversal and copy. Reversed character ranges remain compiler failures
+with native diagnostic wording; public selectors, payloads and tool integration remain
+pending.
 
 The private AST snapshot filesystem layer now owns no-follow directory handles,
 opens children relative to those handles and reads metadata with fstatat before
@@ -1238,8 +1241,24 @@ count all names against a limit and reopen the directory for an independent offs
 Close-on-exec descriptors remain anchored after pathname replacement. Darwin and
 Linux amd64/arm64 metadata backends are implemented; other backends refuse secure
 metadata access. Native tests run on Darwin arm64; cross-compilation alone does not
-prove other platforms at runtime. Complete copy/frame/budget/cleanup integration
-and replay of all 36 Source snapshot recipes remain pending.
+prove other platforms at runtime. The integrated private builder is described below;
+these handles alone are not a public path-selection or permission boundary.
+
+The private Adapter.withSnapshot now builds the complete bounded tree before a
+callback and removes its temporary directory on every return, callback error or
+panic. It keeps original deduplicated target order while copying shallower targets
+first, applies Source language/default-ignore policy plus cached root/nested control
+frames, and counts files/bytes/entries/depth/ignore bytes/patterns/match operations.
+Explicit files bypass tree filters; recursive symlinks, special files and VCS
+metadata are skipped. The nearest non-symlink .git marker sets the project frame;
+a synthetic marker and raw ignore bytes accompany selected directory snapshots.
+Copies have mode 0400 and live rewrites after copy do not change captured bytes.
+All 36 actual Source recipes match paths, manifests, hashes, modes, refusal messages
+and successful cleanup on Darwin arm64. The constructor distinguishes caller
+cancellation from its copy deadline. It does not freeze files during concurrent
+writes, interrupt arbitrary blocking filesystem syscalls, or install a model tool.
+Public canonical selectors/bounded globs, CLI payloads and runtime AST wiring remain
+required; Linux evidence is compile-only.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The

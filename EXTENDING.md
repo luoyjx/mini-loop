@@ -3134,3 +3134,18 @@ race mutation, so selected opens retain NOFOLLOW and regular-file type rechecks.
 Enumeration reopens dot rather than duplicating a shared directory offset. The
 builder must supply aggregate budgets, timeout context, ignore frames and private
 cleanup; this layer alone is not a complete snapshot or public path selector.
+
+### Complete private Go AST snapshots
+
+Adapter.withSnapshot scopes a named sourceSnapshot to one trusted callback. It
+builds the complete tree using request-local counters/control caches and closes
+source descriptors before the callback. Never retain its private paths for later
+use: cleanup runs on success, callback error and panic. The production limits are
+fixed Source constants; withSnapshotLimits is private fixture capacity injection.
+Raw ignore bytes are copied unchanged; decoded lines only feed matching. Validate
+pattern shape before counting control lines, then compile assembled frames. Empty
+raw lines and compiled null/comment patterns have different budget meanings.
+Do not resolve child paths again after metadata/filtering: regular/child opens use
+the held parent handle. Explicit files intentionally bypass recursive filters.
+Public raw-path resolution and final-basename glob expansion remain separate work;
+this kernel cannot install a model tool without those selectors and typed payloads.

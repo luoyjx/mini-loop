@@ -1,5 +1,55 @@
 # Python to Go parity matrix
 
+## 2026-10-08 complete private AST source snapshot builder
+
+Baseline 626c759. Adapter.withSnapshot now combines the anchored filesystem layer
+with the complete Source snapshot algorithm. Named snapshotLimits/Budget/Control/
+Frame/Rewrite records keep request state local and typed. Candidate deduplication
+retains return order; shallower targets copy first. Single-component traversal and
+no-follow metadata/open checks remain anchored. Source handles close before the
+callback; the private trusted temporary directory is removed on return/error/panic.
+No Go dependency or public model tool was added.
+
+All eight Source capacities, 56 suffixes, two basenames and 35 default-ignore rules
+are pinned. Regular copies check initial and actual aggregate bytes, count controls
+as files and finish with mode 0400. Every enumerated source name counts before
+filtering. Recursive VCS metadata/symlinks/special files are skipped; explicit
+files bypass suffix and ignore filtering. The nearest non-symlink git marker sets
+the project frame; directory snapshots get a synthetic marker and cached raw root
+controls. Local controls feed reverse three-state frames with compiled-pattern
+match counts, raw-line quotas and Source UTF-8-ignore/splitlines decoding. Shape
+validation occurs before control quotas; regex compilation occurs afterward.
+Native errno causes are retained while projecting Source descriptor-child text.
+
+All 36 actual Python filesystem recipes replay the native algorithm and compare
+selected path order, rewrite roots, manifests, byte hashes, 0400 modes, refusal
+messages/errno causes and successful cleanup. Native callback faults/cancellation
+also prove temporary parent cleanup; caller deadline/cancellation remain distinct
+from internal copy timeout. Earlier native handle tests prove parent-replacement
+anchoring and metadata-to-open symlink refusal. Unsupported metadata backends now
+refuse at root open even for an empty tree, rather than being swallowed as absent
+ignore controls. Darwin arm64 is runtime-tested; Linux amd64/arm64 is compile-only.
+
+This completes the private snapshot kernel, not the entire AST feature or migration.
+Public canonical selectors/bounded globs, CLI JSON payloads and four model tools/
+runtime wiring remain required. Descending-range compiler wording, native SQLite,
+diagnostics parser selection and G7 remain open. Copying does not freeze concurrent
+regular-file writers or forcibly interrupt blocking filesystem syscalls.
+
+Validation passed: go test ./... -count=1 -timeout=180s;
+go test -race ./... -count=1 -timeout=180s; go vet ./...;
+go test -race ./astcontext -run 'Snapshot|Ignore' -count=1 -timeout=60s;
+Linux amd64/arm64 go test -c ./astcontext; 154 Source contract exports current;
+verify_scans.py reports all 19 scanning guards anchored. verify_guards.py -k ast
+also caught its five substring-selected legacy mutations; these names are not AST
+snapshot mutations and do not establish a Source AST mutation sweep. README outline
+and git diff --check pass. Archify deliver passes 9/9 showcase checks with zero
+errors/warnings. Visual inspection remains skipped after prior access denial.
+Full Python regression, full Source mutation sweep and coverage were not refreshed.
+Specification SHA256: 8e0fb3c4da3994400e951add30754b6a06361e03d2fb8add23d8b5c1d10750e3;
+HTML SHA256: 7e6ceffe3a52ce526ad831ed4b4b3dae84798cc6027ce8dde31ab05820180e60.
+
+
 ## 2026-10-08 anchored AST snapshot filesystem primitives
 
 Baseline 9716ae5. Private snapshotDirectory owns a directory handle and performs

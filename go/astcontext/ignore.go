@@ -36,9 +36,31 @@ type ignoreSpec struct{ patterns []ignorePattern }
 const maxIgnorePatternChars = 4096
 
 func compileIgnore(lines []string) (ignoreSpec, error) {
+	if err := validateIgnoreLines(lines); err != nil {
+		return ignoreSpec{}, err
+	}
+	result := ignoreSpec{}
+	for _, line := range lines {
+		// PathSpec filters empty raw lines, but retains comments/null patterns;
+		// their positions and count still affect matching indices and budgets.
+		if line == "" {
+			continue
+		}
+		pattern, err := compileIgnorePattern(line)
+		if err != nil {
+			return ignoreSpec{}, err
+		}
+		result.patterns = append(result.patterns, pattern)
+	}
+	return result, nil
+}
+
+// Control reads validate shape before counting raw lines; compilation happens
+// only when the containing frame is assembled, after the control budget gates.
+func validateIgnoreLines(lines []string) error {
 	for _, raw := range lines {
 		if utf8.RuneCountInString(raw) > maxIgnorePatternChars {
-			return ignoreSpec{}, fmt.Errorf("ast-outline ignore patterns must be at most %d characters", maxIgnorePatternChars)
+			return fmt.Errorf("ast-outline ignore patterns must be at most %d characters", maxIgnorePatternChars)
 		}
 		if raw == "" || strings.HasPrefix(raw, "#") {
 			continue
@@ -61,24 +83,11 @@ func compileIgnore(lines []string) (ignoreSpec, error) {
 				}
 			}
 			if groups > 2 {
-				return ignoreSpec{}, errors.New("ast-outline ignore patterns allow at most two variable-star groups")
+				return errors.New("ast-outline ignore patterns allow at most two variable-star groups")
 			}
 		}
 	}
-	result := ignoreSpec{}
-	for _, line := range lines {
-		// PathSpec filters empty raw lines, but retains comments/null patterns;
-		// their positions and count still affect matching indices and budgets.
-		if line == "" {
-			continue
-		}
-		pattern, err := compileIgnorePattern(line)
-		if err != nil {
-			return ignoreSpec{}, err
-		}
-		result.patterns = append(result.patterns, pattern)
-	}
-	return result, nil
+	return nil
 }
 
 func (spec ignoreSpec) check(path string) ignoreMatch {

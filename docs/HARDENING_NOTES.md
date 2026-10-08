@@ -8007,4 +8007,21 @@ CLOEXEC prevents retaining these handles in AST children. Components reject slas
 NUL, dot and dot-dot; each independent scan bounds all entries before filtering.
 Context checks bracket traversal batches, not arbitrary blocking filesystem syscalls.
 This does not freeze concurrently rewritten regular-file content or grant model path
-authority. Full snapshot aggregate budgets, ignore frames and cleanup remain open.
+authority. The integrated private builder below now supplies aggregate budgets,
+ignore frames and cleanup; public path selectors remain open.
+
+### Go migration — private AST snapshot copy and lifetime
+
+withSnapshot owns one fixed-parent temporary directory outside the workspace and
+removes it on every callback exit, including errors/panics. It builds first and
+closes source handles before exposing snapshot paths. Request-local counters bound
+source entries, file count, initial/actual copy bytes, depth and ignore controls/
+matching. Ignored or unsupported files are filtered before source open/byte gates;
+controls retain raw bytes and mode 0400, and nested kept decisions override outer
+ignored frames. All 36 Source recipes replay the real native filesystem algorithm.
+Unsupported metadata backends refuse before any tree traversal, including empty
+roots. External context cancellation is not recast as a copy-timeout observation.
+The kernel assumes canonical trusted selections; public selectors and bounded
+show globs remain pending. A copied regular file may reflect concurrent writes,
+filesystem syscalls may block beyond checks, and private snapshotting grants no
+new model authority or OS confinement.

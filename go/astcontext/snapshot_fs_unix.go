@@ -26,6 +26,13 @@ func openSnapshotDirectory(ctx context.Context, root string) (*snapshotDirectory
 	if err != nil {
 		return nil, err
 	}
+	// Refuse unsupported metadata backends even for an empty selected directory;
+	// ignore-control reads intentionally skip ordinary metadata failures.
+	var metadata syscall.Stat_t
+	if err := snapshotStatAt(file, ".", &metadata); err != nil {
+		file.Close()
+		return nil, err
+	}
 	return &snapshotDirectory{file: file}, nil
 }
 
