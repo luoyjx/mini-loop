@@ -1,5 +1,19 @@
 # Go port plan
 
+## 2026-10-09 multi-stage registry Source contracts
+
+Baseline `6cd2260`. Ten recipes execute actual TokenEfficiencyRegistry and
+TokenEfficiencyRuntime methods. They capture stage/global-ID admission, mode and
+wrong-stage refusal order, immutable membership snapshots, grouped stage order,
+clone-cached lifecycle, reverse close order and actual calls in all three stages.
+Direct StageComponents recipes separately capture shared-object deduplication,
+first-enabled binding selection and distinct objects with identical descriptor IDs.
+Only elapsed_ms is normalized. This capture alone does not install Go composition.
+
+Validation: 74 focused Source efficiency tests pass; all 19 scanning guards pass;
+full exporter --check confirms 173 files; git diff --check passes. Python full
+regression/coverage and mutation sweep are not refreshed.
+
 ## 2026-10-09 coverage refresh after response policy delivery
 
 Measured implementation baseline: `6feeba2`. Full cross-package coverage run passed:

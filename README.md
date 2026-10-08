@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `5e4dffa` plus typed response policies and settings,
+Runtime review baseline: `6cd2260` plus multi-stage registry Source contracts,
+plus typed response policies and settings,
 plus response policy Source contracts,
 plus typed request optimization library,
 plus request optimizer Source contracts,

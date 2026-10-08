@@ -1,0 +1,1143 @@
+{
+  "rows": [
+    {
+      "accepted": [],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "enforce",
+      "direct": false,
+      "entries": [],
+      "errors": [],
+      "events": [],
+      "health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "empty",
+      "snapshot": [
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "accepted": [
+        "response",
+        "observation",
+        "request"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "response",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "response_policy",
+            "status": "ok"
+          },
+          {
+            "component_id": "request",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "request_context",
+            "status": "ok"
+          },
+          {
+            "component_id": "observation",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "enforce",
+      "direct": false,
+      "entries": [
+        {
+          "descriptor_stage": "response_policy",
+          "id": "response",
+          "mode": null,
+          "object": "response",
+          "target": "response_policy"
+        },
+        {
+          "descriptor_stage": "observation",
+          "id": "observation",
+          "mode": null,
+          "object": "observation",
+          "target": "observation"
+        },
+        {
+          "descriptor_stage": "request_context",
+          "id": "request",
+          "mode": null,
+          "object": "request",
+          "target": "request_context"
+        }
+      ],
+      "errors": [],
+      "events": [
+        [
+          "observation",
+          "initialize"
+        ],
+        [
+          "request",
+          "initialize"
+        ],
+        [
+          "response",
+          "initialize"
+        ],
+        [
+          "observation",
+          "health"
+        ],
+        [
+          "request",
+          "health"
+        ],
+        [
+          "response",
+          "health"
+        ],
+        [
+          "observation",
+          "reduce"
+        ],
+        [
+          "request",
+          "optimize"
+        ],
+        [
+          "response",
+          "plan"
+        ],
+        [
+          "response",
+          "close"
+        ],
+        [
+          "request",
+          "close"
+        ],
+        [
+          "observation",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "observation",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "request",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "request_context",
+            "status": "ok"
+          },
+          {
+            "component_id": "response",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "response_policy",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "observation",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "request",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "request_context",
+            "status": "ok"
+          },
+          {
+            "component_id": "response",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "response_policy",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "stage-order",
+      "snapshot": [
+        [
+          "observation"
+        ],
+        [
+          "request"
+        ],
+        [
+          "response"
+        ]
+      ]
+    },
+    {
+      "accepted": [
+        "response",
+        "observation",
+        "request"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "off",
+      "direct": false,
+      "entries": [
+        {
+          "descriptor_stage": "response_policy",
+          "id": "response",
+          "mode": null,
+          "object": "response",
+          "target": "response_policy"
+        },
+        {
+          "descriptor_stage": "observation",
+          "id": "observation",
+          "mode": null,
+          "object": "observation",
+          "target": "observation"
+        },
+        {
+          "descriptor_stage": "request_context",
+          "id": "request",
+          "mode": null,
+          "object": "request",
+          "target": "request_context"
+        }
+      ],
+      "errors": [],
+      "events": [],
+      "health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "default-off",
+      "snapshot": [
+        [
+          "observation"
+        ],
+        [
+          "request"
+        ],
+        [
+          "response"
+        ]
+      ]
+    },
+    {
+      "accepted": [
+        "response",
+        "off",
+        "request"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "response",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "response_policy",
+            "status": "ok"
+          },
+          {
+            "component_id": "request",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "request_context",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "off",
+      "direct": false,
+      "entries": [
+        {
+          "descriptor_stage": "response_policy",
+          "id": "response",
+          "mode": "shadow",
+          "object": "response",
+          "target": "response_policy"
+        },
+        {
+          "descriptor_stage": "observation",
+          "id": "off",
+          "mode": "off",
+          "object": "off",
+          "target": "observation"
+        },
+        {
+          "descriptor_stage": "request_context",
+          "id": "request",
+          "mode": "enforce",
+          "object": "request",
+          "target": "request_context"
+        }
+      ],
+      "errors": [],
+      "events": [
+        [
+          "request",
+          "initialize"
+        ],
+        [
+          "response",
+          "initialize"
+        ],
+        [
+          "request",
+          "health"
+        ],
+        [
+          "response",
+          "health"
+        ],
+        [
+          "request",
+          "optimize"
+        ],
+        [
+          "response",
+          "plan"
+        ],
+        [
+          "response",
+          "close"
+        ],
+        [
+          "request",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "request",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "request_context",
+            "status": "ok"
+          },
+          {
+            "component_id": "response",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "response_policy",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "request",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "request_context",
+            "status": "ok"
+          },
+          {
+            "component_id": "response",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "response_policy",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "override-modes",
+      "snapshot": [
+        [
+          "off"
+        ],
+        [
+          "request"
+        ],
+        [
+          "response"
+        ]
+      ]
+    },
+    {
+      "accepted": [
+        "same",
+        "request"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "request",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "request_context",
+            "status": "ok"
+          },
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "enforce",
+      "direct": false,
+      "entries": [
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": null,
+          "object": "same",
+          "target": "observation"
+        },
+        {
+          "descriptor_stage": "response_policy",
+          "id": "same",
+          "mode": null,
+          "object": "second",
+          "target": "response_policy"
+        },
+        {
+          "descriptor_stage": "request_context",
+          "id": "request",
+          "mode": null,
+          "object": "request",
+          "target": "request_context"
+        }
+      ],
+      "errors": [
+        "duplicate token-efficiency component id: same"
+      ],
+      "events": [
+        [
+          "same",
+          "initialize"
+        ],
+        [
+          "request",
+          "initialize"
+        ],
+        [
+          "same",
+          "health"
+        ],
+        [
+          "request",
+          "health"
+        ],
+        [
+          "same",
+          "reduce"
+        ],
+        [
+          "request",
+          "optimize"
+        ],
+        [
+          "request",
+          "close"
+        ],
+        [
+          "same",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "request",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "request_context",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "request",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "request_context",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "global-duplicate",
+      "snapshot": [
+        [
+          "same"
+        ],
+        [
+          "request"
+        ],
+        []
+      ]
+    },
+    {
+      "accepted": [
+        "same"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "enforce",
+      "direct": false,
+      "entries": [
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": null,
+          "object": "same",
+          "target": "observation"
+        },
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": null,
+          "object": "second",
+          "target": "response_policy"
+        }
+      ],
+      "errors": [
+        "component same belongs to observation, not response_policy"
+      ],
+      "events": [
+        [
+          "same",
+          "initialize"
+        ],
+        [
+          "same",
+          "health"
+        ],
+        [
+          "same",
+          "reduce"
+        ],
+        [
+          "same",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "wrong-stage-before-duplicate",
+      "snapshot": [
+        [
+          "same"
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "accepted": [],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "enforce",
+      "direct": false,
+      "entries": [
+        {
+          "descriptor_stage": "observation",
+          "id": "bad",
+          "mode": "invalid",
+          "object": "bad",
+          "target": "observation"
+        }
+      ],
+      "errors": [
+        "'invalid' is not a valid OptimizationMode"
+      ],
+      "events": [],
+      "health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "invalid-mode",
+      "snapshot": [
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "accepted": [
+        "same",
+        "same",
+        "same"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "enforce",
+      "direct": true,
+      "entries": [
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": null,
+          "object": "same",
+          "target": "observation"
+        },
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": null,
+          "object": "same",
+          "target": "request_context"
+        },
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": null,
+          "object": "same",
+          "target": "response_policy"
+        }
+      ],
+      "errors": [],
+      "events": [
+        [
+          "same",
+          "initialize"
+        ],
+        [
+          "same",
+          "health"
+        ],
+        [
+          "same",
+          "reduce"
+        ],
+        [
+          "same",
+          "optimize"
+        ],
+        [
+          "same",
+          "plan"
+        ],
+        [
+          "same",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "direct-shared",
+      "snapshot": [
+        [
+          "same"
+        ],
+        [
+          "same"
+        ],
+        [
+          "same"
+        ]
+      ]
+    },
+    {
+      "accepted": [
+        "same",
+        "same",
+        "same"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "enforce",
+      "direct": true,
+      "entries": [
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": "off",
+          "object": "same",
+          "target": "observation"
+        },
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": "enforce",
+          "object": "same",
+          "target": "request_context"
+        },
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": "shadow",
+          "object": "same",
+          "target": "response_policy"
+        }
+      ],
+      "errors": [],
+      "events": [
+        [
+          "same",
+          "initialize"
+        ],
+        [
+          "same",
+          "health"
+        ],
+        [
+          "same",
+          "optimize"
+        ],
+        [
+          "same",
+          "plan"
+        ],
+        [
+          "same",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "direct-off-first",
+      "snapshot": [
+        [
+          "same"
+        ],
+        [
+          "same"
+        ],
+        [
+          "same"
+        ]
+      ]
+    },
+    {
+      "accepted": [
+        "same",
+        "same"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "default": "enforce",
+      "direct": true,
+      "entries": [
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": null,
+          "object": "same",
+          "target": "observation"
+        },
+        {
+          "descriptor_stage": "observation",
+          "id": "same",
+          "mode": null,
+          "object": "second",
+          "target": "observation"
+        }
+      ],
+      "errors": [],
+      "events": [
+        [
+          "same",
+          "initialize"
+        ],
+        [
+          "same",
+          "initialize"
+        ],
+        [
+          "same",
+          "health"
+        ],
+        [
+          "same",
+          "health"
+        ],
+        [
+          "same",
+          "reduce"
+        ],
+        [
+          "same",
+          "reduce"
+        ],
+        [
+          "same",
+          "close"
+        ],
+        [
+          "same",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "same",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "name": "direct-distinct-same-id",
+      "snapshot": [
+        [
+          "same",
+          "same"
+        ],
+        [],
+        []
+      ]
+    }
+  ]
+}
