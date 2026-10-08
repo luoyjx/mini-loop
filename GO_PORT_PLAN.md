@@ -1,5 +1,18 @@
 # Go port plan
 
+## 2026-10-08 MCP HTTP launcher Source contracts
+
+Baseline 2cce6c8. Snapshot 144 runs real Source create_app manager_factory
+composition, HTTP session creation/message admission, actual FakeAsyncAnthropic
+model/tool batches and lifespan shutdown. Individual full_registry toggles select
+only MCP beyond the default registry. It covers disabled/configured,
+enabled/empty and enabled/configured selections, complete ordered results,
+MCP request catalogue projections and list/call/close counts. No default source
+server-list environment loader exists: servers enter through operator composition.
+`export_go_contracts.py --check` verified all 144 files. Its existing subprocess
+corpus emitted an Unknown child process pid warning; the comparison exited zero.
+Native launcher selection/forwarding is the next slice. No Source runtime changes.
+
 ## 2026-10-08 native managed MCP connection lifetime
 
 Baseline 447c9a3 (Source snapshot 143). Explicit ManagerServices.MCPTools binds

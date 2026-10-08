@@ -1,0 +1,62 @@
+{
+  "rows": [
+    {
+      "configured": true,
+      "counters": {
+        "called": 0,
+        "closed": 0,
+        "listed": 0
+      },
+      "enabled": false,
+      "output": "done",
+      "request_mcp_names": [
+        []
+      ],
+      "results": []
+    },
+    {
+      "configured": false,
+      "counters": {
+        "called": 0,
+        "closed": 0,
+        "listed": 0
+      },
+      "enabled": true,
+      "output": "done",
+      "request_mcp_names": [
+        [
+          "connect_mcp"
+        ],
+        [
+          "connect_mcp"
+        ]
+      ],
+      "results": [
+        "Error: unknown MCP server 'friendly'. Available: (none)"
+      ]
+    },
+    {
+      "configured": true,
+      "counters": {
+        "called": 1,
+        "closed": 1,
+        "listed": 1
+      },
+      "enabled": true,
+      "output": "done",
+      "request_mcp_names": [
+        [
+          "connect_mcp"
+        ],
+        [
+          "connect_mcp",
+          "mcp__raw_name__echo"
+        ]
+      ],
+      "results": [
+        "Connected 'friendly'. Added tools: mcp__raw_name__echo",
+        "echo"
+      ]
+    }
+  ]
+}
