@@ -3149,3 +3149,16 @@ Do not resolve child paths again after metadata/filtering: regular/child opens u
 the held parent handle. Explicit files intentionally bypass recursive filters.
 Public raw-path resolution and final-basename glob expansion remain separate work;
 this kernel cannot install a model tool without those selectors and typed payloads.
+
+### Private AST canonical and glob selectors
+
+Bind an operator workspace through astWorkspace before resolving model paths.
+astSafePath preserves non-strict realpath and symlink-before-dot-dot ordering;
+never replace it with lexical Clean followed by symlink resolution. Glob static
+prefixes intentionally use lexical normalization and anchored no-follow opens,
+then the shared Python fnmatch matcher. Every entry counts toward the cap before
+filtering; only regular no-follow matches are returned. Source internal glob
+checks occur during iteration, so an empty directory does not expire that check.
+Always pass matches into withSnapshot before invoking an AST CLI. The selector
+alone cannot prevent a post-selection swap. Typed payloads and public operations
+must still be implemented before any tool registry/runtime activation.

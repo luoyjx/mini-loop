@@ -8025,3 +8025,15 @@ The kernel assumes canonical trusted selections; public selectors and bounded
 show globs remain pending. A copied regular file may reflect concurrent writes,
 filesystem syscalls may block beyond checks, and private snapshotting grants no
 new model authority or OS confinement.
+
+### Go migration — AST path selection followed by frozen copy
+
+Exact AST selections resolve internal links and enforce canonical containment.
+Glob selections never follow a static directory symlink and never retain symlink
+matches. Their 10,000-entry cap includes hidden/nonmatching/special entries. Rune
+and item limits bound raw model strings; fnmatch uses the existing deterministic
+rune matcher. Canonicalization is non-strict and may suppress metadata failures,
+so actual source reads must still use the no-follow snapshot kernel. A native
+select-then-symlink-swap test proves refusal before the snapshot callback. Source
+iteration deadlines and external context cancellation are separate observations.
+Private selectors do not install tools, approve paths or provide OS confinement.

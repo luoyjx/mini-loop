@@ -1,5 +1,43 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native AST canonical and bounded glob selection
+
+Baseline af83178. Private helpers now validate named-string arrays with Source
+64-item/2048-character limits, return detached slices and canonicalize operator
+workspaces. Exact selections implement non-strict realpath with symlink-before-
+dot-dot ordering and workspace containment. Missing/non-directory suffixes and
+ordinary metadata/readlink errors retain Source resolution behavior; snapshot
+access later reopens the canonical selection with NOFOLLOW. Home expansion uses
+operator HOME or standard-library account lookup. No dependency was added.
+
+Adapter.safeGlobPaths accepts only final-basename wildcards, rejects recursive/
+intermediate patterns and opens every static directory component relative to a
+held no-follow root. It counts every enumerated name against 10,000, then applies
+Source hidden-name, fnmatchcase and regular-file filtering. The shared fnmatch
+rune matcher preserves malformed brackets, descending classes and backslashes.
+Matches are sorted; Source deadline checks remain in entry iteration, including
+empty-directory success, while caller cancellation propagates.
+
+All 80 Source recipes are exercised: 76 compare native results/error text; four
+non-string JSON inputs are refused at the native typed boundary. Raw JSON exists
+only in fixture decoding, not service/domain state. A real post-glob symlink swap
+is refused by the real snapshot constructor before its callback. Selection is
+not a frozen read or new model authority. These helpers are private; typed CLI
+payloads, four semantic tools/runtime activation, descending ignore-range wording,
+native SQLite, diagnostics parser selection and G7 remain open.
+
+Validation passes: focused AST selection race tests; full go test ./... -count=1
+-timeout=180s; go test -race ./... -count=1 -timeout=180s; go vet ./...;
+Linux amd64/arm64 go test -c ./astcontext; README outline; git diff --check.
+Source preparation af83178 verified 155 exports, 41 AST-context tests, 19 scanning
+guards and 77 invariant-posture modules; no Source code changed afterward.
+Archify deliver passes 9/9 showcase checks, zero errors/warnings. Visual inspection
+remains skipped after prior access denial. Full Python regression, full mutation
+sweep and coverage were not refreshed. Linux evidence is compile-only.
+Specification SHA256: a02474b68ee0a2c7ac66be876f101164652c73bf72a4e0c5ccfc44fd81186936;
+HTML SHA256: bf1fbb8b3ac567f40e0b7c3af394d2992d48f995c7ff1edae2a3ef7f04aa1a34.
+
+
 ## 2026-10-08 AST path-selection Source contracts
 
 Baseline 7802901. Export 155 captures 63 actual Source exact/glob selections,

@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `7802901` plus AST path-selection Source contracts,
+Runtime review baseline: `af83178` plus native AST canonical path and bounded glob selection,
+plus AST path-selection Source contracts,
 plus full private AST source snapshot construction,
 plus anchored AST snapshot filesystem primitives,
 plus native three-state AST ignore matching
@@ -418,7 +419,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>semantic tools / selectors pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>semantic payloads / tools pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1232,8 +1233,7 @@ Go standard regular expressions; Source star/length guards remain in force. Igno
 controls drop invalid UTF-8 for matching and use Python splitlines while their raw
 bytes remain available for copying. The private snapshot builder
 now supplies traversal and copy. Reversed character ranges remain compiler failures
-with native diagnostic wording; public selectors, payloads and tool integration remain
-pending.
+with native diagnostic wording; semantic payloads and tool integration remain pending.
 
 The private AST snapshot filesystem layer now owns no-follow directory handles,
 opens children relative to those handles and reads metadata with fstatat before
@@ -1258,8 +1258,22 @@ All 36 actual Source recipes match paths, manifests, hashes, modes, refusal mess
 and successful cleanup on Darwin arm64. The constructor distinguishes caller
 cancellation from its copy deadline. It does not freeze files during concurrent
 writes, interrupt arbitrary blocking filesystem syscalls, or install a model tool.
-Public canonical selectors/bounded globs, CLI payloads and runtime AST wiring remain
-required; Linux evidence is compile-only.
+Canonical selectors/bounded globs are implemented below; CLI payloads and runtime
+AST wiring remain required. Linux evidence is compile-only.
+
+Private AST selection now validates 64-item/2048-character string arrays, canonicalizes
+operator workspaces and resolves exact user paths with Source non-strict realpath
+and symlink-before-dot-dot ordering. Exact paths follow internal links; basename
+globs open static components through no-follow handles and enumerate at most 10,000
+entries before hidden-name, fnmatch and regular-file filtering. Matching uses the
+existing Python-compatible rune matcher, not filepath.Match. Copy reopens selected
+matches with NOFOLLOW, so a later symlink swap cannot reach the snapshot callback.
+All 80 Source recipes are exercised: 76 compare native output/error text and four
+non-string inputs are refused at typed JSON decoding. Glob expansion deadlines are
+checked during entry iteration, retaining Source empty-directory behavior; external
+cancellation remains an error. These are private helpers for forthcoming semantic
+operations; model tool registration, typed CLI payloads and runtime activation remain
+pending.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
