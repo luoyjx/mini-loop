@@ -1,5 +1,17 @@
 # Go port plan
 
+## 2026-10-08 historical summary field contract preparation
+
+Baseline 4c48db4. Source snapshot 138 executes forty historical file recipes:
+nine closed JSON variants for each model/workspace/build field, four truthy
+non-object metadata shapes and nine metrics shapes. Real Source get, summary,
+list, direct ledger rendering and 280 FastAPI outcomes are retained, including
+complete successful list values and HTML response hashes. Non-object metadata
+fails summary/list with AttributeError while get still succeeds. Nonfinite or
+surrogate metadata fields can render a page while their JSON response fails.
+These fixtures prepare the native summary implementation; runtime-generated
+metadata, permissive timing/input/output, native SQLite and full G7 remain open.
+
 ## 2026-10-08 native historical trajectory metadata projections
 
 Baseline 1e8b2cc (Source snapshot 137 preparation). Streaming summary decoders now

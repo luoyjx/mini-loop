@@ -1,0 +1,2484 @@
+{
+  "rows": [
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"model\": null}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "model/null",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"model\": null}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"model\": false}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": false, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": false, \"workspace\": null, \"build\": null}]",
+      "name": "model/boolean",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"model\": false}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": false, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"model\": 7}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": 7, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": 7, \"workspace\": null, \"build\": null}]",
+      "name": "model/integer",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"model\": 7}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": 7, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"model\": 1.5}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": 1.5, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": 1.5, \"workspace\": null, \"build\": null}]",
+      "name": "model/float",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"model\": 1.5}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": 1.5, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"model\": \"\\u5386\\u53f2<&\"}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": \"\\u5386\\u53f2<&\", \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": \"\\u5386\\u53f2<&\", \"workspace\": null, \"build\": null}]",
+      "name": "model/text",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"model\": \"\\u5386\\u53f2<&\"}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": \"\\u5386\\u53f2<&\", \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"model\": [\"x\", 2]}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": [\"x\", 2], \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": [\"x\", 2], \"workspace\": null, \"build\": null}]",
+      "name": "model/list",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"model\": [\"x\", 2]}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": [\"x\", 2], \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"model\": {\"nested\": [1, 1.0]}}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": {\"nested\": [1, 1.0]}, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": {\"nested\": [1, 1.0]}, \"workspace\": null, \"build\": null}]",
+      "name": "model/object",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"model\": {\"nested\": [1, 1.0]}}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": {\"nested\": [1, 1.0]}, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"model\": NaN}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": NaN, \"workspace\": null, \"build\": null}]",
+      "name": "model/nonfinite",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"model\": NaN}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": NaN, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"model\": \"\\ud800\"}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": \"\\ud800\", \"workspace\": null, \"build\": null}]",
+      "name": "model/surrogate",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"model\": \"\\ud800\"}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": \"\\ud800\", \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"workspace\": null}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "workspace/null",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"workspace\": null}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"workspace\": false}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": false, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": false, \"build\": null}]",
+      "name": "workspace/boolean",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"workspace\": false}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": false, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"workspace\": 7}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": 7, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": 7, \"build\": null}]",
+      "name": "workspace/integer",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"workspace\": 7}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": 7, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"workspace\": 1.5}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": 1.5, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": 1.5, \"build\": null}]",
+      "name": "workspace/float",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"workspace\": 1.5}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": 1.5, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"workspace\": \"\\u5386\\u53f2<&\"}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": \"\\u5386\\u53f2<&\", \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": \"\\u5386\\u53f2<&\", \"build\": null}]",
+      "name": "workspace/text",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"workspace\": \"\\u5386\\u53f2<&\"}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": \"\\u5386\\u53f2<&\", \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"workspace\": [\"x\", 2]}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": [\"x\", 2], \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": [\"x\", 2], \"build\": null}]",
+      "name": "workspace/list",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"workspace\": [\"x\", 2]}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": [\"x\", 2], \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"workspace\": {\"nested\": [1, 1.0]}}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": {\"nested\": [1, 1.0]}, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": {\"nested\": [1, 1.0]}, \"build\": null}]",
+      "name": "workspace/object",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"workspace\": {\"nested\": [1, 1.0]}}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": {\"nested\": [1, 1.0]}, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"workspace\": NaN}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": NaN, \"build\": null}]",
+      "name": "workspace/nonfinite",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"workspace\": NaN}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": NaN, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"workspace\": \"\\ud800\"}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": \"\\ud800\", \"build\": null}]",
+      "name": "workspace/surrogate",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"workspace\": \"\\ud800\"}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": \"\\ud800\", \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"build\": null}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "build/null",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"build\": null}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"build\": false}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": false}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": false}]",
+      "name": "build/boolean",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"build\": false}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": false}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"build\": 7}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": 7}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": 7}]",
+      "name": "build/integer",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"build\": 7}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": 7}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"build\": 1.5}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": 1.5}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": 1.5}]",
+      "name": "build/float",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"build\": 1.5}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": 1.5}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"build\": \"\\u5386\\u53f2<&\"}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": \"\\u5386\\u53f2<&\"}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": \"\\u5386\\u53f2<&\"}]",
+      "name": "build/text",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"build\": \"\\u5386\\u53f2<&\"}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": \"\\u5386\\u53f2<&\"}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"build\": [\"x\", 2]}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": [\"x\", 2]}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": [\"x\", 2]}]",
+      "name": "build/list",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"build\": [\"x\", 2]}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": [\"x\", 2]}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"build\": {\"nested\": [1, 1.0]}}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": {\"nested\": [1, 1.0]}}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": {\"nested\": [1, 1.0]}}]",
+      "name": "build/object",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"build\": {\"nested\": [1, 1.0]}}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": {\"nested\": [1, 1.0]}}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"build\": NaN}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": NaN}]",
+      "name": "build/nonfinite",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"build\": NaN}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": NaN}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {\"build\": \"\\ud800\"}, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": \"\\ud800\"}]",
+      "name": "build/surrogate",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {\"build\": \"\\ud800\"}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"event_count\": 1}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": \"\\ud800\"}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": [1], \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": "AttributeError",
+      "listing_wire": null,
+      "name": "invalid-metadata/list",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": [1]}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": "AttributeError",
+      "summary_wire": null
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": true, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": "AttributeError",
+      "listing_wire": null,
+      "name": "invalid-metadata/true",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": true}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": "AttributeError",
+      "summary_wire": null
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": 1, \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": "AttributeError",
+      "listing_wire": null,
+      "name": "invalid-metadata/integer",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": 1}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": "AttributeError",
+      "summary_wire": null
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": \"metadata\", \"metrics\": {\"event_count\": 1}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": "AttributeError",
+      "listing_wire": null,
+      "name": "invalid-metadata/text",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": \"metadata\"}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"event_count\": 1}}\n",
+      "summary_error": "AttributeError",
+      "summary_wire": null
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": null, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": null, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": null, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "metrics/null",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": null}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": null, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": false, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": false, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": false, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "metrics/false",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": false}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": false, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": 0, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": 0, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": 0, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "metrics/zero",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": 0}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": 0, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": \"\", \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": \"\", \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": \"\", \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "metrics/empty-text",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": \"\"}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": \"\", \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": [], \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": [], \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": [], \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "metrics/empty-list",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": []}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": [], \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": {}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "87328c71e6178ba59e25752013b2d0232b87f1c401d88bba296a877b57449f28",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "metrics/object",
+      "page_error": null,
+      "page_sha256": "5b3634f92887b2393ac0854a5d45e273d5e7571dba68c8cf6be2811070828fce",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": true, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": true, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": true, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "metrics/true",
+      "page_error": "TypeError",
+      "page_sha256": null,
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": true}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": true, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": \"metrics\", \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": \"metrics\", \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": \"metrics\", \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "metrics/text",
+      "page_error": "ValueError",
+      "page_sha256": null,
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": \"metrics\"}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": \"metrics\", \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    },
+    {
+      "document_wire": "{\"schema_version\": \"mini-loop.trajectory.v1\", \"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"input\": \"input\", \"output\": \"done\", \"error\": null, \"metadata\": {}, \"metrics\": {\"model_calls\": 2, \"extra\": {\"n\": NaN, \"text\": \"\\udfff\"}}, \"events\": [{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}], \"partial\": false}",
+      "http": [
+        {
+          "body_sha256": "06637fe00a77a778e23838cb3290aa785317042f011920bcb571a31863c6379b",
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/view",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 404,
+          "suffix": "/view",
+          "token": "token-b"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "/export?format=json",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 200,
+          "suffix": "/export?format=jsonl",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": null,
+          "status": 500,
+          "suffix": "LIST",
+          "token": "token-a"
+        },
+        {
+          "body_sha256": null,
+          "body_wire": "[]",
+          "status": 200,
+          "suffix": "LIST",
+          "token": "token-b"
+        }
+      ],
+      "listing_error": null,
+      "listing_wire": "[{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"model_calls\": 2, \"extra\": {\"n\": NaN, \"text\": \"\\udfff\"}}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}]",
+      "name": "metrics/unknown",
+      "page_error": null,
+      "page_sha256": "2eb975b1a8ff12b92eb902bef57d31713e5e5ffd2228963f44e7499e14825c78",
+      "raw": "{\"record_type\": \"trajectory_start\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"started_at\": 1000.0, \"input\": \"input\", \"metadata\": {}}\n{\"record_type\": \"event\", \"type\": \"workflow_started\", \"seq\": 1, \"ts\": 1001.0}\n{\"record_type\": \"trajectory_end\", \"status\": \"completed\", \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"output\": \"done\", \"metrics\": {\"model_calls\": 2, \"extra\": {\"n\": NaN, \"text\": \"\\udfff\"}}}\n",
+      "summary_error": null,
+      "summary_wire": "{\"id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trajectory_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"trace_id\": \"traj_eeeeeeeeeeeeeeeeeeeeeeee\", \"group_id\": \"summary-session\", \"session\": \"summary-session\", \"owner\": \"alice\", \"run_index\": 1, \"status\": \"completed\", \"started_at\": 1000.0, \"ended_at\": 1002.0, \"duration_ms\": 2000.0, \"metrics\": {\"model_calls\": 2, \"extra\": {\"n\": NaN, \"text\": \"\\udfff\"}}, \"partial\": false, \"input_preview\": \"input\", \"model\": null, \"workspace\": null, \"build\": null}"
+    }
+  ]
+}
