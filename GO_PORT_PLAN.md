@@ -1,5 +1,38 @@
 # Go port plan
 
+## 2026-10-09 manager-selected Guardian Source contracts
+
+Baseline d564fef. Export 163 captures seventeen actual SessionManager-selected
+Guardian recipes through the real ApprovalBroker and readonly auditor loop.
+No Guardian or broker substitute is installed: only the model responder and a
+NullStateStore-derived approval receipt sink are controlled. Each case records
+reviewer activation, model prompts/catalogues, human parking, normalized durable
+rows/events, decisions, problem reports and absence of pending questions afterward.
+
+Coverage includes default-off human allow/deny, automatic allow/deny, defer to either
+human decision, provider error, constructor error, provider cancellation, missing
+agent/session refusal, hostile writes with both ordinary and widened catalogues,
+masked preview, fresh reviews reading changed workspace data, and human remembered
+grants taking precedence before another model review. Parent history remains private
+and unchanged; review writes leave no file in either catalogue profile.
+
+The provider-error observation changes the next implementation check: Source's
+Agent loop returns ordinary provider faults as error text. Guardian parses that text
+like any other answer, so RuntimeError("ALLOW provider fault") actually auto-allows.
+An ordinary fault with no verdict word defers without a broker problem. In contrast,
+a role-policy constructor ValueError reaches broker containment, adds a problem and
+parks a human; CancelledError propagates without approval or human parking. These
+are captured current behavior, not a claim that all faults abstain. Native error
+projection and automatic selection must be reconciled against these distinct paths;
+Manager/Launcher activation remains unimplemented and MINILOOP_GUARDIAN unsupported.
+
+Validation: isolated seventeen-case capture and full Source exporter --check
+(163 files), all 19 scan guards, and focused Python Guardian/wiring/readonly-role
+suite pass (14 passed, 1 operator-gated real-provider test skipped). README outline
+and git diff --check pass. No Python runtime or Go implementation changes; full Go,
+full Python, race, coverage and mutation sweep are not refreshed for this Source
+contract slice. G0-G7 and the full port remain open.
+
 ## 2026-10-09 native readonly Guardian library and explicit broker reviewer
 
 Baseline afa4f2d. GuardianRequest/GuardianDecision/Guardian and AgentGuardian now

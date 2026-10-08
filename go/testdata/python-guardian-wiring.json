@@ -1,0 +1,1212 @@
+{
+  "cases": [
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [],
+      "constructor_fault": false,
+      "enabled": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "tool": "bash",
+          "tool_use_id": "action",
+          "type": "approval_required"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "default-off-human-deny",
+      "outcomes": [
+        false
+      ],
+      "parent_messages": 1,
+      "parked": [
+        true
+      ],
+      "problems": [],
+      "prompts": [],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": false,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": null,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "denied",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [],
+      "constructor_fault": false,
+      "enabled": false,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "tool": "bash",
+          "tool_use_id": "action",
+          "type": "approval_required"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": true,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "default-off-human-allow",
+      "outcomes": [
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        true
+      ],
+      "problems": [],
+      "prompts": [],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": false,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": null,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "decision": "allow",
+          "rule": "fixture-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "automatic-allow",
+      "outcomes": [
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "auto_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "DENY reviewed",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "decision": "deny",
+          "rule": "fixture-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "automatic-deny",
+      "outcomes": [
+        false
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "auto_denied",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "DEFER uncertain",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "tool": "bash",
+          "tool_use_id": "action",
+          "type": "approval_required"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": true,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "defer-human-allow",
+      "outcomes": [
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        true
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": null,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "DEFER uncertain",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "tool": "bash",
+          "tool_use_id": "action",
+          "type": "approval_required"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "defer-human-deny",
+      "outcomes": [
+        false
+      ],
+      "parent_messages": 1,
+      "parked": [
+        true
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": null,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "denied",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "fixture provider fault",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "tool": "bash",
+          "tool_use_id": "action",
+          "type": "approval_required"
+        }
+      ],
+      "fault": true,
+      "file_exists": false,
+      "hostile": false,
+      "human": true,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "provider-fault-human-allow",
+      "outcomes": [
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        true
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": null,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "ALLOW provider fault",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "decision": "allow",
+          "rule": "fixture-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        }
+      ],
+      "fault": true,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "provider-fault-allow-word",
+      "outcomes": [
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "auto_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [],
+      "constructor_fault": true,
+      "enabled": true,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "tool": "bash",
+          "tool_use_id": "action",
+          "type": "approval_required"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": true,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "constructor-fault-human-allow",
+      "outcomes": [
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        true
+      ],
+      "problems": [
+        "auto-reviewer raised on bash: ValueError"
+      ],
+      "prompts": [],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": null,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": true,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "provider-cancellation",
+      "outcomes": [
+        "cancelled"
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": []
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [],
+      "masked": false,
+      "missing": "agent",
+      "name": "missing-agent",
+      "outcomes": [
+        false
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false
+      ],
+      "problems": [],
+      "prompts": [],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": []
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [],
+      "masked": false,
+      "missing": "session",
+      "name": "missing-session",
+      "outcomes": [
+        false
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false
+      ],
+      "problems": [],
+      "prompts": [],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": []
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ],
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "decision": "allow",
+          "rule": "fixture-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": true,
+      "human": false,
+      "inspections": [
+        "Unknown tool: write_file"
+      ],
+      "masked": false,
+      "missing": "",
+      "name": "hostile-narrow",
+      "outcomes": [
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "auto_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ],
+        [
+          "bash",
+          "read_file",
+          "write_file",
+          "edit_file",
+          "glob",
+          "TodoWrite",
+          "task",
+          "load_skill",
+          "compress",
+          "ask_user"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "decision": "allow",
+          "rule": "fixture-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": true,
+      "human": false,
+      "inspections": [
+        "Permission denied: this session is read-only (tool risk: write)"
+      ],
+      "masked": false,
+      "missing": "",
+      "name": "hostile-wide",
+      "outcomes": [
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": true,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "auto_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ],
+        [
+          "read_file",
+          "glob"
+        ],
+        [
+          "read_file",
+          "glob"
+        ],
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "decision": "allow",
+          "rule": "fixture-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        },
+        {
+          "decision": "allow",
+          "rule": "fixture-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [
+        "current-0",
+        "current-1"
+      ],
+      "masked": false,
+      "missing": "",
+      "name": "fresh-review-current-file",
+      "outcomes": [
+        true,
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false,
+        false
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n",
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": true,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "auto_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_1",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "auto_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "DEFER uncertain",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "grant_candidate": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "grant_proposed": false,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "tool": "bash",
+          "tool_use_id": "action",
+          "type": "approval_required"
+        },
+        {
+          "grant": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "tool": "bash",
+          "type": "approval_grant_recorded"
+        },
+        {
+          "grant": [
+            "bash",
+            "git",
+            "status"
+          ],
+          "rule": "fixture-rule",
+          "tool": "bash",
+          "type": "approval_grant_used"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": true,
+      "inspections": [],
+      "masked": false,
+      "missing": "",
+      "name": "human-grant-before-guardian",
+      "outcomes": [
+        true,
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        true,
+        false
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status --short\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": true,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": null,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "pending",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        },
+        {
+          "answer": null,
+          "approval_id": "apr_1",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status --short\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "grant_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    },
+    {
+      "answer": "ALLOW reviewed",
+      "cancel": false,
+      "catalogues": [
+        [
+          "read_file",
+          "glob"
+        ]
+      ],
+      "constructor_fault": false,
+      "enabled": true,
+      "events": [
+        {
+          "decision": "allow",
+          "rule": "fixture-rule",
+          "tool": "bash",
+          "type": "approval_auto_reviewed"
+        }
+      ],
+      "fault": false,
+      "file_exists": false,
+      "hostile": false,
+      "human": false,
+      "inspections": [],
+      "masked": true,
+      "missing": "",
+      "name": "masked-automatic-preview",
+      "outcomes": [
+        true
+      ],
+      "parent_messages": 1,
+      "parked": [
+        false
+      ],
+      "problems": [],
+      "prompts": [
+        "An agent requests approval for a potentially dangerous action. Judge ONLY whether this specific action should proceed. You cannot grant new powers, change the sandbox, or widen permissions -- you answer the same allow/deny a human reviewer would.\n\nTool: bash\nRule that flagged it: fixture-rule -- approval required\nArguments (already redacted): {\"command\": \"git status <secret-hidden>\"}\n\nReply with a single line: ALLOW or DENY, followed by a one-sentence reason. If you cannot judge confidently, reply DEFER and the human will decide.\n"
+      ],
+      "remaining": [],
+      "remember": false,
+      "repeat": false,
+      "reviewer_bound": true,
+      "wide": false,
+      "writes": [
+        {
+          "answer": null,
+          "approval_id": "apr_0",
+          "created_at": 0,
+          "input_preview": "{\"command\": \"git status <secret-hidden>\"}",
+          "kind": "approval",
+          "message": "approval required",
+          "resolved_at": 0,
+          "rule": "fixture-rule",
+          "session_id": "parent",
+          "status": "auto_allowed",
+          "tool_name": "bash",
+          "tool_use_id": "action"
+        }
+      ]
+    }
+  ]
+}

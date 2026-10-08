@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `afa4f2d` plus native readonly Guardian/explicit reviewer,
+Runtime review baseline: `d564fef` plus manager-selected Guardian Source contracts,
+plus native readonly Guardian/explicit reviewer,
 plus Guardian Source review/adapter contracts,
 plus native AST text/final tool-result encoding,
 plus AST text/provider encoding Source contracts,
