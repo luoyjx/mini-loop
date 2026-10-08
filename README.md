@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `098eb57` plus actual Manager efficiency composition Source contracts,
+Runtime review baseline: `33ca813` plus typed Manager efficiency selection helpers,
 plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,

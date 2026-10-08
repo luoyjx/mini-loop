@@ -1,5 +1,17 @@
 # Python to Go parity matrix
 
+
+## 2026-10-09 typed Manager efficiency selection helpers
+
+Baseline: `33ca813`. Added named ManagerEfficiencyConfig with off/normal defaults,
+Settings raw threshold 16384, detached integer limits and finite validated TTL.
+The default runtime factory selects the deterministic reducer for non-off modes
+and concise response policy with RequireOptIn=false for concise style.
+Six mode/style combinations and invalid/aliased limits are tested. These helpers
+are a separate prerequisite commit; Manager ownership/lifecycle wiring and its
+14 Source comparisons are delivered separately. Launcher flags and full port
+completion remain pending. No dependencies or push.
+
 ## 2026-10-09 Manager efficiency composition Source contracts
 
 Baseline `098eb57`. Fourteen real SessionManager recipes capture six mode/style
