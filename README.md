@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `ebf0e68` plus historical workflow ledgers,
+Runtime review baseline: `1e8b2cc` plus historical metadata projections,
 final HTML UTF-8 validation and private traceview output,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
@@ -376,8 +376,8 @@ flowchart LR
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
-        GoTraceView["Typed ledger / HTML renderer<br/>span fold · nested rows · real timing<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
-        GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival scalars<br/>append-only files · no session restore"]
+        GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
+        GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
         GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
@@ -1550,6 +1550,12 @@ final HTML UTF-8 validation runs after capping. Visible surrogate text fails, wh
 fully capped text can render successfully. File, trajectory-ID and session CLI loads
 retain private 0600 output. Ordinary JSON details and downloads keep their separate
 scalar boundaries. Native Go SQLite and permissive metadata profiles remain pending.
+Snapshot 137 adds eleven historical metadata recipes and fifty-five HTTP outcomes.
+Streaming summaries select only used fields; archival JSON retains complete metadata,
+unknown metrics and original scalar identity. Ledger/file readers ignore unused root,
+header and terminal fields before typed decoding. Empty legacy metadata values and
+arbitrary inert metadata members match Source rendering and owned encoding boundaries.
+Known metadata field types and timing/input/output profiles still need further parity.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

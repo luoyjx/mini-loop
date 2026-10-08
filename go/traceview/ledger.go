@@ -130,7 +130,22 @@ func Build(document []byte) (Ledger, error) {
 	if events.Kind() != jsonvalue.Null && !eventsArray {
 		return out, ErrDocument
 	}
-	header, err := replaceEvents(value, jsonvalue.ArrayValue(nil)).MarshalJSON()
+	headerValue := value.Select("trajectory_id", "session", "Session", "run_index", "status", "Status",
+		"partial", "Partial", "started_at", "ended_at", "duration_ms", "input", "Input", "output", "Output", "error", "Error")
+	fields := make([]jsonvalue.Field, 0, len(headerValue.Keys())+1)
+	for _, name := range headerValue.Keys() {
+		child, _ := headerValue.Lookup(name)
+		fields = append(fields, jsonvalue.Field{Name: name, Value: child})
+	}
+	metrics, present := value.Lookup("metrics")
+	if !present {
+		metrics, _ = value.Lookup("Metrics")
+	}
+	if metrics.Kind() != jsonvalue.Null && metrics.Kind() != jsonvalue.Object {
+		return out, ErrDocument
+	}
+	fields = append(fields, jsonvalue.Field{Name: "metrics", Value: metrics.Select("event_count", "model_calls", "tool_calls", "tool_errors", "errors")})
+	header, err := jsonvalue.ObjectValue(fields).MarshalJSON()
 	if err != nil || json.Unmarshal(header, &wire) != nil {
 		return out, ErrDocument
 	}

@@ -1,5 +1,50 @@
 # Python to Go parity matrix
 
+## 2026-10-08 native historical trajectory metadata projections
+
+Baseline 1e8b2cc (Source snapshot 137 preparation). Streaming summary decoders now
+select used header/end fields before strict typed decoding. Only model/workspace/build
+metadata enters the typed summary; unused inert members never invalidate that read.
+The file and ledger boundaries likewise select their used fields and metrics. Bare
+file assembly constructs a closed archival document directly, removing redundant
+strict intermediate encoders and the obsolete event-replacement helper.
+
+Store.JSON retains complete original metadata and terminal metrics, including empty
+legacy metadata, unknown nonfinite/surrogate members and integer/float identity.
+The first header and last terminal supply archival values; known native fields and
+summary counters remain named types. Public strict/detail, legacy/download and final
+HTML encoding policies are unchanged. Ownership, size caps, streaming scan and append
+locks remain in place. No domain any/interface/map[string]any or RawMessage was added.
+
+Tests compare all eleven Source documents in full, three known summary metadata
+fields, complete ledger/file/trajectory-id/session HTML hashes and fifty-five actual
+Source HTTP outcomes with complete successful owned-view hashes. These are explicit
+historical file seeds, not runtime-generated metadata or native session SQL proof.
+
+Validation: focused archive/metadata/ledger race tests; full go test ./... with
+shared coverage, full race suite (-count=1 -timeout=180s) and go vet ./... passed.
+After simplifying the new fixture decoder, its focused traceview race gate passed.
+All 137 Source exports are current; all 19 source scan guards anchored. Full Python
+regression: 2,155 passed, 28 skipped, 24 subtests, three dependency warnings in 93.83s.
+README outline and git diff --check passed. No dependencies or Python runtime modules
+changed; Python invariant/guard sweeps were not rerun.
+
+Fresh Go statement coverage: 21,089/23,369 (90.24%), merging duplicate source blocks
+by maximum hit count across -coverpkg=./... test binaries. Profile:
+/tmp/mini-loop-trajectory-metadata-coverage.out. Python coverage was not refreshed;
+statement coverage does not measure feature migration completion.
+
+README baseline, canonical Mermaid and boundary documentation, extension map and
+interactive architecture specification/generated HTML are updated. Archify passed
+9/9 showcase checks with zero errors/warnings. Specification SHA256:
+4138ec331008203613f5c66d2cf709c342036dc08cf80962134c45e9f182f97b.
+HTML SHA256: fd4a7c9b7cf1942701c60a15183714218fe94fe5a3ff67f5b53630dd0aac5308.
+Visual review remains skipped after prior access denial. Arbitrary known metadata
+field types, complete historical summary metrics, permissive timing/input/output and
+model/tool scalar profiles, MCP, native session SQLite and full G7 remain pending.
+Next capture actual Source known metadata and summary-metric type profiles before
+extending retained projections. The complete Python-to-Go objective stays open.
+
 ## 2026-10-08 historical trajectory metadata contract preparation
 
 Baseline cf5fbec. Source snapshot 137 records eleven actual historical metadata

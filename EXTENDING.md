@@ -2638,7 +2638,11 @@ rows and inspector strings. RenderUTF8 validates final output after Source chara
 caps; HTTP views and CLI files use this boundary. Source-visible surrogate text fails
 UTF-8 output, while a fully omitted tail can succeed. Store.JSON is an archival wire
 projection; embedding callers must choose strict JSON, archival download or final HTML
-encoding. Constructor metadata profiles and native SQLite remain pending. Owned result injection and
+encoding. Historical streaming summaries decode only their used fields; complete
+metadata/metrics and original scalar identities remain in the archival document.
+Ledger/file readers discard unused header fields before typed decoding. Source snapshot
+137 covers eleven legacy metadata recipes and fifty-five HTTP outcomes. Known metadata
+field types, constructor profiles and native SQLite remain pending. Owned result injection and
 workflow HTTP routes are described below. Stores and callbacks retain their existing
 cooperative and ownership requirements; an injected store is not proof of native SQLite support.
 

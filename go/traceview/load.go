@@ -72,62 +72,31 @@ func AssembleFile(ctx context.Context, path string) (Ledger, error) {
 	if start == nil {
 		return Ledger{}, ErrDocument
 	}
-	var header struct {
-		ID        *agent.TrajectoryID `json:"trajectory_id"`
-		Session   agent.SessionID
-		RunIndex  int      `json:"run_index"`
-		StartedAt *float64 `json:"started_at"`
-		Input     *string
+	startValue, err := jsonvalue.Decode(string(start))
+	if err != nil {
+		return Ledger{}, err
 	}
-	var terminal struct {
-		Status        *agent.TrajectoryStatus
-		EndedAt       *float64 `json:"ended_at"`
-		DurationMS    *float64 `json:"duration_ms"`
-		Output, Error *string
-		Metrics       Metrics
-	}
-	if json.Unmarshal(start, &header) != nil {
-		return Ledger{}, ErrDocument
-	}
-	if end != nil && json.Unmarshal(end, &terminal) != nil {
-		return Ledger{}, ErrDocument
-	}
-	status := agent.TrajectoryInterrupted
+	endValue := jsonvalue.NullValue()
 	if end != nil {
-		status = agent.TrajectoryCompleted
-		if terminal.Status != nil {
-			status = *terminal.Status
+		endValue, err = jsonvalue.Decode(string(end))
+		if err != nil {
+			return Ledger{}, err
 		}
 	}
-	id := agent.TrajectoryID("")
-	if header.ID != nil {
-		id = *header.ID
-	} else {
-		var members map[string]json.RawMessage
-		json.Unmarshal(start, &members)
-		if _, ok := members["trajectory_id"]; !ok {
-			id = agent.TrajectoryID(strings.TrimSuffix(filepath.Base(path), filepath.Ext(path)))
+	lookup := func(value jsonvalue.Value, name string) jsonvalue.Value {
+		child, _ := value.Lookup(name)
+		return child
+	}
+	id, present := startValue.Lookup("trajectory_id")
+	if !present {
+		id = jsonvalue.TextValue(strings.TrimSuffix(filepath.Base(path), filepath.Ext(path)))
+	}
+	status := jsonvalue.TextValue("interrupted")
+	if end != nil {
+		status, present = endValue.Lookup("status")
+		if !present {
+			status = jsonvalue.TextValue("completed")
 		}
-	}
-	document, err := json.Marshal(struct {
-		ID                   agent.TrajectoryID     `json:"trajectory_id"`
-		Session              agent.SessionID        `json:"session"`
-		RunIndex             int                    `json:"run_index"`
-		StartedAt            *float64               `json:"started_at"`
-		EndedAt              *float64               `json:"ended_at"`
-		DurationMS           *float64               `json:"duration_ms"`
-		Status               agent.TrajectoryStatus `json:"status"`
-		Input, Output, Error *string
-		Metrics              Metrics
-		Events               []json.RawMessage
-		Partial              bool
-	}{id, header.Session, header.RunIndex, header.StartedAt, terminal.EndedAt, terminal.DurationMS, status, header.Input, terminal.Output, terminal.Error, terminal.Metrics, []json.RawMessage{}, partial || end == nil})
-	if err != nil {
-		return Ledger{}, err
-	}
-	value, err := jsonvalue.Decode(string(document))
-	if err != nil {
-		return Ledger{}, err
 	}
 	decodedEvents := make([]jsonvalue.Value, 0, len(events))
 	for _, event := range events {
@@ -137,7 +106,21 @@ func AssembleFile(ctx context.Context, path string) (Ledger, error) {
 		}
 		decodedEvents = append(decodedEvents, v)
 	}
-	document, err = jsonvalue.AppendLegacy(nil, replaceEvents(value, jsonvalue.ArrayValue(decodedEvents)))
+	document, err := jsonvalue.AppendLegacy(nil, jsonvalue.ObjectValue([]jsonvalue.Field{
+		{Name: "trajectory_id", Value: id},
+		{Name: "session", Value: lookup(startValue, "session")},
+		{Name: "run_index", Value: lookup(startValue, "run_index")},
+		{Name: "started_at", Value: lookup(startValue, "started_at")},
+		{Name: "input", Value: lookup(startValue, "input")},
+		{Name: "status", Value: status},
+		{Name: "ended_at", Value: lookup(endValue, "ended_at")},
+		{Name: "duration_ms", Value: lookup(endValue, "duration_ms")},
+		{Name: "output", Value: lookup(endValue, "output")},
+		{Name: "error", Value: lookup(endValue, "error")},
+		{Name: "metrics", Value: lookup(endValue, "metrics")},
+		{Name: "events", Value: jsonvalue.ArrayValue(decodedEvents)},
+		{Name: "partial", Value: jsonvalue.BoolValue(partial || end == nil)},
+	}))
 	if err != nil {
 		return Ledger{}, err
 	}

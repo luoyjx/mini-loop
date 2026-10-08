@@ -2419,6 +2419,12 @@ projection. Store.JSON now supplies archival wire values; HTTP detail/download/v
 adapters choose their encoding boundary explicitly. Native SQL and permissive metadata
 profiles remain pending. Owned later-turn injection is described
 below. Defaults remain off.
+Snapshot 137 adds eleven historical metadata recipes and fifty-five HTTP outcomes.
+Streaming summaries select only used fields; archival JSON retains complete metadata,
+unknown metrics and original scalar identity. Ledger/file readers ignore unused root,
+header and terminal fields before typed decoding. Empty legacy metadata values and
+arbitrary inert metadata members match Source rendering and owned encoding boundaries.
+Known metadata field types and timing/input/output profiles still need further parity.
 
 
 ## Owned workflow result injection

@@ -312,11 +312,12 @@ func (s *Store) scanBounded(id agent.TrajectoryID, visit func([]byte, string) er
 			if envelope.RecordType != "trajectory_start" {
 				return start, end, counts, partial, ErrInvalid
 			}
-			if err = json.Unmarshal(line, &start); err != nil {
+			typed, decodeErr := scanTypedRecord(line, true)
+			if decodeErr != nil || json.Unmarshal(typed, &start) != nil {
 				return start, end, counts, partial, ErrInvalid
 			}
 			var members map[string]json.RawMessage
-			json.Unmarshal(line, &members)
+			json.Unmarshal(typed, &members)
 			if _, ok := members["owner"]; !ok {
 				owner := agent.OwnerID("anonymous")
 				start.Owner = &owner
@@ -333,7 +334,8 @@ func (s *Store) scanBounded(id agent.TrajectoryID, visit func([]byte, string) er
 			found = true
 		} else if envelope.RecordType == "trajectory_end" {
 			var value terminal
-			if err = json.Unmarshal(line, &value); err != nil {
+			typed, decodeErr := scanTypedRecord(line, false)
+			if decodeErr != nil || json.Unmarshal(typed, &value) != nil {
 				return start, end, counts, partial, ErrInvalid
 			}
 			if value.Status == "" {
@@ -473,7 +475,10 @@ func (s *Store) JSON(id agent.TrajectoryID, limit int64) ([]byte, error) {
 	if limit < 0 || size > limit {
 		return nil, ErrTooLarge
 	}
-	metadataJSON := json.RawMessage(`{}`)
+	metadata := jsonvalue.ObjectValue(nil)
+	var archiveStart, archiveEnd jsonvalue.Value
+	var metrics jsonvalue.Value
+	hasMetrics := false
 	events := make([]jsonvalue.Value, 0)
 	seen := int64(0)
 	start, end, counts, partial, err := s.scanBounded(id, func(line []byte, kind string) error {
@@ -481,12 +486,21 @@ func (s *Store) JSON(id agent.TrajectoryID, limit int64) ([]byte, error) {
 		if seen > limit {
 			return ErrTooLarge
 		}
-		if kind == "trajectory_start" {
-			var members map[string]json.RawMessage
-			if json.Unmarshal(line, &members) == nil {
-				if value, ok := members["metadata"]; ok {
-					metadataJSON = append(json.RawMessage(nil), value...)
+		if kind == "trajectory_start" || kind == "trajectory_end" {
+			value, err := jsonvalue.Decode(string(line))
+			if err != nil {
+				return err
+			}
+			if kind == "trajectory_start" {
+				if archiveStart.Kind() != jsonvalue.Object {
+					archiveStart = value
+					if child, ok := value.Lookup("metadata"); ok {
+						metadata = child
+					}
 				}
+			} else {
+				archiveEnd = value
+				metrics, hasMetrics = value.Lookup("metrics")
 			}
 		}
 		if kind == "event" {
@@ -524,11 +538,11 @@ func (s *Store) JSON(id agent.TrajectoryID, limit int64) ([]byte, error) {
 		Input        *string                 `json:"input"`
 		Output       *string                 `json:"output"`
 		Error        *string                 `json:"error"`
-		Metadata     json.RawMessage         `json:"metadata"`
+		Metadata     jsonvalue.Value         `json:"metadata"`
 		Metrics      agent.TrajectoryMetrics `json:"metrics"`
 		Events       []jsonvalue.Value       `json:"events"`
 		Partial      bool                    `json:"partial"`
-	}{start.Schema, id, id, start.Trace, start.Group, start.Session, start.Owner, start.RunIndex, summary.Status, start.StartedAt, summary.EndedAt, summary.DurationMS, start.Input, output, detail, metadataJSON, summary.Metrics, []jsonvalue.Value{}, summary.Partial})
+	}{start.Schema, id, id, start.Trace, start.Group, start.Session, start.Owner, start.RunIndex, summary.Status, start.StartedAt, summary.EndedAt, summary.DurationMS, start.Input, output, detail, jsonvalue.ObjectValue(nil), summary.Metrics, []jsonvalue.Value{}, summary.Partial})
 	if err != nil {
 		return nil, err
 	}
@@ -539,8 +553,23 @@ func (s *Store) JSON(id agent.TrajectoryID, limit int64) ([]byte, error) {
 	fields := make([]jsonvalue.Field, 0, len(document.Keys()))
 	for _, name := range document.Keys() {
 		child, _ := document.Lookup(name)
-		if name == "events" {
+		switch name {
+		case "schema_version", "trace_id", "group_id", "session", "owner", "run_index", "started_at", "input":
+			if original, ok := archiveStart.Lookup(name); ok {
+				child = original
+			}
+		case "status", "ended_at", "duration_ms", "output", "error":
+			if original, ok := archiveEnd.Lookup(name); ok {
+				child = original
+			}
+		case "events":
 			child = jsonvalue.ArrayValue(events)
+		case "metadata":
+			child = metadata
+		case "metrics":
+			if hasMetrics {
+				child = metrics
+			}
 		}
 		fields = append(fields, jsonvalue.Field{Name: name, Value: child})
 	}
