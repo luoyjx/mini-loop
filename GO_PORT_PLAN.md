@@ -1,5 +1,19 @@
 # Go port plan
 
+## 2026-10-08 MCP stdio contract preparation
+
+Baseline 721b413. Snapshot 140 captures sixteen actual Python StdioMCP
+discovery/result cases against a scripted local subprocess: default schemas,
+inert annotation/description variants, text/non-text blocks, isError text, empty
+and Unicode fallback JSON, exact/over character caps, repeated Unicode, oversized
+fallback, and malformed text/content/result failures. The peer also emits
+notifications and mismatched IDs before every response. Large payloads use explicit
+repeat recipes; complete result SHA256 and Source character counts avoid giant
+fixture copies. All 140 contract exports and all 19 scanner anchors pass.
+Full Python regression passes (2,155 passed, 28 skipped, 24 subtests, three warnings
+in 70.30s). This records Source behavior, not MCP registration or native
+session persistence. No Python runtime code or dependency changed.
+
 ## 2026-10-08 native unbounded ledger metrics and conversion phases
 
 Baseline f292c5b (Source snapshot 139 preparation). IntegerCount retains canonical

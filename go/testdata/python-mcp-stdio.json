@@ -1,0 +1,500 @@
+{
+  "rows": [
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "text",
+      "output": "hello",
+      "output_characters": 5,
+      "output_sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"content\": [{\"type\": \"text\", \"text\": \"hello\"}]}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "mixed",
+      "output": "a\n\nb",
+      "output_characters": 4,
+      "output_sha256": "38022fd2b8dbc5cb3d2cee74e083edbf59e3d4e13d067ebcb5db633d4cff4d8c",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"content\": [null, 7, {\"text\": \"a\"}, {}, {\"text\": \"b\"}]}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "is-error",
+      "output": "failure",
+      "output_characters": 7,
+      "output_sha256": "16d34b5e7bcb341ee6cb3d16495d90e93fbe57c46d3827432613210a24ebca30",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"isError\": true, \"content\": [{\"text\": \"failure\"}]}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "empty",
+      "output": "{}",
+      "output_characters": 2,
+      "output_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "fallback-unicode",
+      "output": "{\"content\": [], \"value\": \"\\u4e2d\\u6587\\ud83d\\ude00\"}",
+      "output_characters": 52,
+      "output_sha256": "6ce40b992069f69e3b1c5e9ffd6087136efeb28e9d69c63a28351970f54bfffc",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"content\": [], \"value\": \"\\u4e2d\\u6587\\ud83d\\ude00\"}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "blank-fallback",
+      "output": "{\"content\": [{\"text\": \"\"}], \"ok\": true}",
+      "output_characters": 39,
+      "output_sha256": "a4b06813c90516e0be9255d785d559021766ce145aa30954540fb37f87d64ae6",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"content\": [{\"text\": \"\"}], \"ok\": true}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "blank-lines",
+      "output": "\n",
+      "output_characters": 1,
+      "output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"content\": [{}, {}]}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "limit",
+      "output": "",
+      "output_characters": 50000,
+      "output_sha256": "9483d1c3ad73c1fcfe3260e5fdecbd9a70966a2cf2cd8b95c59d691e46790149",
+      "repeat_count": 50000,
+      "repeat_location": "content",
+      "repeat_text": "x",
+      "result_json": "{\"content\": [{\"text\": \"\"}]}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "over-limit",
+      "output": "",
+      "output_characters": 50035,
+      "output_sha256": "6ee8a28a6012ca534a041fb6ac5c923bdd5f585e33aebb638894c014e616e365",
+      "repeat_count": 50001,
+      "repeat_location": "content",
+      "repeat_text": "x",
+      "result_json": "{\"content\": [{\"text\": \"\"}]}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "unicode-cap",
+      "output": "",
+      "output_characters": 50035,
+      "output_sha256": "95eedef1eddabdc6907f9856ce56e919976e2fd831d815bf0e39eae7ff3e5c30",
+      "repeat_count": 30000,
+      "repeat_location": "content",
+      "repeat_text": "😀中",
+      "result_json": "{\"content\": [{\"text\": \"\"}]}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "large-fallback",
+      "output": "",
+      "output_characters": 50000,
+      "output_sha256": "1ca2342fc61d15f9bd3b275814794f82f028f9f2a6fa558199becd03b83e972b",
+      "repeat_count": 60000,
+      "repeat_location": "value",
+      "repeat_text": "x",
+      "result_json": "{\"value\": \"\"}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "TypeError",
+      "name": "bad-text",
+      "output": "",
+      "output_characters": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"content\": [{\"text\": 1}]}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "object-content",
+      "output": "{\"content\": {\"text\": \"ignored\"}}",
+      "output_characters": 32,
+      "output_sha256": "090d09c784ca80a08c40f01731cc6eb0019a64155d9e5bbb7efd07aa28be910e",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"content\": {\"text\": \"ignored\"}}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "",
+      "name": "string-content",
+      "output": "{\"content\": \"ignored\"}",
+      "output_characters": 22,
+      "output_sha256": "ab187e5c594a627bb6602ab4b794ba4ea0c299739edf253b3e49f2868b3ac5ed",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"content\": \"ignored\"}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "TypeError",
+      "name": "null-content",
+      "output": "",
+      "output_characters": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "{\"content\": null}",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    },
+    {
+      "discovered": [
+        {
+          "annotations": {},
+          "description": "",
+          "input_schema": {
+            "properties": {},
+            "type": "object"
+          },
+          "name": "echo"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": 7,
+          "input_schema": null,
+          "name": "other"
+        }
+      ],
+      "error": "AttributeError",
+      "name": "null-result",
+      "output": "",
+      "output_characters": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "repeat_count": 0,
+      "repeat_location": "",
+      "repeat_text": "",
+      "result_json": "null",
+      "tools_json": "{\"tools\": [{\"name\": \"echo\"}, {\"name\": \"other\", \"description\": 7, \"inputSchema\": null, \"annotations\": {\"readOnlyHint\": true}}]}"
+    }
+  ]
+}
