@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `2f742eb` plus token-efficiency type Source contracts,
+Runtime review baseline: `67d83e4` plus native immutable efficiency contracts,
+plus token-efficiency type Source contracts,
 plus Guardian Launcher activation,
 plus Guardian HTTP Source contracts,
 plus manager-owned per-action Guardian binding,
@@ -422,7 +423,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency descriptor / receipt library: not installed"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
@@ -2043,6 +2044,14 @@ path/digest/version/output/timeout failures retain the common gate and readonly
 session binding. This completes Launcher selection for the implemented AST tools;
 extreme malformed output profiles and full migration gates remain open.
 
+Go efficiency currently provides immutable component descriptors and optimization
+receipts as an independent library. Closed stage/mode/status/lossiness/cost values,
+unbounded typed integer limits/metrics, validated digests/references, bounded warning
+codes and detached projections match 68 actual Source constructor recipes. It stores
+no observation or request content. Reducers, raw artifacts, request/response policies,
+component lifecycle and runtime composition remain open; efficiency mode/style
+activation is still refused. See E0-E6 in GO_PORT_PLAN.md for the remaining sequence.
+
 ## Repository map
 
 | Path | Responsibility |
@@ -2058,6 +2067,7 @@ extreme malformed output profiles and full migration gates remain open.
 | `python/examples/` | Runnable Python custom composition |
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
+| `go/efficiency/` | Immutable token-efficiency descriptors/receipts; runtime adoption pending |
 | `go/secrets/` | Typed optional credential lookup, environment selection and masking |
 | `go/internal/` | Shared Python filename matching and pinned Unicode/text semantics |
 | `go/testdata/` | Generated Python tool, OpenAPI, and SQLite contract snapshots |

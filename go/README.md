@@ -2498,3 +2498,19 @@ outside the parent's held turn; automatic runtime dispatch instead captures its
 current immutable environment without reacquiring the parent mutex. The fake-only
 benchmark composition forwards the same setting to its independent managers.
 Shared concurrency pools remain inherited; this slice adds no nested-pool bypass.
+
+## Token-efficiency typed foundations
+
+The efficiency package implements immutable Descriptor and Receipt constructors
+with explicit DescriptorConfig/ReceiptConfig boundaries. Stage, Mode, Status,
+Lossiness and CostTier are closed named types. Descriptor limits and receipt metrics
+retain arbitrary-size integer values through math/big.Int; constructors and returned
+projections detach each pointer and slice. Descriptor.Snapshot yields normalized
+capabilities in first-seen order; Receipt.Projection preserves bounded warning
+codes, paired raw references/digests and changed detection without carrying content.
+
+Sixty-eight actual Source constructors compare successful projections or exact
+validation messages, including 101-digit descriptor limits and a 1001-digit metric.
+No operational optimization is installed yet. E1-E6 in GO_PORT_PLAN.md cover raw
+storage, observation/request/response stages, lifecycle and actual runtime adoption.
+Efficiency activation remains explicitly unsupported until those consumers exist.

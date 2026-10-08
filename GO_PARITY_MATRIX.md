@@ -1,5 +1,45 @@
 # Python to Go parity matrix
 
+## 2026-10-09 native immutable token-efficiency contracts
+
+Baseline 67d83e4. Package efficiency adds named Stage/Mode/Status/Lossiness/CostTier,
+DescriptorConfig/Descriptor and ReceiptConfig/Receipt/ReceiptProjection. Constructors
+follow the captured Source validation order and messages; Descriptor retains first-seen
+capability deduplication, MIME-like matching and declared recovery/cost metadata.
+Receipt validates safe codes, SHA256 digests, raw-ref pairing and nonnegative metrics;
+its projection carries no observation/request content and computes changed from hashes.
+
+Integer limits and metrics use math/big.Int rather than truncating Source integers to
+host widths. Construction and each public snapshot/projection copy integer pointers,
+optional text pointers and slices. Private object state cannot be changed through a
+caller-owned config or returned projection; zero descriptors/receipts refuse marshaling.
+DefaultDescriptor supplies the Source constructor defaults. Warning length uses the
+existing Python surrogatepass character counter before machine-code validation.
+
+All 27 Source descriptor and 41 receipt recipes match successful normalized fields
+and JSON projections or exact validation messages, including 101-digit descriptor
+limits and a 1001-digit raw-byte counter. Native tests also mutate every returned
+pointer/slice category, refuse NaN/Inf timing and zero objects, and pin the 256/257
+lone-surrogate warning boundary. Native typed construction excludes Python annotation-
+violating objects; exception class names, broader Unicode/numeric wire profiles and
+arbitrary duck-typed SPI values are not claimed matched by this foundation.
+
+This is E0 library delivery, not an activated optimizer. No registry, raw artifact
+store, reducer, request/response policy, component lifecycle or runtime consumer is
+installed yet. Existing unsupported efficiency mode/style checks remain unchanged.
+E1-E6 in the explicit migration breakdown and the full port stay open. No dependency,
+any/interface{}/RawMessage or generic domain map is introduced.
+
+Validation: full go test ./... -count=1 -timeout=180s, full go test -race ./...
+-count=1 -timeout=180s and go vet ./... pass. Focused efficiency race passes.
+Source exporter --check confirms 165 files, all 19 scan guards pass and the Source
+48-test token-efficiency suite passes in this iteration. README outline and
+ git diff --check pass. Archify delivery passes 9/9, zero errors/warnings;
+spec SHA256 34f1bbc8b6d7a3ec671ee76593dfe5a0ee18b2664cebd4dcfccb5fba52212b87,
+HTML ba83403b60d959507daf429004bc896b3482e1fe9d365c1517a1ac74d9a1ff38.
+Visual inspection remains skipped after prior browser access denial. Evidence is
+Darwin arm64; full Python regression, coverage and mutation sweep are not refreshed.
+
 ## 2026-10-09 token-efficiency descriptor/receipt Source contracts
 
 Baseline 2f742eb. Export 165 captures 27 real ComponentDescriptor constructors and

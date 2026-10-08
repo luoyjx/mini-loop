@@ -3285,3 +3285,17 @@ again or modifying a shared broker/policy. Direct broker/gate embedding does not
 synthesize a parent. Launcher selects this path with MINILOOP_GUARDIAN; inspection
 reports guardian_enabled without constructing a manager. Never call Session.Guardian
 recursively under an already locked parent tool turn.
+
+## Go token-efficiency contract foundation
+
+Package efficiency exposes DefaultDescriptor/NewDescriptor and NewReceipt. Pass
+DescriptorConfig or ReceiptConfig with named fields and closed enums; required
+integer metrics/limits use *big.Int. Constructors validate and detach mutable input.
+Descriptor.Snapshot and Receipt.Projection return fresh copies of slices, numeric
+values and optional text; zero objects cannot marshal. The event-safe receipt
+projection contains metrics, hashes and references, with no raw content field.
+
+These are library contracts only. No reducer/optimizer/policy registry, raw store,
+lifecycle or runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
+non-normal response styles remain unsupported. Python annotation-violating plugin
+objects and broader Unicode/numeric wire profiles are not claimed by this foundation.
