@@ -6522,6 +6522,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.ast_runtime_contracts import ast_runtime_contracts
     from tools.ast_integer_contracts import ast_integer_contracts
     from tools.ast_text_contracts import ast_text_contracts
+    from tools.guardian_contracts import guardian_contracts
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
         # composition root too, before importing the module.
@@ -6833,6 +6834,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-ast-runtime.json": _json_bytes(ast_runtime_contracts()),
         "python-ast-integers.json": _json_bytes(ast_integer_contracts()),
         "python-ast-text.json": _json_bytes(ast_text_contracts()),
+        "python-guardian.json": _json_bytes(guardian_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),

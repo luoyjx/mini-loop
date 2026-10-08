@@ -1,5 +1,25 @@
 # Go port plan
 
+## 2026-10-09 Guardian Source review and broker-adapter contracts
+
+Baseline 917574a. Export 162 captures eighteen actual AgentGuardian reviews through
+the real readonly_role_agent constructor and fake model responder, plus four actual
+broker_reviewer adapters. Captures compare exact review prompt, cached system text,
+model-visible tool catalogues/results, first Unicode-word-boundary ALLOW/DENY match,
+first-line 200-character reason, deferred outcomes and unchanged parent history.
+Hostile write attempts are blocked both with the default explore catalogue and an
+operator-widened catalogue, establishing readonly as the second independent boundary.
+Bridge cases mask registered secrets before ASCII JSON preview and cap at 2000
+characters, including escaped credentials and a cut through escaped emoji data.
+
+Source capture changes no Python runtime behavior. Validation: eighteen direct
+reviews and four bridge captures; exporter --check confirms 162 current files and
+all 19 scan guards pass. Existing Guardian/wiring/readonly-role tests pass 14 tests;
+one real-provider role-isolation test is skipped by MINILOOP_REAL_PROVIDER_TESTS.
+README outline and git diff --check pass. Native Guardian construction/explicit
+broker selection follows; Manager/Launcher activation remains a separate slice.
+
+
 ## 2026-10-09 native AST text and final tool-result encoding
 
 Baseline bc51cc7. jsonvalue.LegacyString now renders compact ensure_ascii=False

@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `bc51cc7` plus native AST text/final tool-result encoding,
+Runtime review baseline: `917574a` plus Guardian Source review/adapter contracts,
+plus native AST text/final tool-result encoding,
 plus AST text/provider encoding Source contracts,
 plus native AST decimal conversion faults,
 plus AST decimal conversion Source contracts,
