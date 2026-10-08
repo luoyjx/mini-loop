@@ -7913,5 +7913,23 @@ the existing type-only run fault and crash-tail repair. A clean report always
 names its scope. Source report order, severity vocabulary and exact-50 cap caveat
 are retained. Native malformed-input rejection is distinct from Python's dynamic
 keyword acceptance. The default Python syntax backend is still pending; injected
-provider fixtures do not prove the 29 Source AST/file scan recipes or tree-wide
+provider fixtures do not prove the expanded Source AST/file scan recipes or tree-wide
 confinement. The Source tree symlink-file observation remains recorded separately.
+
+### Go migration — diagnostic scan and parser result separation
+
+The native Python diagnostic scanner requires a selected parser and rejects an
+invalid/zero SyntaxResult; a parser error cannot become a clean report or a file
+warning. Scope relies on the parser's declared CPython profile. Actual input hashes
+and parser observations replay 34 Source scan recipes; no native grammar or compiler
+has yet been selected. Three dynamic Source list/keyword payloads retain distinct
+native strict-decoder refusal rather than fabricated scanner behavior.
+
+Source filesystem behavior is explicit: component sorting before 200-entry selection,
+stat-only byte checks, UTF-8 replacement/newline decoding, quoted errno warnings,
+matching .py directories and tree symlink files. Directory symlinks are not walked.
+The oversize branch continues before report stopping, allowing more than 50 warnings;
+tool formatting remains capped. These are not whole-tree work, atomic file-size or
+arbitrary provider confinement guarantees. Cancellation aborts enumeration/read/parser
+phases without returning a successful partial report. Backend/parser selection remains
+separate from model input and execution authority.

@@ -3016,8 +3016,38 @@ updates later calls through the current session.files snapshot. The common gate,
 permissions, result observers, paired transcript and panic recovery remain in use.
 
 No default Python syntax backend or standalone launcher selection is installed yet.
-The six Source injected-provider recipes are replayed; the 29 real Python file/AST
-recipes remain the next backend acceptance corpus. The selected provider owns its
+The six Source injected-provider recipes are replayed; the expanded 37 real Python
+file/AST recipes now also record actual parser inputs/results. The selected provider owns its
 scope/work bounds and tree traversal semantics; explicit-target confinement does not
 prove arbitrary provider tree traversal confinement. A regex or another language's
 parser is not evidence of ast.parse parity. No dependency was added.
+
+### Native Python diagnostic file scanning
+
+NewPythonSyntaxDiagnostics requires an explicit PythonSyntaxParser. Its Parse method
+receives already-decoded text and returns a closed SyntaxResult: CleanSyntax or
+NewSyntaxProblem(line, message); zero/invalid results are rejected. Non-syntax parser
+errors propagate. This interface selects no external compiler or default parser.
+The caller's parser must preserve its declared CPython ast.parse profile, honor the
+provided context and support concurrent use. Scope remains the Source syntax scope;
+implementations must not substitute approximate or unrelated language checks.
+
+The scanner selects either a true .py suffix target or the sorted first 200 tree
+matches. pathlib component order, hidden .py tree matches, matching directories and
+non-traversed symlink directories are retained. Source tree symlink files are followed
+at stat/read; explicit targets have already passed workspace.Files confinement. UTF-8
+maximal-subpart replacement and universal newlines reuse internal/pytext.Reader.
+Filesystem diagnostics retain Source errno/quoted-path text and warning severity.
+
+The 1,000,000-byte gate is stat-before-read, not an atomic cap against file growth.
+The complete tree is enumerated before 200-entry selection. Oversized warnings take
+Source's early continue branch, so they can exceed 50 before an ordinary file checks
+the stop; the outer report still caps at 50. Context is checked during enumeration,
+reading and before/after parser callbacks; failures do not become clean output.
+
+Thirty-four valid Source recipes replay their actual parser input hashes/results
+through a test-only parser seam. Three malformed keyword/list inputs remain native
+strict admission refusals. This proves file/read/control-flow behavior without
+claiming a native Python grammar. The user has been asked to select an installed
+Python compiler or fully native parser; no compiler dependency/default is chosen
+before their reply. Standalone selection and full activation remain pending.

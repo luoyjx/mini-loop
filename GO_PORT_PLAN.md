@@ -1,5 +1,49 @@
 # Go port plan
 
+## 2026-10-08 native Python diagnostic file scanner
+
+Baseline e04abd1. diagnostics.NewPythonSyntaxDiagnostics now implements native
+file/control flow around an explicit PythonSyntaxParser. SyntaxResult is a closed
+invalid/clean/problem projection with private fields and named constructors; zero
+results are rejected and non-syntax parser errors propagate. No parser or external
+compiler implementation/default is selected. The user preference question remains
+pending; this scanner works with either eventual parser choice.
+
+The native scanner retains Source selection: explicit true .py suffix targets,
+hidden .py tree matches, matching directories, non-traversed directory symlinks,
+component-tuple sorting before first-200 selection and stat-before-read byte checks.
+Tree symlink files retain Source's follow-at-stat/read behavior. Its text reader
+reuses shared Python UTF-8 maximal-subpart replacement/universal newlines. Filesystem
+warnings retain errno/quoted-path text. Oversize warnings continue before the report
+stop, so 53 warnings can be collected before a later ordinary file checks the stop;
+outer rendering still caps at 50. Full enumeration and the stat gate are not whole-
+tree work or atomic growth limits. Context checks cover traversal, read and parser
+admission/completion; cancellation never returns a successful partial report.
+
+All 34 valid file/tool recipes replay actual CPython input hashes and syntax/fault
+observations through a test-only selected parser. Inputs, parser call order/count and
+complete output/error match. Three dynamic keyword/list payloads remain separate
+native strict-admission refusals, including Source's falsey empty list. Nil/unbound
+parsers, invalid result variants, ordinary parser faults and cancellation are tested.
+This establishes the native scanner, not a native Python grammar or actual compiler
+adapter. The six earlier injected-provider recipes remain green.
+
+Validation: focused diagnostics race tests and final full go test ./... -count=1
+-timeout=180s, go test -race ./... -count=1 -timeout=180s and go vet ./... pass.
+Source preparation in e04abd1 passed all 150 export files, all 19 anchored scanning
+guards and eight Python diagnostics/query tests; no Source files changed afterward.
+Full Python regression, package invariants, source mutation sweep and coverage were
+not refreshed for this Go-only scanner slice. README outline and git diff --check
+pass. Canonical map/boundary and interactive source are synchronized; Archify deliver
+passes 9/9 showcase checks with zero errors/warnings. Visual inspection remains
+skipped after prior access denial. Specification SHA256: 10eb7082c512abe93d08448552befa8bc5cc7663e338564d2c0715cba2a8dc14;
+HTML SHA256: 8a498534da3a8053736add2888d5d4f3535d8bc96c12d667ab5a9be6ae7fd673.
+
+Next implement the selected parser after the user's reply, then standalone startup
+selection and complete native diagnostic runtime replay. Native SQLite approval,
+wider filesystem/archival profiles, full feature activation and G7 remain open.
+The complete Python-to-Go goal remains active.
+
 ## 2026-10-08 diagnostics parser-boundary Source observations
 
 Baseline 82c9d05. Snapshot 150's diagnostics corpus now includes 37 real file/tool

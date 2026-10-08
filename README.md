@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `82c9d05` plus diagnostics parser-boundary Source observations
+Runtime review baseline: `e04abd1` plus native diagnostic file scanning and
+closed parser results, plus diagnostics parser-boundary Source observations
 and explicit typed diagnostics provider/tool
 composition (default Python syntax backend pending), managed stored-request reconstruction
 and typed historical request reconstruction
@@ -405,7 +406,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics provider · Python syntax pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1178,6 +1179,13 @@ the provider scope and preserve its order/severity vocabulary, with the Source
 current execution workspace. Provider IO releases the handler lock and honors context
 cancellation. The provider remains caller-owned and must support concurrent use;
 no launcher/CLI selection or default Python syntax parser is added in this slice.
+`diagnostics.NewPythonSyntaxDiagnostics(parser)` now implements native file selection,
+Source component sorting, stat byte warnings, UTF-8 replacement/universal newlines and
+report-stop behavior around an explicit closed-result parser interface. Source tree
+symlink-file behavior is retained; explicit target paths still pass confinement first.
+Replay of actual parser input hashes/results verifies the scanner, not a Python grammar.
+The language-parser implementation/selection remains pending.
+
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The
