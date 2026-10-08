@@ -1,5 +1,23 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow attempt startup/settlement and artifacts
+
+Snapshot 117 executes source start_attempt and commit_attempt: 14 startup
+status/version profiles, 32 terminal-pair/artifact/refusal/verification/terminal-run
+profiles and their repeated commits. Native attempt CAS and exact source refusal
+kinds/details match; every run/node/attempt/artifact projection is compared.
+Terminal enums are independent; no artifact schema_valid/verification correlation
+or run-status gate is invented. Provenance mismatch precedes effects. Late invalid
+verification conversion preserves source partial artifact/reference and terminal
+attempt/version/timestamp changes while node/run settlement remains pending.
+Nil native verification selects the source omitted default; explicit empty text
+remains invalid. Matrix initial states are an explicit trusted fixture, not restore
+support. Native race tests add 16 startup and 16 commit contenders with one winner,
+single artifact publication and overflow refusal before shared mutations. Ordinary
+artifacts are immutable domain models. Cancellation/finalization/outbox/pruning and
+live workflow execution/authority/installation remain open.
+
+
 ## 2026-10-08 process-local workflow store admission and claims
 
 Snapshot 116 executes actual InMemoryWorkflowStore methods: 53 sequential

@@ -2394,4 +2394,13 @@ source budget/refusal order; dependency/concurrency scheduling is engine-owned.
 StoreError exposes finite source kinds/details; NativeRecordOverflow refuses int64
 version wrap before mutation. This store is not durable and does not authorize launch,
 check argument schemas, execute workers, deliver outbox messages or prune graphs yet.
-Settlement/artifacts/outbox/pruning and trusted live origin adaptation remain open.
+StartAttempt gates CLAIMED -> RUNNING by attempt version. CommitAttemptInput binds
+the attempt ID/version, two terminal enums, optional immutable Artifact, optional
+VerificationStatus and error. Nil verification selects not_applicable; an explicit
+invalid value retains the source late failure after artifact/attempt changes but
+before node/run settlement. Callers must supply validated enum variants; the store
+is not a transactional repair boundary for arbitrary invalid operator input.
+Artifact provenance must match run/node/attempt. Store does not recompute hashes,
+check artifact schemas/schema_valid or correlate the two terminal statuses.
+GetArtifact and ArtifactsForNode expose immutable models in recorded reference order.
+Cancellation/finalization/outbox/pruning and trusted live origin adaptation remain open.

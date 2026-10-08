@@ -6753,6 +6753,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-validation.json": _json_bytes(_workflow_validation_contracts()),
         "python-workflow-records.json": _json_bytes(_workflow_record_contracts()),
         "python-workflow-store-core.json": _json_bytes(_workflow_store_contracts()),
+        "python-workflow-attempts.json": _json_bytes(_workflow_attempt_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -9380,6 +9381,83 @@ def _workflow_store_contracts() -> dict:
         try: store.create_run(definition_revision="base",session_id="s",idempotency_key="bad",args=json.loads(args_json),run_context=RunContext(message_id="msg",actor_id=json.loads(actor_json)))
         except Exception as e: canonical_errors.append(dict(args_json=args_json,actor_json=actor_json,error=type(e).__name__))
     return dict(steps=rows,matrix=matrix,canonical_errors=canonical_errors)
+
+
+def _workflow_attempt_contracts() -> dict:
+    """Actual attempt start/settlement/artifact effects, including late invalid verification."""
+    import dataclasses
+    from mini_loop.run_context import RunContext
+    from mini_loop.workflows.models import WorkflowDefinition, AttemptClaim, AttemptStatus, NodeStatus, Artifact
+    from mini_loop.workflows.store import InMemoryWorkflowStore
+    definition=dict(name="wf",revision="base",return_from="a",nodes=[dict(id="a",kind="agent")])
+    def seed():
+        store=InMemoryWorkflowStore();store.register_definition(WorkflowDefinition.from_dict(definition))
+        run=store.create_run(definition_revision="base",session_id="s",idempotency_key="k",args={},run_context=RunContext(message_id="msg"))
+        run=store.transition_run(run.run_id,expected_version=0,to_status="RUNNING")
+        attempt=store.claim_nodes(run.run_id,[AttemptClaim(node_id="a",agent_id="worker",spawn_index=0)],expected_version=1)[0]
+        return store,run,attempt
+    def capture(call):
+        try: call();return dict(error="",detail="")
+        except Exception as error:return dict(error=type(error).__name__,detail=str(error))
+    def projection(store,run,attempt,artifact):
+        ids={run.run_id:"<run>",attempt.attempt_id:"<attempt>"}
+        if artifact is not None:ids[artifact.artifact_id]="<artifact>"
+        def clean(value):
+            if dataclasses.is_dataclass(value):
+                value=dataclasses.asdict(value)
+                for key in ("created_at","started_at","heartbeat_at","ended_at"):
+                    if key in value and value[key] is not None:value[key]=0
+            if isinstance(value,dict):return {key:clean(child) for key,child in value.items()}
+            if isinstance(value,(list,tuple)):return [clean(child) for child in value]
+            if isinstance(value,str):return ids.get(value,value)
+            return value
+        data=dict(run=clean(store.get_run(run.run_id)),node=clean(store.get_node(run.run_id,"a")),
+            attempt=clean(store.get_attempt(attempt.attempt_id)),artifacts=clean(store.artifacts_for_node(run.run_id,"a")))
+        return data,ids
+    starts=[]
+    for status in AttemptStatus:
+        for expected in (0,1):
+            store,run,attempt=seed();store._attempts[attempt.attempt_id].status=status
+            outcome=capture(lambda:store.start_attempt(attempt.attempt_id,expected_version=expected))
+            data,ids=projection(store,run,attempt,None)
+            for raw,label in ids.items():outcome["detail"]=outcome["detail"].replace(raw,label)
+            starts.append(dict(status=status.value,expected=expected,output_json=json.dumps(data),**outcome))
+    recipes=[]
+    for a in AttemptStatus:
+        for n in NodeStatus:
+            if a.is_terminal and n.is_terminal:recipes.append(dict(name=a.value+"/"+n.value,attempt_status=a.value,node_status=n.value))
+    recipes.extend([
+        dict(name="artifact",artifact=True,verification="verified"),
+        dict(name="schema-false",artifact=True,schema_valid=False,verification="refuted"),
+        dict(name="foreign-run",artifact=True,foreign="run"),dict(name="foreign-node",artifact=True,foreign="node"),dict(name="foreign-attempt",artifact=True,foreign="attempt"),
+        dict(name="stale",expected=0),dict(name="claimed",before="CLAIMED",expected=0),
+        dict(name="node-not-running",node_before="FAILED"),
+        dict(name="nonterminal-attempt",attempt_status="RUNNING"),dict(name="nonterminal-node",node_status="PENDING"),
+        dict(name="bad-attempt",attempt_status="bad"),dict(name="bad-node",node_status="bad"),
+        dict(name="late-verification",artifact=True,verification="bad"),dict(name="empty-verification",verification=""),
+        dict(name="run-already-terminal",run_before="COMPLETED"),dict(name="node-unverified",node_status="UNVERIFIED",verification="unverified"),
+    ])
+    commits=[]
+    for recipe in recipes:
+        store,run,attempt=seed()
+        if recipe.get("before")!="CLAIMED":store.start_attempt(attempt.attempt_id,expected_version=0)
+        if "node_before" in recipe:store._nodes[(run.run_id,"a")].status=NodeStatus(recipe["node_before"])
+        if "run_before" in recipe:store._runs[run.run_id].status=recipe["run_before"]
+        artifact=None
+        if recipe.get("artifact"):
+            binding=dict(run_id=run.run_id,node_id="a",attempt_id=attempt.attempt_id)
+            foreign=recipe.get("foreign")
+            if foreign:binding[{"run":"run_id","node":"node_id","attempt":"attempt_id"}[foreign]]="foreign"
+            artifact=Artifact.create(**binding,value={"ok":True},schema={"type":"object"},verification_status="unverified",schema_valid=recipe.get("schema_valid",True))
+        kwargs=dict(expected_version=recipe.get("expected",1),attempt_status=recipe.get("attempt_status","SUCCEEDED"),node_status=recipe.get("node_status","SUCCEEDED"),artifact=artifact,error="detail")
+        if "verification" in recipe:kwargs["verification_status"]=recipe["verification"]
+        outcome=capture(lambda:store.commit_attempt(attempt.attempt_id,**kwargs))
+        data,ids=projection(store,run,attempt,artifact)
+        for raw,label in ids.items():outcome["detail"]=outcome["detail"].replace(raw,label)
+        repeat=capture(lambda:store.commit_attempt(attempt.attempt_id,**kwargs))
+        for raw,label in ids.items():repeat["detail"]=repeat["detail"].replace(raw,label)
+        commits.append(dict(recipe=recipe,output_json=json.dumps(data),repeat=repeat,**outcome))
+    return dict(starts=starts,commits=commits)
 
 
 if __name__ == "__main__":

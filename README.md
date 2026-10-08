@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `23e208e` plus process-local workflow admission/CAS/claims;
+reviewed **2026-10-08** (Go baseline `cf12cef` plus workflow attempt CAS/settlement and artifact binding;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1431,7 +1431,13 @@ definitions, deduplicates session/key launches, keeps detached reads and perform
 versioned transitions and atomic claims under one process-local mutex. Empty claims
 increment the version; active nodes follow definition order. Dependency readiness
 and concurrency scheduling remain engine-owned. This core neither authorizes launch
-nor validates argument schemas. Settlement, artifacts, outbox, retention pruning,
+nor validates argument schemas. Snapshot 117 compares 14 actual attempt starts
+and 32 commit/replay outcomes. Native attempt CAS, terminal settlement and artifact
+provenance binding update the attempt/node/run projections in source order. Store
+accepts independent terminal-state combinations and does not validate artifact schemas
+or establish verification truth. The source late invalid-verification failure, including
+its partial artifact/attempt effects, is preserved and recorded; typed callers should
+supply known verification variants. Cancellation, final completion, outbox, retention pruning,
 execution and trusted live workflow launch adaptation remain pending. This library is
 not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and

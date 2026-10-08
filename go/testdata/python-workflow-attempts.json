@@ -1,0 +1,545 @@
+{
+  "commits": [
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "SUCCEEDED",
+        "name": "SUCCEEDED/SUCCEEDED",
+        "node_status": "SUCCEEDED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "SUCCEEDED",
+        "name": "SUCCEEDED/UNVERIFIED",
+        "node_status": "UNVERIFIED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "SUCCEEDED",
+        "name": "SUCCEEDED/FAILED",
+        "node_status": "FAILED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"CANCELLED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "SUCCEEDED",
+        "name": "SUCCEEDED/CANCELLED",
+        "node_status": "CANCELLED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "FAILED",
+        "name": "FAILED/SUCCEEDED",
+        "node_status": "SUCCEEDED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "FAILED",
+        "name": "FAILED/UNVERIFIED",
+        "node_status": "UNVERIFIED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "FAILED",
+        "name": "FAILED/FAILED",
+        "node_status": "FAILED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"CANCELLED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "FAILED",
+        "name": "FAILED/CANCELLED",
+        "node_status": "CANCELLED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"UNKNOWN\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "UNKNOWN",
+        "name": "UNKNOWN/SUCCEEDED",
+        "node_status": "SUCCEEDED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"UNKNOWN\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "UNKNOWN",
+        "name": "UNKNOWN/UNVERIFIED",
+        "node_status": "UNVERIFIED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"UNKNOWN\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "UNKNOWN",
+        "name": "UNKNOWN/FAILED",
+        "node_status": "FAILED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"CANCELLED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"UNKNOWN\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "UNKNOWN",
+        "name": "UNKNOWN/CANCELLED",
+        "node_status": "CANCELLED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"CANCELLED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "CANCELLED",
+        "name": "CANCELLED/SUCCEEDED",
+        "node_status": "SUCCEEDED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"CANCELLED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "CANCELLED",
+        "name": "CANCELLED/UNVERIFIED",
+        "node_status": "UNVERIFIED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"CANCELLED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "CANCELLED",
+        "name": "CANCELLED/FAILED",
+        "node_status": "FAILED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"CANCELLED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"CANCELLED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "CANCELLED",
+        "name": "CANCELLED/CANCELLED",
+        "node_status": "CANCELLED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [\"<artifact>\"], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact>\", \"verification_status\": \"verified\", \"error\": \"detail\"}, \"artifacts\": [{\"artifact_id\": \"<artifact>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt>\", \"value\": {\"ok\": true}, \"content_hash\": \"artifact:4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}]}",
+      "recipe": {
+        "artifact": true,
+        "name": "artifact",
+        "verification": "verified"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [\"<artifact>\"], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact>\", \"verification_status\": \"refuted\", \"error\": \"detail\"}, \"artifacts\": [{\"artifact_id\": \"<artifact>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt>\", \"value\": {\"ok\": true}, \"content_hash\": \"artifact:4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": false, \"media_type\": \"application/json\", \"created_at\": 0}]}",
+      "recipe": {
+        "artifact": true,
+        "name": "schema-false",
+        "schema_valid": false,
+        "verification": "refuted"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "artifact provenance does not match attempt",
+      "error": "WorkflowStoreError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "artifact": true,
+        "foreign": "run",
+        "name": "foreign-run"
+      },
+      "repeat": {
+        "detail": "artifact provenance does not match attempt",
+        "error": "WorkflowStoreError"
+      }
+    },
+    {
+      "detail": "artifact provenance does not match attempt",
+      "error": "WorkflowStoreError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "artifact": true,
+        "foreign": "node",
+        "name": "foreign-node"
+      },
+      "repeat": {
+        "detail": "artifact provenance does not match attempt",
+        "error": "WorkflowStoreError"
+      }
+    },
+    {
+      "detail": "artifact provenance does not match attempt",
+      "error": "WorkflowStoreError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "artifact": true,
+        "foreign": "attempt",
+        "name": "foreign-attempt"
+      },
+      "repeat": {
+        "detail": "artifact provenance does not match attempt",
+        "error": "WorkflowStoreError"
+      }
+    },
+    {
+      "detail": "attempt <attempt> version conflict",
+      "error": "VersionConflict",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "expected": 0,
+        "name": "stale"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "attempt <attempt> is CLAIMED",
+      "error": "InvalidTransition",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"CLAIMED\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "before": "CLAIMED",
+        "expected": 0,
+        "name": "claimed"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> is CLAIMED",
+        "error": "InvalidTransition"
+      }
+    },
+    {
+      "detail": "node a is FAILED",
+      "error": "InvalidTransition",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"FAILED\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "name": "node-not-running",
+        "node_before": "FAILED"
+      },
+      "repeat": {
+        "detail": "node a is FAILED",
+        "error": "InvalidTransition"
+      }
+    },
+    {
+      "detail": "attempt and node commit statuses must be terminal",
+      "error": "InvalidTransition",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "RUNNING",
+        "name": "nonterminal-attempt"
+      },
+      "repeat": {
+        "detail": "attempt and node commit statuses must be terminal",
+        "error": "InvalidTransition"
+      }
+    },
+    {
+      "detail": "attempt and node commit statuses must be terminal",
+      "error": "InvalidTransition",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "name": "nonterminal-node",
+        "node_status": "PENDING"
+      },
+      "repeat": {
+        "detail": "attempt and node commit statuses must be terminal",
+        "error": "InvalidTransition"
+      }
+    },
+    {
+      "detail": "'bad' is not a valid AttemptStatus",
+      "error": "ValueError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "attempt_status": "bad",
+        "name": "bad-attempt"
+      },
+      "repeat": {
+        "detail": "'bad' is not a valid AttemptStatus",
+        "error": "ValueError"
+      }
+    },
+    {
+      "detail": "'bad' is not a valid NodeStatus",
+      "error": "ValueError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "name": "bad-node",
+        "node_status": "bad"
+      },
+      "repeat": {
+        "detail": "'bad' is not a valid NodeStatus",
+        "error": "ValueError"
+      }
+    },
+    {
+      "detail": "'bad' is not a valid VerificationStatus",
+      "error": "ValueError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [\"<artifact>\"], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": \"<artifact>\", \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": [{\"artifact_id\": \"<artifact>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt_id\": \"<attempt>\", \"value\": {\"ok\": true}, \"content_hash\": \"artifact:4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93\", \"schema_hash\": \"schema:a2c799262a3ce3c19ef5cdd983bf3d12b43ab3c426227091b909dcb7054738c0\", \"verification_status\": \"unverified\", \"schema_valid\": true, \"media_type\": \"application/json\", \"created_at\": 0}]}",
+      "recipe": {
+        "artifact": true,
+        "name": "late-verification",
+        "verification": "bad"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "'' is not a valid VerificationStatus",
+      "error": "ValueError",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "recipe": {
+        "name": "empty-verification",
+        "verification": ""
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"COMPLETED\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"SUCCEEDED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "name": "run-already-terminal",
+        "run_before": "COMPLETED"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    },
+    {
+      "detail": "",
+      "error": "",
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 3, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"UNVERIFIED\", \"version\": 2, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": \"detail\"}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 2, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": 0, \"result_artifact_id\": null, \"verification_status\": \"unverified\", \"error\": \"detail\"}, \"artifacts\": []}",
+      "recipe": {
+        "name": "node-unverified",
+        "node_status": "UNVERIFIED",
+        "verification": "unverified"
+      },
+      "repeat": {
+        "detail": "attempt <attempt> version conflict",
+        "error": "VersionConflict"
+      }
+    }
+  ],
+  "starts": [
+    {
+      "detail": "attempt <attempt> is PENDING",
+      "error": "InvalidTransition",
+      "expected": 0,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"PENDING\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "PENDING"
+    },
+    {
+      "detail": "attempt <attempt> version conflict",
+      "error": "VersionConflict",
+      "expected": 1,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"PENDING\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "PENDING"
+    },
+    {
+      "detail": "",
+      "error": "",
+      "expected": 0,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 1, \"parent_agent_id\": null, \"started_at\": 0, \"heartbeat_at\": 0, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "CLAIMED"
+    },
+    {
+      "detail": "attempt <attempt> version conflict",
+      "error": "VersionConflict",
+      "expected": 1,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"CLAIMED\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "CLAIMED"
+    },
+    {
+      "detail": "attempt <attempt> is RUNNING",
+      "error": "InvalidTransition",
+      "expected": 0,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "RUNNING"
+    },
+    {
+      "detail": "attempt <attempt> version conflict",
+      "error": "VersionConflict",
+      "expected": 1,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"RUNNING\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "RUNNING"
+    },
+    {
+      "detail": "attempt <attempt> is SUCCEEDED",
+      "error": "InvalidTransition",
+      "expected": 0,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "SUCCEEDED"
+    },
+    {
+      "detail": "attempt <attempt> version conflict",
+      "error": "VersionConflict",
+      "expected": 1,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"SUCCEEDED\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "SUCCEEDED"
+    },
+    {
+      "detail": "attempt <attempt> is FAILED",
+      "error": "InvalidTransition",
+      "expected": 0,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "FAILED"
+    },
+    {
+      "detail": "attempt <attempt> version conflict",
+      "error": "VersionConflict",
+      "expected": 1,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"FAILED\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "FAILED"
+    },
+    {
+      "detail": "attempt <attempt> is UNKNOWN",
+      "error": "InvalidTransition",
+      "expected": 0,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"UNKNOWN\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "UNKNOWN"
+    },
+    {
+      "detail": "attempt <attempt> version conflict",
+      "error": "VersionConflict",
+      "expected": 1,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"UNKNOWN\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "UNKNOWN"
+    },
+    {
+      "detail": "attempt <attempt> is CANCELLED",
+      "error": "InvalidTransition",
+      "expected": 0,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"CANCELLED\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "CANCELLED"
+    },
+    {
+      "detail": "attempt <attempt> version conflict",
+      "error": "VersionConflict",
+      "expected": 1,
+      "output_json": "{\"run\": {\"run_id\": \"<run>\", \"definition_revision\": \"base\", \"session_id\": \"s\", \"run_context\": {\"message_id\": \"msg\", \"origin\": \"api\", \"actor_id\": null, \"channel\": \"internal\", \"authority\": \"untrusted\", \"stamped_by\": \"mini_loop\", \"delegated_by\": null, \"parent_message_id\": null, \"approved_capabilities\": []}, \"idempotency_key\": \"k\", \"args\": {}, \"status\": \"RUNNING\", \"version\": 2, \"parent_run_id\": null, \"launch_action_id\": null, \"created_at\": 0, \"started_at\": 0, \"ended_at\": null, \"active_node_ids\": [\"a\"], \"event_cursor\": 0, \"attempts_used\": 1, \"policy_snapshot_hash\": \"\", \"workspace_baseline\": null, \"final_artifact_id\": null, \"error\": null, \"cancel_reason\": null}, \"node\": {\"run_id\": \"<run>\", \"node_id\": \"a\", \"status\": \"RUNNING\", \"version\": 1, \"attempt_ids\": [\"<attempt>\"], \"result_artifact_ids\": [], \"error\": null}, \"attempt\": {\"attempt_id\": \"<attempt>\", \"run_id\": \"<run>\", \"node_id\": \"a\", \"attempt\": 1, \"agent_id\": \"worker\", \"spawn_index\": 0, \"status\": \"CANCELLED\", \"version\": 0, \"parent_agent_id\": null, \"started_at\": null, \"heartbeat_at\": null, \"ended_at\": null, \"result_artifact_id\": null, \"verification_status\": \"not_applicable\", \"error\": null}, \"artifacts\": []}",
+      "status": "CANCELLED"
+    }
+  ]
+}

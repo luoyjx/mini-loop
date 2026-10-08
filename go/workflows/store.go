@@ -61,6 +61,7 @@ type InMemoryStore struct {
 	runs             map[RunID]WorkflowRun
 	nodes            map[nodeKey]NodeState
 	attempts         map[AttemptID]NodeAttempt
+	artifacts        map[ArtifactID]Artifact
 	launches         map[launchKey]launchEntry
 }
 
@@ -68,7 +69,7 @@ func NewInMemoryStore() *InMemoryStore {
 	return &InMemoryStore{
 		definitions: map[Revision]storedDefinition{}, definitionHashes: map[Digest]Revision{},
 		runs: map[RunID]WorkflowRun{}, nodes: map[nodeKey]NodeState{},
-		attempts: map[AttemptID]NodeAttempt{}, launches: map[launchKey]launchEntry{},
+		attempts: map[AttemptID]NodeAttempt{}, artifacts: map[ArtifactID]Artifact{}, launches: map[launchKey]launchEntry{},
 	}
 }
 func (s *InMemoryStore) RegisterDefinition(d Definition) (Definition, error) {

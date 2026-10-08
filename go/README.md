@@ -2130,5 +2130,19 @@ and three canonical hash refusals. Native race tests exercise 24 concurrent laun
 calls and claim CAS contenders, pointer isolation, first-start retention, UUIDv4
 prefixes, tie ordering and atomic overflow refusal. Store does not authorize launch,
 check argument schemas or schedule dependencies/concurrency; service/engine owns
-those checks. Attempt settlement, artifact binding, outbox, retention and live
+those checks. Attempt settlement and artifact binding are described below; outbox, retention and live
 manager/tools/HTTP installation remain open. No workflow persistence ships.
+
+### Workflow attempt settlement
+
+StartAttempt and CommitAttempt use attempt CAS; settlement binds an optional
+immutable artifact by exact run/node/attempt IDs. Source terminal-state combinations
+are independently accepted. GetArtifact/ArtifactsForNode retain stored reference order.
+Snapshot 117 compares 14 actual starts and 32 commit/repeat outcomes. Valid enum
+settlement updates attempt/node/run versions and timestamps; no artifact schema or
+verification-truth check is added. The source invalid verification conversion occurs
+late and leaves partial attempt/artifact state. Native reproduces that operator-input
+quirk; use validated VerificationStatus values. Nil selects the source default.
+Overflow checks precede publication; race tests elect one start/commit CAS winner.
+Cancellation, final completion/outbox generation, delivery, retention and live
+service/engine installation remain open. This store is still process-local.

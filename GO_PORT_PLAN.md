@@ -1,5 +1,68 @@
 # Go port plan
 
+## 2026-10-08 workflow attempt CAS, settlement and artifact binding
+
+Baseline cf12cef. W3B1 adds StartAttempt, CommitAttemptInput/CommitAttempt,
+GetArtifact and ArtifactsForNode to the process-local store. Artifacts are private
+immutable domain values indexed by named IDs. Startup checks missing/version/status
+in source order, then CLAIMED -> RUNNING and stamps one start/heartbeat time.
+It does not advance run/node versions. Commit validates terminal attempt/node enums
+before lookup, checks attempt CAS/RUNNING and node RUNNING, then binds artifact
+provenance. Artifact schema_valid, verification truth and correlated terminal pairs
+are not store-owned checks. Commit can settle a still-running attempt after its run
+was independently marked terminal, matching source.
+
+Optional verification distinguishes omitted (nil -> not_applicable) from explicit
+empty/unknown strings. The actual source conversion is late: invalid verification
+fails after artifact/index references and terminal attempt status/version/timestamps
+are stored, before node/run status/version/error settlement. Native retains that
+observable partial failure, and repeated submission sees the advanced attempt
+version. This is documented operator-input behavior, not an atomic failure claim;
+future service/engine callers must supply validated finite enum variants.
+For valid input, node/run counters advance and active node IDs retain definition
+order. Native int64 version/allocation admission checks occur before publication.
+
+Snapshot 117 runs actual source methods: 14 startup status/version profiles and
+32 terminal pair, artifact, provenance, schema flag, refusal, verification and
+already-terminal run profiles, including repeated commits. Generated IDs and times
+are normalized only in output; fixture state seeding is explicit. All record fields,
+error classes/details and repeated outcomes are compared. The first focused test
+run found a fixture-only mismatch (schema object versus empty args); the seed was
+corrected and focused workflows race passed. Native tests exercise 16 startup
+contenders and 16 commit contenders with one CAS winner, single artifact publication,
+missing getters and overflow refusal without publishing an artifact.
+
+Fresh Go statement coverage uses `-coverpkg=./...`, merging duplicate source blocks
+by maximum execution count: overall 19,032/21,036 (90.47%), workflows 787/847
+(92.92%), agent 6,717/7,402 (90.75%), httpapi 1,478/1,638 (90.23%), teams 384/401
+(95.76%) and runmeta 12/12 (100%). Profile:
+`/tmp/mini-loop-go-shared-coverage-20261008.out`. These measure executed statements,
+not migration completion; Python coverage was not refreshed.
+
+Validation: focused workflow race tests, full Go tests, full Go race, full shared
+coverage and `go vet ./...` passed. All 117 source exports are current and all 19
+scan guards anchored. The first full export check reported a stale existing
+child-background fixture with an unknown-child return code 255; an isolated retry
+passed without changing that fixture. Full Python regression passed: 2,155 tests,
+28 skips, 24 subtests and 3 dependency deprecation warnings in 76.07 seconds.
+Package invariants and guarded-behavior checks were not rerun: no Python package
+module or guarded Python runtime behavior changed.
+`git diff --check` and README outline passed. Architecture regeneration passed 9/9
+checks with zero errors/warnings. Visual inspection remains skipped because access
+was denied; no visual approval is claimed. Specification SHA256:
+`c34712b9d798a15af97754f4cbf99e3ea7fae4aaae7941c4fdd9573028d2c7a0`;
+HTML SHA256: `7c6e941eb8dab9b5b5701ed362a57ae89d4b0fc150b99aab970a05c2d77c8a05`.
+README canonical Mermaid topology reviewed: no live manager/model/HTTP installation;
+boundary/specification, parity, extension and package documentation are updated.
+No dependencies or Python runtime/package modules changed.
+
+Next W3B2 adds cancel_claimed_attempts, request/finish cancellation and fail/finalize
+run with completion outbox creation; W3C adds delivery claims/ack/release and whole
+graph terminal-and-drained pruning. W4-W6 engine/live origin/service/tools/HTTP and
+manager activation, MCP, native session SQLite, profiles and full G7 remain open.
+No durable workflow backend or restart-resume guarantee is inferred.
+
+
 ## 2026-10-08 workflow store registration/admission/CAS/claim core
 
 Baseline 23e208e. W3A adds NewInMemoryStore and finite StoreError kinds/details.
