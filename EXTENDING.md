@@ -3070,7 +3070,31 @@ or version parsing.
 ParseVersion accepts named VersionOutput and performs Source banner, homepage and
 version-range checks. Python Unicode 14 decimal components and Python whitespace
 are retained. Config timeouts additionally must fit a finite positive Go duration.
-This is inert observation parsing, not an executable health/trust check. Process
-execution, digest/workspace checks, bounded snapshots, structured AST payloads, tool
-installation and startup selection remain pending. No provider/default/dependency
-was installed.
+ParseVersion remains inert observation parsing. The separate Adapter described
+below performs actual configured probes. Bounded source snapshots, structured AST
+payloads, tool installation and startup selection remain pending. No provider/default
+or dependency was installed.
+
+### Standalone Go AST executable probing
+
+NewAdapter requires validated Config. Adapter.Probe(ctx, workspace) owns a fresh
+argv subprocess per call and rechecks resolved executable placement and optional
+SHA-256 before every invocation. Empty workspace means an operator-only probe with
+no model workspace binding; later model tools must pass their trusted session root.
+Workspace-local binaries are rejected before launch, including canonical symlink
+targets. A name-only binary is resolved through host PATH; the child inherits only
+LANG/LC_ALL/SYSTEMROOT and explicit passthrough names, plus forced NO_COLOR=1 and
+a fixed trusted TMPDIR outside the supplied workspace. Digest verification does
+not atomically pin an executable against replacement between verification and exec.
+
+Each stdout/stderr drain retains at most MaxOutputBytes raw bytes and independently
+triggers group termination on overflow. Source buffered 64 KiB read-or-EOF ordering
+is retained: a partial over-limit block with an open pipe may first reach the deadline.
+UTF-8 uses Python maximal-subpart replacement
+without universal-newline conversion. Child exit and both pipe drains share one
+configured deadline. Darwin/Linux retain the launched group ID after direct-child
+exit; other builds terminate only the direct child. Cleanup owns/closes the pipes
+and joins the child/drains. Caller cancellation returns its context error; internal
+timeouts/overflow and ordinary process faults become typed probe statuses. There is
+no persistent child or request cache. Source snapshots and tool activation remain
+pending; an Applied version probe is not proof of semantic payload correctness.

@@ -1,5 +1,56 @@
 # Python to Go parity matrix
 
+## 2026-10-08 standalone AST executable probes and bounded processes
+
+Baseline 0477c2b. NewAdapter validates Config and exposes Probe(ctx, workspace).
+A probe resolves the configured executable, rejects canonical workspace-local
+binaries, recomputes optional SHA-256 before each launch and runs direct argv.
+LANG/LC_ALL/SYSTEMROOT plus explicit passthrough names form the child environment;
+NO_COLOR=1 and a fixed trusted TMPDIR outside the supplied workspace override
+ambient values. Empty workspace is an operator-only probe, not a model binding.
+Digest checking precedes exec and does not atomically pin the file against replacement.
+
+Independent stdout/stderr captures retain at most MaxOutputBytes raw bytes each;
+overflow kills the launched group. Python maximal-subpart UTF-8 replacement preserves
+CR/LF rather than applying file-reader universal newlines. Buffered 64 KiB read-or-
+EOF ordering retains Source timeout-before-overflow for a partial over-limit writer
+that keeps its pipe open; native regression and a real Source process audit cover this
+case. Direct-child wait and both
+pipe drains share one deadline. Darwin/Linux retain the launched group ID after child
+exit to terminate pipe-holding descendants; fallback builds kill only the direct child.
+Cleanup owns/closes readers and joins local child/drains; external cancellation returns
+its context error. Internal timeout/overflow/start/read faults remain typed probe
+statuses. The adapter keeps no persistent child or per-request mutable state.
+
+All sixteen real Source probe recipes now replay native executable behavior, including
+three pre-exec refusals and matched-digest execution followed by an ordinary exit fault.
+Native helpers additionally verify exact per-stream caps, malformed UTF-8, environment
+isolation, one-argv shell metacharacters, ordinary/closed-pipe hangs, an actually started
+exited-child descendant, pre-start and active cancellation, zero configuration and
+changed-file digest refusal on the same adapter. The initial test-only three-second
+limit on copied helper executables timed out once during parallel full-suite execution;
+normal probes now retain Source's default fifteen seconds, while dedicated short
+wall-time tests keep their 0.3-second limit and descendant-start evidence.
+
+The public method currently probes only --version. Structured AST payloads, safe source
+snapshots/ignores/globs, four tool-input variants and manager/child/startup/HTTP wiring
+remain required. No model AST tool, default activation or dependency was added. This
+slice does not resolve diagnostics parser choice, native SQLite or the full G7 audit;
+the complete port objective remains active.
+
+Validation: focused native astcontext race tests and all 152 Source contract
+exports pass. The final batch passes full go test ./... -count=1 -timeout=180s,
+go test -race ./... -count=1 -timeout=180s and go vet ./... with the adjacent
+foreground-shell registration fix recorded separately. The real Source partial-
+block process audit confirms actual execution, timeout status and 1,000 retained
+bytes; the native regression matches that ordering. README outline and git diff
+--check pass. Canonical map/source/generated HTML are synchronized; Archify passes
+9/9 showcase checks with zero errors/warnings. Visual inspection remains skipped
+after prior access denial. Full Python regression, package invariants, Source mutation
+sweeps and coverage were not refreshed; no Source runtime module changed.
+Specification SHA256: cad0e208dc39f47ec85ba8fffaed029bcd2e3c9cb950778bf977b68f1ce8166d;
+HTML SHA256: e2aa65224c80d4c7c412ed8bd1db736201c7b804bf779b1c044b6dcbc6533bee.
+
 ## 2026-10-08 typed AST configuration and inert version probes
 
 Baseline 1b820e2. The standalone astcontext package now implements Parameters,

@@ -25,6 +25,7 @@ type sourceFixture struct {
 		Name, Stdout, Stderr string
 		ExitCode             *int `json:"exit_code"`
 		Output               probeWire
+		Executed             bool
 	}
 	Projections []struct {
 		Status, Error string

@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `1b820e2` plus typed AST configuration/status and inert
+Runtime review baseline: `0477c2b` plus standalone AST executable probing and
+bounded process capture/cancellation, plus typed AST configuration/status and inert
 version-output parsing, plus AST adapter Source admission/probe contracts,
 plus explicit diagnostics launcher forwarding
 and actual HTTP/model replay, plus diagnostics HTTP Source contracts,
@@ -410,7 +411,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST config / version parsing · no process adapter"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · source snapshots pending"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1200,8 +1201,16 @@ parses captured version output into closed statuses and immutable probe records.
 Environment names/digests normalize into detached snapshots; semantic components
 use Python-pinned Unicode decimal blocks without machine-integer overflow. Zero
 configuration/status values and unrepresentable timeouts are refused. Version
-parsing is inert: it does not execute a program, verify its digest, confine snapshots
-or install semantic-read tools. Those adapter stages remain pending.
+parsing is inert. A separately constructed astcontext.Adapter now probes a configured
+operator executable after workspace-local refusal and optional SHA-256 recheck. Its
+argv child has a selected environment, independent stdout/stderr byte caps and one
+deadline shared by child exit and pipe drains; cancellation kills/joins the child.
+Buffered drains preserve Source 64 KiB read-or-EOF ordering, including timeout-before-
+overflow for a small over-limit writer that keeps its pipe open.
+Darwin/Linux retain the launched process-group ID to stop pipe-holding descendants
+even after the direct child exits. Other platforms have direct-child cleanup only.
+Source snapshots, structured AST payloads and semantic-read tool installation remain
+pending. Executable verification precedes launch and is not an atomic file pin.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The

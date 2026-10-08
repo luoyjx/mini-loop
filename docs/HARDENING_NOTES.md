@@ -7948,12 +7948,29 @@ remains pending.
 
 ### Go migration — inert AST configuration and probes
 
-The astcontext library has no execution authority. Captured VersionOutput can
+ParseVersion has no execution authority. Captured VersionOutput can
 produce an Applied observation without proving executable identity, workspace
-containment, sidecar environment or source-snapshot safety. The eventual process
-adapter must perform those checks before execution. Private validated Config and
+containment, sidecar environment or source-snapshot safety. Adapter.Probe now independently performs executable placement/digest checks and
+process limits before interpreting output; semantic source snapshots are still
+pending. Private validated Config and
 Probe fields prevent zero/invalid records from becoming successful parsed output;
 status JSON rejects unknown variants. Snapshot environment names/digests detach
 caller storage. Finite positive duration admission strengthens Source's dynamic
 timeout handling; typed environment input refuses non-string names. No AST tool
 or executable default was activated.
+
+### Go migration — AST sidecar process lifetime
+
+Standalone probes reject a canonical executable within the supplied workspace and
+recompute the optional pinned SHA-256 before every exec. This is check-before-exec,
+not an atomic executable-file pin. Selected argv/environment avoid shell parsing or
+ambient variable inheritance; temporary paths stay outside the workspace. Independent
+raw-byte drains bound each stream while maximal-subpart UTF-8 replacement preserves
+Source output text. Buffered 64 KiB read-or-EOF ordering retains Source timeout
+precedence for a partial over-limit block whose producer keeps the pipe open.
+One deadline covers direct-child wait and both drains. Darwin/Linux
+kill the retained launched group even after its direct child exits; fallback platforms
+have direct-child cleanup only. Cancellation returns failure after joining local
+process/drains. Normal Source probes, digest recheck after file mutation, exact byte
+caps, closed-pipe hangs and exited-child pipe holders are exercised by native helpers.
+No source snapshot or model AST tool has been installed.
