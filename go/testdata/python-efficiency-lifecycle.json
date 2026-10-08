@@ -1,0 +1,1605 @@
+{
+  "rows": [
+    {
+      "actions": [],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "closed_health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "closed_initialize": {
+        "components": [],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "closed_receipts": [],
+      "closed_warnings": [
+        "runtime_closed"
+      ],
+      "default": "off",
+      "events": [],
+      "health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "mode": "enforce",
+      "name": "empty"
+    },
+    {
+      "actions": [
+        "ok",
+        "ok"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "closed_health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "closed_initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "closed_receipts": [
+        {
+          "changed": false,
+          "component_id": "probe-0",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        },
+        {
+          "changed": false,
+          "component_id": "probe-1",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        }
+      ],
+      "closed_warnings": [
+        "runtime_closed"
+      ],
+      "default": "off",
+      "events": [
+        [
+          "probe-0",
+          "initialize"
+        ],
+        [
+          "probe-1",
+          "initialize"
+        ],
+        [
+          "probe-0",
+          "health"
+        ],
+        [
+          "probe-1",
+          "health"
+        ],
+        [
+          "probe-1",
+          "close"
+        ],
+        [
+          "probe-0",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "mode": "enforce",
+      "name": "ordered"
+    },
+    {
+      "actions": [
+        "ok",
+        "failure",
+        "ok"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "component_error:RuntimeError",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "error"
+          },
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": false,
+        "phase": "close",
+        "status": "error"
+      },
+      "closed_health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "closed_initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "component_error:RuntimeError",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "error"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": false,
+        "phase": "initialize",
+        "status": "error"
+      },
+      "closed_receipts": [
+        {
+          "changed": false,
+          "component_id": "probe-0",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        },
+        {
+          "changed": false,
+          "component_id": "probe-1",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        },
+        {
+          "changed": false,
+          "component_id": "probe-2",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        }
+      ],
+      "closed_warnings": [
+        "runtime_closed"
+      ],
+      "default": "off",
+      "events": [
+        [
+          "probe-0",
+          "initialize"
+        ],
+        [
+          "probe-1",
+          "initialize"
+        ],
+        [
+          "probe-2",
+          "initialize"
+        ],
+        [
+          "probe-0",
+          "health"
+        ],
+        [
+          "probe-1",
+          "health"
+        ],
+        [
+          "probe-2",
+          "health"
+        ],
+        [
+          "probe-2",
+          "close"
+        ],
+        [
+          "probe-1",
+          "close"
+        ],
+        [
+          "probe-0",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "component_error:RuntimeError",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "error"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": false,
+        "phase": "health",
+        "status": "error"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "component_error:RuntimeError",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "error"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": false,
+        "phase": "initialize",
+        "status": "error"
+      },
+      "mode": "enforce",
+      "name": "fail-open"
+    },
+    {
+      "actions": [
+        "unsafe"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "closed_health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "closed_initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "component_error",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "error"
+          }
+        ],
+        "healthy": false,
+        "phase": "initialize",
+        "status": "error"
+      },
+      "closed_receipts": [
+        {
+          "changed": false,
+          "component_id": "probe-0",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "shadow",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        }
+      ],
+      "closed_warnings": [
+        "runtime_closed"
+      ],
+      "default": "off",
+      "events": [
+        [
+          "probe-0",
+          "initialize"
+        ],
+        [
+          "probe-0",
+          "health"
+        ],
+        [
+          "probe-0",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "component_error",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "error"
+          }
+        ],
+        "healthy": false,
+        "phase": "initialize",
+        "status": "error"
+      },
+      "mode": "shadow",
+      "name": "unsafe-initialize"
+    },
+    {
+      "actions": [
+        "timeout"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "component_error:TimeoutError",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "error"
+          }
+        ],
+        "healthy": false,
+        "phase": "close",
+        "status": "error"
+      },
+      "closed_health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "closed_initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "component_error:TimeoutError",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "error"
+          }
+        ],
+        "healthy": false,
+        "phase": "initialize",
+        "status": "error"
+      },
+      "closed_receipts": [
+        {
+          "changed": false,
+          "component_id": "probe-0",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        }
+      ],
+      "closed_warnings": [
+        "runtime_closed"
+      ],
+      "default": "off",
+      "events": [
+        [
+          "probe-0",
+          "initialize"
+        ],
+        [
+          "probe-0",
+          "health"
+        ],
+        [
+          "probe-0",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "component_error:TimeoutError",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "error"
+          }
+        ],
+        "healthy": false,
+        "phase": "initialize",
+        "status": "error"
+      },
+      "mode": "enforce",
+      "name": "timeout"
+    },
+    {
+      "actions": [
+        "ok"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "closed_health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "closed_initialize": {
+        "components": [],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "closed_receipts": [
+        {
+          "changed": false,
+          "component_id": "probe-0",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "off",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        }
+      ],
+      "closed_warnings": [
+        "runtime_closed"
+      ],
+      "default": "enforce",
+      "events": [],
+      "health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "ok"
+      },
+      "initialize": {
+        "components": [],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "mode": "off",
+      "name": "off"
+    },
+    {
+      "actions": [
+        "missing"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "skipped"
+      },
+      "closed_health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "closed_initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "skipped"
+      },
+      "closed_receipts": [
+        {
+          "changed": false,
+          "component_id": "probe-0",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        }
+      ],
+      "closed_warnings": [
+        "runtime_closed"
+      ],
+      "default": "off",
+      "events": [],
+      "health": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "hook_not_implemented",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "skipped"
+      },
+      "mode": "enforce",
+      "name": "missing"
+    },
+    {
+      "actions": [
+        "false",
+        "true",
+        "none",
+        "degraded",
+        "skipped"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "probe-4",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-3",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "closed_health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "closed_initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-3",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-4",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "closed_receipts": [
+        {
+          "changed": false,
+          "component_id": "probe-0",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        },
+        {
+          "changed": false,
+          "component_id": "probe-1",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        },
+        {
+          "changed": false,
+          "component_id": "probe-2",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        },
+        {
+          "changed": false,
+          "component_id": "probe-3",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        },
+        {
+          "changed": false,
+          "component_id": "probe-4",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        }
+      ],
+      "closed_warnings": [
+        "runtime_closed"
+      ],
+      "default": "off",
+      "events": [
+        [
+          "probe-0",
+          "initialize"
+        ],
+        [
+          "probe-1",
+          "initialize"
+        ],
+        [
+          "probe-2",
+          "initialize"
+        ],
+        [
+          "probe-3",
+          "initialize"
+        ],
+        [
+          "probe-4",
+          "initialize"
+        ],
+        [
+          "probe-0",
+          "health"
+        ],
+        [
+          "probe-1",
+          "health"
+        ],
+        [
+          "probe-2",
+          "health"
+        ],
+        [
+          "probe-3",
+          "health"
+        ],
+        [
+          "probe-4",
+          "health"
+        ],
+        [
+          "probe-4",
+          "close"
+        ],
+        [
+          "probe-3",
+          "close"
+        ],
+        [
+          "probe-2",
+          "close"
+        ],
+        [
+          "probe-1",
+          "close"
+        ],
+        [
+          "probe-0",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "component_reported_unhealthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "degraded"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-3",
+            "component_version": "1",
+            "detail": "capacity_low",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "degraded"
+          },
+          {
+            "component_id": "probe-4",
+            "component_version": "1",
+            "detail": "healthy",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "skipped"
+          }
+        ],
+        "healthy": false,
+        "phase": "health",
+        "status": "degraded"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-3",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-4",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "mode": "enforce",
+      "name": "health-values"
+    },
+    {
+      "actions": [
+        "wrong",
+        "async",
+        "forged"
+      ],
+      "cached_close": true,
+      "cached_initialize": true,
+      "close": {
+        "components": [
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "closed",
+            "elapsed_ms": 0,
+            "phase": "close",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "close",
+        "status": "ok"
+      },
+      "closed_health": {
+        "components": [],
+        "healthy": true,
+        "phase": "health",
+        "status": "skipped"
+      },
+      "closed_initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "closed_receipts": [
+        {
+          "changed": false,
+          "component_id": "probe-0",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        },
+        {
+          "changed": false,
+          "component_id": "probe-1",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        },
+        {
+          "changed": false,
+          "component_id": "probe-2",
+          "component_version": "1",
+          "deterministic": true,
+          "elapsed_ms": 0,
+          "input_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "lossiness": "lossless",
+          "mode": "enforce",
+          "output_digest": "sha256:9f3a0230a80d78b28fbb87c6a043c72a5cafa417fe359056580783f52bfcb495",
+          "projected_bytes": 16,
+          "raw_bytes": 16,
+          "raw_digest": null,
+          "raw_ref": null,
+          "reason": "runtime_closed",
+          "stage": "observation",
+          "status": "passthrough",
+          "tokens_after_estimate": 4,
+          "tokens_before_estimate": 4,
+          "warnings": [
+            "runtime_closed"
+          ]
+        }
+      ],
+      "closed_warnings": [
+        "runtime_closed"
+      ],
+      "default": "off",
+      "events": [
+        [
+          "probe-0",
+          "initialize"
+        ],
+        [
+          "probe-1",
+          "initialize"
+        ],
+        [
+          "probe-2",
+          "initialize"
+        ],
+        [
+          "probe-0",
+          "health"
+        ],
+        [
+          "probe-1",
+          "health"
+        ],
+        [
+          "probe-2",
+          "health"
+        ],
+        [
+          "probe-2",
+          "close"
+        ],
+        [
+          "probe-1",
+          "close"
+        ],
+        [
+          "probe-0",
+          "close"
+        ]
+      ],
+      "health": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "component_error:TypeError",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "error"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "component_error:TypeError",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "error"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "component_error:ValueError",
+            "elapsed_ms": 0,
+            "phase": "health",
+            "stage": "observation",
+            "status": "error"
+          }
+        ],
+        "healthy": false,
+        "phase": "health",
+        "status": "error"
+      },
+      "initialize": {
+        "components": [
+          {
+            "component_id": "probe-0",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-1",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          },
+          {
+            "component_id": "probe-2",
+            "component_version": "1",
+            "detail": "initialized",
+            "elapsed_ms": 0,
+            "phase": "initialize",
+            "stage": "observation",
+            "status": "ok"
+          }
+        ],
+        "healthy": true,
+        "phase": "initialize",
+        "status": "ok"
+      },
+      "mode": "enforce",
+      "name": "bad-health"
+    }
+  ]
+}

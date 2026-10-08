@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `91137e3` plus typed observation orchestration library,
+Runtime review baseline: `54c42b0` plus efficiency lifecycle Source contracts,
+plus typed observation orchestration library,
 plus observation-pipeline Source contracts,
 plus typed observations and builtin reducers,
 plus observation/reducer Source contracts,

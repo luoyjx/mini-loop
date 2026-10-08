@@ -1,5 +1,18 @@
 # Python to Go parity matrix
 
+## 2026-10-09 efficiency lifecycle Source contracts
+
+Baseline 54c42b0. Nine real TokenEfficiencyRuntime recipes capture ordered enabled
+initialize/health/reverse-close hooks, per-root clone-shared cached reports, off and
+missing hooks, contained class-only errors, cooperative timeout, safe/invalid health
+results and closed observation receipts. Only elapsed_ms is normalized. Components
+are controlled probes; runtime coordination and report validation are Source code.
+This capture does not implement native lifecycle or activate Agent efficiency.
+
+Validation: focused Source efficiency tests, exporter --check (170 files), all
+19 source scan guards and git diff --check. Full Python regression, coverage,
+mutation sweeps and Go gates are not refreshed by this capture-only commit.
+
 ## 2026-10-09 typed observation orchestration library
 
 Baseline 91137e3. ObservationPipeline accepts explicit ordered ReducerBindingConfig
