@@ -129,6 +129,48 @@
     {
       "caps": {
         "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "WorkflowDefinition.__init__() missing 1 required positional argument: 'name'",
+      "error": "TypeError",
+      "input_json": "{\"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "missing-name",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "WorkflowDefinition.__init__() missing 1 required positional argument: 'return_from'",
+      "error": "TypeError",
+      "input_json": "{\"name\": \"wf\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "missing-return",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "detail": "WorkflowDefinition.__init__() missing 2 required positional arguments: 'name' and 'return_from'",
+      "error": "TypeError",
+      "input_json": "{\"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}",
+      "name": "missing-both",
+      "output_json": "null",
+      "policy_hash": ""
+    },
+    {
+      "caps": {
+        "max_agents": 32,
         "max_concurrent_agents": 2,
         "max_rounds": 4,
         "wall_time_seconds": 900.0

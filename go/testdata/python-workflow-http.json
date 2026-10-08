@@ -1,0 +1,842 @@
+{
+  "rows": [
+    {
+      "cases": [
+        {
+          "await_worker": false,
+          "body": "",
+          "method": "GET",
+          "name": "empty-list",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "enabled": false,
+            "runs": []
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "",
+          "method": "POST",
+          "name": "missing-body",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": null,
+                "loc": [
+                  "body"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{}",
+          "method": "POST",
+          "name": "missing-definition",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": {},
+                "loc": [
+                  "body",
+                  "definition"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": null, \"args\": [], \"action_id\": 7}",
+          "method": "POST",
+          "name": "multiple-model-errors",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": null,
+                "loc": [
+                  "body",
+                  "definition"
+                ],
+                "msg": "Input should be a valid dictionary",
+                "type": "dict_type"
+              },
+              {
+                "input": [],
+                "loc": [
+                  "body",
+                  "args"
+                ],
+                "msg": "Input should be a valid dictionary",
+                "type": "dict_type"
+              },
+              {
+                "input": 7,
+                "loc": [
+                  "body",
+                  "action_id"
+                ],
+                "msg": "Input should be a valid string",
+                "type": "string_type"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "[]",
+          "method": "POST",
+          "name": "wrong-body",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": [],
+                "loc": [
+                  "body"
+                ],
+                "msg": "Input should be a valid dictionary or object to extract fields from",
+                "type": "model_attributes_type"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "null",
+          "method": "POST",
+          "name": "null-body",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": null,
+                "loc": [
+                  "body"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{}",
+          "method": "POST",
+          "name": "validation-before-owner",
+          "path": "/sessions/missing/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": {},
+                "loc": [
+                  "body",
+                  "definition"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{}",
+          "method": "POST",
+          "name": "auth-before-validation",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": "wrong"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\"}",
+          "method": "POST",
+          "name": "foreign-parent",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "No session 's'"
+          },
+          "status": 404,
+          "token": "token-b"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\"}",
+          "method": "POST",
+          "name": "launch-refused",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "workflows are not enabled"
+          },
+          "status": 404,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\", \"extra\": NaN}",
+          "method": "POST",
+          "name": "legacy-ignored-extra",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "workflows are not enabled"
+          },
+          "status": 404,
+          "token": "token-a"
+        }
+      ],
+      "context": null,
+      "mode": "disabled"
+    },
+    {
+      "cases": [
+        {
+          "await_worker": false,
+          "body": "",
+          "method": "GET",
+          "name": "empty-list",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "enabled": true,
+            "runs": []
+          },
+          "status": 200,
+          "token": ""
+        },
+        {
+          "await_worker": false,
+          "body": "",
+          "method": "POST",
+          "name": "missing-body",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": null,
+                "loc": [
+                  "body"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": ""
+        },
+        {
+          "await_worker": false,
+          "body": "{}",
+          "method": "POST",
+          "name": "missing-definition",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": {},
+                "loc": [
+                  "body",
+                  "definition"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": ""
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": null, \"args\": [], \"action_id\": 7}",
+          "method": "POST",
+          "name": "multiple-model-errors",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": null,
+                "loc": [
+                  "body",
+                  "definition"
+                ],
+                "msg": "Input should be a valid dictionary",
+                "type": "dict_type"
+              },
+              {
+                "input": [],
+                "loc": [
+                  "body",
+                  "args"
+                ],
+                "msg": "Input should be a valid dictionary",
+                "type": "dict_type"
+              },
+              {
+                "input": 7,
+                "loc": [
+                  "body",
+                  "action_id"
+                ],
+                "msg": "Input should be a valid string",
+                "type": "string_type"
+              }
+            ]
+          },
+          "status": 422,
+          "token": ""
+        },
+        {
+          "await_worker": false,
+          "body": "[]",
+          "method": "POST",
+          "name": "wrong-body",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": [],
+                "loc": [
+                  "body"
+                ],
+                "msg": "Input should be a valid dictionary or object to extract fields from",
+                "type": "model_attributes_type"
+              }
+            ]
+          },
+          "status": 422,
+          "token": ""
+        },
+        {
+          "await_worker": false,
+          "body": "null",
+          "method": "POST",
+          "name": "null-body",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": null,
+                "loc": [
+                  "body"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": ""
+        },
+        {
+          "await_worker": false,
+          "body": "{}",
+          "method": "POST",
+          "name": "validation-before-owner",
+          "path": "/sessions/missing/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": {},
+                "loc": [
+                  "body",
+                  "definition"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": ""
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\"}",
+          "method": "POST",
+          "name": "launch-refused",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "workflow launch over HTTP requires an authenticated deployment; an anonymous bind cannot stamp explicit_human authority"
+          },
+          "status": 403,
+          "token": ""
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\", \"extra\": NaN}",
+          "method": "POST",
+          "name": "legacy-ignored-extra",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "workflow launch over HTTP requires an authenticated deployment; an anonymous bind cannot stamp explicit_human authority"
+          },
+          "status": 403,
+          "token": ""
+        }
+      ],
+      "context": null,
+      "mode": "anonymous"
+    },
+    {
+      "cases": [
+        {
+          "await_worker": false,
+          "body": "",
+          "method": "GET",
+          "name": "empty-list",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "enabled": true,
+            "runs": []
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "",
+          "method": "POST",
+          "name": "missing-body",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": null,
+                "loc": [
+                  "body"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{}",
+          "method": "POST",
+          "name": "missing-definition",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": {},
+                "loc": [
+                  "body",
+                  "definition"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": null, \"args\": [], \"action_id\": 7}",
+          "method": "POST",
+          "name": "multiple-model-errors",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": null,
+                "loc": [
+                  "body",
+                  "definition"
+                ],
+                "msg": "Input should be a valid dictionary",
+                "type": "dict_type"
+              },
+              {
+                "input": [],
+                "loc": [
+                  "body",
+                  "args"
+                ],
+                "msg": "Input should be a valid dictionary",
+                "type": "dict_type"
+              },
+              {
+                "input": 7,
+                "loc": [
+                  "body",
+                  "action_id"
+                ],
+                "msg": "Input should be a valid string",
+                "type": "string_type"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "[]",
+          "method": "POST",
+          "name": "wrong-body",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": [],
+                "loc": [
+                  "body"
+                ],
+                "msg": "Input should be a valid dictionary or object to extract fields from",
+                "type": "model_attributes_type"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "null",
+          "method": "POST",
+          "name": "null-body",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": null,
+                "loc": [
+                  "body"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{}",
+          "method": "POST",
+          "name": "validation-before-owner",
+          "path": "/sessions/missing/workflows",
+          "response": {
+            "detail": [
+              {
+                "input": {},
+                "loc": [
+                  "body",
+                  "definition"
+                ],
+                "msg": "Field required",
+                "type": "missing"
+              }
+            ]
+          },
+          "status": 422,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{}",
+          "method": "POST",
+          "name": "auth-before-validation",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "a bearer token is required"
+          },
+          "status": 401,
+          "token": "wrong"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\"}",
+          "method": "POST",
+          "name": "foreign-parent",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "No session 's'"
+          },
+          "status": 404,
+          "token": "token-b"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {}, \"action_id\": \"bad\"}",
+          "method": "POST",
+          "name": "invalid-definition",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "WorkflowDefinition.__init__() missing 2 required positional arguments: 'name' and 'return_from'"
+          },
+          "status": 400,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"return_from\": \"a\"}, \"action_id\": \"bad\"}",
+          "method": "POST",
+          "name": "missing-name",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "WorkflowDefinition.__init__() missing 1 required positional argument: 'name'"
+          },
+          "status": 400,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\"}, \"action_id\": \"bad\"}",
+          "method": "POST",
+          "name": "missing-return",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "WorkflowDefinition.__init__() missing 1 required positional argument: 'return_from'"
+          },
+          "status": 400,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}], \"unrecognized\": true}, \"action_id\": \"bad\"}",
+          "method": "POST",
+          "name": "unknown-definition-field",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "WorkflowDefinition.__init__() got an unexpected keyword argument 'unrecognized'"
+          },
+          "status": 400,
+          "token": "token-a"
+        },
+        {
+          "await_worker": true,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\"}",
+          "method": "POST",
+          "name": "launch",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "action_id": "action",
+            "definition_revision": "wfdef_adf83349003bfd76",
+            "error": null,
+            "estimated_size": "small",
+            "reused": false,
+            "run_id": "run-1",
+            "status": "async_launched",
+            "workflow_name": "wf"
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\"}",
+          "method": "POST",
+          "name": "same-action-replay",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "action_id": "action",
+            "definition_revision": "wfdef_adf83349003bfd76",
+            "error": null,
+            "estimated_size": "small",
+            "reused": true,
+            "run_id": "run-1",
+            "status": "async_launched",
+            "workflow_name": "wf"
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\", \"extra\": NaN}",
+          "method": "POST",
+          "name": "ignored-nonfinite-extra-replay",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "action_id": "action",
+            "definition_revision": "wfdef_adf83349003bfd76",
+            "error": null,
+            "estimated_size": "small",
+            "reused": true,
+            "run_id": "run-1",
+            "status": "async_launched",
+            "workflow_name": "wf"
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\", \"extra\": \"\\ud800\"}",
+          "method": "POST",
+          "name": "ignored-surrogate-extra-replay",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "action_id": "action",
+            "definition_revision": "wfdef_adf83349003bfd76",
+            "error": null,
+            "estimated_size": "small",
+            "reused": true,
+            "run_id": "run-1",
+            "status": "async_launched",
+            "workflow_name": "wf"
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\", \"args\": {\"changed\": true}}",
+          "method": "POST",
+          "name": "changed-action-payload",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "detail": "action action was replayed with a different payload"
+          },
+          "status": 409,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\"}",
+          "method": "POST",
+          "name": "different-parent-action",
+          "path": "/sessions/other/workflows",
+          "response": {
+            "detail": "action action was replayed with a different payload"
+          },
+          "status": 409,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "",
+          "method": "GET",
+          "name": "owned-list",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "enabled": true,
+            "runs": [
+              {
+                "attempts_used": 1,
+                "run_id": "run-1",
+                "status": "RUNNING",
+                "workflow_name": "wf"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "",
+          "method": "GET",
+          "name": "foreign-run",
+          "path": "/sessions/other/workflows/run-1",
+          "response": {
+            "detail": "No workflow run 'run-1'"
+          },
+          "status": 404,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"reason\": \"operator stop\"}",
+          "method": "POST",
+          "name": "cancel",
+          "path": "/sessions/s/workflows/run-1/cancel",
+          "response": {
+            "run_id": "run-1",
+            "status": "CANCELLED"
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "{\"definition\": {\"name\": \"wf\", \"return_from\": \"a\", \"nodes\": [{\"id\": \"a\", \"kind\": \"agent\"}]}, \"action_id\": \"action\"}",
+          "method": "POST",
+          "name": "terminal-replay",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "action_id": "action",
+            "definition_revision": "wfdef_adf83349003bfd76",
+            "error": null,
+            "estimated_size": "small",
+            "reused": true,
+            "run_id": "run-1",
+            "status": "cancelled",
+            "workflow_name": "wf"
+          },
+          "status": 200,
+          "token": "token-a"
+        },
+        {
+          "await_worker": false,
+          "body": "",
+          "method": "GET",
+          "name": "terminal-list",
+          "path": "/sessions/s/workflows",
+          "response": {
+            "enabled": true,
+            "runs": [
+              {
+                "attempts_used": 1,
+                "run_id": "run-1",
+                "status": "CANCELLED",
+                "workflow_name": "wf"
+              }
+            ]
+          },
+          "status": 200,
+          "token": "token-a"
+        }
+      ],
+      "context": {
+        "actor_id": "alice",
+        "approved_capabilities": [
+          "workflow.launch"
+        ],
+        "authority": "explicit_human",
+        "channel": "http",
+        "delegated_by": null,
+        "message_id": "msg_action",
+        "origin": "explicit_human",
+        "parent_message_id": null,
+        "stamped_by": "mini_loop.server"
+      },
+      "mode": "authenticated"
+    }
+  ]
+}

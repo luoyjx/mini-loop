@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `d32c3e5` plus owner-scoped workflow HTTP reads/cancel,
+Runtime review baseline: `136cd53` plus workflow constructor diagnostics and HTTP Source contracts,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed

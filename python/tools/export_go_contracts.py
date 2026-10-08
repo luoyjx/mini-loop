@@ -6491,6 +6491,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.manager_workflow_contracts import manager_workflow_contracts
     from tools.workflow_session_contracts import workflow_session_contracts
     from tools.workflow_inbox_contracts import workflow_inbox_contracts
+    from tools.workflow_http_contracts import workflow_http_contracts
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
         # composition root too, before importing the module.
@@ -6771,6 +6772,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-manager-workflows.json": _json_bytes(manager_workflow_contracts()),
         "python-workflow-session-events.json": _json_bytes(workflow_session_contracts()),
         "python-workflow-inbox.json": _json_bytes(workflow_inbox_contracts()),
+        "python-workflow-http.json": _json_bytes(workflow_http_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -10214,7 +10216,9 @@ def _workflow_admission_contracts() -> dict:
                ("invalid-before-cap", dict(name="!"), dict(max_rounds=1), False),
                ("duplicate-tools", dict(policy=dict(allowed_tools=["glob", "glob"])), {}, False),
                ("subset-tools", dict(policy=dict(allowed_tools=["glob"])), {}, False),
-               ("unknown-field", dict(unrecognized=True), {}, False)]
+               ("unknown-field", dict(unrecognized=True), {}, False),
+               ("missing-name", {}, {}, False), ("missing-return", {}, {}, False),
+               ("missing-both", {}, {}, False)]
     for key, lowered in (("max_concurrent_agents", 2), ("max_agents", 16), ("max_rounds", 2), ("wall_time_seconds", 100.5)):
         recipes.append(("cap-"+key, {}, {key: lowered}, False))
         recipes.append(("at-"+key, dict(budget={key: lowered}), {key: lowered}, False))
@@ -10225,6 +10229,10 @@ def _workflow_admission_contracts() -> dict:
     for name, patch, caps_patch, typed in recipes:
         payload = copy.deepcopy(base)
         payload.update(patch)
+        if name in ("missing-name", "missing-both"):
+            payload.pop("name")
+        if name in ("missing-return", "missing-both"):
+            payload.pop("return_from")
         caps = dict(max_concurrent_agents=4, max_agents=32, max_rounds=4, wall_time_seconds=900.0)
         caps.update(caps_patch)
         settings = Settings(fake_llm=True, **{"workflow_"+key: value for key, value in caps.items()})

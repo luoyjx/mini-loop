@@ -1,5 +1,36 @@
 # Go port plan
 
+## 2026-10-08 workflow HTTP Source contracts and constructor diagnostics
+
+Baseline 136cd53. Source snapshot 131 records 44 actual FastAPI workflow HTTP
+cases across disabled, anonymous and authenticated deployments. The real manager,
+service, journal, engine and store run; only worker execution is replaced with a
+blocking callable. It captures request-model error order, auth/owner refusal,
+launch/cancel/list, unchanged and conflicting actions, terminal replay, ignored
+legacy-valued extra fields and the stored human provenance. HTTP launch is prepared
+by this snapshot; the native route is delivered in the following implementation slice.
+
+Actual HTTP exercise exposed generic native missing-definition-field errors. The
+closed definition decoder now retains unknown top-level keys for a constructor
+refusal after typed lowering, and exposes exact Source missing name/return_from
+TypeError details. Three new actual admission profiles bring that corpus to 23.
+The prior unknown-field exception in the native differential test is removed;
+that profile now compares error kind and detail. Supported definition/hash identity
+is unchanged. This does not establish exhaustive malformed-constructor parity.
+
+Validation passed: focused definition/admission and actual workflow HTTP race
+suite; full go test ./... and go test -race ./... (-count=1 -timeout=180s);
+go vet ./...; all 131 Source exports current; all 19 scan guards anchored; full
+Python regression with 2,155 passed, 28 skipped, 24 subtests and three dependency
+warnings in 82.26s. README outline and git diff --check passed. Python invariant/
+guard sweeps were not rerun because no runtime package or guarded Source behavior
+changed. No dependencies changed. Coverage was not refreshed; 90.23% belongs to
+136cd53. HTTP implementation was verified in the working tree alongside this
+preparation, and is committed separately next.
+The full port remains open; native HTTP launch, launcher activation, reserved event
+variants, archival fidelity, MCP, native session SQLite and full G7 remain pending.
+
+
 ## 2026-10-08 owner-scoped workflow HTTP reads and cancellation
 
 Baseline d32c3e5. A focused slice adds GET session workflow list, GET run detail

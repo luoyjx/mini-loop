@@ -38,14 +38,6 @@ func TestAdmissionMatchesActualPython(t *testing.T) {
 				t.Fatal(err)
 			}
 			got, err := admission.Admit(input)
-			if row.Name == "unknown-field" {
-				// Existing strict Go wire decoding rejects unknown fields before a
-				// typed object exists; Python exposes its constructor TypeError.
-				if err == nil {
-					t.Fatal("unknown field admitted")
-				}
-				return
-			}
 			validationMatches(t, err, row.validationOutcome)
 			if err != nil {
 				return

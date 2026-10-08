@@ -115,13 +115,30 @@ func DecodeDefinition(data []byte) (Definition, error) {
 		return Definition{}, ErrDefinition
 	}
 	for _, key := range []string{"name", "return_from"} {
-		if v, present := input.Lookup(key); !present || v.Kind() != jsonvalue.Text {
+		if v, present := input.Lookup(key); present && v.Kind() != jsonvalue.Text {
 			return Definition{}, ErrDefinition
 		}
 	}
 	// Initialize advertised defaults before lowering the typed wire object.
 	w := definitionWire{SchemaVersion: SchemaVersion, Source: Dynamic, InputSchema: objectSchema(), OutputSchema: objectSchema(), Budget: defaultBudget(), Policy: defaultPolicy()}
-	if err := decodeStrict(data, &w); err != nil {
+	// Source lowers nested constructors before calling WorkflowDefinition(**payload).
+	// Keep unknown top-level keys for its constructor diagnostic after lowering.
+	known := []jsonvalue.Field{}
+	unknown := []string{}
+	for _, key := range input.Keys() {
+		switch key {
+		case "name", "nodes", "return_from", "schema_version", "description", "revision", "definition_id", "parent_revision", "source", "source_version", "input_schema", "output_schema", "budget", "policy", "definition_hash":
+			value, _ := input.Lookup(key)
+			known = append(known, jsonvalue.Field{Name: key, Value: value})
+		default:
+			unknown = append(unknown, key)
+		}
+	}
+	typedData, err := jsonvalue.ObjectValue(known).MarshalJSON()
+	if err != nil {
+		return Definition{}, err
+	}
+	if err := decodeStrict(typedData, &w); err != nil {
 		return Definition{}, err
 	}
 	w.DefinitionHash = jsonvalue.NullValue()
@@ -163,6 +180,21 @@ func DecodeDefinition(data []byte) (Definition, error) {
 		if tools, present := policy.Lookup("allowed_tools"); present && tools.Kind() != jsonvalue.Array {
 			return Definition{}, ErrDefinition
 		}
+	}
+	if len(unknown) > 0 {
+		return Definition{}, invalid(TypeFailure, "WorkflowDefinition.__init__() got an unexpected keyword argument '"+unknown[0]+"'")
+	}
+	missing := []string{}
+	for _, key := range []string{"name", "return_from"} {
+		if _, present := input.Lookup(key); !present {
+			missing = append(missing, key)
+		}
+	}
+	if len(missing) == 1 {
+		return Definition{}, invalid(TypeFailure, "WorkflowDefinition.__init__() missing 1 required positional argument: '"+missing[0]+"'")
+	}
+	if len(missing) == 2 {
+		return Definition{}, invalid(TypeFailure, "WorkflowDefinition.__init__() missing 2 required positional arguments: 'name' and 'return_from'")
 	}
 	// Work with a closed projection to preserve Python's float identity (900.0).
 	encoded, err := json.Marshal(w)
