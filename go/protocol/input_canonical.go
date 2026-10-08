@@ -1,6 +1,9 @@
 package protocol
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
+)
 
 // CanonicalJSON binds a validated input to Python's sorted, compact UTF-8 JSON.
 // Each variant supplies concrete fields in key order; no dynamic JSON is stored.
@@ -13,6 +16,13 @@ func (input ToolInput) sortedJSON(compact bool) (string, error) {
 		return "", err
 	}
 	switch input.Name() {
+	case ToolWorkflow:
+		return PythonJSON(struct {
+			Args       jsonvalue.Value `json:"args"`
+			Definition jsonvalue.Value `json:"definition"`
+		}{input.workflow.Args.Sorted(), input.workflow.Definition.Sorted()}, false, compact)
+	case ToolWorkflowStatus, ToolWorkflowCancel:
+		return PythonJSON(input, false, compact)
 	case ToolReturnArtifact:
 		return PythonJSON(ReturnArtifactToolInput(input.returnArtifact.Sorted()), false, compact)
 	case ToolSpawnTeammate, ToolSendMessage, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:

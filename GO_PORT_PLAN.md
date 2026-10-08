@@ -1,5 +1,57 @@
 # Go port plan
 
+## 2026-10-08 typed workflow tool inputs and journal contracts
+
+Baseline 640aace. W5B2 extends the closed ToolInput union with concrete WorkflowInput
+and WorkflowReferenceInput for Workflow/WorkflowStatus/WorkflowCancel. Definition
+and args are immutable closed JSON sums constrained to objects. Original definition
+metadata participates in action identity; dynamic admission must normalize a separate
+copy. WorkflowRunID is shared with workflows.RunID and the agent action record alias.
+Canonical compact and spaced Python JSON recursively sorts object keys while retaining
+integer/float identity and array order. Recording masking covers nested keys/values;
+original payloads remain unchanged. Archived input decoding and schemas round-trip.
+WorkflowToolSchemas supplies detached exact source schemas without handlers or default
+catalogue activation. Definition/DAG/argument-schema validation stays service-owned.
+
+Snapshot 125 compares eight actual canonical/action identities, three installed
+source tool schemas, 20 refusals under the source advertised schema validator and
+18 actual InMemoryActionJournal/DurableActionJournal(SQLite) profiles. Advertised
+schema validation is fixture evidence, not a claim about Python generic dispatch.
+Profiles cover original/normalized metadata and argument changes, tool-use/session/
+message conflicts, caller-seeded tool-use fallback, completed-action replay, repeated
+same-run binding, conflicting binding and missing actions. Full normalized record
+effects match. Existing native Begin/AttachWorkflow now support these typed variants;
+attachment does not change action status or establish an execution/dispatch claim.
+Native StoredActionJournal is exercised against its injected test store and compared
+to actual source SQLite effects; no native SQLite driver is inferred. Missing-action
+errors are compared as refusals, not Python KeyError text; typed native conflicts are
+required. Immutable inputs and detached journal bindings do not alias stored state.
+
+Validation: focused workflow input/action tests, full
+`go test ./... -count=1 -timeout=180s`, full
+`go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+All 125 Python exports are current; all 19 source scan guards are anchored.
+Full Python regression: 2,155 passed, 28 skipped, 24 subtests in 90.85 seconds.
+Four warnings: three dependency deprecations and an asyncio subprocess transport
+finalizer after loop closure. No tests failed. `git diff --check` and README outline
+passed. Python package invariant/guard checks were not rerun: no package module
+or guarded Python runtime changed.
+No dependencies or Python runtime modules changed. Runtime Mermaid topology remains
+unchanged because no workflow service or tools are installed in the manager.
+Architecture delivery passed 9/9 showcase checks, zero errors/warnings. Specification
+SHA256: e176bf76c6a146d28b6586c6f66347b8d539d54414dd85955b94d81ea1278095;
+HTML SHA256: a8d000ba2e5e6f0ee923fffdc037a3845fe9f9d19d7a45d32429c39c763890eb.
+Visual inspection remains skipped after prior access denial. Overall coverage was
+not refreshed this slice; 90.43% (19,855/21,956) belongs to 8809e24 before W5B1/W5B2.
+These are statement coverage figures, not migration completion. Python coverage
+was not refreshed.
+
+Next W5B3 adds the owned service: trusted live launch contexts, argument admission,
+original/fallback action binding, background execute/wait/cancel, wall-time policy
+and typed lifecycle/progress events. W6 installs optional manager/tools/HTTP, parent
+notification append and shutdown/delete joins. MCP, native session SQLite, remaining
+profiles and full G7 remain open. The full Python-to-Go port is unfinished.
+
 ## 2026-10-08 dynamic workflow definition admission
 
 Baseline 8809e24. W5B1 adds concrete DefinitionCaps, captured DefinitionAdmission

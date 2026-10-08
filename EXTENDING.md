@@ -2500,3 +2500,17 @@ wfpolicy digest, without granting live authority or writing to the store/journal
 Callers must retain original tool input separately for action identity. Unknown
 wire fields retain the existing native decoder refusal rather than Python constructor
 TypeError text; invalid operator caps are refused before admission.
+
+protocol.WorkflowInput preserves original immutable object Definition/Args rather
+than prematurely lowering DefinitionAdmission's normalized view into the journal.
+WorkflowReferenceInput uses WorkflowRunID shared with workflows.RunID and the
+agent action record alias. The closed ToolInput variants support exact canonical
+and spaced Python JSON, archival round trips and recursive recording masks.
+WorkflowToolSchemas returns detached source schemas only; handlers, trusted origin/
+capability checks and manager installation remain future service composition.
+Optional tools are absent from DefaultToolNames. The decoder enforces the advertised
+outer object shape; it does not validate the definition DAG or argument schema.
+ActionJournal.Begin hashes the original input and AttachWorkflow binds one run
+without changing action status; duplicate binding is idempotent, conflicting run
+binding/replay is refused. A started record is not a dispatch claim. Missing-action
+errors retain existing native diagnostics instead of Python KeyError formatting.

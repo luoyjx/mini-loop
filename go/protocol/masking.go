@@ -16,6 +16,11 @@ func MapToolInputStrings(input ToolInput, mask func(string) string) ToolInput {
 	}
 	input = input.clone()
 	switch input.name {
+	case ToolWorkflow:
+		input.workflow.Definition = input.workflow.Definition.MapStrings(mask)
+		input.workflow.Args = input.workflow.Args.MapStrings(mask)
+	case ToolWorkflowStatus, ToolWorkflowCancel:
+		input.workflowReference.RunID = WorkflowRunID(mask(string(input.workflowReference.RunID)))
 	case ToolReturnArtifact:
 		input.returnArtifact = input.returnArtifact.MapStrings(mask)
 	case ToolSpawnTeammate:

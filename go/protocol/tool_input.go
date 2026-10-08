@@ -147,17 +147,19 @@ type AskUserInput struct {
 // ToolInput is a closed union: the name chooses one concrete payload. The
 // unused fields are private and cannot be populated by a runtime caller.
 type ToolInput struct {
-	returnArtifact  jsonvalue.Value
-	spawnTeammate   SpawnTeammateInput
-	sendMessage     SendMessageInput
-	broadcast       BroadcastInput
-	requestShutdown RequestShutdownInput
-	requestPlan     RequestPlanInput
-	submitPlan      SubmitPlanInput
-	reviewPlan      ReviewPlanInput
-	remember        RememberInput
-	recall          RecallInput
-	decision        decisions.Request
+	workflow          WorkflowInput
+	workflowReference WorkflowReferenceInput
+	returnArtifact    jsonvalue.Value
+	spawnTeammate     SpawnTeammateInput
+	sendMessage       SendMessageInput
+	broadcast         BroadcastInput
+	requestShutdown   RequestShutdownInput
+	requestPlan       RequestPlanInput
+	submitPlan        SubmitPlanInput
+	reviewPlan        ReviewPlanInput
+	remember          RememberInput
+	recall            RecallInput
+	decision          decisions.Request
 	// A masked recording projection is a closed JSON tree, never executable input.
 	decisionProjection *decisions.Value
 	createGoal         CreateGoalInput
@@ -400,6 +402,10 @@ func (input ToolInput) clone() (result ToolInput) {
 
 func (input ToolInput) Validate() error {
 	switch input.name {
+	case ToolWorkflow:
+		return validateWorkflowInput(input.workflow)
+	case ToolWorkflowStatus, ToolWorkflowCancel:
+		return nil
 	case ToolReturnArtifact:
 		_, err := input.returnArtifact.MarshalJSON()
 		return err
@@ -449,6 +455,13 @@ func (input ToolInput) Validate() error {
 
 func (input ToolInput) MarshalJSON() ([]byte, error) {
 	switch input.name {
+	case ToolWorkflow:
+		if err := input.Validate(); err != nil {
+			return nil, err
+		}
+		return json.Marshal(input.workflow)
+	case ToolWorkflowStatus, ToolWorkflowCancel:
+		return json.Marshal(input.workflowReference)
 	case ToolReturnArtifact:
 		return json.Marshal(ReturnArtifactInput{Value: input.returnArtifact})
 	case ToolSpawnTeammate, ToolSendMessage, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:
@@ -526,6 +539,8 @@ func decodeToolObject[T any](data []byte, target *T) error {
 func DecodeToolInput(name ToolName, data []byte) (ToolInput, error) {
 	var result ToolInput
 	switch name {
+	case ToolWorkflow, ToolWorkflowStatus, ToolWorkflowCancel:
+		return decodeWorkflowInput(name, data)
 	case ToolReturnArtifact:
 		return decodeReturnArtifactInput(data)
 	case ToolSpawnTeammate, ToolSendMessage, ToolReadInbox, ToolBroadcast, ToolListTeammates, ToolRequestShutdown, ToolRequestPlan, ToolSubmitPlan, ToolReviewPlan, ToolListProtocols:

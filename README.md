@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `8809e24` plus dynamic workflow definition admission;
+reviewed **2026-10-08** (Go baseline `640aace` plus typed workflow tool inputs and journal contracts;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1477,7 +1477,14 @@ or append releases claims. This callable adapter is not bound to live parent ses
 Snapshot 124 compares 20 actual Python dynamic-admission recipes. DefinitionAdmission
 captures concrete operator caps, strips runtime-owned identity/source fields, validates
 the definition before ordered process-cap checks and returns immutable content plus
-the source policy digest. Admission alone grants no authority. Owned launch/task
+the source policy digest. Admission alone grants no authority. Snapshot 125 compares
+three actual tool schemas, eight canonical/action identities, 20 advertised-shape
+refusals and 18 memory/SQLite journal profiles. Protocol now carries concrete
+Workflow/WorkflowStatus/WorkflowCancel inputs, original immutable object definition/
+args and a shared named run ID. Recursive masking leaves the original input unchanged;
+admission does not replace the raw journal payload. Existing native journals begin,
+bind and refuse conflicting replays with full source record effects. The native stored
+journal still uses an injected store, not a native SQLite driver. Owned launch/task
 service and manager/model/HTTP installation remain pending; the canonical runtime
 topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and

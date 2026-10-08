@@ -6761,6 +6761,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-runner.json": _json_bytes(_workflow_runner_contracts(scratch)),
         "python-workflow-views.json": _json_bytes(_workflow_views_contracts()),
         "python-workflow-admission.json": _json_bytes(_workflow_admission_contracts()),
+        "python-workflow-tools.json": _json_bytes(_workflow_tool_contracts(Path(scratch))),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -10231,6 +10232,81 @@ def _workflow_admission_contracts() -> dict:
         rows.append(dict(name=name, input_json=json.dumps(input_payload, ensure_ascii=False), caps=caps,
                          error=error, detail=detail, output_json=json.dumps(output, ensure_ascii=False), policy_hash=digest))
     return dict(rows=rows)
+
+
+def _workflow_tool_contracts(scratch: Path) -> dict:
+    """Source tool schemas and actual memory/SQLite workflow journal effects."""
+    import copy
+    import dataclasses
+    import tempfile
+    from mini_loop.actions import InMemoryActionJournal, DurableActionJournal, _payload_hash
+    from mini_loop.agent import _tool_action_id
+    from mini_loop.registry import ToolRegistry, ToolCall
+    from mini_loop.run_context import RunContext
+    from mini_loop.storage import SQLiteStateStore
+    from mini_loop.workflows.tools import install_workflows
+    from mini_loop.workflows.validation import validate_json_value
+    registry = install_workflows(ToolRegistry())
+    base = dict(definition=dict(name="wf", nodes=[dict(id="a", kind="agent")], return_from="a"), args={})
+    inputs = [("launch", "Workflow", base),
+              ("empty-definition", "Workflow", dict(definition={}, args={})),
+              ("original-metadata", "Workflow", dict(definition={**base["definition"], "revision":"original", "source":"plugin", "definition_hash":False}, args={"z":1.0,"a":"汉字😀\n\u2028<>&"})),
+              ("nested", "Workflow", dict(definition=base["definition"], args={"z":[None,False,1,1.0,{"secret":"value"}],"a":2**80})),
+              ("status", "WorkflowStatus", dict(run_id="wf_run")),
+              ("cancel", "WorkflowCancel", dict(run_id="wf_run")),
+              ("empty-status", "WorkflowStatus", dict(run_id="")),
+              ("unicode-cancel", "WorkflowCancel", dict(run_id="汉字😀\n\u2028<>&"))]
+    context = dataclasses.replace(RunContext.default(), message_id="m")
+    rows = []
+    for name, tool_name, value in inputs:
+        validate_json_value(registry.get(tool_name).input_schema, value)
+        rows.append(dict(name=name, tool=tool_name, input_json=json.dumps(value, ensure_ascii=False),
+                         canonical=json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")),
+                         spaced=json.dumps(value, ensure_ascii=False, sort_keys=True), input_hash=_payload_hash(value),
+                         action_id=_tool_action_id(session_id="s", run_context=context, call=ToolCall(tool_name,value,"u"))))
+    schemas = [registry.get(name).schema for name in ("Workflow","WorkflowStatus","WorkflowCancel")]
+    refusals=[]
+    for tool_name in ("Workflow", "WorkflowStatus", "WorkflowCancel"):
+        values = ([{}, dict(definition={}), dict(args={}), dict(definition=None,args={}), dict(definition=[],args={}),
+                   dict(definition={},args=None),dict(definition={},args=[]),dict(definition={},args={},extra=True)]
+                  if tool_name=="Workflow" else [{},dict(run_id=None),dict(run_id=1),dict(run_id=False),dict(run_id=[]),dict(run_id="r",extra=True)])
+        for value in values:
+            error=""
+            try: validate_json_value(registry.get(tool_name).input_schema,value)
+            except Exception as failure: error=type(failure).__name__
+            assert error
+            refusals.append(dict(tool=tool_name,input_json=json.dumps(value),error=error))
+    def clean(record):
+        value=dataclasses.asdict(record);value["created_at"]=0
+        if value["completed_at"] is not None: value["completed_at"]=0
+        return value
+    runs=[]
+    for backing in ("memory","sqlite"):
+        for mode in ("attach", "finish-then-attach", "fallback-id", "changed-args", "changed-metadata", "normalized-defaults", "changed-tool-use", "changed-session", "changed-message"):
+            with tempfile.TemporaryDirectory(prefix="workflow-action-",dir=str(scratch)) as temp:
+                store=SQLiteStateStore(Path(temp)/"state.db") if backing=="sqlite" else None
+                journal=DurableActionJournal(store) if store else InMemoryActionJournal()
+                value=copy.deepcopy(base)
+                request=dict(action_id="action",session_id="s",message_id="m",tool_use_id="action" if mode=="fallback-id" else "u",tool_name="Workflow",input_value=value)
+                records=[clean(journal.begin(**request)),clean(journal.attach_workflow("action","run"))]
+                replay=copy.deepcopy(request)
+                if mode=="changed-args": replay["input_value"]["args"]={"x":1}
+                if mode=="changed-metadata": replay["input_value"]["definition"]["revision"]="forged"
+                if mode=="normalized-defaults":
+                    from mini_loop.workflows.models import WorkflowDefinition
+                    replay["input_value"]["definition"]=WorkflowDefinition.from_dict(value["definition"]).to_dict()
+                if mode=="changed-tool-use": replay["tool_use_id"]="other"
+                if mode=="changed-session": replay["session_id"]="other"
+                if mode=="changed-message": replay["message_id"]="other"
+                if mode=="finish-then-attach": records.append(clean(journal.finish("action",status="completed",result="async_launched")))
+                errors=[]
+                for operation in (lambda:journal.begin(**replay),lambda:journal.attach_workflow("action","run"),lambda:journal.attach_workflow("action","other"),lambda:journal.attach_workflow("missing","run")):
+                    try: records.append(clean(operation()));errors.append("")
+                    except Exception as failure: errors.append(type(failure).__name__)
+                records.append(clean(journal.get("action")))
+                runs.append(dict(backing=backing,mode=mode,input_json=json.dumps(value), replay_json=json.dumps(replay["input_value"]),records=records,errors=errors))
+                if store: store.close()
+    return dict(inputs=rows,schemas=schemas,refusals=refusals,runs=runs)
 
 
 if __name__ == "__main__":

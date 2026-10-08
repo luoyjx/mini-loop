@@ -2288,3 +2288,16 @@ Snapshot 124 compares 20 real Python service recipes, including typed definition
 forged metadata, exact/fractional limits, refusal ordering and policy hashes. Native
 unknown-field refusal uses the existing strict decoder diagnostic. Live launch,
 action-journal binding and owned task lifecycle remain the next service work.
+
+## Typed workflow tool and action contracts
+
+WorkflowInput carries immutable object Definition and Args. WorkflowReferenceInput
+uses the shared WorkflowRunID alias for status/cancel. DecodeToolInput strictly
+checks outer advertised shape while definition admission stays service-owned.
+Original metadata contributes to canonical action hashes; normalization must not
+replace it before journal Begin. WorkflowToolSchemas advertises three detached
+source schemas without installing tools or granting authority. Snapshot 125 matches
+eight input/action identities, 20 advertised-shape refusals, three schemas and 18
+actual Python memory/SQLite journal profiles. Native injected-store effects are
+compared to SQLite source, without claiming a native SQLite implementation.
+Background launch/wait/cancel/events and manager/tool activation remain pending.

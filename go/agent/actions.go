@@ -16,7 +16,7 @@ import (
 )
 
 type ActionID string
-type WorkflowRunID string
+type WorkflowRunID = protocol.WorkflowRunID
 type InputHash string
 type ActionStatus string
 
