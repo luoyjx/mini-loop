@@ -1,5 +1,18 @@
 # Python to Go parity matrix
 
+## 2026-10-08 MCP registration contract preparation
+
+Baseline edd6c46. Source snapshot 141 captures seven real register_mcp scenarios
+and ten publications: separator normalization, lossy cross-server collision refusal,
+same-server replacement, degenerate names, exact/over Unicode description caps,
+non-string description str projection, advisory truthy readonly hints, exact refs/
+numeric enum schemas and Source null/bool schema values, and same-server normalized
+duplicate tools. Complete catalogue order/metadata, raw owners and problem strings
+are retained. Seven namespace normalizations and two actual wrapped original-name/
+timeout handler outputs are captured. All 141 Source exports and all 19 scanner
+anchors pass. No Python runtime module or dependency changed. Native gate/runtime
+composition is validated and recorded in the next implementation checkpoint.
+
 ## 2026-10-08 native MCP stdio client library
 
 Baseline bb069d3 (Source snapshot 140). The dependency-free mcp package owns a
