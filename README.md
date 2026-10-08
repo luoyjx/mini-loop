@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `8ecc4c2` plus AST HTTP Source contracts,
+Runtime review baseline: `f921d3a` plus AST Launcher environment selection,
+plus AST HTTP Source contracts,
 plus explicit runtime AST model tools,
 plus AST tool declarations and closed input variants,
 plus native AST semantic operations,
@@ -401,7 +402,7 @@ flowchart LR
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · AST / workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
@@ -1231,7 +1232,7 @@ overflow for a small over-limit writer that keeps its pipe open.
 Darwin/Linux retain the launched process-group ID to stop pipe-holding descendants
 even after the direct child exits. Other platforms have direct-child cleanup only.
 Private Source snapshots, structured AST payloads and explicit semantic-read tool
-installation are implemented below; launcher selection remains pending. Executable verification precedes
+installation and Launcher environment selection are implemented below. Executable verification precedes
 launch and is not an atomic file pin.
 
 The internal AST ignore component now preserves ignore/keep/unmatched decisions,
@@ -1266,8 +1267,8 @@ All 36 actual Source recipes match paths, manifests, hashes, modes, refusal mess
 and successful cleanup on Darwin arm64. The constructor distinguishes caller
 cancellation from its copy deadline. It does not freeze files during concurrent
 writes, interrupt arbitrary blocking filesystem syscalls, or install a model tool.
-Canonical selectors/bounded globs are implemented below; CLI payloads and runtime
-AST wiring is implemented below; launcher selection remains required. Linux evidence is compile-only.
+Canonical selectors, bounded globs, CLI payloads, runtime AST tools and Launcher
+wiring are implemented below. Linux evidence is compile-only.
 
 Private AST selection now validates 64-item/2048-character string arrays, canonicalizes
 operator workspaces and resolves exact user paths with Source non-strict realpath
@@ -1296,8 +1297,8 @@ path rewriting, error-before-import handling, iterable warnings/errors, arbitrar
 metrics and partial/ambiguity/no-match precedence. All 65 actual Source observations
 replay: 61 compare exact ASCII/UTF-8 JSON and four preserve ordinary TypeError text.
 Detached records/warnings and strict standard-JSON nonfinite refusal are tested.
-Actual semantic subprocess execution and explicit model-tool runtime selection are
-implemented below; launcher configuration remains pending. Extreme CPython recursion/digit-fault wording and
+Actual semantic subprocess execution, explicit model-tool runtime selection and
+Launcher configuration are implemented below. Extreme CPython recursion/digit-fault wording and
 lone-surrogate string projection still need final profile work; current ToJSON enforces a UTF-8 boundary.
 
 Native astcontext Adapter now implements RepoMap, FileOutline, ShowSymbol and
@@ -1494,7 +1495,7 @@ configuration freshly per request, retains the app deployment skills path and
 joins managers before deleting transient a/b roots. Main provider/owner snapshots
 are not inherited. Explicit external memory/trajectory paths keep their configured
 semantics. Unsupported comprehensive features, workflow, guardian, token-efficiency
-and AST activation remain errors; those runtime profiles are not claimed migrated.
+remain errors; those runtime profiles are not claimed migrated.
 The five visible and three heldout admitted tasks now have concrete immutable
 specifications, typed trusted judge/setup callbacks and detached optional tool
 names. Prompts, 6000-line log bytes, permissive substring/existence judges and
@@ -1982,6 +1983,16 @@ The Mermaid block above remains the canonical GitHub view.
   HTML.
 
 </details>
+
+The Go Launcher forwards MINILOOP_AST_OUTLINE_ENABLED/BINARY/SHA256/TIMEOUT/
+MAX_OUTPUT_BYTES into the managed AST adapter. Selection is default off; activation
+requires a trusted absolute executable and SHA-256 pin. The Source defaults are
+10 seconds and 1,000,000 output bytes. Settings inspection and --dump-config report
+selection without executing a probe. Fourteen Source HTTP/model traces compare
+catalogues, exact results, actual child argv/cwd and private snapshot removal;
+path/digest/version/output/timeout failures retain the common gate and readonly
+session binding. This completes Launcher selection for the implemented AST tools;
+extreme malformed output profiles and full migration gates remain open.
 
 ## Repository map
 

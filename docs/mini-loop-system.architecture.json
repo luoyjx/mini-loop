@@ -367,7 +367,7 @@
         280,
         76
       ],
-      "tag": "ASTConfig: explicit / default off"
+      "tag": "AST: pinned environment / default off"
     },
     {
       "id": "goResources",
@@ -493,7 +493,7 @@
       "id": "goEntry",
       "type": "backend",
       "label": "Go Startup / HTTP / SSE",
-      "sublabel": "Explicit diagnostics / workflows / HTTP / SSE / owned resources / history",
+      "sublabel": "Explicit AST / diagnostics / workflows / owned HTTP / SSE",
       "pos": [
         330,
         800
@@ -1651,7 +1651,8 @@
         "Native AST result/payload records and a private captured-output classifier now preserve all 65 Source observations: exact ordered ASCII/UTF-8 projections for 61 results and four ordinary TypeError escapes. Closed immutable JSON variants keep unknown members inert; paths rewrite values only. Integer metrics and partial/ambiguity/no-match ordering remain Source-compatible. Detached warning/optional records and finite standard JSON publication are tested. Actual semantic process execution, four tools and runtime selection remain pending; extreme recursion/digit-fault wording and lone-surrogate string projection remain final profile work.",
         "Native standalone Adapter now owns four typed semantic operations: canonical input selection, bounded anchored source snapshots, workspace-aware executable probe and direct command invocation, captured-output classification and cleanup. Twenty-six actual Source public-operation recipes compare exact ordered JSON, version/command argv, original workspace cwd and temporary path removal against actual native children. Child checks external 0400 copies and reads original bytes even when the live workspace changes during execution. Leading-dash grep expressions stay attached; glob ambiguity/no-match returns before probe, with 32 names and 16384 UTF-8 bytes. Workspace executables remain refused before side effects, cancellation propagates, and no mutable request state is cached. Four model tools and runtime selection remain pending; final extreme fault/surrogate profiles remain open.",
         "Protocol now carries four named AST ToolInput variants with detached arrays/optional pointers, closed density/view/reference-kind enums, supplied-field canonical identity and recording-only masking. Four actual installed Source declarations match full schema defaults, maxLength, numeric/array limits, false additionalProperties and descriptions. Named InputSchema fields preserve these projections with detached clones. Typed unknown/null/non-string/enum admission refusals are explicit; snapshot/path/process authority remains in the standalone Adapter. Runtime registration follows as the next slice, and launcher defaults remain unchanged.",
-        "Explicit RuntimeConfig/ManagerServices ASTConfig now installs the four Source read/parallel tools with semantic-outline/symbol/references capabilities through ToolGate. Nil stays default off and zero config fails construction. Manager copies the operator config; handlers verify bound identity/current workspace under lock and run stateless requests after releasing it. Fresh task-child handlers inherit selected AST tools through existing read-capability policy. Native model-batch/child traces exercise actual version probes, frozen 0400 source reads, values-only rewrites and cleanup. Guard denial starts no CLI, foreign authority fails, root transitions rebind and manager config reassignment cannot alter sessions. Launcher settings/env/CLI and HTTP Source traces remain next; extreme output profiles and the full port are still open."
+        "Explicit RuntimeConfig/ManagerServices ASTConfig now installs the four Source read/parallel tools with semantic-outline/symbol/references capabilities through ToolGate. Nil stays default off and zero config fails construction. Manager copies the operator config; handlers verify bound identity/current workspace under lock and run stateless requests after releasing it. Fresh task-child handlers inherit selected AST tools through existing read-capability policy. Native model-batch/child traces exercise actual version probes, frozen 0400 source reads, values-only rewrites and cleanup. Guard denial starts no CLI, foreign authority fails, root transitions rebind and manager config reassignment cannot alter sessions. Launcher settings/env/CLI and HTTP Source traces remain next; extreme output profiles and the full port are still open.",
+        "Go Launcher forwards the five Source MINILOOP_AST_OUTLINE_* settings to ManagerServices.ASTConfig. Default off; activation requires a trusted absolute executable and SHA-256 pin, with Source timeout/output limits. Inspection reports configured selection without probes. Fourteen Source HTTP/model traces match exact catalogues/results, native child argv/cwd and snapshot removal, including readonly path, integrity, version, output and timeout failures. Existing ToolGate and session authority remain unchanged; extreme malformed output profiles remain open."
       ]
     }
   ]

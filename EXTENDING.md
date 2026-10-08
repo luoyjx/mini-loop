@@ -3248,3 +3248,13 @@ Construct astcontext.Config through NewConfig and pass its address to ASTConfig.
 Model inputs cannot choose a binary, environment, workspace root or process limits.
 The stateless Adapter needs no persistent subprocess/cache cleanup hook. Its per-call
 process/snapshot lifetime stays beneath the normal gate, hooks and permission policy.
+
+### Go Launcher AST settings
+
+The standalone CLI loads the existing MINILOOP_AST_OUTLINE_* settings and forwards
+ASTConfig through the Manager. Selection is default off; enabled settings require
+a trusted absolute binary path and SHA-256 digest. Launcher settings override the
+library defaults with Source timeout 10 seconds and output cap 1,000,000 bytes.
+Inspect and --dump-config describe selection without probing. Executable availability
+and per-invocation integrity checks remain in the AST adapter, beneath ToolGate.
+No model arguments can select the binary, environment or process limits.

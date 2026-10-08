@@ -1,5 +1,40 @@
 # Python to Go parity matrix
 
+## 2026-10-08 AST Launcher environment selection
+
+Baseline f921d3a. The Launcher now forwards the five existing Source AST settings
+into a detached astcontext.Config and ManagerServices.ASTConfig. Selection defaults
+off. Activation requires an operator-owned absolute executable path and SHA-256
+pin; timeout/output defaults are the Source settings' 10 seconds / 1,000,000 bytes.
+MINILOOP_AST_OUTLINE_ENABLED is no longer an unsupported setting. No extra model
+inputs, environment passthrough or alternate CLI activation bypass is introduced.
+Inspection reports ast_tools as configured selection without probing the binary;
+missing executables are reported at actual invocation, as in Source.
+
+Fourteen actual HTTP/model traces match export 159: catalogues and exact result
+text, final text, child argv/cwd and cleanup. Tests use a copied native executable
+with no injected production environment; the race helper exits through the native
+syscall to avoid the race runtime's artificial one-second exit delay. Readonly
+sessions exercise all four operations and executable/path/output/timeout refusals.
+CLI dump-config also reports activation without starting runtime or probing.
+The existing gate and current session binding remain the execution boundary.
+
+Validation: full go test ./... -count=1 -timeout=180s with cross-package coverage,
+go vet ./..., fourteen focused HTTP replays and inspection/config tests pass.
+Deduplicated Go statement coverage: 90.03% (24,094 / 26,762), agent 89.57%,
+astcontext 89.01%, httpapi 89.51%, protocol 91.68%, launcher 80.79%, config 86.60%.
+Coverage is executed statements, not migration completion. Source exports 159 and
+all 19 scan guards pass. Full go test -race ./... -count=1 -timeout=180s
+passes. README outline and git diff --check pass. Archify delivery passes 9/9
+with zero errors/warnings; specification SHA256
+84f0fbec73caa3b6b78e245d1bac8ee71fde36c4689f0a15895b8f24572cbb9f, artifact
+a1bd1cf38c3432f76f4d87eb64ff6378daf73baec171a82dbb73cec1cdc67c71.
+Full Python regression/coverage and mutation sweep are not refreshed. Native
+runtime evidence is Darwin arm64; visual review remains skipped after the earlier
+browser access denial. Extreme malformed AST profiles, native SQLite, diagnostic
+parser selection and G0-G7 remain open.
+
+
 ## 2026-10-08 AST HTTP Source contracts
 
 Baseline 8ecc4c2. Export 159 adds fourteen actual Source HTTP-to-model AST traces:

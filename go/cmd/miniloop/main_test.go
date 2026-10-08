@@ -261,3 +261,24 @@ func TestSessionQueryFlagReportsSelectionWithoutStartingRuntime(t *testing.T) {
 		t.Fatal("refusal created workspace")
 	}
 }
+
+func TestASTEnvironmentDumpReportsSelectionWithoutProbe(t *testing.T) {
+	root := t.TempDir()
+	env := map[string]string{
+		"MINILOOP_WORKSPACE_ROOT":      filepath.Join(root, "ws"),
+		"MINILOOP_AST_OUTLINE_ENABLED": "1",
+		"MINILOOP_AST_OUTLINE_BINARY":  filepath.Join(root, "missing-cli"),
+		"MINILOOP_AST_OUTLINE_SHA256":  strings.Repeat("a", 64),
+	}
+	var out, errout bytes.Buffer
+	if code := execute(context.Background(), []string{"--dump-config"}, env, &out, &errout); code != 0 {
+		t.Fatal(code, errout.String())
+	}
+	var report launcher.Report
+	if err := json.Unmarshal(out.Bytes(), &report); err != nil || !report.ASTTools || len(report.Unsupported) != 0 {
+		t.Fatal(report, err)
+	}
+	if _, err := os.Stat(env["MINILOOP_WORKSPACE_ROOT"]); !os.IsNotExist(err) {
+		t.Fatal("inspection started runtime", err)
+	}
+}

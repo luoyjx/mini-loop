@@ -8087,3 +8087,13 @@ session and canonical current workspace, captures the stateless Adapter under lo
 and releases that lock before subprocess work. Selected child definitions bind to
 new child authority. Operator config is detached by the Manager; raw model arguments
 never select executable/environment/depth/byte budgets or a different workspace.
+
+### Go migration — AST Launcher preserves operator activation
+
+The Launcher no longer refuses MINILOOP_AST_OUTLINE_ENABLED. It constructs only
+from validated operator settings, requiring an absolute executable and SHA-256
+pin. Defaults remain off; inspecting settings never executes a probe. Timeout and
+output cap use Source settings rather than library defaults. No test passthrough
+variables enter production configuration. Exact HTTP replay covers disabled
+catalogues and readonly path/integrity/version/output/timeout failure outcomes.
+The existing per-call integrity check is not an atomic executable pin.
