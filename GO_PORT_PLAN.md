@@ -1,5 +1,21 @@
 # Go port plan
 
+## 2026-10-08 AST public-operation Source contracts
+
+Baseline d051052. Export 157 records 26 actual public Source operations against
+real isolated CLI children and real bounded snapshots. Exact JSON, probe/command
+argv order, original workspace cwd and post-return snapshot removal are captured.
+Cases include four density profiles, all six view/import pairs, leading-dash
+symbols/grep patterns, signature-only show, all reference kinds and selected caps,
+glob early no-match/ambiguity, regular-file refusal and option/input errors.
+No Source operation, probe, subprocess, snapshot or classifier method is replaced.
+Native semantic operation replay is the next delivery slice; this capture does
+not activate tools or change runtime defaults. G0-G7 remain open.
+Validation: all 157 exported Source contracts current; 41 Source AST tests pass;
+all 19 scanning guards anchored. README outline and git diff --check pass.
+Source runtime/defaults are unchanged. Full Python regression, full mutation
+sweep and coverage were not refreshed for this capture commit.
+
 ## 2026-10-08 native AST results and captured payload classification
 
 Baseline 8dc34a8. Native astcontext now has closed Operation and immutable Result/Payload records.

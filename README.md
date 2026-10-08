@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `8dc34a8` plus native AST results and captured payload classification,
+Runtime review baseline: `d051052` plus AST public-operation Source contracts,
+plus native AST results and captured payload classification,
 plus shared CPython JSON syntax diagnostics,
 plus AST payload invocation Source contracts,
 plus native AST canonical path and bounded glob selection,
