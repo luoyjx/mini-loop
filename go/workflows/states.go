@@ -2,6 +2,7 @@
 // dispatch a workflow service; activation and trusted execution remain adapter-owned.
 package workflows
 
+type PhaseID string
 type NodeID string
 type RunID string
 type AttemptID string

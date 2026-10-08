@@ -209,7 +209,7 @@ func TestStoredWorkflowEventsRejectConflictingIdentityAndVersion(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, pair := range [][2]string{{`"payload_version":1`, `"payload_version":2`}, {`"kind":"workflow_failed"`, `"kind":"workflow_started"`}, {`"workflow_run_id":"run"`, `"workflow_run_id":"other"`}, {`"event_id":"e"`, `"event_id":""`}} {
+	for _, pair := range [][2]string{{`"payload_version":1`, `"payload_version":2`}, {`"kind":"workflow_failed"`, `"kind":"workflow_started"`}, {`"workflow_run_id":"run"`, `"workflow_run_id":"other"`}} {
 		if _, err := DecodeStoredEvent([]byte(strings.Replace(string(bytes), pair[0], pair[1], 1))); err == nil {
 			t.Fatal(pair)
 		}

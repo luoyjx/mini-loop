@@ -2617,11 +2617,16 @@ only historical untrusted provenance. The sequence field aliases the live event 
 
 SessionInfo.Workflows is a concrete ordered RunSummary slice, empty when disabled
 or freshly forked; the existing HTTP session wrapper preserves it and health reflects
-activation. Unsupported reserved event kinds remain refused. Current emitted payloads
-have concrete fields; additional arbitrary archival payload members are not retained
-by this projection and full open-payload archival parity remains pending. Automatic result injection and dedicated
-workflow routes remain pending. Stores and callbacks retain their existing cooperative
-and ownership requirements; an injected store is not proof of native SQLite support.
+activation. DecodeWorkflowObservation accepts all eighteen Source observation kinds,
+validates version/identity aliases and retains complete finite JSON object payloads.
+ObservationPayload returns immutable inert data; Progress only exposes native typed
+service progress. Unknown fields and historical decisions cannot reconstruct trusted
+context. PhaseID and optional empty identities are retained; Source-valid explicitly
+empty archived event IDs are accepted while native service IDs remain required.
+Native producers still emit twelve named variants. Legacy non-finite/surrogate and
+permissive constructor header profiles remain pending. Owned result injection and
+workflow HTTP routes are described below. Stores and callbacks retain their existing
+cooperative and ownership requirements; an injected store is not proof of native SQLite support.
 
 
 ## Owned workflow result injection

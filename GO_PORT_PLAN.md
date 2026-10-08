@@ -1,5 +1,44 @@
 # Go port plan
 
+## 2026-10-08 complete finite workflow observations
+
+Baseline 474ee49 (Source snapshot 133 preparation). The Go observation decoder
+now accepts all eighteen Source workflow kinds and optional PhaseID. Complete finite
+JSON object payloads use the existing immutable closed Value representation, retaining
+unknown nested fields, sparse progress, historical decisions and large integer/float
+identity. Native live service events keep their twelve named payload variants;
+ObservationPayload exposes historical data and Progress reports only native progress.
+Explicitly empty archived event IDs match Source constructors; native service event
+identity remains required. Alias/version/session guards remain in place.
+
+Native differential tests compare all 22 Source observations through raw round trips,
+recursive secret masking, managed backlog/subscriber/sink, injected event storage and
+stored-event restoration. All ten constructor refusals match Source diagnostics.
+Payload claims of explicit human authority or workflow.launch approval remain inert;
+restored RunContext is untrusted and grants no capability. Reserved observation kinds
+do not activate controllers or introduce runtime emissions or new defaults.
+
+Validation: focused workflow observation/session/archive race tests; full Go tests
+with shared-package coverage and full race tests (-count=1 -timeout=180s); go vet;
+all 133 Source exports current; all 19 scan guards anchored. Full Python regression: 2,155 passed, 28 skipped, 24 subtests,
+three dependency warnings in 72.93s.
+README outline and git diff --check passed. Python runtime modules and guarded Source
+behavior did not change, so invariant/guard sweeps were not rerun. No new dependencies.
+
+Fresh Go statement coverage: 20,887/23,168 (90.15%), merging identical source blocks
+by maximum hit count across -coverpkg=./... binaries. Agent 7,570/8,431 (89.79%),
+httpapi 1,646/1,834 (89.75%), launcher 152/189 (80.42%) and workflows 1,524/1,655
+(92.08%). Profile: /tmp/mini-loop-workflow-archive-coverage.out. Python coverage was
+not refreshed; these statement percentages do not measure Python feature parity.
+
+README baseline, canonical Mermaid, boundary text and generated interactive map are
+updated. Archify passed 9/9 showcase checks with zero errors/warnings. Specification
+SHA256 4856e0b532ea1d7ec790b72774f944d6849925835de96b6a3dd981d2224326b4;
+HTML SHA256 62b06e0342f52e83cf947d441ff6ab3c6dbf4ddf2ce61e04d9d8f5305ece9b56.
+Visual review remains skipped after prior access denial. Legacy non-finite/surrogate
+and permissive constructor header profiles, MCP, native session SQLite, remaining
+malformed/transport profiles and full G7 remain pending. The complete port stays open.
+
 ## 2026-10-08 workflow archive contract preparation
 
 Baseline 474f8e8. Source snapshot 133 records all eighteen WorkflowEvent kinds

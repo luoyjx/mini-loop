@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/workflows"
 )
@@ -13,7 +14,8 @@ func workflowKind(kind SessionEventKind) bool {
 	switch WorkflowEventKind(kind) {
 	case WorkflowPlanned, WorkflowDecisionRecorded, WorkflowStarted, WorkflowNodeClaimed,
 		WorkflowAgentStarted, WorkflowAgentProgress, WorkflowAgentCompleted, WorkflowVerdictRecorded,
-		WorkflowCompleted, WorkflowFailed, WorkflowCancelled, WorkflowResultEnqueued:
+		WorkflowCompleted, WorkflowFailed, WorkflowCancelled, WorkflowResultEnqueued,
+		WorkflowApprovalRequired, WorkflowRejected, WorkflowPhaseStarted, WorkflowCheckpointed, WorkflowPaused, WorkflowResumed:
 		return true
 	}
 	return false
@@ -84,48 +86,28 @@ func decodeWorkflowEvent(data []byte) (WorkflowEvent, error) {
 		AttemptID     *workflows.AttemptID `json:"attempt_id"`
 		AgentID       *workflows.AgentID   `json:"agent_id"`
 		ParentAgentID *workflows.AgentID   `json:"parent_agent_id"`
-		Payload       struct {
-			DefinitionHash workflows.Digest      `json:"definition_hash"`
-			NodeCount      int                   `json:"node_count"`
-			Size           string                `json:"size_guideline"`
-			Actor          *ActorID              `json:"actor_id"`
-			Authority      RunAuthority          `json:"authority"`
-			Decision       string                `json:"decision"`
-			Mode           string                `json:"mode"`
-			StartedAt      *float64              `json:"started_at"`
-			Kind           workflows.NodeKind    `json:"kind"`
-			Spawn          workflows.SpawnIndex  `json:"spawn_index"`
-			Type           SessionEventKind      `json:"type"`
-			Name           *protocol.ToolName    `json:"name"`
-			ID             *string               `json:"id"`
-			Error          *string               `json:"error"`
-			DurationMS     *float64              `json:"duration_ms"`
-			Success        bool                  `json:"success"`
-			Status         string                `json:"status"`
-			Artifact       *workflows.ArtifactID `json:"artifact_id"`
-			Hash           workflows.Digest      `json:"content_hash"`
-			Reason         string                `json:"reason"`
-			Message        workflows.OutboxID    `json:"message_id"`
-		} `json:"payload"`
+		PhaseID       *workflows.PhaseID   `json:"phase_id"`
+		Payload       workflows.Value      `json:"payload"`
 	}
 	if err := json.Unmarshal(data, &row); err != nil {
 		return WorkflowEvent{}, err
 	}
-	if row.Type != row.Kind || row.RunID != row.WorkflowRunID || row.Version != 1 {
+	if row.Version != 1 {
+		return WorkflowEvent{}, fmt.Errorf("unsupported workflow event payload_version")
+	}
+	if row.Type != row.Kind || row.RunID != row.WorkflowRunID {
 		return WorkflowEvent{}, fmt.Errorf("workflow event aliases or version do not match")
 	}
-	if row.Kind == WorkflowDecisionRecorded && (row.Payload.Decision != "approved" || row.Payload.Mode != "trusted_local_preapproval") {
-		return WorkflowEvent{}, fmt.Errorf("unsupported workflow decision projection")
+	if !workflowKind(SessionEventKind(row.Kind)) {
+		return WorkflowEvent{}, fmt.Errorf("unsupported workflow event kind: %s", row.Kind)
 	}
-	p := row.Payload
+	if row.Payload.Kind() != jsonvalue.Object {
+		return WorkflowEvent{}, fmt.Errorf("workflow observation requires known kind and object payload")
+	}
 	event := WorkflowEvent{Kind: row.Kind, EventID: row.EventID, OccurredAt: row.OccurredAt,
 		SessionID: row.SessionID, RunID: row.RunID, Name: row.Name, Revision: row.Revision,
-		NodeID: row.NodeID, AttemptID: row.AttemptID, AgentID: row.AgentID, ParentAgentID: row.ParentAgentID,
-		payload: workflowEventPayload{definitionHash: p.DefinitionHash, nodeCount: p.NodeCount, size: p.Size,
-			actor: p.Actor, authority: p.Authority, startedAt: p.StartedAt, nodeKind: p.Kind, spawn: p.Spawn,
-			progress: WorkflowProgress{Type: p.Type, Name: p.Name, ID: p.ID, Error: p.Error, DurationMS: p.DurationMS},
-			success:  p.Success, error: p.Error, verification: workflows.VerificationStatus(p.Status), artifact: p.Artifact,
-			hash: p.Hash, reason: p.Reason, message: p.Message, status: workflows.RunStatus(p.Status)}}
+		PhaseID: row.PhaseID, NodeID: row.NodeID, AttemptID: row.AttemptID, AgentID: row.AgentID, ParentAgentID: row.ParentAgentID,
+		observation: &row.Payload}
 	_, err := event.MarshalJSON()
 	return event, err
 }
@@ -152,6 +134,14 @@ func maskWorkflowEvent(event WorkflowEvent, mask func(string) string) WorkflowEv
 	if event.ParentAgentID != nil {
 		*event.ParentAgentID = workflows.AgentID(mask(string(*event.ParentAgentID)))
 	}
+	if event.PhaseID != nil {
+		*event.PhaseID = workflows.PhaseID(mask(string(*event.PhaseID)))
+	}
+	if event.observation != nil {
+		value := event.observation.MapStrings(mask)
+		event.observation = &value
+		return event
+	}
 	p := &event.payload
 	p.definitionHash = workflows.Digest(mask(string(p.definitionHash)))
 	p.hash = workflows.Digest(mask(string(p.hash)))
@@ -176,4 +166,10 @@ func maskWorkflowEvent(event WorkflowEvent, mask func(string) string) WorkflowEv
 	maskStringPointer(mask, &p.progress.ID)
 	maskStringPointer(mask, &p.progress.Error)
 	return event
+}
+
+// DecodeWorkflowObservation retains a Source event's inert payload and metadata.
+// It neither reconstructs a trusted context nor activates a workflow controller.
+func DecodeWorkflowObservation(data []byte) (WorkflowEvent, error) {
+	return decodeWorkflowEvent(data)
 }

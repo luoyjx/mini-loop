@@ -28,6 +28,12 @@ const (
 	WorkflowFailed           WorkflowEventKind = "workflow_failed"
 	WorkflowCancelled        WorkflowEventKind = "workflow_cancelled"
 	WorkflowResultEnqueued   WorkflowEventKind = "workflow_result_enqueued"
+	WorkflowApprovalRequired WorkflowEventKind = "workflow_approval_required"
+	WorkflowRejected         WorkflowEventKind = "workflow_rejected"
+	WorkflowPhaseStarted     WorkflowEventKind = "workflow_phase_started"
+	WorkflowCheckpointed     WorkflowEventKind = "workflow_checkpointed"
+	WorkflowPaused           WorkflowEventKind = "workflow_paused"
+	WorkflowResumed          WorkflowEventKind = "workflow_resumed"
 )
 
 type WorkflowProgress struct {
@@ -39,7 +45,8 @@ type WorkflowProgress struct {
 }
 
 // WorkflowEvent is a closed service-event union. Its private payload is selected
-// by Kind; it cannot carry arbitrary tool output, arguments, transcript or maps.
+// by Kind for live service events. Decoded observations retain an immutable closed
+// JSON object, never a trusted context or an untyped map.
 type WorkflowEvent struct {
 	Kind          WorkflowEventKind
 	EventID       string
@@ -53,6 +60,8 @@ type WorkflowEvent struct {
 	AgentID       *workflows.AgentID
 	ParentAgentID *workflows.AgentID
 	payload       workflowEventPayload
+	PhaseID       *workflows.PhaseID
+	observation   *workflows.Value
 }
 type workflowEventPayload struct {
 	definitionHash workflows.Digest
@@ -75,6 +84,8 @@ type workflowEventPayload struct {
 }
 
 func (e WorkflowEvent) Clone() WorkflowEvent {
+	e.PhaseID = clonePointer(e.PhaseID)
+	e.observation = clonePointer(e.observation)
 	e.NodeID = clonePointer(e.NodeID)
 	e.AttemptID = clonePointer(e.AttemptID)
 	e.AgentID = clonePointer(e.AgentID)
@@ -91,25 +102,39 @@ func (e WorkflowEvent) Clone() WorkflowEvent {
 	return e
 }
 func (e WorkflowEvent) Progress() (WorkflowProgress, bool) {
-	return e.Clone().payload.progress, e.Kind == WorkflowAgentProgress
+	return e.Clone().payload.progress, e.Kind == WorkflowAgentProgress && e.observation == nil
 }
 func (e WorkflowEvent) MarshalJSON() ([]byte, error) { return e.encode(true) }
 
 func (e WorkflowEvent) encode(includeType bool) ([]byte, error) {
-	if e.SessionID == "" || e.RunID == "" || e.Name == "" || e.Revision == "" || e.EventID == "" {
-		return nil, fmt.Errorf("workflow event requires session, run, definition and event identity")
+	if !workflowKind(SessionEventKind(e.Kind)) {
+		return nil, fmt.Errorf("unsupported workflow event kind: %s", e.Kind)
+	}
+	for _, field := range []struct{ name, value string }{{"session_id", string(e.SessionID)}, {"run_id", string(e.RunID)}, {"workflow_name", e.Name}, {"definition_revision", string(e.Revision)}} {
+		if field.value == "" {
+			return nil, fmt.Errorf("%s is required", field.name)
+		}
+	}
+	if e.EventID == "" && e.observation == nil {
+		return nil, fmt.Errorf("live workflow event requires event identity")
 	}
 	switch e.Kind {
 	case WorkflowNodeClaimed, WorkflowAgentStarted, WorkflowAgentProgress, WorkflowAgentCompleted, WorkflowVerdictRecorded:
-		if e.NodeID == nil || *e.NodeID == "" || (e.Kind != WorkflowNodeClaimed && (e.AttemptID == nil || *e.AttemptID == "")) {
-			return nil, fmt.Errorf("workflow attempt event requires node and attempt identity")
+		if e.NodeID == nil || *e.NodeID == "" {
+			return nil, fmt.Errorf("%s requires node_id", e.Kind)
+		}
+		if e.Kind != WorkflowNodeClaimed && (e.AttemptID == nil || *e.AttemptID == "") {
+			return nil, fmt.Errorf("%s requires attempt_id", e.Kind)
 		}
 	}
 	switch e.Kind {
 	case WorkflowAgentStarted, WorkflowAgentProgress, WorkflowAgentCompleted:
 		if e.AgentID == nil || *e.AgentID == "" {
-			return nil, fmt.Errorf("workflow agent event requires agent identity")
+			return nil, fmt.Errorf("%s requires agent_id", e.Kind)
 		}
+	}
+	if e.Kind == WorkflowPhaseStarted && (e.PhaseID == nil || *e.PhaseID == "") {
+		return nil, fmt.Errorf("workflow_phase_started requires phase_id")
 	}
 	payload, err := e.payloadJSON()
 	if err != nil {
@@ -135,13 +160,17 @@ func (e WorkflowEvent) encode(includeType bool) ([]byte, error) {
 		Revision      workflows.Revision   `json:"definition_revision"`
 		Version       int                  `json:"payload_version"`
 		Payload       workflows.Value      `json:"payload"`
+		PhaseID       *workflows.PhaseID   `json:"phase_id,omitempty"`
 		NodeID        *workflows.NodeID    `json:"node_id,omitempty"`
 		AttemptID     *workflows.AttemptID `json:"attempt_id,omitempty"`
 		AgentID       *workflows.AgentID   `json:"agent_id,omitempty"`
 		ParentAgentID *workflows.AgentID   `json:"parent_agent_id,omitempty"`
-	}{kind, e.Kind, e.EventID, e.OccurredAt, e.SessionID, e.RunID, e.RunID, e.Name, e.Revision, 1, value, e.NodeID, e.AttemptID, e.AgentID, e.ParentAgentID})
+	}{kind, e.Kind, e.EventID, e.OccurredAt, e.SessionID, e.RunID, e.RunID, e.Name, e.Revision, 1, value, e.PhaseID, e.NodeID, e.AttemptID, e.AgentID, e.ParentAgentID})
 }
 func (e WorkflowEvent) payloadJSON() ([]byte, error) {
+	if e.observation != nil {
+		return e.observation.MarshalJSON()
+	}
 	p := e.payload
 	switch e.Kind {
 	case WorkflowPlanned:
@@ -222,4 +251,13 @@ type WorkflowEventSinkFunc func(context.Context, WorkflowEvent) error
 
 func (f WorkflowEventSinkFunc) EmitWorkflowEvent(ctx context.Context, event WorkflowEvent) error {
 	return f(ctx, event)
+}
+
+// ObservationPayload returns inert archival JSON. Live service payloads retain
+// their named structure and are not lowered through this accessor.
+func (e WorkflowEvent) ObservationPayload() (workflows.Value, bool) {
+	if e.observation == nil {
+		return workflows.Value{}, false
+	}
+	return *e.observation, true
 }

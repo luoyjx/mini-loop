@@ -2388,9 +2388,17 @@ and fresh-fork results. Existing owner-scoped HTTP info and SSE resume projectio
 preserve these records; health reflects activation. Snapshot 129 compares actual Python
 session/SQLite capture for twelve variants, completed/fork/disabled summaries and
 shutdown publication. Native tests exercise real fresh workers and HTTP/SSE ownership.
-Six reserved Source event kinds and exhaustive historical archive profiles
-and native SQLite remain pending. Owned later-turn injection is described below.
-Defaults remain off.
+DecodeWorkflowObservation now accepts all eighteen Source observation kinds and
+retains complete finite JSON object payloads in an immutable Value. ObservationPayload
+exposes inert archived data; Progress only exposes native service progress. Optional
+PhaseID, sparse payloads, historical decisions and unknown nested fields survive
+recursive masking and archive round trips. Source-valid empty archival event IDs are
+retained; native service IDs remain required. Snapshot 133 compares 22 actual Source
+constructor/session/SQLite observations and ten constructor refusals. Stored provenance
+remains untrusted regardless of claimed authority in payload data. The six reserved
+kinds are observational vocabulary; native producers still emit twelve variants.
+Legacy scalar/permissive header profiles and native SQLite remain pending. Owned
+later-turn injection is described below. Defaults remain off.
 
 
 ## Owned workflow result injection
