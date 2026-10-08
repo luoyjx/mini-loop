@@ -1,5 +1,36 @@
 # Go port plan
 
+## 2026-10-08 AST adapter Source admission and probe contracts
+
+Baseline 940c023. Source export 152 starts the missing AST-context adapter port.
+Eighteen actual AstContextConfig recipes capture defaults, invalid bounds, environment
+name validation/deduplication, normalized executable digests, pinned schema and version
+range admission. Sixteen actual AstOutlineAdapter.probe invocations use temporary
+operator-owned executables and the unmodified Source subprocess runner. Recorded
+version/homepage/exit behavior includes prereleases, multiline search and Unicode
+decimal versions. Missing, workspace-local and digest-mismatched binaries do not
+execute; matching digests permit execution without overriding a later process fault.
+Eight actual probe/result projections retain statuses, optional fields and compact JSON.
+
+Implementation order for the complete adapter: (1) closed configuration/status/probe
+and validated inert result projections; (2) argv subprocess, environment allowlist,
+digest recheck, independent byte drains, shared deadline and descendant cleanup;
+(3) anchored no-follow snapshots, bounded ignores and safe glob selection;
+(4) payload admission/path rewriting and four closed tool-input variants;
+(5) managed/child/workspace binding, explicit startup selection and real HTTP replay.
+No raw map/any domain design, relaxed path boundary or substitute parser is planned.
+This Source preparation changes no runtime/default/architecture topology. It does
+not prove native AST support, secure snapshot behavior or full migration completion.
+Diagnostics parser choice and native SQLite approval remain independent open items.
+
+Validation: 41 Python AST-context tests pass; all 19 source scanning guards
+remain anchored; export_go_contracts.py --check confirms all 152 files. Full
+Go go test ./... -count=1 -timeout=180s passes. README outline and git diff
+--check pass. No Python runtime package modules, source scanner targets or Go
+runtime code changed; full Python regression, invariant/mutation sweep, race,
+vet and coverage were not rerun. Architecture topology is unchanged, so no
+interactive-map regeneration or visual inspection was required for this slice.
+
 ## 2026-10-08 explicit diagnostics launcher forwarding
 
 Baseline 1350998. launcher.Options.DiagnosticsProvider forwards an explicit

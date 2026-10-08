@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `1350998` plus explicit diagnostics launcher forwarding
+Runtime review baseline: `940c023` plus AST adapter Source admission/probe contracts,
+plus explicit diagnostics launcher forwarding
 and actual HTTP/model replay, plus diagnostics HTTP Source contracts,
 native diagnostic file scanning and
 closed parser results, plus diagnostics parser-boundary Source observations
