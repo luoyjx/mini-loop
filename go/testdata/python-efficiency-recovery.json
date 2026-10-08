@@ -1,0 +1,262 @@
+{
+  "capabilities": [
+    "observation.recover"
+  ],
+  "custom_retained": true,
+  "parallel_safe": true,
+  "readonly": true,
+  "risk": "read",
+  "rows": [
+    {
+      "content": "hello文🔒",
+      "header": "[masked raw artifact; chars=0:7/7]",
+      "name": "default",
+      "output_bytes": 47,
+      "output_sha256": "ff26da526ce25541a5cd2c1a35176199589abc3cb6c236eb38601a87b093214f",
+      "params": {},
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "hello文🔒",
+      "header": "[masked raw artifact; chars=5:6/7; continue with offset=6]",
+      "name": "slice",
+      "output_bytes": 62,
+      "output_sha256": "907a6a82c048bdb63f1642585101d7f13058eeeebb16e8dfc7fca8ea1b686148",
+      "params": {
+        "limit": 1,
+        "offset": 5
+      },
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "hello",
+      "header": "[masked raw artifact; chars=5:5/5]",
+      "name": "beyond",
+      "output_bytes": 35,
+      "output_sha256": "b644b38516b025408ce668c11fbfd68db81b7735549b975975d19a097ec0baef",
+      "params": {
+        "offset": 999
+      },
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "hello",
+      "header": "[masked raw artifact; chars=5:5/5]",
+      "name": "huge-offset",
+      "output_bytes": 35,
+      "output_sha256": "b644b38516b025408ce668c11fbfd68db81b7735549b975975d19a097ec0baef",
+      "params": {
+        "offset": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      },
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "a",
+      "header": "[masked raw artifact; chars=0:49929/60000; continue with offset=49929]",
+      "name": "huge-limit",
+      "output_bytes": 50000,
+      "output_sha256": "13c33218c14ea9f6a363bc94fde69cb29551cbc9fbc757112c1f6cf4b8991462",
+      "params": {
+        "limit": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      },
+      "repeat": 60000,
+      "state": "normal"
+    },
+    {
+      "content": "a",
+      "header": "[masked raw artifact; chars=0:49929/60000; continue with offset=49929]",
+      "name": "ascii-page",
+      "output_bytes": 50000,
+      "output_sha256": "13c33218c14ea9f6a363bc94fde69cb29551cbc9fbc757112c1f6cf4b8991462",
+      "params": {},
+      "repeat": 60000,
+      "state": "normal"
+    },
+    {
+      "content": "🔒",
+      "header": "[masked raw artifact; chars=0:12482/50000; continue with offset=12482]",
+      "name": "emoji-page",
+      "output_bytes": 49999,
+      "output_sha256": "cd4bbe99ad5d69c4b66ff578d159899cb094c564a54ff9ded1a7cdf50fd8a4e5",
+      "params": {},
+      "repeat": 50000,
+      "state": "normal"
+    },
+    {
+      "content": "🔒",
+      "header": "[masked raw artifact; chars=12470:24951/50000; continue with offset=24951]",
+      "name": "second-page",
+      "output_bytes": 49999,
+      "output_sha256": "88c3b7b7eb1064583fef1b1ed86840ffd29e8297c20b6603e2cc222e5495b8e8",
+      "params": {
+        "offset": 12470
+      },
+      "repeat": 50000,
+      "state": "normal"
+    },
+    {
+      "content": "文a🔒",
+      "header": "[masked raw artifact; chars=0:18723/60000; continue with offset=18723]",
+      "name": "mixed-page",
+      "output_bytes": 49999,
+      "output_sha256": "a6cd3183a015d371e98974f075bfde11c1d74225cfde63589b21e3cde93b7888",
+      "params": {},
+      "repeat": 20000,
+      "state": "normal"
+    },
+    {
+      "content": "",
+      "header": "[masked raw artifact; chars=0:0/0]",
+      "name": "empty",
+      "output_bytes": 35,
+      "output_sha256": "46c70eb6d3f6c0480a904bd4fe7e7050a91ca86b12f1fad5d95bb7b69e69b1ed",
+      "params": {},
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "x",
+      "header": "Error: offset must be a non-negative integer",
+      "name": "negative-offset",
+      "output_bytes": 44,
+      "output_sha256": "6c65eb5655dd0119a108735377db0fe6f44e50f08fb9fb40dc97a04cf02acaff",
+      "params": {
+        "offset": -1
+      },
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "x",
+      "header": "Error: limit must be a positive integer",
+      "name": "zero-limit",
+      "output_bytes": 39,
+      "output_sha256": "b118f3305c59c06f8fbdbb48367774e33c3579342cc3ac98111d73852c9a28b4",
+      "params": {
+        "limit": 0
+      },
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "x",
+      "header": "Error: limit must be a positive integer",
+      "name": "negative-limit",
+      "output_bytes": 39,
+      "output_sha256": "b118f3305c59c06f8fbdbb48367774e33c3579342cc3ac98111d73852c9a28b4",
+      "params": {
+        "limit": -1
+      },
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "x",
+      "header": "Error: offset must be a non-negative integer",
+      "name": "null-offset",
+      "output_bytes": 44,
+      "output_sha256": "6c65eb5655dd0119a108735377db0fe6f44e50f08fb9fb40dc97a04cf02acaff",
+      "params": {
+        "offset": null
+      },
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "x",
+      "header": "Error: limit must be a positive integer",
+      "name": "null-limit",
+      "output_bytes": 39,
+      "output_sha256": "b118f3305c59c06f8fbdbb48367774e33c3579342cc3ac98111d73852c9a28b4",
+      "params": {
+        "limit": null
+      },
+      "repeat": 1,
+      "state": "normal"
+    },
+    {
+      "content": "x",
+      "header": "Error: masked raw artifact recovery is not enabled for this session",
+      "name": "no-store",
+      "output_bytes": 67,
+      "output_sha256": "dbeae712a29d38c1d02f1d30c60fc167daea5bcb67fd19b6e4311273bf38fde6",
+      "params": {},
+      "repeat": 1,
+      "state": "unavailable"
+    },
+    {
+      "content": "x",
+      "header": "Error: raw artifact does not belong to this session",
+      "name": "foreign-store",
+      "output_bytes": 51,
+      "output_sha256": "6a583fe6eedd418f5b64d1ba7ae9d09fd1b0da29f61dc3dc03c1371c14b3fcd4",
+      "params": {},
+      "repeat": 1,
+      "state": "foreign"
+    },
+    {
+      "content": "x",
+      "header": "Error: raw artifact store is closed",
+      "name": "closed-store",
+      "output_bytes": 35,
+      "output_sha256": "52397c89be32ee5b188875777f58d07ebe6d893640f5d18005e8cace6defb253",
+      "params": {},
+      "repeat": 1,
+      "state": "closed"
+    },
+    {
+      "content": "x",
+      "header": "Error: raw artifact has expired",
+      "name": "expired",
+      "output_bytes": 31,
+      "output_sha256": "3eaf90c8f75d57a0fb6da23052fb83e7461093aabb28a75acb229ed14c95b72f",
+      "params": {},
+      "repeat": 1,
+      "state": "expired"
+    },
+    {
+      "content": "x",
+      "header": "Error: invalid raw artifact reference",
+      "name": "invalid-ref",
+      "output_bytes": 37,
+      "output_sha256": "119ede3e932cd547d6084ce2595c6253da790cc1d129af055c049915931048bb",
+      "params": {},
+      "repeat": 1,
+      "state": "invalid"
+    }
+  ],
+  "same_registry": true,
+  "schema": {
+    "description": "Read one bounded page of an already-masked tool result by session-scoped raw_ref.",
+    "input_schema": {
+      "properties": {
+        "limit": {
+          "default": 50000,
+          "description": "Requested characters; the complete rendered page is hard-capped at 50000 UTF-8 bytes.",
+          "maximum": 50000,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "offset": {
+          "default": 0,
+          "description": "Character offset for bounded recovery.",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "raw_ref": {
+          "description": "Opaque raw_ref emitted with a reduced tool result.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "raw_ref"
+      ],
+      "type": "object"
+    },
+    "name": "read_token_artifact"
+  }
+}

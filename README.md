@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `ad703dc` plus native scoped masked RAM storage,
+Runtime review baseline: `5f6035b` plus artifact-recovery Source contracts,
+plus native scoped masked RAM storage,
 plus masked raw-store Source contracts,
 plus native immutable efficiency contracts,
 plus token-efficiency type Source contracts,

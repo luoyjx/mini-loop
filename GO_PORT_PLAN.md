@@ -1,5 +1,21 @@
 # Go port plan
 
+## 2026-10-09 bounded artifact-recovery Source contracts
+
+Baseline 5f6035b. Export 167 executes the real installed read_token_artifact handler
+in twenty store/pagination scenarios. Captures pin the exact schema and read-only,
+parallel-safe observation.recover traits, complete rendered-output SHA256/byte count
+and header, including UTF-8 byte caps, Python character offsets, continuation hints,
+unbounded offsets/limits, explicit null, invalid bounds, no store, foreign refs,
+closed stores and expiry. Temporary real stores retain scoped ref authority; no
+handler or pagination implementation is substituted. Installation also proves the
+registry object and an existing custom same-name tool are retained unchanged.
+
+Validation: Source tools/efficiency tests pass 52 tests; exporter --check confirms
+167 files and all 19 scan guards pass. README outline and git diff --check pass.
+This commit captures Source only. Native recovery and tool/runtime binding follow;
+full Python regression, coverage and mutation sweep are not refreshed.
+
 ## 2026-10-09 native scoped masked RAM store
 
 Baseline ad703dc. Package efficiency adds RawStoreConfig/ArtifactClock/RawStore,
