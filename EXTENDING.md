@@ -3315,6 +3315,20 @@ InstallTokenArtifactTool extends an immutable custom catalogue while preserving 
 existing same-name definition and its catalogue identity. It does not widen an
 explicit RuntimeConfig.ToolSelection or register a default feature.
 
+DefaultObservation/NewObservation construct a MaskedObservation assertion, preserving
+MIME-like content type, first-seen reduced_by, optional paired legacy raw metadata
+and ordered ObservationMetadata entries. Metadata values use a closed immutable
+JSON sum; command status scalars and nested JSON are supported without generic maps.
+Snapshot and NewReduction/Snapshot detach mutable slice/pointer inputs. Arbitrary
+Python metadata objects remain outside this typed boundary. Observation itself
+checks raw-ref/digest pairing only; receipts/recovery validate their stronger patterns.
+
+ObservationReducer exposes Descriptor and Reduce with named ReductionOptions and
+ObservationReduction. PassthroughObservationReducer and DeterministicLosslessReducer
+are stateless explicit library implementations. The latter removes ANSI and folds
+noncritical duplicates/blank runs using pinned Python diagnostic/Unicode predicates.
+These reducers do not perform masking or install runtime optimization.
+
 No reducer/optimizer/policy registry, shared component lifecycle or default efficiency
 runtime consumer is installed yet. MINILOOP_TOKEN_EFFICIENCY_MODE and
 non-normal response styles remain unsupported. Python annotation-violating plugin

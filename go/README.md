@@ -2523,3 +2523,16 @@ definitions; explicit tool selection still narrows admission. No operational
 optimization is installed yet. E2-E6 in GO_PORT_PLAN.md cover observation/request/
 response stages, lifecycle and default runtime adoption.
 Efficiency activation remains explicitly unsupported until those consumers exist.
+
+
+MaskedObservation and ObservationReduction now own immutable typed state with
+copying snapshots. ObservationMetadata carries ordered key/value pairs using a
+closed JSON sum, including command status fields, repeated keys and nested values.
+NewObservation preserves Source pairing validation without imposing raw-ref/digest
+patterns before the receipt/recovery boundaries. Twenty actual Source constructors
+match, including unsafe legacy paired metadata and repeated reduced_by entries.
+ObservationReducer has named ReductionOptions and concrete ObservationReduction.
+The two stateless builtin reducers match Source descriptors and 69 full-content/
+warning recipes, including ANSI OSC greediness, Unicode-14 word/decimal classes and
+Python ASCII-range IGNORECASE extensions. Shared concurrent calls retain independent
+results. E2 mode/admission/inflation/recovery/fault pipeline remains pending.

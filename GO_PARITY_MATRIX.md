@@ -1,5 +1,50 @@
 # Python to Go parity matrix
 
+## 2026-10-09 typed observations and builtin reducer libraries
+
+Baseline 824d130. efficiency adds ObservationConfig/MaskedObservation,
+ReductionConfig/ObservationReduction, ReductionOptions and the concrete-result
+ObservationReducer SPI. Constructors own detached slices/pointers and snapshots
+copy them again; zero objects refuse marshaling. Ordered ObservationMetadata entries
+preserve repeated keys and closed immutable JSON values, including real command
+status scalars and nested values. Source's observation boundary deduplicates
+reduced_by and checks MIME-like text and ref/digest pairing only; invalid-looking
+paired legacy refs/digests remain admitted here, with stronger validation retained
+at receipts and raw recovery. Reduction warnings keep Source bounds/messages.
+
+PassthroughObservationReducer and DeterministicLosslessReducer are stateless explicit
+libraries. The latter removes actual Source CSI/OSC escapes, folds CR-only/blank
+runs and noncritical duplicates, and retains singular/plural markers and warning
+order. Native critical-line matching uses pinned Python Unicode-14 word/decimal
+classes and ASCII IGNORECASE extension letters, rather than Go ASCII boundaries.
+Source's faile/failed versus fail behavior, extension boundaries and greedy OSC ST
+removal remain exact. Both descriptors match actual Source constructor snapshots.
+
+All twelve observation and eight reduction constructors compare normalized fields,
+observation JSON or exact validation messages. Both reducers compare full content
+and warnings on 69 actual Source inputs and repeated invocations. Native checks
+mutate caller/snapshot slices, pointer metadata and nested array copies, reject
+zero/cancelled inputs and run 32 shared concurrent stateless calls under race.
+Arbitrary Python metadata objects, annotation-violating values and broader Unicode/
+numeric wire profiles remain open; no generic map or dynamic result object enters
+the reducer SPI. Metadata uses the existing closed JSON sum, not any/interface{}.
+
+This delivers E2 types/builtin algorithms only. Runtime registry/modes/admission,
+component deadlines/health/drain, inflation/double-reduction guards, recoverable
+storage and fail-open receipts remain pending. Neither reducer is installed in the
+Agent pipeline; efficiency mode/style activation remains unsupported. E3-E6 and
+the full migration objective stay open.
+
+Validation: full go test ./... -count=1 -timeout=180s, full go test -race ./...
+-count=1 -timeout=180s and go vet ./... pass; focused observation/builtin race passes.
+Source exporter --check confirms 168 files, all 19 scan guards pass, and Source
+tools/efficiency tests pass 52 tests. README outline and git diff --check pass.
+Archify delivery passes 9/9 with zero errors/warnings; spec SHA256
+06671546e6ac1d04d5ea1efe2a87eeb95c96331212f602485a338c787cba7357;
+HTML 1e8ae6e4f06dba54e7c14a0235548962c4e5f235dfbdde452fd694185726bbf3.
+Visual inspection remains skipped after prior browser access denial. Full Python
+regression, coverage and mutation sweep are not refreshed. Evidence is Darwin arm64.
+
 ## 2026-10-09 observation and builtin-reducer Source contracts
 
 Baseline 7f40ded. Export 168 captures twelve MaskedObservation and eight
