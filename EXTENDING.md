@@ -2366,4 +2366,8 @@ grant launch authority; origin checks remain service-owned. ArtifactFromSubmissi
 requires a structured return_artifact result, then validates against the controller's
 schema and binds the controller's run/node/attempt IDs. VerificationFromValue falls
 back to unverified for malformed/missing status. It does not invent verification.
+runmeta.Snapshot is a shared inert provenance record with detached Clone projections.
+agent retains private trusted RunContext construction, validation and capability checks;
+its public provenance types alias runmeta without a wire-format change. Consumers
+may store snapshots but must not use decoded fields to mint execution authority.
 Runtime records and trusted-origin adaptation are the next separate slice.

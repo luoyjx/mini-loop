@@ -2094,3 +2094,12 @@ ValidateDefinition, ValidateSchema and ValidateValue now port the actual source 
 budget/tool policy and JSON Schema subset. ArtifactFromSubmission binds structured
 completion to explicit controller IDs; it does not authorize launch or verify truth.
 Snapshot 114 pins exact refusal ordering and structured artifact outcomes.
+
+### Shared provenance records
+
+runmeta owns named MessageID, ActorID, Authority, Capability and the inert Snapshot
+wire record. Snapshot.Clone detaches optional fields and capabilities, retaining
+null versus empty arrays. agent aliases these public types and retains its private
+live RunContext, trusted factories and capability checks. A decoded snapshot is
+archival data; it has no authority constructor or authorization methods. This
+prepares workflow records without a workflows/agent dependency cycle.

@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `d0c4656` plus workflow DAG/schema and artifact submission validation;
+reviewed **2026-10-08** (Go baseline `c2efdcb` plus shared inert run provenance records;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1416,6 +1416,9 @@ Native validators preserve refusal order, read-only tool budgets, the three supp
 engine node kinds, DAG acyclicity and the source JSON Schema subset. Numeric schema
 admission excludes booleans; enum/const use Python equality. Structured artifact
 completion binds the controller's attempt IDs and validates its schema before creation.
+Run provenance snapshots and their named IDs now live in `go/runmeta`; the agent
+retains its private trusted RunContext and source-compatible public aliases.
+Decoded snapshot data cannot mint a trusted context or grant execution authority.
 Run/attempt/outbox records, storage and execution are still pending. This library is
 not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and

@@ -5,20 +5,22 @@ import (
 	"encoding/hex"
 	"errors"
 	"slices"
+
+	"github.com/luoyjx/mini-loop/go/runmeta"
 )
 
-type MessageID string
-type ActorID string
-type RunAuthority string
-type RunCapability string
+type MessageID = runmeta.MessageID
+type ActorID = runmeta.ActorID
+type RunAuthority = runmeta.Authority
+type RunCapability = runmeta.Capability
 
 const (
-	AuthorityUntrusted                   RunAuthority  = "untrusted"
-	AuthorityExplicitHuman               RunAuthority  = "explicit_human"
-	AuthorityPeerAgent                   RunAuthority  = "peer_agent"
-	CapabilityWorkflowLaunch             RunCapability = "workflow.launch"
-	CapabilityWorkflowManage             RunCapability = "workflow.manage"
-	CapabilityPersonalSkillCaptureSource RunCapability = "personal_skill.capture_source"
+	AuthorityUntrusted                   = runmeta.AuthorityUntrusted
+	AuthorityExplicitHuman               = runmeta.AuthorityExplicitHuman
+	AuthorityPeerAgent                   = runmeta.AuthorityPeerAgent
+	CapabilityWorkflowLaunch             = runmeta.CapabilityWorkflowLaunch
+	CapabilityWorkflowManage             = runmeta.CapabilityWorkflowManage
+	CapabilityPersonalSkillCaptureSource = runmeta.CapabilityPersonalSkillCaptureSource
 )
 
 // RunContext is stamped by a trusted caller, never decoded from model text.
@@ -34,17 +36,7 @@ type RunContext struct {
 	parentMessageID *MessageID
 	approved        []RunCapability
 }
-type RunContextSnapshot struct {
-	MessageID            MessageID       `json:"message_id"`
-	Origin               string          `json:"origin"`
-	ActorID              *ActorID        `json:"actor_id"`
-	Channel              string          `json:"channel"`
-	Authority            RunAuthority    `json:"authority"`
-	StampedBy            string          `json:"stamped_by"`
-	DelegatedBy          *string         `json:"delegated_by"`
-	ParentMessageID      *MessageID      `json:"parent_message_id"`
-	ApprovedCapabilities []RunCapability `json:"approved_capabilities"`
-}
+type RunContextSnapshot = runmeta.Snapshot
 
 func newMessageID() (MessageID, error) {
 	var bytes [16]byte
@@ -142,7 +134,12 @@ func (value RunContext) clone() RunContext {
 }
 func (value RunContext) Snapshot() RunContextSnapshot {
 	value = value.clone()
-	return RunContextSnapshot{value.messageID, value.origin, value.actorID, value.channel, value.Authority(), value.stampedBy, value.delegatedBy, value.parentMessageID, value.approved}
+	return RunContextSnapshot{
+		MessageID: value.messageID, Origin: value.origin, ActorID: value.actorID,
+		Channel: value.channel, Authority: value.Authority(), StampedBy: value.stampedBy,
+		DelegatedBy: value.delegatedBy, ParentMessageID: value.parentMessageID,
+		ApprovedCapabilities: value.approved,
+	}
 }
 func (value RunContext) DerivePeerAgent(delegatedBy string) (RunContext, error) {
 	if err := value.Validate(); err != nil {

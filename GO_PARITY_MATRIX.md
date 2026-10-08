@@ -1,5 +1,16 @@
 # Python to Go parity matrix
 
+## 2026-10-08 shared inert provenance preparation
+
+Native runmeta now owns the existing snapshot wire record and named provenance
+types. agent exports compatible aliases; its private live RunContext, trusted
+factories, delegation and capability checks are unchanged. Clone detaches pointer
+and slice fields and preserves archival null/empty distinctions. Source RunContext
+as_dict and the existing context/delegation evidence remain the contract; native
+tests cover decoded wire retention, isolation and unchanged live authority. No
+workflow launch policy or storage is installed by this extraction.
+
+
 ## 2026-10-08 workflow DAG/schema and structured artifact validation
 
 Snapshot 114 executes actual source definition/schema/value validators and artifact

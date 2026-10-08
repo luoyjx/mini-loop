@@ -1,5 +1,66 @@
 # Go port plan
 
+## 2026-10-08 shared inert provenance preparation
+
+Baseline c2efdcb. Preparing W1B without a workflows -> agent -> workflows
+import cycle: runmeta now owns MessageID, ActorID, Authority, Capability and
+Snapshot. agent retains its existing public aliases and constants, private live
+RunContext fields, trusted factories, validation, delegation and capability checks.
+No decoded snapshot can construct a trusted context. Source RunContext.as_dict
+remains the wire contract; shared fields do not add authority or approval.
+
+Snapshot.Clone detaches optional actor/delegation/parent pointers and capability
+storage. It retains nil versus empty capability arrays for historical projections;
+live agent snapshots keep their existing nonnil empty capability list. Native tests
+verify exact decoded wire bytes, clone isolation, unchanged untrusted authority,
+trusted caller isolation and human-capability removal on delegation. Existing
+source context, archival, event and teammate evidence is reused without a new
+source snapshot. No dependencies, Python package modules, scanners or guarded
+source behavior were changed.
+
+README architecture reviewed: active Mermaid flows remain unchanged; the boundary
+and interactive card now name shared inert provenance ownership. Interactive HTML
+regenerated from JSON with showcase 9/9, zero errors/warnings. Spec SHA256
+60bc8242ef7243bfce086e0d0d8c358615821e48a82172bfa9eb2353d5c966f5;
+HTML SHA256 4c75fa4407c4b84d70a9e2e593ea43db6daa10e9c02d36a8dbac8eb54971053b.
+Visual inspection remains skipped after prior denial, without retry/bypass.
+
+Current full Go coverage uses -coverpkg=./... with duplicate source blocks merged
+by maximum execution count: overall 18,623/20,608 (90.37%), agent 6,717/7,402
+(90.75%), httpapi 1,478/1,638 (90.23%), workflows 380/419 (90.69%), runmeta 12/12
+(100%). Profile: /tmp/mini-loop-runmeta-coverage.out. These are statement coverage,
+not migration completion percentages; Python coverage was not refreshed.
+
+Validation: focused provenance tests under race, full Go test with shared coverage,
+full Go race and go vet passed. The initial vet found an unkeyed cross-package
+snapshot literal; explicit field names fixed it, followed by full final-source
+coverage and race gates. All 114 source exports current; all 19 scan guards anchored.
+After the Go gates finished, full Python regression passed: 2,155 passed, 28 skipped,
+24 subtests, three dependency warnings in 86.85s. Diff check and README outline
+passed. Python package invariants and mutation guards were not rerun because their
+package modules/behavior/anchors did not change.
+
+This is a focused preparation commit; workflow run/node/attempt/outbox records, trusted live launch adaptation,
+process-local store CAS/claim/outbox, engine, integration, MCP, native session
+SQLite and full G7 remain open. Source list_nodes follows definition order; list_runs
+sorts by creation time and run ID. Preserve those contracts in the store slice.
+
+Next small commits:
+
+1. W1B records: WorkflowRun, NodeState, AttemptClaim, NodeAttempt and OutboxMessage
+   with named identities/counters, closed immutable args/payload and detached
+   provenance; compare actual Python constructor defaults and projections.
+2. W3A store admission: register/get definitions, idempotent create/read/list runs,
+   versioned transition_run and atomic claim_nodes. Preserve definition-order node
+   lists, refusal order, empty-claim version increments and all-or-nothing claims.
+3. W3B attempt settlement/cancellation: start, commit, failure, terminal artifact
+   binding, cancellation and finalization with source state-transition evidence.
+4. W3C outbox/pruning: claims, acknowledgment/release and complete cascade pruning.
+   This remains process-local, matching actual source; it is not workflow durability.
+5. W4-W6 execute/install: trusted live origin admission, fresh readonly worker
+   engine, service/tools/HTTP/manager selection and actual integration evidence.
+
+
 ## 2026-10-08 workflow DAG/schema and artifact submission validation
 
 Baseline d0c4656. The workflow model library now ports the source definition
