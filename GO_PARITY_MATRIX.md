@@ -1,5 +1,52 @@
 # Python to Go parity matrix
 
+## 2026-10-09 explicit Agent observation projection adoption
+
+Baseline `0ce795c`. Session dispatch now binds a named private toolOutcomeProjector
+between full-output masking and journal settlement/result observers. The concrete
+consumer uses the existing shared efficiency.Runtime and closed observation/command
+metadata, sorted post-mask query and token-threshold budget. Replay and
+read_token_artifact bypass reduction. Denials and ordinary hook/handler errors still
+pass through the post-mask stage. The bare ToolGate seam remains unchanged.
+
+Action settlement retains full masked authority while observers, tool_result events,
+trajectory and model tool results receive the projection. Candidates and recovery
+markers are masked again. Recovery envelope inflation discards the unused ref and
+rewrites applied public metrics to full authority; successful metrics include the
+final envelope and final mask. Post-mask cancellation preserves Source's started
+journal record. Early handler cancellation keeps the existing cancellation settlement.
+
+ObservationRawConfig has named persist/minimum-byte settings, cloned unbounded
+thresholds and Source defaults true/4096. readonly and absent recovery tools forbid
+writes. Explicit runtime and recovery tool bindings must use the same nonnil store;
+foreign-workspace runtime stores are detached without changing the caller's runtime.
+Store/tool creation, session-owned cleanup, initialization, environment selection and
+Manager/launcher/benchmark/HTTP defaults remain E6.4 work. No default feature is
+activated or dependency added. A typed optimization_stage_error variant exposes
+only a safe native fault class and tool span, with event masking/archival decoding.
+Native runtime fault class wording is explicit and is not claimed as arbitrary
+Python exception-class parity.
+
+All 17 actual Source tool scenarios match reducer inputs, full public receipt
+metrics, masked raw artifacts, authority journals, observer/provider outputs and
+call ordering (only opaque ref and span/elapsed identity normalized). A real
+Session.Run test performs bash -> projected result -> read_token_artifact -> model
+reply and confirms only the first tool is reduced, recovered output stays complete
+and masked, and the journal contains no ephemeral recovery projection. Targeted
+race tests cover the differential corpus, live flow, detached/foreign store settings
+and typed stage-error archival decoding. Wider malformed/custom runtime profiles
+and full port parity remain open; E6.3 is delivered for the supported typed boundary.
+
+Validation: full Go ordinary and race suites passed with `-p=1 -count=1
+-timeout=180s`; `go vet ./...` passed. Targeted observation differential/live/binding
+race tests passed. The 74 targeted Python efficiency tests, all 19 scan guards and
+complete 177-file exporter check passed for the Source contract commit in this
+iteration. git diff --check passed. Architecture regeneration passed 9/9 checks,
+with zero errors/warnings and file hashes matching its receipt. Visual inspection
+remains skipped after prior browser access denial. Full Python regression and
+coverage were not refreshed; no merge or push was performed.
+
+
 ## 2026-10-09 Agent observation adoption Source contracts
 
 Baseline `ef26580`. A separate helper captures 17 actual Agent._exec_tool calls

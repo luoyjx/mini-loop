@@ -92,3 +92,15 @@ type RequestOptimizationRejectedEvent struct {
 func (event SessionEvent) RequestOptimizationRejected() (RequestOptimizationRejectedEvent, bool) {
 	return event.requestRejected, event.kind == EventRequestOptimizationRejected
 }
+
+const EventOptimizationStageError SessionEventKind = "optimization_stage_error"
+
+type OptimizationStageErrorEvent struct {
+	Stage        efficiency.Stage `json:"stage"`
+	ParentSpanID SpanID           `json:"parent_span_id"`
+	Error        string           `json:"error"`
+}
+
+func (event SessionEvent) OptimizationStageError() (OptimizationStageErrorEvent, bool) {
+	return event.optimizationError, event.kind == EventOptimizationStageError
+}

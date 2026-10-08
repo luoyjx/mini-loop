@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `ef26580` plus actual Agent observation adoption Source contracts,
+Runtime review baseline: `0ce795c` plus explicit Agent observation projection adoption,
 plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,
@@ -443,7 +443,7 @@ flowchart LR
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
-        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: response → request guard/ledger → cache"]
+        GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
@@ -2075,20 +2075,21 @@ RuntimeConfig.TokenArtifactTools installs bounded read_token_artifact via the co
 gate, with caller-owned store lifetime and pinned session/owner/workspace authority.
 Character pagination plus header/continuation stays within 50,000 UTF-8 bytes;
 unbounded numeric pagination and explicit null retain typed replay identity. Existing
-tool selections and custom same-name catalogue entries remain intact. Agent reducer
-integration and Agent/default runtime composition remain open; efficiency mode/style
+tool selections and custom same-name catalogue entries remain intact. Explicit Agent reducer integration is described below;
+Manager/default runtime composition remains open; efficiency mode/style
 activation is still refused. Immutable MaskedObservation/ObservationReduction and
 two builtin reducer libraries now match twenty Source constructors and 69 reducer
 inputs. DeterministicLosslessReducer preserves Python ANSI, Unicode-14 diagnostic
 and path rules. ObservationPipeline now orchestrates explicit typed bindings in
 off/shadow/enforce modes with byte/token inflation and double-reduction guards,
 recoverable masked RAM retention and safe fault receipts. WithRawStore clones share
-component serialization and synchronized token estimates. This library is not
-installed in Agent/Manager. Observation components now expose optional typed
+component serialization and synchronized token estimates. Explicit Agent adoption
+is described below; Manager/default composition remains pending. Observation components now expose optional typed
 Initialize/Health/Close hooks, clone-shared cached reports, exclusive health admission
 and close-before-drain fencing. Timed drain failures remain retryable; hook faults are
 contained class-only records. Raw storage remains caller-owned. Masking before/after
-the plugin boundary, multi-stage identity registration and default selection remain pending.
+the plugin boundary and multi-stage identity registration are described below; default
+selection remains pending.
 RequestPipeline now optimizes immutable provider-neutral RequestDocument values
 through explicit RequestOptimizer/OptimizationContext/result types. JSON data uses
 closed recursive variants; no generic service map or opaque raw JSON is retained.
@@ -2100,8 +2101,8 @@ admission and snapshots; Runtime composes all three stages into one lifecycle/ca
 counter root. Same pointer instances share locks and lifecycle hooks, while distinct
 objects with equal IDs in direct StageComponents retain independent hooks. Clones
 share admission/draining with explicit caller-owned raw-store binding. Agent request
-ledger is now installed by explicit RuntimeConfig.TokenEfficiency; observation and
-Manager/default composition remain pending.
+ledger is now installed by explicit RuntimeConfig.TokenEfficiency; observation adoption
+is described below and Manager/default composition remains pending.
 The Agent consumer now guards role/count/tool identities, error flags and stable
 protocol blocks before lowering eligible payloads to named message variants. Its
 transient ledger reuses provider projections while preserving authoritative history;
@@ -2123,6 +2124,16 @@ request/cache seams and remask/refreeze selected messages for every recovery cal
 Observation adoption, Manager composition and environment defaults remain pending.
 See E0-E6 in GO_PORT_PLAN.md for the remaining sequence.
 
+Go explicit observation adoption runs after full output masking and before journal
+settlement/result observers. Journals retain full masked authority; model results,
+observers, events and trajectories receive the candidate plus its masked recovery
+marker. Replay and read_token_artifact skip reduction. Envelope inflation discards
+unused raw refs and reports authority metrics. readonly/absent recovery tools forbid
+raw writes; foreign workspace stores are detached. ObservationRawConfig snapshots
+persist/minimum-byte settings; defaults are true/4096 only within an explicitly
+injected runtime. Shared component/store lifetime and default Manager composition
+remain caller-owned/pending. A typed stage-error event contains no plugin text.
+
 ## Repository map
 
 | Path | Responsibility |
@@ -2138,7 +2149,7 @@ See E0-E6 in GO_PORT_PLAN.md for the remaining sequence.
 | `python/examples/` | Runnable Python custom composition |
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
-| `go/efficiency/` | Typed registry, shared three-stage runtime/lifecycle, masked RAM and recovery; Agent adoption pending |
+| `go/efficiency/` | Typed registry, shared three-stage runtime/lifecycle, masked RAM and recovery; explicit Agent adoption, defaults pending |
 | `go/secrets/` | Typed optional credential lookup, environment selection and masking |
 | `go/internal/` | Shared Python filename matching and pinned Unicode/text semantics |
 | `go/testdata/` | Generated Python tool, OpenAPI, and SQLite contract snapshots |

@@ -42,6 +42,7 @@ type BashExecutor interface {
 type Session struct {
 	requestProjections                                map[requestProjectionKey]protocol.Message
 	tokenEfficiency                                   *efficiency.Runtime
+	observationRaw                                    ObservationRawConfig
 	conciseResponse                                   bool
 	guardianEnabled                                   bool
 	mcp                                               *mcpState

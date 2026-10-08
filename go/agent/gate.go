@@ -168,10 +168,6 @@ func notifyObserver(observer ResultObserver, ctx context.Context, authority Tool
 	return observer.OnResult(ctx, authority, call, outcome)
 }
 
-func (gate *ToolGate) finish(ctx context.Context, authority ToolAuthority, call ToolCall, outcome ToolOutcome) ToolOutcome {
-	outcome.Output = maskedText(gate.secrets, outcome.Output)
-	return gate.observe(ctx, authority, call, outcome)
-}
 func (gate *ToolGate) observe(ctx context.Context, authority ToolAuthority, call ToolCall, outcome ToolOutcome) ToolOutcome {
 	for i := range outcome.events {
 		outcome.events[i].Reason = maskedText(gate.secrets, outcome.events[i].Reason)
@@ -197,7 +193,15 @@ func (gate *ToolGate) dispatch(ctx context.Context, authority ToolAuthority, cal
 	return gate.dispatchWithApprover(ctx, authority, call, reconciled, nil)
 }
 
+type toolOutcomeProjector interface {
+	projectToolOutcome(context.Context, ToolAuthority, ToolCall, ToolOutcome) (ToolOutcome, error)
+}
+
 func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAuthority, call ToolCall, reconciled func(ActionReconciliation), approver Approver) (returned ToolOutcome, dispatchError error) {
+	return gate.dispatchProjected(ctx, authority, call, reconciled, approver, nil)
+}
+
+func (gate *ToolGate) dispatchProjected(ctx context.Context, authority ToolAuthority, call ToolCall, reconciled func(ActionReconciliation), approver Approver, projector toolOutcomeProjector) (returned ToolOutcome, dispatchError error) {
 	if err := authority.Validate(); err != nil {
 		return ToolOutcome{}, err
 	}
@@ -228,8 +232,19 @@ func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAu
 			}
 		}
 	}()
-	failed := func(err error) ToolOutcome {
-		return gate.finish(ctx, authority, call, ToolOutcome{Output: "Error: " + err.Error(), Failed: true})
+	finish := func(outcome ToolOutcome) (ToolOutcome, error) {
+		outcome.Output = maskedText(gate.secrets, outcome.Output)
+		if projector != nil {
+			projected, err := projector.projectToolOutcome(ctx, authority, call, outcome)
+			if err != nil {
+				return ToolOutcome{}, err
+			}
+			outcome = projected
+		}
+		return gate.observe(ctx, authority, call, outcome), nil
+	}
+	failed := func(err error) (ToolOutcome, error) {
+		return finish(ToolOutcome{Output: "Error: " + err.Error(), Failed: true})
 	}
 	for _, hook := range gate.before {
 		decision, err := hook.BeforeTool(ctx, authority, call)
@@ -237,19 +252,19 @@ func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAu
 			return ToolOutcome{}, ctx.Err()
 		}
 		if err != nil {
-			return failed(err), nil
+			return failed(err)
 		}
 		switch decision.kind {
 		case BeforeKeep:
 		case BeforeRewrite:
 			if err := decision.input.Validate(); err != nil || decision.input.Name() != call.Name() {
-				return failed(errors.New("before hook returned an invalid tool-input rewrite")), nil
+				return failed(errors.New("before hook returned an invalid tool-input rewrite"))
 			}
 			call.Input = decision.input
 		case BeforeDeny:
-			return gate.finish(ctx, authority, call, ToolOutcome{Output: decision.message, Denied: true}), nil
+			return finish(ToolOutcome{Output: decision.message, Denied: true})
 		default:
-			return failed(fmt.Errorf("before hook returned invalid decision %q", decision.kind)), nil
+			return failed(fmt.Errorf("before hook returned invalid decision %q", decision.kind))
 		}
 	}
 	for _, hook := range gate.guards {
@@ -258,10 +273,10 @@ func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAu
 			return ToolOutcome{}, ctx.Err()
 		}
 		if err != nil {
-			return failed(err), nil
+			return failed(err)
 		}
 		if denied {
-			return gate.finish(ctx, authority, call, ToolOutcome{Output: message, Denied: true}), nil
+			return finish(ToolOutcome{Output: message, Denied: true})
 		}
 	}
 	definition, exists := gate.catalog.Lookup(call.Name())
@@ -280,10 +295,10 @@ func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAu
 		return ToolOutcome{}, err
 	}
 	if err != nil {
-		return failed(err), nil
+		return failed(err)
 	}
 	if permission.denied {
-		return gate.finish(ctx, authority, call, ToolOutcome{Output: permission.message, Denied: true, events: permission.Events()}), nil
+		return finish(ToolOutcome{Output: permission.message, Denied: true, events: permission.Events()})
 	}
 	outcome := ToolOutcome{events: permission.Events()}
 	if gate.journal != nil {
@@ -295,7 +310,7 @@ func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAu
 			return ToolOutcome{}, ctx.Err()
 		}
 		if err != nil {
-			return failed(err), nil
+			return failed(err)
 		}
 		switch {
 		case prior.Status.Terminal():
@@ -317,7 +332,7 @@ func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAu
 				outcome.Output, outcome.Replayed = ReconciledActionResult, true
 				if reconciler, ok := gate.journal.(ActionReconciler); ok {
 					if _, err := reconciler.Reconcile(ctx, ActionSettlement{id, ActionCompleted, &outcome.Output}); err != nil {
-						return failed(err), nil
+						return failed(err)
 					}
 				}
 			case EffectNotApplied:
@@ -374,6 +389,16 @@ func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAu
 		outcome.Output = output
 	}
 	outcome.Output = maskedText(gate.secrets, outcome.Output)
+	authoritative := outcome.Output
+	if projector != nil {
+		projected, err := projector.projectToolOutcome(ctx, authority, call, outcome)
+		if err != nil {
+			// Source post-mask cancellation leaves authority started for reconciliation.
+			journalStarted = false
+			return ToolOutcome{}, err
+		}
+		outcome = projected
+	}
 	if journalStarted {
 		status := ActionCompleted
 		if outcome.Denied {
@@ -381,7 +406,7 @@ func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAu
 		} else if outcome.Failed {
 			status = ActionFailed
 		}
-		if _, err := gate.journal.Finish(ctx, ActionSettlement{id, status, &outcome.Output}); err != nil {
+		if _, err := gate.journal.Finish(ctx, ActionSettlement{id, status, &authoritative}); err != nil {
 			return ToolOutcome{}, err
 		}
 		journalStarted = false

@@ -79,6 +79,7 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
 	requestRejected     RequestOptimizationRejectedEvent
+	optimizationError   OptimizationStageErrorEvent
 	optimizationReceipt OptimizationMetrics
 	workflow            WorkflowEvent
 	teamInbox           TeamInboxEvent

@@ -3394,8 +3394,7 @@ instruction; it retains the tighter existing/config/context limit, adds the inst
 once and replaces response_policy metadata at the end. Its instruction/output bounds
 are validated when producing StableResponseSettings. Root clones share lifecycle,
 serialization and counter state; independently constructed stages remain separate.
-Caller-owned content masking, request/observation adoption and default composition
-remain separate. Explicit Agent response instruction/cap adoption is described below.
+Explicit Agent adoption is described below; default composition remains separate.
 
 Registry offers RegisterObservation/RegisterRequest/RegisterResponse with global IDs,
 stage validation and detached per-binding modes. Snapshot returns immutable typed
@@ -3425,8 +3424,8 @@ OptimizationReceipt returns cloned OptimizationMetrics with *big.Int counts and 
 digests, warning strings or content. Typed event JSON/masking and DecodeStoredEvent
 retain the metric-only variant; archival metrics grant no executable authority.
 The caller owns the runtime and shared initialization/close. Explicit request
-adoption is described below; observation adoption and Manager/launcher/default
-composition remain pending; nil keeps defaults.
+and observation adoption are described below; Manager/launcher/default
+composition remains pending; nil keeps defaults.
 
 
 ### Go Agent request projection and protected side calls
@@ -3443,3 +3442,17 @@ ledger ownership. Protected side calls skip request/cache seams and reassert mas
 selected messages plus message cache metadata for each recovery dispatch; personal
 skill previews use this path. Explicit response planning retains its purpose rule.
 The caller owns the shared runtime. Observation/default composition remains pending.
+
+### Go explicit Agent observation adoption
+
+RuntimeConfig.TokenEfficiency also binds post-mask tool observation projection.
+ObservationRawConfig optionally snapshots Persist and MinBytes; defaults true/4096
+apply only to the explicitly injected consumer. Recovery tool and runtime must bind
+the same nonnil store. foreign workspace bindings are detached; callers own store
+creation and close. readonly/absent recovery tools forbid writes. A private named
+projector runs before journal settlement and observers; journals keep full masked
+output while observers/model results receive the remasked candidate/recovery marker.
+Replay and recovery-tool calls bypass reduction. Inflation includes the marker and
+discards unused refs. Source post-mask cancellation leaves journal authority started.
+OptimizationStageError carries only a safe fault class and tool span; no plugin text.
+Manager/default composition and wider custom runtime profiles remain pending.

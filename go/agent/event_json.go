@@ -62,6 +62,8 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 		return marshalEvent(h, workflowSessionJSON{Event: e.workflow, Sequence: record.Sequence})
 	}
 	switch e.kind {
+	case EventOptimizationStageError:
+		return marshalEvent(h, e.optimizationError)
 	case EventRequestOptimizationRejected:
 		return marshalEvent(h, e.requestRejected)
 	case EventOptimizationReceipt:

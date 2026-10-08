@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/luoyjx/mini-loop/go/efficiency"
 	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 
 	"github.com/luoyjx/mini-loop/go/protocol"
@@ -108,6 +109,13 @@ func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent,
 		return event, err
 	}
 	switch kind {
+	case EventOptimizationStageError:
+		v, err := storedPayload[OptimizationStageErrorEvent](data)
+		if err == nil && (v.Stage != efficiency.Observation || v.Error == "" || v.ParentSpanID == "") {
+			err = errors.New("invalid stored optimization stage error")
+		}
+		event.optimizationError = v
+		return event, err
 	case EventRequestOptimizationRejected:
 		v, err := storedPayload[RequestOptimizationRejectedEvent](data)
 		if err == nil && v.Reason != "message_protocol_guard" {

@@ -23,6 +23,8 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	event.optimizationError.Error = mask(event.optimizationError.Error)
+	event.optimizationError.ParentSpanID = SpanID(mask(string(event.optimizationError.ParentSpanID)))
 	if event.kind == EventOptimizationReceipt {
 		event.optimizationReceipt.ComponentID = mask(event.optimizationReceipt.ComponentID)
 		event.optimizationReceipt.ComponentVersion = mask(event.optimizationReceipt.ComponentVersion)

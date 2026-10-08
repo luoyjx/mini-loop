@@ -1,5 +1,52 @@
 # Go port plan
 
+## 2026-10-09 explicit Agent observation projection adoption
+
+Baseline `0ce795c`. Session dispatch now binds a named private toolOutcomeProjector
+between full-output masking and journal settlement/result observers. The concrete
+consumer uses the existing shared efficiency.Runtime and closed observation/command
+metadata, sorted post-mask query and token-threshold budget. Replay and
+read_token_artifact bypass reduction. Denials and ordinary hook/handler errors still
+pass through the post-mask stage. The bare ToolGate seam remains unchanged.
+
+Action settlement retains full masked authority while observers, tool_result events,
+trajectory and model tool results receive the projection. Candidates and recovery
+markers are masked again. Recovery envelope inflation discards the unused ref and
+rewrites applied public metrics to full authority; successful metrics include the
+final envelope and final mask. Post-mask cancellation preserves Source's started
+journal record. Early handler cancellation keeps the existing cancellation settlement.
+
+ObservationRawConfig has named persist/minimum-byte settings, cloned unbounded
+thresholds and Source defaults true/4096. readonly and absent recovery tools forbid
+writes. Explicit runtime and recovery tool bindings must use the same nonnil store;
+foreign-workspace runtime stores are detached without changing the caller's runtime.
+Store/tool creation, session-owned cleanup, initialization, environment selection and
+Manager/launcher/benchmark/HTTP defaults remain E6.4 work. No default feature is
+activated or dependency added. A typed optimization_stage_error variant exposes
+only a safe native fault class and tool span, with event masking/archival decoding.
+Native runtime fault class wording is explicit and is not claimed as arbitrary
+Python exception-class parity.
+
+All 17 actual Source tool scenarios match reducer inputs, full public receipt
+metrics, masked raw artifacts, authority journals, observer/provider outputs and
+call ordering (only opaque ref and span/elapsed identity normalized). A real
+Session.Run test performs bash -> projected result -> read_token_artifact -> model
+reply and confirms only the first tool is reduced, recovered output stays complete
+and masked, and the journal contains no ephemeral recovery projection. Targeted
+race tests cover the differential corpus, live flow, detached/foreign store settings
+and typed stage-error archival decoding. Wider malformed/custom runtime profiles
+and full port parity remain open; E6.3 is delivered for the supported typed boundary.
+
+Validation: full Go ordinary and race suites passed with `-p=1 -count=1
+-timeout=180s`; `go vet ./...` passed. Targeted observation differential/live/binding
+race tests passed. The 74 targeted Python efficiency tests, all 19 scan guards and
+complete 177-file exporter check passed for the Source contract commit in this
+iteration. git diff --check passed. Architecture regeneration passed 9/9 checks,
+with zero errors/warnings and file hashes matching its receipt. Visual inspection
+remains skipped after prior browser access denial. Full Python regression and
+coverage were not refreshed; no merge or push was performed.
+
+
 ## 2026-10-09 Agent observation adoption Source contracts
 
 Baseline `ef26580`. A separate helper captures 17 actual Agent._exec_tool calls
@@ -747,7 +794,7 @@ including optional/custom components, is still required for the port.
   Source-safe event projections. Capture constructor/receipt behavior before wiring.
 - E1 (native store/recovery tool delivered; default activation/lifecycle pending): scoped masked raw-artifact memory store, opaque refs, trusted monotonic TTL,
   per-item/total capacity, integrity checks, discard/sweep/clear/close and tools.
-- E2 (observation orchestration library delivered; Agent masking/adoption pending): observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
+- E2 (observation library and typed Agent masking/adoption delivered; broader profiles pending): observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
   single ownership, no inflation, recoverable storage and fail-open fault receipts.
 - E3 (request library and typed Agent protocol/ledger adoption delivered; broader profiles pending): detached typed request projection, frozen-prefix/identity/envelope guards,
   optimizer admission, budgets and cache-order/transcript preservation.
@@ -755,7 +802,7 @@ including optional/custom components, is still required for the port.
   existing output-cap/context-budget preservation, shadow and fault behavior.
 - E5 (three-stage registry/lifecycle delivered; session/Manager adoption pending): shared component identities, serial admission, initialize/health/close once,
   draining/deadlines/retry, per-session clone/store binding and contained failures.
-- E6 (E6.1 response and E6.2 request adoption delivered; E6.3 observations and E6.4 defaults/lifecycle pending): agent/manager/launcher/benchmark/HTTP composition, events/recording, independent
+- E6 (E6.1 response, E6.2 request and E6.3 observations delivered; E6.4 defaults/lifecycle pending): agent/manager/launcher/benchmark/HTTP composition, events/recording, independent
   environment selection and actual Source end-to-end feature-combination tests.
 
 Each slice retains the overall port objective and gets a separate validated commit.

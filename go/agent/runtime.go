@@ -62,9 +62,10 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	// Explicit request/response runtime; observation adoption is separate.
+	// Explicit three-stage runtime; caller owns its component/store lifetime.
 	TokenEfficiency *efficiency.Runtime
 	ConciseResponse bool
+	ObservationRaw  *ObservationRawConfig
 	// Explicit per-action readonly reviews require a session-bound approval broker.
 	GuardianEnabled bool
 	// A nonnil immutable operator config explicitly installs four AST read tools.
@@ -329,6 +330,13 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 // questions plus deferred compaction to the implemented workspace tools.
 // Task delegates to a fresh child through the explicit subagent seam.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
+	observationRaw, err := normalizedObservationRaw(config.ObservationRaw)
+	if err != nil {
+		return nil, err
+	}
+	if config.TokenEfficiency != nil && config.TokenArtifactTools && config.TokenEfficiency.RawStore() != nil && config.TokenEfficiency.RawStore() != config.TokenArtifactStore {
+		return nil, errors.New("observation and recovery tool require the same raw store")
+	}
 	astAdapter, astErr := configuredAST(config.ASTConfig)
 	if astErr != nil {
 		return nil, astErr
@@ -699,6 +707,12 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		session.toolLimiter = config.ToolLimiter
 	}
 	session.tokenEfficiency, session.conciseResponse = config.TokenEfficiency, config.ConciseResponse
+	session.observationRaw = observationRaw
+	if session.tokenEfficiency != nil {
+		if store := session.tokenEfficiency.RawStore(); store != nil && store.Workspace() != session.executionRoot() {
+			session.tokenEfficiency = session.tokenEfficiency.WithRawStore(nil)
+		}
+	}
 	session.bash = config.Bash
 	session.todos, session.events = handler.todos, handler.events
 	session.secrets, session.events.secrets = config.Secrets, config.Secrets

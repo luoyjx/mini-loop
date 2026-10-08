@@ -2583,7 +2583,7 @@ preserves repeated instances/IDs separately from registry admission; shared poin
 instances serialize across stages and initialize/health/close once per root. WithRawStore
 clones retain global admission and explicit caller-owned store binding. Ten actual
 Source registry recipes and native queued-cancellation/drain tests cover composition.
-Agent/Manager and mode/style defaults remain pending.
+Explicit Agent adoption is described below; Manager and mode/style defaults remain pending.
 
 
 Explicit agent.RuntimeConfig.TokenEfficiency now adopts response policies before
@@ -2593,7 +2593,7 @@ purposes skip planning. Typed optimization_receipt events retain metrics and war
 counts while excluding digests/warning strings/content. Record snapshots, masking and
 archival decoding support this variant. Fourteen Source Agent recipes and native live
 Run/default-cache tests cover response adoption. The caller retains runtime lifecycle
-ownership. Explicit request adoption is described below; observation adoption, manager
+ownership. Explicit request and observation adoption are described below; manager
 and environment defaults remain open.
 
 
@@ -2606,3 +2606,15 @@ ownership. Protected personal-skill previews bypass request/cache projections an
 reassert selected masked messages/cache metadata across recovery calls. Sixteen actual
 Agent recipes, fifteen shape recipes and native live Run/large-row tests cover this
 slice. Observation, Manager/default composition and broader provider profiles remain.
+
+### Explicit Agent observation adoption
+
+TokenEfficiency now reduces masked tool outputs through the shared runtime, before
+journal settlement and observers. Journals retain complete masked authority; model
+results/events/trajectory/observers receive remasked projections and optional recovery
+markers. Replay and read_token_artifact bypass reduction. Marker inflation discards
+unused refs and rewrites public metrics to authority. ObservationRawConfig snapshots
+persist/minimum-byte settings (true/4096 defaults); readonly and absent recovery tools
+forbid raw writes. Explicit runtime and recovery tool share a store; foreign workspace
+bindings are detached. Component/store lifetimes and default service composition remain
+caller-owned/pending. No dependencies or default activation are added.

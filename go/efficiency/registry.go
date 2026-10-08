@@ -243,6 +243,9 @@ func (r *Runtime) WithRawStore(store *RawStore) *Runtime {
 	copy.observation = r.observation.WithRawStore(store)
 	return &copy
 }
+
+// RawStore returns the caller-owned masked artifact binding.
+func (r *Runtime) RawStore() *RawStore       { return r.observation.rawStore }
 func (r *Runtime) ObservationEnforced() bool { return r.observation.ObservationEnforced() }
 func (r *Runtime) ReduceObservation(ctx context.Context, input MaskedObservation, options ReductionOptions, persistMaskedRaw bool) (ObservationOutcome, error) {
 	return r.observation.ReduceObservation(ctx, input, options, persistMaskedRaw)
