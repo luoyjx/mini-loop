@@ -85,6 +85,11 @@ func storedGrant(tokens []string) GrantCandidate {
 
 func decodeStoredEventPayload(kind SessionEventKind, data []byte) (SessionEvent, error) {
 	event := SessionEvent{kind: kind}
+	if workflowKind(kind) {
+		v, err := decodeWorkflowEvent(data)
+		event.workflow = v
+		return event, err
+	}
 	switch kind {
 	case EventImprovementProposed:
 		v, err := storedPayload[selfimprove.ProposedEvent](data)

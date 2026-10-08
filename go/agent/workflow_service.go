@@ -111,6 +111,7 @@ func definitionInfo(definition workflows.Definition) (workflowDefinitionInfo, er
 // Saved run snapshots are inert. Parent resolution and worker factories are
 // operator seams; this constructor does not install a manager or model tool.
 type WorkflowService struct {
+	resolveEvents                workflowEventResolver
 	config                       WorkflowServiceConfig
 	admission                    *workflows.DefinitionAdmission
 	store                        *workflows.InMemoryStore

@@ -93,13 +93,15 @@ func (e WorkflowEvent) Clone() WorkflowEvent {
 func (e WorkflowEvent) Progress() (WorkflowProgress, bool) {
 	return e.Clone().payload.progress, e.Kind == WorkflowAgentProgress
 }
-func (e WorkflowEvent) MarshalJSON() ([]byte, error) {
+func (e WorkflowEvent) MarshalJSON() ([]byte, error) { return e.encode(true) }
+
+func (e WorkflowEvent) encode(includeType bool) ([]byte, error) {
 	if e.SessionID == "" || e.RunID == "" || e.Name == "" || e.Revision == "" || e.EventID == "" {
 		return nil, fmt.Errorf("workflow event requires session, run, definition and event identity")
 	}
 	switch e.Kind {
 	case WorkflowNodeClaimed, WorkflowAgentStarted, WorkflowAgentProgress, WorkflowAgentCompleted, WorkflowVerdictRecorded:
-		if e.NodeID == nil || *e.NodeID == "" || e.AttemptID == nil || *e.AttemptID == "" {
+		if e.NodeID == nil || *e.NodeID == "" || (e.Kind != WorkflowNodeClaimed && (e.AttemptID == nil || *e.AttemptID == "")) {
 			return nil, fmt.Errorf("workflow attempt event requires node and attempt identity")
 		}
 	}
@@ -117,8 +119,12 @@ func (e WorkflowEvent) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	kind := e.Kind
+	if !includeType {
+		kind = ""
+	}
 	return json.Marshal(struct {
-		Type          WorkflowEventKind    `json:"type"`
+		Type          WorkflowEventKind    `json:"type,omitempty"`
 		Kind          WorkflowEventKind    `json:"kind"`
 		EventID       string               `json:"event_id"`
 		OccurredAt    float64              `json:"occurred_at"`
@@ -133,7 +139,7 @@ func (e WorkflowEvent) MarshalJSON() ([]byte, error) {
 		AttemptID     *workflows.AttemptID `json:"attempt_id,omitempty"`
 		AgentID       *workflows.AgentID   `json:"agent_id,omitempty"`
 		ParentAgentID *workflows.AgentID   `json:"parent_agent_id,omitempty"`
-	}{e.Kind, e.Kind, e.EventID, e.OccurredAt, e.SessionID, e.RunID, e.RunID, e.Name, e.Revision, 1, value, e.NodeID, e.AttemptID, e.AgentID, e.ParentAgentID})
+	}{kind, e.Kind, e.EventID, e.OccurredAt, e.SessionID, e.RunID, e.RunID, e.Name, e.Revision, 1, value, e.NodeID, e.AttemptID, e.AgentID, e.ParentAgentID})
 }
 func (e WorkflowEvent) payloadJSON() ([]byte, error) {
 	p := e.payload

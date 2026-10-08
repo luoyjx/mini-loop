@@ -2603,3 +2603,22 @@ may cancel their wait while background shutdown still owns drainage. No durable
 worker restart, cross-process fencing or exactly-once effects are implied. Session
 workflow event/SSE/archive projection, summaries, notifications and HTTP remain
 separate pending integrations.
+
+
+### Go workflow session observation
+
+The default manager constructs an internal event resolver distinct from launch
+admission. It may observe terminal publication during Stop, but never resurrects a
+deleted session or grants launch authority. Injected services keep their operator
+resolver/sink policy. The managed sink validates service/session identity and emits a
+closed SessionEvent through the existing masked persistence/trajectory/subscription
+path. Workflow() returns a detached known variant; stored-event decoding carries
+only historical untrusted provenance. The sequence field aliases the live event seq.
+
+SessionInfo.Workflows is a concrete ordered RunSummary slice, empty when disabled
+or freshly forked; the existing HTTP session wrapper preserves it and health reflects
+activation. Unsupported reserved event kinds remain refused. Current emitted payloads
+have concrete fields; additional arbitrary archival payload members are not retained
+by this projection and full open-payload archival parity remains pending. Automatic result injection and dedicated
+workflow routes remain pending. Stores and callbacks retain their existing cooperative
+and ownership requirements; an injected store is not proof of native SQLite support.

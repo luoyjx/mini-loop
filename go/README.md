@@ -2367,5 +2367,26 @@ cleanup errors; shutdown retries safe pins. A cancelled Stop caller does not aba
 background drainage. Snapshot 128 compares 12 actual Python manager profiles plus
 native tests of real workers, captured caps, deleted replay, partial-admission races,
 terminal publication, failure retention and caller cancellation. Defaults remain off.
-Live parent notifications, session events/summaries, HTTP and launcher selection are
-still pending; process-local workflow graphs do not provide durable recovery.
+Later-turn result injection, dedicated workflow routes and launcher selection remain
+pending. Session observation and summaries are described below; process-local workflow
+graphs do not provide durable recovery.
+
+
+## Workflow session observation
+
+The owned manager now captures the twelve emitted workflow variants in the existing
+closed SessionEvent union. Workflow() returns detached data; archival decoding validates
+version/identity aliases without acquiring trusted authority. The normal event path
+masks workflow metadata and payload strings before injected state storage, active
+trajectory capture, bounded backlog/subscribers and contained operator sinks. Workflow
+JSON retains its event identity and adds sequence equal to the session seq.
+
+Stop revokes launch admission while preserving terminal observations for surviving
+parents. Deleted parents remain absent; injected services keep their resolver policy.
+SessionInfo.Workflows exposes typed session-filtered summaries, with empty disabled
+and fresh-fork results. Existing owner-scoped HTTP info and SSE resume projections
+preserve these records; health reflects activation. Snapshot 129 compares actual Python
+session/SQLite capture for twelve variants, completed/fork/disabled summaries and
+shutdown publication. Native tests exercise real fresh workers and HTTP/SSE ownership.
+Six reserved Source event kinds, later-turn injection, dedicated workflow HTTP routes,
+launcher selection and native SQLite remain pending. Defaults remain off.

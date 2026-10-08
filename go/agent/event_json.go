@@ -58,6 +58,9 @@ func (record SessionEventRecord) MarshalJSON() ([]byte, error) {
 		h.MessageID = record.Scope.RunContext.MessageID()
 		h.ParentMessageID = record.Scope.RunContext.Snapshot().ParentMessageID
 	}
+	if e.workflow.Kind != "" {
+		return marshalEvent(h, workflowSessionJSON{Event: e.workflow, Sequence: record.Sequence})
+	}
 	switch e.kind {
 	case EventTeamInbox:
 		return marshalEvent(h, e.teamInbox)

@@ -10,6 +10,7 @@ import (
 
 	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/userresources"
+	"github.com/luoyjx/mini-loop/go/workflows"
 )
 
 type SessionStatus string
@@ -53,26 +54,27 @@ func (event SessionEvent) Cancelled() (CancelledEvent, bool) {
 }
 
 type SessionInfo struct {
-	ActiveTrajectoryID       *TrajectoryID       `json:"active_trajectory_id"`
-	TrajectoryCount          int                 `json:"trajectory_count"`
-	TrajectoryRecordingError *string             `json:"trajectory_recording_error"`
-	ID                       SessionID           `json:"id"`
-	Status                   SessionStatus       `json:"status"`
-	Activity                 SessionActivity     `json:"activity"`
-	Busy                     bool                `json:"busy"`
-	CancelReason             *string             `json:"cancel_reason"`
-	CreatedAt                float64             `json:"created_at"`
-	RunCount                 int                 `json:"run_count"`
-	PermissionMode           PermissionMode      `json:"permission_mode"`
-	PendingSteering          int                 `json:"pending_steering"`
-	ForkedFrom               *ForkLineage        `json:"forked_from"`
-	Workspace                string              `json:"workspace"`
-	WorkspaceBound           bool                `json:"workspace_bound"`
-	Model                    string              `json:"model"`
-	MessageCount             int                 `json:"message_count"`
-	Todos                    []protocol.TodoItem `json:"todos"`
-	Subscribers              int                 `json:"subscribers"`
-	SinkError                *string             `json:"sink_error"`
+	Workflows                []workflows.RunSummary `json:"workflows"`
+	ActiveTrajectoryID       *TrajectoryID          `json:"active_trajectory_id"`
+	TrajectoryCount          int                    `json:"trajectory_count"`
+	TrajectoryRecordingError *string                `json:"trajectory_recording_error"`
+	ID                       SessionID              `json:"id"`
+	Status                   SessionStatus          `json:"status"`
+	Activity                 SessionActivity        `json:"activity"`
+	Busy                     bool                   `json:"busy"`
+	CancelReason             *string                `json:"cancel_reason"`
+	CreatedAt                float64                `json:"created_at"`
+	RunCount                 int                    `json:"run_count"`
+	PermissionMode           PermissionMode         `json:"permission_mode"`
+	PendingSteering          int                    `json:"pending_steering"`
+	ForkedFrom               *ForkLineage           `json:"forked_from"`
+	Workspace                string                 `json:"workspace"`
+	WorkspaceBound           bool                   `json:"workspace_bound"`
+	Model                    string                 `json:"model"`
+	MessageCount             int                    `json:"message_count"`
+	Todos                    []protocol.TodoItem    `json:"todos"`
+	Subscribers              int                    `json:"subscribers"`
+	SinkError                *string                `json:"sink_error"`
 }
 type liveRuntime struct {
 	MessageCount int
@@ -115,6 +117,7 @@ type activeTurn struct {
 // Its underlying core is private: children use Session directly and do not
 // fabricate outer session status/done events.
 type ManagedSession struct {
+	workflows      *WorkflowService
 	teamRun        *teammateRun
 	skillOperation *personalSkillOperation
 	skillCapture   userresources.CaptureLedger
@@ -154,7 +157,7 @@ func newManagedSession(config RuntimeConfig, deferState bool) (*ManagedSession, 
 	}
 	core.control = &sessionControl{mode: core.mode}
 	core.gate.modeSource = core.control
-	session := &ManagedSession{core: core, admission: make(chan struct{}, 1), accepting: true, status: StatusIdle, createdAt: float64(time.Now().UnixMicro()) / 1e6, approvals: config.Approvals, workspaceBound: config.Workspace != ""}
+	session := &ManagedSession{workflows: config.WorkflowService, core: core, admission: make(chan struct{}, 1), accepting: true, status: StatusIdle, createdAt: float64(time.Now().UnixMicro()) / 1e6, approvals: config.Approvals, workspaceBound: config.Workspace != ""}
 	session.admission <- struct{}{}
 	core.runtime.workflowParent = session
 	run := &trajectoryRun{store: config.Trajectories, masker: config.Secrets}
@@ -423,7 +426,13 @@ func (session *ManagedSession) Info() SessionInfo {
 	}
 	mode, queued := session.core.control.snapshot()
 	trajectoryID, trajectoryCount, trajectoryError := session.core.events.trajectory.snapshot()
-	return SessionInfo{trajectoryID, trajectoryCount, trajectoryError, session.ID(), status, activity, busy, reason, createdAt, count, mode, queued, clonePointer(session.core.forkedFrom), session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
+	summaries := []workflows.RunSummary{}
+	if session.workflows != nil {
+		if values, err := session.workflows.Views().Summaries(workflows.SessionID(session.ID())); err == nil {
+			summaries = values
+		}
+	}
+	return SessionInfo{summaries, trajectoryID, trajectoryCount, trajectoryError, session.ID(), status, activity, busy, reason, createdAt, count, mode, queued, clonePointer(session.core.forkedFrom), session.core.workspace, session.workspaceBound, session.core.model, messageCount, todos, session.core.SubscriberCount(), sink}
 }
 func hasStuckSignal(detector StuckDetector, state StuckState) (stuck bool) {
 	defer func() {

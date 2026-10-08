@@ -78,6 +78,7 @@ func (event StuckEvent) NudgesUsed() int     { return event.nudgesUsed }
 // SessionEvent is a closed union. Accessors return detached values only
 // for their corresponding variant; there is no untyped event payload.
 type SessionEvent struct {
+	workflow            WorkflowEvent
 	teamInbox           TeamInboxEvent
 	improvementProposed selfimprove.ProposedEvent
 	verifiedRound       verifiedloop.RoundEvent
@@ -171,6 +172,7 @@ func (event SessionEvent) Todos() ([]protocol.TodoItem, bool) {
 	return append([]protocol.TodoItem{}, event.todos...), true
 }
 func (event SessionEvent) clone() SessionEvent {
+	event.workflow = event.workflow.Clone()
 	event.improvementProposed = cloneProposed(event.improvementProposed)
 	event.verifiedReceipt.ExitCode = clonePointer(event.verifiedReceipt.ExitCode)
 	event.memory.Consolidated = clonePointer(event.memory.Consolidated)

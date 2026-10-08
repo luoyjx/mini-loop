@@ -212,7 +212,14 @@ func (sink workflowProgressSink) OnEvent(ctx context.Context, record SessionEven
 }
 func (s *WorkflowService) emit(ctx context.Context, run workflows.WorkflowRun, kind WorkflowEventKind, attempt *workflows.NodeAttempt, payload workflowEventPayload) {
 	parent, exists := s.config.ResolveParent(SessionID(run.SessionID))
-	if !exists || parent.Events == nil {
+	sink := parent.Events
+	if !exists {
+		sink = nil
+	}
+	if s.resolveEvents != nil {
+		sink = s.resolveEvents(SessionID(run.SessionID))
+	}
+	if sink == nil {
 		return
 	}
 	definition, err := s.store.GetDefinition(run.DefinitionRevision)
@@ -239,7 +246,7 @@ func (s *WorkflowService) emit(ctx context.Context, run workflows.WorkflowRun, k
 			event.ParentAgentID = attempt.ParentAgentID
 		}
 	}
-	if err := parent.Events.EmitWorkflowEvent(ctx, event.Clone()); err != nil {
+	if err := sink.EmitWorkflowEvent(ctx, event.Clone()); err != nil {
 		s.observe(run.RunID, kind, err)
 	}
 }

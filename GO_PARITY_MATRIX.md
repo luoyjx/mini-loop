@@ -1,5 +1,69 @@
 # Python to Go parity matrix
 
+## 2026-10-08 typed workflow session events and summaries
+
+Baseline 99b87f3. W6C now routes the twelve event kinds actually emitted by
+WorkflowService through the owned parent's common session event bus. A closed
+WorkflowEvent variant is retained in SessionEvent with detached pointers and a
+concrete payload decoder; no generic domain map or RawMessage was added. Session
+JSON adds the source sequence alias without duplicate type members. Known archival
+rows require consistent kind/run aliases, version 1 and required event identities;
+archival provenance remains untrusted and cannot recreate human capabilities.
+Node-claimed rows require node identity but may omit an attempt, matching Source.
+
+Masking covers workflow names, identities and every emitted string payload before
+state, trajectory, backlog, subscribers and operator sinks. The usual non-ephemeral
+capture/publication path applies, including bounded queues, durable-first ordering
+for injected stores, active trajectory capture and contained sink faults. The native
+SQLite implementation is still pending; the differential evidence uses actual Python
+SQLite rows versus the existing injected Go state-store contract.
+
+Launch admission and terminal observation have separate owned manager lookups:
+stopping rejects launches while service shutdown can still publish terminal events
+to surviving sessions. Deleted parents remain absent. Injected services preserve
+operator-owned event resolution. Session info exposes ordered typed RunSummary
+slices, empty when disabled or freshly forked. Existing owner-scoped HTTP session
+projections retain those summaries, health reports actual activation, and SSE resumes
+workflow records through the existing cursor/envelope path. Dedicated workflow HTTP
+routes and launcher selection are still separate work.
+
+Snapshot 129 compares twelve actual Python WorkflowEvent/session captures across
+live subscription, backlog, sink and SQLite storage, including recursive secret
+masking and metadata aliases. Additional actual fresh Python worker execution proves
+completed/fork/disabled summary projections. A blocked Source worker checks shutdown
+terminal publication. Older manager/fork fixtures now retain Source's existing empty
+workflows field instead of excluding it. Native race tests compare the four surfaces,
+archive round trips and untrusted provenance, detached accessors, real fresh manager
+worker telemetry and summaries, stopping/deleted resolution, owner-scoped HTTP and
+actual resumable SSE. Unsupported/inconsistent archive identity/version is refused.
+
+Final gates passed: focused agent/HTTP race profiles; full go test ./... and
+full go test -race ./... (both -count=1 -timeout=180s); go vet ./...; all 129
+source exports current; all 19 scan guards anchored; full Python regression:
+2,155 passed, 28 skipped, 24 subtests, three dependency warnings in 74.76s.
+The first Go run exposed omitted empty workflows fields in two old Source fixture
+projections; those fields were restored from actual info() before rerunning all gates.
+One concurrent export check flagged the unrelated child-background snapshot;
+the sequential rerun passed without changing that fixture. Package invariant/guard
+sweeps were not rerun because no Python runtime package or guarded source changed.
+git diff --check and README outline passed. Architecture specification SHA256:
+3d3d6065dca12fded4726b391d2f32448c700dd5ecadbfebd449d5dd3cb9f929;
+HTML SHA256 4614865699e91fc693797d14d0416fdc87069fbb92dbc4ab62b09d22ff4550fd. No Python runtime module or
+load-bearing guard changed; no dependencies were added. README canonical Mermaid
+and its boundary explanation were updated; the JSON specification regenerates the
+HTML with all nine Archify showcase checks passing and zero errors/warnings. Visual
+inspection remains skipped after prior access denial. Coverage was not refreshed;
+90.23% (20,568/22,796) belongs to 99b87f3, not this implementation.
+
+Next W6C slice installs later-turn result injection with append-before-ack ownership.
+The six reserved Source event kinds (approval-required/rejected/phase-started/
+checkpointed/paused/resumed) are not emitted by the current Source service and remain
+outside this decoder. They still need a defined native archival projection before
+full event-model parity. MCP, native session SQLite, remaining profiles and full G7
+remain open. The full Python-to-Go port is unfinished; workflow activation stays off
+by default and workflow state remains process-local.
+
+
 ## 2026-10-08 manager-owned workflow composition
 
 Baseline 09bde07. W6B adds optional ManagerServices workflow construction and owned

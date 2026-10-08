@@ -23,6 +23,7 @@ func maskedEvent(masker TextMasker, event SessionEvent) SessionEvent {
 		return event
 	}
 	mask := masker.MaskText
+	event.workflow = maskWorkflowEvent(event.workflow, mask)
 	event.improvementProposed.Objective = mask(event.improvementProposed.Objective)
 	event.improvementProposed.Branch = mask(event.improvementProposed.Branch)
 	event.improvementProposed.DiffStat = mask(event.improvementProposed.DiffStat)

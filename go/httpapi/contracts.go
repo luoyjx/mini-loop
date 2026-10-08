@@ -38,10 +38,9 @@ type ApprovalRequest struct {
 	Remember bool             `json:"remember"`
 }
 
-// Workflow projection remains disabled; trajectory state comes from the manager.
+// Session projections, including typed workflow summaries, come from the manager.
 type SessionInfo struct {
 	agent.SessionInfo
-	Workflows [0]struct{} `json:"workflows"`
 }
 
 func info(v agent.SessionInfo) SessionInfo { return SessionInfo{SessionInfo: v} }

@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `e0fd85d` plus optional owned manager workflows,
+Runtime review baseline: `18347a0` plus typed workflow session events and summaries,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -409,8 +409,9 @@ flowchart LR
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · operator create-only publication"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
-        GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join"]
+        GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join<br/>typed session events · scoped summaries"]
         GoGate -. explicit-human workflow tools .-> GoWorkflow
+        GoWorkflow -. session events / summaries .-> GoSession
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
         GoChildren["Fresh subagent sessions<br/>capability-selected tools · peer RunContext<br/>inherited seams / pools · fresh counters"]
         GoLaunch --> GoEntry --> GoTrust --> GoManager
@@ -1513,9 +1514,13 @@ teammates omit all three tools. Delete revokes lookup/admission and joins workfl
 through terminal publication before scratch reclamation; failed cleanup pins shared
 workspace paths for shutdown retry. Stop owns service closure even if its caller
 cancels. Managed launch and cancellation snapshot share an admission barrier, so
-a pending launch cannot escape deletion cleanup. Defaults remain off. Live parent
-notifications, typed session event/SSE/archive integration, summaries, HTTP and
-launcher activation remain pending.
+a pending launch cannot escape deletion cleanup. Defaults remain off. Snapshot 129 now compares the 12 emitted workflow event variants through actual
+Python session capture, masking, subscriber/sink/backlog and SQLite rows. Manager
+parents route events through the common Go event bus, injected state store and active
+trajectory; archival decoding keeps provenance untrusted. Session info and existing
+owner-scoped HTTP projections expose typed workflow summaries. Workflow SSE uses
+normal resume cursors plus the source sequence alias. Live result injection, dedicated
+workflow HTTP routes and launcher activation remain pending.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable

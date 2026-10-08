@@ -57,6 +57,7 @@ func (manager *SessionManager) initializeWorkflows() error {
 		ResolveParent: manager.workflowParent, AttemptPool: services.WorkflowAttemptPool, Worker: worker,
 	})
 	if err == nil {
+		manager.workflows.resolveEvents = manager.workflowEventSink
 		manager.config.Services.WorkflowAttemptPool = manager.workflows.config.AttemptPool
 	}
 	return err
@@ -72,7 +73,7 @@ func (manager *SessionManager) workflowParent(id SessionID) (WorkflowParent, boo
 	if manager.state != ManagerActive || session == nil {
 		return WorkflowParent{}, false
 	}
-	return WorkflowParent{Owner: session.Owner(), Workspace: session.core.workspace}, true
+	return WorkflowParent{Owner: session.Owner(), Workspace: session.core.workspace, Events: managedWorkflowEvents{session}}, true
 }
 
 // The background deletion owns this wait even when the initiating caller leaves.
@@ -142,4 +143,15 @@ func (manager *SessionManager) retryWorkflowRetentions() {
 			manager.reclaimUnusedWorkspace(id, path)
 		}
 	}
+}
+
+// Revoking launch admission does not revoke terminal observability while Stop
+// drains the owned service. Deleted handles remain absent from the live map.
+func (manager *SessionManager) workflowEventSink(id SessionID) WorkflowEventSink {
+	manager.mu.Lock()
+	defer manager.mu.Unlock()
+	if manager.state == ManagerStopped || manager.sessions[id] == nil {
+		return nil
+	}
+	return managedWorkflowEvents{manager.sessions[id]}
 }
