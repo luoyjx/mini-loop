@@ -1,5 +1,37 @@
 # Go port plan
 
+## 2026-10-08 request-reconstruction Source contracts
+
+Baseline 654b1a8. Snapshot 149 calls Source reconstruct_request against actual
+SQLiteStateStore for 32 seeded recipes and a real managed-model request before/
+after a live transcript rewrite. NullStateStore missing-start behavior is included.
+Seeds retain ordered event inputs, epoch rows, complete output or Source exception
+class. The runtime recipe removes only nondeterministic event IDs/timestamps,
+retaining all reconstruction inputs and physical load order; its old request stays
+identical after a later epoch appears.
+
+Observations pin first matching model_start selection, early legacy/null epoch
+return before count conversion, latest preceding matched catalogue/system/capability
+projections, missing references matching null fields, physical-order early stop,
+old/missing epoch reads and nullable/scalar archival output. Count conversion uses
+Python truth/int rules: empty list/false/null become zero; true/float/Unicode decimal
+text convert, large integers cap by slice length, negative counts slice from the
+end, and invalid/nonempty containers report ValueError/TypeError. Absent sequence
+and explicit null remain distinct; malformed predecessor sequence comparisons can
+raise TypeError. Fingerprint equality is structural and treats integer/float values
+as Python does. These behaviors constrain the closed native result/event design.
+
+The 13 focused diagnostics/query/reconstruction tests and all 19 scanning guards
+pass. No Source runtime modules or Go implementation changed. Native reconstruction
+is still the next slice; no new live permission, storage durability or full migration
+completion is claimed. Full feature activation, native SQLite driver approval,
+remaining scalar/archival/transport profiles and full G7 remain open.
+
+Export --check passes all 149 files, including a second independent execution of
+the actual runtime recipe. Existing exporter model-deprecation warnings remain.
+git diff --check passes. Full Go/Python regression, mutation sweep and coverage
+were not rerun for this Source preparation slice.
+
 ## 2026-10-08 transcript-search launcher and actual runtime replay
 
 Baseline 8c2cf7e (Source snapshot 148). launcher.Options.SessionQueryTools and
