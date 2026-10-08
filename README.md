@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `cf12cef` plus workflow attempt CAS/settlement and artifact binding;
+reviewed **2026-10-08** (Go baseline `d696498` plus workflow cancellation/finalization and completion outbox creation;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1437,7 +1437,13 @@ provenance binding update the attempt/node/run projections in source order. Stor
 accepts independent terminal-state combinations and does not validate artifact schemas
 or establish verification truth. The source late invalid-verification failure, including
 its partial artifact/attempt effects, is preserved and recorded; typed callers should
-supply known verification variants. Cancellation, final completion, outbox, retention pruning,
+supply known verification variants. Snapshot 118 compares 131 cancellation, finish,
+failure and finalization profiles with repeated outcomes and full state projections.
+Unstarted attempts settle in claim insertion order. Cancellation retains source
+reason/refusal effects and the two-version RUNNING-to-CANCELLED path without active
+nodes. FinalizeRun requires successful nodes and an existing artifact, then creates
+one typed completion outbox record; artifact ownership remains an upper-layer check.
+Outbox reads are detached and ordered. Delivery claims/ack/release, retention pruning,
 execution and trusted live workflow launch adaptation remain pending. This library is
 not installed in manager/model/HTTP paths; the canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and

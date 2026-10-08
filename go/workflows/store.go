@@ -42,6 +42,10 @@ type launchKey struct {
 	session SessionID
 	key     IdempotencyKey
 }
+type outboxKey struct {
+	run  RunID
+	kind OutboxKind
+}
 type launchEntry struct {
 	hash Digest
 	run  RunID
@@ -61,7 +65,10 @@ type InMemoryStore struct {
 	runs             map[RunID]WorkflowRun
 	nodes            map[nodeKey]NodeState
 	attempts         map[AttemptID]NodeAttempt
+	attemptOrder     []AttemptID
 	artifacts        map[ArtifactID]Artifact
+	outbox           map[OutboxID]OutboxSnapshot
+	outboxKeys       map[outboxKey]OutboxID
 	launches         map[launchKey]launchEntry
 }
 
@@ -70,6 +77,7 @@ func NewInMemoryStore() *InMemoryStore {
 		definitions: map[Revision]storedDefinition{}, definitionHashes: map[Digest]Revision{},
 		runs: map[RunID]WorkflowRun{}, nodes: map[nodeKey]NodeState{},
 		attempts: map[AttemptID]NodeAttempt{}, artifacts: map[ArtifactID]Artifact{}, launches: map[launchKey]launchEntry{},
+		outbox: map[OutboxID]OutboxSnapshot{}, outboxKeys: map[outboxKey]OutboxID{},
 	}
 }
 func (s *InMemoryStore) RegisterDefinition(d Definition) (Definition, error) {
@@ -402,6 +410,7 @@ func (s *InMemoryStore) ClaimNodes(id RunID, claims []AttemptClaim, expected Rec
 		n.AttemptIDs = append(slices.Clone(n.AttemptIDs), attempt.AttemptID)
 		s.nodes[key] = n
 		s.attempts[attempt.AttemptID] = attempt
+		s.attemptOrder = append(s.attemptOrder, attempt.AttemptID)
 		out[i] = attempt.Clone()
 	}
 	r.AttemptsUsed += AttemptCount(len(out))

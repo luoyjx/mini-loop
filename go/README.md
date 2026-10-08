@@ -2144,5 +2144,22 @@ verification-truth check is added. The source invalid verification conversion oc
 late and leaves partial attempt/artifact state. Native reproduces that operator-input
 quirk; use validated VerificationStatus values. Nil selects the source default.
 Overflow checks precede publication; race tests elect one start/commit CAS winner.
-Cancellation, final completion/outbox generation, delivery, retention and live
-service/engine installation remain open. This store is still process-local.
+Cancellation and final completion/outbox generation are described below; delivery,
+retention and live service/engine installation remain open. This store is still process-local.
+
+### Workflow cancellation and completion
+
+CancelClaimedAttempts settles only CLAIMED tasks in insertion order; running tasks
+must commit before FinishCancellation. RequestCancel uses run CAS, preserves source
+sticky reasons and refuses invalid transitions after storing the reason. A RUNNING
+run with no active nodes takes two version increments through CANCELLING to CANCELLED.
+FailRun retains the source read-then-CAS boundary. FinalizeRun checks successful nodes
+and an existing artifact, then creates a named WorkflowCompleted outbox record.
+It does not validate final artifact provenance/schema or establish delivery.
+ListOutbox uses explicit optional run/session filters and an undelivered flag,
+returning detached records sorted by creation time and message ID.
+Snapshot 118 compares 131 actual source profiles and repeated full graph projections.
+Native tests cover cancellation with started/unstarted tasks, concurrent request and
+finalization CAS, single notification creation, counter overflow admission, delivery
+filters and timestamp isolation. Outbox leasing/ack/release, whole graph pruning,
+engine/service/trusted origins/tools/HTTP and manager installation remain open.

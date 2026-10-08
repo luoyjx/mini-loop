@@ -1,5 +1,23 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow cancellation and completion outbox creation
+
+Snapshot 118 runs actual cancel_claimed_attempts, request_cancel, finish_cancellation,
+fail_run and finalize_run: 131 initial-state/refusal profiles, repeated outcomes and
+full run/node/attempt/outbox projections. Initial status seeds are explicitly trusted
+fixtures, not restored live authority. Cancellation includes claim insertion order,
+mixed started/unstarted tasks, sticky reasons including empty text, version-first
+refusal and terminal no-ops. Later bad-node cancellation keeps earlier settled tasks
+while leaving the run projection unchanged, matching source. Finalization checks
+artifact existence before successful node states; foreign artifacts/schema-invalid
+artifacts are accepted by this store layer and caller validation remains necessary.
+Native overflow/entropy admission precedes publication. Race tests elect one request
+and one finalization CAS winner; the finalization creates one completion message.
+Outbox reads preserve source filters, creation-time/ID ordering and detached dates.
+Delivery leasing/ack/release, terminal-and-drained retention, live workflow service,
+engine, origin authority, tools/HTTP and manager activation remain open.
+
+
 ## 2026-10-08 workflow attempt startup/settlement and artifacts
 
 Snapshot 117 executes source start_attempt and commit_attempt: 14 startup

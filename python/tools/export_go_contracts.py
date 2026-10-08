@@ -6754,6 +6754,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-records.json": _json_bytes(_workflow_record_contracts()),
         "python-workflow-store-core.json": _json_bytes(_workflow_store_contracts()),
         "python-workflow-attempts.json": _json_bytes(_workflow_attempt_contracts()),
+        "python-workflow-completion.json": _json_bytes(_workflow_completion_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -9458,6 +9459,143 @@ def _workflow_attempt_contracts() -> dict:
         for raw,label in ids.items():repeat["detail"]=repeat["detail"].replace(raw,label)
         commits.append(dict(recipe=recipe,output_json=json.dumps(data),repeat=repeat,**outcome))
     return dict(starts=starts,commits=commits)
+
+
+def _workflow_completion_contracts() -> dict:
+    """Actual cancellation/finalization folds; initial states are explicit fixtures."""
+    import dataclasses
+    from mini_loop.run_context import RunContext
+    from mini_loop.workflows.models import (
+        Artifact, AttemptClaim, AttemptStatus, NodeStatus, RunStatus, WorkflowDefinition,
+    )
+    from mini_loop.workflows.store import InMemoryWorkflowStore
+
+    recipes = []
+    for status in RunStatus:
+        for active in (False, True):
+            for stale in (False, True):
+                recipes.append(dict(op="request", status=status.value, active=active, stale=stale))
+            recipes.append(dict(op="finish", status=status.value, active=active))
+        recipes.append(dict(op="fail", status=status.value))
+        recipes.append(dict(op="finalize", status=status.value, node_status="SUCCEEDED"))
+    for status in NodeStatus:
+        recipes.append(dict(op="finalize", status="RUNNING", node_status=status.value))
+    recipes.extend([
+        dict(op="finalize", status="RUNNING", node_status="SUCCEEDED", foreign=True),
+        dict(op="finalize", status="RUNNING", node_status="SUCCEEDED", no_artifact=True),
+        dict(op="finalize", status="RUNNING", node_status="SUCCEEDED", stale=True),
+        dict(op="request", status="RUNNING", reason="", prior_reason=""),
+        dict(op="request", status="RUNNING", active=True, reason="new", prior_reason="first"),
+        dict(op="request", status="CREATED", reason="first"),
+    ])
+    for status in AttemptStatus:
+        recipes.append(dict(op="cancel_claimed", status="CANCELLING", claims=True, attempt_status=status.value))
+    recipes.extend([
+        dict(op="cancel_claimed", status="CANCELLING", claims=True, bad_node="a"),
+        dict(op="cancel_claimed", status="CANCELLING", claims=True, reason=""),
+        dict(op="cancel_claimed", status="RUNNING"),
+    ])
+    for op in ("request", "finish", "fail", "finalize", "cancel_claimed"):
+        recipes.append(dict(op=op, status="RUNNING", missing=True))
+
+    rows = []
+    for recipe in recipes:
+        store = InMemoryWorkflowStore()
+        definition = WorkflowDefinition.from_dict(dict(
+            name="wf", revision="base", return_from="a",
+            nodes=[dict(id="a", kind="agent"), dict(id="b", kind="agent")],
+        ))
+        store.register_definition(definition)
+        run = store.create_run(
+            definition_revision="base", session_id="s", idempotency_key="k", args={},
+            run_context=RunContext(message_id="msg"),
+        )
+        ids = {run.run_id: "<run>"}
+        stored = store._runs[run.run_id]
+        if recipe.get("claims"):
+            stored.status = RunStatus.RUNNING
+            attempts = store.claim_nodes(run.run_id, [
+                AttemptClaim(node_id="b", agent_id="worker-b", spawn_index=9),
+                AttemptClaim(node_id="a", agent_id="worker-a", spawn_index=1),
+            ], expected_version=0)
+            for attempt in attempts:
+                ids[attempt.attempt_id] = "<attempt-" + attempt.node_id + ">"
+            store._attempts[attempts[1].attempt_id].status = AttemptStatus(recipe.get("attempt_status", "CLAIMED"))
+            if recipe.get("bad_node"):
+                store._nodes[(run.run_id, recipe["bad_node"])].status = NodeStatus.FAILED
+        stored.status = RunStatus(recipe["status"])
+        if "prior_reason" in recipe:
+            stored.cancel_reason = recipe["prior_reason"]
+        if recipe.get("active"):
+            store._nodes[(run.run_id, "a")].status = NodeStatus.RUNNING
+            stored.active_node_ids = ("a",)
+        if recipe["op"] == "finalize":
+            for node in store._nodes.values():
+                node.status = NodeStatus(recipe.get("node_status", "SUCCEEDED"))
+            artifact = Artifact.create(
+                run_id="foreign" if recipe.get("foreign") else run.run_id,
+                node_id="b", attempt_id="seed-attempt", value={"ok": True}, schema={},
+                schema_valid=False, verification_status="refuted",
+            )
+            ids[artifact.artifact_id] = "<artifact>"
+            if not recipe.get("no_artifact"):
+                store._artifacts[artifact.artifact_id] = artifact
+        target = "missing" if recipe.get("missing") else run.run_id
+
+        def clean(value):
+            if dataclasses.is_dataclass(value):
+                value = dataclasses.asdict(value)
+                for key in ("created_at", "started_at", "heartbeat_at", "ended_at"):
+                    if key in value and value[key] is not None:
+                        value[key] = 0
+            if isinstance(value, dict):
+                return {key: clean(child) for key, child in value.items()}
+            if isinstance(value, (list, tuple)):
+                return [clean(child) for child in value]
+            if isinstance(value, str):
+                return ids.get(value, value)
+            return value
+
+        def project():
+            messages = store.list_outbox(run_id=run.run_id)
+            for message in messages:
+                ids[message.message_id] = "<outbox>"
+            return clean(dict(
+                run=store.get_run(run.run_id), nodes=store.list_nodes(run.run_id),
+                attempts=store.list_attempts(run.run_id), outbox=messages,
+            ))
+
+        def invoke(repeated=False):
+            version = store.get_run(run.run_id).version + int(recipe.get("stale", False) and not repeated)
+            reason = "second" if repeated else recipe.get("reason")
+            try:
+                op = recipe["op"]
+                if op == "request":
+                    kwargs = {} if reason is None else dict(reason=reason)
+                    result = store.request_cancel(target, expected_version=version, **kwargs)
+                elif op == "finish":
+                    result = store.finish_cancellation(target)
+                elif op == "fail":
+                    result = store.fail_run(target, error="failure")
+                elif op == "finalize":
+                    result = store.finalize_run(target, expected_version=version, final_artifact_id=artifact.artifact_id)
+                else:
+                    kwargs = {} if reason is None else dict(error=reason)
+                    result = store.cancel_claimed_attempts(target, **kwargs)
+                cancelled = clean([item.attempt_id for item in result]) if isinstance(result, list) else []
+                return dict(error="", detail="", cancelled=cancelled)
+            except Exception as error:
+                detail = str(error)
+                for raw, label in ids.items():
+                    detail = detail.replace(raw, label)
+                return dict(error=type(error).__name__, detail=detail, cancelled=[])
+
+        outcome = invoke()
+        state = project()
+        repeated = invoke(repeated=True)
+        rows.append(dict(recipe=recipe, output_json=json.dumps(state), repeat=repeated,
+                         repeat_json=json.dumps(project()), **outcome))
+    return dict(rows=rows)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,67 @@
 # Go port plan
 
+## 2026-10-08 workflow cancellation and final completion
+
+Baseline d696498. W3B2 adds CancelClaimedAttempts, RequestCancel,
+FinishCancellation, FailRun, FinalizeRun and ListOutbox with named OutboxFilter.
+The process-local store owns typed outbox maps/key indexes and attempt insertion
+order. Claim order differs from spawn/read sorting and is preserved for cancellation.
+Only CLAIMED attempts settle before startup; running tasks settle through CommitAttempt.
+Source node-status refusal can retain earlier cancellations with stale run active IDs;
+that operator-state failure is preserved explicitly. Native bounded-counter admission
+precedes shared mutations. Nil cancellation detail/reason selects source defaults;
+empty text stays explicit. Sticky first nonempty reason is stored even when a
+transition fails. RUNNING without active nodes still goes through CANCELLING then
+CANCELLED, with two version increments; repeated terminal requests retain state.
+FinishCancellation gates live node states. FailRun keeps the source unlocked read
+followed by versioned TransitionRun, so a concurrent change may return a CAS conflict.
+
+FinalizeRun requires run CAS/RUNNING, existing artifact, then every node satisfying
+dependencies. Store checks neither final artifact ownership/return-node provenance
+nor schema_valid/verification truth. Completion, final artifact reference and one
+WorkflowCompleted notification publish under one mutex; immutable closed payloads
+carry named run/revision/artifact fields. Random ID allocation and int64 version
+overflow refuse before publication. This is process-local atomic publication, not
+durable delivery. ListOutbox sorts detached records by created_at/message_id with
+explicit run/session/undelivered filters. No message leasing or append is installed.
+
+Snapshot 118 executes five actual source methods over 131 profiles and repeated
+submissions, comparing full run/node/attempt/outbox fields, error classes/details
+and cancellation return order. State seeds are explicit fixtures. Native tests cover
+started/unstarted cancellation through public APIs, 16 cancellation CAS contenders,
+16 finalization CAS contenders with one outbox message, run double-increment/node/
+attempt overflow refusal, sorted filters and detached delivery timestamps.
+Initial corpus generation caught an omitted node_status in the missing-run profile;
+the seed default was corrected. Focused compilation caught test-only ArtifactInput field names and a Value
+comparison mismatch; corrected to existing typed constructors/canonical comparisons.
+Focused workflow race passed before full gates.
+
+Validation: `go test ./... -count=1 -timeout=180s`, `go vet ./...` and
+`go test -race ./... -count=1 -timeout=180s` all passed; focused workflow race
+passed too. All 118 source exports are current; export execution emitted dependency
+deprecations and an unknown-child return-code-255 warning but exited successfully.
+All 19 scan guards are anchored. Full Python regression passed: 2,155 tests,
+28 skips, 24 subtests and 3 dependency deprecation warnings in 122.35 seconds.
+`git diff --check` and README outline passed. Python package invariants/guard checks
+were not rerun because no package module or guarded Python runtime behavior changed.
+Archify regenerated the architecture HTML with all 9 checks passing, zero errors
+and zero warnings. Visual review remains skipped after the previous access denial;
+no visual approval is claimed. Specification SHA256:
+`cc6b44f50c6ba65b0a7469fd08b7286f50e91dc0497552adb0201b75d8379658`;
+HTML SHA256: `01415f0b6cf32349cfa359b6b0719ecb612282501f790b9613e643e0c09c905c`.
+README canonical
+runtime topology reviewed: no manager/model/HTTP installation changes. Boundary,
+architecture specification, extension, parity and package documents are updated.
+No dependencies or Python runtime/package modules changed. Overall coverage is not
+refreshed in this slice; the prior 90.47% measurement belongs to d696498.
+
+Next W3C adds explicit enqueue, delivery claims/ack/release and terminal-and-drained
+whole graph pruning, including attempt insertion order and outbox-key indexes.
+W4-W6 trusted live origin/engine/service/tools/HTTP/manager activation, MCP, native
+session SQLite, profiles and full G7 remain open. No durable workflow backend or
+restart-resume guarantee is inferred. Full Python-to-Go migration remains unfinished.
+
+
 ## 2026-10-08 workflow attempt CAS, settlement and artifact binding
 
 Baseline cf12cef. W3B1 adds StartAttempt, CommitAttemptInput/CommitAttempt,

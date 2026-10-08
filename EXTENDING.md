@@ -2403,4 +2403,15 @@ is not a transactional repair boundary for arbitrary invalid operator input.
 Artifact provenance must match run/node/attempt. Store does not recompute hashes,
 check artifact schemas/schema_valid or correlate the two terminal statuses.
 GetArtifact and ArtifactsForNode expose immutable models in recorded reference order.
-Cancellation/finalization/outbox/pruning and trusted live origin adaptation remain open.
+CancelClaimedAttempts settles unstarted attempts in insertion order, retaining
+earlier settlements on a later source node-status refusal. RequestCancel uses run
+CAS and a sticky first nonempty reason; invalid source transitions retain that reason.
+FinishCancellation refuses running nodes. FailRun uses source read-then-CAS ordering.
+FinalizeRun checks run CAS/RUNNING, artifact existence and successful node states,
+then publishes completion and one WorkflowCompleted OutboxSnapshot together.
+It does not bind final artifact ownership/return-node provenance; callers own that
+check. ListOutbox takes a named OutboxFilter and returns detached records ordered by
+creation time/ID. No claim, acknowledgment or external append occurs here.
+Native counter/ID allocation admission precedes publication; overflow does not
+publish partial cancellation/finalization. Delivery/pruning and trusted live origin
+adaptation remain open; retention must remove attempt insertion indexes with the graph.
