@@ -1,5 +1,49 @@
 # Python to Go parity matrix
 
+## 2026-10-08 owner-scoped workflow HTTP reads and cancellation
+
+Baseline d32c3e5. A focused slice adds GET session workflow list, GET run detail
+and POST run cancel. Typed responses delegate to the optional manager-owned
+service. Disabled lists expose enabled=false with an empty array; disabled detail
+and cancel return 404. Session ownership is checked before service access, and
+missing or foreign runs remain indistinguishable. Cancel does not mint launch
+capabilities: existing session ownership suffices to reduce capability.
+
+Required cancel-body validation precedes session lookup, after shared ingress
+authentication. Missing/null bodies, non-object bodies and non-string reasons retain
+Source validation categories; omitted reason defaults to requested by operator,
+and extra fields are ignored. Cancellation awaits owned worker settlement through
+the service before returning its typed terminal status.
+
+Native HTTP race tests cover disabled/enabled projections, owner and run-session
+isolation, validation/auth/lookup ordering, Unicode reasons, ignored extra fields,
+worker cancellation/join and repeated terminal cancellation. Python server routes
+were inspected directly; no new differential HTTP snapshot was added in this slice.
+The existing 130 Source snapshots remain the previous evidence corpus. These tests
+do not establish exhaustive malformed-body or archival parity.
+
+Validation passed: focused WorkflowHTTP race tests; full go test ./... and
+full go test -race ./... (-count=1 -timeout=180s); go vet ./...; all 130 Source
+exports current; all 19 scan guards anchored; full Python regression with
+2,155 passed, 28 skipped, 24 subtests and three dependency warnings in 76.21s.
+Fresh shared-package Go statement coverage is 90.23% (20,742/22,989), using
+-coverpkg=./... and merging identical source blocks by maximum hit count. This
+measures executed statements, not Python feature parity. README outline and
+git diff --check passed. Invariant/guard sweeps were not rerun because no Python
+runtime package or guarded Source behavior changed.
+
+README baseline, canonical Mermaid annotations, boundary explanation and generated
+interactive map are updated together. Archify showcase validation passed 9/9 with
+zero errors/warnings; visual review remains skipped after prior access denial.
+Specification SHA256: ef916c4915dff4ea57b2f8fa58c5bd91757556d9f8111e4e19ac3226ba6f264f.
+HTML SHA256: fae2485547e09e51c3d152ffe52fda9aa04f727bc2cf7214bd76381d42e3434e.
+No dependencies or Python runtime modules changed.
+
+HTTP launch, launcher activation, six reserved event projections, open-payload
+archive fidelity, MCP, native session SQLite, remaining profiles and full G7 remain
+pending. The complete Python-to-Go port remains open.
+
+
 ## 2026-10-08 owned later-turn workflow result injection
 
 Baseline 182c53b. W6C installs notification delivery for manager-bound workflow

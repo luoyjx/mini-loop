@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `182c53b` plus owned later-turn workflow result injection,
+Runtime review baseline: `d32c3e5` plus owner-scoped workflow HTTP reads/cancel,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -409,7 +409,7 @@ flowchart LR
         GoWorktrees["Explicit worktree service / tools<br/>Git create / keep / inspect / safe remove<br/>task binding · audit · exclusive enter"]
         GoDraftLibrary["Go userresources draft / preview libraries<br/>typed candidate / two-attempt model seam<br/>explicit standalone Session adapter<br/>owner + session + digest · operator create-only publication"]
         GoSkillCapture["Go admitted-turn evidence<br/>process-local · 64 messages / 40k characters<br/>mask before budget · sticky screening failure"]
-        GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join<br/>typed session events · scoped summaries"]
+        GoWorkflow["Optional manager-owned WorkflowService<br/>trusted launch / manage · shared worker pools<br/>process-local DAG / outbox · cancel / join<br/>typed session events · scoped summaries · owned HTTP reads / cancel"]
         GoGate -. explicit-human workflow tools .-> GoWorkflow
         GoWorkflow -. events / summaries / later-turn results .-> GoSession
         GoResources["Bound session resources<br/>TodoWrite · load_skill · ask_user · compress · task<br/>optional task / plan / goal / team / workflow tools · goal CAS snapshots<br/>snapshot · digest check · deferred summary"]
@@ -1593,6 +1593,12 @@ A verified loop must sample the fingerprint before each acceptance judgment;
 computing or restoring a digest alone does not establish verified completion.
 Personal-skill previews are process-local; a committed `SKILL.md` is durable,
 never replaces an existing skill, and appears only in future session snapshots.
+
+The Go HTTP workflow list, detail and cancel routes resolve the admitted session
+owner before accessing the optional manager-owned service. Cancellation reduces
+capability and requires ownership without minting human launch authority. Required
+cancel-body validation precedes session lookup; ingress authentication remains first.
+The dedicated HTTP launch route and launcher activation remain pending.
 
 Open the [interactive architecture](docs/mini-loop-system.architecture.html) for
 guided request, tool, and orchestration views. Its source is
