@@ -2473,3 +2473,20 @@ Normal exit without a structured result raises source RuntimeError. Parent cance
 must be joined by the engine/service before resource reclamation. LastWorker is a
 synchronized detached diagnostic and does not grant authority. No owned workflow
 service, launch/manage tools, HTTP or manager installation is supplied yet.
+
+workflows.NewServiceViews owns the status/summary and notification projection layer.
+Status reads run/node/artifact state under one store lock and detaches optional fields.
+Session filtering hides foreign run IDs as NotFound but is not owner authentication.
+RecordLaunchTurn is first-wins; PruneTerminalRuns removes matching bookkeeping.
+PrepareNotifications takes named SessionID/ParentTurn, selects strictly later-turn
+runs and caps each lease at MaxWorkflowNotifications (50). NotificationBatch keeps
+its recipient/turn/token/message identities private; public notifications/IDs detach.
+ContextMessage emits the source untrusted artifact-data wrapper. Results over 8,000
+UTF-8 bytes become null with a 2,000-code-point preview; status retains full retrieval.
+Nonempty run error/reason strings override closed outbox payload diagnostics.
+DeliverNotifications requires a NotificationAppender with explicit recipient/turn/
+content. Append must succeed before ack; prepare/construction/append failure releases
+claims, and acknowledgment failure retains the append effect. Return count plus error
+reports that partial boundary. No durable or exactly-once delivery is implied. Caller
+owner admission and live session mutation belong to the future owned-service adapter;
+this package does not append to an agent or install an automatic injector.

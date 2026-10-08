@@ -1,5 +1,71 @@
 # Go port plan
 
+## 2026-10-08 workflow state views and notification delivery
+
+Baseline 48276bc. W5A ports source status/summaries, launch-turn bookkeeping,
+prepare/ack/release and workflow_injector's append-before-ack flow into typed
+ServiceViews, RunStatusView, NodeStatusView, RunSummary, WorkflowNotification,
+NotificationBatch and NotificationAppender. It is the service's projection/delivery
+layer, not the complete owned launch/task service. Status hides foreign-session
+runs as NotFound before definition/artifact reads and returns detached fields; one
+native store lock keeps run/node/artifact projections coherent during settlement.
+Summaries preserve store run order. Session filtering does not authenticate an owner.
+
+RecordLaunchTurn retains the first turn and requires an existing run. PruneTerminalRuns
+removes the returned run IDs from that bookkeeping under its own mutex. Notifications
+are eligible only after the launch turn (unset means zero). Every claim is capped at
+50; overflow remains pending. Results are canonical compact Unicode JSON, with strict
+UTF-8 byte length >8,000 selecting null plus the first 2,000 code points and the source
+WorkflowStatus retrieval instruction. Run diagnostic strings win when nonempty; else
+arbitrary outbox payload diagnostics survive in immutable closed JSON variants. A
+leased NotificationBatch owns private recipient/turn/message IDs/token and detaches
+its public views. The source untrusted-artifact-data wrapper is reproduced exactly.
+
+DeliverNotifications invokes an explicit typed append adapter before acknowledgment.
+Prepare/construction/append failure releases the lease; release refusal replaces the
+original fault as in source. Ack failure leaves the already appended context intact
+and returns count plus error; it cannot undo the external effect. No claim is called
+exactly-once or durable. Caller owner admission and the live parent append adapter
+remain future owned-service/manager responsibilities. Idle empty claims still mint
+source tokens; no append occurs for empty notifications. Context cancellation and
+missing appender admission are explicit native API checks.
+
+Snapshot 123 compares 33 actual Python WorkflowService status/summary/prepare/ack/
+release recipes. Actual workflow_injector runs append success/failure against a
+recording list; records/artifacts/statuses/launch turns are explicit trusted fixture
+seeds, not authorized launches. It covers all 13 run statuses, final/no/missing
+artifact, diagnostic fallback, foreign sessions/status, same/future/past/negative
+turns, ASCII and multibyte exact/over 8,000-byte bounds, release/ack and a 51-notice
+batch. UUIDs, lease tokens and time are normalized. Full status/summary/notification/
+message/outbox effects and error kinds/details match. Native race tests verify two
+unique batches across four concurrent deliveries, append-before-delivered observation,
+first-turn replay, bookkeeping cleanup and detached/coherent status during execution.
+No Python runtime modules or dependencies changed.
+
+Validation: focused workflow race, full `go test ./... -count=1 -timeout=180s`,
+full `go test -race ./... -count=1 -timeout=180s` and `go vet ./...` passed.
+All 123 Python exports are current (dependency deprecations only) and all 19 source
+scan guards are anchored. Full Python regression passed: 2,155 tests, 28 skipped,
+24 subtests, 3 dependency deprecation warnings in 85.09 seconds. `git diff --check`
+and README outline passed. Python package invariant/guard checks were not rerun:
+no package module or guarded Python runtime changed. Architecture regeneration
+passed 9/9 checks with zero errors/warnings. Specification SHA256:
+`406d63369067f7d27997f8f35a3a5e6edd2a712ce0e53bf981262c9d39c6cf2b`;
+HTML SHA256: `2f9e71d30b72cb69fe800b5ac87a181eb463942a938579d07cbb32d7fb5cbd3e`.
+Canonical runtime topology stays unchanged because no owned workflow service or
+parent-session injector is installed. Visual review remains skipped after the prior
+access denial. Overall coverage was not refreshed; 90.56% belongs to c1016d7 and is
+not a current completion measure.
+
+Next W5B adds dynamic-definition policy caps, concrete Workflow action input/journal
+binding, trusted live launch contexts, background execution/wait/cancel, wall-time
+control and typed lifecycle/progress events. W6 installs optional manager/tools/HTTP
+and binds notification append to admitted parent turns with shutdown/delete joins.
+MCP, native session SQLite, remaining runtime profiles and full G7 remain open.
+The full Python-to-Go port is unfinished; workflow persistence/restart-resume is
+not established by this callable projection/delivery layer.
+
+
 ## 2026-10-08 isolated native workflow workers
 
 Baseline c1016d7. W4B adds agent.NewFreshWorkflowRunner with explicit provider,

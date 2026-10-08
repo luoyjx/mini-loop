@@ -2254,3 +2254,25 @@ masked repository reads, no context-management writes, concurrent fresh historie
 invalid live contexts and two-node native engine/worker completion. No external model
 endpoint was called. No owned launch service, tools/HTTP, parent append or manager
 workflow activation is installed yet; no durable workflow backend ships.
+
+### Workflow state views and notification delivery
+
+workflows.NewServiceViews provides typed Status/Summaries and first-wins launch-turn
+bookkeeping with explicit pruning cleanup. Status hides foreign sessions as NotFound,
+reads run/node/artifact state coherently under one store lock and detaches projections.
+Session filtering is not owner admission. PrepareNotifications selects strictly
+later-turn runs and caps claims at 50; unset launch turn means zero. NotificationBatch
+keeps scope/token/message identity private and detaches public views. Results over
+8,000 UTF-8 bytes become null plus a 2,000-code-point preview and retrieval instruction.
+Run strings take precedence over arbitrary closed outbox diagnostic variants.
+ContextMessage retains the source untrusted-artifact-data wrapper. DeliverNotifications
+uses an explicit typed NotificationAppender; append precedes ack and preparation/
+construction/append failure releases claims. Ack failure retains the append effect
+and returns count plus error. Empty claims do not append. This is process-local,
+without durable or exactly-once delivery. It is not a live session injector.
+Snapshot 123 compares 33 real Python service/injector profiles, exact/over ASCII/
+multibyte bounds, first/later turn rules, fallback, foreign filtering, release/ack,
+append failure and a 51-notice overflow. Race tests cover concurrent unique delivery,
+coherent detached status during engine execution and pruning parallel bookkeeping.
+Owned launch/journal/context/task service, wall-time/events and manager/tools/HTTP
+installation remain pending. No native workflow persistence is delivered.

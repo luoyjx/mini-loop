@@ -310,7 +310,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `c1016d7` plus isolated native workflow workers;
+reviewed **2026-10-08** (Go baseline `48276bc` plus workflow state views and notification delivery;
 remaining route groups and runtime-profile differences remain explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -1467,7 +1467,14 @@ in-memory compaction and typed trusted live context resolution. Named peer conte
 drop human capabilities. Invalid submission can repair; duplicate capture keeps the
 first value. Native tests exercise widened-catalogue readonly denial, isolated histories,
 no context-management writes and engine/worker completion. The operator runner is
-callable; owned service and manager/model/HTTP installation remain pending, and the
+callable. Snapshot 123 compares 33 actual Python service projection/delivery profiles,
+including the real parent injector. ServiceViews now returns coherent detached status
+and ordered summaries, retains first launch turns, clears pruned bookkeeping and
+claims at most 50 later-turn notices. Strict >8,000 UTF-8 bytes selects a 2,000-code-point
+preview and retrieval hint. Run diagnostics retain source outbox fallback. An explicit
+NotificationAppender receives the untrusted-data wrapper before ack; failed construction
+or append releases claims. This callable adapter is not bound to live parent sessions.
+Owned launch/task service and manager/model/HTTP installation remain pending; the
 canonical runtime topology is unchanged.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four

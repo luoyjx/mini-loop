@@ -6759,6 +6759,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-retention.json": _json_bytes(_workflow_retention_contracts()),
         "python-workflow-engine.json": _json_bytes(_workflow_engine_contracts()),
         "python-workflow-runner.json": _json_bytes(_workflow_runner_contracts(scratch)),
+        "python-workflow-views.json": _json_bytes(_workflow_views_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
@@ -10069,6 +10070,119 @@ def _workflow_runner_contracts(scratch: Path) -> dict:
         return dict(rows=asyncio.run(collect()))
     finally:
         module.Agent = base
+
+
+def _workflow_views_contracts() -> dict:
+    """Actual status/summary, bounded leases, UTF-8 preview and parent append/ack."""
+    import asyncio
+    import dataclasses
+    from types import SimpleNamespace
+    from mini_loop.actions import InMemoryActionJournal
+    from mini_loop.config import Settings
+    from mini_loop.fake_llm import FakeAsyncAnthropic
+    from mini_loop.run_context import RunContext
+    from mini_loop.workflows.models import WorkflowDefinition, RunStatus, Artifact
+    from mini_loop.workflows.store import InMemoryWorkflowStore
+    from mini_loop.workflows.service import WorkflowService, workflow_injector
+    recipes = [dict(name="status-"+status.value, status=status.value) for status in RunStatus]
+    recipes += [
+        dict(name="object-result", artifact=True, value={"z": 1.0, "a": "你好"}),
+        dict(name="ascii-at-bound", artifact=True, text="x", repeat=7998),
+        dict(name="ascii-over-bound", artifact=True, text="x", repeat=7999),
+        dict(name="utf8-at-bound", artifact=True, text="界", repeat=2666),
+        dict(name="utf8-over-bound", artifact=True, text="界", repeat=2667),
+        dict(name="fallback", payload={"error": {"why": "fault"}, "cancel_reason": False}, run_error="", cancel_reason=""),
+        dict(name="run-diagnostic-wins", payload={"error": "fallback", "cancel_reason": "fallback"}, run_error="run fault", cancel_reason="run reason"),
+        dict(name="same-turn", launch_turn=1, turn=1),
+        dict(name="future-turn", launch_turn=2, turn=1),
+        dict(name="past-turn", launch_turn=1, turn=2),
+        dict(name="negative-turn", launch_turn=-2, turn=-1),
+        dict(name="no-turn-yet", turn=0),
+        dict(name="foreign-session", session="foreign"),
+        dict(name="foreign-status", status_session="foreign"),
+        dict(name="missing-artifact", missing_artifact=True),
+        dict(name="release", mode="release", artifact=True, value="retrievable"),
+        dict(name="ack", mode="ack"),
+        dict(name="append", mode="append", artifact=True, value="result"),
+        dict(name="append-failure", mode="append-failure"),
+        dict(name="count-bound", count=51),
+    ]
+    def scenario(recipe):
+        store = InMemoryWorkflowStore()
+        definition = WorkflowDefinition.from_dict(dict(name="wf", revision="base", return_from="a", nodes=[dict(id="a", kind="agent")]))
+        store.register_definition(definition)
+        service = WorkflowService(settings=Settings(fake_llm=True), client=FakeAsyncAnthropic(), action_journal=InMemoryActionJournal(), session_resolver=lambda _: None, store=store)
+        ids, runs = {}, []
+        for index in range(recipe.get("count", 1)):
+            run = store.create_run(definition_revision="base", session_id="s", idempotency_key="k"+str(index), args={}, run_context=RunContext(message_id="msg"))
+            ids[run.run_id] = "<run-"+str(index)+">"
+            stored = store._runs[run.run_id]
+            stored.status = RunStatus(recipe.get("status", "COMPLETED"))
+            stored.error = recipe.get("run_error")
+            stored.cancel_reason = recipe.get("cancel_reason")
+            if recipe.get("artifact"):
+                value = recipe.get("text", "")*recipe["repeat"] if "repeat" in recipe else recipe.get("value")
+                artifact = Artifact.create(run_id=run.run_id, node_id="a", attempt_id="seed", value=value, schema={})
+                store._artifacts[artifact.artifact_id] = artifact
+                stored.final_artifact_id = artifact.artifact_id
+                ids[artifact.artifact_id] = "<artifact-"+str(index)+">"
+            if recipe.get("missing_artifact"):
+                stored.final_artifact_id = "absent"
+            if "launch_turn" in recipe:
+                service._launch_turns.setdefault(run.run_id, recipe["launch_turn"])
+            notice = store.enqueue_outbox(run_id=run.run_id, kind="notice", payload=recipe.get("payload", {}))
+            ids[notice.message_id] = "<notice-"+str(index)+">"
+            runs.append(run)
+        def clean(value):
+            if dataclasses.is_dataclass(value):
+                value = dataclasses.asdict(value)
+                for stamp in ("created_at", "claimed_at", "delivered_at"):
+                    if stamp in value and value[stamp] is not None:
+                        value[stamp] = 0
+                if value.get("claim_token") is not None and "claim_token" in value:
+                    value["claim_token"] = "<claim>"
+            if isinstance(value, dict):
+                return {key: clean(child) for key, child in value.items()}
+            if isinstance(value, (list, tuple)):
+                return [clean(child) for child in value]
+            if isinstance(value, str):
+                for raw, label in ids.items():
+                    value = value.replace(raw, label)
+                return value
+            return value
+        statuses, status_error = [], ""
+        try:
+            statuses = [service.status(run.run_id, session_id=recipe.get("status_session", "s")) for run in runs]
+        except Exception as error:
+            status_error = type(error).__name__
+        notifications, message_ids, token = [], (), ""
+        messages, append_observed_pending = [], False
+        class Messages(list):
+            def append(self, message):
+                nonlocal append_observed_pending
+                append_observed_pending = all(notice.delivered_at is None and notice.claim_token is not None for notice in store.list_outbox())
+                if recipe.get("mode") == "append-failure":
+                    raise RuntimeError("append failed")
+                super().append(message)
+        messages = Messages()
+        error, detail = "", ""
+        try:
+            session = recipe.get("session", "s")
+            turn = recipe.get("turn", 1)
+            if recipe.get("mode") in ("append", "append-failure"):
+                parent = SimpleNamespace(state={"workflow_service": service, "session": SimpleNamespace(id=session, run_count=turn)}, messages=messages)
+                asyncio.run(workflow_injector(parent))
+            else:
+                notifications, message_ids, token = service.prepare_notifications(session_id=session, parent_turn=turn)
+                if recipe.get("mode") == "release":
+                    service.release_notifications(session_id=session, message_ids=message_ids, claim_token=token)
+                if recipe.get("mode") == "ack":
+                    service.acknowledge_notifications(session_id=session, message_ids=message_ids, claim_token=token)
+        except Exception as failure:
+            error, detail = type(failure).__name__, str(failure)
+        output = clean(dict(statuses=statuses, status_error=status_error, summaries=service.summaries(recipe.get("session", "s")), notifications=notifications, message_ids=message_ids, has_token=bool(token), messages=messages, append_observed_pending=append_observed_pending, outbox=store.list_outbox()))
+        return dict(recipe=recipe, error=error, detail=clean(detail), output_json=json.dumps(output, ensure_ascii=False))
+    return dict(rows=[scenario(recipe) for recipe in recipes])
 
 
 if __name__ == "__main__":
