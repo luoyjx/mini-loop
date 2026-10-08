@@ -1,5 +1,16 @@
 # Python to Go parity matrix
 
+## 2026-10-08 historical trajectory metadata contract preparation
+
+Baseline cf5fbec. Source snapshot 137 records eleven actual historical metadata
+recipes: null/false/zero/empty text/empty list/object, arbitrary object members,
+ignored header/end fields and unknown metrics. Real TrajectoryStore get/summary,
+trace-view file assembly/rendering and fifty-five FastAPI HTTP outcomes are captured.
+A direct ledger input also contains ignored nonfinite/surrogate root fields. Full
+HTML response hashes and complete archival document values are retained for native
+comparison. These fixtures do not establish arbitrary model/workspace/build types,
+permissive timing/input/output fields, native session SQLite or full port completion.
+
 ## 2026-10-08 native workflow ledger and final UTF-8 boundaries
 
 Baseline ebf0e68 (Source snapshot 136). Native ledger construction, JSONL assembly
