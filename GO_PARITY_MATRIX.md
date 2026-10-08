@@ -1,5 +1,15 @@
 # Python to Go parity matrix
 
+## 2026-10-08 InProcessMCP Source contracts
+
+Baseline 17a5ea1. Snapshot 145 runs actual Source InProcessMCP with synchronous
+and asynchronous handlers, closed scalar/list/object results, handler errors,
+unknown/nil handlers, duplicate definitions with last-handler dispatch and no-op
+Close followed by reuse. All twelve ordered results and discovery definitions are
+captured. The complete Source exporter check passes 145 files; its subprocess
+corpus emitted an Unknown child process pid warning and exited zero. Native
+in-process implementation is the next slice. No Python runtime modules changed.
+
 ## 2026-10-08 native MCP launcher selection and operator configuration
 
 Baseline 4f6b2a5 (Source snapshot 144). launcher.Options now carries MCPTools and

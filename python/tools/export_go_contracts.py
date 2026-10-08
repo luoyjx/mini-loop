@@ -6505,6 +6505,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.mcp_connect_contracts import mcp_connect_contracts
     from tools.mcp_lifecycle_contracts import mcp_lifecycle_contracts
     from tools.mcp_launcher_contracts import mcp_launcher_contracts
+    from tools.mcp_inprocess_contracts import mcp_inprocess_contracts
     with tempfile.TemporaryDirectory(prefix="mini-loop-go-contract-") as scratch:
         # server.py constructs its default app at import time. Isolate that
         # composition root too, before importing the module.
@@ -6799,6 +6800,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-mcp-connect.json": _json_bytes(mcp_connect_contracts()),
         "python-mcp-lifecycle.json": _json_bytes(mcp_lifecycle_contracts()),
         "python-mcp-launcher.json": _json_bytes(mcp_launcher_contracts()),
+        "python-mcp-inprocess.json": _json_bytes(mcp_inprocess_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
