@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/luoyjx/mini-loop/go/agent"
 	"github.com/luoyjx/mini-loop/go/secrets"
@@ -181,7 +182,7 @@ func improvementFixtureJSON(t *testing.T, raw []byte) interface{} {
 
 func TestImprovementHTTPAdmissionAndNoRateSpending(t *testing.T) {
 	manager := testManager(t, doneProvider{})
-	server := testServer(t, Config{Manager: manager, Auth: tokenAuth(t), RateLimitPerMinute: 1})
+	server := testServer(t, Config{Manager: manager, Auth: tokenAuth(t), RateLimitPerMinute: 1, Now: func() time.Time { return time.Unix(125, 0) }})
 	id := create(t, server, "token-a").ID
 	for i := 0; i < 3; i++ {
 		if w := request(server, "GET", "/improvements", "{broken", "token-a"); w.Code != 200 {
