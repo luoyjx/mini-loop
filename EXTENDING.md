@@ -3275,6 +3275,12 @@ environment. Review uses fresh readonly auditor state and the explore catalogue,
 returning GuardianDecision (allow/deny/abstain plus Source reason). Explicitly set
 ApprovalBrokerConfig.Reviewer to GuardianReviewer{Guardian: reviewer, Secrets: redactor}
 to bridge masked typed inputs and bounded ASCII preview to the broker. Errors remain
-subject to existing broker containment; they do not imply approval. Capture again
-when execution workspace changes. Automatic manager/launcher selection remains open;
-never call Session.Guardian recursively under an already locked parent tool turn.
+subject to existing broker containment. Provider failures converted by the child loop
+into Source-style error text are still parsed as answers; an ALLOW/DENY word in that
+text can decide the action. Capture again when execution workspace changes.
+ManagerServices.GuardianEnabled or RuntimeConfig.GuardianEnabled (with Approvals)
+selects automatic per-action binding from the current owned turn. The private path
+clones the surface and captures its parent environment without locking the parent
+again or modifying a shared broker/policy. Direct broker/gate embedding does not
+synthesize a parent. Launcher selection remains pending. Never call Session.Guardian
+recursively under an already locked parent tool turn.

@@ -61,6 +61,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	// Explicit per-action readonly reviews require a session-bound approval broker.
+	GuardianEnabled bool
 	// A nonnil immutable operator config explicitly installs four AST read tools.
 	ASTConfig *astcontext.Config
 	// A nonnil provider explicitly installs diagnostics. The default Python
@@ -355,6 +357,9 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	if config.Approvals != nil && (config.Approver != nil || config.Questions != nil) {
 		return nil, errors.New("approval broker conflicts with an explicit approver/question surface")
+	}
+	if config.GuardianEnabled && config.Approvals == nil {
+		return nil, errors.New("automatic Guardian requires an approval broker")
 	}
 	if config.ID == "" || config.Owner == "" || config.Provider == nil || config.Bash == nil || !config.Mode.Valid() || config.MaxRounds < 1 {
 		return nil, errors.New("runtime session requires valid identity, provider, executor, mode and round limit")
@@ -685,6 +690,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	session.events.sessionID, session.events.sink = config.ID, config.EventSink
 	session.bindEventHistory()
 	handler.session = session
+	session.guardianEnabled = config.GuardianEnabled
 	session.mcp = handler.mcp
 	session.runtime = handler
 	if config.TeamTools {

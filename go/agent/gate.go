@@ -194,6 +194,10 @@ func (gate *ToolGate) Dispatch(ctx context.Context, authority ToolAuthority, cal
 }
 
 func (gate *ToolGate) dispatch(ctx context.Context, authority ToolAuthority, call ToolCall, reconciled func(ActionReconciliation)) (returned ToolOutcome, dispatchError error) {
+	return gate.dispatchWithApprover(ctx, authority, call, reconciled, nil)
+}
+
+func (gate *ToolGate) dispatchWithApprover(ctx context.Context, authority ToolAuthority, call ToolCall, reconciled func(ActionReconciliation), approver Approver) (returned ToolOutcome, dispatchError error) {
 	if err := authority.Validate(); err != nil {
 		return ToolOutcome{}, err
 	}
@@ -268,9 +272,12 @@ func (gate *ToolGate) dispatch(ctx context.Context, authority ToolAuthority, cal
 	if gate.modeSource != nil {
 		authority.Mode = gate.modeSource.CurrentMode()
 	}
-	permission, err := gate.policy.Evaluate(ctx, authority, call, risk, exists)
+	permission, err := gate.policy.evaluateWithApprover(ctx, authority, call, risk, exists, approver)
 	if ctx.Err() != nil {
 		return ToolOutcome{}, ctx.Err()
+	}
+	if errors.Is(err, context.Canceled) {
+		return ToolOutcome{}, err
 	}
 	if err != nil {
 		return failed(err), nil

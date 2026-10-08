@@ -276,6 +276,7 @@ func NewApprovalBroker(config ApprovalBrokerConfig) (*ApprovalBroker, error) {
 // broker-bound session state in the Python runtime either.
 type ApprovalSurface struct {
 	broker   *ApprovalBroker
+	reviewer ApprovalReviewer
 	binding  ToolAuthority
 	sink     ApprovalEventSink
 	redactor ApprovalRedactor
@@ -452,10 +453,17 @@ func (surface *ApprovalSurface) Approve(ctx context.Context, request ApprovalReq
 	if !snapshot.GrantProposed {
 		snapshot.GrantCandidate = DefaultGrantCandidate(request.Call.Input)
 	}
-	if broker.reviewer != nil {
-		verdict, err := reviewApproval(ctx, broker.reviewer, request)
+	reviewer := surface.reviewer
+	if reviewer == nil {
+		reviewer = broker.reviewer
+	}
+	if reviewer != nil {
+		verdict, err := reviewApproval(ctx, reviewer, request)
 		if ctx.Err() != nil {
 			return false, ctx.Err()
+		}
+		if errors.Is(err, context.Canceled) {
+			return false, err
 		}
 		if err != nil || (verdict != ReviewAllow && verdict != ReviewDeny && verdict != ReviewAbstain && verdict != "") {
 			if err == nil {

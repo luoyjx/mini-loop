@@ -418,7 +418,7 @@
       "id": "goChildren",
       "type": "backend",
       "label": "Go Fresh Child Sessions",
-      "sublabel": "task roles / explicit readonly auditors",
+      "sublabel": "task roles / readonly auditors",
       "pos": [
         1370,
         1540
@@ -427,7 +427,7 @@
         330,
         76
       ],
-      "tag": "tasks: depth 2 / Guardian: explicit"
+      "tag": "tasks: depth 2 / review: per action"
     },
     {
       "id": "goSecrets",
@@ -448,7 +448,7 @@
       "id": "goApprovals",
       "type": "security",
       "label": "Go Approval Broker",
-      "sublabel": "grants / explicit Guardian / questions",
+      "sublabel": "grants / opt-in Guardian / questions",
       "pos": [
         1920,
         980

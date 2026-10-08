@@ -39,6 +39,7 @@ type BashExecutor interface {
 }
 
 type Session struct {
+	guardianEnabled                                   bool
 	mcp                                               *mcpState
 	teamManager                                       *SessionManager
 	runtime                                           *runtimeHandler

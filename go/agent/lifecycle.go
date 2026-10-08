@@ -457,9 +457,9 @@ func (s *Session) dispatchToolAnnounced(ctx context.Context, run RunContext, use
 		return ToolOutcome{}, err
 	}
 	started := time.Now()
-	outcome, err := s.gate.dispatch(ctx, ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, call, func(v ActionReconciliation) {
+	outcome, err := s.gate.dispatchWithApprover(ctx, ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, call, func(v ActionReconciliation) {
 		s.events.append(SessionEvent{kind: EventReconcile, reconcile: ReconcileEvent{use.Input.Name(), v.ActionID, v.Verdict, v.Verifiable}})
-	})
+	}, s.guardianApprover(run))
 	if err != nil {
 		return outcome, err
 	}

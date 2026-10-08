@@ -8127,5 +8127,12 @@ the normal role subset and an operator-widened catalogue; neither layer requires
 recursive approval. Parent transcript/counters are not inherited. Auditor lineage
 and peer-agent provenance retain no human powers. The broker adapter masks typed
 input before ASCII JSON preview and caps at 2000 characters; unparsed output abstains
-and faults remain handled by the existing broker. Current library reviewers pin the
-parent environment outside its turn; automatic per-request binding is still pending.
+and construction faults remain handled by the existing broker. Ordinary provider
+faults converted into child error text retain Source parsing, including verdict words.
+Cancellation propagates without a decision or human question. Explicit library
+reviewers pin the parent outside its turn; automatic manager selection instead
+captures an immutable current-parent environment per dispatch and clones its approval
+surface. It never reacquires the parent's mutex or stores a shared parent handle.
+Tests cover concurrent owner-isolated full turns, current file reads, human grant
+precedence, immutable/readonly denial before review, and hostile narrow/wide auditors.
+The automatic selection is opt-in; Launcher forwarding remains pending.

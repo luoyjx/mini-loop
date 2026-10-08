@@ -162,6 +162,14 @@ func DefaultPermissionPolicy(approver Approver) *PermissionPolicy {
 }
 
 func (policy *PermissionPolicy) Evaluate(ctx context.Context, authority ToolAuthority, call ToolCall, risk ToolRisk, exists bool) (PermissionOutcome, error) {
+	return policy.evaluateWithApprover(ctx, authority, call, risk, exists, nil)
+}
+
+// A turn can bind its immutable current-parent review without mutating a shared policy.
+func (policy *PermissionPolicy) evaluateWithApprover(ctx context.Context, authority ToolAuthority, call ToolCall, risk ToolRisk, exists bool, approver Approver) (PermissionOutcome, error) {
+	if approver == nil {
+		approver = policy.approver
+	}
 	if err := authority.Validate(); err != nil {
 		return PermissionOutcome{}, err
 	}
@@ -191,9 +199,9 @@ func (policy *PermissionPolicy) Evaluate(ctx context.Context, authority ToolAuth
 			continue
 		}
 		allowed := false
-		if rule.action == RuleAsk && policy.approver != nil {
+		if rule.action == RuleAsk && approver != nil {
 			var err error
-			allowed, err = policy.approver.Approve(ctx, ApprovalRequest{authority, call, rule.name, rule.message})
+			allowed, err = approver.Approve(ctx, ApprovalRequest{authority, call, rule.name, rule.message})
 			if err != nil {
 				return PermissionOutcome{}, err
 			}
@@ -204,7 +212,7 @@ func (policy *PermissionPolicy) Evaluate(ctx context.Context, authority ToolAuth
 		}
 		outcome.denied = true
 		outcome.message = "Permission denied: " + rule.message
-		if rule.action == RuleAsk && policy.approver == nil {
+		if rule.action == RuleAsk && approver == nil {
 			outcome.message += " (approval required)"
 		}
 		outcome.events = append(outcome.events, PermissionEvent{PermissionDeny, rule.name, call.Name(), rule.message})

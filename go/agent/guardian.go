@@ -38,6 +38,37 @@ type GuardianReviewer struct {
 	Secrets  ApprovalRedactor
 }
 
+// The owning turn captures current authority/environment before dispatch. The
+// reviewer contains no parent session handle and never reacquires its turn mutex.
+type ownedGuardianReviewer struct {
+	parent  SubagentParent
+	secrets ApprovalRedactor
+}
+
+func (reviewer ownedGuardianReviewer) ReviewApproval(ctx context.Context, request ApprovalRequest) (ReviewVerdict, error) {
+	if request.Authority.SessionID != reviewer.parent.authority.SessionID || request.Authority.OwnerID != reviewer.parent.authority.OwnerID || request.Authority.Workspace != reviewer.parent.authority.Workspace {
+		return ReviewAbstain, errors.New("Guardian parent does not match approval authority")
+	}
+	guardian, err := NewAgentGuardian(reviewer.parent)
+	if err != nil {
+		return ReviewAbstain, err
+	}
+	return (GuardianReviewer{Guardian: guardian, Secrets: reviewer.secrets}).ReviewApproval(ctx, request)
+}
+
+func (s *Session) guardianApprover(run RunContext) Approver {
+	if !s.guardianEnabled {
+		return nil
+	}
+	surface, ok := s.gate.policy.approver.(*ApprovalSurface)
+	if !ok {
+		return nil
+	}
+	bound := *surface
+	bound.reviewer = ownedGuardianReviewer{parent: s.subagentParent(run), secrets: surface.redactor}
+	return &bound
+}
+
 func (reviewer GuardianReviewer) ReviewApproval(ctx context.Context, request ApprovalRequest) (ReviewVerdict, error) {
 	if reviewer.Guardian == nil {
 		return ReviewAbstain, errors.New("nil guardian reviewer")

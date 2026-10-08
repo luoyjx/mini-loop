@@ -51,6 +51,7 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	GuardianEnabled bool
 	// A nonnil immutable operator config explicitly installs four AST read tools.
 	ASTConfig           *astcontext.Config
 	DiagnosticsProvider diagnostics.Provider

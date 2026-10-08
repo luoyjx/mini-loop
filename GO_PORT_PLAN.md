@@ -1,5 +1,52 @@
 # Go port plan
 
+## 2026-10-09 native manager-owned per-action Guardian binding
+
+Baseline 09f66e4. ManagerServices.GuardianEnabled now forwards an explicit boolean
+to the runtime. RuntimeConfig.GuardianEnabled requires a bound ApprovalBroker.
+Each owned tool dispatch captures a typed SubagentParent with its current run,
+owner, execution root and catalogue; a cloned ApprovalSurface selects the readonly
+Guardian for this action. A private gate/policy override passes that surface without
+mutating a shared broker or policy. The review callback stores no parent Session
+handle, never reacquires its mutex, and constructs a fresh auditor only when the
+broker actually asks for review. Remembered human grants still answer first.
+Direct public gate/broker calls retain their explicit embedding behavior; they do
+not fabricate a current parent. Default-off managed turns keep the existing human
+path. Children remain readonly peers with fresh state and no recursive auto-binding.
+
+Seventeen Source recipes are exercised: fifteen managed owned-dispatch recipes
+match decisions, human parking, normalized approval rows/events, prompts/catalogues,
+inspection results and problem counts. The two missing-agent/session Source recipes
+map to native refusal of unbound approval authority; this is an authority-boundary
+comparison, not an emulation of a Python state dictionary. Native construction fault
+messages retain Go error types rather than Python exception class text. Provider
+errors already project to child error text in the native loop, so both ordinary
+fault deferral and ALLOW-word error-text approval match actual Source outcomes.
+Reviewer context.Canceled now propagates through broker and permission dispatch,
+including cancellation returned while the outer context is still live. It creates
+neither an auto decision nor a human pending row. Other reviewer faults still defer.
+
+Additional complete concurrent managed turns share one provider and read distinct
+owner workspaces, producing separate allow/deny receipts without deadlocking the
+parent turn or leaking the review prompt into its transcript. Default immutable and
+readonly denials reject before Guardian/provider execution. Repeated owned reviews
+see changed file data; hostile auditors cannot write even under a widened catalogue.
+No dependencies or ambiguous domain fields added. Launcher MINILOOP_GUARDIAN
+forwarding is the next slice; configuration still refuses it with a truthful Launcher
+selection reason. HTTP/launcher activation and broader optional harness profiles
+are not claimed complete. G0-G7 and the full port remain open.
+
+Validation: full go test ./... -count=1 -timeout=180s, full go test -race ./...
+-count=1 -timeout=180s, and go vet ./... pass for the implementation. Final focused
+Guardian/Approval race also passes after adding the denial checks. Source exporter
+--check confirms 163 files. README outline and git diff --check pass. Archify delivery
+passes 9/9 with zero errors/warnings; spec SHA256
+802912598def5f4d97ca9f1efa518165d7a6f94065f071e41fbef0e81ae214ff,
+HTML 0792ad08834eca8e77c48aca2d6c77ced3f6d59b870045ba58df274860a9889c.
+Visual inspection remains skipped after earlier browser access denial. Native runtime
+evidence is Darwin arm64. Full Python regression, scans/mutation sweep and coverage
+are not refreshed; no Python runtime/scanner/target changed in this slice.
+
 ## 2026-10-09 manager-selected Guardian Source contracts
 
 Baseline d564fef. Export 163 captures seventeen actual SessionManager-selected
