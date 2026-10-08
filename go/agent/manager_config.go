@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/luoyjx/mini-loop/go/astcontext"
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/diagnostics"
 	"github.com/luoyjx/mini-loop/go/memory"
@@ -50,6 +51,8 @@ type BashFactory interface {
 // Services must be concurrency-safe when shared across the fleet. Factories
 // may inspect the manager, but cannot recursively create/delete/stop it.
 type ManagerServices struct {
+	// A nonnil immutable operator config explicitly installs four AST read tools.
+	ASTConfig           *astcontext.Config
 	DiagnosticsProvider diagnostics.Provider
 	SessionQueryTools   bool
 	MCPTools            bool

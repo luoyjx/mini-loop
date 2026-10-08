@@ -98,6 +98,10 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 	}
 	defaults.System = clonePointer(defaults.System)
 	config.Services.MemoryAuto = clonePointer(config.Services.MemoryAuto)
+	config.Services.ASTConfig = clonePointer(config.Services.ASTConfig)
+	if _, err := configuredAST(config.Services.ASTConfig); err != nil {
+		return nil, err
+	}
 	if config.ModelConcurrency < 0 || config.ToolConcurrency < 0 || config.ApprovalTimeout < 0 || config.ShutdownGrace < 0 || config.DeleteGrace < 0 || config.StateLeaseTTL < 0 {
 		return nil, errors.New("manager limits cannot be negative")
 	}
@@ -456,6 +460,7 @@ func (manager *SessionManager) baseManagedRuntimeConfig(id SessionID, owner Owne
 	runtime.teamManager = manager
 	runtime.SessionQueryTools = services.SessionQueryTools
 	runtime.DiagnosticsProvider = services.DiagnosticsProvider
+	runtime.ASTConfig = services.ASTConfig
 	if services.SessionQueryTools {
 		runtime.transcriptSearch = transcriptSearchReader{store: services.StateStore}
 	}

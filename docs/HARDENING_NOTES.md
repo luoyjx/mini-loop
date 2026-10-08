@@ -8077,3 +8077,13 @@ path admission, count/string guards, freezing and executable integrity remain in
 astcontext. Canonical input and masking operate on recording copies, never on the
 execution object. Model schema defaults are descriptive; execution applies them
 explicitly. Default annotation data remain immutable closed JSON variants.
+
+### Go migration — AST tools bind current runtime authority
+
+Four AST definitions are read/parallel only when explicitly configured by the operator.
+The common ToolGate still applies before hooks, guards, permission and result hooks;
+guard refusal starts no version probe. Runtime handler lookup checks bound owner,
+session and canonical current workspace, captures the stateless Adapter under lock
+and releases that lock before subprocess work. Selected child definitions bind to
+new child authority. Operator config is detached by the Manager; raw model arguments
+never select executable/environment/depth/byte budgets or a different workspace.

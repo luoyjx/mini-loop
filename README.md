@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `2169cd4` plus AST tool declarations and closed input variants,
+Runtime review baseline: `aa18ee6` plus explicit runtime AST model tools,
+plus AST tool declarations and closed input variants,
 plus native AST semantic operations,
 plus AST public-operation Source contracts,
 plus native AST results and captured payload classification,
@@ -425,7 +426,7 @@ flowchart LR
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · reviewer · typed store seam · diagnostic snapshot"]
         GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
-        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic adapters · model tools pending"]
+        GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
         GoBackground -->|shared argv / environment / group control| GoBash
@@ -1228,8 +1229,8 @@ Buffered drains preserve Source 64 KiB read-or-EOF ordering, including timeout-b
 overflow for a small over-limit writer that keeps its pipe open.
 Darwin/Linux retain the launched process-group ID to stop pipe-holding descendants
 even after the direct child exits. Other platforms have direct-child cleanup only.
-Private Source snapshot construction is implemented below; structured AST payloads
-and semantic-read tool installation remain pending. Executable verification precedes
+Private Source snapshots, structured AST payloads and explicit semantic-read tool
+installation are implemented below; launcher selection remains pending. Executable verification precedes
 launch and is not an atomic file pin.
 
 The internal AST ignore component now preserves ignore/keep/unmatched decisions,
@@ -1239,7 +1240,7 @@ Go standard regular expressions; Source star/length guards remain in force. Igno
 controls drop invalid UTF-8 for matching and use Python splitlines while their raw
 bytes remain available for copying. The private snapshot builder
 now supplies traversal and copy. Reversed character ranges remain compiler failures
-with native diagnostic wording; semantic payloads and tool integration remain pending.
+with native diagnostic wording; payload/tool integration is implemented below.
 
 The private AST snapshot filesystem layer now owns no-follow directory handles,
 opens children relative to those handles and reads metadata with fstatat before
@@ -1265,7 +1266,7 @@ and successful cleanup on Darwin arm64. The constructor distinguishes caller
 cancellation from its copy deadline. It does not freeze files during concurrent
 writes, interrupt arbitrary blocking filesystem syscalls, or install a model tool.
 Canonical selectors/bounded globs are implemented below; CLI payloads and runtime
-AST wiring remain required. Linux evidence is compile-only.
+AST wiring is implemented below; launcher selection remains required. Linux evidence is compile-only.
 
 Private AST selection now validates 64-item/2048-character string arrays, canonicalizes
 operator workspaces and resolves exact user paths with Source non-strict realpath
@@ -1277,9 +1278,8 @@ matches with NOFOLLOW, so a later symlink swap cannot reach the snapshot callbac
 All 80 Source recipes are exercised: 76 compare native output/error text and four
 non-string inputs are refused at typed JSON decoding. Glob expansion deadlines are
 checked during entry iteration, retaining Source empty-directory behavior; external
-cancellation remains an error. These are private helpers for forthcoming semantic
-operations; model tool registration, typed CLI payloads and runtime activation remain
-pending.
+cancellation remains an error. These private helpers now serve the semantic
+operations, typed CLI payloads and explicit model-tool runtime integration below.
 
 The internal jsonsyntax scanner now supplies shared closed diagnostic codes and
 Python character offsets. HTTP retains its existing 985-container/4300-digit
@@ -1295,8 +1295,8 @@ path rewriting, error-before-import handling, iterable warnings/errors, arbitrar
 metrics and partial/ambiguity/no-match precedence. All 65 actual Source observations
 replay: 61 compare exact ASCII/UTF-8 JSON and four preserve ordinary TypeError text.
 Detached records/warnings and strict standard-JSON nonfinite refusal are tested.
-Actual semantic subprocess execution is implemented below; four model tools and
-runtime selection remain pending. Extreme CPython recursion/digit-fault wording and
+Actual semantic subprocess execution and explicit model-tool runtime selection are
+implemented below; launcher configuration remains pending. Extreme CPython recursion/digit-fault wording and
 lone-surrogate string projection still need final profile work; current ToJSON enforces a UTF-8 boundary.
 
 Native astcontext Adapter now implements RepoMap, FileOutline, ShowSymbol and
@@ -1311,7 +1311,7 @@ original cwd and removal of private snapshots through actual native CLI children
 The child independently verifies external 0400 source copies; a mutation of the live
 workspace during child execution still reads original bytes. Workspace executables
 are refused before side effects and caller cancellation remains a Go error.
-Four model-tool registrations and runtime selection remain next. Final extreme
+Four model-tool registrations and explicit runtime selection are implemented below. Final extreme
 numeric/recursion wording and lone-surrogate projection profiles remain open.
 
 Native protocol now declares four AST ToolInput variants with named density,
@@ -1325,7 +1325,25 @@ and typed validation; defaults use existing immutable closed JSON variants.
 The Go boundary refuses non-string arrays, unknown fields, null fields and invalid
 enums. These are explicit typed admission refusals, not a claim of parity for every
 malformed dynamic Python handler input. Scalar/count semantic errors still belong
-to the existing adapter. Runtime registration is the next delivery slice.
+to the existing adapter. Explicit runtime registration is implemented below.
+
+RuntimeConfig.ASTConfig and ManagerServices.ASTConfig now explicitly install the
+four Source-compatible read/parallel AST tools through the existing ToolGate.
+Nil keeps them absent; invalid zero config fails construction before runtime setup.
+The Manager detaches the operator config and forwards it through its shared session
+construction path. The handler captures the current identity/workspace binding
+under lock, then executes immutable request state without holding the mutation lock.
+Foreign session/owner/workspace authority is refused. Selected task-child definitions
+rebind to fresh child handlers while sharing only the stateless configured adapter;
+existing read-capability policy selects all four tools for Explore.
+Real native CLI tests exercise a read-only four-tool model batch, eight version/command
+executions, source freeze modes, values-only path rewriting and post-tool cleanup.
+Guard denials start no child, workspace transitions rebind the root, manager config
+reassignment cannot affect sessions and an actual task-child performs its own probe
+and operation. Installed schemas/traits/capabilities match Source export 158.
+Launcher settings/environment/CLI selection and HTTP end-to-end Source traces remain
+next; default tool installation is unchanged. Final AST malformed/extreme output
+profiles, SQLite, diagnostic parser selection and G0-G7 remain open.
 
 Most feature bundles are opt-in. The workflow store, workflow-local journal,
 outbox, and verified-loop coordinator are process-local or library-only. The

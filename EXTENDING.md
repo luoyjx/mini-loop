@@ -3224,3 +3224,27 @@ The Go boundary refuses non-string arrays, unknown fields, null fields and inval
 enums. These are explicit typed admission refusals, not a claim of parity for every
 malformed dynamic Python handler input. Scalar/count semantic errors still belong
 to the existing adapter. Runtime registration is the next delivery slice.
+
+### Go explicit runtime AST tool selection
+
+RuntimeConfig.ASTConfig and ManagerServices.ASTConfig now explicitly install the
+four Source-compatible read/parallel AST tools through the existing ToolGate.
+Nil keeps them absent; invalid zero config fails construction before runtime setup.
+The Manager detaches the operator config and forwards it through its shared session
+construction path. The handler captures the current identity/workspace binding
+under lock, then executes immutable request state without holding the mutation lock.
+Foreign session/owner/workspace authority is refused. Selected task-child definitions
+rebind to fresh child handlers while sharing only the stateless configured adapter;
+existing read-capability policy selects all four tools for Explore.
+Real native CLI tests exercise a read-only four-tool model batch, eight version/command
+executions, source freeze modes, values-only path rewriting and post-tool cleanup.
+Guard denials start no child, workspace transitions rebind the root, manager config
+reassignment cannot affect sessions and an actual task-child performs its own probe
+and operation. Installed schemas/traits/capabilities match Source export 158.
+Launcher settings/environment/CLI selection and HTTP end-to-end Source traces remain
+next; default tool installation is unchanged. Final AST malformed/extreme output
+profiles, SQLite, diagnostic parser selection and G0-G7 remain open.
+Construct astcontext.Config through NewConfig and pass its address to ASTConfig.
+Model inputs cannot choose a binary, environment, workspace root or process limits.
+The stateless Adapter needs no persistent subprocess/cache cleanup hook. Its per-call
+process/snapshot lifetime stays beneath the normal gate, hooks and permission policy.

@@ -358,7 +358,7 @@
       "id": "goFiles",
       "type": "backend",
       "label": "Filesystem libraries",
-      "sublabel": "files / typed AST semantic reads",
+      "sublabel": "files / typed AST model tools",
       "pos": [
         1920,
         1360
@@ -367,7 +367,7 @@
         280,
         76
       ],
-      "tag": "AST semantic tools: pending"
+      "tag": "ASTConfig: explicit / default off"
     },
     {
       "id": "goResources",
@@ -1650,7 +1650,8 @@
         "Shared internal jsonsyntax now supplies closed CPython diagnostic codes and character offsets for HTTP and forthcoming AST payload decoding. Callers select fixed container/integer limits; HTTP retains its 985/4300 profile and existing wire failure projection. Successful values continue through existing closed/typed lowering. Eight malformed outputs from 65 actual Source AST invocations match diagnostic messages and offsets; HTTP syntax/number/depth/encoding/surrogate tests retain their source profiles. This extraction adds no AST payload interpretation, executable call, model tool or runtime activation.",
         "Native AST result/payload records and a private captured-output classifier now preserve all 65 Source observations: exact ordered ASCII/UTF-8 projections for 61 results and four ordinary TypeError escapes. Closed immutable JSON variants keep unknown members inert; paths rewrite values only. Integer metrics and partial/ambiguity/no-match ordering remain Source-compatible. Detached warning/optional records and finite standard JSON publication are tested. Actual semantic process execution, four tools and runtime selection remain pending; extreme recursion/digit-fault wording and lone-surrogate string projection remain final profile work.",
         "Native standalone Adapter now owns four typed semantic operations: canonical input selection, bounded anchored source snapshots, workspace-aware executable probe and direct command invocation, captured-output classification and cleanup. Twenty-six actual Source public-operation recipes compare exact ordered JSON, version/command argv, original workspace cwd and temporary path removal against actual native children. Child checks external 0400 copies and reads original bytes even when the live workspace changes during execution. Leading-dash grep expressions stay attached; glob ambiguity/no-match returns before probe, with 32 names and 16384 UTF-8 bytes. Workspace executables remain refused before side effects, cancellation propagates, and no mutable request state is cached. Four model tools and runtime selection remain pending; final extreme fault/surrogate profiles remain open.",
-        "Protocol now carries four named AST ToolInput variants with detached arrays/optional pointers, closed density/view/reference-kind enums, supplied-field canonical identity and recording-only masking. Four actual installed Source declarations match full schema defaults, maxLength, numeric/array limits, false additionalProperties and descriptions. Named InputSchema fields preserve these projections with detached clones. Typed unknown/null/non-string/enum admission refusals are explicit; snapshot/path/process authority remains in the standalone Adapter. Runtime registration follows as the next slice, and launcher defaults remain unchanged."
+        "Protocol now carries four named AST ToolInput variants with detached arrays/optional pointers, closed density/view/reference-kind enums, supplied-field canonical identity and recording-only masking. Four actual installed Source declarations match full schema defaults, maxLength, numeric/array limits, false additionalProperties and descriptions. Named InputSchema fields preserve these projections with detached clones. Typed unknown/null/non-string/enum admission refusals are explicit; snapshot/path/process authority remains in the standalone Adapter. Runtime registration follows as the next slice, and launcher defaults remain unchanged.",
+        "Explicit RuntimeConfig/ManagerServices ASTConfig now installs the four Source read/parallel tools with semantic-outline/symbol/references capabilities through ToolGate. Nil stays default off and zero config fails construction. Manager copies the operator config; handlers verify bound identity/current workspace under lock and run stateless requests after releasing it. Fresh task-child handlers inherit selected AST tools through existing read-capability policy. Native model-batch/child traces exercise actual version probes, frozen 0400 source reads, values-only rewrites and cleanup. Guard denial starts no CLI, foreign authority fails, root transitions rebind and manager config reassignment cannot alter sessions. Launcher settings/env/CLI and HTTP Source traces remain next; extreme output profiles and the full port are still open."
       ]
     }
   ]

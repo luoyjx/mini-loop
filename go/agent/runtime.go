@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/luoyjx/mini-loop/go/astcontext"
 	"github.com/luoyjx/mini-loop/go/decisions"
 	"github.com/luoyjx/mini-loop/go/diagnostics"
 	"github.com/luoyjx/mini-loop/go/memory"
@@ -60,6 +61,8 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
+	// A nonnil immutable operator config explicitly installs four AST read tools.
+	ASTConfig *astcontext.Config
 	// A nonnil provider explicitly installs diagnostics. The default Python
 	// syntax backend is not yet implemented; nil leaves the tool unregistered.
 	DiagnosticsProvider diagnostics.Provider
@@ -147,6 +150,7 @@ type RuntimeConfig struct {
 }
 
 type runtimeHandler struct {
+	ast                  *astcontext.Adapter
 	diagnostics          diagnostics.Provider
 	transcriptSearch     sessionquery.Reader
 	mcp                  *mcpState
@@ -191,6 +195,9 @@ func (signal *compressionSignal) take() bool {
 }
 
 func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAuthority, input protocol.ToolInput) (string, error) {
+	if protocol.IsASTTool(input.Name()) {
+		return handler.executeAST(ctx, authority, input)
+	}
 	if input.Name() == protocol.ToolDiagnostics {
 		return handler.executeDiagnostics(ctx, authority, input)
 	}
@@ -313,6 +320,10 @@ func (handler *runtimeHandler) ExecuteTool(ctx context.Context, authority ToolAu
 // questions plus deferred compaction to the implemented workspace tools.
 // Task delegates to a fresh child through the explicit subagent seam.
 func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
+	astAdapter, astErr := configuredAST(config.ASTConfig)
+	if astErr != nil {
+		return nil, astErr
+	}
 	if config.WorkflowService != nil {
 		config.WorkflowTools = true
 		config.ActionJournal = config.WorkflowService.config.Journal
@@ -494,6 +505,16 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	}
 	handler.transcriptSearch = config.transcriptSearch
 	handler.diagnostics = config.DiagnosticsProvider
+	handler.ast = astAdapter
+	if astAdapter != nil {
+		for _, schema := range protocol.ASTToolSchemas() {
+			definition, err := NewToolDefinitionWithSchema(schema, astTraits(schema.Name), handler)
+			if err != nil {
+				return nil, err
+			}
+			definitions = append(definitions, definition)
+		}
+	}
 	if config.DiagnosticsProvider != nil {
 		definition, err := NewToolDefinitionWithSchema(protocol.DiagnosticsSchema(), ToolTraits{Risk: RiskRead, Readonly: true, ParallelSafe: true}, handler)
 		if err != nil {

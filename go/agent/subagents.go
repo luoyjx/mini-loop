@@ -163,6 +163,9 @@ func (provider *InProcessSubagents) RunSubagent(ctx context.Context, request Sub
 	// receive its authority through the same gate and retain their own contract.
 	for i := range definitions {
 		if previous, bound := definitions[i].handler.(*runtimeHandler); bound {
+			if protocol.IsASTTool(definitions[i].name) {
+				handler.ast = previous.ast
+			}
 			if definitions[i].name == protocol.ToolDiagnostics {
 				handler.diagnostics = previous.diagnostics
 			}

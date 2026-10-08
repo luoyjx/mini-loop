@@ -1,5 +1,40 @@
 # Python to Go parity matrix
 
+## 2026-10-08 explicit runtime AST model tools
+
+Baseline aa18ee6. RuntimeConfig.ASTConfig and ManagerServices.ASTConfig now explicitly install the
+four Source-compatible read/parallel AST tools through the existing ToolGate.
+Nil keeps them absent; invalid zero config fails construction before runtime setup.
+The Manager detaches the operator config and forwards it through its shared session
+construction path. The handler captures the current identity/workspace binding
+under lock, then executes immutable request state without holding the mutation lock.
+Foreign session/owner/workspace authority is refused. Selected task-child definitions
+rebind to fresh child handlers while sharing only the stateless configured adapter;
+existing read-capability policy selects all four tools for Explore.
+Real native CLI tests exercise a read-only four-tool model batch, eight version/command
+executions, source freeze modes, values-only path rewriting and post-tool cleanup.
+Guard denials start no child, workspace transitions rebind the root, manager config
+reassignment cannot affect sessions and an actual task-child performs its own probe
+and operation. Installed schemas/traits/capabilities match Source export 158.
+Launcher settings/environment/CLI selection and HTTP end-to-end Source traces remain
+next; default tool installation is unchanged. Final AST malformed/extreme output
+profiles, SQLite, diagnostic parser selection and G0-G7 remain open.
+
+Validation: installed Source traits/capabilities match; four-tool readonly model
+batch performs eight real probes/operations and compares rewritten path/content,
+original cwd, private mode and cleanup. Manager config detachment/current workspace
+rebinding, foreign authority refusal, guard-before-process denial, zero config
+refusal and actual task-child applied-result delivery pass under focused AST race.
+Full go test ./... -count=1 -timeout=180s, go test -race ./... -count=1 -timeout=180s
+and go vet ./... pass; a final focused race refresh includes the added child-result
+assertion. Source exports 158 and scan guards 19 passed this iteration. README outline
+and git diff --check pass. Archify delivery passes 9/9 with zero errors/warnings;
+specification SHA256 f7ef731506812e8419ad6d4ad8ea012a94d7ea293c0082a6b28bc384ebd51fdb,
+artifact 12e865b6e8d7f813bb56bcd16cc402791f13ae991379694c192544add4563797.
+Native evidence is Darwin arm64. Visual inspection remains skipped after prior browser
+access denial. Coverage, full Python regression and full mutation sweep were not
+refreshed; G0-G7 remain open.
+
 ## 2026-10-08 AST tool declarations and closed input variants
 
 Baseline 2169cd4. Source export 158 captures the four installed tools'
