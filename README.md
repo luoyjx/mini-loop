@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `d3157cf` plus foreground shell start/Interrupt
+Runtime review baseline: `6158e2c` plus AST snapshot filesystem Source contracts,
+plus foreground shell start/Interrupt
 registration serialization, plus standalone AST executable probing and
 bounded process capture/cancellation, plus typed AST configuration/status and inert
 version-output parsing, plus AST adapter Source admission/probe contracts,

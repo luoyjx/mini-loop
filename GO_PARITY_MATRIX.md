@@ -1,5 +1,47 @@
 # Python to Go parity matrix
 
+## 2026-10-08 AST source snapshot filesystem contracts
+
+Baseline 6158e2c. Source export 153 records 36 actual private anchored snapshot
+recipes without substituting its traversal, descriptor opens, reads, ignore matcher
+or copy effects. Manifests retain relative paths, file bytes/hashes, read-only modes,
+synthetic Git markers, returned candidate order and private path rewrites. Successful
+context exit is observed to remove the temporary snapshot; a source-file mutation
+inside the context leaves the frozen bytes unchanged.
+
+The corpus pins all 56 supported source suffixes and both exact basenames, uppercase
+suffixes, hidden names, unsupported explicit-file bypass, default exclusions, root/
+nested ignore frames, negated vendor paths, nearest Git-marker selection and explicit
+nested overrides. Recursive symlinks/FIFOs and symlink ignore controls are skipped;
+raw explicit symlink/FIFO targets, symlink parents, absent/empty/outside candidates
+retain actual refusal classes/text. These private snapshot candidates are distinct
+from public tool paths, which first pass safe-path resolution.
+
+The actual default 64 MiB stat gate is exercised using a sparse oversized source.
+Smaller, explicitly recorded capacity overrides exercise file/control-file, entry,
+depth, ignore-byte, ignore-pattern and match-operation counters without changing
+matching or traversal. Their native replay must use these same declared limits;
+these cases do not prove default-capacity throughput or race behavior. Default cap
+values are pinned separately. Oversized ignored files bypass the byte gate; invalid
+UTF-8 is dropped for ignore matching while raw control bytes are copied unchanged,
+and Unicode splitlines behavior is captured. Actual ignore shape/length guards are
+also captured.
+
+Next implement the native snapshotter with anchored no-follow opens, complete
+supported-name/default-ignore behavior, bounded nested frames and private cleanup.
+Public model tool paths must be resolved before forming trusted snapshot targets.
+This Source preparation changes no runtime/default/topology and proves no native
+snapshot implementation. Structured AST payloads/tool/runtime wiring, diagnostics
+parser choice, native SQLite and G7 remain open; the complete port goal is active.
+
+Validation: all 153 Source exports pass --check; 41 Python AST-context tests,
+all 19 scanning guards and verify_invariants.py pass. Full Go go test ./...
+-count=1 -timeout=180s passes in this batch. README outline and git diff --check
+pass. No runtime module, default, scanner target or architecture topology changed;
+full Python regression, mutation sweeps, race, vet and coverage were not rerun.
+No native snapshot replay or race proof is claimed. Interactive-map regeneration
+was not required for this contract-only change.
+
 ## 2026-10-08 foreground shell startup registration ordering
 
 Baseline d3157cf. A full race run failed the existing real-child spawn/stop stress
