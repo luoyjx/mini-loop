@@ -1,0 +1,175 @@
+{
+  "rows": [
+    {
+      "authenticated": false,
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "enabled": false,
+      "env": {
+        "MINILOOP_WORKFLOW_MAX_AGENTS": "32",
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "4",
+        "MINILOOP_WORKFLOW_MAX_ROUNDS": "4",
+        "MINILOOP_WORKFLOW_WALL_TIME_SECONDS": "900.0"
+      },
+      "health": false,
+      "journal_shared": false,
+      "listing": {
+        "enabled": false,
+        "runs": []
+      },
+      "name": "default",
+      "pool": 0,
+      "tools": []
+    },
+    {
+      "authenticated": false,
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "enabled": true,
+      "env": {
+        "MINILOOP_EXPERIMENTAL_WORKFLOWS": "1",
+        "MINILOOP_WORKFLOW_MAX_AGENTS": "32",
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "4",
+        "MINILOOP_WORKFLOW_MAX_ROUNDS": "4",
+        "MINILOOP_WORKFLOW_WALL_TIME_SECONDS": "900.0"
+      },
+      "health": true,
+      "journal_shared": true,
+      "listing": {
+        "enabled": true,
+        "runs": []
+      },
+      "name": "enabled-open",
+      "pool": 4,
+      "tools": [
+        "Workflow",
+        "WorkflowCancel",
+        "WorkflowStatus"
+      ]
+    },
+    {
+      "authenticated": true,
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "enabled": true,
+      "env": {
+        "MINILOOP_EXPERIMENTAL_WORKFLOWS": "1",
+        "MINILOOP_WORKFLOW_MAX_AGENTS": "32",
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "4",
+        "MINILOOP_WORKFLOW_MAX_ROUNDS": "4",
+        "MINILOOP_WORKFLOW_WALL_TIME_SECONDS": "900.0"
+      },
+      "health": true,
+      "journal_shared": true,
+      "listing": {
+        "enabled": true,
+        "runs": []
+      },
+      "name": "enabled-auth",
+      "pool": 4,
+      "tools": [
+        "Workflow",
+        "WorkflowCancel",
+        "WorkflowStatus"
+      ]
+    },
+    {
+      "authenticated": true,
+      "caps": {
+        "max_agents": 32,
+        "max_concurrent_agents": 4,
+        "max_rounds": 4,
+        "wall_time_seconds": 900.0
+      },
+      "enabled": false,
+      "env": {
+        "MINILOOP_EXPERIMENTAL_WORKFLOWS": "0",
+        "MINILOOP_WORKFLOW_MAX_AGENTS": "32",
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "4",
+        "MINILOOP_WORKFLOW_MAX_ROUNDS": "4",
+        "MINILOOP_WORKFLOW_WALL_TIME_SECONDS": "900.0"
+      },
+      "health": false,
+      "journal_shared": false,
+      "listing": {
+        "enabled": false,
+        "runs": []
+      },
+      "name": "disabled-auth",
+      "pool": 0,
+      "tools": []
+    },
+    {
+      "authenticated": false,
+      "caps": {
+        "max_agents": 2,
+        "max_concurrent_agents": 1,
+        "max_rounds": 2,
+        "wall_time_seconds": 3.5
+      },
+      "enabled": true,
+      "env": {
+        "MINILOOP_EXPERIMENTAL_WORKFLOWS": "1",
+        "MINILOOP_WORKFLOW_MAX_AGENTS": "2",
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "1",
+        "MINILOOP_WORKFLOW_MAX_ROUNDS": "2",
+        "MINILOOP_WORKFLOW_WALL_TIME_SECONDS": "3.5"
+      },
+      "health": true,
+      "journal_shared": true,
+      "listing": {
+        "enabled": true,
+        "runs": []
+      },
+      "name": "caps-open",
+      "pool": 1,
+      "tools": [
+        "Workflow",
+        "WorkflowCancel",
+        "WorkflowStatus"
+      ]
+    },
+    {
+      "authenticated": true,
+      "caps": {
+        "max_agents": 2,
+        "max_concurrent_agents": 1,
+        "max_rounds": 2,
+        "wall_time_seconds": 3.5
+      },
+      "enabled": true,
+      "env": {
+        "MINILOOP_EXPERIMENTAL_WORKFLOWS": "1",
+        "MINILOOP_WORKFLOW_MAX_AGENTS": "2",
+        "MINILOOP_WORKFLOW_MAX_CONCURRENT_AGENTS": "1",
+        "MINILOOP_WORKFLOW_MAX_ROUNDS": "2",
+        "MINILOOP_WORKFLOW_WALL_TIME_SECONDS": "3.5"
+      },
+      "health": true,
+      "journal_shared": true,
+      "listing": {
+        "enabled": true,
+        "runs": []
+      },
+      "name": "caps-auth",
+      "pool": 1,
+      "tools": [
+        "Workflow",
+        "WorkflowCancel",
+        "WorkflowStatus"
+      ]
+    }
+  ]
+}

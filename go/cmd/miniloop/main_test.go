@@ -194,3 +194,33 @@ func TestTeamFlagReportsSelectionWithoutStartingRuntime(t *testing.T) {
 		t.Fatal(report, err)
 	}
 }
+
+func TestWorkflowSelectionDumpIsPureAndSupportsSourceEnvironment(t *testing.T) {
+	for _, row := range []struct {
+		args    []string
+		env     map[string]string
+		enabled bool
+	}{
+		{[]string{"--workflow-tools", "--dump-config"}, map[string]string{}, true},
+		{[]string{"--dump-config"}, map[string]string{"MINILOOP_EXPERIMENTAL_WORKFLOWS": "1"}, true},
+		{[]string{"--dump-config"}, map[string]string{}, false},
+	} {
+		root := filepath.Join(t.TempDir(), "uncreated")
+		row.env["MINILOOP_WORKSPACE_ROOT"] = root
+		var out, errout bytes.Buffer
+		if code := execute(context.Background(), row.args, row.env, &out, &errout); code != 0 {
+			t.Fatal(code, errout.String())
+		}
+		var report launcher.Report
+		if err := json.Unmarshal(out.Bytes(), &report); err != nil || report.WorkflowTools != row.enabled || len(report.Unsupported) != 0 {
+			t.Fatal(report, err)
+		}
+		if _, err := os.Stat(root); !os.IsNotExist(err) {
+			t.Fatal("inspection created workspace", err)
+		}
+	}
+	var out, errout bytes.Buffer
+	if code := execute(context.Background(), []string{"--workflow-tools"}, map[string]string{"MINILOOP_FEATURES": "1"}, &out, &errout); code != 1 || !strings.Contains(errout.String(), "MINILOOP_FEATURES") {
+		t.Fatal(code, errout.String())
+	}
+}

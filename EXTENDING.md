@@ -2651,3 +2651,14 @@ a parent-model turn counter. Unknown request fields are ignored. Retained JSON d
 lowers into immutable closed Value; request diagnostics never enter service authority.
 Known permission/conflict/lookup/validation failures retain HTTP categories; nested
 malformed-definition and retained legacy-scalar profiles still need broader G7 proof.
+
+## Workflow launcher selection
+
+Launcher Options.WorkflowTools and Settings.EnableWorkflows select one optional
+manager service using logical OR. Source MINILOOP_EXPERIMENTAL_WORKFLOWS is supported;
+--workflow-tools is the Go explicit selector. Inspection reports the actual selection
+without side effects. Four typed Settings caps pass to ManagerServices.WorkflowCaps;
+manager normalization captures them before service construction. Model/tool pools,
+journal, readonly worker resolver and shutdown ownership use existing manager seams.
+The independent selector does not activate the comprehensive MINILOOP_FEATURES bundle
+or widen authority on general HTTP messages. Defaults remain disabled.

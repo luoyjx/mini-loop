@@ -668,7 +668,7 @@ trajectory root failure refuses startup. The launcher best-effort constructs the
 spill store at `MINILOOP_SPILL_DIR` (default `./var/spill`; empty disables it).
 A root construction failure disables preservation while startup continues, matching
 Python. The launcher also refuses enabled
-comprehensive feature/workflow/guardian/token-efficiency/AST integrations.
+comprehensive feature/guardian/token-efficiency/AST integrations.
 Implemented decision providers and memory roots have independent selections. Inactive optional settings remain typed and validated.
 Ordinary workspace compaction artifacts remain separate from the private store.
 The default structured Bash tool currently bypasses string-output preservation in
@@ -2302,7 +2302,7 @@ eight input/action identities, 20 advertised-shape refusals, three schemas and 1
 actual Python memory/SQLite journal profiles. Native injected-store effects are
 compared to SQLite source, without claiming a native SQLite implementation.
 Background launch/wait/cancel/events are implemented by the owned service below;
-Explicit runtime tools are described below; Manager composition is described below; HTTP/launcher activation remains pending.
+Explicit runtime tools are described below; Manager composition is described below; Workflow HTTP and standalone activation are described below.
 
 
 ## Owned workflow service
@@ -2367,8 +2367,8 @@ cleanup errors; shutdown retries safe pins. A cancelled Stop caller does not aba
 background drainage. Snapshot 128 compares 12 actual Python manager profiles plus
 native tests of real workers, captured caps, deleted replay, partial-admission races,
 terminal publication, failure retention and caller cancellation. Defaults remain off.
-Later-turn result injection, dedicated workflow routes and launcher selection remain
-pending. Session observation and summaries are described below; process-local workflow
+Later-turn result injection, dedicated workflow routes and launcher selection are
+described below. Session observation and summaries are described below; process-local workflow
 graphs do not provide durable recovery.
 
 
@@ -2388,7 +2388,7 @@ and fresh-fork results. Existing owner-scoped HTTP info and SSE resume projectio
 preserve these records; health reflects activation. Snapshot 129 compares actual Python
 session/SQLite capture for twelve variants, completed/fork/disabled summaries and
 shutdown publication. Native tests exercise real fresh workers and HTTP/SSE ownership.
-Six reserved Source event kinds, dedicated workflow HTTP routes, launcher selection
+Six reserved Source event kinds and exhaustive historical archive profiles
 and native SQLite remain pending. Owned later-turn injection is described below.
 Defaults remain off.
 
@@ -2404,3 +2404,26 @@ that append observable. The Source untrusted-artifact-data wrapper conveys data 
 grants no capability. Standalone runtimes, Fresh workers and delegated/autonomous
 children have no automatic manager delivery. This path is process-local and is not
 a durable append/ack transaction. Snapshot 130 compares actual Python managed turns.
+
+## Workflow HTTP and standalone activation
+
+MINILOOP_EXPERIMENTAL_WORKFLOWS=1 or --workflow-tools enables the optional
+manager-owned workflow service, model tools and HTTP operations. Defaults stay off.
+The four MINILOOP_WORKFLOW_* caps select concurrency, total agents, rounds and
+wall time; they are validated and captured during startup. --dump-config reports
+workflow_tools selection without constructing a manager, listener or provider.
+MINILOOP_FEATURES remains unsupported until its complete bundle is implemented.
+
+```sh
+MINILOOP_FAKE_LLM=1 MINILOOP_API_TOKENS='alice:dev-token' go run ./cmd/miniloop --workflow-tools
+```
+
+GET session workflows lists runs; GET run detail and POST run cancel require
+session ownership. POST session workflows additionally requires authenticated
+deployment and stamps only workflow.launch. Stable msg_ action identity supports
+journal replay; general HTTP/model text does not gain human authority. Actual
+Source default lifespan selection is compared across six configurations. Native
+TCP tests use the real model adapter and readonly FreshWorkflowRunner for artifact
+completion, refuse model launch from ordinary HTTP messages, and cancel/join an
+active worker request on shutdown. Workflow state remains process-local. Native
+session SQLite, reserved events, archival fidelity and full G7 remain pending.

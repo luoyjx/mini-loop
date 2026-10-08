@@ -1,5 +1,51 @@
 # Python to Go parity matrix
 
+## 2026-10-08 workflow launcher activation
+
+Baseline 3789ae9. The standalone launcher now supports Source's
+MINILOOP_EXPERIMENTAL_WORKFLOWS setting and an independent --workflow-tools
+selector. Logical OR selects ManagerServices.WorkflowTools; all four typed workflow
+caps are passed to the existing manager constructor and captured before service
+creation. New() honors the Source environment setting without operator injection.
+Unsupported() no longer falsely reports workflows unavailable. Default-off behavior
+and comprehensive MINILOOP_FEATURES refusal remain explicit. --dump-config reports
+workflow_tools selection without manager, provider, listener or workspace effects.
+
+Snapshot 132 runs the real default Python create_app lifespan with no injected
+manager or worker. Six default/enabled/disabled/authenticated/custom-cap profiles
+capture health, owned empty lists, installed tools, caps, pool and journal binding.
+Native launcher comparisons verify visible selection/catalogues across those same
+profiles; custom-cap admission probes exercise all four captured process limits.
+Existing manager snapshot 128 retains private pool/journal identity and lifecycle
+proof. A Python configuration comment says the server ignores the flag, but the
+actual lifespan forwards it; this snapshot follows executable Source behavior.
+
+Native TCP integration uses the real HTTP model adapter and FreshWorkflowRunner,
+submits an artifact, observes owned result data and rejects foreign-owner access.
+A forced Workflow model call from an ordinary HTTP message creates no new run even
+in auto permission mode. Shutdown cancels an active upstream worker request and
+joins manager task/publication ownership. The explicit CLI flag selects the same
+service as the Source environment path. No authority/default/persistence widening
+is introduced; workflow graphs and the default journal remain process-local.
+
+Validation passed: focused Workflow/Unsupported launcher/config/CLI race suite;
+full go test ./... and go test -race ./... (-count=1 -timeout=180s); go vet ./...;
+all 132 Source exports current; all 19 scan guards anchored; full Python regression
+with 2,155 passed, 28 skipped, 24 subtests and three dependency warnings in 88.84s.
+README outline and git diff --check passed. Python invariant/guard sweeps were not
+rerun because no Python runtime package or guarded Source behavior changed.
+Architecture baseline, canonical Mermaid annotations,
+boundary text and generated interactive map are updated. Archify passed 9/9 showcase
+checks with zero errors/warnings. Specification SHA256:
+050ab039c672fdb90140ad81a396d66feed0ffa43e068c9a9d2b1b4c95b47c27;
+HTML SHA256 627c643753aeace97b304b3b5b036464c289393ba2aecc4ca0158201ff995c0f.
+Visual review remains skipped after prior access denial. No dependencies or Python
+runtime package changes were introduced. Coverage was not refreshed; 90.23% belongs
+to 136cd53. Six reserved event projections, open-payload archive fidelity, MCP,
+native session SQLite, remaining malformed/transport profiles and full G7 remain
+pending. The complete Python-to-Go port stays open.
+
+
 ## 2026-10-08 authenticated workflow HTTP launch
 
 Baseline 06a9584. POST /sessions/{session_id}/workflows now admits a required

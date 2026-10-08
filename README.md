@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `06a9584` plus authenticated workflow HTTP launch,
+Runtime review baseline: `3789ae9` plus Source-compatible workflow launcher activation,
 the Python directory split, its
 package-relative default skills path, and the Go typed loop, execution gate
 and workspace files, bounded glob search, todo/skill/question handlers, typed
@@ -363,7 +363,7 @@ flowchart LR
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · usage · SDK retries"]
@@ -1523,8 +1523,9 @@ normal resume cursors plus the source sequence alias. Snapshot 130 compares the 
 in the launch turn, custom-injector ordering, later-turn append-before-ack, and no
 duplicate on a further turn. Go manager parents now install this path automatically
 when workflows are enabled; failed appends release claims. Result messages retain
-the Source untrusted-artifact-data wrapper and grant no capability. Dedicated workflow
-HTTP routes and launcher activation remain pending.
+the Source untrusted-artifact-data wrapper and grant no capability. Snapshot 131
+compares dedicated workflow HTTP routes; snapshot 132 verifies actual default Source
+lifespan activation. Go supports the Source environment flag and --workflow-tools.
 The separate Go improvement library now classifies touched verifier paths and
 computes a typed 16-byte acceptance-instrument fingerprint. It matches the four
 source root-relative globs, their ordering, file-symlink behavior and unreadable
@@ -1602,7 +1603,10 @@ The Go workflow HTTP launch route requires an authenticated deployment and an ow
 parent, then stamps only workflow.launch with explicit_human authority. Its action_id
 derives a stable msg_ identity for journal replay; absent/null/empty actions receive
 a fresh wfhttp_ identity. General HTTP messages retain untrusted authority.
-Workflow execution remains optional and launcher activation is still pending.
+Workflow execution is selected by MINILOOP_EXPERIMENTAL_WORKFLOWS or the explicit
+Go --workflow-tools flag. All four process caps are captured from typed settings;
+defaults remain disabled. The manager owns worker pools, journal, cancellation and
+terminal publication through normal launcher shutdown.
 
 Open the [interactive architecture](docs/mini-loop-system.architecture.html) for
 guided request, tool, and orchestration views. Its source is
