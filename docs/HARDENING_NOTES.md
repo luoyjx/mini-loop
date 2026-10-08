@@ -7845,3 +7845,14 @@ exclusion, custom connection, parent borrowing/child replacement and Explore den
 Their explicit permissive operator permission seam probes binding without changing
 production defaults. Native child-factory retention strengthens Source cleanup gaps;
 no arbitrary custom-provider cleanup or durable child recovery is claimed.
+
+### Go migration — bounded historical search coverage
+
+The native sessionquery library carries first/current/skipped epoch coverage in
+named results and in every partial-scan answer, including no matches. It scans at
+most 20 recent epochs and stops at 20 matches. Context cancellation and backend read
+faults propagate without presenting an exhaustive empty result. The Reader accepts
+an explicit session identity and historical closed data; it grants no authority.
+Source search positions use full lowercase text but slice the original string;
+actual Unicode and object-order fixtures protect this behavior. Runtime-bound
+owner/session admission and native SQLite are not supplied by this library seam.

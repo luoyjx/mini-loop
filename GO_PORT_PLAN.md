@@ -1,5 +1,47 @@
 # Go port plan
 
+## 2026-10-08 native historical transcript-search library
+
+Baseline 2110eb2 (Source snapshot 147). The new sessionquery package provides named
+SessionID/Epoch, Message, Match and Result structures, an explicit two-method Reader,
+and Search/ToolSearch/Render APIs. Historical Role/Content use immutable closed
+ArchiveValue variants and never become live protocol messages or authority. Reader
+adapters must project missing roles as question-mark text and preserve stored order.
+
+Eight real Source SQLite recipes and four absent/null-store surfaces match exact
+search records and rendered output. The library retains direct empty-needle search
+versus tool blank-query refusal, original query repr in no-match text, Python full
+Unicode lowercasing/offsets, UTF-8 structured JSON spacing/order, gaps, match caps and
+partial-scan coverage. The outer fixture's sorted inputs are not authoritative for
+object order; messages_json retains actual SQLite-loaded row text. Native tests
+check 20-epoch read bounds, explicit session selection, read failure and cancellation
+before/during reads. Reads stop at 20 matches; per-epoch loading retains Source's
+whole-epoch shape rather than claiming a byte-bounded historical scan.
+
+This is a library slice. Runtime registration, managed owner/session admission,
+request reconstruction, historical nonfinite/surrogate search parity, native SQLite,
+full feature activation and full G7 remain open. Invalid/surrogate query/content text
+is refused instead of silently rewritten. No dependencies or default behavior changed.
+
+Validation: focused sessionquery race tests; full go test ./... -count=1
+-timeout=180s, full go test -race ./... -count=1 -timeout=180s and go vet ./...
+passed. All 147 Source exports are current, and all 19 scanning guards are anchored.
+Python regression: 2155 passed, 28 skipped, 4 warnings and 24 subtests in 85.87s.
+Warnings include three dependency deprecations and the previously observed asyncio
+subprocess destructor Event loop is closed warning; its origin remains unidentified.
+No Python runtime package module changed, so the separate invariant verifier was
+not rerun. Source mutation guards and coverage were not refreshed in this library
+slice; prior coverage is not a current-tree or migration-completion measurement.
+README outline and git diff --check pass.
+
+Canonical README, extension/hardening boundaries and interactive architecture are
+updated. Archify deliver passes 9/9 showcase checks with no errors/warnings. Visual
+inspection remains skipped after prior access denial. Specification SHA256:
+e71c75133fa8a2ef26b12ec374282c1ac5a2eb5eab43bbd5c58e1496ff48b78b;
+HTML SHA256: 9734cf992963a0c2f869aabb12000be4579e3dc3fdf53c571bc13b2ce7a57aed.
+Next bind the search library to a typed runtime tool and managed session identity.
+The complete Python-to-Go objective remains active.
+
 ## 2026-10-08 transcript-search Source contracts
 
 Baseline 5af16e6. The comprehensive Source registry includes transcript_search,

@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `c9bc067` plus Source-selected task-child MCP binding
+Runtime review baseline: `2110eb2` plus the typed bounded transcript-search library
+and Source-selected task-child MCP binding
 and parent-retained connection cleanup, plus typed native InProcessMCP handlers and
 Python result text, plus explicit MCP launcher selection and
 operator server forwarding, plus default-off managed MCP connections,
@@ -387,7 +388,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending<br/>bounded epoch-search library · tool binding pending"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
@@ -900,6 +901,16 @@ The parser retains Python 3.11 default integer syntax and its 4,300-digit bound.
 Queue shedding and the 2,000-row window can still leave visible gaps; this is
 a bounded resume, not complete history or cross-process live tailing. The injected
 store seam is implemented; native Go SQL persistence/reopen remains pending.
+The Go `sessionquery` library now supplies typed historical search results through
+an explicit read-only Reader, distinct from live protocol messages. It scans at most
+20 recent epochs and returns at most 20 snippets of 240 Python characters, carrying
+coverage warnings into its rendered text. Snapshot 147 compares eight actual SQLite
+search recipes and four absent/null-store surfaces, preserving stored object order
+and Python Unicode lowercase offsets. Reads propagate context cancellation and
+backend errors. This is a library seam: runtime tool registration, bound owner/session
+admission, request reconstruction and native SQLite remain pending. Historical
+nonfinite/surrogate search profiles are not yet established as Source parity.
+
 `ManagedSession.ReadTranscript(ctx, selection)` returns a detached persisted epoch,
 including old compaction inputs and unfinished crash tails. Current selection is
 the zero value; explicit integer selections retain out-of-range identities for

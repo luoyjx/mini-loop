@@ -2892,3 +2892,23 @@ The Source worker runtime alias is a named protocol AgentWorker variant; Source'
 advertised Explore/general-purpose schema is retained. Wider historical role/input
 spellings remain part of the open scalar-profile work. Four real Source task
 recipes and a native blocked-cancelled-child test verify the current boundary.
+
+## Go historical transcript search reader
+
+`sessionquery.Reader` exposes only `TranscriptEpoch` and ordered `LoadMessages` for
+an explicitly supplied SessionID/Epoch. `Message` has named Role and Content fields
+using immutable closed ArchiveValue variants; historical scalars/containers are
+inert data, not live protocol messages. A missing role must be projected as the
+Source question-mark text by the backing adapter. The reader must preserve object
+member order from storage, since structural content is searched as Python JSON text.
+
+`Search` preserves direct empty-needle behavior. `ToolSearch` supplies whitespace
+trimming and empty-query refusal; an absent reader/session differs from a configured
+no-op reader returning empty history. Result/Match fields name epochs, ordinal,
+role, snippet and skipped coverage. Source full Unicode lowercasing determines the
+snippet offset in original text, even when the lowercase form grows. Both APIs
+propagate cancellation/read faults. Search caps epochs and matches; loading each
+stored epoch retains Source's whole-epoch read shape. This interface supplies no
+owner authorization, lifetime management, runtime tool installation or durability.
+Binding to managed session identity is the next slice; native SQLite, request
+reconstruction and historical nonfinite/surrogate parity remain open.
