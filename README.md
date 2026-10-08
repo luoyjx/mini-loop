@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `30274e7` plus typed masked-artifact recovery tool,
+Runtime review baseline: `7f40ded` plus observation/reducer Source contracts,
+plus typed masked-artifact recovery tool,
 plus artifact-recovery Source contracts,
 plus native scoped masked RAM storage,
 plus masked raw-store Source contracts,

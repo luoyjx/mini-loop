@@ -1,5 +1,28 @@
 # Go port plan
 
+## 2026-10-09 observation and builtin-reducer Source contracts
+
+Baseline 7f40ded. Export 168 captures twelve MaskedObservation and eight
+ObservationReduction constructors plus both real builtin reducers over 69 inputs.
+The constructor corpus pins stable reduced_by deduplication, MIME-like values,
+ref/digest pairing without premature pattern validation, ordered/repeated metadata
+pairs, warning bounds and successful projections/exact error messages.
+
+Reducer captures preserve full result content/warnings and both descriptors.
+Cases cover ANSI CSI and OSC removal (including greedy ST consumption), incomplete
+escapes, duplicate/CR-only/blank/space runs, singular/plural markers, diagnostics,
+Python Unicode decimal and word boundaries, Unicode-14/15 differences, extension
+and drive paths and the four extra re.IGNORECASE ASCII-range letters. The actual
+Source regex preserves faile/failed but can fold fail; fixtures retain that fact.
+No validation or algorithm is substituted. Inputs follow declared field types;
+arbitrary Python metadata objects and annotation-violating values are not claimed.
+
+Validation: Source tools/efficiency suite passes 52 tests, exporter --check confirms
+168 files and all 19 scan guards pass. README outline and git diff --check pass.
+Native typed observations/reducers follow. E2 mode/admission/inflation/storage/fault
+handling and E3-E6 remain pending; runtime optimization is not activated by this
+contract capture. Full Python regression, coverage and mutation sweep not refreshed.
+
 ## 2026-10-09 typed masked-artifact recovery tool
 
 Baseline 30274e7. efficiency.ReadMaskedPage accepts a scoped reference and named
