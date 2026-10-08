@@ -1,6 +1,28 @@
 # Go port plan
 
 
+## 2026-10-09 child efficiency inheritance Source contracts
+
+Baseline: `bc63773`. Added eight actual InProcessSubagents child runs, with real
+read_file and selected read_token_artifact calls, capturing shared component root,
+same-workspace store identity, role-selected recovery capability, fresh ledger,
+empty parent history and response opt-in state. Worker, Explore, custom filtered
+and custom readonly recovery roles are exercised across enforce/shadow/off,
+required/default concise policy and disabled raw persistence.
+
+Source children share components and matching raw stores; constructor state does
+not inherit the parent's concise_response flag. Default Explore excludes recovery;
+explicit readonly selection can recover existing masked data without store writes.
+The parent's store stays open after the child finishes. Child request/response/
+observation callbacks execute through the actual Agent. The default runtime owns
+no child-specific initialize/close. No random refs, timestamps or paths are exported.
+
+Validation: 82 focused Python efficiency/subagent tests, all 19 scan guards and
+the complete 179-file exporter check passed. git diff --check passed. Native child
+inheritance is a separate commit; launcher/HTTP/benchmark activation and foreign
+workspace child allocation remain open. No dependency or push.
+
+
 ## 2026-10-09 Manager-owned efficiency composition and lifecycle
 
 Baseline: `50dd0a2`. The library Manager now selects default or injected shared

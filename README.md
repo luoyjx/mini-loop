@@ -261,7 +261,7 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `50dd0a2` plus Manager-owned efficiency composition and shutdown,
+Runtime review baseline: `bc63773` plus actual child efficiency inheritance Source contracts,
 plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,
