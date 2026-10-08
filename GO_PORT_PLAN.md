@@ -1,5 +1,22 @@
 # Go port plan
 
+## 2026-10-09 coverage refresh after response policy delivery
+
+Measured implementation baseline: `6feeba2`. Full cross-package coverage run passed:
+`cd go && go test ./... -p=1 -count=1 -timeout=180s -coverpkg=./... -coverprofile=/tmp/mini-loop-current-coverage.out`.
+Repeated profile blocks were deduplicated by source location, with execution counts
+combined by maximum; statements count once across test packages.
+
+| Scope | Covered / total statements | Coverage |
+| --- | --- | --- |
+| All Go packages | 25,648 / 28,448 | 90.16% |
+| agent | 8,183 / 9,129 | 89.64% |
+| efficiency | 1,349 / 1,481 | 91.09% |
+| httpapi | 1,613 / 1,802 | 89.51% |
+
+This is statement coverage, not Python-to-Go port completion. Python coverage and
+mutation coverage were not refreshed. Evidence: Darwin arm64; local execution.
+
 ## 2026-10-09 typed response settings and policy library
 
 Baseline 5e4dffa. StableResponseSettings names bounded instruction strings, ordered
