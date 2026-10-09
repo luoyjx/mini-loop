@@ -520,6 +520,14 @@ None of this substitutes for not giving an agent credentials it does not need.
 
 ## 4. Durable conversation state — `StateStore`
 
+Go's independent `sqlitestate.Open(ctx, path)` now owns native schema-v7 opening
+and additive migration over a pinned CGO SQLite connection. Close releases the
+connection and pool, including on failed admission. Fresh schema creation occurs
+before future-version refusal; partial upgrade DDL/version changes can remain
+when later index creation fails. Source version gates are preserved. This library
+has no record methods or StateStore conformance yet; injecting a test store still
+does not prove durable managed restoration.
+
 `TrajectoryStore` records what happened, for audit, and redacts content when
 asked. `StateStore` is the other half: the state a *different process* needs to
 resume a session — the model-facing transcript and the event cursor an SSE

@@ -252,6 +252,21 @@ owner/diagnostic copies.
 
 ### Durable state contracts and archival decoding
 
+`sqlitestate.Open(ctx, path)` is now the standalone native SQLite schema library.
+It creates parent directories, owns one pinned connection with WAL/NORMAL/foreign
+keys, and performs Source v7 creation/index/additive upgrades. Callers own Close.
+The fixed mattn/go-sqlite3 v1.14.52 driver requires CGO and a C compiler; this
+checkout validates on Go 1.23.3. Paths containing query/fragment bytes remain
+literal filenames. Twenty-two actual Source database cases compare columns,
+indexes, version rows, preserved values and partial-failure outcomes, then native
+successful opens are reopened to verify idempotency. Schema versions use the
+existing closed scalar integer conversion before comparisons, retaining huge
+future-version diagnostics without narrowing. Corrupt-file errors include Source
+recovery advice; cancellation and environmental failures remain ordinary errors.
+Malformed schema-version conversion diagnostics and broader database error
+categories remain to be audited. The package has no record APIs yet and does not
+satisfy agent.StateStore or enable Launcher/Manager storage.
+
 `agent.SessionRecord` models the Python schema-v7 session projection: immutable
 creation time, mutable run/status/todo state, tenant owner, pending steering and
 bound-workspace flag. The event cursor is derived from event rows. Model, mode,
@@ -317,7 +332,8 @@ Python; this policy is not proof that a foreign process is dead or external fenc
 Snapshot 45 runs actual Python AgentSession over SQLite to pin guard/capture,
 masking, epochs, metadata timing, ephemeral sequence/ordinal differences and
 confirmed/unconfirmed renewal loss. Go runs the same recipe and failure outcomes
-against a test-only backing. Driver approval, backend execution
+against a test-only backing. Driver approval and native schema opening are now
+complete; record backend execution
 and durable SSE/launcher activation remain open; passing injection tests does
 not establish physical durability.
 

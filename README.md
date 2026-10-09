@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `0300df4` plus Source timeout overflow/error ordering,
+Runtime review baseline: `f44e8b6` plus standalone native SQLite schema opening,
+plus Source timeout overflow/error ordering,
 plus timeout conversion Source contracts,
 plus native benchmark post-construction narrowing,
 plus benchmark filter-order Source contracts,
@@ -456,7 +457,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>in-memory diagnostic snapshot · injected backend; SQLite pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>injected records · standalone SQLite schema v7<br/>record SQL / activation pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
@@ -579,6 +580,14 @@ flowchart LR
 ```
 <!-- architecture-map:end -->
 
+The standalone `go/sqlitestate` library now opens a pinned SQLite connection,
+sets WAL/NORMAL/foreign keys, and applies Source schema-v7 creation and additive
+upgrades. Its schema/index/version/data effects match 22 actual Python database
+cases, including partial migration failures and unbounded version refusal. It
+owns connection cleanup; additive upgrades can survive a later open failure.
+This package does not yet implement `agent.StateStore`, install runtime storage,
+or prove durable session restoration. Record SQL and explicit activation follow.
+
 Go Manager selects an off/normal shared efficiency root by default. Library callers
 can configure ManagerEfficiencyConfig or inject ManagerServices.TokenEfficiency;
 Start initializes once without granting service authority. Writable default
@@ -588,7 +597,7 @@ template stores retain shared identity. Delete releases the last live session
 holder after consumers drain; Stop drains sessions, cron, workflows and cleanup,
 then closes all distinct stores before shared components. Source lifecycle reports
 and store selection are checked against 14 captured Manager scenarios. Launcher
-mode/style activation remains pending. Switched-workspace writable enforce
+settings now select mode/style in Launcher and benchmark composition. Switched-workspace writable enforce
 children allocate fresh stores from detached settings only when recovery survives
 role selection. Child-created stores are transient RAM; old workspace refs stay
 confined to their original store, while component lifecycle remains shared.

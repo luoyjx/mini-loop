@@ -403,7 +403,7 @@
       "id": "goActions",
       "type": "database",
       "label": "Go Replay / State",
-      "sublabel": "state / restore / managed historical request reads",
+      "sublabel": "injected state / standalone SQLite schema",
       "pos": [
         1370,
         1360
@@ -412,7 +412,7 @@
         280,
         76
       ],
-      "tag": "injected / SQLite pending"
+      "tag": "record SQL pending"
     },
     {
       "id": "goChildren",
@@ -1683,7 +1683,8 @@
         "Entered-workspace Go children detach foreign stores and allocate fresh masked RAM only for writable enforce + selected recovery; TTL/capacities come from detached settings; child stores are transient, lifecycle root stays shared",
         "Go runtimeconfig.ManagerEfficiency maps validated mode/style, persistence, threshold and artifact limits into Launcher and request-time isolated fake benchmark managers; nine actual HTTP/native-shell traces and two benchmark Source reports match. Benchmark now constructs, runs setup, then restricts tools while retaining store ownership; MINILOOP_FEATURES and SQLite stay unavailable.",
         "ManagedSession.RestrictTools narrows pristine catalogues under exclusive admission/core locking; retained snapshots and Manager store ownership stay intact. Benchmark matches Source construct → setup → filter → run order; seven Source recipes and native effect/admission tests cover it.",
-        "Efficiency invocation converts arbitrary-size ms/1000 ratios before Go duration saturation; overflow faults occur before component bodies. Stage/init faults stay in safe reports; close escapes with admission fenced and no success cache. Twenty-five actual Source profiles match. No topology/default change."
+        "Efficiency invocation converts arbitrary-size ms/1000 ratios before Go duration saturation; overflow faults occur before component bodies. Stage/init faults stay in safe reports; close escapes with admission fenced and no success cache. Twenty-five actual Source profiles match. No topology/default change.",
+        "Native sqlitestate now owns pinned SQLite WAL/NORMAL/foreign-key opening and Source v7 additive schema migration. Twenty-two actual Source cases compare old/current/future schemas, partial failures and saved data; native successful opens are reopened. Record SQL, StateStore conformance and Manager/Launcher activation remain pending. Opening does not mark actions or claim leases."
       ]
     }
   ]

@@ -8152,3 +8152,14 @@ contain the fault; close lets it escape before hook handling while retaining
 its admission fence and leaving close reports uncached. Twenty-five actual Source
 profiles compare calls, reasons/errors and post-close denial; no plugin diagnostic
 text is introduced into public receipt/lifecycle codes.
+
+### Go migration — SQLite opening retains additive partial effects
+
+Native sqlitestate schema opening uses one pinned connection so connection-local
+foreign-key and synchronous settings cannot be lost through pool rotation. A
+failed open closes native handles without overwriting the database. Future schema
+refusal follows initial CREATE IF NOT EXISTS, matching Source. Upgrade steps and
+version update precede index creation; the v2 missing-epoch Source case remains
+at v7 after the index error. No atomic migration/repair transaction is claimed.
+Current v7 missing binding columns are not silently repaired. Schema opening alone
+establishes neither session durability nor leases/authority/Manager activation.

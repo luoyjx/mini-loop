@@ -1,5 +1,43 @@
 # Go port plan
 
+## 2026-10-09 native SQLite opening and schema migration
+
+Baseline: f44e8b6. The standalone sqlitestate library now opens the approved CGO
+SQLite driver, creates parent directories and pins a single configured connection.
+WAL, synchronous NORMAL, foreign keys and the driver's five-second busy timeout
+are verified on the actual connection. Close is idempotent; failed admission closes
+native handles. Query/fragment bytes in filenames remain literal path content.
+
+The embedded schema matches the complete Python export. Native creation and
+additive upgrades preserve Source step ordering/version gates and leave partial
+DDL/version effects when a later operation fails. Initial CREATE statements precede
+future-version refusal. Existing v7 files are not silently repaired. Twenty-two
+actual Source databases compare columns, indexes, version-row scalar identity,
+preserved session values and exact observed migration errors. Successful native
+opens are reopened and compared again. The SQL scanner immediately lowers concrete
+scalar variants into the existing closed Source int conversion before comparisons;
+large positive version identities remain exact in refusal diagnostics, and negative
+unbounded versions retain every applicable upgrade branch. No vague domain fields.
+
+Corrupt/foreign database errors retain Source recovery advice; ordinary environment
+and context failures propagate. Malformed version-conversion diagnostics, broader
+SQLite error categories and byte-specific malformed numeric profiles remain for
+further audit. This package has no record methods or agent.StateStore conformance
+and does not activate Manager/Launcher persistence. Native session/transcript/event/
+action/approval/lease SQL, concurrent connection transactions and durable managed
+restart/catch-up/cron restoration remain required. No full migration completion.
+
+Validation: 26 focused Python storage/census tests, the 185-file exporter check,
+Go full tests (-p=1 -count=1 -timeout=300s), vet and module verification passed.
+Go full race (-p=1 -count=1 -timeout=300s) also passed, including sqlitestate.
+The macOS CGO race link emitted an LC_DYSYMTAB warning; the tests and command
+completed successfully. git diff --check passed.
+README baseline/canonical map/boundary, extension and
+hardening guides and Go README are updated; generated architecture delivers 9/9
+checks with zero errors/warnings and matching SHA-256 receipts. Visual review stays
+skipped after the earlier browser denial. Full Python regression and coverage are
+not refreshed. No push.
+
 ## 2026-10-09 SQLite schema-version scalar Source contracts
 
 The migration capture now contains 22 actual SQLiteStateStore cases. Seven new
