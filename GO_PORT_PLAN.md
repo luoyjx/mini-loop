@@ -14401,3 +14401,41 @@ artifact passes 9/9 with zero errors/warnings; exact receipt hashes/bytes verifi
 Visual review was not repeated because prior browser review was denied; zero
 visual correction rounds. Nonfatal CGO linker warnings remain explicit.
 Coverage not refreshed. No push; full migration remains open.
+
+
+## 2026-10-09 coverage refresh after CLI dotenv activation
+
+Measured code/test baseline: `57b232d` (runtime `f85a78f`). Fresh full Go tests
+passed on Darwin arm64 with:
+`go test -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/mini-loop-current-go.cover ./...`
+from `go/`. Source-location blocks were merged by maximum hit count, counting
+each statement once across test packages.
+
+| Scope | Covered / total statements | Coverage |
+| --- | ---: | ---: |
+| All Go packages | 28,088 / 31,202 | 90.02% |
+| agent | 8,990 / 10,003 | 89.87% |
+| sqlitestate | 521 / 625 | 83.36% |
+| dotenv | 326 / 360 | 90.56% |
+| config | 349 / 401 | 87.03% |
+| launcher | 212 / 263 | 80.61% |
+| audit | 312 / 321 | 97.20% |
+| httpapi | 1,616 / 1,806 | 89.48% |
+| internal/commandenv | 0 / 28 | 0.00% |
+| cmd/miniloop | 45 / 69 | 65.22% |
+
+Compared with the last 27,949 / 30,998 snapshot, this adds 139 covered and
+204 total statements; the aggregate changes from 90.16% to 90.02%.
+Subprocess execution counters are not merged into this profile. In particular,
+commandenv is exercised by passing real-process tests despite its zero collected
+statement count; this profile cannot measure those child-process executions.
+This is statement coverage, not feature parity or mutation coverage.
+Python coverage and mutation checks were not refreshed in this iteration.
+
+The first coverage attempt failed because test helpers mixed JSON stdout with
+Go coverage warnings on stderr. Commit `57b232d` separates the streams; the
+successful rerun above supersedes that failed profile. Relevant race tests
+(`./cmd/miniloop ./internal/commandenv`) and full `go vet ./...` passed.
+Only tests and the README review baseline changed; runtime code and Python
+sources were unchanged. Full race and Python suites were not rerun this iteration.
+The profile remains temporary local output. No push.
