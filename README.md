@@ -382,7 +382,7 @@ terminable. CLI dump reports actual enabled/disabled discovery and still creates
 no manager/listener or model probe; it now reads dotenv files and updates its
 own process environment. Pure config.Load and launcher inspection remain unchanged.
 
-Runtime review baseline: `24822d1` plus executable dotenv startup activation,
+Runtime review baseline: `f85a78f` plus subprocess JSON stdout isolation tests,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -526,7 +526,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `24822d1` plus executable dotenv startup activation;
+reviewed **2026-10-09** (Go baseline `f85a78f` plus subprocess JSON stdout isolation tests;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through

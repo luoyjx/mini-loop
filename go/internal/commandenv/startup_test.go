@@ -129,7 +129,8 @@ func TestActualSourceEffectsPublishedToChildProcesses(t *testing.T) {
 			for name, value := range row.Environment {
 				command.Env = append(command.Env, name+"="+strings.ReplaceAll(value, "$ROOT", root))
 			}
-			output, err := command.CombinedOutput()
+			// Coverage and other runtime diagnostics use stderr, outside the JSON protocol.
+			output, err := command.Output()
 			if err != nil {
 				t.Fatalf("%v: %s", err, output)
 			}

@@ -98,7 +98,8 @@ func TestActualMainDumpAndBootstrapFailureOrder(t *testing.T) {
 		t.Fatal(err)
 	}
 	command := cliProcess(t, root, "--dump-config")
-	output, err := command.CombinedOutput()
+	// The stdout protocol must remain independent of runtime stderr diagnostics.
+	output, err := command.Output()
 	if err != nil {
 		t.Fatalf("%v: %s", err, output)
 	}
@@ -122,7 +123,7 @@ func TestActualMainDumpAndBootstrapFailureOrder(t *testing.T) {
 	}
 	command = cliProcess(t, root, "--dump-config")
 	command.Env = append(command.Env, "PYTHON_DOTENV_DISABLED=true")
-	output, err = command.CombinedOutput()
+	output, err = command.Output()
 	if err != nil {
 		t.Fatal(err, string(output))
 	}
