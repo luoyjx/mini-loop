@@ -291,9 +291,13 @@ is rejected before allocation; custom factories own their sandbox boundary.
 Empty-fleet posture reads template metadata without binding or executing it.
 Actual managed turns and pinned children retain read/write restrictions and
 explicit extra roots across a parent workspace switch.
+`Launcher.Options.Sandbox` binds the same backend through its timeout-preserving
+factory. SDK inspection reports the selected type and an optional detached reason;
+real HTTP health and model-tool turns observe this selection. No CLI flag or
+implicit confinement is added.
 
-Runtime review baseline: `8c9d90a` plus direct Manager sandbox injection and
-actual managed-turn/pinned-child/workspace-switch enforcement tests,
+Runtime review baseline: `cc690a7` plus Launcher sandbox injection, inspection and
+actual HTTP model-tool confinement/deadline tests,
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
@@ -435,7 +439,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `8c9d90a` plus direct Manager sandbox injection;
+reviewed **2026-10-09** (Go baseline `cc690a7` plus explicit Launcher sandbox injection;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -547,7 +551,7 @@ flowchart LR
         GoLaunch --> GoEntry --> GoTrust --> GoManager
         GoEntry -->|public static documents| GoBrowser
         GoBrowser -->|authenticated API / SSE| GoTrust
-        GoLaunch -. construct / stop / caller store / explicit restore .-> GoManager
+        GoLaunch -. construct / stop / caller store / sandbox / explicit restore .-> GoManager
         GoManager -. explicit typed workspace factory .-> GoWorktrees
         GoManager -->|create / fork / restore · owned teammate idle turns · bind resources / sandbox| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate

@@ -486,6 +486,11 @@ and workspace entry; template metadata is observable even before the first
 session. A nonnil custom BashFactory plus Sandbox is rejected before allocation,
 because the custom factory owns execution configuration. Children retain the
 executor captured at creation while a parent switches to a new workspace.
+For the Launcher SDK, pass `launcher.Options.Sandbox`; its factory preserves the
+configured BashTimeout while binding this backend. InspectWithOptions reports the
+backend type and optional unavailable reason without binding a workspace or
+executing a command. HTTP health uses the actual factory/live executor metadata.
+CLI startup still leaves this option nil; no new environment setting is added.
 
 ---
 

@@ -13579,3 +13579,50 @@ slice. Python package/exports/schemas/scanner and mutation targets did not chang
 so Python/export/invariant/scanner/guard gates and coverage were not refreshed.
 
 Final go vet ./..., README architecture outline and git diff --check passed.
+
+## Explicit Launcher sandbox binding — 2026-10-09
+
+Base: cc690a7. Launcher.Options.Sandbox now explicitly selects the sandbox used
+by its existing bound Bash factory, alongside the configured BashTimeout. This
+factory owns the boundary rather than setting both ManagerServices.Sandbox and
+BashFactory; the prior conflict guard remains intact. The same factory serves
+creation/restoration and workspace preparation. Nil remains host execution; no
+CLI switch, environment setting, automatic platform selection or dependency is
+added. Sandbox lifetime/concurrency safety remain caller-owned.
+
+InspectWithOptions projects actual template metadata through shell.InspectSandbox,
+retaining the historical default sandbox="none" and exposing an optional detached
+sandbox_reason for unavailable backends. It allocates no workspace and performs
+no Argv/ForWorkspace/command invocation. The existing public HTTP health report
+reads this factory for an empty fleet and actual bound executors for live handles.
+Configuration metadata alone is not an OS-enforcement guarantee.
+
+Real loopback HTTP tests create a session, admit a model-tool turn through the
+configured Anthropic-compatible HTTP provider, execute Bash and return its result
+in the next actual upstream model request. Native Seatbelt (without skip on local
+Darwin arm64) permits workspace writes, blocks reading a fake protected credential
+and writing outside, records both denials without the canary value, leaves no
+forbidden file, and enforces the configured one-second shell deadline. An explicit
+UnavailableSandbox instead permits the controlled host read/write while retaining
+that same deadline. Empty/live health and SDK inspect report both selections;
+reason snapshots detach. The existing configured-host-shell deadline regression
+also passes. These tests use concrete replies and existing closed JSON request
+variants, introducing no ambiguous domain payload.
+
+README Mermaid/boundary/review baseline, EXTENDING and architecture specification
+updated; HTML regenerated via Archify with 9/9 showcase checks and zero errors/
+warnings. Receipt sizes and SHA256 match the specification/artifact. Visual review
+remains skipped after the previously denied browser action. Default diagnostics
+and remaining full-port acceptance stay open; no push.
+
+Validation: focused final Launcher race tests passed, including both real HTTP
+profiles and the pre-existing host deadline regression (Seatbelt not skipped).
+Full `go test -p=1 -count=1 -timeout=300s ./...` and the same command with
+-race passed. Existing macOS CGO LC_DYSYMTAB warnings were nonfatal. Final
+architecture receipt hash/size checks, README outline and git diff --check passed.
+Python package/exports/default-tool schemas/source-scanner and mutation targets
+were unchanged, so Python/export/invariant/scanner/guard gates and coverage were
+not refreshed. Broader restart/confinement profiles remain separate acceptance
+work; full port goal remains active.
+
+Final go vet ./... passed.
