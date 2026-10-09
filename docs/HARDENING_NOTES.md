@@ -8163,3 +8163,22 @@ version update precede index creation; the v2 missing-epoch Source case remains
 at v7 after the index error. No atomic migration/repair transaction is claimed.
 Current v7 missing binding columns are not silently repaired. Schema opening alone
 establishes neither session durability nor leases/authority/Manager activation.
+
+### Go migration — native metadata, deletion and lease ownership
+
+SQLite upsert never refreshes created_at or transfers/releases the independent
+process lease. Load uses detached current Todo/steering variants, literal UTF-8
+metadata and derived event cursors; unknown shapes fail explicitly. Flat typed
+metadata arrays have no generic archival container cap; a real 1,501-item Source
+recipe verifies that the writer can read its own larger valid records. Conditional
+lease UPDATEs have no read-before-write window. Expiry equality remains held: the
+owner can renew at equality and a foreign process must wait for strict expiry.
+Missing rows cannot be claimed. Immediate deletion retains audit tables and rolls
+back previous message/event deletes if the session delete fails.
+
+The driver can report success for a very short SQL call whose context was already
+cancelled. API admission and pre-commit checks therefore test context explicitly.
+Rollback uses an independent cleanup context so cancellation cannot abandon a
+writer reservation. Tests cover real aborting triggers, cancelled commits, twenty
+competing double-connection claims, reopen and all thirteen Source lease steps. Database leases remain separate from external-effect fencing; record
+operations do not establish tenant authorization or restore human authority.

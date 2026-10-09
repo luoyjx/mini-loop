@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `f44e8b6` plus standalone native SQLite schema opening,
+Runtime review baseline: `8066d7b` plus native SQLite session metadata and leases,
+plus standalone native SQLite schema opening,
 plus Source timeout overflow/error ordering,
 plus timeout conversion Source contracts,
 plus native benchmark post-construction narrowing,
@@ -457,7 +458,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>injected records · standalone SQLite schema v7<br/>record SQL / activation pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>SQLite session rows · conditional leases<br/>transcript / event / audit SQL · activation pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
@@ -585,8 +586,15 @@ sets WAL/NORMAL/foreign keys, and applies Source schema-v7 creation and additive
 upgrades. Its schema/index/version/data effects match 22 actual Python database
 cases, including partial migration failures and unbounded version refusal. It
 owns connection cleanup; additive upgrades can survive a later open failure.
-This package does not yet implement `agent.StateStore`, install runtime storage,
-or prove durable session restoration. Record SQL and explicit activation follow.
+It now implements `agent.SessionStore` and `agent.LeaseStore` with typed rows,
+immutable creation time, derived event cursors and detached Todo/steering metadata.
+Deletion uses BEGIN IMMEDIATE and rolls back operational rows on failure while
+retaining audit tables. Conditional lease UPDATEs preserve expiry equality and
+separate tenant identity from process ownership; two connections cannot both claim.
+Explicit cancellation checks precede SQL admission and transaction commit. Record
+reads use current typed Todo/steering variants and fail on unsupported metadata.
+Transcript/event/action/approval SQL and complete `agent.StateStore` conformance,
+Manager/Launcher activation and durable managed restoration remain pending.
 
 Go Manager selects an off/normal shared efficiency root by default. Library callers
 can configure ManagerEfficiencyConfig or inject ManagerServices.TokenEfficiency;

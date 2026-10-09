@@ -12,7 +12,9 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"unicode/utf8"
 
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/mattn/go-sqlite3"
 )
 
@@ -46,7 +48,10 @@ type Store struct {
 	mu   sync.Mutex
 	db   *sql.DB
 	conn *sql.Conn
+	now  func() float64
 }
+
+var ErrClosed = errors.New("SQLite state store is closed")
 
 // Open creates parent directories and applies the Source schema-v7 migration.
 // An open failure can leave additive DDL applied, as in Python; migrations are
@@ -107,4 +112,24 @@ func (s *Store) Close() error {
 	err := errors.Join(s.conn.Close(), s.db.Close())
 	s.conn, s.db = nil, nil
 	return err
+}
+
+// ready is called under mu so close and pre-cancelled admission are serialized.
+// The SQLite driver can finish a short statement before noticing cancellation.
+func (s *Store) ready(ctx context.Context) error {
+	if s.conn == nil {
+		return ErrClosed
+	}
+	return ctx.Err()
+}
+
+// SQLite's Python binding UTF-8 encodes text parameters before executing SQL.
+// Reject surrogatepass/invalid Go bytes rather than persisting a lossy replacement.
+func validateText(values ...string) error {
+	for _, value := range values {
+		if !utf8.ValidString(value) {
+			return jsonvalue.ErrSurrogate
+		}
+	}
+	return nil
 }

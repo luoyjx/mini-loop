@@ -72,6 +72,10 @@ func AppendLegacySpaced(value Value) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	return spacedSeparators(compact), nil
+}
+
+func spacedSeparators(compact []byte) []byte {
 	out := make([]byte, 0, len(compact))
 	quoted, escaped := false, false
 	for _, c := range compact {
@@ -90,7 +94,7 @@ func AppendLegacySpaced(value Value) ([]byte, error) {
 			out = append(out, ' ')
 		}
 	}
-	return out, nil
+	return out
 }
 
 // UnmarshalJSON lowers ordinary boundary input immediately into closed variants.

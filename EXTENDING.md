@@ -524,9 +524,15 @@ Go's independent `sqlitestate.Open(ctx, path)` now owns native schema-v7 opening
 and additive migration over a pinned CGO SQLite connection. Close releases the
 connection and pool, including on failed admission. Fresh schema creation occurs
 before future-version refusal; partial upgrade DDL/version changes can remain
-when later index creation fails. Source version gates are preserved. This library
-has no record methods or StateStore conformance yet; injecting a test store still
-does not prove durable managed restoration.
+when later index creation fails. Source version gates are preserved. It now implements
+SessionStore and LeaseStore over typed metadata and conditional process lease
+UPDATEs. Upsert preserves creation time and lease ownership. Immediate deletion
+retains audit rows and rolls back earlier operational deletes on failure. Source
+expiry equality and optional-column read fallbacks are preserved. Explicit context
+checks precede SQL admission and commit; rollback survives caller cancellation.
+Current Todo/steering variants are decoded explicitly, with unsupported shapes
+refused. Transcript/event/action/approval SQL and complete StateStore conformance
+remain pending; these library methods do not activate managed restoration.
 
 `TrajectoryStore` records what happened, for audit, and redacts content when
 asked. `StateStore` is the other half: the state a *different process* needs to

@@ -403,7 +403,7 @@
       "id": "goActions",
       "type": "database",
       "label": "Go Replay / State",
-      "sublabel": "injected state / standalone SQLite schema",
+      "sublabel": "session rows / leases / injected state",
       "pos": [
         1370,
         1360
@@ -412,7 +412,7 @@
         280,
         76
       ],
-      "tag": "record SQL pending"
+      "tag": "other record SQL pending"
     },
     {
       "id": "goChildren",
@@ -1684,7 +1684,8 @@
         "Go runtimeconfig.ManagerEfficiency maps validated mode/style, persistence, threshold and artifact limits into Launcher and request-time isolated fake benchmark managers; nine actual HTTP/native-shell traces and two benchmark Source reports match. Benchmark now constructs, runs setup, then restricts tools while retaining store ownership; MINILOOP_FEATURES and SQLite stay unavailable.",
         "ManagedSession.RestrictTools narrows pristine catalogues under exclusive admission/core locking; retained snapshots and Manager store ownership stay intact. Benchmark matches Source construct → setup → filter → run order; seven Source recipes and native effect/admission tests cover it.",
         "Efficiency invocation converts arbitrary-size ms/1000 ratios before Go duration saturation; overflow faults occur before component bodies. Stage/init faults stay in safe reports; close escapes with admission fenced and no success cache. Twenty-five actual Source profiles match. No topology/default change.",
-        "Native sqlitestate now owns pinned SQLite WAL/NORMAL/foreign-key opening and Source v7 additive schema migration. Twenty-two actual Source cases compare old/current/future schemas, partial failures and saved data; native successful opens are reopened. Record SQL, StateStore conformance and Manager/Launcher activation remain pending. Opening does not mark actions or claim leases."
+        "Native sqlitestate now owns pinned SQLite WAL/NORMAL/foreign-key opening and Source v7 additive schema migration. Twenty-two actual Source cases compare old/current/future schemas, partial failures and saved data; native successful opens are reopened. Record SQL, StateStore conformance and Manager/Launcher activation remain pending. Opening does not mark actions or claim leases.",
+        "Native sqlitestate now implements SessionStore and LeaseStore. Upsert preserves creation/leases; typed detached metadata and optional-column fallbacks match Source. Immediate deletion rolls back operational rows and retains audit. Conditional UPDATE claims preserve exact expiry equality; two connections compete for one owner. Explicit context admission/pre-commit checks and live rollback cleanup prevent cancelled commits from leaving writer reservations. Other record SQL, StateStore composition and Manager/Launcher activation remain pending; no human authority or external-effect fencing is installed."
       ]
     }
   ]

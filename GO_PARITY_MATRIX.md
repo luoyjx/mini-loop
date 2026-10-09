@@ -1,5 +1,48 @@
 # Python to Go parity matrix
 
+## 2026-10-09 native SQLite session metadata, deletion and leases
+
+Baseline: 8066d7b. sqlitestate.Store now satisfies the consumer-owned SessionStore
+and LeaseStore interfaces. Session upsert preserves creation time and independent
+lease ownership; detached reads order by creation time and derive event cursors
+after fetching session rows. Source system NULL/empty identity, owner/steering/
+binding fallbacks and Python scalar binding truth are retained. Exact spaced UTF-8
+Todo and steering JSON match actual Source bytes. Invalid UTF-8 parameters are
+refused before SQL. Current typed Todo/steering shapes are decoded explicitly;
+unknown fields/unsupported shapes fail instead of silently discarding metadata.
+
+A real Source capture and native test round-trip 1,501 Todo and steering entries.
+Flat typed metadata arrays avoid the generic archival container cap. Each Todo
+object uses exact known property names and closed field values; no vague service
+fields or payload maps are added. Broader legacy malformed metadata diagnostics
+remain part of the remaining profile audit.
+
+Deletion uses BEGIN IMMEDIATE and preserves action/approval audit rows. An actual
+Source/native aborting trigger proves that earlier message/event deletion rolls
+back with the session-row failure. Conditional lease UPDATEs preserve all thirteen
+Source outcomes: foreign equality refusal, owner equality renewal, expired renewal
+refusal, stale-owner release refusal, same-owner reacquisition and missing-row
+refusal. Twenty double-connection races admit exactly one process owner; upsert
+and reopen retain lease data. These database leases do not fence external effects.
+
+Native tests exposed the driver's successful short SQL execution with an already
+cancelled context. API admission and pre-commit context checks now fence those
+cases; rollback uses a live cleanup context. Tests prove cancelled commit rollback,
+released writer reservation, closed-store errors, detached reads and no invalid
+text mutations. Metadata/lease methods install no human or tenant authorization.
+
+Validation: 42 focused Python tests, all 19 scan guards, 186-file exporter check,
+Go focused SQLite/jsonvalue tests, final full tests (-p=1 -count=1 -timeout=300s)
+and vet passed. Final full race (-p=1 -count=1 -timeout=300s) also passed. The
+macOS CGO race link emitted an LC_DYSYMTAB warning; tests and command succeeded.
+git diff --check passed. README baseline/canonical map,
+extension/hardening guides and Go README updated. Generated architecture passes
+9/9 checks with zero errors/warnings and matching SHA-256 receipts. Visual review
+remains skipped after the earlier browser denial. Full Python regression and
+coverage were not refreshed; no push. Transcript/event/action/approval SQL,
+complete StateStore conformance, configured Manager/Launcher activation and
+native durable restoration/catch-up/cron restart remain required. Goal stays active.
+
 ## 2026-10-09 SQLite session metadata and deletion Source contracts
 
 A new actual SQLiteStateStore capture records literal Unicode/HTML/quote/newline/

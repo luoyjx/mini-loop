@@ -95,6 +95,17 @@
     "workspace": "/kept",
     "workspace_bound": true
   },
+  "large_metadata": {
+    "count": 1501,
+    "last_steering": "queued-1500",
+    "last_todo": {
+      "activeForm": "working",
+      "content": "todo-1500",
+      "status": "pending"
+    },
+    "steering": 1501,
+    "todos": 1501
+  },
   "raw_steering": "[\"汉字😀 <tag>: comma, quote\\\" slash\\\\ newline\\n separator \"]",
   "raw_todos": "[{\"content\": \"汉字😀 <tag>: comma, quote\\\" slash\\\\ newline\\n separator \", \"status\": \"pending\", \"activeForm\": \"doing\"}]",
   "reopened": [

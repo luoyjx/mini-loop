@@ -59,4 +59,15 @@ def sqlite_session_contracts(scratch) -> dict:
     deletion.delete_session("saved")
     result["deleted"] = counts()
     deletion.close()
+    large = SQLiteStateStore(root / "large.db")
+    count = 1501
+    large.upsert_session(replace(record,
+        todos=tuple(dict(content=f"todo-{index}", status="pending", activeForm="working")
+                    for index in range(count)),
+        pending_steering=tuple(f"queued-{index}" for index in range(count))))
+    loaded = large.load_sessions()[0]
+    result["large_metadata"] = dict(count=count, todos=len(loaded.todos),
+        steering=len(loaded.pending_steering), last_todo=loaded.todos[-1],
+        last_steering=loaded.pending_steering[-1])
+    large.close()
     return result

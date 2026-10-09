@@ -5,6 +5,16 @@ package jsonvalue
 // Existing ASCII archival renderers remain unchanged.
 func (v Value) MarshalUTF8() ([]byte, error) { return appendUTF8(nil, v, false) }
 
+// MarshalUTF8Spaced matches json.dumps(ensure_ascii=False) with default spacing.
+// It retains literal Unicode and rejects text that SQLite cannot encode as UTF-8.
+func (v Value) MarshalUTF8Spaced() ([]byte, error) {
+	compact, err := v.MarshalUTF8()
+	if err != nil {
+		return nil, err
+	}
+	return spacedSeparators(compact), nil
+}
+
 // MarshalLegacyUTF8 matches Python archival ensure_ascii=False: nonfinite
 // numbers are retained, but unpaired surrogate text cannot become UTF-8 bytes.
 func (v Value) MarshalLegacyUTF8() ([]byte, error) { return appendUTF8(nil, v, true) }

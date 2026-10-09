@@ -264,8 +264,24 @@ existing closed scalar integer conversion before comparisons, retaining huge
 future-version diagnostics without narrowing. Corrupt-file errors include Source
 recovery advice; cancellation and environmental failures remain ordinary errors.
 Malformed schema-version conversion diagnostics and broader database error
-categories remain to be audited. The package has no record APIs yet and does not
-satisfy agent.StateStore or enable Launcher/Manager storage.
+categories remain to be audited. The package now implements agent.SessionStore and agent.LeaseStore.
+
+Session upsert keeps the original creation time and lease; reads order by creation
+time and derive cursors from events after fetching session rows. System NULL and
+empty strings remain distinct; optional historical owner/steering/binding columns
+use Source fallback values. Todo and steering JSON use exact spaced UTF-8 bytes.
+A real Source recipe verifies 1,501 Todo/steering entries; these flat typed arrays
+do not inherit the generic archival container-size limit. Current metadata is
+detached; unknown Todo fields and unsupported shapes
+return ErrSessionMetadata instead of silently losing data. Invalid UTF-8 text is
+refused before SQL. Deletion rolls back messages/events/sessions as one immediate
+transaction, retaining action and approval audit rows. Single-statement lease
+claims/renewals preserve Source expiry equality, owner-scoped release and missing
+row refusal. Store Close serializes against these operations. Pre-cancelled calls
+and cancelled pre-commit transactions are explicitly fenced; cleanup uses a live
+rollback context. These operations install no owner authorization or human grants.
+Transcript/event/action/approval record APIs, complete agent.StateStore conformance
+and Launcher/Manager persistence activation remain pending.
 
 `agent.SessionRecord` models the Python schema-v7 session projection: immutable
 creation time, mutable run/status/todo state, tenant owner, pending steering and
