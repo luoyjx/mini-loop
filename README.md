@@ -349,7 +349,7 @@ missing-credential failure carries typed `TypeError` identity through existing
 recovery and error-result projection. Supplied keys retain header/size admission;
 SDK profile, OAuth and federation discovery remain outside this native seam.
 
-Runtime review baseline: `798a2a6` plus deferred provider missing-credential admission,
+Runtime review baseline: `3b529b8` plus pinned dotenv Source contracts,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -493,7 +493,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `798a2a6` plus deferred provider missing-credential admission;
+reviewed **2026-10-09** (Go baseline `3b529b8` plus pinned dotenv Source contracts;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through

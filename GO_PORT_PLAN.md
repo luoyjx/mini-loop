@@ -14130,3 +14130,40 @@ repeated because previous browser inspection was denied; correction rounds 0.
 Existing Darwin CGO linker warnings were nonfatal. Python package invariant/
 guard gates and coverage were not refreshed: package modules/mutation anchors
 are unchanged. No push; full migration/default diagnostics remain unfinished.
+
+## Dotenv parsing/interpolation/application Source contracts — 2026-10-09
+
+Base: `3b529b8`. Actual Python config imports load_dotenv(override=True);
+Go still reports no dotenv discovery. Snapshot 197 freezes installed
+python-dotenv 1.2.2 through real parse_stream, DotEnv.dict and load_dotenv over
+38 profiles (19 recipes with both override settings). This is a prerequisite
+for native parsing and startup discovery, not implementation of either.
+
+Recipes cover valueless versus empty values, export modifiers, quoted keys,
+comments, literal comment markers, recognized/unknown escapes, multiline values,
+CR/LF/CRLF, Unicode whitespace/keys, BOM, malformed-line recovery, trailing
+garbage, duplicate insertion order, variable/default syntax, environment/prior
+binding priority and disabled loading. Bindings retain nullable key/value,
+exact original text, original start line and error flag. Values preserve first
+key insertion order with final binding values. Environment application captures
+returned load status, class/message failure and exact partially applied map.
+
+A parser-accepted key containing '=' triggers ValueError during environment
+application after earlier variables were written. This partial effect remains
+frozen instead of imposing atomic application. Valueless bindings can make
+load_dotenv return true without writing any variable. PYTHON_DOTENV_DISABLED
+stops load_dotenv while pure DotEnv parsing/interpolation remains observable.
+Only logging warnings are silenced; parser, resolver and environment application
+are actual Source calls. Environment is isolated and restored per recipe.
+
+README architecture baseline/map reviewed; no runtime topology/default/authority
+change, new dependency or native source change. Native parser, filesystem
+discovery, file decoding and actual CLI activation remain pending. Full default
+diagnostics and wider migration acceptance remain open.
+
+Validation passed: focused real parser/interpolation/application test, full
+Python pytest (2171 passed, 28 skipped, 24 subtests, 3 warnings), all 197 Source
+exports, all 19 scanning guards, README outline and git diff --check. No Go
+implementation/default-tool type or Python package module/mutation anchor
+changed; Go/race/vet and Python invariant/guard gates were not repeated.
+Coverage was not refreshed. No push; native dotenv remains unfinished.
