@@ -6490,6 +6490,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.audit_posture_contracts import audit_posture_contracts
     from tools.audit_remote_cli_contracts import audit_remote_cli_contracts
     from tools.audit_settings_contracts import audit_settings_contracts
+    from tools.audit_live_contracts import audit_live_contracts
     from tools.sandbox_contracts import sandbox_contracts
     from tools.posture_contracts import posture_contracts
     from tools.feature_bundle_contracts import feature_bundle_contracts
@@ -6833,6 +6834,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-bound-tools.json": _json_bytes(workflow_bound_tool_contracts()),
         "python-manager-workflows.json": _json_bytes(manager_workflow_contracts()),
         "python-posture.json": _json_bytes(posture_contracts(scratch)),
+        "python-audit-live.json": _json_bytes(audit_live_contracts(Path(scratch) / "audit-live")),
         "python-audit-settings.json": _json_bytes(audit_settings_contracts(Path(scratch) / "audit-settings")),
         "python-audit-remote-cli.json": _json_bytes(audit_remote_cli_contracts(Path(scratch) / "audit-cli")),
         "python-audit-posture.json": _json_bytes(audit_posture_contracts(Path(scratch) / "audit")),

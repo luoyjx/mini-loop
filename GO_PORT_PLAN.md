@@ -13858,3 +13858,28 @@ Source contract commit. README outline and git diff --check passed. Existing
 CGO linker warnings were nonfatal. Python package invariant/guard checks and
 coverage were not refreshed because package modules and mutation anchors are
 unchanged. No push; the complete port remains active.
+
+## Full deployment audit Source observation contracts — 2026-10-09
+
+`python-audit-live.json` freezes actual full `audit(manager)` findings/rendering
+for sixteen real SessionManagers. Cases cover default and empty catalogues,
+parallel-safe read/write/exec/external/unclassified risks independent of advisory
+readonly, absent/null/complete/partial/case-sensitive masking, cached unresolved
+and short secrets, unavailable and empty-reason sandbox metadata, no-shell
+severity lowering, actual SQLite/Seatbelt configuration, real persistence write
+faults, workflows, merged multi-session MCP counts and component problem logs.
+Generic channels include plain lists and churning bounded logs.
+
+Inputs separately capture configuration findings and typed component metadata/
+ledger observations from actual Source objects. Names/flags/counts represent
+observations, not grants. Secret cache reporting does not resolve lazy values.
+The hardened profile still reports shell resource limits; selected sandbox
+confinement is not a CPU/memory/disk bound. The full function sorts by severity
+and check. Only temporary root prefixes are normalized; two independent roots
+reproduce the snapshot. Source package modules are unchanged.
+
+Validation: focused actual-manager Source fixture test and full Python pytest
+passed (2168 passed, 28 skipped, 24 subtests; 3 existing warnings). Source
+exporter --check passed for 194 files; verify_scans passed all 19 anchored scanning
+guards. Two independent roots reproduce full snapshots. git diff --check passed.
+No Source package modules or guarded mutation anchors changed.
