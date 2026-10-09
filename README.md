@@ -382,7 +382,15 @@ terminable. CLI dump reports actual enabled/disabled discovery and still creates
 no manager/listener or model probe; it now reads dotenv files and updates its
 own process environment. Pure config.Load and launcher inspection remain unchanged.
 
-Runtime review baseline: `6c1bf01` plus native SQLite large-decision replay tests,
+`go/reload.NewWatcher` is an explicitly selected development library. Operator
+roots are captured once; polling follows Uvicorn StatReload's first-seen baseline,
+increasing floating-point mtime comparison and reset semantics. Go watches `.go`;
+an explicit Python profile watches `.py` for differential checks. Matching directory
+names and resolved file symlinks retain Source behavior. It does not build code,
+start a child or restart a server. `MINILOOP_RELOAD` remains refused until the
+native supervisor/build/CLI path is delivered.
+
+Runtime review baseline: `552541f` plus explicit Source-compatible reload observation,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -526,7 +534,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `6c1bf01` plus native SQLite large-decision replay tests;
+reviewed **2026-10-10** (Go baseline `552541f` plus explicit Source-compatible reload observation;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through

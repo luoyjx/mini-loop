@@ -2846,3 +2846,16 @@ Signal hooks are installed after preparation, preserving termination during a
 blocked startup FIFO. Independent subprocess tests prove all 18 pinned environment
 outcomes, actual executable main dump/failure order, local audit construction,
 HTTP→auto-mode Bash environment inheritance and SIGTERM shutdown/startup handling.
+
+
+### Development reload observer
+
+`reload.NewWatcher(reload.WatchConfig{Roots: []string{sourceRoot}})` explicitly
+observes Go source paths. `Next(ctx)` polls after 250ms by default; `Scan(ctx)`
+performs one observation and `Reset()` clears baselines for a future replacement.
+A typed PythonSource profile supports Source differential checks. New/deleted
+paths and non-increasing mtimes do not trigger, matching Uvicorn StatReload.
+The roots/delay are detached from caller configuration. Directory symlinks are
+not traversed; matching-suffix directories and resolved file symlinks participate.
+It does not build binaries, own children/listeners or change CLI startup.
+`MINILOOP_RELOAD` remains unavailable pending the native supervisor/build path.

@@ -6496,6 +6496,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.dotenv_contracts import dotenv_contracts
     from tools.dotenv_file_contracts import dotenv_file_contracts
     from tools.dotenv_boot_contracts import dotenv_boot_contracts
+    from tools.reload_contracts import reload_contracts
     from tools.sandbox_contracts import sandbox_contracts
     from tools.posture_contracts import posture_contracts
     from tools.feature_bundle_contracts import feature_bundle_contracts
@@ -6845,6 +6846,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-dotenv.json": _json_bytes(dotenv_contracts()),
         "python-dotenv-files.json": _json_bytes(dotenv_file_contracts(Path(scratch) / "dotenv-files")),
         "python-dotenv-boot.json": _json_bytes(dotenv_boot_contracts(Path(scratch) / "dotenv-boot")),
+        "python-reload.json": _json_bytes(reload_contracts(Path(scratch) / "reload")),
         "python-audit-settings.json": _json_bytes(audit_settings_contracts(Path(scratch) / "audit-settings")),
         "python-audit-remote-cli.json": _json_bytes(audit_remote_cli_contracts(Path(scratch) / "audit-cli")),
         "python-audit-posture.json": _json_bytes(audit_posture_contracts(Path(scratch) / "audit")),

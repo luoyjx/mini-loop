@@ -1588,6 +1588,7 @@
       "dot": "cyan",
       "title": "Language layout",
       "items": [
+        "Explicit go/reload watcher observes operator-selected .go paths (Python differential profile .py), with Source StatReload baseline/mtime/reset semantics and cancellable polling. It owns no build, child, listener or runtime activation; MINILOOP_RELOAD remains refused until supervisor/build/CLI delivery.",
         "The main map follows the Python runtime under python/",
         "Go NewRuntimeSession registers ten implemented tools behind one typed gate",
         "SessionManager owns ManagedSession admission/cancel/status and drains scratch cleanup; raw children emit core spans only",

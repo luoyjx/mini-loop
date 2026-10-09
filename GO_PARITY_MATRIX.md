@@ -7216,3 +7216,53 @@ were not rerun: no runtime implementation or corresponding source/targets change
 The initial test was terminated after identifying interactive approval waiting;
 the final bounded test explicitly checks restored interactive mode before current
 operator admission. No runtime authorization rule was changed. No push.
+
+
+## Native development reload observation — 2026-10-10
+
+`go/reload` adds a typed, explicitly selected source observer; no launcher default
+or `MINILOOP_RELOAD` refusal is changed. WatchConfig owns normalized roots, finite
+Go/Python language selection and a detached optional delay (nil selects 250ms).
+Watcher retains resolved-path floating-point mtimes under its own mutex. Scan
+records first-seen paths, detects only mtime increases and returns the first
+changed path without replacing its baseline; Reset clears baselines after a
+future supervisor replacement. Next supports context cancellation before scanning
+and during the configured delay. Directory symlinks are not traversed, matching
+Source; matching suffix directories and resolved file links still participate.
+Filesystem discovery/stat errors are skipped as in Source polling.
+
+Snapshot 200 (`python-reload.json`) invokes the actual installed Uvicorn 0.49.0
+StatReload with zero delay over temporary real filesystem operations; it never
+starts a server/process. Version and StatReload source SHA-256 are recorded.
+31 steps cover initial/same/increasing/decreasing mtimes, repeat detection,
+observer reconstruction, addition/deletion/recreation, unrelated suffixes, resolved
+file symlinks and a matching-suffix directory. Go tests replay the same steps for
+the exact Python suffix and explicit Go suffix adaptation. Additional native
+checks cover cancellation, detached config and invalid construction.
+
+The supervisor is still required to stop/join children, build native replacements,
+retain listener ownership and refresh child startup. Those actions are absent
+from this observer and are the next implementation slices. No runtime dependency
+was added. The source exporter has a new recipe; no Python runtime module or
+Go default-tool types changed. README review/boundary and the architecture language
+card identify this library as explicit and unconnected to current startup.
+
+Validation: narrow `go test -count=1 ./reload`, full `go test -p=1 -count=1
+-timeout=300s ./...`, full `go test -race -p=1 -count=1 -timeout=300s ./...` and
+`go vet ./...` passed from `go/`. The complete exporter check passed with 200
+current files, and all 19 scanning guards passed. Installed Source default delay
+was verified as 0.25s. Source/export deprecation warnings and Darwin CGO race-link
+warnings remain nonfatal. `git diff --check` passed. Python runtime modules and
+load-bearing guards did not change; full Python, invariants, mutation and coverage
+were not rerun. Architecture delivery passed 9/9 with zero errors/warnings; exact
+specification/artifact SHA-256 and byte counts were verified. Correction rounds:
+0. Visual review was not repeated after the prior browser denial. No push.
+
+Next reload slices retain the complete public-entry objective:
+1. Typed build/artifact ownership using the repository Go toolchain: real syntax
+   failure, corrected-source recovery, cancellation and private output cleanup.
+2. Owned supervisor: stop/join before replacement, cancelled lifecycle and child
+   exit behavior, retained listener and fresh child startup environment.
+3. CLI selection and actual HTTP process proof: Source nonempty environment
+   activation, observed source edit changing served native behavior, build failure
+   then recovery and SIGTERM cleanup. The current refusal stays until these pass.
