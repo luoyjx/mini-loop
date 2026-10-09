@@ -1,5 +1,18 @@
 # Python to Go parity matrix
 
+## 2026-10-09 component timeout conversion Source contracts
+
+Baseline: `1a64ec5`. Twenty-five actual Source operations cover three stage calls
+and initialize/close across five positive arbitrary-size millisecond values.
+Division converts the integer ratio: 2**1024 milliseconds remains finite after
+dividing by 1000. 10**312 and 10**400 overflow before component bodies run.
+Stage calls and initialize report component_error:OverflowError; close escapes
+OverflowError with its exact division diagnostic. Close keeps admission fenced.
+These contracts precede native conversion/error-order fixes.
+Validation: 124 focused Python tests, all 19 scan guards, complete 184-file
+exporter check and git diff --check passed. No Python runtime modules changed.
+
+
 ## 2026-10-09 native benchmark construction/filter order
 
 Baseline: `bcaeca9`. ManagedSession.RestrictTools is an explicit first-turn-only

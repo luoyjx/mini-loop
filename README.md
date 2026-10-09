@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `bcaeca9` plus native benchmark post-construction narrowing,
+Runtime review baseline: `1a64ec5` plus timeout conversion Source contracts,
+plus native benchmark post-construction narrowing,
 plus benchmark filter-order Source contracts,
 plus Launcher and benchmark efficiency settings activation,
 plus benchmark efficiency Source contracts,
