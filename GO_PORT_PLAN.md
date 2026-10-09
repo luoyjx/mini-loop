@@ -13021,3 +13021,32 @@ The temporary profile is local validation output and is not checked in.
 This is statement coverage, not a full-port parity or release-readiness measure.
 Python full tests passed in the composition slice, but Python coverage was not
 refreshed. Source contracts committed as acb2646 add no Go runtime statements.
+
+## Go built-in feature publication order — 2026-10-09
+
+`orderBuiltinDefinitions` orders built-in catalogues by Source full-registry
+groups, followed by independently selected decisions, workflows and AST tools.
+Sorting precedes capability filtering; extra tools keep their relative order
+after the built-ins. Explicit custom catalogues skip this ordering step. No
+feature is automatically selected and no handler, authority or permission is
+changed.
+
+An actual native Manager with twelve explicitly selected groups matches all 48
+Source tools in order, concrete schemas, risks, readonly/parallel traits,
+capabilities and bash classification. Diagnostics is selected with an
+inventory-only provider that errors if called: no native parser is claimed.
+All 14 Source registry and eight Manager catalogue recipes also test ordering
+from reversed publication input. A separate actual custom Manager preserves its
+caller-supplied two-tool order without widening. The overall feature setting
+remains refused; default Python-syntax parsing and injector override semantics
+are still required.
+
+Validation: focused contract and its race run pass; full Go tests and full race
+tests with `-p=1 -count=1 -timeout=300s` pass, as does `go vet ./...`. Race
+linking reports existing nonfatal macOS CGO LC_DYSYMTAB warnings. Architecture
+delivery passes 9/9 with zero errors/warnings and exact specification/HTML
+bytes and hashes verified; browser visual inspection remains skipped after the
+earlier denial. README Mermaid/outline and `git diff --check` reviewed. Python
+code/exports were unchanged in this slice; their full suite/export/scanning gates
+passed at acb2646 and were not rerun. Coverage was not remeasured after the new
+ordering helper.

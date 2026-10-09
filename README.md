@@ -261,7 +261,15 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `ec20692` plus Source full-feature composition contracts,
+Go built-in feature catalogues publish tools in Python registry order, including
+independently selected decisions, workflows and AST additions. Caller-supplied
+catalogues keep their order; capability filtering retains the selected subsequence.
+Explicitly composed full tools match all 48 Source schemas and traits. The full
+`MINILOOP_FEATURES` startup setting remains unavailable pending default Python
+syntax parsing and injector override semantics.
+
+Runtime review baseline: `125f44b` plus Source-ordered Go built-in feature catalogues,
+plus Source full-feature composition contracts,
 plus native process-kill generation recovery,
 plus native cron/SQLite reopen proof,
 plus Launcher caller-owned state injection,
@@ -474,7 +482,7 @@ flowchart LR
         GoSecrets -. explicit credential scrub / passthrough .-> GoMCP
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · MINILOOP_GUARDIAN readonly review · typed store seam"]
-        GoGate["ToolGate<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
+        GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
         GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]

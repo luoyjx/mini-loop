@@ -3601,3 +3601,12 @@ contain this as component_error:OverflowError. Close conversion occurs outside
 hook fault containment, matching Source; it returns the error with admission
 already fenced, releases lifecycle serialization and leaves close report uncached.
 Missing hooks skip conversion. Expired close budgets retain their existing priority.
+
+### Go built-in feature ordering
+
+`NewRuntimeSession` publishes built-in definitions in Source registry order before
+applying `ToolSelection`. Full feature groups precede independently enabled
+decisions, workflows and AST tools. Unranked extensions retain relative order
+after those built-ins. Supplying `RuntimeConfig.Tools` or `ManagerServices.Tools`
+keeps caller catalogue order. Ordering does not select any feature or grant
+authority; full startup activation still requires parser and injector parity.

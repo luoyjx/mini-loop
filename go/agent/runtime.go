@@ -675,6 +675,9 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		}
 		definitions = append(definitions, definition)
 	}
+	if config.Tools == nil {
+		orderBuiltinDefinitions(definitions)
+	}
 	catalog, err := NewToolCatalog(config.ToolSelection.filter(definitions)...)
 	if err != nil {
 		return nil, err

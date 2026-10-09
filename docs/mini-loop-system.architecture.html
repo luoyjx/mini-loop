@@ -4838,8 +4838,8 @@
         <text data-detail="fine" x="1015" y="1248" class="t-backend" font-size="7" text-anchor="middle">typed turns / explicit verified proposals</text>
         </g>
 
-        <g id="node-goGate" data-node-id="goGate" data-node-label="Go ToolGate" tabindex="0" role="button" aria-label="Focus Go ToolGate, before / guard / permission / after; self-audit read, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="before / guard / permission / after; self-audit read" data-node-tag="pinned subset; deny is final" data-node-context="Independent Go port - in progress">
-          <title>Go ToolGate · before / guard / permission / after; self-audit read · Independent Go port - in progress · pinned subset; deny is final</title>
+        <g id="node-goGate" data-node-id="goGate" data-node-label="Go ToolGate" tabindex="0" role="button" aria-label="Focus Go ToolGate, before / guard / permission / after; self-audit read, Independent Go port - in progress" aria-pressed="false" data-node-kind="security" data-node-sublabel="before / guard / permission / after; self-audit read" data-node-tag="Source order; subset deny is final" data-node-context="Independent Go port - in progress">
+          <title>Go ToolGate · before / guard / permission / after; self-audit read · Independent Go port - in progress · Source order; subset deny is final</title>
           <rect x="1370" y="1180" width="280" height="76" rx="6" class="c-mask"/>
           <rect x="1370" y="1180" width="280" height="76" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1376 1186) scale(0.6875)">
@@ -4848,7 +4848,7 @@
           </g>
           <text data-detail-anchor x="1510" y="1216" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Go ToolGate</text>
         <text data-detail="context" x="1510" y="1232" class="t-muted" font-size="9" text-anchor="middle">before / guard / permission / after; self-audit read</text>
-        <text data-detail="fine" x="1510" y="1248" class="t-security" font-size="7" text-anchor="middle">pinned subset; deny is final</text>
+        <text data-detail="fine" x="1510" y="1248" class="t-security" font-size="7" text-anchor="middle">Source order; subset deny is final</text>
         </g>
 
         <g id="node-goBash" data-node-id="goBash" data-node-label="Workspace shell.Executor" tabindex="0" role="button" aria-label="Focus Workspace shell.Executor, foreground start/stop / background bytes, Independent Go port - in progress" aria-pressed="false" data-node-kind="backend" data-node-sublabel="foreground start/stop / background bytes" data-node-tag="background: explicit activation" data-node-context="Independent Go port - in progress">
@@ -5590,6 +5590,7 @@
           <li>&bull; Launcher Options.StateStore now forwards an explicit caller-owned backend to Manager and App.RestoreSessions exposes operator restoration. Constructor and Serve do not automatically publish saved handles. Stop drains/releases leases but never closes the backend. Inspection reports process-local/injected selection without probing durability. Native authenticated HTTP tests reopen SQLite, preserve owner-scoped transcripts and resume a turn. Default startup stays process-local; native cron restart follows below; the later generation process-kill test proves one window; other windows remain pending.</li>
           <li>&bull; Native cron/SQLite close-and-reopen proof now replays all seven scheduled Source restoration recipes: bound/scratch/current-system, missing SQL/no-store and foreign lease. A Manager-created durable one-shot survives reconstruction disarmed and Manager Start does not arm it. Operator arm triggers lazy native session restoration, preserved history and a fresh untrusted turn. Another reopen retains run_count and persisted one-shot removal. Cron jobs remain JSON, sessions/leases remain SQLite. Tests use explicit civil-minute ticks in one process; the later process-kill test proves generation recovery; other crash/clock-drift/wider archival profiles remain pending.</li>
           <li>&bull; Native SQLite now has a real process-kill generation recovery test. A dedicated child persists the admitted request and its process lease, publishes a typed checkpoint and blocks in Complete. The parent kills only that confirmed child without Stop/Close. Another process sees the persisted lease and unrepaired history, refuses model admission until natural expiry, acquires distinct process ownership, sends the interrupted-turn repair in its next request and persists the resumed turn. A later reopen retains repair and run_count=2. This proves one killed-generation window, not power-loss durability, external-effect atomicity or all crash windows; broader variants remain pending.</li>
+          <li>&bull; Go built-in feature publication follows Source group order, then decisions/workflows/AST; capability filtering retains subsequences and explicit custom catalogues keep caller order. Actual explicit composition matches all 48 schemas and traits; MINILOOP_FEATURES remains refused pending default Python syntax parsing and injector overrides.</li>
         </ul>
       </div>
     </div>
