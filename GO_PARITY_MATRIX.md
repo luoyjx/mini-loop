@@ -6369,3 +6369,17 @@ scanner/guard gates and coverage were not refreshed because their targets are
 unchanged. No architecture topology/defaults changed.
 
 Final go vet ./... passed.
+
+## Remote posture audit Source contracts — 2026-10-09
+
+Snapshot `python-audit-posture.json` fixes 22 actual Python `audit_posture`
+results and `render` outputs: fourteen existing real health profiles plus eight
+missing/null/empty/unknown/selected/error-precedence cases. The exporter runs
+Source code in a separate scratch root; Python tests compare two independent
+roots with the frozen fixture. This prepares the remote audit library; local
+settings/live inspection and CLI composition remain outside this slice.
+
+Validation: full Python pytest passed (2165 passed, 28 skipped, 24 subtests;
+3 existing warnings). Source exporter --check passed for 191 files.
+verify_scans passed all 19 anchored scanning guards; git diff --check passed.
+No Python package modules or guarded mutation anchors changed.

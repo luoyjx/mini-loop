@@ -1,0 +1,1053 @@
+{
+  "cases": [
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "default-empty",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "default-live",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 1,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "null-registry",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-unregistered",
+          "detail": "http://fixture.invalid has a secret registry but 2 credential-shaped variable(s) in its environment are not registered, so the shell inherits them and their values reach tool output unmasked",
+          "remedy": "register them on the server (SecretRegistry.from_environ() picks up every credential-shaped name)",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "unregistered",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-unregistered\n           http://fixture.invalid has a secret registry but 2 credential-shaped variable(s) in its environment are not registered, so the shell inherits them and their values reach tool output unmasked\n           -> register them on the server (SecretRegistry.from_environ() picks up every credential-shaped name)\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "SecretRegistry",
+          "secrets_unregistered": 2,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "registered",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n4 finding(s): 3 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "SecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-unregistered",
+          "detail": "http://fixture.invalid has a secret registry but 2 credential-shaped variable(s) in its environment are not registered, so the shell inherits them and their values reach tool output unmasked",
+          "remedy": "register them on the server (SecretRegistry.from_environ() picks up every credential-shaped name)",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "registered-case-sensitive",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-unregistered\n           http://fixture.invalid has a secret registry but 2 credential-shaped variable(s) in its environment are not registered, so the shell inherits them and their values reach tool output unmasked\n           -> register them on the server (SecretRegistry.from_environ() picks up every credential-shaped name)\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "SecretRegistry",
+          "secrets_unregistered": 2,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement-unavailable",
+          "detail": "http://fixture.invalid asked for confinement and could not get it: fixture platform unavailable",
+          "remedy": "run it in a container, or on a host with a backend",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "unavailable-sandbox",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement-unavailable\n           http://fixture.invalid asked for confinement and could not get it: fixture platform unavailable\n           -> run it in a container, or on a host with a backend\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "UnavailableSandbox",
+          "sandbox_reason": "fixture platform unavailable",
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        }
+      ],
+      "name": "sqlite-auth",
+      "rendered": "[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n\n2 finding(s): 2 high",
+      "report": {
+        "authenticated": true,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "DurableActionJournal",
+          "authenticated": true,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "SQLiteStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state-failing",
+          "detail": "http://fixture.invalid has a state store whose writes are failing: RuntimeError: fixture disk unavailable",
+          "remedy": "check disk space and permissions on the server's database path",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        }
+      ],
+      "name": "broken-store",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] durable-state-failing\n           http://fixture.invalid has a state store whose writes are failing: RuntimeError: fixture disk unavailable\n           -> check disk space and permissions on the server's database path\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n\n5 finding(s): 5 high",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "BrokenStore",
+          "state_store_error": "RuntimeError: fixture disk unavailable",
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 1,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-unregistered",
+          "detail": "http://fixture.invalid has a secret registry but 2 credential-shaped variable(s) in its environment are not registered, so the shell inherits them and their values reach tool output unmasked",
+          "remedy": "register them on the server (SecretRegistry.from_environ() picks up every credential-shaped name)",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement-unavailable",
+          "detail": "http://fixture.invalid asked for confinement and could not get it: fixture live agent unavailable",
+          "remedy": "run it in a container, or on a host with a backend",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "live-overrides",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-unregistered\n           http://fixture.invalid has a secret registry but 2 credential-shaped variable(s) in its environment are not registered, so the shell inherits them and their values reach tool output unmasked\n           -> register them on the server (SecretRegistry.from_environ() picks up every credential-shaped name)\n[HIGH    ] shell-confinement-unavailable\n           http://fixture.invalid asked for confinement and could not get it: fixture live agent unavailable\n           -> run it in a container, or on a host with a backend\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "NullCachePolicy",
+          "sandbox": "UnavailableSandbox",
+          "sandbox_reason": "fixture live agent unavailable",
+          "secrets": "SecretRegistry",
+          "secrets_unregistered": 2,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "NullStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 1,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "workflows",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": true,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": true
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "full-settings-custom-manager",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": true,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "owner-resources",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": false,
+          "user_resources": true,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": false,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "trajectories",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n5 finding(s): 4 high, 1 medium",
+      "report": {
+        "authenticated": false,
+        "experimental_workflows": false,
+        "fake_llm": true,
+        "features": false,
+        "max_concurrent_llm": 8,
+        "max_concurrent_tools": 8,
+        "model": "claude-sonnet-4-6",
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "authenticated": false,
+          "cache_policy": "DefaultCachePolicy",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": null,
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "NullStateStore",
+          "state_store_error": null,
+          "stuck_detector": "DefaultStuckDetector",
+          "trajectories": true,
+          "user_resources": false,
+          "workflows": false
+        },
+        "sessions": 0,
+        "status": "ok",
+        "trajectories": true,
+        "workspace_binding": false
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "posture-unavailable",
+          "detail": "http://fixture.invalid did not report a posture; it is older than this audit or is not a mini-loop server",
+          "remedy": "upgrade the server, or audit it locally",
+          "severity": "medium"
+        }
+      ],
+      "name": "missing",
+      "rendered": "[MEDIUM  ] posture-unavailable\n           http://fixture.invalid did not report a posture; it is older than this audit or is not a mini-loop server\n           -> upgrade the server, or audit it locally\n\n1 finding(s): 1 medium",
+      "report": {}
+    },
+    {
+      "findings": [
+        {
+          "check": "posture-unavailable",
+          "detail": "http://fixture.invalid did not report a posture; it is older than this audit or is not a mini-loop server",
+          "remedy": "upgrade the server, or audit it locally",
+          "severity": "medium"
+        }
+      ],
+      "name": "null",
+      "rendered": "[MEDIUM  ] posture-unavailable\n           http://fixture.invalid did not report a posture; it is older than this audit or is not a mini-loop server\n           -> upgrade the server, or audit it locally\n\n1 finding(s): 1 medium",
+      "report": {
+        "posture": null
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "posture-unavailable",
+          "detail": "http://fixture.invalid did not report a posture; it is older than this audit or is not a mini-loop server",
+          "remedy": "upgrade the server, or audit it locally",
+          "severity": "medium"
+        }
+      ],
+      "name": "empty",
+      "rendered": "[MEDIUM  ] posture-unavailable\n           http://fixture.invalid did not report a posture; it is older than this audit or is not a mini-loop server\n           -> upgrade the server, or audit it locally\n\n1 finding(s): 1 medium",
+      "report": {
+        "posture": {}
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "authentication",
+          "detail": "http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it",
+          "remedy": "set MINILOOP_API_TOKEN on the server",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        }
+      ],
+      "name": "unknown-only",
+      "rendered": "[HIGH    ] authentication\n           http://fixture.invalid accepts unauthenticated callers; every session and transcript on it is readable by anyone who can reach it\n           -> set MINILOOP_API_TOKEN on the server\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n\n3 finding(s): 3 high",
+      "report": {
+        "posture": {
+          "future": true
+        }
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement",
+          "detail": "http://fixture.invalid runs shell commands unconfined on its host",
+          "remedy": "start it with a sandbox",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state",
+          "detail": "http://fixture.invalid keeps transcripts only in memory",
+          "remedy": "start it with a SQLite state store",
+          "severity": "medium"
+        }
+      ],
+      "name": "explicit-null-wrappers",
+      "rendered": "[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement\n           http://fixture.invalid runs shell commands unconfined on its host\n           -> start it with a sandbox\n[MEDIUM  ] durable-state\n           http://fixture.invalid keeps transcripts only in memory\n           -> start it with a SQLite state store\n\n3 finding(s): 2 high, 1 medium",
+      "report": {
+        "authenticated": true,
+        "posture": {
+          "sandbox": null,
+          "secrets": null,
+          "state_store": "NullStateStore"
+        }
+      }
+    },
+    {
+      "findings": [],
+      "name": "empty-names",
+      "rendered": "audit: no findings.",
+      "report": {
+        "authenticated": true,
+        "posture": {
+          "sandbox": "",
+          "sandbox_reason": "",
+          "secrets": "",
+          "secrets_unregistered": 0,
+          "state_store_error": ""
+        }
+      }
+    },
+    {
+      "findings": [],
+      "name": "all-selected",
+      "rendered": "audit: no findings.",
+      "report": {
+        "authenticated": true,
+        "posture": {
+          "action_journal": "DurableActionJournal",
+          "sandbox": "SeatbeltSandbox",
+          "secrets": "SecretRegistry",
+          "secrets_unregistered": 0,
+          "state_store": "SQLiteStateStore"
+        }
+      }
+    },
+    {
+      "findings": [
+        {
+          "check": "action-journal",
+          "detail": "http://fixture.invalid cannot tell, after a restart, which side effects already happened",
+          "remedy": "start it with a SQLite state store",
+          "severity": "high"
+        },
+        {
+          "check": "durable-state-failing",
+          "detail": "http://fixture.invalid has a state store whose writes are failing: fixture writes failing",
+          "remedy": "check disk space and permissions on the server's database path",
+          "severity": "high"
+        },
+        {
+          "check": "secret-masking",
+          "detail": "http://fixture.invalid does not mask credentials in tool output",
+          "remedy": "start it with secrets=SecretRegistry.from_environ()",
+          "severity": "high"
+        },
+        {
+          "check": "shell-confinement-unavailable",
+          "detail": "http://fixture.invalid asked for confinement and could not get it: fixture backend unavailable",
+          "remedy": "run it in a container, or on a host with a backend",
+          "severity": "high"
+        }
+      ],
+      "name": "error-precedence",
+      "rendered": "[HIGH    ] action-journal\n           http://fixture.invalid cannot tell, after a restart, which side effects already happened\n           -> start it with a SQLite state store\n[HIGH    ] durable-state-failing\n           http://fixture.invalid has a state store whose writes are failing: fixture writes failing\n           -> check disk space and permissions on the server's database path\n[HIGH    ] secret-masking\n           http://fixture.invalid does not mask credentials in tool output\n           -> start it with secrets=SecretRegistry.from_environ()\n[HIGH    ] shell-confinement-unavailable\n           http://fixture.invalid asked for confinement and could not get it: fixture backend unavailable\n           -> run it in a container, or on a host with a backend\n\n4 finding(s): 4 high",
+      "report": {
+        "authenticated": true,
+        "posture": {
+          "action_journal": "InMemoryActionJournal",
+          "sandbox": "NullSandbox",
+          "sandbox_reason": "fixture backend unavailable",
+          "secrets": "NullSecretRegistry",
+          "secrets_unregistered": 9,
+          "state_store": "NullStateStore",
+          "state_store_error": "fixture writes failing"
+        }
+      }
+    }
+  ],
+  "source": "http://fixture.invalid"
+}
