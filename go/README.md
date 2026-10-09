@@ -581,8 +581,7 @@ The consumer-owned Recovery seam accepts concrete RecoveryInput/RecoveryServices
 Provider adapters expose typed protocol.ModelFailure evidence; custom Go errors
 without that interface retain compatible overload/rate/context/streaming message
 classification, but connection errors should expose a typed failure kind. Durable
-recovery state, protected token-efficiency projections and advanced provider
-variants remain pending.
+recovery state, advanced provider variants remain pending. Protected efficiency projections are installed.
 
 ### Control a managed session
 
@@ -668,7 +667,7 @@ trajectory root failure refuses startup. The launcher best-effort constructs the
 spill store at `MINILOOP_SPILL_DIR` (default `./var/spill`; empty disables it).
 A root construction failure disables preservation while startup continues, matching
 Python. The launcher also refuses enabled
-comprehensive feature/token-efficiency integrations.
+comprehensive feature integrations. Efficiency mode/style settings are supported.
 Implemented decision providers and memory roots have independent selections. Inactive optional settings remain typed and validated.
 Ordinary workspace compaction artifacts remain separate from the private store.
 The default structured Bash tool currently bypasses string-output preservation in
@@ -1922,8 +1921,7 @@ transport and no spill. `httpapi.Config.BenchmarkSkillsDir` captures the deploym
 path; empty selects compiled builtin data. External catalogue files are read
 fresh for every arm. Launcher passes its actual configured skills path. Explicit
 external memory/trajectory paths retain their configured effects. Unsupported
-comprehensive features and token-efficiency activation
-fail privately; native profile validation limits remain explicit differences.
+comprehensive features fail privately; native profile validation limits remain explicit differences.
 Snapshot 93 compares five actual source HTTP profiles with only nondeterministic
 durations/derived warnings omitted. This is instrument validation, not model
 quality evidence or G7 completion. Paid runs remain operator initiated.
@@ -2519,10 +2517,8 @@ Explicit RuntimeConfig.TokenArtifactTools/TokenArtifactStore now install bounded
 read_token_artifact through the common gate. Twenty Source handler results match
 actual Go turns, including Unicode pages and unbounded/null pagination. The caller
 owns store lifetime. An immutable catalogue installer preserves same-name custom
-definitions; explicit tool selection still narrows admission. No operational
-optimization is installed yet. E2-E6 in GO_PORT_PLAN.md cover observation/request/
-response stages, lifecycle and default runtime adoption.
-Efficiency activation remains explicitly unsupported until those consumers exist.
+definitions; explicit tool selection still narrows admission. Observation/request/response consumers and Manager/child/Launcher adoption are
+installed. GO_PORT_PLAN.md records remaining profile and persistence work.
 
 
 MaskedObservation and ObservationReduction now own immutable typed state with
@@ -2583,8 +2579,7 @@ preserves repeated instances/IDs separately from registry admission; shared poin
 instances serialize across stages and initialize/health/close once per root. WithRawStore
 clones retain global admission and explicit caller-owned store binding. Ten actual
 Source registry recipes and native queued-cancellation/drain tests cover composition.
-Explicit Agent and Manager/child adoption are installed; launcher mode/style
-activation remains pending.
+Explicit Agent, Manager/child and Launcher mode/style adoption are installed.
 
 
 Explicit agent.RuntimeConfig.TokenEfficiency now adopts response policies before
@@ -2631,8 +2626,11 @@ recovery capability receive workspace-bound masked RAM stores. Start initializes
 once; deletion releases last holders after drain; Stop closes distinct stores
 before shared components. EfficiencyStatus returns detached lifecycle reports.
 Fourteen captured Python Manager scenarios, filtered capability admission, failed
-publication and restored-store cleanup have native tests. Launcher efficiency
-flags and HTTP/benchmark activation remain pending.
+publication and restored-store cleanup have native tests. Launcher and request-time fake benchmark both use runtimeconfig.ManagerEfficiency
+to forward all seven validated settings. Default off/normal remains unchanged.
+Nine real HTTP/native-shell runs compare Source requests and receipts; two fake
+benchmark reports compare selected settings. Source post-construction tool
+filtering versus native pre-allocation filtering remains an allocation-order gap.
 
 
 Standard in-process children share the efficiency root and matching store.

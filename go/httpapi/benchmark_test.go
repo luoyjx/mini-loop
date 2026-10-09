@@ -35,7 +35,16 @@ func normalizeBenchmark(report benchmark.FakeReport) benchmark.FakeReport {
 }
 
 func TestBenchmarkActualPythonHTTP(t *testing.T) {
-	data, err := os.ReadFile("../testdata/python-benchmark-http.json")
+	compareBenchmarkSource(t, "python-benchmark-http.json", 5)
+}
+
+func TestBenchmarkEfficiencyActualPythonHTTP(t *testing.T) {
+	compareBenchmarkSource(t, "python-benchmark-efficiency-http.json", 2)
+}
+
+func compareBenchmarkSource(t *testing.T, filename string, count int) {
+	t.Helper()
+	data, err := os.ReadFile("../testdata/" + filename)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,11 +58,13 @@ func TestBenchmarkActualPythonHTTP(t *testing.T) {
 			Response    benchmark.FakeReport
 		}
 	}](t, data)
-	if len(fixture.Cases) != 5 {
+	if len(fixture.Cases) != count {
 		t.Fatal("source benchmark inventory drift")
 	}
 	for _, test := range fixture.Cases {
 		t.Run(test.Name, func(t *testing.T) {
+			t.Setenv("MINILOOP_TOKEN_EFFICIENCY_MODE", "off")
+			t.Setenv("MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE", "normal")
 			t.Setenv("MINILOOP_MAX_TURNS", "50")
 			t.Setenv("MINILOOP_FAKE_DELAY", "0")
 			for key, value := range test.Environment {

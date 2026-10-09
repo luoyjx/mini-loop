@@ -1,5 +1,38 @@
 # Python to Go parity matrix
 
+## 2026-10-09 native efficiency startup settings activation
+
+Baseline: `2f57665`. The pure runtimeconfig.ManagerEfficiency adapter maps validated
+mode/style, persistence, raw threshold, TTL and capacities into named Manager
+selections with freshly owned integers. Launcher and fake benchmark managers use
+the same adapter. Mode/style startup refusal is removed only for these implemented
+consumers; comprehensive MINILOOP_FEATURES remains unsupported. Off/normal stays
+the default. App.Serve owns initialize-before-listening and ordered shutdown.
+
+Nine actual native HTTP/listener/provider/shell scenarios match Source model
+requests and metric-only receipts: all mode/style pairs, readonly, disabled
+persistence, below-threshold raw output, and actual raw-reference recovery. Root
+initialize/close reports are checked after real listener shutdown. The HTTP test
+compares requests/receipts, not the fixture's private store fields; Manager and
+child allocation/limits/closure have their separate existing tests. Two actual
+benchmark HTTP reports now compare the separate efficiency fixture; the original
+five profiles remain covered. These reports do not establish allocation-order
+parity: Python filters an already constructed session, native RunArm still filters
+before allocation. That difference must be closed without losing store ownership.
+
+README canonical Go startup label/boundary, EXTENDING, Go README and generated
+architecture are updated. Structural architecture checks passed 9/9 with zero
+errors/warnings and both SHA256 values match the receipt. Visual inspection was
+not retried after the earlier browser denial.
+
+Validation: go test ./... -count=1 -timeout=180s, go vet ./..., complete 182-file
+Source exporter check and git diff --check passed.
+go test -race -p=1 ./... -count=1 -timeout=180s also passed.
+No Python package modules/default tools, dependencies or push changed. Full Python
+regression and coverage were not refreshed. Benchmark allocation order, SQLite,
+broader profile audit and full Go port completion remain open.
+
+
 ## 2026-10-09 benchmark efficiency Source contracts
 
 Baseline: `7f9d13c`. Two actual authenticated Python benchmark HTTP runs capture

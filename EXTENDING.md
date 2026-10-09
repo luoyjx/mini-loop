@@ -3407,8 +3407,7 @@ stage operations plus Initialize/Health/Close and WithRawStore. Clones share one
 counter/lifecycle/admission root. Close fences and drains calls across every stage;
 raw-store ownership stays with the caller. Independently constructed stage pipelines
 remain independent. Manager now composes an explicit off/normal root by default; see the managed binding below.
-MINILOOP_TOKEN_EFFICIENCY_MODE and
-non-normal response styles remain unsupported. Python annotation-violating plugin
+Launcher and fake benchmark map mode/style settings through runtimeconfig.ManagerEfficiency. Python annotation-violating plugin
 objects and broader Unicode/numeric wire profiles are not claimed by this foundation.
 
 
@@ -3424,7 +3423,7 @@ OptimizationReceipt returns cloned OptimizationMetrics with *big.Int counts and 
 digests, warning strings or content. Typed event JSON/masking and DecodeStoredEvent
 retain the metric-only variant; archival metrics grant no executable authority.
 The caller owns the runtime and shared initialization/close. Explicit request
-and observation adoption are described below; Manager composition is described below; launcher activation remains pending. Bare
+and observation adoption are described below; Manager composition is described below; Launcher settings selection is installed. Bare
 RuntimeConfig nil keeps defaults.
 
 
@@ -3441,7 +3440,7 @@ message_protocol_guard. Ordinary side calls optimize detached messages without
 ledger ownership. Protected side calls skip request/cache seams and reassert masked
 selected messages plus message cache metadata for each recovery dispatch; personal
 skill previews use this path. Explicit response planning retains its purpose rule.
-The caller owns the shared runtime. Manager composition is described below; launcher activation remains pending.
+The caller owns the shared runtime. Manager composition is described below; Launcher settings selection is installed.
 
 ### Go explicit Agent observation adoption
 
@@ -3477,8 +3476,8 @@ after drain. Failed publication releases unpublished bindings. Stop owns the dra
 even if its caller stops waiting, closes distinct stores, then closes components.
 EfficiencyStatus returns detached typed lifecycle reports with safe fault codes.
 Bare RuntimeConfig consumers retain caller-owned lifetimes. Standard child
-inheritance is described below; launcher/HTTP/benchmark mode/style activation and
-broader runtime-profile activation remain separate work.
+inheritance is described below. Launcher/HTTP/fake benchmark map validated settings
+through runtimeconfig.ManagerEfficiency; broader runtime-profile work remains open.
 
 
 ### Go child efficiency inheritance
@@ -3520,3 +3519,14 @@ close stays with the caller/Manager. Managed session/template store cleanup
 retains its existing boundaries. Seven Source runs prove new workspace reads,
 old-reference isolation, own-reference recovery, role filtering and 7/200/800
 limits despite the parent's injected 99/100/400 store.
+
+### Go startup efficiency mapping
+
+Use runtimeconfig.ManagerEfficiency only after config.Settings.Validate. The pure
+adapter reads no environment and allocates no services; each integer gets fresh
+ownership. Launcher and fakeManagerConfig forward the same named selection into
+ManagerConfig.Efficiency. The default remains off/normal; custom library-injected
+runtimes retain their own modes/components. Comprehensive MINILOOP_FEATURES still
+refuses activation. Benchmark environment selection happens per HTTP request; the
+main app provider is never reused. Benchmark post-construction filtering parity
+is still open and must preserve ownership of any store allocated before filtering.

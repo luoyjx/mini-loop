@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `7f9d13c` plus benchmark efficiency Source contracts,
+Runtime review baseline: `2f57665` plus Launcher and benchmark efficiency settings activation,
+plus benchmark efficiency Source contracts,
 plus efficiency startup Source contracts,
 plus native entered-workspace child artifact allocation,
 plus Agent request projection Source contracts,
@@ -436,7 +437,7 @@ flowchart LR
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · Guardian / AST / workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
@@ -2093,22 +2094,21 @@ gate, with caller-owned store lifetime and pinned session/owner/workspace author
 Character pagination plus header/continuation stays within 50,000 UTF-8 bytes;
 unbounded numeric pagination and explicit null retain typed replay identity. Existing
 tool selections and custom same-name catalogue entries remain intact. Explicit Agent reducer integration is described below;
-Manager/default runtime composition remains open; efficiency mode/style
-activation is still refused. Immutable MaskedObservation/ObservationReduction and
+Manager/default runtime composition and Launcher mode/style selection are installed. Immutable MaskedObservation/ObservationReduction and
 two builtin reducer libraries now match twenty Source constructors and 69 reducer
 inputs. DeterministicLosslessReducer preserves Python ANSI, Unicode-14 diagnostic
 and path rules. ObservationPipeline now orchestrates explicit typed bindings in
 off/shadow/enforce modes with byte/token inflation and double-reduction guards,
 recoverable masked RAM retention and safe fault receipts. WithRawStore clones share
 component serialization and synchronized token estimates. Explicit Agent adoption
-and Manager/child composition are installed; launcher activation remains pending.
+and Manager/child composition are installed; Launcher mode/style selection is installed.
 Observation components now expose optional typed
 Initialize/Health/Close hooks, clone-shared cached reports, exclusive health admission
 and close-before-drain fencing. Timed drain failures remain retryable; hook faults are
 contained class-only records. Bare store bindings remain caller-owned; Manager
 owns its managed session/template stores. Masking before/after
 the plugin boundary and multi-stage identity registration are described below; default
-launcher selection remains pending.
+Launcher settings selection is installed.
 RequestPipeline now optimizes immutable provider-neutral RequestDocument values
 through explicit RequestOptimizer/OptimizationContext/result types. JSON data uses
 closed recursive variants; no generic service map or opaque raw JSON is retained.
@@ -2121,7 +2121,7 @@ counter root. Same pointer instances share locks and lifecycle hooks, while dist
 objects with equal IDs in direct StageComponents retain independent hooks. Clones
 share admission/draining with explicit caller-owned raw-store binding. Agent request
 ledger is now installed by explicit RuntimeConfig.TokenEfficiency; observation adoption
-and Manager/child composition are installed; launcher activation remains pending.
+and Manager/child composition are installed; Launcher mode/style selection is installed.
 The Agent consumer now guards role/count/tool identities, error flags and stable
 protocol blocks before lowering eligible payloads to named message variants. Its
 transient ledger reuses provider projections while preserving authoritative history;
@@ -2169,7 +2169,8 @@ remain caller-owned/pending. A typed stage-error event contains no plugin text.
 | `python/examples/` | Runnable Python custom composition |
 | `go/` | Independent Go implementation; see the parity matrix for current coverage |
 | `go/httpapi/` | Embeddable typed authentication, REST admission and process-local SSE |
-| `go/efficiency/` | Typed registry, shared three-stage runtime/lifecycle, scoped masked RAM/recovery; Manager and child adoption, launcher activation pending |
+| `go/runtimeconfig/` | Pure validated-settings translation shared by Launcher and fake benchmark |
+| `go/efficiency/` | Typed registry, shared three-stage runtime/lifecycle, scoped masked RAM/recovery; Manager, child and Launcher adoption; default off/normal |
 | `go/secrets/` | Typed optional credential lookup, environment selection and masking |
 | `go/internal/` | Shared Python filename matching and pinned Unicode/text semantics |
 | `go/testdata/` | Generated Python tool, OpenAPI, and SQLite contract snapshots |
@@ -2244,3 +2245,21 @@ Check the Python contract snapshot before extending the Go port:
 | What informed the token-efficiency design? | [Token-efficiency components](docs/TOKEN_EFFICIENCY_COMPONENTS.md) |
 | What is the Python-to-Go migration sequence and current parity? | [Go port plan](GO_PORT_PLAN.md) and [parity matrix](GO_PARITY_MATRIX.md) |
 | Where are the source-level external studies? | [Research Atlas](research-site/README.md) |
+
+### Go efficiency startup selection
+
+runtimeconfig.ManagerEfficiency converts validated config.Settings into detached
+agent.ManagerEfficiencyConfig selections. Launcher and request-time fake benchmark
+construction both use it. Off/normal remains the default; shadow observes reducer
+candidates, enforce applies reductions, and enforce/concise adds instructions with
+a tighter response cap. Configured persistence, threshold, TTL and capacities reach
+Manager-owned scoped masked RAM stores. App.Serve initializes the shared root before
+listening and Stop drains sessions before store/component closure.
+
+Nine Source HTTP traces match actual native listener/provider/shell requests and
+metric-only receipts, including readonly, disabled persistence, below-threshold
+output and raw recovery. Two separate benchmark Source reports compare selected
+settings using four isolated fake arms. Benchmark tool filtering still occurs
+before native allocation, while Python filters its constructed session; allocation
+order parity remains open. The comprehensive MINILOOP_FEATURES bundle and SQLite
+backend remain unavailable.

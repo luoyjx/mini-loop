@@ -20,6 +20,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/httpapi"
 	"github.com/luoyjx/mini-loop/go/memory"
 	"github.com/luoyjx/mini-loop/go/provider"
+	"github.com/luoyjx/mini-loop/go/runtimeconfig"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/spill"
@@ -294,7 +295,8 @@ func NewWithOptions(ctx context.Context, settings config.Settings, server config
 	if auth != nil && auth.Configured() {
 		auditView = agent.SelfAuditOwnerView
 	}
-	manager, err := agent.NewSessionManager(agent.ManagerConfig{WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
+	efficiencyConfig := runtimeconfig.ManagerEfficiency(settings)
+	manager, err := agent.NewSessionManager(agent.ManagerConfig{Efficiency: &efficiencyConfig, WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
 		TeamIdlePoll: settings.TeamIdlePoll.Duration(), TeamIdleTimeout: settings.TeamIdleTimeout.Duration(),
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},

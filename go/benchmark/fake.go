@@ -10,6 +10,7 @@ import (
 	"github.com/luoyjx/mini-loop/go/agent"
 	"github.com/luoyjx/mini-loop/go/config"
 	"github.com/luoyjx/mini-loop/go/memory"
+	"github.com/luoyjx/mini-loop/go/runtimeconfig"
 	"github.com/luoyjx/mini-loop/go/shell"
 	"github.com/luoyjx/mini-loop/go/skills"
 	"github.com/luoyjx/mini-loop/go/trajectory"
@@ -137,7 +138,9 @@ func fakeManagerConfig(ctx context.Context, settings config.Settings, delay time
 			return agent.ManagerConfig{}, err
 		}
 	}
+	efficiencyConfig := runtimeconfig.ManagerEfficiency(settings)
 	return agent.ManagerConfig{
+		Efficiency:    &efficiencyConfig,
 		WorkspaceRoot: settings.WorkspaceRoot, BindableRoots: settings.BindableRoots,
 		ModelConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentLLM), ToolConcurrency: agent.ConcurrencyLimit(settings.MaxConcurrentTools), ApprovalTimeout: settings.ApprovalTimeout.Duration(),
 		Defaults: agent.SessionDefaults{Model: settings.Model, PermissionMode: agent.ModeInteractive, MaxRounds: settings.MaxTurns, MaxTokens: settings.MaxTokens, TokenThreshold: settings.TokenThreshold, SubagentMaxDepth: settings.SubagentMaxDepth, SubagentMaxRounds: settings.SubagentMaxRounds},
