@@ -722,7 +722,14 @@ The caller owns database open/close; constructor, Serve and Stop never close it.
 Construction retains the Manager explicit action-recovery policy, but does not
 automatically publish persisted sessions. Inspection reports injected selection
 without backend reads. Native HTTP restart tests preserve owner isolation and
-stored transcripts. Native cron restart and wider archival variants remain pending.
+stored transcripts. Native cron/SQLite reopen tests now run all seven scheduled
+Source recipes, preserving bound paths, selected scratch factory/current system,
+missing-row refusal and foreign-lease denial. A real durable one-shot remains
+disarmed through Manager Start after reconstruction; explicit operator arm causes
+lazy restoration and a fresh untrusted turn. Another reopen proves persisted job
+removal and run_count. Cron definitions still live in .cron.json, while session
+history and leases use SQLite. Wider archival variants and OS-process crash
+validation remain pending.
 
 ---
 

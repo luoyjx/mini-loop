@@ -1,5 +1,47 @@
 # Go port plan
 
+## 2026-10-09 native cron and scheduled SQLite reconstruction proof
+
+Baseline: ba6dc73. Native sqlitestate integration now replays all seven actual
+Python scheduled-restoration recipes from Snapshot 47: bound-clean, scratch-clean,
+bound-crash, scratch-crash, missing-sql, missing-null and foreign-bound. Every
+stored recipe closes/reopens native SQLite before Manager construction. Bound
+workspace paths remain recorded; scratch selects the current explicit factory.
+Scheduled requests use the current system builder rather than recorded custom
+system. Metadata survives repair as the documented Go addition. Missing SQL rows
+remain anonymous/unconfirmed and cannot run or create the missing row. No-store
+fallback remains ephemeral. Foreign leases prevent repair/model admission.
+Live handles are reused and pre-provider transcript flush uses actual native SQL.
+Growth publishes the newly selected scratch workspace/system projection.
+
+A second integration creates a session through Manager, runs a provider round,
+persists a durable one-shot cron job, stops/drains and closes SQLite. A reconstructed
+Manager loads the JSON job disarmed; explicit Manager Start leaves it disarmed
+and no session is restored eagerly. Tick before arm does nothing. Privileged
+operator arm permits lazy native restoration, a second provider request with the
+persisted prefix and a fresh untrusted context without actor/capabilities. Stop
+releases the lease. Another database/Manager reopen proves run_count=2 and that
+one-shot removal persisted. Cron definitions remain .cron.json, with independent
+claim files; sessions, history and process leases use SQLite. No cron SQL table
+or external-effect transaction is claimed.
+
+The tests use explicit Source civil-minute ticks and Manager reconstruction in
+one test process. OS-process crash/clock-drift testing and wider archival profiles
+remain open, along with full feature activation and final Go port audit. This
+slice adds typed integration tests and documentation only; no runtime changes or
+new dependencies. Python source/default-tool types/exported fixtures unchanged.
+
+Focused native cron and scheduled tests passed. Full Go ordinary tests (-p=1
+-count=1 -timeout=300s) and go vet ./... passed. The final focused run adds explicit
+Manager Start to verify restored jobs stay disarmed; full race covers that final
+assertion. Full Go race (-race -p=1 -count=1 -timeout=300s) passed.
+Native test links emitted nonfatal macOS CGO LC_DYSYMTAB warnings; all commands
+succeeded. git diff --check passed.
+README baseline/canonical map, extension/Go README and architecture specification
+updated. Archify delivery passes 9/9 with zero errors/warnings and exact receipt
+hashes verified. Visual review skipped after the earlier browser denial. Python
+suite/export/coverage were not refreshed. No push; the full port goal stays active.
+
 ## 2026-10-09 Launcher caller-owned state injection and explicit restoration
 
 Baseline: 492a916. launcher.Options.StateStore is now a concrete consumer-owned

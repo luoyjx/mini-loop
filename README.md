@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `492a916` plus Launcher caller-owned state injection,
+Runtime review baseline: `ba6dc73` plus native cron/SQLite reopen proof,
+plus Launcher caller-owned state injection,
 plus native managed SQLite close/reopen proof,
 plus native SQLite action/approval rows,
 plus native SQLite transcript and event rows,
@@ -483,7 +484,7 @@ flowchart LR
         GoManager -. delete / stop after turn drain: cancel and join .-> GoBackground
         GoLaunch -. explicit background-tools flag .-> GoBackground
         GoChildren -. selected background tools: separate scopes / queues .-> GoBackground
-        GoCron["Explicit operator cron<br/>typed jobs · five fields · disarmed restore<br/>per-session controls · ticker / run cancellation"]
+        GoCron["Explicit operator cron<br/>typed jobs · five fields · disarmed restore<br/>native SQLite scheduled sessions · fresh authority<br/>per-session controls · ticker / run cancellation"]
         GoCronStore["Operator cron JSON / claim files<br/>masked prompts · mark before dispatch<br/>exclusive minute claim; no external transaction"]
         GoCronRunner["Managed resolver / scheduled runner<br/>fresh untrusted ManagedSession.Run<br/>live reuse / injected-store restore"]
         GoManager -->|default ownership / owner-scoped operations| GoCron
@@ -615,7 +616,12 @@ restoration without making it automatic at construction or Serve. Stop drains
 Manager work and releases leases but never closes that backend. Inspect reports
 process-local or injected selection without probing or asserting durability.
 Native HTTP tests reopen SQLite and retain owner-scoped transcript/resumed turns.
-Native cron restart, OS-process crash tests and wider archival profiles remain pending.
+Native cron/SQLite close-and-reopen tests now cover all seven scheduled Source
+restoration recipes and a real durable one-shot job. Jobs remain in .cron.json,
+while session history/leases use SQLite. Manager Start keeps restored jobs disarmed;
+operator arm triggers lazy restoration and a fresh untrusted turn. A further reopen
+retains run_count and the one-shot removal. OS-process crash tests and wider
+archival profiles remain pending.
 
 Go Manager selects an off/normal shared efficiency root by default. Library callers
 can configure ManagerEfficiencyConfig or inject ManagerServices.TokenEfficiency;

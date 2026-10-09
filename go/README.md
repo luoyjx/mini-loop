@@ -296,7 +296,15 @@ resolved time and answer. ReadApprovals preserves SQL NULL versus empty tool-use
 IDs through ApprovalRecord.ToolUseIDNull and its JSON codec. Recovery is explicit:
 MarkInflightUnknown atomically changes selected started rows to unknown, either
 per session or globally; Open never invokes it. It establishes no external-effect
-fencing or human grants. Native cron restart evidence remains pending.
+fencing or human grants. Native cron/SQLite close-and-reopen integration now has
+real backend proof: all seven scheduled Source recipes retain the distinct bound,
+scratch, missing-row and foreign-lease rules, including current scheduled system
+building and pre-provider flush. A Manager-created durable one-shot survives
+reconstruction disarmed; Start does not arm it, operator arm enables lazy resolution,
+and the scheduled turn gets no actor/capabilities. Another reopen retains run_count
+and persisted one-shot removal. Job definitions remain in .cron.json and sessions
+remain in SQLite; these tests drive explicit civil-minute ticks, not OS-process
+crash or clock-drift scenarios.
 Native library-injected Manager restoration
 now replays all seven Source recipes over real database close/reopen and resumes a
 Manager-created session with its stored steering and request prefix. Foreign-held
