@@ -3610,3 +3610,12 @@ decisions, workflows and AST tools. Unranked extensions retain relative order
 after those built-ins. Supplying `RuntimeConfig.Tools` or `ManagerServices.Tools`
 keeps caller catalogue order. Ordering does not select any feature or grant
 authority; full startup activation still requires parser and injector parity.
+
+### Go explicit lifecycle injector overrides
+
+`RuntimeConfig.Injectors` and `ManagerServices.Injectors` distinguish nil from a
+caller-supplied list. Nil keeps selected background/team lifecycle injection; a
+list (including an empty one) replaces those defaults. Manager and child copies
+preserve this distinction. Custom injectors run in supplied order, followed by
+workflow inbox and core controls. Override does not drain pending background/team
+observations or remove tool access.

@@ -156,9 +156,11 @@ type RuntimeConfig struct {
 	EventSink            EventSink
 
 	UserPromptHooks []UserPromptHook
-	Injectors       []MessageInjector
-	ModelLimiter    *ConcurrencyLimiter
-	ToolLimiter     *ConcurrencyLimiter
+	// Nil selects lifecycle defaults; nonnil (even empty) replaces background/team
+	// injectors. Workflow completion and core control injection remain appended.
+	Injectors    []MessageInjector
+	ModelLimiter *ConcurrencyLimiter
+	ToolLimiter  *ConcurrencyLimiter
 }
 
 type runtimeHandler struct {
@@ -740,7 +742,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		session.stopHooks = append([]StopHook(nil), config.StopHooks...)
 	}
 	session.promptHooks = append([]UserPromptHook(nil), config.UserPromptHooks...)
-	session.injectors = append([]MessageInjector(nil), config.Injectors...)
+	session.injectors = cloneInjectors(config.Injectors)
 	session.modelLimiter = config.ModelLimiter
 	if config.ToolLimiter != nil {
 		session.toolLimiter = config.ToolLimiter

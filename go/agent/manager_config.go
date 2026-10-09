@@ -69,44 +69,46 @@ type ManagerServices struct {
 	// Memory is the shared fallback when no owner resource resolver is configured.
 	// Nil creates WorkspaceRoot/.memory during manager construction.
 	// Managed runtimes always receive an owner-bound view of this store.
-	Memory                    *memory.Store
-	MemoryAuto                *bool
-	MemoryTools               bool
-	UserResources             *userresources.Resolver
-	DecisionTools             bool
-	DecisionProvider          decisions.Provider
-	DecisionLLM               DecisionLLMConfig
-	SelfAuditTools            bool
-	SelfAuditView             SelfAuditView
-	GoalTools                 bool
-	PlanModeTools             bool
-	PlanApprover              PlanApprover
-	StateStore                StateStore
-	CronTools                 bool
-	BackgroundTools           bool
-	WorktreeTools             bool
-	Worktrees                 *worktrees.Manager
-	TaskTools                 bool
-	Trajectories              TrajectoryStore
-	Build                     string
-	Spill                     spill.Store
-	Provider                  Provider
-	Recovery                  Recovery
-	StreamProgress            StreamProgressConfig
-	BashFactory               BashFactory
-	Skills                    SkillSource
-	Approvals                 *ApprovalBroker
-	ActionJournal             ActionJournal
-	Secrets                   ApprovalRedactor
-	Hooks                     GateHooks
-	SystemBuilder             SystemBuilder
-	Compactor                 Compactor
-	Subagents                 SubagentProvider
-	RoleToolPolicy            RoleToolPolicy
-	CachePolicy               CachePolicy
-	StuckDetector             StuckDetector
-	StopHooks                 []StopHook
-	UserPromptHooks           []UserPromptHook
+	Memory           *memory.Store
+	MemoryAuto       *bool
+	MemoryTools      bool
+	UserResources    *userresources.Resolver
+	DecisionTools    bool
+	DecisionProvider decisions.Provider
+	DecisionLLM      DecisionLLMConfig
+	SelfAuditTools   bool
+	SelfAuditView    SelfAuditView
+	GoalTools        bool
+	PlanModeTools    bool
+	PlanApprover     PlanApprover
+	StateStore       StateStore
+	CronTools        bool
+	BackgroundTools  bool
+	WorktreeTools    bool
+	Worktrees        *worktrees.Manager
+	TaskTools        bool
+	Trajectories     TrajectoryStore
+	Build            string
+	Spill            spill.Store
+	Provider         Provider
+	Recovery         Recovery
+	StreamProgress   StreamProgressConfig
+	BashFactory      BashFactory
+	Skills           SkillSource
+	Approvals        *ApprovalBroker
+	ActionJournal    ActionJournal
+	Secrets          ApprovalRedactor
+	Hooks            GateHooks
+	SystemBuilder    SystemBuilder
+	Compactor        Compactor
+	Subagents        SubagentProvider
+	RoleToolPolicy   RoleToolPolicy
+	CachePolicy      CachePolicy
+	StuckDetector    StuckDetector
+	StopHooks        []StopHook
+	UserPromptHooks  []UserPromptHook
+	// Nil selects lifecycle defaults; an explicit list replaces background/team
+	// injection, including an empty list. The manager copies without widening.
 	Injectors                 []MessageInjector
 	EventSink                 EventSink
 	ModelLimiter, ToolLimiter *ConcurrencyLimiter

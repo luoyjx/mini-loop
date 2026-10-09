@@ -193,7 +193,7 @@ func NewSessionManager(config ManagerConfig) (*SessionManager, error) {
 		services.StopHooks = append([]StopHook{}, services.StopHooks...)
 	}
 	services.UserPromptHooks = append([]UserPromptHook(nil), services.UserPromptHooks...)
-	services.Injectors = append([]MessageInjector(nil), services.Injectors...)
+	services.Injectors = cloneInjectors(services.Injectors)
 	if config.WorkspaceRoot == "" {
 		config.WorkspaceRoot = "./workspaces"
 	}

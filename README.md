@@ -266,9 +266,12 @@ independently selected decisions, workflows and AST additions. Caller-supplied
 catalogues keep their order; capability filtering retains the selected subsequence.
 Explicitly composed full tools match all 48 Source schemas and traits. The full
 `MINILOOP_FEATURES` startup setting remains unavailable pending default Python
-syntax parsing and injector override semantics.
+syntax parsing. Explicit injector lists (including empty lists) replace default
+background/team injection; nil retains selected lifecycle defaults. Workflow and
+core control injection remain appended, and child copies preserve this selection.
 
-Runtime review baseline: `125f44b` plus Source-ordered Go built-in feature catalogues,
+Runtime review baseline: `cf637b9` plus Source-compatible explicit injector overrides,
+plus Source-ordered Go built-in feature catalogues,
 plus Source full-feature composition contracts,
 plus native process-kill generation recovery,
 plus native cron/SQLite reopen proof,
@@ -466,7 +469,7 @@ flowchart LR
         GoManager["Go SessionManager<br/>owner lookup · resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
-        GoSession["Go Session<br/>prompt hooks · injectors · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
+        GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]
         GoContext["Context pipeline<br/>fitted schemas · skills · cache · token meter<br/>pinned layers · optional memory selection/index / team inbox<br/>spill → snip → micro → summary · optional plan guidance<br/>efficiency: observation · response → request guard/ledger → cache"]
         GoBrowser["Embedded Python browser sources<br/>public console / ui shell<br/>authenticated data requests"]
         GoTraceCLI["Go traceview CLI<br/>operator-selected export / stored runs<br/>private standalone HTML"]
@@ -1749,7 +1752,8 @@ rollback, stopped publication, readonly gating and parent-turn mutex independenc
 Snapshot 112 now exercises real Python spawning before 8 injector and 11 idle-loop
 recipes. It checks initial resource inheritance, exact prompts/results, named peer
 contexts, retained task effects, partial inbox errors and prepared worktree path selection.
-Round injection runs after background notifications and before custom injectors, drains
+With nil injector selection, round injection runs after background notifications;
+an explicit injector list replaces these lifecycle defaults. Team injection drains
 only the bound registered inbox and emits a typed team_inbox count before rendering.
 Delegated subagents have no manager binding and cannot consume parent mail.
 The owned worker proceeds from its initial result into the source idle loop: poll,

@@ -27,6 +27,15 @@ type MessageInjector interface {
 	Inject(context.Context, TurnContext) ([]protocol.Message, error)
 }
 
+// Nil selects built-in lifecycle injectors. An explicit list, including an
+// empty list, replaces them. Preserve this distinction through fleet/child copies.
+func cloneInjectors(injectors []MessageInjector) []MessageInjector {
+	if injectors == nil {
+		return nil
+	}
+	return append([]MessageInjector{}, injectors...)
+}
+
 func (s *Session) turnContext() TurnContext {
 	view := TurnContext{Authority: ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: s.currentRun.clone()}, Label: s.label, Depth: s.depth, Messages: append([]protocol.Message(nil), s.messages...)}
 	if s.todos != nil {
@@ -52,11 +61,13 @@ func (s *Session) rewritePrompt(ctx context.Context, prompt string) (string, err
 }
 
 func (s *Session) injectMessages(ctx context.Context) error {
-	if err := s.injectBackground(ctx); err != nil {
-		return err
-	}
-	if err := s.injectTeam(ctx); err != nil {
-		return err
+	if s.injectors == nil {
+		if err := s.injectBackground(ctx); err != nil {
+			return err
+		}
+		if err := s.injectTeam(ctx); err != nil {
+			return err
+		}
 	}
 	for _, injector := range s.injectors {
 		messages, err := injector.Inject(ctx, s.turnContext())

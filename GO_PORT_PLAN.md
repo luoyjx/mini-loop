@@ -13050,3 +13050,39 @@ earlier denial. README Mermaid/outline and `git diff --check` reviewed. Python
 code/exports were unchanged in this slice; their full suite/export/scanning gates
 passed at acb2646 and were not rerun. Coverage was not remeasured after the new
 ordering helper.
+
+## Explicit lifecycle injector overrides — 2026-10-09
+
+Source Manager uses a supplied injector list even when empty; otherwise it selects
+background/team defaults for the full feature profile. Workflow and core controls
+are appended independently. Go previously injected background/team before every
+custom list and collapsed empty lists into nil during fleet/child copying.
+
+`cloneInjectors` now preserves nil versus an explicit empty list through Manager,
+Runtime and delegated child construction. `injectMessages` selects background/team
+defaults only for nil; explicit lists execute their supplied entries in order.
+Workflow inbox remains afterward, followed by the existing steering/posture and
+runtime-fact pipeline. No tools are removed by selecting custom injectors.
+
+Native tests queue an orphan ledger entry and actual team mail, run a real managed
+model turn with nil/empty/custom lists, compare request contents and delivery
+events, and verify overridden queues remain untouched. Restoring nil for a later
+turn delivers both pending observations in background/team order. Child snapshots
+preserve empty/custom selection. Existing actual-Source workflow-inbox and child
+loop-extension tests cover independently appended workflow/custom injection.
+
+This closes the explicit-list override gap for future full-feature composition.
+Go full startup selection still requires a default Python-syntax parser. No new
+dependency or complete feature profile is introduced in this slice.
+
+Validation: focused native injector/extension tests, full Go tests and full race
+tests (`-p=1 -count=1 -timeout=300s`) and `go vet ./...` pass. Existing nonfatal
+macOS CGO linker warnings occur in race linking. `verify_guards.py -k
+injector-return-unchecked` catches its mutation (1/1). An extra full 378-guard
+Source sweep was intentionally interrupted while an unrelated foreground-cancel
+mutation waited; it is not complete or claimed passed. Its remaining probe sleep
+was terminated. Python runtime/exports are unchanged; full Python/export/scans
+were not refreshed. Architecture passes 9/9 with zero errors/warnings and exact
+receipt hashes/bytes verified; browser visual inspection remains skipped after
+the earlier denial. README outline and `git diff --check` pass. Coverage was not
+remeasured.

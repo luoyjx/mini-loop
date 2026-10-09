@@ -291,7 +291,7 @@ func newSubagent(ctx context.Context, request SubagentRequest) (*Session, RunCon
 	}
 	child.stopHooks = append([]StopHook(nil), parent.stopHooks...)
 	child.promptHooks = append([]UserPromptHook(nil), parent.promptHooks...)
-	child.injectors = append([]MessageInjector(nil), parent.injectors...)
+	child.injectors = cloneInjectors(parent.injectors)
 	child.modelLimiter, child.toolLimiter = parent.modelLimiter, parent.toolLimiter
 	child.subagents, child.rolePolicy = parent.subagents, parent.rolePolicy
 	child.subagentMaxDepth, child.subagentMaxRounds = parent.maxDepth, parent.maxRounds
@@ -377,7 +377,7 @@ func (s *Session) subagentParent(run RunContext) SubagentParent {
 		authority:    ToolAuthority{SessionID: s.id, OwnerID: s.owner, Workspace: s.executionRoot(), Mode: s.permissionMode(), RunContext: run.clone()}, label: s.label, depth: s.depth,
 		model: s.model, maxTokens: s.maxTokens, tokenThreshold: s.tokenThreshold, maxRounds: s.subagentMaxRounds, maxDepth: s.subagentMaxDepth,
 		provider: s.provider, recovery: s.recovery, streamProgress: s.streamProgress, catalog: s.gate.catalog, policy: s.gate.policy, hooks: GateHooks{Before: append([]BeforeHook(nil), s.gate.before...), Guards: append([]GuardHook(nil), s.gate.guards...), After: append([]AfterHook(nil), s.gate.after...), Observers: append([]ResultObserver(nil), s.gate.observers...)},
-		promptHooks: append([]UserPromptHook(nil), s.promptHooks...), injectors: append([]MessageInjector(nil), s.injectors...), modelLimiter: s.modelLimiter, toolLimiter: s.toolLimiter,
+		promptHooks: append([]UserPromptHook(nil), s.promptHooks...), injectors: cloneInjectors(s.injectors), modelLimiter: s.modelLimiter, toolLimiter: s.toolLimiter,
 		skills: s.skills, questions: s.questions, compactor: s.compactor, subagents: s.subagents, rolePolicy: s.rolePolicy, events: s.events, secrets: s.secrets, cachePolicy: s.cachePolicy, stuckDetector: s.stuckDetector, stopHooks: append([]StopHook(nil), s.stopHooks...),
 	}
 	if s.mcp != nil {
