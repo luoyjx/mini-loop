@@ -8140,3 +8140,15 @@ independently of other services; the broad feature bundle still refuses activati
 Eleven real HTTP comparisons prove human/auto routing and actual workspace effects,
 including the Source provider-error-text verdict behavior. Inspection allocates no
 workspace and probes no provider.
+
+### Go migration — timeout conversion preserves Source failure order
+
+Source descriptor integers are unbounded. Saturating them directly into Go
+time.Duration hid Python true-division overflow and executed bodies Source never
+awaits. Invocation now converts the exact ms/1000 ratio and returns a typed safe
+OverflowError when it becomes nonfinite. Finite huge ratios retain scheduling
+saturation without narrowing descriptor metadata. Three stages and initialize
+contain the fault; close lets it escape before hook handling while retaining
+its admission fence and leaving close reports uncached. Twenty-five actual Source
+profiles compare calls, reasons/errors and post-close denial; no plugin diagnostic
+text is introduced into public receipt/lifecycle codes.

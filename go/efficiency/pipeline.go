@@ -223,15 +223,18 @@ func (p *componentRuntime) receipt(b *componentBinding, status Status, reason, b
 		RawBytes: new(big.Int).SetUint64(uint64(len(before))), ProjectedBytes: new(big.Int).SetUint64(uint64(len(after))), TokensBeforeEstimate: beforeTokens, TokensAfterEstimate: afterTokens,
 		InputDigest: artifactDigest(before), OutputDigest: artifactDigest(after), Lossiness: b.descriptor.Lossiness, Deterministic: b.descriptor.Deterministic, RawRef: refs.ref, RawDigest: refs.digest, Warnings: warnings, ElapsedMS: elapsed})
 }
-func invocationDuration(ms *big.Int) time.Duration {
-	// Source can admit a timeout larger than Go's nanosecond duration. Saturate
-	// scheduling only; descriptor metadata stays unbounded. Overflow classes and
-	// extremely large scheduler profiles remain a separate compatibility gate.
+func invocationDuration(ms *big.Int) (time.Duration, error) {
+	// Python int true division converts the ratio, not the integer operand.
+	// A finite ms/1000 may exceed Go scheduling while remaining Source-valid.
+	seconds, _ := new(big.Rat).SetFrac(ms, big.NewInt(1000)).Float64()
+	if math.IsInf(seconds, 0) {
+		return 0, &ComponentFault{Class: "OverflowError", Cause: errors.New("integer division result too large for a float")}
+	}
 	max := big.NewInt(math.MaxInt64 / int64(time.Millisecond))
 	if ms.Cmp(max) > 0 {
-		return time.Duration(math.MaxInt64)
+		return time.Duration(math.MaxInt64), nil
 	}
-	return time.Duration(ms.Int64()) * time.Millisecond
+	return time.Duration(ms.Int64()) * time.Millisecond, nil
 }
 func (b *observationBinding) invoke(ctx context.Context, o MaskedObservation, options ReductionOptions) (result ObservationReduction, err error) {
 	select {
@@ -245,7 +248,11 @@ func (b *observationBinding) invoke(ctx context.Context, o MaskedObservation, op
 			err = &ComponentFault{Class: "RuntimeError", Cause: errors.New("component panic")}
 		}
 	}()
-	child, cancel := context.WithTimeout(ctx, invocationDuration(b.descriptor.TimeoutMS))
+	timeout, err := invocationDuration(b.descriptor.TimeoutMS)
+	if err != nil {
+		return result, err
+	}
+	child, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 	options.Query = copyText(options.Query)
 	options.BudgetTokens = copyInteger(options.BudgetTokens)

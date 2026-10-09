@@ -3545,3 +3545,15 @@ Ordinary construction filtering remains available. Benchmark uses this seam only
 after task setup, matching Source allocation order. Active/used/restored/closed
 handles must not use this seam; it returns named ErrSessionBusy or
 ErrToolSelectionStarted where applicable.
+
+### Go component timeout conversion
+
+Descriptor.TimeoutMS stays a detached *big.Int. Shared invocationDuration converts
+the exact integer ratio through big.Rat.Float64 before duration saturation. Do not
+convert the millisecond operand directly to float64: 2**1024/1000 is finite even
+though 2**1024 alone overflows. Nonfinite ratios return ComponentFault with class
+OverflowError and the Source division diagnostic. Stage consumers and Initialize
+contain this as component_error:OverflowError. Close conversion occurs outside
+hook fault containment, matching Source; it returns the error with admission
+already fenced, releases lifecycle serialization and leaves close report uncached.
+Missing hooks skip conversion. Expired close budgets retain their existing priority.

@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `1a64ec5` plus timeout conversion Source contracts,
+Runtime review baseline: `0300df4` plus Source timeout overflow/error ordering,
+plus timeout conversion Source contracts,
 plus native benchmark post-construction narrowing,
 plus benchmark filter-order Source contracts,
 plus Launcher and benchmark efficiency settings activation,
@@ -2280,3 +2281,14 @@ unchanged. Ordinary CreateSessionRequest.ToolSelection still filters before stor
 allocation. Benchmark deliberately uses the post-construction seam after setup to
 match Python run_arm. Seven actual Source recipes cover store identity, schemas
 and shutdown; additional native tests cover removed write effects and admission.
+
+### Component timeout overflow
+
+Efficiency descriptors retain arbitrary-size positive integer milliseconds.
+Invocation first converts the exact ms/1000 ratio, matching Python integer true
+division. A finite ratio may exceed Go scheduling range and retains duration
+saturation; an infinite ratio produces a named OverflowError before the component
+body runs. Stage receipts and initialization reports contain the safe fault code.
+Close returns the typed error, retains admission fencing, and caches no success.
+Twenty-five actual Source operations cover three stages and initialize/close,
+including 2**1024 milliseconds that remains finite only after ratio conversion.

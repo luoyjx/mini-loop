@@ -2657,3 +2657,14 @@ Busy sessions return ErrSessionBusy; prior turns or restored history return
 ErrToolSelectionStarted. Closed/cancelled sessions refuse mutation. The unchanged
 Manager ledger retains any previously allocated stores for teardown. Benchmark
 uses this after setup; HTTP exposes no catalogue-mutation route.
+
+### Efficiency timeout overflow profiles
+
+Arbitrary-size descriptor milliseconds are preserved. The scheduler conversion
+uses the exact ms/1000 ratio; finite values saturate only the Go duration. Ratios
+that overflow binary64 produce a typed OverflowError before component execution.
+Observation/request/response contain the failure in receipts, initialize in its
+report, while close returns the error without caching successful closure. Its
+admission fence remains active. Twenty-five actual Python operations compare body
+calls, status/reason, exact escaped error and post-close admission. Broader SPI
+and Unicode/wire profiles remain under audit.

@@ -1,5 +1,37 @@
 # Python to Go parity matrix
 
+## 2026-10-09 native component timeout overflow/error order
+
+Baseline: `0300df4`. Shared invocationDuration now converts the exact arbitrary
+integer ms/1000 ratio using big.Rat.Float64. Finite ratios still saturate Go
+scheduling without narrowing descriptor metadata. Overflow returns a named
+ComponentFault/OverflowError with the exact Source division diagnostic before
+component bodies run. Observation/request/response contain it in receipts and
+Initialize contains it in safe lifecycle records. Close preserves Source ordering:
+missing hooks and exhausted budgets skip first; conversion errors then escape
+before hook containment, with admission fenced and no cached success report.
+
+Twenty-five actual Source operations compare invocation-body calls, public status/
+reason, exact escaped error and post-close admission. The 2**1024 millisecond case
+proves ratio conversion rather than premature operand conversion. No dynamic
+payload types or dependencies added. README baseline/boundary, EXTENDING, Go README
+and hardening notes are updated. No topology or default change; interactive map
+regenerated with 9/9 checks, no errors/warnings and verified receipt hashes. Visual
+inspection remains skipped after the earlier browser denial.
+
+Python gates: 124 focused tests, 19 scan guards and complete 184-file exporter
+check passed. Final Go full tests (-p=1 -count=1 -timeout=180s), vet and
+efficiency package race passed. Full race (-p=1 -timeout=180s) hit the HTTP
+package time limit during historical metadata views; that specific test reran
+green, then the entire HTTP package race passed in 42 seconds with -timeout=300s.
+The original race command finished with only the HTTP timeout failure; all
+other packages passed. All package race suites are verified across that run and
+the HTTP rerun. The original full command remains a recorded nonzero result.
+git diff --check passed. No push; full Python
+regression and coverage were not refreshed. Wider wire/SPI profiles, native SQLite
+and completion of the full Go port remain open.
+
+
 ## 2026-10-09 component timeout conversion Source contracts
 
 Baseline: `1a64ec5`. Twenty-five actual Source operations cover three stage calls

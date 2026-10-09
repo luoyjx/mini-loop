@@ -323,7 +323,10 @@ func (p *componentRuntime) Initialize(ctx context.Context, services LifecycleSer
 		if err := acquireLifecycle(ctx, b.serial); err != nil {
 			return LifecycleReport{}, err
 		}
-		err := callLifecycleHook(ctx, invocationDuration(b.descriptor.TimeoutMS), func(child context.Context) error { return hook.Initialize(child, services) })
+		timeout, err := invocationDuration(b.descriptor.TimeoutMS)
+		if err == nil {
+			err = callLifecycleHook(ctx, timeout, func(child context.Context) error { return hook.Initialize(child, services) })
+		}
 		<-b.serial
 		if escaped := cancellation(err, ctx); escaped != nil {
 			return LifecycleReport{}, escaped
@@ -454,19 +457,25 @@ func (p *componentRuntime) Close(ctx context.Context, options LifecycleCloseOpti
 			records = append(records, lifecycleRecord(b, ClosePhase, LifecycleSkipped, "hook_not_implemented", 0))
 			continue
 		}
-		timeout := invocationDuration(b.descriptor.TimeoutMS)
 		hookOptions := LifecycleCloseOptions{}
+		var remaining time.Duration
 		if !deadline.IsZero() {
-			remaining := time.Until(deadline)
+			remaining = time.Until(deadline)
 			if remaining <= 0 {
 				records = append(records, lifecycleRecord(b, ClosePhase, LifecycleError, "deadline_exceeded", 0))
 				continue
 			}
-			if remaining < timeout {
-				timeout = remaining
-			}
 			seconds := remaining.Seconds()
 			hookOptions.DeadlineSeconds = &seconds
+		}
+		// Source converts before the close-hook try block; overflow escapes and
+		// keeps admission fenced without caching a successful close report.
+		timeout, timeoutErr := invocationDuration(b.descriptor.TimeoutMS)
+		if timeoutErr != nil {
+			return LifecycleReport{}, timeoutErr
+		}
+		if !deadline.IsZero() && remaining < timeout {
+			timeout = remaining
 		}
 		start := time.Now()
 		err := callLifecycleHook(ctx, timeout, func(child context.Context) error { return hook.Close(child, hookOptions) })

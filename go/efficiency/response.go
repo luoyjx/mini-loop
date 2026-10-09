@@ -106,7 +106,11 @@ func (b *responseBinding) invoke(ctx context.Context, c ResponseContext) (result
 		return result, e
 	}
 	defer func() { <-b.serial }()
-	err = callLifecycleHook(ctx, invocationDuration(b.descriptor.TimeoutMS), func(child context.Context) error {
+	timeout, err := invocationDuration(b.descriptor.TimeoutMS)
+	if err != nil {
+		return result, err
+	}
+	err = callLifecycleHook(ctx, timeout, func(child context.Context) error {
 		var callErr error
 		result, callErr = b.planner.Plan(child, c)
 		return callErr

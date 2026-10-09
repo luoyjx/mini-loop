@@ -282,7 +282,11 @@ func (b *requestBinding) invoke(ctx context.Context, c OptimizationContext, opti
 		return result, err
 	}
 	defer func() { <-b.serial }()
-	err = callLifecycleHook(ctx, invocationDuration(b.descriptor.TimeoutMS), func(child context.Context) error {
+	timeout, err := invocationDuration(b.descriptor.TimeoutMS)
+	if err != nil {
+		return result, err
+	}
+	err = callLifecycleHook(ctx, timeout, func(child context.Context) error {
 		options.BudgetTokens = copyInteger(options.BudgetTokens)
 		var callErr error
 		result, callErr = b.optimizer.Optimize(child, c, options)
