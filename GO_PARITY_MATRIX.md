@@ -1,5 +1,19 @@
 # Python to Go parity matrix
 
+## 2026-10-09 efficiency startup Source contracts
+
+Baseline: `8456602`. Nine actual Python server-lifespan/HTTP scenarios capture
+mode/style combinations, readonly authority, disabled persistence and the raw
+threshold. Requests record caps, concise instructions, recovery capability and
+actual Bash/result recovery; receipts normalize timing and ephemeral identities.
+Store limits and shutdown closure are observed from the actual runtime.
+E6.4c Go Launcher/HTTP/benchmark settings activation remains pending.
+Validation: 124 focused Python tests, 19 scan guards, complete 181-file exporter
+check, go test ./... -count=1 -timeout=180s and git diff --check passed.
+Full Python regression, race/vet and coverage were not refreshed for this
+Source-contract-only change.
+
+
 
 ## 2026-10-09 native entered-workspace child artifact allocation
 

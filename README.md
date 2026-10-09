@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `3968369` plus native entered-workspace child artifact allocation,
+Runtime review baseline: `8456602` plus efficiency startup Source contracts,
+plus native entered-workspace child artifact allocation,
 plus Agent request projection Source contracts,
 plus explicit Agent response policy adoption,
 plus Agent response adoption Source contracts,
