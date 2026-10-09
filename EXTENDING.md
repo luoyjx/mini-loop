@@ -1975,7 +1975,8 @@ intentional. Model output and improvement drafts cannot become these callbacks.
 
 `benchmark.RunArm(ctx, label, ManagerConfig, tasks)` now explicitly launches one
 owned manager and fresh anonymous interactive sessions, captures workload storage
-before callbacks, applies real catalogue reduction and stops/joins on every exit.
+before callbacks, constructs the complete session, runs setup, then uses
+ManagedSession.RestrictTools before the first turn. It stops/joins on every exit.
 Nil/empty tasks mean no tasks; callers explicitly select DefaultTasks or HeldoutTasks.
 Injected services remain caller-owned, and custom workspace factories must isolate
 task paths. Setup/create failures abort; ordinary run/judge failures score rows;
@@ -3465,7 +3466,9 @@ library selection. Off/normal, raw persistence true, threshold 16384, TTL 3600 a
 ManagerServices.TokenEfficiency overrides default component/mode selection.
 ManagerServices.Tools supplies an immutable caller catalogue; the Manager does not
 automatically widen it with builtin or recovery tools. Explicit optional feature
-flags remain independent. Final ToolSelection filtering precedes store allocation.
+flags remain independent. CreateSessionRequest.ToolSelection filtering precedes
+store allocation. Benchmark constructs first, runs setup, then uses the exclusive
+first-turn ManagedSession.RestrictTools seam. Already bound stores stay owned.
 
 Manager Start/StartContext initializes once with empty lifecycle services. Store
 binding is per workspace; foreign template stores are detached from session roots
@@ -3528,5 +3531,17 @@ ownership. Launcher and fakeManagerConfig forward the same named selection into
 ManagerConfig.Efficiency. The default remains off/normal; custom library-injected
 runtimes retain their own modes/components. Comprehensive MINILOOP_FEATURES still
 refuses activation. Benchmark environment selection happens per HTTP request; the
-main app provider is never reused. Benchmark post-construction filtering parity
-is still open and must preserve ownership of any store allocated before filtering.
+main app provider is never reused. Benchmark constructs and runs setup before
+RestrictTools; store ownership survives catalogue reduction and ends at drain/close.
+
+### Go first-turn catalogue restriction
+
+ManagedSession.RestrictTools(ctx, ToolSelection) takes nonblocking turn admission,
+checks accepting state and context, then locks the core and requires no prior turns
+or history. It snapshots a subset of the current immutable catalogue. Removed and
+unknown names cannot add authority; schema publication and ToolGate execution use
+the new inventory. It changes no service/store bindings or lease/history records.
+Ordinary construction filtering remains available. Benchmark uses this seam only
+after task setup, matching Source allocation order. Active/used/restored/closed
+handles must not use this seam; it returns named ErrSessionBusy or
+ErrToolSelectionStarted where applicable.

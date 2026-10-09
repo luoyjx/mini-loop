@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `76772ef` plus benchmark filter-order Source contracts,
+Runtime review baseline: `bcaeca9` plus native benchmark post-construction narrowing,
+plus benchmark filter-order Source contracts,
 plus Launcher and benchmark efficiency settings activation,
 plus benchmark efficiency Source contracts,
 plus efficiency startup Source contracts,
@@ -437,7 +438,7 @@ flowchart LR
         GoTeams["Go team protocols<br/>bounded mailbox / 200 handshakes<br/>owned GET / injection / idle turns"]
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
-        GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>typed statistics · conservative paired verdict"]
+        GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
@@ -1542,7 +1543,8 @@ Selection belongs to one construction: independent sessions, forks and restored
 handles use their configured profile, without restoring this transient selection.
 It is not a persisted policy or host sandbox. Child role policies narrow the
 selected parent catalogue. `benchmark.RunArm` now owns a manager and runs each
-admitted task in a fresh anonymous interactive session. Setup faults abort the
+admitted task in a fresh anonymous interactive session. Construction and setup
+precede first-turn tool restriction, preserving allocated store ownership. Setup faults abort the
 arm; run/judge faults score failed rows, and cancellation aborts with joined
 manager teardown. Duration covers only the run; cost/motion use the actual final
 typed transcript. Workspaces remain available for inspection. Caller-owned
@@ -2260,7 +2262,20 @@ listening and Stop drains sessions before store/component closure.
 Nine Source HTTP traces match actual native listener/provider/shell requests and
 metric-only receipts, including readonly, disabled persistence, below-threshold
 output and raw recovery. Two separate benchmark Source reports compare selected
-settings using four isolated fake arms. Benchmark tool filtering still occurs
-before native allocation, while Python filters its constructed session; allocation
-order parity remains open. The comprehensive MINILOOP_FEATURES bundle and SQLite
+settings using four isolated fake arms. Benchmark now constructs the complete session, runs setup, then calls
+ManagedSession.RestrictTools before its first turn. Already allocated stores stay
+owned until manager drain/close, matching Source order. The comprehensive MINILOOP_FEATURES bundle and SQLite
 backend remain unavailable.
+
+### Managed tool restriction before the first turn
+
+ManagedSession.RestrictTools accepts an immutable ToolSelection under exclusive
+admission and the core lock. It replaces the inventory with a newly owned subset,
+retaining installed order and ignoring unknown names. Repeated restrictions cannot
+restore removed tools. Busy, closed, cancelled and previously used/restored sessions
+refuse mutation. The same gate inventory supplies model schemas and execution
+admission; published snapshots and construction-time service/store bindings remain
+unchanged. Ordinary CreateSessionRequest.ToolSelection still filters before store
+allocation. Benchmark deliberately uses the post-construction seam after setup to
+match Python run_arm. Seven actual Source recipes cover store identity, schemas
+and shutdown; additional native tests cover removed write effects and admission.

@@ -1881,8 +1881,8 @@ admitted judges. POST /benchmark now composes these admitted tasks through four 
 ### Owned benchmark arms
 
 `benchmark.RunArm` takes an explicit workload and ManagerConfig, captures task
-storage before callbacks, creates fresh anonymous interactive sessions and applies
-the selected catalogue. A caller-supplied workspace factory must isolate tasks.
+storage before callbacks, creates complete fresh anonymous interactive sessions,
+runs setup, then applies ManagedSession.RestrictTools before the first turn. A caller-supplied workspace factory must isolate tasks.
 Workspaces remain available for inspection; injected shared services stay caller-owned.
 The owned manager is stopped/joined on success, setup faults and cancellation.
 Setup/create faults abort the arm, ordinary run/judge faults score failed rows,
@@ -2629,8 +2629,10 @@ Fourteen captured Python Manager scenarios, filtered capability admission, faile
 publication and restored-store cleanup have native tests. Launcher and request-time fake benchmark both use runtimeconfig.ManagerEfficiency
 to forward all seven validated settings. Default off/normal remains unchanged.
 Nine real HTTP/native-shell runs compare Source requests and receipts; two fake
-benchmark reports compare selected settings. Source post-construction tool
-filtering versus native pre-allocation filtering remains an allocation-order gap.
+benchmark reports compare selected settings. RunArm now matches Source order:
+construct full session/store, run setup, restrict tools, then run. Seven actual
+Source recipes verify construction/setup inventory, retained stores, model schemas
+and manager closure. Ordinary construction-time selection still filters first.
 
 
 Standard in-process children share the efficiency root and matching store.
@@ -2644,3 +2646,14 @@ workspace reads, old/new reference isolation and configured TTL/capacities.
 Child-created stores are transient RAM; shared lifecycle ownership stays with
 the caller/Manager. efficiency.ArtifactLimits and RawStore.Limits expose detached
 parameters without raw authority.
+
+### Restrict a newly constructed managed session
+
+ManagedSession.RestrictTools(ctx, selection) narrows the current catalogue while
+owning nonblocking admission and the core lock. SelectTools() removes all tools;
+zero selection preserves the current inventory. Unknown names are ignored and
+installed order is retained. Repeating a restriction cannot recover removed tools.
+Busy sessions return ErrSessionBusy; prior turns or restored history return
+ErrToolSelectionStarted. Closed/cancelled sessions refuse mutation. The unchanged
+Manager ledger retains any previously allocated stores for teardown. Benchmark
+uses this after setup; HTTP exposes no catalogue-mutation route.

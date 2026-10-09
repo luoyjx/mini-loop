@@ -1,5 +1,36 @@
 # Python to Go parity matrix
 
+## 2026-10-09 native benchmark construction/filter order
+
+Baseline: `bcaeca9`. ManagedSession.RestrictTools is an explicit first-turn-only
+monotonic catalogue reduction. Nonblocking turn admission and the core lock
+serialize mutation; cancelled, closed, busy, used and restored-history handles
+refuse it. A fresh catalogue preserves installed order and immutable snapshots;
+unknown/removed names cannot widen capability. Model schemas and tool execution
+use the same gate inventory. Services, stores and Manager ownership are untouched.
+
+RunArm now constructs the complete session, runs task setup, restricts tools, then
+runs the model, matching Python. Ordinary CreateSessionRequest.ToolSelection still
+filters before allocation. Seven Source recipes match native construction/setup
+names, store identity across filtering, model schemas and manager store closure.
+Seven actual RunArm tests compare model catalogues, setup-before-model and results.
+Additional native tests prove removed write effects are denied, old snapshots stay
+immutable, repeated restriction cannot restore tools, and live admission/history
+guards reject mutation. Source run_arm has no explicit stop; native owned teardown
+remains a deliberate lifecycle guarantee after success/failure/cancellation.
+
+README canonical benchmark flow and boundary, EXTENDING, Go README and the
+generated architecture are updated. Architecture checks passed 9/9, zero errors/
+warnings, both SHA256 values verified. Visual inspection remains skipped after
+the earlier browser denial. Full Go tests, vet and race passed:
+go test ./... -count=1 -timeout=180s; go vet ./...;
+go test -race -p=1 ./... -count=1 -timeout=180s. git diff --check passed.
+Source gates passed: 124 focused Python tests, all 19 scan guards and complete
+183-file exporter check. No Python runtime modules or default-tool types changed.
+No dependencies or push. Full Python regression/coverage were not refreshed.
+E6 broader profile audit, native SQLite and complete Go migration remain open.
+
+
 ## 2026-10-09 benchmark post-construction filter Source contracts
 
 Baseline: `76772ef`. Seven actual Python benchmark.run_arm runs observe Manager

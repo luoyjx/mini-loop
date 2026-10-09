@@ -57,9 +57,6 @@ func RunArm(ctx context.Context, label string, config agent.ManagerConfig, tasks
 	rows = make([]TaskResult, 0, len(tasks))
 	for _, task := range tasks {
 		request := agent.CreateSessionRequest{Owner: "anonymous", PermissionMode: agent.ModeInteractive}
-		if names, selected := task.ToolNames(); selected {
-			request.ToolSelection = agent.SelectTools(names...)
-		}
 		session, err := manager.Create(ctx, request)
 		if err != nil {
 			return nil, &ArmError{ArmCreate, task.Name(), err}
@@ -67,6 +64,13 @@ func RunArm(ctx context.Context, label string, config agent.ManagerConfig, tasks
 		workspace := session.Info().Workspace
 		if err := prepareTask(ctx, task, workspace); err != nil {
 			return nil, &ArmError{ArmSetup, task.Name(), err}
+		}
+		// Python constructs the complete session and runs setup before filtering.
+		// Retain already allocated services/stores while narrowing model authority.
+		if names, selected := task.ToolNames(); selected {
+			if err := session.RestrictTools(ctx, agent.SelectTools(names...)); err != nil {
+				return nil, &ArmError{ArmSetup, task.Name(), err}
+			}
 		}
 		started := time.Now()
 		final, runErr := session.Run(ctx, task.Prompt())

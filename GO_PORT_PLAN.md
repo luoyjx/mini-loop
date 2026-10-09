@@ -1,5 +1,36 @@
 # Go port plan
 
+## 2026-10-09 native benchmark construction/filter order
+
+Baseline: `bcaeca9`. ManagedSession.RestrictTools is an explicit first-turn-only
+monotonic catalogue reduction. Nonblocking turn admission and the core lock
+serialize mutation; cancelled, closed, busy, used and restored-history handles
+refuse it. A fresh catalogue preserves installed order and immutable snapshots;
+unknown/removed names cannot widen capability. Model schemas and tool execution
+use the same gate inventory. Services, stores and Manager ownership are untouched.
+
+RunArm now constructs the complete session, runs task setup, restricts tools, then
+runs the model, matching Python. Ordinary CreateSessionRequest.ToolSelection still
+filters before allocation. Seven Source recipes match native construction/setup
+names, store identity across filtering, model schemas and manager store closure.
+Seven actual RunArm tests compare model catalogues, setup-before-model and results.
+Additional native tests prove removed write effects are denied, old snapshots stay
+immutable, repeated restriction cannot restore tools, and live admission/history
+guards reject mutation. Source run_arm has no explicit stop; native owned teardown
+remains a deliberate lifecycle guarantee after success/failure/cancellation.
+
+README canonical benchmark flow and boundary, EXTENDING, Go README and the
+generated architecture are updated. Architecture checks passed 9/9, zero errors/
+warnings, both SHA256 values verified. Visual inspection remains skipped after
+the earlier browser denial. Full Go tests, vet and race passed:
+go test ./... -count=1 -timeout=180s; go vet ./...;
+go test -race -p=1 ./... -count=1 -timeout=180s. git diff --check passed.
+Source gates passed: 124 focused Python tests, all 19 scan guards and complete
+183-file exporter check. No Python runtime modules or default-tool types changed.
+No dependencies or push. Full Python regression/coverage were not refreshed.
+E6 broader profile audit, native SQLite and complete Go migration remain open.
+
+
 ## 2026-10-09 benchmark post-construction filter Source contracts
 
 Baseline: `76772ef`. Seven actual Python benchmark.run_arm runs observe Manager
@@ -1042,25 +1073,26 @@ unrefreshed. Native immutable contracts follow; E1-E6 and the full port stay ope
 
 ## Token-efficiency migration slices — 2026-10-09
 
-Current baseline 2f742eb: Settings parses the efficiency fields, but the Go runtime
-has no observation/request/response optimization service. Mode/style activation
-remains explicitly unsupported. The full Source token_efficiency.py contract,
-including optional/custom components, is still required for the port.
+Review baseline `bcaeca9` plus native benchmark post-construction restriction:
+typed observation/request/response services, shared lifecycle, Manager/child
+bindings and Launcher/HTTP/fake benchmark mode/style settings are installed.
+E6.4 supported composition is delivered; full Source token_efficiency.py fidelity,
+including broader wire/SPI/custom profiles, still requires a coverage audit.
 
 - E0 (native foundation delivered; broader wire/SPI profiles open): named immutable component descriptors and optimization receipts, closed stage/
   mode/status/lossiness/cost types, bounded warnings, unbounded integer metrics and
   Source-safe event projections. Capture constructor/receipt behavior before wiring.
-- E1 (native store/recovery tool delivered; default activation/lifecycle pending): scoped masked raw-artifact memory store, opaque refs, trusted monotonic TTL,
+- E1 (native store/recovery tool and managed/default lifecycle delivered; broader profiles open): scoped masked raw-artifact memory store, opaque refs, trusted monotonic TTL,
   per-item/total capacity, integrity checks, discard/sweep/clear/close and tools.
 - E2 (observation library and typed Agent masking/adoption delivered; broader profiles pending): observation reducers and runtime off/shadow/enforce behavior; mask-before-input,
   single ownership, no inflation, recoverable storage and fail-open fault receipts.
 - E3 (request library and typed Agent protocol/ledger adoption delivered; broader profiles pending): detached typed request projection, frozen-prefix/identity/envelope guards,
   optimizer admission, budgets and cache-order/transcript preservation.
-- E4 (response library and explicit Agent response adoption delivered; default composition pending): stable typed response settings and concise policy; bounded instructions,
+- E4 (response library, Agent adoption and selected default composition delivered; broader profiles open): stable typed response settings and concise policy; bounded instructions,
   existing output-cap/context-budget preservation, shadow and fault behavior.
-- E5 (three-stage registry/lifecycle delivered; session/Manager adoption pending): shared component identities, serial admission, initialize/health/close once,
+- E5 (three-stage registry/lifecycle and session/Manager/child adoption delivered; broader profiles open): shared component identities, serial admission, initialize/health/close once,
   draining/deadlines/retry, per-session clone/store binding and contained failures.
-- E6 (E6.1 response, E6.2 request and E6.3 observations delivered; E6.4 defaults/lifecycle pending): agent/manager/launcher/benchmark/HTTP composition, events/recording, independent
+- E6 (E6.1 response, E6.2 request, E6.3 observations and E6.4 supported defaults/lifecycle delivered; broader profile audit open): agent/manager/launcher/benchmark/HTTP composition, events/recording, independent
   environment selection and actual Source end-to-end feature-combination tests.
 
 Each slice retains the overall port objective and gets a separate validated commit.

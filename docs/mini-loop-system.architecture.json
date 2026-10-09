@@ -523,7 +523,7 @@
       "id": "goBenchmark",
       "type": "backend",
       "label": "Go benchmark instrument",
-      "sublabel": "owned fake comparison / admitted tasks / statistics",
+      "sublabel": "construct / setup / restrict / run / owned teardown",
       "pos": [
         60,
         610
@@ -1681,7 +1681,8 @@
         "Go Manager owns default-off efficiency roots: init once, scoped masked RAM stores, drain then store revocation then shared close; Launcher/fake benchmark settings active; default off/normal",
         "Go in-process children share efficiency roots and matching stores; selected recovery handlers bind child identity, concise opt-in and request ledger start fresh; Manager drains active tasks before revocation",
         "Entered-workspace Go children detach foreign stores and allocate fresh masked RAM only for writable enforce + selected recovery; TTL/capacities come from detached settings; child stores are transient, lifecycle root stays shared",
-        "Go runtimeconfig.ManagerEfficiency maps validated mode/style, persistence, threshold and artifact limits into Launcher and request-time isolated fake benchmark managers; nine actual HTTP/native-shell traces and two benchmark Source reports match. Benchmark post-construction filtering/allocation parity remains open; MINILOOP_FEATURES and SQLite stay unavailable."
+        "Go runtimeconfig.ManagerEfficiency maps validated mode/style, persistence, threshold and artifact limits into Launcher and request-time isolated fake benchmark managers; nine actual HTTP/native-shell traces and two benchmark Source reports match. Benchmark now constructs, runs setup, then restricts tools while retaining store ownership; MINILOOP_FEATURES and SQLite stay unavailable.",
+        "ManagedSession.RestrictTools narrows pristine catalogues under exclusive admission/core locking; retained snapshots and Manager store ownership stay intact. Benchmark matches Source construct → setup → filter → run order; seven Source recipes and native effect/admission tests cover it."
       ]
     }
   ]
