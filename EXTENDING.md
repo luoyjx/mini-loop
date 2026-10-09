@@ -535,8 +535,12 @@ refused. TranscriptStore/EventStore now append with immediate read-head transact
 retain older epochs, roll back failed batches and distinguish physical event
 ordinals from payload sequence. Known events decode with inert scope; archival
 message decoding permits larger histories while network and tool-input/caller
-limits remain. Action/approval SQL and complete StateStore conformance
-remain pending; these library methods do not activate managed restoration.
+limits remain. Native action/approval rows complete StateStore conformance.
+Action conflicts update settlement fields only; approval conflicts update status,
+resolved time and answer only. Nullable approval tool-use IDs retain a separate
+NULL bit through JSON. MarkInflightUnknown is an explicit immediate transaction,
+with optional session scope and whole-operation rollback. Opening alone performs
+no recovery; these library methods do not activate managed restoration or grants.
 
 `TrajectoryStore` records what happened, for audit, and redacts content when
 asked. `StateStore` is the other half: the state a *different process* needs to

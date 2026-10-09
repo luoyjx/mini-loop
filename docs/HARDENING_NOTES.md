@@ -8198,3 +8198,20 @@ Large plain/text/result blocks and accumulated arrays round-trip while network
 JSON still rejects oversize frames. Tool inputs and caller projections retain their
 separate decoding limits. Unknown historical variants and stored-event limits
 remain explicit; neither row reading nor remembered grant events install authority.
+
+### Go migration — audit identity and explicit atomic recovery
+
+Native action upserts preserve original session/message/tool identity, input hash
+and creation time. Approval upserts preserve original identity, prompt, preview,
+kind and creation time, updating only status/resolved time/answer. Nullable approval
+tool-use IDs distinguish SQL NULL from an empty string in the typed record and JSON.
+Detached reads cannot mutate persisted nullable results. Session deletion retains
+action/approval audit rows. Native Store now satisfies the complete StateStore seam.
+
+MarkInflightUnknown reserves the writer before selecting started rows, closes the
+read cursor and updates all selected rows inside one immediate transaction. A real
+aborting trigger proves earlier updates roll back. Optional session scope includes
+an explicitly empty session ID; nil means global. Open never invokes this policy.
+Unknown status proves neither foreign-process death nor external-effect fencing.
+Stored approvals cannot reconstruct remembered grants. Native managed restart and
+configured Launcher activation remain separate validation work.

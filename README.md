@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `5221144` plus native SQLite transcript and event rows,
+Runtime review baseline: `1daa299` plus native SQLite action/approval rows,
+plus native SQLite transcript and event rows,
 plus native SQLite session metadata and leases,
 plus standalone native SQLite schema opening,
 plus Source timeout overflow/error ordering,
@@ -459,7 +460,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>SQLite sessions · epochs · events · leases<br/>audit SQL / activation pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>SQLite sessions · epochs · events · leases · audit<br/>activation pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
@@ -599,7 +600,10 @@ global message ordinals across epochs and retaining old history. Event ordinals
 remain distinct from live sequences; known historical events decode as untrusted
 metadata. DecodeStoredMessage reads large known histories without widening the
 network frame cap; tool input/caller boundaries and stored-event limits remain.
-Action/approval SQL and complete `agent.StateStore` conformance,
+Native action/approval SQL now completes `agent.StateStore` conformance. Upserts
+preserve original identity and creation fields; explicit transactional recovery
+marks started actions unknown without proving foreign effects stopped. Approval
+reads preserve SQL NULL versus empty tool-use IDs and restore no grants.
 Manager/Launcher activation and durable managed restoration remain pending.
 
 Go Manager selects an off/normal shared efficiency root by default. Library callers

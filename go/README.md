@@ -289,9 +289,15 @@ of live SSE sequences. Known events use the existing untrusted archival decoder,
 including its explicit 16 MiB/variant boundaries. protocol.DecodeStoredMessage
 removes the network cap for known stored rows and text/thinking/result blocks;
 tool-input and caller decoders keep their separate limits. Unsupported historical
-shapes still fail, and reads do not authorize execution. Action/approval APIs,
-complete agent.StateStore conformance
-and Launcher/Manager persistence activation remain pending.
+shapes still fail, and reads do not authorize execution. Native action/approval
+rows now complete agent.StateStore conformance. Action updates preserve original
+identity, input hash and creation time; approval updates change only status,
+resolved time and answer. ReadApprovals preserves SQL NULL versus empty tool-use
+IDs through ApprovalRecord.ToolUseIDNull and its JSON codec. Recovery is explicit:
+MarkInflightUnknown atomically changes selected started rows to unknown, either
+per session or globally; Open never invokes it. It establishes no external-effect
+fencing or human grants. Launcher/Manager persistence activation and native
+managed restart evidence remain pending.
 
 `agent.SessionRecord` models the Python schema-v7 session projection: immutable
 creation time, mutable run/status/todo state, tenant owner, pending steering and

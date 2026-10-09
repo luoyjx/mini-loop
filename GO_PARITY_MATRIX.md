@@ -1,5 +1,38 @@
 # Python to Go parity matrix
 
+## 2026-10-09 native SQLite action and approval audit rows
+
+Baseline: 1daa299. Native sqlitestate.Store now compiles against the complete
+agent.StateStore interface. Action upserts update only status, result, workflow run
+and completion time. Approval upserts update only status, resolved time and answer;
+original identity, prompt/preview/kind and creation fields remain immutable.
+ApprovalRecord.ToolUseIDNull and its concrete JSON codec preserve SQL NULL versus
+empty tool-use IDs. Invalid simultaneous NULL/value state is refused. Reads are
+detached and approvals remain audit data without remembered grants.
+
+MarkInflightUnknown is explicit, scoped by optional session or global when nil.
+It selects started IDs after BEGIN IMMEDIATE, closes the cursor, updates inside
+that transaction and rolls back all earlier updates on failure. Open does not
+invoke recovery. Unknown does not prove foreign-process death or external-effect
+fencing. Native tests replay existing actual Source audit/reopen/scoped/global
+recovery snapshots, verify identity preservation, missing/closed reads, nullable
+approval order/status filtering, detached results and trigger-induced rollback.
+An actual Source SQLite probe confirms empty tool-use ID and SQL NULL stay distinct.
+
+Validation: focused Go sqlitestate/agent tests, full Go race and vet passed;
+25 Python storage/crash tests and the 186-file Source export check passed.
+The initial parallel ordinary coverage run failed one existing AST timeout recipe:
+the version probe reached its one-second timeout rather than succeeding before the
+operation timeout. Final serialized full cross-package coverage verification
+(-p=1 -count=1 -timeout=300s -coverpkg=./...) passed.
+The successful race run emitted a nonfatal macOS CGO LC_DYSYMTAB linker warning.
+README baseline/canonical map, extension/hardening and Go README updated.
+Archify delivery passes 9/9, zero errors/warnings; exact specification/artifact
+hashes verified. Visual review skipped after the earlier browser denial.
+Full Python suite/coverage not refreshed. Configured Manager/Launcher storage,
+native managed restart/catch-up/cron proofs, wider archival profiles and full port
+audit remain open. No push.
+
 ## 2026-10-09 native SQLite transcript epochs and event rows
 
 Baseline: 5221144. sqlitestate.Store now satisfies TranscriptStore and EventStore

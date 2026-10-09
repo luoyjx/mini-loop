@@ -119,18 +119,20 @@ func (snapshot ApprovalSnapshot) Clone() ApprovalSnapshot {
 }
 
 type ApprovalRecord struct {
-	ApprovalID   ApprovalID        `json:"approval_id"`
-	SessionID    SessionID         `json:"session_id"`
-	ToolUseID    string            `json:"tool_use_id"`
-	ToolName     protocol.ToolName `json:"tool_name"`
-	Rule         string            `json:"rule"`
-	Message      string            `json:"message"`
-	InputPreview string            `json:"input_preview"`
-	Status       ApprovalStatus    `json:"status"`
-	CreatedAt    float64           `json:"created_at"`
-	ResolvedAt   *float64          `json:"resolved_at"`
-	Kind         ApprovalKind      `json:"kind"`
-	Answer       *string           `json:"answer"`
+	ApprovalID ApprovalID `json:"approval_id"`
+	SessionID  SessionID  `json:"session_id"`
+	ToolUseID  string     `json:"tool_use_id"`
+	// ToolUseIDNull distinguishes historical SQL NULL from an empty tool-use ID.
+	ToolUseIDNull bool              `json:"-"`
+	ToolName      protocol.ToolName `json:"tool_name"`
+	Rule          string            `json:"rule"`
+	Message       string            `json:"message"`
+	InputPreview  string            `json:"input_preview"`
+	Status        ApprovalStatus    `json:"status"`
+	CreatedAt     float64           `json:"created_at"`
+	ResolvedAt    *float64          `json:"resolved_at"`
+	Kind          ApprovalKind      `json:"kind"`
+	Answer        *string           `json:"answer"`
 }
 
 func (record ApprovalRecord) Clone() ApprovalRecord {
