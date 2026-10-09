@@ -13744,3 +13744,46 @@ Validation: focused Source CLI fixture test and full Python pytest passed
 (2166 passed, 28 skipped, 24 subtests; 3 existing warnings). Source exporter
 --check passed for 192 files; verify_scans passed all 19 anchored guards.
 git diff --check passed. No package modules or mutation anchors changed.
+
+## Native remote audit fetching and CLI — 2026-10-09
+
+`audit.Fetch(ctx, base, client)` reads public /healthz, trims trailing slashes,
+uses a ten-second context budget and returns a concrete Report. Borrowed clients
+retain their timeout/transport/redirect policy; the helper does not configure
+environment credentials or mutate the client. Build is optional text, pid is an
+optional integer; invalid types/overflow fail atomically at the JSON boundary.
+Non-2xx, transport/read faults and invalid documents fail without publishing
+findings. A 1 MiB response cap is an explicit Go bound beyond Source's unbounded
+JSON load; it counts streamed bytes before decoding.
+
+The independent `go/cmd/miniloop-audit --url` command prints Source-compatible
+header/findings and returns 1 for high/critical findings, 0 otherwise. Operational
+errors exit 1; invalid/missing arguments exit 2 with usage on stderr (Source's
+missing-URL usage uses stdout). No-argument local auditing remains unimplemented
+and is explicitly refused. Signal cancellation propagates to HTTP. Remote audit
+does not construct a manager, resolve model credentials or create sessions.
+
+Twenty-two Source CLI profiles are exercised through real native loopback HTTP,
+including slash trimming, header metadata, findings, exact text and exit status.
+An actual Launcher health test proves all default findings and zero sessions.
+Cancellation, the ten-second deadline, borrowed-client preservation, failed HTTP,
+invalid syntax/types/overflow, trailing JSON, oversized streamed bodies and
+missing metadata are covered. An actual built binary successfully audited a
+loopback server, printed the fixed build/pid and returned 0 with no findings.
+
+README canonical Mermaid now includes the independent audit client and its
+public health read. Architecture JSON aggregates that client under the Go entry
+component and explains this grouping; generated HTML updated together. Archify
+delivery passed 9/9 showcase checks, zero errors/warnings; exact specification
+and artifact bytes/SHA256 match the receipt. Visual review was not repeated
+because prior browser inspection was denied; correction rounds 0. No dependency,
+server default, authority, schema or health behavior changes. Local/live auditing
+and remaining full migration acceptance stay open.
+
+Final validation: focused audit/command race tests, full serialized Go tests,
+full serialized Go race tests and go vet ./... passed. Actual native binary
+HTTP smoke passed. Full Python pytest, 192-file exporter --check and 19 scanning
+guards passed in the preceding Source contract commit. README outline and
+git diff --check passed. Existing CGO linker warnings were nonfatal. Python
+package invariant/guard checks and coverage were not refreshed: package modules
+and guarded mutation anchors are unchanged. No push; full migration remains open.

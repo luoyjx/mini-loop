@@ -55,6 +55,8 @@ type Posture struct {
 type Report struct {
 	Authenticated bool
 	Posture       *Posture
+	Build         *string
+	PID           *int
 }
 
 func (report *Report) UnmarshalJSON(data []byte) error {
@@ -66,6 +68,24 @@ func (report *Report) UnmarshalJSON(data []byte) error {
 		return errors.New("audit report must be an object")
 	}
 	result := Report{}
+	if build, exists := value.Lookup("build"); exists && build.Kind() != jsonvalue.Null {
+		text, ok := build.Text()
+		if !ok {
+			return errors.New("build must be a string or null")
+		}
+		result.Build = &text
+	}
+	if pid, exists := value.Lookup("pid"); exists && pid.Kind() != jsonvalue.Null {
+		text, ok := pid.Integer()
+		if !ok {
+			return errors.New("pid must be an integer or null")
+		}
+		number, err := strconv.Atoi(text)
+		if err != nil {
+			return fmt.Errorf("pid: %w", err)
+		}
+		result.PID = &number
+	}
 	if auth, exists := value.Lookup("authenticated"); exists && auth.Kind() != jsonvalue.Null {
 		var ok bool
 		result.Authenticated, ok = auth.Bool()
