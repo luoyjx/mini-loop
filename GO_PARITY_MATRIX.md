@@ -6586,3 +6586,49 @@ passed (2168 passed, 28 skipped, 24 subtests; 3 existing warnings). Source
 exporter --check passed for 194 files; verify_scans passed all 19 anchored scanning
 guards. Two independent roots reproduce full snapshots. git diff --check passed.
 No Source package modules or guarded mutation anchors changed.
+
+## Typed full deployment finding composition — 2026-10-09
+
+`audit.ComposeLive` combines configuration findings with concrete
+LiveObservation/CatalogObservation/ToolObservation/ProblemChannel structs.
+Named protocol tools, finite agent risks, secret names and selfaudit Ledger/
+exact problem counters carry observations; there are no dynamic payloads or
+reflection in the native composition. It implements every Source full audit
+finding branch and sorts by severity/check. Nil catalogue remains default shell,
+while an explicit empty catalogue lowers confinement/journal severity and omits
+resource limits. A present-but-empty sandbox reason remains an unavailable
+finding, distinct from remote audit's truthiness rule.
+
+Credential-shape detection reuses pinned Python uppercasing and fnmatch patterns;
+registration is exact-case, names are sorted and previews stop at three. Values
+are never rendered or resolved. Cached unresolved/short names preserve source
+order. Persistence faults remain findings distinct from null-store configuration.
+Specific MCP/cron/skills ledgers use Source remedies; generic channels sort by
+name and exclude private, cron and skills attributes. Count summaries, distinct
+problem counts, extra-problem suffixes and unbounded comma-grouped churn totals
+are preserved. Copying configuration and channel containers prevents sorting
+from mutating caller observations.
+
+The sixteen actual manager profiles compare complete findings and exact rendering
+under native Go. Additional cases reject unknown risk/severity, failed ledgers,
+missing summaries/totals and duplicate/empty channels without partial findings.
+A 30-digit churn total remains exact; private/specific-channel exclusion and
+input immutability are verified. This is pure library composition. Native manager
+observation, collection of every native problem source, and local audit CLI
+startup/shutdown still need implementation; no HTTP/model-tool path is registered.
+
+README map/boundary and baseline review distinguish this status. Architecture
+JSON annotation and generated HTML are updated together. Archify delivery passed
+9/9 showcase checks, zero errors/warnings; exact specification/artifact byte counts
+and SHA256 match the receipt. Visual review was not repeated because prior
+browser inspection was denied; correction rounds 0. No dependency, runtime
+default, authority, persistence, health or CLI behavior changes. Wider migration
+acceptance and default diagnostics remain open.
+
+Final validation: focused native audit race, full serialized Go tests, full
+serialized Go race tests and go vet ./... passed. Full Python pytest, 194-file
+Source exporter check and all 19 scanning guards passed in the preceding
+contract commit. README outline and git diff --check passed. Existing CGO
+linker warnings were nonfatal. Python package invariant/guard checks and
+coverage were not refreshed because package modules and mutation anchors are
+unchanged. No push; native observation and full migration acceptance remain open.

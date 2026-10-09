@@ -315,8 +315,13 @@ Source check order, follows symlink targets and observes missing/cyclic roots
 without creating them. Nil environment reads the process; an explicit empty map
 is empty. Invalid authentication and unexpected stat faults return errors.
 The library does not construct runtime services or imply live-manager auditing.
+`audit.ComposeLive` combines those configuration findings with concrete tool,
+secret-cache, persistence and problem-ledger observations to implement the full
+Source finding logic. It preserves shell-sensitive severities, exact log counts
+and final severity/check sorting. This composition is library-only: a Go manager
+observer and local CLI binding remain pending; no health/tool path calls it.
 
-Runtime review baseline: `bbc0b73` plus native configuration audit library,
+Runtime review baseline: `121e99a` plus typed full deployment audit composition,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -460,7 +465,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `bbc0b73` plus native configuration audit library;
+reviewed **2026-10-09** (Go baseline `121e99a` plus typed full deployment audit composition;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -514,7 +519,7 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
-        GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>library-only config / filesystem audit"]
+        GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>library-only config / filesystem / full finding composition"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
