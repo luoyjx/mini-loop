@@ -172,6 +172,10 @@ type CleanupError struct {
 
 type hostBashFactory struct{}
 
+func (hostBashFactory) SandboxPosture() shell.SandboxPosture {
+	return shell.SandboxPosture{Name: "None"}
+}
+
 func (hostBashFactory) BashFor(ctx context.Context, binding SessionBinding) (BashExecutor, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err

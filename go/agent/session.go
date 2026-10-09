@@ -39,7 +39,10 @@ type BashExecutor interface {
 	ExecuteBash(context.Context, protocol.BashInput) (string, error)
 }
 
+type runtimeShellBinding struct{ executor BashExecutor }
+
 type Session struct {
+	shellBinding                                      atomic.Pointer[runtimeShellBinding]
 	requestProjections                                map[requestProjectionKey]protocol.Message
 	tokenEfficiency                                   *efficiency.Runtime
 	observationRaw                                    ObservationRawConfig
@@ -140,6 +143,7 @@ func NewSession(id SessionID, owner OwnerID, provider Provider, executor BashExe
 	session, err := NewSessionWithGate(id, owner, provider, gate, ModeInteractive, root, maxRounds)
 	if session != nil {
 		session.bash = executor
+		session.shellBinding.Store(&runtimeShellBinding{executor})
 	}
 	return session, err
 }

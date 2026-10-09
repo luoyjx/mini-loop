@@ -277,9 +277,12 @@ Go `/healthz.features` reports deployment `EnableFeatures`, including caller-bac
 full startup; selecting independent optional groups does not change that flag.
 Go `/healthz.posture` observes live/default runtime components, persisted write
 faults and credential coverage counts without creating a session. Native component
-labels may differ from Python; absent sandbox remains explicitly `None`.
+labels may differ from Python; the null-store marker remains `NullStateStore`
+for Source remote audit. Shell metadata reports an injected sandbox or explicit
+`None`; unobservable custom executors/factories fail observation. Seatbelt
+implementation and OS confinement verification remain pending.
 
-Runtime review baseline: `95f7e2b` plus typed native runtime posture and public health projection,
+Runtime review baseline: `b0613e4` plus injected sandbox posture and compatible null-store reporting,
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
@@ -478,7 +481,7 @@ flowchart LR
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
-        GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · runtime posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
+        GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · atomic shell posture / persistence faults<br/>resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]

@@ -180,6 +180,7 @@ func (h *runtimeHandler) enterWorkspace(ctx context.Context, path string) error 
 	// diagnostics and live mode; later calls in this same batch use the new root.
 	s.gate.catalog, s.gate.policy = catalog, policy
 	s.executionWorkspace, s.files, s.bash = files.Root(), files, executor
+	s.shellBinding.Store(&runtimeShellBinding{executor})
 	h.binding.Workspace = files.Root()
 	h.questions, s.questions = questions, questions
 	return nil

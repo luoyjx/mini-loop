@@ -167,6 +167,10 @@ func InspectWithOptions(settings config.Settings, server config.ServerSettings, 
 
 type boundBashFactory struct{ timeout time.Duration }
 
+func (boundBashFactory) SandboxPosture() shell.SandboxPosture {
+	return shell.SandboxPosture{Name: "None"}
+}
+
 func (f boundBashFactory) BashFor(ctx context.Context, binding agent.SessionBinding) (agent.BashExecutor, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err

@@ -5,10 +5,11 @@ import (
 	"reflect"
 
 	"github.com/luoyjx/mini-loop/go/secrets"
+	"github.com/luoyjx/mini-loop/go/shell"
 )
 
 // RuntimePosture is an observation, never an authorization or durability grant.
-// Component labels identify native implementations; absent components are None.
+// Component labels identify native implementations and compatible null markers.
 type RuntimePosture struct {
 	Authenticated       bool    `json:"authenticated"`
 	StateStore          string  `json:"state_store"`
@@ -83,11 +84,33 @@ func (manager *SessionManager) ObserveRuntimePosture(authenticated bool, environ
 		StateStore:    componentLabel(reflect.TypeOf(services.StateStore)),
 		ActionJournal: componentLabel(reflect.TypeOf(services.ActionJournal)),
 		Secrets:       componentLabel(reflect.TypeOf(mask)),
-		// The native runtime currently executes host commands without a sandbox seam.
+		// Executor configuration is observed below; it is not a confinement claim.
 		Sandbox: "None", CachePolicy: componentLabel(reflect.TypeOf(cache)),
 		StuckDetector: componentLabel(reflect.TypeOf(detector)),
 		UserResources: services.UserResources != nil, Workflows: workflow,
 		Trajectories: services.Trajectories != nil}
+	// Source remote audit recognizes this explicit null-store marker.
+	if services.StateStore == nil {
+		report.StateStore = "NullStateStore"
+	}
+	var sandbox shell.SandboxPosture
+	if live != nil {
+		if binding := live.shellBinding.Load(); binding != nil {
+			if source, ok := binding.executor.(shell.SandboxPostureProvider); ok {
+				sandbox = source.SandboxPosture()
+			}
+		}
+	} else if source, ok := services.BashFactory.(shell.SandboxPostureProvider); ok {
+		sandbox = source.SandboxPosture()
+	}
+	if sandbox.Name == "" {
+		return RuntimePosture{}, errors.New("sandbox posture observation is unavailable")
+	}
+	report.Sandbox = sandbox.Name
+	if sandbox.Reason != nil {
+		value := *sandbox.Reason
+		report.SandboxReason = &value
+	}
 	for _, handle := range handles {
 		if fault := handle.PersistenceStatus().Error; fault != nil && *fault != "" {
 			report.StateStoreError = fault

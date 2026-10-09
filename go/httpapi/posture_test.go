@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/luoyjx/mini-loop/go/agent"
+	"github.com/luoyjx/mini-loop/go/internal/jsonvalue"
 	"github.com/luoyjx/mini-loop/go/secrets"
 	"github.com/luoyjx/mini-loop/go/sqlitestate"
 )
@@ -75,5 +76,52 @@ func TestPublicHealthPostureFailureReturnsPrivateError(t *testing.T) {
 	response := request(server, "GET", "/healthz", "", "")
 	if response.Code != 500 || response.Body.String() != `{"detail":"runtime posture observation failed"}` {
 		t.Fatal(response.Code, response.Body.String())
+	}
+}
+
+// Preserve every Source field, including future unknown fields. Only these two
+// known null-wrapper labels differ; NullStateStore remains exact for remote audit.
+func sourceNullPostureLabels(t *testing.T, data []byte) []byte {
+	t.Helper()
+	root, err := jsonvalue.Decode(string(data))
+	if err != nil || root.Kind() != jsonvalue.Object {
+		t.Fatal("invalid Source health", err)
+	}
+	var fields []jsonvalue.Field
+	for _, key := range root.Keys() {
+		value, _ := root.Lookup(key)
+		if key == "posture" {
+			if value.Kind() != jsonvalue.Object {
+				t.Fatal("invalid Source posture")
+			}
+			var nested []jsonvalue.Field
+			for _, name := range value.Keys() {
+				entry, _ := value.Lookup(name)
+				text, _ := entry.Text()
+				if (name == "secrets" && text == "NullSecretRegistry") || (name == "sandbox" && text == "NullSandbox") {
+					entry = jsonvalue.TextValue("None")
+				}
+				nested = append(nested, jsonvalue.Field{Name: name, Value: entry})
+			}
+			value = jsonvalue.ObjectValue(nested)
+		}
+		fields = append(fields, jsonvalue.Field{Name: key, Value: value})
+	}
+	encoded, err := jsonvalue.ObjectValue(fields).MarshalJSON()
+	if err != nil {
+		t.Fatal(err)
+	}
+	return encoded
+}
+
+func TestSourcePostureNullLabelsKeepUnknownFieldsAndNonNullComponents(t *testing.T) {
+	source := `{"future":[1,"x"],"posture":{"state_store":"NullStateStore","secrets":"NullSecretRegistry","sandbox":"NullSandbox","future":true}}`
+	want := `{"future":[1,"x"],"posture":{"state_store":"NullStateStore","secrets":"None","sandbox":"None","future":true}}`
+	if got := string(sourceNullPostureLabels(t, []byte(source))); got != want {
+		t.Fatal(got)
+	}
+	source = `{"posture":{"state_store":"SQLiteStateStore","secrets":"SecretRegistry","sandbox":"SeatbeltSandbox","future":null}}`
+	if got := string(sourceNullPostureLabels(t, []byte(source))); got != source {
+		t.Fatal(got)
 	}
 }

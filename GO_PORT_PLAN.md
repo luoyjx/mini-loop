@@ -13358,3 +13358,63 @@ Architecture regeneration passed 9/9 showcase checks with zero errors/warnings;
 receipt byte sizes/SHA256 match specification and HTML. Visual inspection remains
 skipped following the earlier browser denial. Coverage was not refreshed.
 Default Python-syntax backend, native sandbox and the full G0-G7 audit remain open.
+
+## Existing sandbox observation and null-store audit marker — 2026-10-09
+
+Base: b0613e4. Inspection of the actual native shell revealed a pre-existing
+`Sandbox` argv/ForWorkspace seam, so the previous report's unconditional sandbox
+None and documentation's “no seam” statement were incorrect for injected
+executors. This slice corrects that report before adding native Seatbelt.
+`Executor.SandboxPosture` reads wrapper type metadata and a detached optional
+`SandboxReason`; it never calls Argv or ForWorkspace. Native host factories report
+None. Custom factories may expose this typed metadata for an empty fleet;
+unobservable custom factories/executors return an observation error, which public
+health projects as its existing private 500. They are not guessed to be confined
+or unconfined, and inspection does not construct a session or call a Bash factory.
+
+Actual active executor bindings publish through a typed atomic pointer on initial
+construction and after successful workspace preparation. This avoids reading the
+mutable core Bash field concurrently with workspace entry. Tests rebind between
+wrappers of different native types and inspect concurrently; reported type follows
+the successful binding. Failed preparation cannot publish a new shell binding.
+Metadata is configuration evidence only, not a claim that the OS enforces policy.
+The Seatbelt/default availability library and its real OS enforcement tests remain
+next. No sandbox is enabled by default and no dependency is added.
+
+A second concrete gap appeared in Source `audit_posture`: it detects missing
+persistence only for the literal NullStateStore marker. Native None was an honest
+absence description but caused that actual auditor to miss process-local-only
+transcripts. The nil native store now reports the compatible NullStateStore
+marker; it creates no null store object or persistence service. Existing full
+HTTP comparisons keep this marker exact. Secret/sandbox null-wrapper aliases
+remain narrowly normalized, and comparison now uses closed JSON Value projection
+so future unknown response fields are retained instead of dropped by typed
+remarshalling. Unknown/non-null labels remain untouched. This supersedes the
+previous slice's absent-state None label and its missing-sandbox-seam statement.
+
+Focused native race tests cover wrapper metadata without command execution,
+reason detachment/rebinding, empty/live observations, type changes on workspace
+entry, concurrent inspection/publication, unsupported factory refusal and later
+live observability. The unknown-field comparison regression guards against the
+previous typed remarshal dropping future Source fields. Runtime permissions,
+process execution, persistence schema and feature defaults are unchanged.
+
+Validation: focused final agent/shell/HTTP/Launcher race tests passed. Complete
+`go test -p=1 -count=1 -timeout=300s ./...`,
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` from `go/`
+all exited zero. Existing macOS CGO linker warnings were nonfatal. A freshly
+built actual CLI bound an ephemeral loopback port in a temporary workspace; its
+real GET /healthz document was passed to current Source audit_posture. Source
+reported action-journal, authentication, secret-masking, shell-confinement and
+durable-state. Replacing only the actual null-store marker with the old None
+reproduced the missed durable-state finding. The owned native process received
+SIGTERM, drained and exited zero; the temporary workspace was released. Evidence
+is `/tmp/mini-loop-native-posture-audit.json` (local, not a repository fixture).
+Architecture regeneration passed 9/9 showcase checks, zero errors/warnings;
+receipt sizes/SHA256 matched specification and generated HTML. README outline
+and diff checks passed. Visual review remains skipped following the earlier
+browser denial. Python package, exports, schemas and mutation/scan anchors did
+not change, so full Python/export/scanner/invariant/guard checks were not rerun;
+the live Source auditor was executed. Coverage was not refreshed. Native
+Seatbelt/default platform selection, default diagnostic parsing and full G0-G7
+completion remain open.

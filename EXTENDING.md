@@ -3659,4 +3659,13 @@ Manager locks, must be concurrency safe, and must not resolve credential values.
 Missing Names means no registered names, matching Source. Panics fail the report.
 Health returns a private 500 for observation failures and masks successful output.
 Existing output masking may resolve registered values; observation reads names only.
-No native sandbox seam exists yet; its report remains None with no invented reason.
+The existing `shell.Sandbox` argv/rebinding seam is injectable. Shell executors
+expose `SandboxPosture()` metadata, including an optional `SandboxReason()` reason.
+Custom Bash factories can implement `shell.SandboxPostureProvider` for empty-fleet
+inspection; otherwise observation fails until a live observable executor exists.
+Metadata callbacks run outside Manager locks, must be concurrency safe and must
+not execute commands. Active executors publish through an atomic binding after
+workspace preparation. Configured metadata is not proof of OS confinement;
+native Seatbelt/default platform selection remain pending.
+The null-store report uses Source's `NullStateStore` marker, because its remote
+auditor checks that exact marker to detect process-local transcripts.

@@ -415,24 +415,7 @@ func TestActualPythonHTTPContracts(t *testing.T) {
 					actual := normalizeJSON(t, w.Body.Bytes(), ids, paths)
 					sourceResponse := c.Response
 					if c.Name == "health" {
-						// Native implementation absence uses None; Source wraps it in
-						// NullStateStore/NullSecretRegistry/NullSandbox. Other posture
-						// fields remain compared, including explicit JSON nulls.
-						health := decode[HealthResponse](t, sourceResponse)
-						if health.Posture.StateStore == "NullStateStore" {
-							health.Posture.StateStore = "None"
-						}
-						if health.Posture.Secrets == "NullSecretRegistry" {
-							health.Posture.Secrets = "None"
-						}
-						if health.Posture.Sandbox == "NullSandbox" {
-							health.Posture.Sandbox = "None"
-						}
-						encoded, err := json.Marshal(health)
-						if err != nil {
-							t.Fatal(err)
-						}
-						sourceResponse = encoded
+						sourceResponse = sourceNullPostureLabels(t, sourceResponse)
 					}
 					expected := normalizeJSON(t, sourceResponse, nil, nil)
 					if !bytes.Equal(actual, expected) {

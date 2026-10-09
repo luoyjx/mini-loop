@@ -759,6 +759,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		}
 	}
 	session.bash = config.Bash
+	session.shellBinding.Store(&runtimeShellBinding{config.Bash})
 	session.todos, session.events = handler.todos, handler.events
 	session.secrets, session.events.secrets = config.Secrets, config.Secrets
 	session.events.sessionID, session.events.sink = config.ID, config.EventSink
