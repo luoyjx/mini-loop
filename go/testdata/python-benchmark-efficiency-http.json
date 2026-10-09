@@ -1,0 +1,389 @@
+{
+  "cases": [
+    {
+      "arms": [
+        5,
+        5,
+        3,
+        3
+      ],
+      "cleaned": true,
+      "clients": 4,
+      "environment": {
+        "MINILOOP_TOKEN_EFFICIENCY_MODE": "shadow"
+      },
+      "main_fake": true,
+      "name": "efficiency-shadow",
+      "raw": "",
+      "response": {
+        "baseline": [
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 208,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "write-file",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 187,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "arithmetic",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 243,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "edit-config",
+            "tool_calls": 1,
+            "tool_errors": 1
+          },
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 226,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "page-long-log",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 209,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "page-long-log-readonly",
+            "tool_calls": 1,
+            "tool_errors": 1
+          }
+        ],
+        "candidate": [
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 208,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "write-file",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 187,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "arithmetic",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 243,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "edit-config",
+            "tool_calls": 1,
+            "tool_errors": 1
+          },
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 226,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "page-long-log",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 209,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "page-long-log-readonly",
+            "tool_calls": 1,
+            "tool_errors": 1
+          }
+        ],
+        "comparison": {
+          "baseline_passed": 0,
+          "candidate_passed": 0,
+          "dimension_warnings": [],
+          "dimensions": {
+            "context_tokens_estimate": {
+              "baseline": 1073,
+              "candidate": 1073,
+              "delta_pct": 0.0
+            },
+            "rounds": {
+              "baseline": 10,
+              "candidate": 10,
+              "delta_pct": 0.0
+            },
+            "tool_calls": {
+              "baseline": 5,
+              "candidate": 5,
+              "delta_pct": 0.0
+            },
+            "tool_errors": {
+              "baseline": 2,
+              "candidate": 2,
+              "delta_pct": 0.0
+            }
+          },
+          "regressions": [],
+          "tasks": 5,
+          "verdict": "not_worse",
+          "wins": []
+        },
+        "heldout_comparison": {
+          "baseline_passed": 0,
+          "candidate_passed": 0,
+          "dimension_warnings": [],
+          "dimensions": {
+            "context_tokens_estimate": {
+              "baseline": 616,
+              "candidate": 616,
+              "delta_pct": 0.0
+            },
+            "rounds": {
+              "baseline": 6,
+              "candidate": 6,
+              "delta_pct": 0.0
+            },
+            "tool_calls": {
+              "baseline": 3,
+              "candidate": 3,
+              "delta_pct": 0.0
+            }
+          },
+          "regressions": [],
+          "tasks": 3,
+          "verdict": "not_worse",
+          "wins": []
+        },
+        "note": "fake transport: this exercises the instrument, not the model; real runs stay in the terminal (tools/paired_benchmark.py)",
+        "real": false
+      },
+      "status": 200
+    },
+    {
+      "arms": [
+        5,
+        5,
+        3,
+        3
+      ],
+      "cleaned": true,
+      "clients": 4,
+      "environment": {
+        "MINILOOP_TOKEN_EFFICIENCY_MODE": "enforce",
+        "MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE": "concise"
+      },
+      "main_fake": true,
+      "name": "efficiency-enforce-concise",
+      "raw": "",
+      "response": {
+        "baseline": [
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 208,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "write-file",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 187,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "arithmetic",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 243,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "edit-config",
+            "tool_calls": 1,
+            "tool_errors": 1
+          },
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 226,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "page-long-log",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "baseline",
+            "context_tokens_estimate": 209,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "page-long-log-readonly",
+            "tool_calls": 1,
+            "tool_errors": 1
+          }
+        ],
+        "candidate": [
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 208,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "write-file",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 187,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "arithmetic",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 243,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "edit-config",
+            "tool_calls": 1,
+            "tool_errors": 1
+          },
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 226,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "page-long-log",
+            "tool_calls": 1,
+            "tool_errors": 0
+          },
+          {
+            "arm": "candidate",
+            "context_tokens_estimate": 209,
+            "error": null,
+            "passed": false,
+            "repeated_reads": 0,
+            "rounds": 2,
+            "task": "page-long-log-readonly",
+            "tool_calls": 1,
+            "tool_errors": 1
+          }
+        ],
+        "comparison": {
+          "baseline_passed": 0,
+          "candidate_passed": 0,
+          "dimension_warnings": [],
+          "dimensions": {
+            "context_tokens_estimate": {
+              "baseline": 1073,
+              "candidate": 1073,
+              "delta_pct": 0.0
+            },
+            "rounds": {
+              "baseline": 10,
+              "candidate": 10,
+              "delta_pct": 0.0
+            },
+            "tool_calls": {
+              "baseline": 5,
+              "candidate": 5,
+              "delta_pct": 0.0
+            },
+            "tool_errors": {
+              "baseline": 2,
+              "candidate": 2,
+              "delta_pct": 0.0
+            }
+          },
+          "regressions": [],
+          "tasks": 5,
+          "verdict": "not_worse",
+          "wins": []
+        },
+        "heldout_comparison": {
+          "baseline_passed": 0,
+          "candidate_passed": 0,
+          "dimension_warnings": [],
+          "dimensions": {
+            "context_tokens_estimate": {
+              "baseline": 616,
+              "candidate": 616,
+              "delta_pct": 0.0
+            },
+            "rounds": {
+              "baseline": 6,
+              "candidate": 6,
+              "delta_pct": 0.0
+            },
+            "tool_calls": {
+              "baseline": 3,
+              "candidate": 3,
+              "delta_pct": 0.0
+            }
+          },
+          "regressions": [],
+          "tasks": 3,
+          "verdict": "not_worse",
+          "wins": []
+        },
+        "note": "fake transport: this exercises the instrument, not the model; real runs stay in the terminal (tools/paired_benchmark.py)",
+        "real": false
+      },
+      "status": 200
+    }
+  ]
+}

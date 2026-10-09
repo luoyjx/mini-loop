@@ -6782,6 +6782,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-benchmark-tasks.json": _json_bytes(_benchmark_task_contracts()),
         "python-benchmark-arms.json": _json_bytes(_benchmark_arm_contracts()),
         "python-benchmark-http.json": _json_bytes(_benchmark_http_contracts()),
+        "python-benchmark-efficiency-http.json": _json_bytes(_benchmark_http_contracts(efficiency_settings=True)),
         "python-self-audit.json": _json_bytes(_self_audit_contracts()),
         "python-problem-log.json": _json_bytes(_problem_log_contracts()),
         "python-self-audit-manager.json": _json_bytes(_self_audit_manager_contracts()),
@@ -7697,7 +7698,7 @@ def _benchmark_arm_contracts() -> dict:
     return asyncio.run(collect())
 
 
-def _benchmark_http_contracts() -> dict:
+def _benchmark_http_contracts(*, efficiency_settings: bool = False) -> dict:
     """Actual fake-only HTTP arms; normalize wall timing alone."""
     from unittest.mock import patch
     from fastapi.testclient import TestClient
@@ -7710,13 +7711,22 @@ def _benchmark_http_contracts() -> dict:
     cases = []
     with tempfile.TemporaryDirectory(prefix="go-benchmark-http-") as scratch:
         root = Path(scratch)
-        for name, raw, environment, main_fake in [
+        scenarios = [
             ("default", "", {}, True),
             ("ignored-body", '{"real":true,"tasks":[],"model":"paid"}', {}, True),
             ("malformed-body", "{broken", {}, True),
             ("real-main", "", {}, False),
             ("one-round", "", {"MINILOOP_MAX_TURNS": "1"}, True),
-        ]:
+        ]
+        if efficiency_settings:
+            scenarios = [
+                ("efficiency-shadow", "", {"MINILOOP_TOKEN_EFFICIENCY_MODE": "shadow"}, True),
+                ("efficiency-enforce-concise", "", {
+                    "MINILOOP_TOKEN_EFFICIENCY_MODE": "enforce",
+                    "MINILOOP_TOKEN_EFFICIENCY_RESPONSE_STYLE": "concise",
+                }, True),
+            ]
+        for name, raw, environment, main_fake in scenarios:
             managers = []
             class ObservedManager(SourceManager):
                 def __init__(self, *args, **kwargs):

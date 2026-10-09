@@ -1,5 +1,18 @@
 # Go port plan
 
+## 2026-10-09 benchmark efficiency Source contracts
+
+Baseline: `7f9d13c`. Two actual authenticated Python benchmark HTTP runs capture
+request-time shadow and enforce/concise settings, four isolated fake-client arms
+and workspace cleanup. A separate fixture preserves the existing five-case
+Go benchmark comparison while native settings activation remains pending.
+These reports do not establish parity of benchmark raw-store allocation order.
+Validation: complete 182-file exporter check, existing benchmark HTTP comparison
+and git diff --check passed. The preceding startup-contract commit also passed
+124 focused Python tests, 19 scan guards and the full Go test suite.
+No runtime code or dependencies changed; coverage was not refreshed.
+
+
 ## 2026-10-09 efficiency startup Source contracts
 
 Baseline: `8456602`. Nine actual Python server-lifespan/HTTP scenarios capture
