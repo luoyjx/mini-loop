@@ -349,7 +349,14 @@ missing-credential failure carries typed `TypeError` identity through existing
 recovery and error-result projection. Supplied keys retain header/size admission;
 SDK profile, OAuth and federation discovery remain outside this native seam.
 
-Runtime review baseline: `3b529b8` plus pinned dotenv Source contracts,
+The standalone Go `dotenv` library now parses scalar UTF-8 text into concrete
+bindings, resolves variables with Source priority and applies values to a
+returned environment map. It preserves raw spans/lines, nullable values, syntax
+recovery, duplicate order and partial writes before environment faults. It
+performs no file discovery or process mutation. `DotEnvDiscovery` remains false;
+CLI activation and filesystem decoding/discovery remain pending.
+
+Runtime review baseline: `5df7222` plus native dotenv text and environment phases,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -493,7 +500,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `3b529b8` plus pinned dotenv Source contracts;
+reviewed **2026-10-09** (Go baseline `5df7222` plus native dotenv text and environment phases;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -547,6 +554,7 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
+        GoDotenv["Go dotenv · pure library<br/>typed bindings · variable resolution · detached application<br/>Source 1.2.2 · syntax recovery / partial faults<br/>file discovery and CLI activation pending"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>absent-key inspection · request auth before HTTP / retry<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
@@ -644,6 +652,7 @@ flowchart LR
     end
 
     Caller --> Entry
+    Caller --> GoDotenv
     Caller --> GoRemoteAudit
     GoRemoteAudit -. public health report .-> GoEntry
     GoManager -. template components / detached fleet diagnostics .-> GoRemoteAudit

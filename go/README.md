@@ -2793,3 +2793,13 @@ ModelFailureOther, distinct from a remote HTTP AuthenticationError. The existing
 Agent run boundary returns `[Error]` text and records a provider error.
 Empty keys do not alter endpoint/error text during redaction. No automatic SDK
 profile, OAuth or federation credential discovery is implemented by this seam.
+
+### Native dotenv library
+
+The separate dotenv package implements pinned Source 1.2.2 text parsing,
+variable resolution and detached environment application with concrete types.
+All 48 Source profiles match exact bindings/lines, interpolation, ordering,
+disabled loading and partial fault outcomes. Input maps/bindings stay unchanged.
+It performs no filesystem or process mutation; file decoding/discovery and
+CLI activation remain pending. Config inspection still reports
+DotEnvDiscovery=false. No new dependency is required.

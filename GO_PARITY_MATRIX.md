@@ -6848,3 +6848,53 @@ exports, all 19 scanning guards, README outline and git diff --check. No Go
 implementation/default-tool type or Python package module/mutation anchor
 changed; Go/race/vet and Python invariant/guard gates were not repeated.
 Coverage was not refreshed. No push; native dotenv remains unfinished.
+
+## Native dotenv text, variable and environment phases — 2026-10-09
+
+Base: `5df7222`. New dependency-free dotenv package implements concrete Name/
+Binding/Original/Variable/Environment/Application/Failure structures. Parse
+preserves nullable keys/values, exact original spans and start lines, malformed
+line recovery, Python whitespace, export prefixes, quoted/unquoted keys,
+comments, recognized/unknown escapes and multiline values. Regex-style escaped
+final quote backtracking and recovery's CR-before-CRLF alternation are explicit.
+Invalid UTF-8 is refused at the native scalar text boundary.
+
+Resolve expands Source ${name}/${name:-default} syntax with prior values versus
+external environment priority, including valueless shadows, empty defaults,
+self references and duplicate first-key order/final values. Apply returns a
+detached map, honors disabled-loading case folding for its finite tokens,
+skips valueless/existing-preserved values and retains writes before invalid
+name/NUL faults. Loaded false and missing loaded-on-failure remain distinct.
+No parser/resolver/application phase mutates process environment or input
+containers; resolved value pointers detach from raw bindings.
+
+The Source corpus expands from 38 to 48 profiles with actual escaped-quote
+backtracking, bad-line CRLF recovery, NUL name/value faults and Unicode long-s
+disabled loading. All raw bindings, resolved ordered values, application status,
+fault class/message and exact partially applied maps compare with native Go.
+Additional native checks cover scalar refusal, empty input, immutable inputs
+and detached maps/value pointers.
+
+This is the full text/environment library prerequisite. File discovery, file
+decoding, config/CLI activation and default diagnostics remain unfinished.
+DotEnvDiscovery stays false and config.Load remains pure. README canonical
+Mermaid/boundary/review baseline and aggregate startup/SDK architecture annotation
+are updated together. No dependency, authority, persistence or runtime default
+change. Wider migration acceptance remains open; no push.
+
+Validation: full Go ordinary and race suites (`-p=1 -count=1 -timeout=300s`)
+and `go vet ./...` pass. Python full suite: 2171 passed, 28 skipped, 24
+subtests, 3 warnings. Contract export check: 197 files current. All 19 source
+scanning guards pass. Focused native dotenv race: 48 Source profiles pass.
+README outline and `git diff --check` pass; regenerated Archify artifact passes
+9/9 checks with zero errors/warnings and receipt hashes/byte counts verified.
+Visual review was not repeated because the previous browser review was denied;
+zero visual correction rounds. Python package invariants and mutation guards
+were not rerun: this slice changes a contract helper/test, not package modules
+or mutation anchors. No push.
+
+Fresh cross-package Go statement coverage after this slice: 27949/30998 =
+90.16% (`go test -p=1 -count=1 -timeout=300s -coverpkg=./...`), merging identical
+source blocks across test binaries. Dotenv: 202/205 = 98.54%; audit: 97.20%;
+agent: 89.89%; launcher: 80.61%. This measures ordinary Go test execution;
+Python and mutation coverage were not refreshed.

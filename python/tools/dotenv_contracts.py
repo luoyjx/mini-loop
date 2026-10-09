@@ -32,6 +32,11 @@ def dotenv_contracts() -> dict:
         ("blank", "\n # only comments\n", {"KEEP": "original"}),
         ("valueless", "A\nB\n", {}),
         ("disabled", "A=file\n", {"PYTHON_DOTENV_DISABLED": "true", "A": "external"}),
+        ("backtracking", "A='tail\\'\nB=\"tail\\\"\nC='a\\'b'\n", {}),
+        ("crlf-errors", "bad key=value\r\nA=valid\r\n", {}),
+        ("nul-name", "A=prior\nBAD\x00NAME=value\n", {}),
+        ("nul-value", "A=prior\nB=value\x00tail\n", {}),
+        ("unicode-disable", "A=file\n", {"PYTHON_DOTENV_DISABLED": "yeſ"}),
     ]
     rows = []
     # Source warns for malformed lines. Capture logging separately from data;

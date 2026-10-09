@@ -3748,3 +3748,14 @@ non-streaming token limits retain their earlier refusal phase. Client credential
 strings remain captured at construction; this change adds no ambient credential
 lookup, alternate authentication mechanism or rotation. Supplied key, endpoint
 and wire constraints retain their existing native admission bounds.
+
+### Go dotenv text/environment library
+
+`dotenv.Parse` returns named bindings with exact original text/start lines and
+recoverable syntax error flags. `Resolve` consumes an explicit environment and
+override selection; `Apply` returns a detached environment/application result
+and typed ValueError faults with Source partial writes. Nil input environment
+means empty. Nullable values remain distinct from empty strings. Functions
+perform no filesystem access or process mutation and install no config/CLI
+path. Supply scalar UTF-8; parser rejects invalid byte strings. File decoding,
+discovery and startup activation remain separate pending work.

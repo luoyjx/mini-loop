@@ -1893,6 +1893,326 @@
           "value": "file"
         }
       ]
+    },
+    {
+      "applied": {},
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "A='tail\\'\nB=\"tail\\\"\nC='a\\'b'\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": false,
+      "name": "backtracking",
+      "override": true,
+      "text": "A='tail\\'\nB=\"tail\\\"\nC='a\\'b'\n",
+      "values": []
+    },
+    {
+      "applied": {},
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "A='tail\\'\nB=\"tail\\\"\nC='a\\'b'\n",
+          "value": null
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": false,
+      "name": "backtracking",
+      "override": false,
+      "text": "A='tail\\'\nB=\"tail\\\"\nC='a\\'b'\n",
+      "values": []
+    },
+    {
+      "applied": {
+        "A": "valid"
+      },
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "bad key=value\r",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 2,
+          "original": "\nA=valid\r\n",
+          "value": "valid"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "crlf-errors",
+      "override": true,
+      "text": "bad key=value\r\nA=valid\r\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "valid"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "valid"
+      },
+      "bindings": [
+        {
+          "error": true,
+          "key": null,
+          "line": 1,
+          "original": "bad key=value\r",
+          "value": null
+        },
+        {
+          "error": false,
+          "key": "A",
+          "line": 2,
+          "original": "\nA=valid\r\n",
+          "value": "valid"
+        }
+      ],
+      "environment": {},
+      "fault": null,
+      "loaded": true,
+      "name": "crlf-errors",
+      "override": false,
+      "text": "bad key=value\r\nA=valid\r\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "valid"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=prior\n",
+          "value": "prior"
+        },
+        {
+          "error": false,
+          "key": "BAD\u0000NAME",
+          "line": 2,
+          "original": "BAD\u0000NAME=value\n",
+          "value": "value"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "nul-name",
+      "override": true,
+      "text": "A=prior\nBAD\u0000NAME=value\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "BAD\u0000NAME",
+          "value": "value"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=prior\n",
+          "value": "prior"
+        },
+        {
+          "error": false,
+          "key": "BAD\u0000NAME",
+          "line": 2,
+          "original": "BAD\u0000NAME=value\n",
+          "value": "value"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "nul-name",
+      "override": false,
+      "text": "A=prior\nBAD\u0000NAME=value\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "BAD\u0000NAME",
+          "value": "value"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=prior\n",
+          "value": "prior"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=value\u0000tail\n",
+          "value": "value\u0000tail"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "nul-value",
+      "override": true,
+      "text": "A=prior\nB=value\u0000tail\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "B",
+          "value": "value\u0000tail"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=prior\n",
+          "value": "prior"
+        },
+        {
+          "error": false,
+          "key": "B",
+          "line": 2,
+          "original": "B=value\u0000tail\n",
+          "value": "value\u0000tail"
+        }
+      ],
+      "environment": {},
+      "fault": {
+        "message": "embedded null byte",
+        "type": "ValueError"
+      },
+      "loaded": null,
+      "name": "nul-value",
+      "override": false,
+      "text": "A=prior\nB=value\u0000tail\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "B",
+          "value": "value\u0000tail"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "PYTHON_DOTENV_DISABLED": "yeſ"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=file\n",
+          "value": "file"
+        }
+      ],
+      "environment": {
+        "PYTHON_DOTENV_DISABLED": "yeſ"
+      },
+      "fault": null,
+      "loaded": false,
+      "name": "unicode-disable",
+      "override": true,
+      "text": "A=file\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "PYTHON_DOTENV_DISABLED": "yeſ"
+      },
+      "bindings": [
+        {
+          "error": false,
+          "key": "A",
+          "line": 1,
+          "original": "A=file\n",
+          "value": "file"
+        }
+      ],
+      "environment": {
+        "PYTHON_DOTENV_DISABLED": "yeſ"
+      },
+      "fault": null,
+      "loaded": false,
+      "name": "unicode-disable",
+      "override": false,
+      "text": "A=file\n",
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        }
+      ]
     }
   ],
   "version": "1.2.2"
