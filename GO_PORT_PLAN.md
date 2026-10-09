@@ -13626,3 +13626,43 @@ not refreshed. Broader restart/confinement profiles remain separate acceptance
 work; full port goal remains active.
 
 Final go vet ./... passed.
+
+## Native SQLite sandbox restoration proof — 2026-10-09
+
+Base: 98a5a1b. A real Launcher/HTTP/native SQLite test now covers the recovery
+boundary previously inferred from the shared Bash factory. Generation one creates
+an authenticated owned session and runs a real model/Bash turn under Seatbelt.
+After server/manager shutdown, its process lease is released and the database is
+closed. A new database open and Launcher use a different explicit ExtraWritable
+root, then the operator explicitly restores the persisted session. Construction
+does not restore implicitly; a foreign HTTP owner still receives 404. Workspace,
+stable identity and transcript remain unchanged before the next admitted turn.
+Permission is explicitly reselected through the owned mode endpoint; restoration
+does not recover an old human grant.
+
+The resumed real model-tool turn permits writes in the original session workspace
+and the new extra root, denies a fake protected credential read, denies outside
+writes and revokes the old extra root. The actual following model request contains
+the denial results without the canary value; filesystem checks prove both allowed
+files and absence of forbidden effects. Live public health reports Seatbelt with
+no persistence fault. Shutdown again releases the lease; a third actual database
+open retains the same session identity and run_count=2. The focused race test
+executes real Seatbelt on local Darwin arm64 without skip. This is close/reopen
+in one process, not a power-loss or killed-sandbox-generation claim.
+
+Runtime inspection found no implementation change necessary. No runtime, schema,
+Source export, dependency, authority or feature default is modified. README map
+and visible review baseline are reviewed/updated; the canonical diagram topology
+and architecture specification are unchanged, so no regeneration is required.
+The default diagnostics and wider full-port acceptance remain open; no push.
+
+Validation: final focused `go test -race -count=1 -run
+TestLauncherSQLiteRestoreRebindsCurrentSeatbeltPolicy -v ./launcher` passed
+without a Seatbelt skip. Full serialized `go test -p=1 -count=1 -timeout=300s
+./...` passed. The full race suite was not repeated for this test-only slice;
+runtime code remains at 98a5a1b. Existing CGO linker warnings were nonfatal.
+README outline and git diff --check passed. Python/package/export/invariant/
+scanner/guard gates and coverage were not refreshed because their targets are
+unchanged. No architecture topology/defaults changed.
+
+Final go vet ./... passed.

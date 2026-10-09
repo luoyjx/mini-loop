@@ -295,9 +295,13 @@ explicit extra roots across a parent workspace switch.
 factory. SDK inspection reports the selected type and an optional detached reason;
 real HTTP health and model-tool turns observe this selection. No CLI flag or
 implicit confinement is added.
+Native SQLite close/reopen tests also verify restored HTTP sessions bind the
+current caller sandbox policy: the old extra writable root is revoked, the new
+one is usable, protected reads remain denied and the original workspace/history
+is retained. Restoration stays an explicit operator action.
 
-Runtime review baseline: `cc690a7` plus Launcher sandbox injection, inspection and
-actual HTTP model-tool confinement/deadline tests,
+Runtime review baseline: `98a5a1b` plus native SQLite reopen and restored HTTP
+tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
@@ -439,7 +443,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `cc690a7` plus explicit Launcher sandbox injection;
+reviewed **2026-10-09** (Go baseline `98a5a1b` plus persisted sandbox-restoration proof;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
