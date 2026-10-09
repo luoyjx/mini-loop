@@ -356,7 +356,7 @@ recovery, duplicate order and partial writes before environment faults. It
 performs no file discovery or process mutation. `DotEnvDiscovery` remains false;
 CLI activation and filesystem decoding/discovery remain pending.
 
-Runtime review baseline: `5df7222` plus native dotenv text and environment phases,
+Runtime review baseline: `2bc7722` plus pinned dotenv filesystem Source contracts,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -500,7 +500,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `5df7222` plus native dotenv text and environment phases;
+reviewed **2026-10-09** (Go baseline `2bc7722` plus pinned dotenv filesystem Source contracts;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through

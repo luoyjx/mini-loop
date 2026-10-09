@@ -6898,3 +6898,41 @@ Fresh cross-package Go statement coverage after this slice: 27949/30998 =
 source blocks across test binaries. Dotenv: 202/205 = 98.54%; audit: 97.20%;
 agent: 89.89%; launcher: 80.61%. This measures ordinary Go test execution;
 Python and mutation coverage were not refreshed.
+
+## Dotenv discovery and file decoding Source contracts — 2026-10-09
+
+Base: `2bc7722`. Snapshot 198 uses installed python-dotenv 1.2.2 against real
+isolated directories/files/symlinks/FIFOs. Ten discovery profiles cover caller
+file versus cwd selection, missing wrapper frames, interactive/debugger/frozen
+selection, nearest-file precedence, directories, dangling links and FIFO
+admission. Real default load_dotenv calls also capture selected environment
+values; explicit find_dotenv(usecwd=True) does not change the later default
+loader's caller-file origin. FIFO is tested for discovery only, without opening
+it for reading. Two missing-file profiles pin empty result versus OSError and
+three real walk profiles pin directory/file origins and missing-start failure.
+Temporary paths are normalized only at the observation boundary; the filesystem
+and discovery/parser/loader functions are actual Source calls.
+
+Thirty-six file-read profiles pin ordinary UTF-8, universal newline conversion
+(including inside quoted multiline values), retained BOM, invalid/truncated
+UTF-8 with exact exception messages, empty/missing/directory inputs, linked and
+dangling files, file-before-stream selection, fallback stream, disabled loading
+before decoding, explicit latin-1/utf-8-sig codecs, interpolation priority and
+partial environment writes on invalid names. dotenv_values always resolves with
+override=true; load_dotenv uses each profile's override selection. Decode faults
+leave the environment unchanged; disabled load can return false while the
+independent dotenv_values observation still reports a decode fault.
+
+No native discovery/file reading or CLI activation is claimed. DotEnvDiscovery
+remains false. Native caller-origin mapping, actual FIFO reading, file codecs,
+startup selection and default diagnostics remain open for subsequent slices.
+README architecture map reviewed and review baseline updated; no runtime
+structure/default/authority or dependency change. No push.
+
+Validation passed: focused actual filesystem contract test; full Python suite
+2172 passed, 28 skipped, 24 subtests, 3 warnings; all 198 Source exports current;
+all 19 scanning guards; README outline and git diff --check. No Go runtime or
+Python package module/mutation anchor changed, so Go ordinary/race/vet and
+Python package invariants/mutation guards were not rerun. Architecture source
+and generated map need no regeneration because topology is unchanged. Coverage
+was not refreshed for this Source-only slice. Full migration remains open.

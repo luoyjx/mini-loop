@@ -1,0 +1,954 @@
+{
+  "discovery": [
+    {
+      "applied": {
+        "SOURCE": "yes"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "filename": ".env",
+      "frozen": false,
+      "interactive": false,
+      "kind": "parent",
+      "loaded": true,
+      "name": "caller-parent",
+      "selected": "source/.env",
+      "usecwd": false
+    },
+    {
+      "applied": {
+        "SOURCE": "yes"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "filename": ".env",
+      "frozen": false,
+      "interactive": false,
+      "kind": "parent",
+      "loaded": true,
+      "name": "cwd-explicit",
+      "selected": "working/.env",
+      "usecwd": true
+    },
+    {
+      "applied": {
+        "WORK": "yes"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "filename": ".env",
+      "frozen": false,
+      "interactive": true,
+      "kind": "parent",
+      "loaded": true,
+      "name": "interactive",
+      "selected": "working/.env",
+      "usecwd": false
+    },
+    {
+      "applied": {
+        "WORK": "yes"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": true,
+      "filename": ".env",
+      "frozen": false,
+      "interactive": false,
+      "kind": "parent",
+      "loaded": true,
+      "name": "debugger",
+      "selected": "working/.env",
+      "usecwd": false
+    },
+    {
+      "applied": {
+        "WORK": "yes"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "filename": ".env",
+      "frozen": true,
+      "interactive": false,
+      "kind": "parent",
+      "loaded": true,
+      "name": "frozen",
+      "selected": "working/.env",
+      "usecwd": false
+    },
+    {
+      "applied": {
+        "LOCAL": "yes"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "filename": ".env",
+      "frozen": false,
+      "interactive": false,
+      "kind": "file",
+      "loaded": true,
+      "name": "nearest",
+      "selected": "source/pkg/.env",
+      "usecwd": false
+    },
+    {
+      "applied": {
+        "SOURCE": "yes"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "filename": ".env",
+      "frozen": false,
+      "interactive": false,
+      "kind": "directory",
+      "loaded": true,
+      "name": "directory-skipped",
+      "selected": "source/.env",
+      "usecwd": false
+    },
+    {
+      "applied": {
+        "SOURCE": "yes"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "filename": ".env",
+      "frozen": false,
+      "interactive": false,
+      "kind": "symlink",
+      "loaded": true,
+      "name": "symlink-file",
+      "selected": "source/pkg/.env",
+      "usecwd": false
+    },
+    {
+      "applied": {
+        "SOURCE": "yes"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "filename": ".env",
+      "frozen": false,
+      "interactive": false,
+      "kind": "dangling",
+      "loaded": true,
+      "name": "dangling-skipped",
+      "selected": "source/.env",
+      "usecwd": false
+    },
+    {
+      "applied": null,
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "filename": ".env",
+      "frozen": false,
+      "interactive": false,
+      "kind": "fifo",
+      "loaded": null,
+      "name": "fifo",
+      "selected": "source/pkg/.env",
+      "usecwd": false
+    }
+  ],
+  "missing": [
+    {
+      "fault": null,
+      "required": false,
+      "selected": ""
+    },
+    {
+      "fault": {
+        "message": "File not found",
+        "type": "OSError"
+      },
+      "required": true,
+      "selected": null
+    }
+  ],
+  "reads": [
+    {
+      "applied": {
+        "A": "hello",
+        "B": "你好"
+      },
+      "content": "413d68656c6c6f0a423de4bda0e5a5bd0a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "utf8",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "hello"
+        },
+        {
+          "key": "B",
+          "value": "你好"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "hello",
+        "B": "你好"
+      },
+      "content": "413d68656c6c6f0a423de4bda0e5a5bd0a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "utf8",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "hello"
+        },
+        {
+          "key": "B",
+          "value": "你好"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "one\ntwo\nthree",
+        "B": "end"
+      },
+      "content": "413d276f6e650d0a74776f0d7468726565270d0a423d656e640d",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "newlines",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "one\ntwo\nthree"
+        },
+        {
+          "key": "B",
+          "value": "end"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "one\ntwo\nthree",
+        "B": "end"
+      },
+      "content": "413d276f6e650d0a74776f0d7468726565270d0a423d656e640d",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "newlines",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "one\ntwo\nthree"
+        },
+        {
+          "key": "B",
+          "value": "end"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "﻿A": "one"
+      },
+      "content": "efbbbf413d6f6e650a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "bom",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "﻿A",
+          "value": "one"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "﻿A": "one"
+      },
+      "content": "efbbbf413d6f6e650a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "bom",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "﻿A",
+          "value": "one"
+        }
+      ]
+    },
+    {
+      "applied": {},
+      "content": "413d7072696f720a423dff0a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": {
+        "message": "'utf-8' codec can't decode byte 0xff in position 10: invalid start byte",
+        "type": "UnicodeDecodeError"
+      },
+      "kind": "file",
+      "loaded": null,
+      "name": "invalid-utf8",
+      "override": true,
+      "stream": null,
+      "valueFault": {
+        "message": "'utf-8' codec can't decode byte 0xff in position 10: invalid start byte",
+        "type": "UnicodeDecodeError"
+      },
+      "values": null
+    },
+    {
+      "applied": {},
+      "content": "413d7072696f720a423dff0a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": {
+        "message": "'utf-8' codec can't decode byte 0xff in position 10: invalid start byte",
+        "type": "UnicodeDecodeError"
+      },
+      "kind": "file",
+      "loaded": null,
+      "name": "invalid-utf8",
+      "override": false,
+      "stream": null,
+      "valueFault": {
+        "message": "'utf-8' codec can't decode byte 0xff in position 10: invalid start byte",
+        "type": "UnicodeDecodeError"
+      },
+      "values": null
+    },
+    {
+      "applied": {},
+      "content": "413de282",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": {
+        "message": "'utf-8' codec can't decode bytes in position 2-3: unexpected end of data",
+        "type": "UnicodeDecodeError"
+      },
+      "kind": "file",
+      "loaded": null,
+      "name": "truncated-utf8",
+      "override": true,
+      "stream": null,
+      "valueFault": {
+        "message": "'utf-8' codec can't decode bytes in position 2-3: unexpected end of data",
+        "type": "UnicodeDecodeError"
+      },
+      "values": null
+    },
+    {
+      "applied": {},
+      "content": "413de282",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": {
+        "message": "'utf-8' codec can't decode bytes in position 2-3: unexpected end of data",
+        "type": "UnicodeDecodeError"
+      },
+      "kind": "file",
+      "loaded": null,
+      "name": "truncated-utf8",
+      "override": false,
+      "stream": null,
+      "valueFault": {
+        "message": "'utf-8' codec can't decode bytes in position 2-3: unexpected end of data",
+        "type": "UnicodeDecodeError"
+      },
+      "values": null
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": false,
+      "name": "empty",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": []
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": false,
+      "name": "empty",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": []
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "missing",
+      "loaded": false,
+      "name": "missing",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": []
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "missing",
+      "loaded": false,
+      "name": "missing",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": []
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "directory",
+      "loaded": false,
+      "name": "directory",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": []
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "directory",
+      "loaded": false,
+      "name": "directory",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": []
+    },
+    {
+      "applied": {
+        "A": "linked"
+      },
+      "content": "413d6c696e6b65640a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "symlink",
+      "loaded": true,
+      "name": "symlink",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "linked"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "linked"
+      },
+      "content": "413d6c696e6b65640a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "symlink",
+      "loaded": true,
+      "name": "symlink",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "linked"
+        }
+      ]
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "dangling",
+      "loaded": false,
+      "name": "dangling",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": []
+    },
+    {
+      "applied": {},
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "dangling",
+      "loaded": false,
+      "name": "dangling",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": []
+    },
+    {
+      "applied": {
+        "A": "file"
+      },
+      "content": "413d66696c650a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "file-before-stream",
+      "override": true,
+      "stream": "A=stream\n",
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "file"
+      },
+      "content": "413d66696c650a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "file-before-stream",
+      "override": false,
+      "stream": "A=stream\n",
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "stream"
+      },
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "missing",
+      "loaded": true,
+      "name": "missing-stream",
+      "override": true,
+      "stream": "A=stream\r\n",
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "stream"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "stream"
+      },
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "missing",
+      "loaded": true,
+      "name": "missing-stream",
+      "override": false,
+      "stream": "A=stream\r\n",
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "stream"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "stream"
+      },
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "directory",
+      "loaded": true,
+      "name": "directory-stream",
+      "override": true,
+      "stream": "A=stream\n",
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "stream"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "stream"
+      },
+      "content": "",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": null,
+      "kind": "directory",
+      "loaded": true,
+      "name": "directory-stream",
+      "override": false,
+      "stream": "A=stream\n",
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "stream"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "PYTHON_DOTENV_DISABLED": "yes"
+      },
+      "content": "413dff0a",
+      "encoding": "utf-8",
+      "environment": {
+        "PYTHON_DOTENV_DISABLED": "yes"
+      },
+      "fault": null,
+      "kind": "file",
+      "loaded": false,
+      "name": "disabled-invalid",
+      "override": true,
+      "stream": null,
+      "valueFault": {
+        "message": "'utf-8' codec can't decode byte 0xff in position 2: invalid start byte",
+        "type": "UnicodeDecodeError"
+      },
+      "values": null
+    },
+    {
+      "applied": {
+        "PYTHON_DOTENV_DISABLED": "yes"
+      },
+      "content": "413dff0a",
+      "encoding": "utf-8",
+      "environment": {
+        "PYTHON_DOTENV_DISABLED": "yes"
+      },
+      "fault": null,
+      "kind": "file",
+      "loaded": false,
+      "name": "disabled-invalid",
+      "override": false,
+      "stream": null,
+      "valueFault": {
+        "message": "'utf-8' codec can't decode byte 0xff in position 2: invalid start byte",
+        "type": "UnicodeDecodeError"
+      },
+      "values": null
+    },
+    {
+      "applied": {
+        "A": "café"
+      },
+      "content": "413d636166e90a",
+      "encoding": "latin-1",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "latin1",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "café"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "café"
+      },
+      "content": "413d636166e90a",
+      "encoding": "latin-1",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "latin1",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "café"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "one"
+      },
+      "content": "efbbbf413d6f6e650a",
+      "encoding": "utf-8-sig",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "utf8-sig",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "one"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "one"
+      },
+      "content": "efbbbf413d6f6e650a",
+      "encoding": "utf-8-sig",
+      "environment": {},
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "utf8-sig",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "one"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "file",
+        "B": "file"
+      },
+      "content": "413d66696c650a423d247b417d0a",
+      "encoding": "utf-8",
+      "environment": {
+        "A": "external"
+      },
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "interpolation",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        },
+        {
+          "key": "B",
+          "value": "file"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "external",
+        "B": "external"
+      },
+      "content": "413d66696c650a423d247b417d0a",
+      "encoding": "utf-8",
+      "environment": {
+        "A": "external"
+      },
+      "fault": null,
+      "kind": "file",
+      "loaded": true,
+      "name": "interpolation",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "file"
+        },
+        {
+          "key": "B",
+          "value": "file"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "content": "413d7072696f720a276261643d6b6579273d76616c75650a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": {
+        "message": "illegal environment variable name",
+        "type": "ValueError"
+      },
+      "kind": "file",
+      "loaded": null,
+      "name": "partial-fault",
+      "override": true,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "bad=key",
+          "value": "value"
+        }
+      ]
+    },
+    {
+      "applied": {
+        "A": "prior"
+      },
+      "content": "413d7072696f720a276261643d6b6579273d76616c75650a",
+      "encoding": "utf-8",
+      "environment": {},
+      "fault": {
+        "message": "illegal environment variable name",
+        "type": "ValueError"
+      },
+      "kind": "file",
+      "loaded": null,
+      "name": "partial-fault",
+      "override": false,
+      "stream": null,
+      "valueFault": null,
+      "values": [
+        {
+          "key": "A",
+          "value": "prior"
+        },
+        {
+          "key": "bad=key",
+          "value": "value"
+        }
+      ]
+    }
+  ],
+  "version": "1.2.2",
+  "walk": [
+    {
+      "fault": null,
+      "name": "directory",
+      "paths": [
+        "caller-parent/source/pkg",
+        "caller-parent/source",
+        "caller-parent",
+        "."
+      ]
+    },
+    {
+      "fault": null,
+      "name": "file",
+      "paths": [
+        "caller-parent/source/pkg",
+        "caller-parent/source",
+        "caller-parent",
+        "."
+      ]
+    },
+    {
+      "fault": {
+        "message": "Starting path not found",
+        "type": "OSError"
+      },
+      "name": "missing",
+      "paths": []
+    }
+  ]
+}
