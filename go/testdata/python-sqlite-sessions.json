@@ -1,0 +1,146 @@
+{
+  "absent_optional": [
+    {
+      "created_at": 10.0,
+      "event_cursor": 0,
+      "owner": "anonymous",
+      "pending_steering": [],
+      "run_count": 4,
+      "session_id": "saved",
+      "status": "running",
+      "system": null,
+      "todos": [],
+      "workspace": "/updated",
+      "workspace_bound": false
+    }
+  ],
+  "before_delete": {
+    "actions": 1,
+    "approvals": 1,
+    "events": 1,
+    "messages": 1,
+    "sessions": 1
+  },
+  "delete_error": "reject deletion",
+  "deleted": {
+    "actions": 1,
+    "approvals": 1,
+    "events": 0,
+    "messages": 0,
+    "sessions": 0
+  },
+  "empty_metadata": [
+    {
+      "created_at": 10.0,
+      "event_cursor": 0,
+      "owner": "",
+      "pending_steering": [],
+      "run_count": 4,
+      "session_id": "saved",
+      "status": "running",
+      "system": null,
+      "todos": [],
+      "workspace": "/updated",
+      "workspace_bound": true
+    }
+  ],
+  "failed_delete": {
+    "actions": 1,
+    "approvals": 1,
+    "events": 1,
+    "messages": 1,
+    "sessions": 1
+  },
+  "initial": [
+    {
+      "created_at": 10.0,
+      "event_cursor": 0,
+      "owner": "",
+      "pending_steering": [
+        "汉字😀 <tag>: comma, quote\" slash\\ newline\n separator "
+      ],
+      "run_count": 0,
+      "session_id": "saved",
+      "status": "idle",
+      "system": "",
+      "todos": [
+        {
+          "activeForm": "doing",
+          "content": "汉字😀 <tag>: comma, quote\" slash\\ newline\n separator ",
+          "status": "pending"
+        }
+      ],
+      "workspace": "/kept",
+      "workspace_bound": true
+    }
+  ],
+  "input": {
+    "created_at": 10.0,
+    "event_cursor": 999,
+    "owner": "",
+    "pending_steering": [
+      "汉字😀 <tag>: comma, quote\" slash\\ newline\n separator "
+    ],
+    "run_count": 0,
+    "session_id": "saved",
+    "status": "idle",
+    "system": "",
+    "todos": [
+      {
+        "activeForm": "doing",
+        "content": "汉字😀 <tag>: comma, quote\" slash\\ newline\n separator ",
+        "status": "pending"
+      }
+    ],
+    "workspace": "/kept",
+    "workspace_bound": true
+  },
+  "raw_steering": "[\"汉字😀 <tag>: comma, quote\\\" slash\\\\ newline\\n separator \"]",
+  "raw_todos": "[{\"content\": \"汉字😀 <tag>: comma, quote\\\" slash\\\\ newline\\n separator \", \"status\": \"pending\", \"activeForm\": \"doing\"}]",
+  "reopened": [
+    {
+      "created_at": 10.0,
+      "event_cursor": 0,
+      "owner": "",
+      "pending_steering": [
+        "汉字😀 <tag>: comma, quote\" slash\\ newline\n separator "
+      ],
+      "run_count": 4,
+      "session_id": "saved",
+      "status": "running",
+      "system": null,
+      "todos": [
+        {
+          "activeForm": "doing",
+          "content": "汉字😀 <tag>: comma, quote\" slash\\ newline\n separator ",
+          "status": "pending"
+        }
+      ],
+      "workspace": "/updated",
+      "workspace_bound": true
+    }
+  ],
+  "updated": [
+    {
+      "created_at": 10.0,
+      "event_cursor": 0,
+      "owner": "",
+      "pending_steering": [
+        "汉字😀 <tag>: comma, quote\" slash\\ newline\n separator "
+      ],
+      "run_count": 4,
+      "session_id": "saved",
+      "status": "running",
+      "system": null,
+      "todos": [
+        {
+          "activeForm": "doing",
+          "content": "汉字😀 <tag>: comma, quote\" slash\\ newline\n separator ",
+          "status": "pending"
+        }
+      ],
+      "workspace": "/updated",
+      "workspace_bound": true
+    }
+  ]
+}

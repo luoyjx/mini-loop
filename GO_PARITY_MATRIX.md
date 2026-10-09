@@ -1,5 +1,20 @@
 # Python to Go parity matrix
 
+## 2026-10-09 SQLite session metadata and deletion Source contracts
+
+A new actual SQLiteStateStore capture records literal Unicode/HTML/quote/newline/
+separator bytes in Todo and steering JSON, empty owner/system identity, immutable
+created_at on upsert, reopen, empty metadata and optional-column read fallbacks.
+Historical textual workspace_bound follows Python bool(), including nonempty
+"false". A real BEFORE DELETE trigger aborts the final session-row deletion after
+message/event deletion; Source rolls the entire operation back and a subsequent
+successful deletion retains action/approval audit rows. This extends the existing
+session snapshots and thirteen lease steps in python-state-store.json.
+
+Validation: 42 focused storage/census/durable-approval/restart tests, all 19 scan
+guards and the complete 186-file exporter check passed. git diff --check passed.
+No Python package changes, full regression or coverage refresh. No push.
+
 ## 2026-10-09 native SQLite opening and schema migration
 
 Baseline: f44e8b6. The standalone sqlitestate library now opens the approved CGO

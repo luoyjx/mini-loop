@@ -6540,6 +6540,7 @@ def _snapshot() -> dict[str, bytes]:
     from tools.efficiency_subagent_contracts import efficiency_subagent_contracts
     from tools.efficiency_workspace_child_contracts import efficiency_workspace_child_contracts
     from tools.efficiency_startup_contracts import efficiency_startup_contracts
+    from tools.sqlite_session_contracts import sqlite_session_contracts
     from tools.sqlite_schema_contracts import sqlite_schema_contracts
     from tools.efficiency_timeout_contracts import efficiency_timeout_contracts
     from tools.benchmark_efficiency_filter_contracts import benchmark_efficiency_filter_contracts
@@ -6880,6 +6881,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-efficiency-message-shape.json": _json_bytes(efficiency_message_shape_contracts()),
         "python-goals.json": _json_bytes(goal_contracts),
         "python-openapi.json": _json_bytes(openapi),
+        "python-sqlite-sessions.json": _json_bytes(sqlite_session_contracts(scratch)),
         "python-sqlite-migrations.json": _json_bytes(sqlite_schema_contracts(scratch)),
         "python-sqlite-schema.sql": (_SCHEMA.strip() + "\n").encode(),
     }
