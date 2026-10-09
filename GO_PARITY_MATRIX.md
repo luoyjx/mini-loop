@@ -5945,3 +5945,50 @@ contracts, schemas and guarded anchors did not change; full Python tests and
 export/scanner/invariant/guard sweeps were not rerun. Coverage was not refreshed.
 The migration remains incomplete, including the default syntax parser and full
 health posture.
+
+## Runtime-posture Source contracts — 2026-10-09
+
+Base: 016c03e. The health port still lacks Source's `posture` field. Snapshot
+`python-posture.json` records 14 real Manager/Agent and FastAPI lifespan profiles,
+with 13 concrete posture fields per before/direct/HTTP/after report. Only volatile
+build/PID/start/uptime fields are removed from the health document. Default-empty,
+default-live, null/custom registries, unresolved/short registered values, exact-case
+registration, unavailable sandbox, SQLite/authentication, actual event-write failure,
+live Agent overrides, workflow selection, independently selected full deployment
+settings, owner resources and trajectories are represented.
+
+The broken-store scenario runs a real fake-model turn against an injected store
+whose event append fails; it captures the surfaced persistence error. The initial
+construction-only probe produced no error, so it was replaced with that real turn.
+Live overrides demonstrate Source's first-live-Agent preference for secrets, cache,
+detector and sandbox. Registry coverage uses nonempty environment values, uppercase
+credential-pattern matching and exact registered-name matching; unresolved/short
+registered values still count as covered. No-registry/default Null reports zero
+unregistered credentials. Only the count is published, never credential identities.
+Inspection retains session counts, and owner-resource inspection creates no owner
+children. Manager startup/lifetime uses the actual TestClient lifespan, not a mock.
+
+Next cohesive implementation slices:
+1. Define a named Go posture record with explicit nullable persistence error and
+   sandbox reason, concrete implementation labels and booleans/counts.
+2. Read effective runtime defaults/live bindings without constructing a session or
+   resolving owner resources; expose observed persistence failure and credential
+   coverage through narrow typed seams. Record native sandbox/extension differences.
+3. Bind the public health projection and compare supported profiles against this
+   Source snapshot; preserve false feature flags for independent groups.
+4. Continue runtime identity/timing, remaining dependency-approved default parser,
+   native sandbox/other unresolved extension seams and the complete G0-G7 audit.
+
+This is captured Source evidence, not an implemented Go posture or a parity claim.
+No runtime code, dependency, default selection, public route or architecture
+ownership changes in this slice. Go remains independently incomplete.
+
+Validation: both new Source contract tests passed, including reconstruction under
+two temporary roots. Full `.venv/bin/python -m pytest -q` passed 2161 tests,
+28 skipped and 24 subtests, with three dependency deprecation warnings in 97.10s.
+Exporter `--check` passed all 189 files (dependency deprecation/regex warnings);
+`verify_scans.py` passed all 19 scanning anchors. README outline and
+`git diff --check` passed. Python package modules and guarded runtime anchors are
+unchanged, so separate invariant/mutation sweeps were not rerun. Go source and
+architecture topology/specification are unchanged; Go gates and architecture
+regeneration/visual inspection were not repeated. Coverage was not refreshed.

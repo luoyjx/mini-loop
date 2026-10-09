@@ -276,7 +276,7 @@ core control injection remain appended, and child copies preserve this selection
 Go `/healthz.features` reports deployment `EnableFeatures`, including caller-backed
 full startup; selecting independent optional groups does not change that flag.
 
-Runtime review baseline: `e1e4fde` plus deployment-selected full-feature health reporting,
+Runtime review baseline: `016c03e` plus actual runtime-posture Source contracts,
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
