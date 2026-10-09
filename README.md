@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `1daa299` plus native SQLite action/approval rows,
+Runtime review baseline: `78ce1a3` plus native managed SQLite close/reopen proof,
+plus native SQLite action/approval rows,
 plus native SQLite transcript and event rows,
 plus native SQLite session metadata and leases,
 plus standalone native SQLite schema opening,
@@ -604,7 +605,11 @@ Native action/approval SQL now completes `agent.StateStore` conformance. Upserts
 preserve original identity and creation fields; explicit transactional recovery
 marks started actions unknown without proving foreign effects stopped. Approval
 reads preserve SQL NULL versus empty tool-use IDs and restore no grants.
-Manager/Launcher activation and durable managed restoration remain pending.
+Library-injected Manager restoration now has native database close/reopen proof:
+seven actual Source recipes plus a live Manager-created session retain history,
+metadata, repair epochs and resumed requests. Foreign leases prevent repair and
+model admission; Stop releases owned leases. Configured Launcher activation,
+native cron restart and wider archival profiles remain pending.
 
 Go Manager selects an off/normal shared efficiency root by default. Library callers
 can configure ManagerEfficiencyConfig or inject ManagerServices.TokenEfficiency;

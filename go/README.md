@@ -296,8 +296,13 @@ resolved time and answer. ReadApprovals preserves SQL NULL versus empty tool-use
 IDs through ApprovalRecord.ToolUseIDNull and its JSON codec. Recovery is explicit:
 MarkInflightUnknown atomically changes selected started rows to unknown, either
 per session or globally; Open never invokes it. It establishes no external-effect
-fencing or human grants. Launcher/Manager persistence activation and native
-managed restart evidence remain pending.
+fencing or human grants. Configured Launcher persistence activation and native
+cron restart evidence remain pending. Native library-injected Manager restoration
+now replays all seven Source recipes over real database close/reopen and resumes a
+Manager-created session with its stored steering and request prefix. Foreign-held
+rows remain unmodified until the lease can be claimed; owned stop releases it.
+Managed transcript reads and bounded event catch-up use the native backend. These
+are Manager-instance reconstruction tests, not OS-process crash tests.
 
 `agent.SessionRecord` models the Python schema-v7 session projection: immutable
 creation time, mutable run/status/todo state, tenant owner, pending steering and

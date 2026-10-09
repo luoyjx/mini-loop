@@ -1,5 +1,54 @@
 # Go port plan
 
+## 2026-10-09 native SQLite Manager reconstruction proof
+
+Baseline: 78ce1a3. Library-injected agent.SessionManager now has real native
+SQLite close/reopen integration evidence. TestManagerNativeSQLiteRestartMatchesSourceRecipes
+replays all seven actual Python manager restoration recipes from Snapshot 46:
+clean, bare-user, bare-blocks, tools, paired, empty and foreign. It closes native
+handles before constructing each successor, rather than retaining an in-memory
+backend. Restored owner, system, status, creation time, run count, workspace,
+Todo/steering and repaired transcript match supported Source facts. Existing Go
+additions preserve metadata through repair and advance payload sequence beyond
+both physical cursor and archived sequence.
+
+Foreign leases prevent crash-tail repair and model admission until released;
+reacquisition reloads before the resumed request. Pending tool approval expires
+with a persisted resolution time, and the transcript contains not-run repair.
+Second database reopen retains repair/metadata. Stop releases owned leases.
+Bounded native CatchUpEvents returns scoped, strictly increasing sequences above
+the original payload sequence 9; managed ReadTranscript reads native rows.
+TestManagerCreatedSessionSurvivesNativeDatabaseReopen creates a session through
+the public manager, runs a real local provider round and saves steering. After
+Stop/database close/reopen, a new Manager resumes the persisted request prefix
+and sends the queued steering to its provider without degraded persistence.
+
+These are Manager-instance reconstruction tests in one Go test process, not
+OS-process termination tests. No Launcher setting, cron restart proof, restored
+human authority or external-effect fencing is inferred. Those remaining slices
+and wider archival variants remain open. This slice adds typed integration tests
+and documentation only; it changes no runtime behavior or dependencies.
+
+Next activation slice follows the actual Source startup seam: server.create_app
+accepts a supplied manager/manager_factory; its default constructs a manager
+without SQLite and does not call restore_sessions automatically. No Source
+STATE_DB environment option was found in server/config/__main__. Go Launcher
+should first expose an explicit typed caller-supplied StateStore and operator
+restoration path, preserving caller ownership and default process-local behavior;
+a new CLI database switch would be a separately labeled Go addition.
+
+Validation: both focused native Manager tests passed, full Go ordinary tests
+(-p=1 -count=1 -timeout=300s), go vet ./... and full Go race tests
+(-race -p=1 -count=1 -timeout=300s) passed. The final focused live-create
+run additionally verifies steering reaches the resumed provider; full race covers
+that assertion. macOS CGO emitted a nonfatal LC_DYSYMTAB link warning.
+git diff --check passed. README runtime baseline/boundary, extension guide, Go
+README and architecture specification updated. Archify delivery passes 9/9 with
+zero errors/warnings and exact specification/artifact receipt hashes verified.
+Visual inspection remains skipped after the earlier browser denial. Python source
+and exported fixtures were unchanged; Python suite/export/coverage were not
+rerun for this test-only slice. No push; full Go port goal remains active.
+
 ## 2026-10-09 coverage refresh after native SQLite audit delivery
 
 Measured implementation baseline: `547de7d`. Full serialized cross-package test

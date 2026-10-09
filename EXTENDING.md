@@ -710,9 +710,14 @@ its next sequence above both ordinal and stored payload sequence. It also waits
 for a lease before repair. These are documented Go additions. Crash-tail calls
 get unknown results, while expired parked approvals get not-run results. Tests
 send the next model request, exercise retry/reload and join shutdown races.
-The Go backing is test-only. Native SQLite/reopen and goal variant folding
-and backend launcher activation remain pending; a lease
-is neither an external-effect transaction nor fencing.
+The original snapshot uses a test backing. Native sqlitestate integration now
+replays all seven restoration recipes over database close/reopen and reconstructs
+a Manager-created session after a real live turn and durable steering write.
+Tests verify lease refusal/release, approval expiry, repair persistence, monotonic
+event catch-up, managed transcript reads and the next provider request prefix.
+These tests reconstruct Manager instances in one test process; they do not claim
+OS-process crash testing or external-effect fencing. Backend Launcher activation,
+native cron restart and wider archival variants remain pending.
 
 ---
 

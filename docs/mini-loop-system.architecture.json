@@ -412,7 +412,7 @@
         280,
         76
       ],
-      "tag": "native SQL / activation pending"
+      "tag": "native SQL / Launcher pending"
     },
     {
       "id": "goChildren",
@@ -1687,7 +1687,8 @@
         "Native sqlitestate now owns pinned SQLite WAL/NORMAL/foreign-key opening and Source v7 additive schema migration. Twenty-two actual Source cases compare old/current/future schemas, partial failures and saved data; native successful opens are reopened. Record SQL, StateStore conformance and Manager/Launcher activation remain pending. Opening does not mark actions or claim leases.",
         "Native sqlitestate now implements SessionStore and LeaseStore. Upsert preserves creation/leases; typed detached metadata and optional-column fallbacks match Source. Immediate deletion rolls back operational rows and retains audit. Conditional UPDATE claims preserve exact expiry equality; two connections compete for one owner. Explicit context admission/pre-commit checks and live rollback cleanup prevent cancelled commits from leaving writer reservations. Other record SQL, StateStore composition and Manager/Launcher activation remain pending; no human authority or external-effect fencing is installed.",
         "Native sqlitestate now implements TranscriptStore and EventStore with immediate read-head/append transactions, epoch-retained messages and separate physical event ordinals. Whole failed batches roll back; independent connections append contiguous ordinals. Historical known message decoding has no network frame cap, while network/tool-input/caller limits stay separate. Known event reads retain untrusted scope and existing archival limits. Action/approval SQL, full StateStore conformance and Manager/Launcher activation remain pending.",
-        "Native sqlitestate now satisfies complete agent.StateStore: identity-preserving action/approval upserts, nullable approval tool-use IDs and explicit atomic started-to-unknown recovery. Open performs no recovery and archived approvals restore no grants. Configured Manager/Launcher activation and native managed restart remain pending."
+        "Native sqlitestate now satisfies complete agent.StateStore: identity-preserving action/approval upserts, nullable approval tool-use IDs and explicit atomic started-to-unknown recovery. Open performs no recovery and archived approvals restore no grants. Configured Manager/Launcher activation and native managed restart remain pending.",
+        "Library-injected Manager now has native SQLite close/reopen reconstruction proof: seven actual Python restoration recipes and a live Manager-created session retain metadata, crash-tail repair, approval expiry and next request history. Foreign leases block repair/model admission, stop releases owned leases and stored event sequences survive bounded catch-up. Tests reconstruct Manager instances in one process; Launcher configuration, native cron restart and OS-process crash testing remain pending."
       ]
     }
   ]
