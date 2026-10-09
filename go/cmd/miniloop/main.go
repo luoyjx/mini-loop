@@ -14,10 +14,15 @@ import (
 
 	"github.com/luoyjx/mini-loop/go/config"
 	"github.com/luoyjx/mini-loop/go/httpapi"
+	"github.com/luoyjx/mini-loop/go/internal/commandenv"
 	"github.com/luoyjx/mini-loop/go/launcher"
 )
 
 func execute(ctx context.Context, args []string, env map[string]string, stdout, stderr io.Writer) int {
+	return executePrepared(ctx, args, env, false, stdout, stderr)
+}
+
+func executePrepared(ctx context.Context, args []string, env map[string]string, discovery bool, stdout, stderr io.Writer) int {
 	flags := flag.NewFlagSet("miniloop", flag.ContinueOnError)
 	flags.SetOutput(stderr)
 	sessionQueryTools := flags.Bool("session-query-tools", false, "enable the implemented Go read-only transcript search tool")
@@ -59,7 +64,9 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 	if *dump {
 		encoder := json.NewEncoder(stdout)
 		encoder.SetIndent("", "  ")
-		if err := encoder.Encode(launcher.InspectWithOptions(settings, server, auth, options)); err != nil {
+		report := launcher.InspectWithOptions(settings, server, auth, options)
+		report.DotEnvDiscovery = discovery
+		if err := encoder.Encode(report); err != nil {
 			return fail(err)
 		}
 		return 0
@@ -90,18 +97,12 @@ func execute(ctx context.Context, args []string, env map[string]string, stdout, 
 	return 0
 }
 func main() {
+	env, err := commandenv.Initialize()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
-	// Snapshot the environment once; settings/auth see the same input. No .env
-	// discovery or mutation of process credentials occurs here.
-	env := map[string]string{}
-	for _, entry := range os.Environ() {
-		for i := 0; i < len(entry); i++ {
-			if entry[i] == '=' {
-				env[entry[:i]] = entry[i+1:]
-				break
-			}
-		}
-	}
-	os.Exit(execute(ctx, os.Args[1:], env, os.Stdout, os.Stderr))
+	os.Exit(executePrepared(ctx, os.Args[1:], env.Reveal(), env.DiscoveryEnabled, os.Stdout, os.Stderr))
 }

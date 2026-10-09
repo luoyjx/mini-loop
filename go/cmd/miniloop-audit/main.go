@@ -13,6 +13,7 @@ import (
 
 	"github.com/luoyjx/mini-loop/go/audit"
 	"github.com/luoyjx/mini-loop/go/config"
+	"github.com/luoyjx/mini-loop/go/internal/commandenv"
 	"github.com/luoyjx/mini-loop/go/launcher"
 	"github.com/luoyjx/mini-loop/go/secrets"
 )
@@ -91,8 +92,13 @@ func findingStatus(findings []audit.Finding) int {
 }
 
 func main() {
+	environment, err := commandenv.Initialize()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-	code := execute(ctx, os.Args[1:], os.Stdout, os.Stderr)
+	code := executeWithEnvironment(ctx, os.Args[1:], environment.Reveal(), os.Stdout, os.Stderr)
 	stop()
 	os.Exit(code)
 }

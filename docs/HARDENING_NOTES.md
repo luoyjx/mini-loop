@@ -8250,3 +8250,16 @@ and the original token. Eighteen actual Source module import/Settings profiles
 pin this order. Prepared values remain private, diagnostic rendering is opaque,
 and Reveal returns detached maps. No process writes or CLI default activation
 are implied. Pure Load does not reload dotenv or repeat import-stage cleanup.
+
+## Executable dotenv publication and early faults — 2026-10-09
+
+Compiled command mains now prepare and publish environment before settings/auth
+or runtime construction. Source frozen/cwd origin is an explicit deployment
+adaptation; ordinary Python config-module origin remains available in the SDK.
+A dotenv fault publishes preceding values but skips auth cleanup and returns
+before command interpretation. Successful disabled loading still performs the
+custom-base-URL cleanup. Eighteen independent-process probes compare exact Source
+effects and inherited child environment; a real main HTTP→Bash turn verifies the
+same propagation. Signal handlers start after preparation so blocked startup FIFO
+reads can still be terminated. Inspection exposes actual enabled/disabled CLI
+selection without publishing credentials; pure SDK inspection stays false.

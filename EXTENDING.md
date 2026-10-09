@@ -3789,4 +3789,16 @@ exposes no values. Failure retains preceding dotenv writes and skips cleanup;
 disabled loading does not skip cleanup. Prepare once per startup, then pass the
 revealed map to pure Load/server/auth/child construction. Repeated Load evaluates
 that supplied map and does not discover or reload dotenv. Preparation does not
-mutate process state or create roots. CLI default origin/update remains pending.
+mutate process state or create roots. Compiled CLI entry points use the wrapper below.
+
+### Executable process environment publication
+
+internal/commandenv.Initialize belongs only at a compiled command's entry point,
+called once before application signal hooks/dispatch/goroutines. It snapshots
+process variables, prepares with explicit Frozen=true (Source cwd-origin branch),
+then publishes differences, including prior writes on a dotenv fault. Private
+InitializedEnvironment reveals detached maps and exposes DiscoveryEnabled based
+on the pre-load disabled flag; default diagnostics contain no environment values.
+Pure SDK functions do not call this wrapper. Command snapshot helpers continue
+to accept caller-prepared maps without process writes. miniloop dump reports the
+wrapper's actual selection; pure launcher inspection remains false.

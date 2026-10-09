@@ -14353,3 +14353,51 @@ README outline and git diff --check pass. Archify artifact: 9/9, zero errors or
 warnings, exact receipt hashes/bytes verified. Visual review not repeated because
 prior browser review was denied; zero visual correction rounds. Nonfatal CGO
 linker warnings retain their existing boundary. Coverage not refreshed; no push.
+
+## Executable dotenv startup and child environment propagation — 2026-10-09
+
+Base: `24822d1`. Both executable mains now invoke internal/commandenv.Initialize
+before dispatch, signal hooks and runtime construction. Named InitializedEnvironment
+privately owns a snapshot, reveals detached maps and reports pre-load enabled versus
+disabled discovery. Preparation uses Source frozen-program origin (cwd/ancestors)
+for compiled Go commands. This is an explicit deployment-origin adaptation from
+ordinary Python source's config-module directory, not a claim those origins are
+identical. SDK callers retain explicit caller-file/interactive/debugger/frozen
+contexts. No build-machine source path is guessed and no Python file is required.
+
+Initializer captures process variables once, performs native override=true and
+ordered auth cleanup, then publishes changed/removed variables to process environment.
+Prior writes survive an import-stage fault, which returns before command handling
+or runtime creation. Complete publication ensures default shell/background/MCP
+factories observe prepared values. Remote audit and usage dispatch also follow
+initialization, like Source package import. Signal hooks start after preparation,
+so a blocked startup FIFO can still be terminated. No discovery reload follows.
+
+Eighteen independent process probes compare exact Source prepared effects and actual
+inherited child environment. Ordinary Source caller-profile probes set native cwd
+at the equivalent package origin; Source cwd/frozen profiles use their recorded cwd.
+Existing explicit SDK tests continue to prove the original Source origin selection.
+Actual main subprocess tests prove file override/credential-free dump, disabled
+status, import error before help/usage, local audit using file fake mode while
+ignoring PORT, no runtime roots on early failure, HTTP→auto-mode Bash inherited
+MODEL_ID/custom values and removed AUTH_TOKEN, graceful shutdown and startup FIFO
+termination. Pure execute snapshot helpers and SDK Load/inspection remain isolated.
+CLI dump now performs executable preparation but still creates no runtime/roots
+or model probe; enabled/disabled DotEnvDiscovery differs from pure SDK false.
+
+README canonical Mermaid, boundary/review baseline, current startup docs and
+interactive aggregate entry annotation update together. No dependency added.
+Default diagnostics/full-feature CLI and full migration acceptance remain open;
+no push. This implements dotenv command activation, not completion of the port.
+
+Validation passed: focused race for commandenv/config/dotenv and both commands;
+full Go ordinary/race suites (-p=1 -count=1 -timeout=300s), go vet ./...; standalone
+compiled CLI binary dotenv dump smoke; Python full suite 2173 passed, 28 skipped,
+24 subtests, 3 warnings; all 199 Source exports; all 19 scanning guards; all 378
+existing Python mutation guards. Those mutation guards do not establish Go
+mutation coverage. No Python package module changed, so Python package invariants
+were not rerun. README outline and git diff --check pass. Archify regenerated
+artifact passes 9/9 with zero errors/warnings; exact receipt hashes/bytes verified.
+Visual review was not repeated because prior browser review was denied; zero
+visual correction rounds. Nonfatal CGO linker warnings remain explicit.
+Coverage not refreshed. No push; full migration remains open.

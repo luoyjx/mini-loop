@@ -575,8 +575,8 @@ retained. The standalone launcher now accepts `MINILOOP_DECISIONS=off|llm|jev`.
 Jev requires `TYPESAFE_API_KEY` and uses `MINILOOP_DECISION_MODEL` (jev-latest by
 default). `launcher.Options.DecisionProvider` overrides a selected backend; alone
 it leaves off-mode disabled. With environment off, `DecisionTools` explicitly
-selects LLM when no backend is supplied. `--dump-config` reports off/llm/jev/custom without I/O or
-credentials. FakeLLM does not substitute a fake Jev backend.
+selects LLM when no backend is supplied. `--dump-config` reports off/llm/jev/custom without provider I/O or exposing
+credentials; executable startup may read dotenv files. FakeLLM does not substitute a fake Jev backend.
 Snapshot 55 compares actual source memory/SQLite-reopen large-result replay and
 aggregate shedding. Native gate tests retain exact maximum-size bytes, replay
 from a fresh session, retain three of five maximum results under the shared
@@ -773,8 +773,10 @@ both Python and Go; see the preservation section below. No dependency was added.
 `--dump-config` emits a **settings-and-availability** report with credential presence,
 URL credential/query/fragment removal, build revision, process-local state and unavailable
 activations. It creates no manager or listener and makes no provider probe; it does
-not implement Python's full effective harness/tool posture. There is no `.env`
-discovery/override or reload. Go additionally rejects nonfinite/overflowing numbers
+not implement Python's full effective harness/tool posture. Executable startup now
+discovers/overrides dotenv once; no subsequent reload occurs. SDK Load/inspection
+do not perform discovery. The compiled CLI uses Source frozen/cwd origin rather
+than ordinary Python configuration-module origin. Go additionally rejects nonfinite/overflowing numbers
 and positive durations smaller than one nanosecond; representability limits differ
 from Python's arbitrary integers/floats. Fake delay is checked even with a real client.
 
@@ -2801,8 +2803,9 @@ variable resolution and detached environment application with concrete types.
 All 48 Source profiles match exact bindings/lines, interpolation, ordering,
 disabled loading and partial fault outcomes. Input maps/bindings stay unchanged.
 Parse/Resolve/Apply perform no filesystem or process mutation. Separate
-file APIs are now available below; CLI activation remains pending. Config inspection still reports
-DotEnvDiscovery=false. No new dependency is required.
+file APIs are available below and executable CLI activation is implemented. Pure
+SDK inspection reports DotEnvDiscovery=false; CLI inspection reports enabled/disabled
+startup discovery. No new dependency is required.
 
 ### Native dotenv filesystem SDK
 
@@ -2814,7 +2817,7 @@ checks disabled loading before discovery/decoding and returns detached complete
 or partial effects without changing process environment/cwd. All 10 discovery,
 2 missing-file, 3 walk and 40 file-read Source profiles match. Actual FIFO
 producer/EOF execution also passes. Config/CLI do not invoke these libraries;
-DotEnvDiscovery remains false pending explicit startup-origin mapping.
+Compiled CLI startup uses Source frozen/cwd origin; pure SDK inspection remains false.
 
 ### Native startup environment preparation
 
@@ -2823,6 +2826,23 @@ then remove ANTHROPIC_AUTH_TOKEN for a truthy custom base URL. Typed failures
 retain earlier writes and skip cleanup. Named PreparedEnvironment hides values
 from diagnostic rendering and Reveal returns detached maps. All 18 real Source
 import/Settings profiles validate phase/environment semantics and successful
-settings values. Pure Load stays independent and creates no roots. CLI default
-origin, process environment propagation and startup activation remain pending;
-DotEnvDiscovery remains false.
+settings values. Pure Load stays independent and creates no roots. Executable
+startup now publishes prepared process effects; see the entry-point contract below.
+
+### Executable dotenv startup
+
+Both compiled commands initialize process environment before dispatch using the
+Source frozen-program search from cwd to root. Ordinary Python source uses its
+config module directory; this cross-language deployment-origin adaptation is
+explicit. Dotenv override=true and auth-token cleanup occur once. Effects are
+published before settings/server/auth/runtime construction and inherited by default
+child processes. Partial dotenv faults publish preceding writes and return code 1
+before runtime creation. Audit also prepares before remote/usage dispatch, matching
+Source package import order. Disabled loading performs no discovery/read but still
+runs custom-base-URL cleanup. CLI dump reports enabled/disabled discovery and still
+creates no runtime/roots; it now reads files and mutates only its own process.
+The pure SDK Load, PrepareEnvironment and launcher inspection remain independent.
+Signal hooks are installed after preparation, preserving termination during a
+blocked startup FIFO. Independent subprocess tests prove all 18 pinned environment
+outcomes, actual executable main dump/failure order, local audit construction,
+HTTP→auto-mode Bash environment inheritance and SIGTERM shutdown/startup handling.

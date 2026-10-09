@@ -267,7 +267,7 @@ func Values(options FileOptions, environment Environment) FileValues {
 // decoding. Decode faults write nothing; application faults preserve prior writes.
 // Like Source, a FIFO waits for its producer and is read to EOF without a cap.
 func LoadFile(options FileOptions, environment Environment, override bool) Application {
-	if loadingDisabled(environment) {
+	if LoadingDisabled(environment) {
 		return Apply(nil, environment, override)
 	}
 	values := fileValues(options, environment, override)

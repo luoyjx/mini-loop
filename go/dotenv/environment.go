@@ -97,7 +97,7 @@ func Apply(values []Variable, environment Environment, override bool) Applicatio
 	for key, value := range environment {
 		result.Environment[key] = value
 	}
-	if loadingDisabled(environment) {
+	if LoadingDisabled(environment) {
 		loaded := false
 		result.Loaded = &loaded
 		return result
@@ -126,7 +126,8 @@ func Apply(values []Variable, environment Environment, override bool) Applicatio
 	return result
 }
 
-func loadingDisabled(environment Environment) bool {
+// LoadingDisabled observes Source's finite truthy tokens without reading process state.
+func LoadingDisabled(environment Environment) bool {
 	// Long s is the only non-ASCII case-fold expansion into these finite tokens.
 	value := strings.ReplaceAll(strings.ToLower(environment["PYTHON_DOTENV_DISABLED"]), "ſ", "s")
 	return value == "1" || value == "true" || value == "t" || value == "yes" || value == "y"

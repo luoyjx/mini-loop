@@ -360,7 +360,8 @@ the disabled flag before discovery/read, and decode faults change no environment
 These are privileged local SDK filesystem reads; no tool gate or remote route
 calls them. No function changes process environment or cwd. Missing caller
 origin is refused rather than guessed from compiled Go source paths.
-`DotEnvDiscovery` remains false: config/CLI startup activation is still pending.
+Pure SDK inspection continues to report DotEnvDiscovery=false; executable entry
+points now perform the startup preparation described below.
 
 `config.PrepareEnvironment` now composes dotenv override=true with Source's
 custom-base-URL authentication cleanup. A dotenv fault retains prior writes
@@ -368,10 +369,20 @@ and prevents cleanup; a successful disabled load still allows cleanup.
 PreparedEnvironment privately owns the values and explicitly reveals detached
 snapshots; ordinary diagnostic rendering contains no environment values.
 Callers prepare once, then use pure config.Load for settings evaluation.
-This local SDK composition creates no workspace or process writes and does not
-install a default CLI origin or process-environment update path.
+This local SDK composition creates no workspace or process writes.
+Both executable mains now invoke `internal/commandenv.Initialize` before argument
+interpretation, signal hooks or runtime construction. Compiled Go commands use
+the pinned Source frozen-program branch: search cwd and ancestors. This differs
+from ordinary Python source execution's configuration-module origin; SDK callers
+can still supply that explicit origin. The entry point publishes complete or
+partial prepared effects to process environment, so default Bash/background/MCP
+children receive the same variables; a loading fault returns before runtime
+creation. Runtime signal hooks start afterward so startup FIFO reads remain
+terminable. CLI dump reports actual enabled/disabled discovery and still creates
+no manager/listener or model probe; it now reads dotenv files and updates its
+own process environment. Pure config.Load and launcher inspection remain unchanged.
 
-Runtime review baseline: `0aee7e0` plus native startup environment preparation,
+Runtime review baseline: `24822d1` plus executable dotenv startup activation,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -515,7 +526,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `0aee7e0` plus native startup environment preparation;
+reviewed **2026-10-09** (Go baseline `24822d1` plus executable dotenv startup activation;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -569,8 +580,9 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
-        GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>CLI origin / process update pending"]
-        GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · CLI activation pending"]
+        GoCLIEnv["Go commandenv · executable mains only<br/>Source frozen origin · cwd / ancestors<br/>publish prepared process environment<br/>faults before dispatch · disabled status"]
+        GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>explicit origin · no process writes"]
+        GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · detached SDK effects"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>absent-key inspection · request auth before HTTP / retry<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
@@ -669,6 +681,10 @@ flowchart LR
 
     Caller --> Entry
     Caller --> GoStartupEnv
+    GoLaunch -. CLI main only .-> GoCLIEnv
+    GoRemoteAudit -. CLI main only .-> GoCLIEnv
+    GoCLIEnv --> GoStartupEnv
+    GoCLIEnv -. inherited process environment .-> GoBash
     GoStartupEnv --> GoDotenv
     Caller --> GoDotenv
     Caller --> GoRemoteAudit
@@ -776,8 +792,9 @@ separate Go subgraph is a process-local port in progress with an embeddable
 HTTP handler and a standalone `go/cmd/miniloop` launcher. It runs independently
 of Python, embeds the default code-review skill, and owns listening and shutdown.
 Default trajectory files are enabled and private spill storage is best-effort;
-configured but unavailable optional features refuse activation. It reads an environment
-snapshot without `.env` discovery, uses typed settings, and checks both the requested
+configured but unavailable optional features refuse activation. Executable startup
+loads dotenv from cwd/ancestors with Source frozen-program semantics, then passes
+one prepared environment snapshot into typed settings/auth and checks the requested
 host and actual listener before admitting unauthenticated traffic. `--dump-config`
 reports redacted settings/availability without creating a runtime or probing a model;
 it is not the full Python effective-posture report. See
