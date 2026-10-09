@@ -8240,3 +8240,13 @@ turns use existing provider error projection without contacting the endpoint.
 Empty keys leave endpoint/diagnostic text intact during redaction. Supplied
 key/URL/wire bounds and public listener authentication guards remain enforced.
 There is no automatic profile/OAuth/federation lookup in this native seam.
+
+## Native config import environment ordering — 2026-10-09
+
+PrepareEnvironment applies dotenv with override=true before custom-base-URL
+AUTH_TOKEN removal. The cleanup executes only after successful loading, including
+a successful disabled load; a partial dotenv fault retains preceding variables
+and the original token. Eighteen actual Source module import/Settings profiles
+pin this order. Prepared values remain private, diagnostic rendering is opaque,
+and Reveal returns detached maps. No process writes or CLI default activation
+are implied. Pure Load does not reload dotenv or repeat import-stage cleanup.

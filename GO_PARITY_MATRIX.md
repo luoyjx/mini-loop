@@ -6982,3 +6982,55 @@ mutation anchor changed, so Python invariant/guard gates were not rerun.
 Archify regenerated artifact: 9/9, zero errors/warnings; exact hashes and bytes
 verified. Visual review was not repeated because prior browser review was denied;
 zero visual correction rounds. Coverage was not refreshed. No push.
+
+## Source config import and native startup environment preparation — 2026-10-09
+
+Base: `0aee7e0`. Snapshot 199 loads an unmodified copy of actual
+python/mini_loop/config.py under an isolated existing module filename and fresh
+module identity, then calls its actual load_settings factory. All environment,
+cwd, module and interactive/debugger/frozen observations restore afterward.
+No dotenv finder/parser/loader, auth cleanup, Settings or mkdir is replaced.
+Eighteen profiles capture nearest/caller-parent/root versus cwd origins,
+interactive/debugger/frozen origin, override/interpolation, token cleanup for
+nonempty/empty/whitespace base URL, disabled loading, decode and partial import
+faults, Settings parsing/bounds failure, and factories after import.
+
+Actual import runs dotenv override=true before custom-base-URL token cleanup.
+Partial dotenv application faults retain earlier MODEL_ID/BASE_URL writes but
+leave AUTH_TOKEN present; disabled loading still permits later cleanup. Settings
+faults occur after successful import/cleanup but before workspace mkdir. A later
+Settings call observes later environment changes without loading changed dotenv
+contents again; authentication cleanup likewise belongs to import, not each
+Settings call. Source successful Settings construction creates workspace roots;
+this side effect is recorded independently from environment effects.
+
+Native config.PrepareEnvironment composes the existing dotenv SDK with that
+import-phase order over explicit environment/origin observations. Named
+PreparedEnvironment privately retains detached complete/partial environment
+values; Reveal returns another detached map and ordinary String/GoString exposes
+no values. Import fault class/message and exact maps compare directly across all
+18 profiles. Subsequent pure Load settings values match successful Source
+profiles; parsing/bounds refusal is checked semantically, retaining existing
+native Load diagnostic wording. Preparation/Load create no workspace; eventual
+launcher construction owns that previously implemented effect. They change no
+process environment/cwd and preserve input containers.
+
+README canonical Mermaid/boundary/review baseline and interactive aggregate SDK
+annotation update together. CLI default origin and actual process-environment
+commit remain pending; no CLI/remote route/tool invokes preparation yet and
+DotEnvDiscovery remains false. These are prerequisites for actual command
+startup activation, not completion of it. No dependency or default/persistence
+change. Default diagnostics and full migration acceptance remain open; no push.
+
+Validation passed: focused Source module test and native config race contracts;
+full Go ordinary/race suites (-p=1 -count=1 -timeout=300s), go vet ./...; full
+Python suite 2173 passed, 28 skipped, 24 subtests, 3 warnings; all 199 Source
+exports current; all 19 scanning guards; all 378 existing Python mutation guards
+load-bearing. The foreground-interrupt negative case took an extended wait but
+completed and caught its mutation; no verifier/test change was needed. Mutation
+verification uses temporary copies and does not establish Go mutation coverage.
+No Python package module changed, so Python package invariants were not rerun.
+README outline and git diff --check pass. Archify artifact: 9/9, zero errors or
+warnings, exact receipt hashes/bytes verified. Visual review not repeated because
+prior browser review was denied; zero visual correction rounds. Nonfatal CGO
+linker warnings retain their existing boundary. Coverage not refreshed; no push.

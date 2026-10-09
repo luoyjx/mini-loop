@@ -362,7 +362,16 @@ calls them. No function changes process environment or cwd. Missing caller
 origin is refused rather than guessed from compiled Go source paths.
 `DotEnvDiscovery` remains false: config/CLI startup activation is still pending.
 
-Runtime review baseline: `1454b45` plus native dotenv discovery and file loading,
+`config.PrepareEnvironment` now composes dotenv override=true with Source's
+custom-base-URL authentication cleanup. A dotenv fault retains prior writes
+and prevents cleanup; a successful disabled load still allows cleanup.
+PreparedEnvironment privately owns the values and explicitly reveals detached
+snapshots; ordinary diagnostic rendering contains no environment values.
+Callers prepare once, then use pure config.Load for settings evaluation.
+This local SDK composition creates no workspace or process writes and does not
+install a default CLI origin or process-environment update path.
+
+Runtime review baseline: `0aee7e0` plus native startup environment preparation,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -506,7 +515,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-09** (Go baseline `1454b45` plus native dotenv discovery and file loading;
+reviewed **2026-10-09** (Go baseline `0aee7e0` plus native startup environment preparation;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
@@ -560,6 +569,7 @@ flowchart LR
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
         GoLaunch["Go cmd/miniloop · launcher<br/>full profile with caller diagnostics · explicit RepoRoot binding<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>health reports deployment selection · actual typed runtime posture<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
+        GoStartupEnv["Go config.PrepareEnvironment · local SDK<br/>dotenv override=true → base-URL auth cleanup<br/>private env · explicit detached Reveal<br/>CLI origin / process update pending"]
         GoDotenv["Go dotenv · local SDK library<br/>typed bindings · explicit caller/cwd discovery<br/>file / FIFO decode · detached environment application<br/>Source 1.2.2 · CLI activation pending"]
         GoRemoteAudit["Go audit libraries · cmd/miniloop-audit<br/>public health GET · 10s deadline · bounded response<br/>typed report → findings / text / exit status<br/>local construct → full findings → stop · privileged Manager SDK"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
@@ -658,6 +668,8 @@ flowchart LR
     end
 
     Caller --> Entry
+    Caller --> GoStartupEnv
+    GoStartupEnv --> GoDotenv
     Caller --> GoDotenv
     Caller --> GoRemoteAudit
     GoRemoteAudit -. public health report .-> GoEntry

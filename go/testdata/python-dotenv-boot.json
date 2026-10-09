@@ -1,0 +1,837 @@
+{
+  "cases": [
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "nearest",
+        "__BOOT_ROUTE": "nearest"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d6e6561726573740a5f5f424f4f545f524f5554453d6e6561726573740a",
+          "path": "source/pkg/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "caller-nearest",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "nearest",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "parent",
+        "__BOOT_ROUTE": "parent"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d706172656e740a5f5f424f4f545f524f5554453d706172656e740a",
+          "path": "source/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "caller-parent",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "parent",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "root",
+        "__BOOT_ROUTE": "root"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "4d4f44454c5f49443d726f6f740a5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "root",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "root",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming",
+        "__BOOT_ROUTE": "root"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d6377640a5f5f424f4f545f524f5554453d6377640a",
+          "path": "working/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "cwd-ignored",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "incoming",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "cwd",
+        "__BOOT_ROUTE": "cwd"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d6377640a5f5f424f4f545f524f5554453d6377640a",
+          "path": "working/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": true,
+      "name": "interactive",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "cwd",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "cwd",
+        "__BOOT_ROUTE": "cwd"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": true,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d6377640a5f5f424f4f545f524f5554453d6377640a",
+          "path": "working/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "debugger",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "cwd",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "cwd",
+        "__BOOT_ROUTE": "cwd"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d6377640a5f5f424f4f545f524f5554453d6377640a",
+          "path": "working/.env"
+        }
+      ],
+      "frozen": true,
+      "imported": true,
+      "interactive": false,
+      "name": "frozen",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "cwd",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "file-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "DERIVED": "file",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_MAX_TOKENS": "123",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "file"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d66696c650a414e5448524f5049435f4150495f4b45593d66696c652d6b65790a4d494e494c4f4f505f4d41585f544f4b454e533d3132330a444552495645443d247b4d4f44454c5f49447d0a",
+          "path": "source/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "override-and-interpolate",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "file-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 123,
+        "model": "file",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_BASE_URL": "https://example.invalid",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "414e5448524f5049435f424153455f55524c3d68747470733a2f2f6578616d706c652e696e76616c69640a",
+          "path": "source/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "base-url-removes-token",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": "https://example.invalid",
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "incoming",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "ANTHROPIC_BASE_URL": "",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "ANTHROPIC_BASE_URL": "https://incoming.invalid",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "414e5448524f5049435f424153455f55524c3d0a",
+          "path": "source/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "empty-base-url-keeps-token",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "incoming",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_BASE_URL": " ",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "414e5448524f5049435f424153455f55524c3d2720270a",
+          "path": "source/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "whitespace-base-url-removes-token",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": " ",
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "incoming",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming",
+        "PYTHON_DOTENV_DISABLED": "true"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming",
+        "PYTHON_DOTENV_DISABLED": "true"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443dff0a",
+          "path": "source/pkg/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "disabled-invalid-file",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": null,
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "incoming",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_BASE_URL": "https://incoming.invalid",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming",
+        "PYTHON_DOTENV_DISABLED": "true"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "ANTHROPIC_BASE_URL": "https://incoming.invalid",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming",
+        "PYTHON_DOTENV_DISABLED": "true"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443dff0a",
+          "path": "source/pkg/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "disabled-base-url-cleanup",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": "https://incoming.invalid",
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "incoming",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": {
+        "message": "'utf-8' codec can't decode byte 0xff in position 19: invalid start byte",
+        "type": "UnicodeDecodeError"
+      },
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d7072696f720a4241443dff0a",
+          "path": "source/pkg/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": false,
+      "interactive": false,
+      "name": "invalid-file",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": null,
+      "stage": "import",
+      "workspaceCreated": false
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "ANTHROPIC_BASE_URL": "https://example.invalid",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "prior"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": {
+        "message": "illegal environment variable name",
+        "type": "ValueError"
+      },
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d7072696f720a414e5448524f5049435f424153455f55524c3d68747470733a2f2f6578616d706c652e696e76616c69640a276261643d6b6579273d76616c75650a",
+          "path": "source/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": false,
+      "interactive": false,
+      "name": "partial-import-fault",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": null,
+      "stage": "import",
+      "workspaceCreated": false
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_BASE_URL": "https://example.invalid",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_MAX_TOKENS": "bad",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "file"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": {
+        "message": "MINILOOP_MAX_TOKENS='bad' is not an integer; refusing to guess. Unset MINILOOP_MAX_TOKENS to use the default.",
+        "type": "ValueError"
+      },
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d66696c650a4d494e494c4f4f505f4d41585f544f4b454e533d6261640a414e5448524f5049435f424153455f55524c3d68747470733a2f2f6578616d706c652e696e76616c69640a",
+          "path": "source/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "settings-integer-fault",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": null,
+      "stage": "settings",
+      "workspaceCreated": false
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_MAX_TOKENS": "0",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": {
+        "message": "max_tokens must be at least 1",
+        "type": "ValueError"
+      },
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d494e494c4f4f505f4d41585f544f4b454e533d300a",
+          "path": "source/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "settings-bound-fault",
+      "postEnvironment": {},
+      "postFile": null,
+      "settings": null,
+      "stage": "settings",
+      "workspaceCreated": false
+    },
+    {
+      "applied": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "later-token",
+        "ANTHROPIC_BASE_URL": "https://later.invalid",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "later"
+      },
+      "caller": "source/pkg/config.py",
+      "cwd": "working/deep",
+      "debugger": false,
+      "environment": {
+        "ANTHROPIC_API_KEY": "incoming-key",
+        "ANTHROPIC_AUTH_TOKEN": "incoming-token",
+        "MINILOOP_FAKE_LLM": "1",
+        "MINILOOP_WORKSPACE_ROOT": "$ROOT/workspaces",
+        "MODEL_ID": "incoming"
+      },
+      "fault": null,
+      "files": [
+        {
+          "content": "5f5f424f4f545f524f5554453d726f6f740a",
+          "path": ".env"
+        },
+        {
+          "content": "4d4f44454c5f49443d696d706f727465640a",
+          "path": "source/.env"
+        }
+      ],
+      "frozen": false,
+      "imported": true,
+      "interactive": false,
+      "name": "factories-after-import",
+      "postEnvironment": {
+        "ANTHROPIC_AUTH_TOKEN": "later-token",
+        "ANTHROPIC_BASE_URL": "https://later.invalid",
+        "MODEL_ID": "later"
+      },
+      "postFile": "MODEL_ID=not-reloaded\n",
+      "settings": {
+        "apiKey": "incoming-key",
+        "baseURL": "https://later.invalid",
+        "fakeLLM": true,
+        "maxTokens": 8000,
+        "model": "later",
+        "workspaceRoot": "$ROOT/workspaces"
+      },
+      "stage": "ready",
+      "workspaceCreated": true
+    }
+  ],
+  "version": "1.2.2"
+}

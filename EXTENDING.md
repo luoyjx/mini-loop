@@ -3777,3 +3777,16 @@ Decode faults retain no new writes; application faults retain earlier writes.
 FIFO reads wait for the producer and EOF, as Source does. Other Python codecs
 are outside this finite SDK surface. Local callers own these filesystem inputs;
 these APIs are not automatically wired into runtime tools or startup.
+
+### Go startup environment preparation
+
+PrepareEnvironment(environment, origin) performs dotenv override=true followed
+by Source base-URL authentication cleanup. Nil environment is explicit empty;
+origin is an explicit dotenv.DiscoveryContext. It returns a named
+PreparedEnvironment with a typed optional Failure and private environment.
+Reveal returns a detached credential-bearing map; default diagnostic formatting
+exposes no values. Failure retains preceding dotenv writes and skips cleanup;
+disabled loading does not skip cleanup. Prepare once per startup, then pass the
+revealed map to pure Load/server/auth/child construction. Repeated Load evaluates
+that supplied map and does not discover or reload dotenv. Preparation does not
+mutate process state or create roots. CLI default origin/update remains pending.

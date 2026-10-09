@@ -2815,3 +2815,14 @@ or partial effects without changing process environment/cwd. All 10 discovery,
 2 missing-file, 3 walk and 40 file-read Source profiles match. Actual FIFO
 producer/EOF execution also passes. Config/CLI do not invoke these libraries;
 DotEnvDiscovery remains false pending explicit startup-origin mapping.
+
+### Native startup environment preparation
+
+config.PrepareEnvironment matches actual Source config import: dotenv override,
+then remove ANTHROPIC_AUTH_TOKEN for a truthy custom base URL. Typed failures
+retain earlier writes and skip cleanup. Named PreparedEnvironment hides values
+from diagnostic rendering and Reveal returns detached maps. All 18 real Source
+import/Settings profiles validate phase/environment semantics and successful
+settings values. Pure Load stays independent and creates no roots. CLI default
+origin, process environment propagation and startup activation remain pending;
+DotEnvDiscovery remains false.
