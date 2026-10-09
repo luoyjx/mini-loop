@@ -264,13 +264,17 @@ separate:
 Go built-in feature catalogues publish tools in Python registry order, including
 independently selected decisions, workflows and AST additions. Caller-supplied
 catalogues keep their order; capability filtering retains the selected subsequence.
-Explicitly composed full tools match all 48 Source schemas and traits. The full
+`ManagerConfig.EnableFeatures` selects all 48 Source tools when an explicit
+diagnostics provider is available. Custom catalogues retain their inventory;
+full-profile lifecycle binding still supports default background/team notices.
+Independently selected workflow/AST/decision additions retain Source order. The full
 `MINILOOP_FEATURES` startup setting remains unavailable pending default Python
 syntax parsing. Explicit injector lists (including empty lists) replace default
 background/team injection; nil retains selected lifecycle defaults. Workflow and
 core control injection remain appended, and child copies preserve this selection.
 
-Runtime review baseline: `fa73913` plus actual CPython syntax-parser contracts,
+Runtime review baseline: `59aebed` plus explicit Manager full-feature composition,
+plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
 plus Source-ordered Go built-in feature catalogues,
 plus Source full-feature composition contracts,
@@ -467,7 +471,7 @@ flowchart LR
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
         GoDecisionLibrary["Optional decision providers · default off<br/>closed choice / score / noul judgments<br/>masked state + result projections · fixed Jev HTTP<br/>isolated current-LLM query · shared model pool"]
-        GoManager["Go SessionManager<br/>owner lookup · resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
+        GoManager["Go SessionManager<br/>explicit full profile · custom catalogue / injector overrides<br/>owner lookup · resource snapshots / default scoped memory<br/>workspace policy · raw stores / component lifecycle · drain"]
         GoManaged["Go ManagedSession<br/>admission · active cancellation · status / done<br/>completed fork history · lineage · stored epoch / request reads"]
         GoControls["Owned session controls<br/>bounded steering · live mode · posture notes"]
         GoSession["Go Session<br/>prompt hooks · explicit injector overrides · Todo reminder<br/>ordered parallel groups · inherited pools · events<br/>configured coalescing · interrupted text<br/>DefaultRecovery · live / side history ownership<br/>default goal stop · bounded continuation<br/>optional writable memory capture"]

@@ -62,8 +62,10 @@ type Questioner interface {
 // empty catalogue; a nil Questions surface reports the Python bare-Agent
 // unavailability notice. This callback is not a durable approval broker.
 type RuntimeConfig struct {
-	Tools           *ToolCatalog
-	efficiencyOwner *SessionManager
+	// Manager full-profile lifecycle binding is independent of tool publication.
+	featureLifecycle bool
+	Tools            *ToolCatalog
+	efficiencyOwner  *SessionManager
 	// Explicit three-stage runtime; caller owns its component/store lifetime.
 	TokenEfficiency *efficiency.Runtime
 	ConciseResponse bool
@@ -527,12 +529,14 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 		}
 	}
 
-	if config.BackgroundTools {
+	if config.BackgroundTools || (config.featureLifecycle && config.Injectors == nil) {
 		native, ok := config.Bash.(*shell.Executor)
 		if !ok || native == nil || native.Workspace() != files.Root() {
 			return nil, errors.New("background tools require a native shell bound to the session workspace")
 		}
 		handler.background = &backgroundState{executor: native}
+	}
+	if config.BackgroundTools {
 		for i := range definitions {
 			if definitions[i].name == protocol.ToolBash {
 				definitions[i].handler = handler
@@ -763,7 +767,7 @@ func NewRuntimeSession(config RuntimeConfig) (*Session, error) {
 	session.guardianEnabled = config.GuardianEnabled
 	session.mcp = handler.mcp
 	session.runtime = handler
-	if config.TeamTools {
+	if config.TeamTools || config.featureLifecycle {
 		session.teamManager = config.teamManager
 	}
 	if config.taskStore != nil {

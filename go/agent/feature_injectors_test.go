@@ -11,13 +11,36 @@ import (
 	"github.com/luoyjx/mini-loop/go/teams"
 )
 
+// Full features also perform memory extraction with a tool-free model request.
+// Observe agent turns here; the memory-specific contracts cover those side calls.
+type notificationProvider struct{ requests []protocol.ModelRequest }
+
+func (provider *notificationProvider) Complete(_ context.Context, request protocol.ModelRequest) (protocol.ModelReply, error) {
+	if len(request.Tools) == 0 {
+		return fakeReply([]protocol.Block{protocol.NewTextBlock("[]")}, protocol.StopEndTurn), nil
+	}
+	provider.requests = append(provider.requests, request.Clone())
+	return fakeReply([]protocol.Block{protocol.NewTextBlock("done")}, protocol.StopEndTurn), nil
+}
+
 func TestManagerCustomInjectorsReplaceLifecycleDefaultsWithoutDraining(t *testing.T) {
-	for _, name := range []string{"default", "empty", "custom"} {
+	for _, name := range []string{"default", "empty", "custom", "full", "full-empty", "full-custom-tools"} {
 		t.Run(name, func(t *testing.T) {
-			provider := &recordingProvider{}
+			provider := &notificationProvider{}
 			config := managerTestConfig(t.TempDir(), provider)
 			config.Services.BackgroundTools, config.Services.TeamTools = true, true
-			if name == "empty" {
+			config.EnableFeatures = strings.HasPrefix(name, "full")
+			if config.EnableFeatures {
+				config.Services.BackgroundTools, config.Services.TeamTools = false, false
+				if name == "full-custom-tools" {
+					base := createManaged(t, makeManager(t, managerTestConfig(t.TempDir(), &FakeProvider{})), CreateSessionRequest{Owner: "fixture"})
+					config.Services.Tools = base.core.gate.catalog
+				} else {
+					config.Services.DiagnosticsProvider = inventoryDiagnostics{}
+				}
+			}
+			defaults := name == "default" || name == "full" || name == "full-custom-tools"
+			if name == "empty" || name == "full-empty" {
 				config.Services.Injectors = []MessageInjector{}
 			}
 			if name == "custom" {
@@ -27,11 +50,11 @@ func TestManagerCustomInjectorsReplaceLifecycleDefaultsWithoutDraining(t *testin
 			}
 			manager := makeManager(t, config)
 			session := createManaged(t, manager, CreateSessionRequest{Owner: "fixture"})
-			if (session.core.injectors == nil) != (name == "default") {
+			if (session.core.injectors == nil) != defaults {
 				t.Fatal("nil/empty selection lost during construction")
 			}
 			parent := session.core.subagentParent(RunContext{})
-			if (parent.injectors == nil) != (name == "default") {
+			if (parent.injectors == nil) != defaults {
 				t.Fatal("nil/empty selection lost in child snapshot")
 			}
 			ledger := filepath.Join(session.Info().Workspace, ".background")
@@ -60,10 +83,10 @@ func TestManagerCustomInjectorsReplaceLifecycleDefaultsWithoutDraining(t *testin
 			}
 			hasBackground := strings.Contains(text.String(), "<task_notification ")
 			hasTeam := strings.Contains(text.String(), "<team_inbox>")
-			if hasBackground != (name == "default") || hasTeam != (name == "default") {
+			if hasBackground != defaults || hasTeam != defaults {
 				t.Fatalf("unexpected model injection: %s", text.String())
 			}
-			if name == "default" && strings.Index(text.String(), "<task_notification ") > strings.Index(text.String(), "<team_inbox>") {
+			if defaults && strings.Index(text.String(), "<task_notification ") > strings.Index(text.String(), "<team_inbox>") {
 				t.Fatal("default injector order changed")
 			}
 			if strings.Contains(text.String(), "custom fixture") != (name == "custom") {
@@ -73,7 +96,7 @@ func TestManagerCustomInjectorsReplaceLifecycleDefaultsWithoutDraining(t *testin
 			if err != nil {
 				t.Fatal(err)
 			}
-			if name == "default" {
+			if defaults {
 				if len(mail) != 0 || session.core.background.manager == nil {
 					t.Fatal("default lifecycle notification not consumed")
 				}

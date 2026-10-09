@@ -115,6 +115,10 @@ type ManagerServices struct {
 }
 
 type ManagerConfig struct {
+	// EnableFeatures selects the full Source registry unless Services.Tools is
+	// supplied. A default registry requires an explicit DiagnosticsProvider until
+	// a default parser exists. Lifecycle injection still respects custom lists.
+	EnableFeatures                    bool
 	Efficiency                        *ManagerEfficiencyConfig
 	TeamIdlePoll, TeamIdleTimeout     time.Duration
 	StateLeaseTTL                     time.Duration

@@ -13123,3 +13123,49 @@ scan verification anchors all 19 guards. Full Go tests
 while it was renamed; the final full run above validates the final paths.
 Go runtime and Python package modules were unchanged; race, invariants and
 mutation guards were not rerun for this corpus slice. Coverage was not refreshed.
+
+## Explicit Manager full-feature composition — 2026-10-09
+
+`ManagerConfig.EnableFeatures` now normalizes the twelve Source registry groups
+when no custom tool catalogue is supplied. A full built-in catalogue requires an
+explicit diagnostics Provider; rejection precedes efficiency normalization,
+journal recovery and workspace allocation. No parser fallback or new dependency
+is installed. Workflow, AST and decision additions keep independent selection.
+
+A caller-supplied catalogue is authoritative and is not expanded by the full
+profile. Explicit individual Go feature options still retain their own meaning.
+Full-profile lifecycle binding is separate from registration: background orphan
+notifications and team inbox remain available with a custom catalogue and nil
+injector selection. Background binding does not overwrite the custom Bash
+classifier or handler. An overridden injector list retains its earlier replacement
+semantics, and custom catalogues without selected background tools or default
+injection do not require the native background executor.
+
+All eight actual Source Manager catalogue recipes now match native construction: 10
+default, 48 full, ten custom tools, 48 with injector override, 51 with workflows,
+52 with AST, 49 with decisions and 56 together. Full/default versus custom Bash
+classification also matches. Native model turns additionally prove full-profile
+and custom-catalogue notification delivery, suppressed queues under explicit empty
+injection and later delivery when defaults are restored. Full profile enables
+existing automatic memory extraction; the notification fixture handles its
+tool-free auxiliary request instead of assuming every model request has tools.
+
+This is an embedding API with caller-supplied diagnostics, not completed default
+startup. Launcher/CLI `MINILOOP_FEATURES` still refuses activation pending a
+default diagnostics backend and startup wiring. Approval for using the existing
+CPython backend remains pending. Runtime paths still use the common typed gate;
+custom definitions/authority and optional durable-store ownership remain explicit.
+
+Validation: all eight catalogue recipes and focused notification/custom executor
+cases pass. Final full `go test -p=1 -count=1 -timeout=300s ./...` and
+`go vet ./...` pass. First full race run had only the notification fixture failure
+(the old recording provider indexed an empty auxiliary-request tool list); all
+other packages passed. After fixing that test fixture, full `go test -race
+-count=1 -timeout=300s ./agent` passes, as does a final focused race run covering
+the added custom-executor case. The aggregate race command was not repeated;
+production code was unchanged after that full race run. Existing macOS CGO
+linker warnings are nonfatal. Architecture delivery passes 9/9 with zero
+errors/warnings and exact receipt hashes/bytes verified; browser visual inspection
+remains skipped after the earlier denial. README outline and `git diff --check`
+pass. Python runtime/exports and Go tool schemas are unchanged: their checks
+were not refreshed, and coverage was not remeasured.

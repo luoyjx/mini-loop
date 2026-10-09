@@ -3619,3 +3619,14 @@ list (including an empty one) replaces those defaults. Manager and child copies
 preserve this distinction. Custom injectors run in supplied order, followed by
 workflow inbox and core controls. Override does not drain pending background/team
 observations or remove tool access.
+
+### Go Manager full-feature profile
+
+Set `ManagerConfig.EnableFeatures` to publish the Source full registry when
+`ManagerServices.Tools` is nil. Supply `DiagnosticsProvider`; missing default
+parsing fails before workspace or journal effects. Caller catalogues replace
+the automatic registry, while explicit independent options keep their meaning.
+Nil injectors enable full-profile background/team lifecycle binding even for
+custom catalogues; explicit lists replace those notifications. Workflow/AST/
+decision options remain independent. This Manager API does not enable the
+Launcher/CLI environment switch or install a default parser.
