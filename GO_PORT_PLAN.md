@@ -1,5 +1,29 @@
 # Go port plan
 
+## 2026-10-09 coverage refresh after native SQLite audit delivery
+
+Measured implementation baseline: `547de7d`. Full serialized cross-package test
+run passed on local Darwin arm64:
+`cd go && go test ./... -p=1 -count=1 -timeout=300s -coverpkg=./... -coverprofile=/tmp/mini-loop-go-cross-coverage.out`.
+Repeated profile blocks were deduplicated by source location; execution counts
+were combined by maximum, counting each statement once across test packages.
+
+| Scope | Covered / total statements | Coverage |
+| --- | --- | --- |
+| All Go packages | 26,914 / 29,902 | 90.01% |
+| agent | 8,766 / 9,783 | 89.60% |
+| sqlitestate | 520 / 625 | 83.20% |
+| efficiency | 1,489 / 1,629 | 91.41% |
+| httpapi | 1,610 / 1,802 | 89.35% |
+
+Previous comparable snapshot at `6feeba2` was 25,648 / 28,448 (90.16%). This
+snapshot adds 1,454 statements and 1,266 covered statements; overall coverage
+changes by -0.15 percentage points. This measures executed Go statements,
+not Python-to-Go feature completion, mutation strength or production durability.
+Python coverage was not refreshed. The successful serialized run followed an
+initial parallel AST timeout-recipe failure documented in the implementation
+entry; that failed profile is excluded from these totals. No push.
+
 ## 2026-10-09 native SQLite action and approval audit rows
 
 Baseline: 1daa299. Native sqlitestate.Store now compiles against the complete
