@@ -41,6 +41,14 @@ def sqlite_schema_contracts(scratch) -> dict:
             seed += f"INSERT INTO schema_version VALUES ({additional});"
         seed += "INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');"
         seeds.append((name, seed))
+    for name, literal in (("fractional-current", "7.9"),
+                          ("fractional-old", "1.9"),
+                          ("negative-huge-real", "-1e100"),
+                          ("unicode-version", "'٧'"),
+                          ("blob-version", "X'37'"),
+                          ("underscore-future", "'7_0'"),
+                          ("huge-text-future", "'1_" + "0" * 100 + "'")):
+        seeds.append((name, _SCHEMA + f"INSERT INTO schema_version VALUES ({literal});"))
     for name, seed in seeds:
         path = root / (name + ".db")
         db = sqlite3.connect(path)
@@ -57,7 +65,7 @@ def sqlite_schema_contracts(scratch) -> dict:
         columns = {table: [row[1] for row in db.execute(f"PRAGMA table_info({table})")]
                    for table in tables}
         indexes = [row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='index' AND name NOT LIKE 'sqlite_autoindex%' ORDER BY name")]
-        versions = [row[0] for row in db.execute("SELECT version FROM schema_version")]
+        versions = [row[0] for row in db.execute("SELECT quote(version) FROM schema_version")]
         saved = []
         if "session_id" in columns["sessions"]:
             selected = ", ".join("quote(" + column + ")" for column in columns["sessions"])

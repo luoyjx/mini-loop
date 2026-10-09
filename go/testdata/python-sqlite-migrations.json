@@ -64,7 +64,7 @@
       "saved": [],
       "seed_sql": "",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -128,7 +128,7 @@
       "saved": [],
       "seed_sql": "CREATE TABLE schema_version (version INTEGER NOT NULL); INSERT INTO schema_version VALUES (8);",
       "versions": [
-        8
+        "8"
       ]
     },
     {
@@ -208,7 +208,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle'\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL\n);INSERT INTO schema_version VALUES (0);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -288,7 +288,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle'\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL\n);INSERT INTO schema_version VALUES (1);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -368,7 +368,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle'\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL\n);INSERT INTO schema_version VALUES (2);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -448,7 +448,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]'\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL\n);INSERT INTO schema_version VALUES (3);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -528,7 +528,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]'\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL\n);INSERT INTO schema_version VALUES (4);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -608,7 +608,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL\n);INSERT INTO schema_version VALUES (5);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -688,7 +688,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL\n);INSERT INTO schema_version VALUES (6);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -768,7 +768,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);INSERT INTO schema_version VALUES (7);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -844,7 +844,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);INSERT INTO schema_version VALUES (7);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -920,7 +920,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);INSERT INTO schema_version VALUES (6);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -998,7 +998,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);INSERT INTO schema_version VALUES (3);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -1074,7 +1074,7 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);INSERT INTO schema_version VALUES (2);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7
+        "7"
       ]
     },
     {
@@ -1154,8 +1154,471 @@
       ],
       "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);INSERT INTO schema_version VALUES (1);INSERT INTO schema_version VALUES (8);INSERT INTO sessions (session_id, workspace, system, created_at, run_count, status) VALUES ('saved', '/kept', 'prompt', 12.5, 3, 'running');",
       "versions": [
-        7,
-        7
+        "7",
+        "7"
+      ]
+    },
+    {
+      "columns": {
+        "actions": [
+          "action_id",
+          "session_id",
+          "message_id",
+          "tool_use_id",
+          "tool_name",
+          "input_hash",
+          "status",
+          "result",
+          "workflow_run_id",
+          "created_at",
+          "completed_at"
+        ],
+        "approvals": [
+          "approval_id",
+          "session_id",
+          "tool_use_id",
+          "tool_name",
+          "rule",
+          "message",
+          "input_preview",
+          "status",
+          "created_at",
+          "resolved_at",
+          "kind",
+          "answer"
+        ],
+        "events": [
+          "session_id",
+          "ordinal",
+          "payload"
+        ],
+        "messages": [
+          "session_id",
+          "ordinal",
+          "epoch",
+          "payload"
+        ],
+        "sessions": [
+          "session_id",
+          "workspace",
+          "system",
+          "created_at",
+          "run_count",
+          "status",
+          "todos",
+          "owner",
+          "lease_owner",
+          "lease_until",
+          "pending_steering",
+          "workspace_bound"
+        ]
+      },
+      "error": "",
+      "indexes": [
+        "actions_session",
+        "messages_epoch"
+      ],
+      "name": "fractional-current",
+      "saved": [],
+      "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);\nINSERT INTO schema_version VALUES (7.9);",
+      "versions": [
+        "7.9"
+      ]
+    },
+    {
+      "columns": {
+        "actions": [
+          "action_id",
+          "session_id",
+          "message_id",
+          "tool_use_id",
+          "tool_name",
+          "input_hash",
+          "status",
+          "result",
+          "workflow_run_id",
+          "created_at",
+          "completed_at"
+        ],
+        "approvals": [
+          "approval_id",
+          "session_id",
+          "tool_use_id",
+          "tool_name",
+          "rule",
+          "message",
+          "input_preview",
+          "status",
+          "created_at",
+          "resolved_at",
+          "kind",
+          "answer"
+        ],
+        "events": [
+          "session_id",
+          "ordinal",
+          "payload"
+        ],
+        "messages": [
+          "session_id",
+          "ordinal",
+          "epoch",
+          "payload"
+        ],
+        "sessions": [
+          "session_id",
+          "workspace",
+          "system",
+          "created_at",
+          "run_count",
+          "status",
+          "todos",
+          "owner",
+          "lease_owner",
+          "lease_until",
+          "pending_steering",
+          "workspace_bound"
+        ]
+      },
+      "error": "",
+      "indexes": [
+        "actions_session",
+        "messages_epoch"
+      ],
+      "name": "fractional-old",
+      "saved": [],
+      "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);\nINSERT INTO schema_version VALUES (1.9);",
+      "versions": [
+        "7"
+      ]
+    },
+    {
+      "columns": {
+        "actions": [
+          "action_id",
+          "session_id",
+          "message_id",
+          "tool_use_id",
+          "tool_name",
+          "input_hash",
+          "status",
+          "result",
+          "workflow_run_id",
+          "created_at",
+          "completed_at"
+        ],
+        "approvals": [
+          "approval_id",
+          "session_id",
+          "tool_use_id",
+          "tool_name",
+          "rule",
+          "message",
+          "input_preview",
+          "status",
+          "created_at",
+          "resolved_at",
+          "kind",
+          "answer"
+        ],
+        "events": [
+          "session_id",
+          "ordinal",
+          "payload"
+        ],
+        "messages": [
+          "session_id",
+          "ordinal",
+          "epoch",
+          "payload"
+        ],
+        "sessions": [
+          "session_id",
+          "workspace",
+          "system",
+          "created_at",
+          "run_count",
+          "status",
+          "todos",
+          "owner",
+          "lease_owner",
+          "lease_until",
+          "pending_steering",
+          "workspace_bound"
+        ]
+      },
+      "error": "",
+      "indexes": [
+        "actions_session",
+        "messages_epoch"
+      ],
+      "name": "negative-huge-real",
+      "saved": [],
+      "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);\nINSERT INTO schema_version VALUES (-1e100);",
+      "versions": [
+        "7"
+      ]
+    },
+    {
+      "columns": {
+        "actions": [
+          "action_id",
+          "session_id",
+          "message_id",
+          "tool_use_id",
+          "tool_name",
+          "input_hash",
+          "status",
+          "result",
+          "workflow_run_id",
+          "created_at",
+          "completed_at"
+        ],
+        "approvals": [
+          "approval_id",
+          "session_id",
+          "tool_use_id",
+          "tool_name",
+          "rule",
+          "message",
+          "input_preview",
+          "status",
+          "created_at",
+          "resolved_at",
+          "kind",
+          "answer"
+        ],
+        "events": [
+          "session_id",
+          "ordinal",
+          "payload"
+        ],
+        "messages": [
+          "session_id",
+          "ordinal",
+          "epoch",
+          "payload"
+        ],
+        "sessions": [
+          "session_id",
+          "workspace",
+          "system",
+          "created_at",
+          "run_count",
+          "status",
+          "todos",
+          "owner",
+          "lease_owner",
+          "lease_until",
+          "pending_steering",
+          "workspace_bound"
+        ]
+      },
+      "error": "",
+      "indexes": [
+        "actions_session",
+        "messages_epoch"
+      ],
+      "name": "unicode-version",
+      "saved": [],
+      "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);\nINSERT INTO schema_version VALUES ('٧');",
+      "versions": [
+        "'٧'"
+      ]
+    },
+    {
+      "columns": {
+        "actions": [
+          "action_id",
+          "session_id",
+          "message_id",
+          "tool_use_id",
+          "tool_name",
+          "input_hash",
+          "status",
+          "result",
+          "workflow_run_id",
+          "created_at",
+          "completed_at"
+        ],
+        "approvals": [
+          "approval_id",
+          "session_id",
+          "tool_use_id",
+          "tool_name",
+          "rule",
+          "message",
+          "input_preview",
+          "status",
+          "created_at",
+          "resolved_at",
+          "kind",
+          "answer"
+        ],
+        "events": [
+          "session_id",
+          "ordinal",
+          "payload"
+        ],
+        "messages": [
+          "session_id",
+          "ordinal",
+          "epoch",
+          "payload"
+        ],
+        "sessions": [
+          "session_id",
+          "workspace",
+          "system",
+          "created_at",
+          "run_count",
+          "status",
+          "todos",
+          "owner",
+          "lease_owner",
+          "lease_until",
+          "pending_steering",
+          "workspace_bound"
+        ]
+      },
+      "error": "",
+      "indexes": [
+        "actions_session",
+        "messages_epoch"
+      ],
+      "name": "blob-version",
+      "saved": [],
+      "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);\nINSERT INTO schema_version VALUES (X'37');",
+      "versions": [
+        "X'37'"
+      ]
+    },
+    {
+      "columns": {
+        "actions": [
+          "action_id",
+          "session_id",
+          "message_id",
+          "tool_use_id",
+          "tool_name",
+          "input_hash",
+          "status",
+          "result",
+          "workflow_run_id",
+          "created_at",
+          "completed_at"
+        ],
+        "approvals": [
+          "approval_id",
+          "session_id",
+          "tool_use_id",
+          "tool_name",
+          "rule",
+          "message",
+          "input_preview",
+          "status",
+          "created_at",
+          "resolved_at",
+          "kind",
+          "answer"
+        ],
+        "events": [
+          "session_id",
+          "ordinal",
+          "payload"
+        ],
+        "messages": [
+          "session_id",
+          "ordinal",
+          "epoch",
+          "payload"
+        ],
+        "sessions": [
+          "session_id",
+          "workspace",
+          "system",
+          "created_at",
+          "run_count",
+          "status",
+          "todos",
+          "owner",
+          "lease_owner",
+          "lease_until",
+          "pending_steering",
+          "workspace_bound"
+        ]
+      },
+      "error": "$DB was written by schema v70; this build understands v7. Refusing to open it rather than silently dropping fields.",
+      "indexes": [],
+      "name": "underscore-future",
+      "saved": [],
+      "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);\nINSERT INTO schema_version VALUES ('7_0');",
+      "versions": [
+        "'7_0'"
+      ]
+    },
+    {
+      "columns": {
+        "actions": [
+          "action_id",
+          "session_id",
+          "message_id",
+          "tool_use_id",
+          "tool_name",
+          "input_hash",
+          "status",
+          "result",
+          "workflow_run_id",
+          "created_at",
+          "completed_at"
+        ],
+        "approvals": [
+          "approval_id",
+          "session_id",
+          "tool_use_id",
+          "tool_name",
+          "rule",
+          "message",
+          "input_preview",
+          "status",
+          "created_at",
+          "resolved_at",
+          "kind",
+          "answer"
+        ],
+        "events": [
+          "session_id",
+          "ordinal",
+          "payload"
+        ],
+        "messages": [
+          "session_id",
+          "ordinal",
+          "epoch",
+          "payload"
+        ],
+        "sessions": [
+          "session_id",
+          "workspace",
+          "system",
+          "created_at",
+          "run_count",
+          "status",
+          "todos",
+          "owner",
+          "lease_owner",
+          "lease_until",
+          "pending_steering",
+          "workspace_bound"
+        ]
+      },
+      "error": "$DB was written by schema v10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000; this build understands v7. Refusing to open it rather than silently dropping fields.",
+      "indexes": [],
+      "name": "huge-text-future",
+      "saved": [],
+      "seed_sql": "\nCREATE TABLE IF NOT EXISTS schema_version (\n    version INTEGER NOT NULL\n);\nCREATE TABLE IF NOT EXISTS sessions (\n    session_id   TEXT PRIMARY KEY,\n    workspace    TEXT NOT NULL,\n    system       TEXT,\n    created_at   REAL NOT NULL,\n    run_count    INTEGER NOT NULL DEFAULT 0,\n    status       TEXT NOT NULL DEFAULT 'idle',\n    todos        TEXT NOT NULL DEFAULT '[]',\n    owner        TEXT NOT NULL DEFAULT 'anonymous',\n    lease_owner  TEXT,\n    lease_until  REAL NOT NULL DEFAULT 0,\n    pending_steering TEXT NOT NULL DEFAULT '[]',\n    workspace_bound INTEGER NOT NULL DEFAULT 0\n);\nCREATE TABLE IF NOT EXISTS messages (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    epoch      INTEGER NOT NULL DEFAULT 1,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    action_id       TEXT PRIMARY KEY,\n    session_id      TEXT NOT NULL,\n    message_id      TEXT NOT NULL,\n    tool_use_id     TEXT NOT NULL,\n    tool_name       TEXT NOT NULL,\n    input_hash      TEXT NOT NULL,\n    status          TEXT NOT NULL,\n    result          TEXT,\n    workflow_run_id TEXT,\n    created_at      REAL NOT NULL,\n    completed_at    REAL\n);\nCREATE TABLE IF NOT EXISTS events (\n    session_id TEXT NOT NULL,\n    ordinal    INTEGER NOT NULL,\n    payload    TEXT NOT NULL,\n    PRIMARY KEY (session_id, ordinal)\n);\nCREATE TABLE IF NOT EXISTS approvals (\n    approval_id   TEXT PRIMARY KEY,\n    session_id    TEXT NOT NULL,\n    tool_use_id   TEXT,\n    tool_name     TEXT NOT NULL,\n    rule          TEXT NOT NULL,\n    message       TEXT NOT NULL,\n    input_preview TEXT NOT NULL,\n    status        TEXT NOT NULL,\n    created_at    REAL NOT NULL,\n    resolved_at   REAL,\n    kind          TEXT NOT NULL DEFAULT 'approval',\n    answer        TEXT\n);\nINSERT INTO schema_version VALUES ('1_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000');",
+      "versions": [
+        "'1_0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'"
       ]
     }
   ]

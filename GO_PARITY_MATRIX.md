@@ -1,5 +1,20 @@
 # Python to Go parity matrix
 
+## 2026-10-09 SQLite schema-version scalar Source contracts
+
+The migration capture now contains 22 actual SQLiteStateStore cases. Seven new
+recipes exercise fractional current/old versions, huge negative REAL versions,
+Unicode decimal TEXT, ASCII BLOB, underscored future TEXT and an unbounded future
+version. Version-row observations now use SQLite quote() so scalar identity is
+retained without a vague numeric JSON field. Source int() truncates REAL values
+and preserves the exact huge future-version refusal. No Go behavior is claimed
+by this fixture extension; native checks are part of the following schema slice.
+
+Validation: 26 focused Python storage/census tests and the complete 185-file
+exporter check passed. The 19 scan guards passed in this iteration. git diff
+--check passed. No package/runtime change, full Python regression or coverage
+refresh. No push.
+
 ## 2026-10-09 SQLite schema migration Source contracts
 
 Fifteen actual Python SQLiteStateStore open cases capture fresh creation, versions
