@@ -6433,3 +6433,17 @@ Gate: go test -race -p=1 -count=1 -timeout=300s -coverpkg=./...
 -coverprofile=/tmp/mini-loop-current-cross-coverage.out ./... (exit 0).
 Python coverage and mutation coverage were not refreshed. This measures
 executed statements, not migration acceptance or completion.
+
+## Remote audit CLI Source contracts — 2026-10-09
+
+`python-audit-remote-cli.json` captures 22 actual `mini_loop.audit.main`
+executions against a loopback HTTP server. Each case fixes GET /healthz without
+an Authorization header, trailing slash removal, printed build/pid metadata,
+full rendered findings and exit status. Medium-only/missing posture exits 0;
+high/critical findings exit 1; missing URL is usage status 2. Python Source
+remains unchanged. A fixture test checks the actual command and wire request.
+
+Validation: focused Source CLI fixture test and full Python pytest passed
+(2166 passed, 28 skipped, 24 subtests; 3 existing warnings). Source exporter
+--check passed for 192 files; verify_scans passed all 19 anchored guards.
+git diff --check passed. No package modules or mutation anchors changed.
