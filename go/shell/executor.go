@@ -27,7 +27,7 @@ type SecretSource interface {
 }
 
 // Sandbox owns argv and must return a workspace-bound instance. No sandbox is
-// configured by default. Seatbelt/container implementations remain separate work.
+// configured by default. The opt-in Seatbelt backend lives in package sandbox.
 type Sandbox interface {
 	ForWorkspace(string) (Sandbox, error)
 	Argv(string) ([]string, error)

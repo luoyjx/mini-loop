@@ -13481,3 +13481,56 @@ evidence; verification was repeated after fixing the source/snapshot state and
 serializing the full suite and export. No thresholds or runtime were changed.
 Go tests/race/vet, invariant/guard scripts and coverage were not refreshed for
 this Python-tool/fixture-only slice. No push; full migration remains active.
+
+## Native opt-in Seatbelt sandbox — 2026-10-09
+
+Base: e0ee372. Native go/sandbox now implements Source policy/parameter building,
+NullSandbox, reason-carrying UnavailableSandbox, platform availability and the
+credential-protecting default factory through the existing shell.Sandbox seam.
+Config and DefaultOptions are concrete types; private copied slices make bindings
+immutable. Optional ProtectCredentials distinguishes omission (enabled) from an
+explicit false. SandboxUnavailable and MarkerEncodingError retain typed failures.
+No ambiguous JSON/domain containers or dependency were added. Configuration
+metadata is not an OS attestation. No wrapper is installed by runtime startup.
+
+Native comparisons consume the committed actual Source fixture through a closed
+JSON decoder that rejects unknown fields. All eight construction/rebind recipes,
+eight git markers, sixteen availability/require/credential profiles, omitted
+factory defaults, null/unavailable wrappers and constructor errors match. Argv
+and preview retain exact Source policy/quoting; operator path text only appears
+in separate -D parameters. Workspace rebind replaces ordinary roots, retains
+explicit ExtraWritable, re-resolves protected roots and rediscovers shared git
+metadata, never granting sibling working-tree files. Existing workspace.ResolvePath
+retains symlink/parent/nonexistent-tail semantics; marker decoding is strict UTF-8
+and line splitting follows Source Unicode separators.
+
+Actual Darwin arm64 shell.Executor executions prove protected root/file reads and
+copy-to-workspace denial, outside writes denied without file creation, inside
+writes allowed, successful rebind with old writes denied and original executor
+still bound. Three ordinary children can spawn; resource caps are not claimed.
+A real local HTTP server provides a positive network control: the same system
+curl command succeeds under AllowNetwork and fails under default policy. A real
+git repository with two linked worktrees commits from its sandbox while main/peer
+working files remain unwritable. Availability-only checks cannot replace these
+execution tests. An unavailable-backend executor actually runs host commands and
+reports a detached reason; nil sandbox still reports None. Caller mutations and
+concurrent rebind/argv construction cannot alter the original configuration.
+
+README canonical Mermaid/boundary/default labels and interactive specification
+updated; HTML regenerated with Archify, not edited. Showcase validation passed
+9/9 with zero errors/warnings and receipt sizes/SHA256 matched both files. Visual
+inspection stays skipped after the previously denied browser action. The runtime
+still needs default diagnostics and wider full-port acceptance; the full goal
+remains active. No push.
+
+Validation: focused final sandbox race tests passed, including all real macOS
+execution cases without skips; the final full ordinary and race suites passed
+with `go test [-race] -p=1 -count=1 -timeout=300s ./...`. The initial ordinary run
+failed the existing Launcher AST timeout recipe because its first probe exceeded
+one second; isolated timeout regression and the repeated final full ordinary
+run passed. No AST code, fixture or deadline was changed. Nonfatal macOS CGO
+LC_DYSYMTAB linker warnings remain in the full race output. Python package,
+exports, schemas, source scan and mutation anchors are unchanged, so full Python,
+export, invariant/scanner/guard checks were not rerun. Coverage was not refreshed.
+
+Final `go vet ./...`, README architecture outline and `git diff --check` passed.

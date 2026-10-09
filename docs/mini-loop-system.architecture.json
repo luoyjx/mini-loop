@@ -343,7 +343,7 @@
       "id": "goBash",
       "type": "backend",
       "label": "Workspace shell.Executor",
-      "sublabel": "foreground start/stop / background bytes",
+      "sublabel": "foreground / background · opt-in Seatbelt",
       "pos": [
         1920,
         1180
@@ -352,7 +352,7 @@
         280,
         76
       ],
-      "tag": "background: explicit activation"
+      "tag": "default host / explicit confinement"
     },
     {
       "id": "goFiles",
@@ -1597,7 +1597,7 @@
         "Optional Go journals replay terminal results; SQLite backend remains pending",
         "Optional bound approvals preserve grants, text answers, reviewer abstention and typed rows; no SQLite backend yet",
         "Optional registry masking precedes result settlement and covers implemented events, approvals and compaction files; live arguments stay raw",
-        "Real host shell consumes selected credentials, bounds shared capture, masks streams and kills process groups; Seatbelt and future sink coverage remain open",
+        "Real host shell consumes selected credentials, bounds shared capture, masks streams and kills process groups; opt-in native Seatbelt now verifies macOS read/write/network boundaries; future sink coverage remains open",
         "Default cache uses detached wire annotations; stuck detection keeps 20 steps and nudges once before halting",
         "Children inherit typed prompt/injector seams, cache/stuck policies and exact model/tool pools with fresh state",
         "Parallel groups preserve result/step order; exclusive tools are barriers and bypass tool permits",
@@ -1631,7 +1631,7 @@
         "Explicit go/worktrees service creates/binds/keeps/removes Git worktrees and appends audit events; Go Resources also installs five model tools only with WorktreeTools=true, through the common risk/permission gate",
         "enter_worktree is an exclusive barrier: prepare files, shell/sandbox, model context, approval/question surfaces and future children before publishing execution scope; manager Info, task HTTP roots, trajectory attribution and scratch cleanup retain the original lifecycle workspace",
         "An initialized task board stays pinned; first lazy task admission after entry uses the new execution workspace. Fresh children use current files/shell but do not borrow the manager worktree service; selected worktree tools report unconfigured. Forks retain manager activation with fresh scratch",
-        "Shell rebind retains deadline, capture, secrets, spill and foreground interrupt ownership; custom factories must report the target root. OS sandbox backend and full feature activation remain pending",
+        "Shell rebind retains deadline, capture, secrets, spill and foreground interrupt ownership; custom factories must report the target root. opt-in Seatbelt binds through the existing shell seam; default diagnostic parsing remains pending",
         "Go SessionManager aggregates an explicit WorktreeWorkspaceFactory adapter to go/worktrees: factory provisioning is independent of model-tool activation and paths are scratch, including plain-directory fallback",
         "Actual Python and Go delete drain shared holders then remove even dirty factory directories, leaving Git registration and branch; stop, PreserveWorkspace and explicit bound admission retain work. Guarded worktree Remove is separate",
         "The existing Go failed-admission cleanup removes unpublished scratch without Git metadata cleanup; Python create instead leaves the allocation. Source has no Git-aware manager reclaimer",
@@ -1695,7 +1695,7 @@
         "Go built-in feature publication follows Source group order, then decisions/workflows/AST; capability filtering retains subsequences and explicit custom catalogues keep caller order. Actual explicit composition matches all 48 schemas and traits; MINILOOP_FEATURES remains refused pending default Python syntax parsing.",
         "Go explicit Injector lists replace background/team lifecycle defaults, including empty lists; nil retains selected defaults. Fleet/runtime/child copies preserve nil versus empty. Pending observations are not drained under overrides; workflow inbox and core controls remain appended.",
         "ManagerConfig.EnableFeatures explicitly composes the full Source registry with a caller diagnostics provider: eight Source catalogue recipes match, independent workflow/AST/decision selections stay explicit, custom catalogues retain publication order and full lifecycle notification binding. Missing default diagnostics fails before allocation/recovery. Launcher NewWithOptions now accepts MINILOOP_FEATURES with a caller diagnostics provider; default CLI remains refused pending its parser; no Python runtime has been introduced.",
-        "Full-feature Launcher startup and inspection share explicit diagnostics availability. Original settings select all Source groups, independent additions remain explicit, and RepoRoot binds the native worktree service. Native HTTP proves both 48-tool catalogues and exact configured/nonconfigured list behavior. Inspection invokes no provider and creates no workspace; full-group availability is reported only when its diagnostics backend is supplied, while missing-backend requests remain in settings/Unsupported. Default CLI has no diagnostics backend and still refuses full mode; no Python dependency was added. HTTP health features now forwards the deployment EnableFeatures setting, matching Source; independent workflow selection leaves features false. Native health posture now uses a typed Manager observation: first live Agent bindings or actual default policies, detached persistence errors, credential coverage counts and optional resource/workflow/trajectory availability. The observation creates no session or owner bundle and resolves no credential values; existing HTTP output masking may resolve registered values. Registry callback failures return a private 500; error projection remains masked. Native component labels are explicit. The null-store marker is NullStateStore for Source remote audit. Existing shell.Sandbox injection/rebinding now has typed metadata: first-live executor bindings publish atomically, factory metadata covers empty fleets, unavailable reasons detach, and unobservable custom bindings fail observation. Absent default sandbox remains None. No metadata invokes a command or proves OS confinement; native Seatbelt/default platform selection remain open."
+        "Full-feature Launcher startup and inspection share explicit diagnostics availability. Original settings select all Source groups, independent additions remain explicit, and RepoRoot binds the native worktree service. Native HTTP proves both 48-tool catalogues and exact configured/nonconfigured list behavior. Inspection invokes no provider and creates no workspace; full-group availability is reported only when its diagnostics backend is supplied, while missing-backend requests remain in settings/Unsupported. Default CLI has no diagnostics backend and still refuses full mode; no Python dependency was added. HTTP health features now forwards the deployment EnableFeatures setting, matching Source; independent workflow selection leaves features false. Native health posture now uses a typed Manager observation: first live Agent bindings or actual default policies, detached persistence errors, credential coverage counts and optional resource/workflow/trajectory availability. The observation creates no session or owner bundle and resolves no credential values; existing HTTP output masking may resolve registered values. Registry callback failures return a private 500; error projection remains masked. Native component labels are explicit. The null-store marker is NullStateStore for Source remote audit. Existing shell.Sandbox injection/rebinding now has typed metadata: first-live executor bindings publish atomically, factory metadata covers empty fleets, unavailable reasons detach, and unobservable custom bindings fail observation. Absent default sandbox remains None. No metadata invokes a command or proves OS confinement; native opt-in Seatbelt/default platform selection now ships through shell.Config.Sandbox. Paths are separate -D parameters; credential protection defaults on in the explicit factory; workspace rebind preserves only extra roots and rediscovers shared git metadata. Actual macOS shell tests verify protected read/copy denial, write boundaries, local network deny/allow and linked-worktree commits without sibling working-file writes. Host execution remains the default; no CPU/memory/PID caps or container backend are provided."
       ]
     }
   ]

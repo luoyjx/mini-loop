@@ -465,6 +465,22 @@ the end-to-end test: the model could not read the protected file, but found the
 canary in neighbouring files that were never listed. Copies leak; a container's
 filesystem view does not have that failure mode.
 
+The independent Go port exposes the same opt-in boundary in `go/sandbox`.
+`sandbox.NewSeatbelt(sandbox.Config{...})` builds an immutable configuration;
+`sandbox.NewDefault(workspace, sandbox.DefaultOptions{Require: true})` chooses
+the platform backend and refuses an unavailable host. Omitting `Require` permits
+an `UnavailableSandbox` whose reason is visible in runtime posture. Credential
+protection defaults to enabled; `ProtectCredentials` is an optional boolean so
+omission remains distinct from an explicit opt-out. Pass the result through
+`shell.Config.Sandbox`; `shell.Executor.WithWorkspace` rebinds cwd and policy
+together. Only `Config.ExtraWritable` survives a rebind, while ordinary writable
+roots are replaced and shared git metadata is rediscovered. Paths are separate
+`-D` argv entries, and the binary remains `/usr/bin/sandbox-exec`. Real macOS Go
+tests prove read/copy/write denial, explicit networking and worktree commits;
+configuration metadata alone is not evidence of successful OS enforcement.
+Go runtime startup continues to select host execution unless a caller injects
+this backend. No container or resource-consumption limits are provided.
+
 ---
 
 ## 3a. Secrets — `SecretRegistry`

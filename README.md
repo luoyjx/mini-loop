@@ -279,12 +279,15 @@ Go `/healthz.posture` observes live/default runtime components, persisted write
 faults and credential coverage counts without creating a session. Native component
 labels may differ from Python; the null-store marker remains `NullStateStore`
 for Source remote audit. Shell metadata reports an injected sandbox or explicit
-`None`; unobservable custom executors/factories fail observation. Seatbelt
-implementation and OS confinement verification remain pending.
+`None`; unobservable custom executors/factories fail observation. The opt-in Go
+`sandbox` package implements Seatbelt policies, credential-protecting platform
+selection and workspace rebinding through `shell.Config.Sandbox`. Actual macOS
+tests verify protected reads/copies, confined writes, denied/allowed local
+network access and linked-worktree commits without sibling working-file access.
+Host execution remains the default; Seatbelt provides no resource caps.
 
-Runtime review baseline: `82bf428` plus Source sandbox construction contracts
-(policy parameters, credential defaults, platform selection and workspace rebind;
-native Seatbelt implementation remains pending),
+Runtime review baseline: `e0ee372` plus native opt-in Seatbelt and actual macOS
+shell/worktree/network enforcement tests,
 plus explicit Manager full-feature composition,
 plus actual CPython syntax-parser contracts,
 plus Source-compatible explicit injector overrides,
@@ -426,8 +429,8 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-08** (Go baseline `640aace` plus typed workflow tool inputs and journal contracts;
-remaining route groups and runtime-profile differences remain explicit).
+reviewed **2026-10-09** (Go baseline `e0ee372` plus native opt-in Seatbelt;
+default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
 the existing permission, tool-result, and event boundaries.
@@ -503,7 +506,7 @@ flowchart LR
         GoSecrets["Optional Secret Registry<br/>named lookup · cached values · masked copies<br/>typed environment selection API"]
         GoApprovals["Optional approval broker<br/>park · resolve · timeout · cancel<br/>session grants · MINILOOP_GUARDIAN readonly review · typed store seam"]
         GoGate["ToolGate<br/>Source-ordered built-ins · caller catalogue order<br/>optional pinned catalogue subset<br/>before → guard → permission → execute<br/>after → observer<br/>text refusals · fault flags"]
-        GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
+        GoBash["Workspace shell.Executor<br/>process groups · deadline · shared capture<br/>serialized foreground start / Interrupt tracking<br/>opt-in Seatbelt · parameter paths · workspace rebind<br/>selected environment · masked typed result<br/>spill.Store: string preservation only"]
         GoFiles["Filesystem libraries<br/>workspace read · write · edit · glob<br/>bound path · anchored create / prepared catalogues<br/>skill publication · snapshots · memory lifecycle lock<br/>configured diagnostics scan · parser selection pending<br/>AST probe / bounded process · private source snapshots<br/>ignore frames · bounded copy · cleanup<br/>canonical selectors · basename globs<br/>typed semantic reads · explicit ASTConfig tools"]
         GoBackground["Explicit background service / runtime tools<br/>typed tasks · independent contexts / groups<br/>merged byte capture · results · orphan ledger"]
         GoBgLedger["Workspace .background records<br/>masked command · pid · start time<br/>orphan report; no process/session restore"]
@@ -971,7 +974,15 @@ and detached exit/timeout/overflow/duration metadata for observers; replays
 retain stored text without inventing fresh process metadata. Legacy injected
 string executors remain supported. Host execution is the default: workspace
 cwd and the typo blocklist do not provide shell confinement. A typed rebinding
-Sandbox argv seam is implemented, but no Go Seatbelt backend ships yet.
+Sandbox argv seam binds the opt-in `go/sandbox` Seatbelt backend. `NewDefault`
+protects the host credential paths, adds operator exclusions, and returns an
+explicit unavailable wrapper outside supported hosts; `Require` instead refuses
+construction. Paths use separate `-D` parameters. Workspace entry replaces
+ordinary writable roots, retains explicit extra roots and rediscovers shared git
+metadata. Actual macOS tests cover command execution through this shell executor,
+including read/copy/write denial, network opt-in and worktree commits. This is a
+filesystem/network boundary, with no CPU, memory or PID caps. A read deny-list
+does not protect unlisted copies of secrets. No sandbox is installed implicitly.
 Runtime process tests ran on macOS; Linux process-group code has not been run
 on a Linux host, and other platforms reject executor construction. Typed HTTP JSON
 and SSE data now use the optional recording projection; durable-storage
