@@ -12997,3 +12997,27 @@ skipped and 24 subtests passed; exporter `--check` current for all 187 files;
 `-p=1 -count=1 -timeout=300s -coverpkg=./...` and `go vet ./...` pass.
 `git diff --check` passes. Go runtime and Python package modules were unchanged;
 race, invariants and guarded-mutation checks were not rerun for this fixture slice.
+
+## Coverage refresh — 2026-10-09, runtime at ec20692
+
+Fresh full Go coverage run after the native SQLite reconstruction, cron and
+killed-process recovery tests:
+
+| Scope | Covered statements | Total statements | Coverage |
+| --- | ---: | ---: | ---: |
+| All Go packages | 26,935 | 29,906 | 90.07% |
+| agent | 8,776 | 9,783 | 89.71% |
+| sqlitestate | 521 | 625 | 83.36% |
+| httpapi | 1,610 | 1,802 | 89.35% |
+| efficiency | 1,489 | 1,629 | 91.41% |
+
+Command: `go test -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-current-coverage.out ./...` from `go/`; exit 0.
+Aggregate calculation groups identical source blocks across test packages and
+uses their maximum execution count before summing statements. Package log lines
+with `-coverpkg=./...` are individual test contributions, not package totals.
+The temporary profile is local validation output and is not checked in.
+
+This is statement coverage, not a full-port parity or release-readiness measure.
+Python full tests passed in the composition slice, but Python coverage was not
+refreshed. Source contracts committed as acb2646 add no Go runtime statements.
