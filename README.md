@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `fd57eb8` plus native process-kill generation recovery,
+Runtime review baseline: `ec20692` plus Source full-feature composition contracts,
+plus native process-kill generation recovery,
 plus native cron/SQLite reopen proof,
 plus Launcher caller-owned state injection,
 plus native managed SQLite close/reopen proof,

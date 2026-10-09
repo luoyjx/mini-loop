@@ -5698,3 +5698,29 @@ HTTP now has 40 operations/37 patterns against source 44; four workflow routes
 remain. Teammate construction/lifecycle, lead/member model tools, inbox/protocol
 injection, autonomous task/idle loops, prompt identity, source diagnostics binding,
 MCP, native SQLite and the full G0–G7 release audit remain open.
+
+## Source full-feature composition contracts — 2026-10-09
+
+`python/tools/feature_bundle_contracts.py` captures actual Python registries and
+manager construction into `go/testdata/python-feature-bundle.json`: 14 registry
+cases, eight manager cases and 57 shared concrete definitions. The full bundle
+contains 48 tools in Source order. Custom registries retain their ten tools; an
+explicit empty injector list removes background/team default injectors. Workflow,
+AST and decision selections independently extend the bundle to 51, 52 and 49
+tools (56 together). Bash classification changes only with background enabled.
+
+The AST path and digest select inventory only; no AST command or model request is
+executed. Two focused tests verify deterministic exports across separate roots,
+ordered composition, override behavior and per-call bash classification. This
+fixture establishes Source evidence, not Go full-bundle parity. Go still rejects
+`MINILOOP_FEATURES`: default Python-syntax parsing, catalogue ordering and
+injector override semantics need implementation before activation. Runtime
+topology, authority, persistence and defaults are unchanged; the README map was
+reviewed and its baseline updated.
+
+Validation: focused contracts 2 passed; full Python suite 2,157 passed, 28
+skipped and 24 subtests passed; exporter `--check` current for all 187 files;
+`verify_scans.py` anchors all 19 scanning guards. Full Go tests with
+`-p=1 -count=1 -timeout=300s -coverpkg=./...` and `go vet ./...` pass.
+`git diff --check` passes. Go runtime and Python package modules were unchanged;
+race, invariants and guarded-mutation checks were not rerun for this fixture slice.

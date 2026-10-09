@@ -6487,6 +6487,7 @@ def _manager_skill_commit_contracts(scratch: Path) -> dict:
 
 
 def _snapshot() -> dict[str, bytes]:
+    from tools.feature_bundle_contracts import feature_bundle_contracts
     from tools.workflow_tool_contracts import workflow_bound_tool_contracts
     from tools.manager_workflow_contracts import manager_workflow_contracts
     from tools.workflow_session_contracts import workflow_session_contracts
@@ -6825,6 +6826,7 @@ def _snapshot() -> dict[str, bytes]:
         "python-workflow-service.json": _json_bytes(_workflow_service_contracts()),
         "python-workflow-bound-tools.json": _json_bytes(workflow_bound_tool_contracts()),
         "python-manager-workflows.json": _json_bytes(manager_workflow_contracts()),
+        "python-feature-bundle.json": _json_bytes(feature_bundle_contracts(scratch)),
         "python-workflow-session-events.json": _json_bytes(workflow_session_contracts()),
         "python-workflow-inbox.json": _json_bytes(workflow_inbox_contracts()),
         "python-workflow-http.json": _json_bytes(workflow_http_contracts()),
