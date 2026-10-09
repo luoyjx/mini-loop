@@ -7266,3 +7266,51 @@ Next reload slices retain the complete public-entry objective:
 3. CLI selection and actual HTTP process proof: Source nonempty environment
    activation, observed source edit changing served native behavior, build failure
    then recovery and SIGTERM cleanup. The current refusal stays until these pass.
+
+
+## Native reload build and artifact ownership — 2026-10-10
+
+`reload.NewBuilder` captures explicit trusted module/package/toolchain configuration
+and a detached environment. One local package is selected; option-shaped, wildcard
+and parent-escaping targets are refused. Build uses the existing Go executable,
+`-mod=readonly`, the current host OS/architecture and `GOTOOLCHAIN=local` to prevent
+implicit toolchain downloads. This native compilation stage is the Go development
+adaptation; Python StatReload restarts an interpreter and has no corresponding
+native build artifact. No new dependency is added.
+
+Each attempt allocates a private 0700 temporary output directory and streams
+compiler diagnostics to its caller. Errors/cancellation clean the directory before
+returning. Successful output must be a regular Go executable, checked with standard
+library buildinfo, with owner-only executable mode and a retained SHA-256.
+Artifact.Executable rechecks regular-file shape, execute permission and bytes;
+Artifact.Close releases only its own temporary directory and is idempotent.
+The consumer must stop/join its running child before closing its artifact.
+Builder diagnostics are opaque to fmt so retained environment credentials are not
+exposed by incidental formatting. Compiler diagnostics remain caller-owned.
+
+The build command owns a distinct process session/group on macOS/Linux. Caller
+cancellation kills it; command completion also removes lingering helpers. A
+bounded WaitDelay handles inherited diagnostic pipes. Other platforms retain the
+existing direct-process cancellation fallback; no descendant-group guarantee is
+claimed there. Actual native tests compile syntax-invalid source, prove failed
+output cleanup, repair and run two changed binaries, reject library archives,
+refuse modified/closed artifacts and verify detached private configuration.
+An explicit test toolchain spawns a real helper holding pipes; cancellation joins
+the command, removes output and leaves no running helper on macOS/Linux.
+
+This is an explicit SDK component. It does not yet own a server child or listener;
+CLI reload remains refused until the supervisor and HTTP process proof are wired.
+README review/boundary and architecture metadata identify the separate owners.
+Python sources, contract exports and existing guard/scanner anchors are unchanged.
+
+Validation: narrow `go test -count=1 -timeout=120s ./reload`, full
+`go test -p=1 -count=1 -timeout=300s ./...`, full
+`go test -race -p=1 -count=1 -timeout=300s ./...` and `go vet ./...` all passed
+from `go/`; `git diff --check` passed. Full race linked native SQLite consumers
+with existing Darwin CGO LC_DYSYMTAB warnings; affected binaries exited zero.
+Architecture delivery passed 9/9 with zero errors/warnings, and both exact
+specification/artifact SHA-256 and byte counts were verified. Correction rounds:
+0. Visual review was not repeated after the prior browser denial. Python runtime,
+exporter/fixtures, default tools and existing guard/scanner targets did not change;
+Python/export/invariant/scanner/mutation/coverage checks were not rerun.
+No push. The next implementation remains the owned supervisor/listener/CLI path.

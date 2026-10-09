@@ -2859,3 +2859,17 @@ The roots/delay are detached from caller configuration. Directory symlinks are
 not traversed; matching-suffix directories and resolved file symlinks participate.
 It does not build binaries, own children/listeners or change CLI startup.
 `MINILOOP_RELOAD` remains unavailable pending the native supervisor/build path.
+
+
+### Native development build artifacts
+
+`reload.NewBuilder(reload.BuildConfig{ModuleDirectory: moduleRoot})` selects
+`./cmd/miniloop` with the existing Go toolchain; one explicit local package may
+replace that default. Build(ctx, diagnostics) creates a private native Go binary
+using readonly modules and the installed local toolchain. A failed build cleans
+its output; a successful Artifact owns its directory. Call Executable(ctx) before
+launch to recheck retained bytes, then stop/join the child before Artifact.Close.
+Environment is captured/detached at construction; compiler diagnostics stream to
+the caller. On macOS/Linux cancellation ends the compiler group, including its
+helpers; other platforms use direct-process cancellation. This operator library
+has no model tool or CLI activation. Server supervision remains pending.

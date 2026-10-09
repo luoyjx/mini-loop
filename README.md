@@ -386,11 +386,15 @@ own process environment. Pure config.Load and launcher inspection remain unchang
 roots are captured once; polling follows Uvicorn StatReload's first-seen baseline,
 increasing floating-point mtime comparison and reset semantics. Go watches `.go`;
 an explicit Python profile watches `.py` for differential checks. Matching directory
-names and resolved file symlinks retain Source behavior. It does not build code,
-start a child or restart a server. `MINILOOP_RELOAD` remains refused until the
-native supervisor/build/CLI path is delivered.
+names and resolved file symlinks retain Source behavior. The separate typed
+`reload.Builder` compiles one operator-selected local package using the existing
+Go toolchain, host target and readonly module mode. Each attempt owns a private
+output directory; failed attempts clean it, while a successful `Artifact` checks
+its retained executable bytes and releases them on Close. Build cancellation
+ends the owned compiler group on macOS/Linux. Server-child supervision and
+listener ownership remain the next slice; `MINILOOP_RELOAD` is still refused.
 
-Runtime review baseline: `552541f` plus explicit Source-compatible reload observation,
+Runtime review baseline: `bd6a095` plus native reload build/artifact ownership,
 plus native SQLite reopen and restored HTTP
 tool-turn proof of current sandbox policy binding,
 plus explicit Manager full-feature composition,
@@ -534,7 +538,7 @@ plus configured-store transcript epoch reads with concrete historical snapshots,
 plus explicit typed plan-mode tools, review callbacks and log-folded prompt guidance,
 plus explicit typed goal tools, CAS snapshots, bounded default stop continuation
 and disarmed log restoration,
-reviewed **2026-10-10** (Go baseline `552541f` plus explicit Source-compatible reload observation;
+reviewed **2026-10-10** (Go baseline `bd6a095` plus native reload build/artifact ownership;
 default diagnostics and remaining full-runtime acceptance stay explicit).
 The optional `decision` tool evaluates explicit state through a configured
 provider; its typed result returns through
