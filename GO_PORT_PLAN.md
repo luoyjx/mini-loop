@@ -1,5 +1,27 @@
 # Go port plan
 
+## 2026-10-09 approved SQLite driver prerequisite
+
+User explicitly approved mattn/go-sqlite3 v1.14.52 on 2026-10-09. The Go
+module now pins that exact version and records its module checksums. Go remains
+at 1.23; the local validation toolchain is Go 1.23.3 on darwin/arm64 with CGO
+and clang. This supersedes the pending approval recorded in the historical
+2026-10-06 driver decision below.
+
+An isolated temporary Go probe imported the actual driver and opened an on-disk
+database. It reported SQLite 3.53.4 and passed WAL selection, transaction rollback,
+transaction commit, independent-connection visibility and close/reopen checks.
+This is driver prerequisite evidence; the native StateStore schema/migrations,
+records, leases and Manager wiring remain unimplemented. The dependency is
+currently indirect because production code does not import it yet.
+
+Validation: go mod verify, go vet ./... and
+go test ./... -p=1 -count=1 -timeout=300s passed. git diff --check passed.
+No runtime source, topology, authority or default behavior changes in this slice.
+No push. Python tests, race suites and coverage were not refreshed for this
+module-only change.
+
+
 ## 2026-10-09 native component timeout overflow/error order
 
 Baseline: `0300df4`. Shared invocationDuration now converts the exact arbitrary
