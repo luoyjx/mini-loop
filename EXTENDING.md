@@ -716,8 +716,13 @@ a Manager-created session after a real live turn and durable steering write.
 Tests verify lease refusal/release, approval expiry, repair persistence, monotonic
 event catch-up, managed transcript reads and the next provider request prefix.
 These tests reconstruct Manager instances in one test process; they do not claim
-OS-process crash testing or external-effect fencing. Backend Launcher activation,
-native cron restart and wider archival variants remain pending.
+OS-process crash testing or external-effect fencing. Launcher now forwards
+Options.StateStore and offers App.RestoreSessions for explicit operator recovery.
+The caller owns database open/close; constructor, Serve and Stop never close it.
+Construction retains the Manager explicit action-recovery policy, but does not
+automatically publish persisted sessions. Inspection reports injected selection
+without backend reads. Native HTTP restart tests preserve owner isolation and
+stored transcripts. Native cron restart and wider archival variants remain pending.
 
 ---
 

@@ -1,5 +1,46 @@
 # Go port plan
 
+## 2026-10-09 Launcher caller-owned state injection and explicit restoration
+
+Baseline: 492a916. launcher.Options.StateStore is now a concrete consumer-owned
+agent.StateStore seam forwarded into ManagerServices. Default startup remains
+process-local. App.RestoreSessions(ctx) delegates explicit operator restoration;
+neither NewWithOptions nor Serve automatically publishes saved session handles.
+The Manager's existing default stored-journal construction policy still explicitly
+marks started actions unknown. Store open and side-effect-free inspection do not.
+Report.StateStore now uses named StateBackend values process-local/injected;
+injection selection makes no claim about arbitrary backend physical durability.
+
+Backend ownership stays with the embedding caller: App never opens or closes it,
+including on constructor failure. Stop cancels/joins manager work and releases
+owned leases before the caller may close the store. Restore preserves the Manager
+partial-fleet result/error and cancellation semantics and does not start a turn,
+arm cron or reconstruct historical grants. HTTP owner admission stays unchanged.
+Python server.create_app supports custom Manager/manager_factory composition,
+while its default startup supplies no SQLite and performs no automatic restore.
+This slice follows that seam; it introduces no CLI/environment database setting.
+
+Native authenticated HTTP integration writes a model turn, reads its stored
+transcript, stops/releases the process lease, closes/reopens SQLite and constructs
+a second Launcher. Before explicit restore the session returns 404 even after
+Serve starts. Explicit restore exposes the owner-bound handle, a repeated restore
+returns no duplicates, foreign GET/transcript/events remain 404, the transcript
+is unchanged and a resumed model turn persists without degradation. Tests also
+verify inspection leaves started actions unchanged while Manager construction
+marks them unknown, cancelled restore propagates, stopped restore is refused,
+no-store restore stays empty and failed construction leaves the caller store open.
+
+Focused native Launcher tests, full Go ordinary tests (-p=1 -count=1
+-timeout=300s), go vet ./... and full Go race (-race -p=1 -count=1
+-timeout=300s) passed. Native test links emitted nonfatal macOS CGO
+LC_DYSYMTAB warnings; all commands succeeded. git diff --check passed.
+README canonical map/baseline, boundary, extension guide and Go README updated;
+Archify delivery passes 9/9 with zero errors/warnings and exact receipt hashes
+verified. Visual inspection remains skipped after the earlier browser denial.
+Python source/default-tool types/exports were unchanged; their suite/export and
+coverage were not refreshed. Native cron restart, OS-process crash tests, wider
+archival variants and full Go port audit remain open. No push.
+
 ## 2026-10-09 native SQLite Manager reconstruction proof
 
 Baseline: 78ce1a3. Library-injected agent.SessionManager now has real native

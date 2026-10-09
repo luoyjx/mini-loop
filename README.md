@@ -261,7 +261,8 @@ separate:
 
 ## Architecture
 
-Runtime review baseline: `78ce1a3` plus native managed SQLite close/reopen proof,
+Runtime review baseline: `492a916` plus Launcher caller-owned state injection,
+plus native managed SQLite close/reopen proof,
 plus native SQLite action/approval rows,
 plus native SQLite transcript and event rows,
 plus native SQLite session metadata and leases,
@@ -446,7 +447,7 @@ flowchart LR
         GoImprovement["Go improvement / verified core<br/>lineage · verified Git proposals<br/>live GET / owned proposal POST"]
         GoSelfAudit["Go self-audit observer / snapshot core<br/>activity · problems · trajectories · skill usage<br/>suggestions · inadmissible task drafts"]
         GoBenchmarkLibrary["Go benchmark instrument<br/>admitted tasks · setup · effect judges<br/>construct → setup → restrict → run<br/>typed statistics · conservative paired verdict"]
-        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>listener ownership · signal shutdown"]
+        GoLaunch["Go cmd/miniloop · launcher<br/>typed settings · efficiency / Guardian / AST / workflow / decision / memory selection · bind guard<br/>optional caller-owned store · explicit restoration<br/>listener ownership · signal shutdown"]
         GoEntry["Go HTTP / SSE / browser handler<br/>bounded ingress · typed JSON / event projection<br/>owned catalogue / memory / drafts · typed admission<br/>explicit transcript-search / diagnostics selection"]
         GoTrust["Authenticator<br/>one admitted principal · owner-scoped routes"]
         GoProvider["Model providers<br/>Stateful signed fake · direct Anthropic-compatible HTTP<br/>typed replies · SSE · UTF-8 tool-result wire · usage · SDK retries"]
@@ -461,7 +462,7 @@ flowchart LR
         GoTraceView["Typed ledger / HTML renderer<br/>selected header fields · typed span fold<br/>phase-specific metric ints · unbounded sums<br/>legacy payload inspectors · final UTF-8 check<br/>escaped text · embedded CSS / filter JS"]
         GoTraces["Private trajectory JSONL<br/>per-run owner · masked full fields<br/>privacy before UTF-8 · archival metadata / metrics<br/>closed summary views · strict list UTF-8<br/>append-only files · no session restore"]
         GoArchives["Workspace compaction artifacts<br/>.task_outputs · .transcripts"]
-        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>SQLite sessions · epochs · events · leases · audit<br/>activation pending<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
+        GoActions["Optional journal / session state<br/>typed replay · epochs · events · restore<br/>SQLite sessions · epochs · events · leases · audit<br/>explicit caller store · operator restore<br/>optional session-bound search · typed reader<br/>historical request reconstruction · managed stored reads"]
         GoMCP["Go MCP connect_mcp / registration / adapters<br/>closed input · exact schema · bounded RPC<br/>exclusive publication · raw owner collisions<br/>managed connection lifetime · fork isolation<br/>stdio / in-process · launcher selection<br/>task-child binding · parent-retained cleanup"]
         GoMCP -. explicit fixed MCPCatalog snapshot .-> GoGate
         GoGate -. MCPTools: approved exclusive connect / publish .-> GoMCP
@@ -506,7 +507,7 @@ flowchart LR
         GoLaunch --> GoEntry --> GoTrust --> GoManager
         GoEntry -->|public static documents| GoBrowser
         GoBrowser -->|authenticated API / SSE| GoTrust
-        GoLaunch -. construct / stop .-> GoManager
+        GoLaunch -. construct / stop / caller store / explicit restore .-> GoManager
         GoManager -. explicit typed workspace factory .-> GoWorktrees
         GoManager -->|create / fork / restore · owned teammate idle turns · bind owner resources| GoManaged --> GoControls --> GoSession
         GoControls -. mode at permission evaluation .-> GoGate
@@ -608,8 +609,13 @@ reads preserve SQL NULL versus empty tool-use IDs and restore no grants.
 Library-injected Manager restoration now has native database close/reopen proof:
 seven actual Source recipes plus a live Manager-created session retain history,
 metadata, repair epochs and resumed requests. Foreign leases prevent repair and
-model admission; Stop releases owned leases. Configured Launcher activation,
-native cron restart and wider archival profiles remain pending.
+model admission; Stop releases owned leases. launcher.Options.StateStore now
+forwards an explicit caller-owned backend; App.RestoreSessions delegates operator
+restoration without making it automatic at construction or Serve. Stop drains
+Manager work and releases leases but never closes that backend. Inspect reports
+process-local or injected selection without probing or asserting durability.
+Native HTTP tests reopen SQLite and retain owner-scoped transcript/resumed turns.
+Native cron restart, OS-process crash tests and wider archival profiles remain pending.
 
 Go Manager selects an off/normal shared efficiency root by default. Library callers
 can configure ManagerEfficiencyConfig or inject ManagerServices.TokenEfficiency;

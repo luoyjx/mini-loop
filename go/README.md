@@ -296,13 +296,41 @@ resolved time and answer. ReadApprovals preserves SQL NULL versus empty tool-use
 IDs through ApprovalRecord.ToolUseIDNull and its JSON codec. Recovery is explicit:
 MarkInflightUnknown atomically changes selected started rows to unknown, either
 per session or globally; Open never invokes it. It establishes no external-effect
-fencing or human grants. Configured Launcher persistence activation and native
-cron restart evidence remain pending. Native library-injected Manager restoration
+fencing or human grants. Native cron restart evidence remains pending.
+Native library-injected Manager restoration
 now replays all seven Source recipes over real database close/reopen and resumes a
 Manager-created session with its stored steering and request prefix. Foreign-held
 rows remain unmodified until the lease can be claimed; owned stop releases it.
 Managed transcript reads and bounded event catch-up use the native backend. These
 are Manager-instance reconstruction tests, not OS-process crash tests.
+
+Launcher embedding can pass `Options.StateStore` to `NewWithOptions`; no database
+is selected by default. `App.RestoreSessions(ctx)` is an operator method, usually
+called before Serve. Neither constructor nor Serve automatically restores handles.
+Stop cancels/joins Manager work and releases owned leases; the caller closes its
+backend afterward, including on construction/restoration failure. Restore can
+return earlier handles with a later error: there is no fleet transaction. Report's
+named StateBackend distinguishes process-local from injected selection; inspection
+performs no backend reads and makes no durability claim for arbitrary implementations.
+Native HTTP tests close/reopen SQLite, preserve owner isolation and transcript reads,
+and resume another turn without degraded persistence.
+
+Given the embedding's ctx/settings/server/auth/listener, setup can be:
+
+```go
+store, err := sqlitestate.Open(ctx, "var/state.db")
+if err != nil { return err }
+defer store.Close()
+app, err := launcher.NewWithOptions(ctx, settings, server, auth,
+    launcher.Options{StateStore: store})
+if err != nil { return err }
+defer app.Stop(context.Background())
+if _, err := app.RestoreSessions(ctx); err != nil { return err }
+return app.Serve(ctx, listener)
+```
+
+This optional library composition follows Python's custom Manager/manager_factory
+startup seam. No new CLI/environment database option is introduced.
 
 `agent.SessionRecord` models the Python schema-v7 session projection: immutable
 creation time, mutable run/status/todo state, tenant owner, pending steering and
