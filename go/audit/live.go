@@ -8,7 +8,6 @@ import (
 	"github.com/luoyjx/mini-loop/go/agent"
 	"github.com/luoyjx/mini-loop/go/internal/fnmatch"
 	"github.com/luoyjx/mini-loop/go/internal/pytext"
-	"github.com/luoyjx/mini-loop/go/protocol"
 	"github.com/luoyjx/mini-loop/go/secrets"
 	"github.com/luoyjx/mini-loop/go/selfaudit"
 )
@@ -25,42 +24,12 @@ const (
 	ExperimentalWorkflows Check = "workflows"
 )
 
-type ToolObservation struct {
-	Name         protocol.ToolName `json:"name"`
-	Risk         agent.ToolRisk    `json:"risk"`
-	ParallelSafe bool              `json:"parallel_safe"`
-}
-
-type CatalogObservation struct {
-	Tools []ToolObservation `json:"tools"`
-}
-type SubsystemName string
-
-type ProblemChannel struct {
-	Name   SubsystemName    `json:"name"`
-	Ledger selfaudit.Ledger `json:"ledger"`
-}
-
-// LiveObservation is inert metadata from a trusted local observer. It grants no
-// authority and does not itself prove that a backend enforces its policy.
-// Nil Catalog means Source's default shell catalogue, distinct from an empty one.
-type LiveObservation struct {
-	Catalog          *CatalogObservation `json:"catalog"`
-	SandboxNull      bool                `json:"sandbox_null"`
-	SandboxReason    *string             `json:"sandbox_reason"`
-	SecretsNull      bool                `json:"secrets_null"`
-	SecretNames      []secrets.Name      `json:"secret_names"`
-	Unresolved       []secrets.Name      `json:"unresolved"`
-	ShortValues      []secrets.Name      `json:"short_values"`
-	PersistenceError *string             `json:"persistence_error"`
-	MCP              selfaudit.Ledger    `json:"mcp"`
-	Cron             selfaudit.Ledger    `json:"cron"`
-	Skills           selfaudit.Ledger    `json:"skills"`
-	Channels         []ProblemChannel    `json:"channels"`
-	StateNull        bool                `json:"state_null"`
-	JournalMemory    bool                `json:"journal_memory"`
-	Workflows        bool                `json:"workflows"`
-}
+// Aliases keep audit composition and manager observation on one concrete schema.
+type ToolObservation = agent.DeploymentToolObservation
+type CatalogObservation = agent.DeploymentCatalogObservation
+type SubsystemName = agent.DeploymentSubsystemName
+type ProblemChannel = agent.DeploymentProblemChannel
+type LiveObservation = agent.DeploymentAuditObservation
 
 // ComposeLive combines configuration findings with full deployment observations.
 // It performs no runtime callbacks, filesystem IO, secret lookup or tool effects.

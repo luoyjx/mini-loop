@@ -3696,3 +3696,30 @@ workspace preparation. Configured metadata is not proof of OS confinement;
 native Seatbelt/default platform selection remain pending.
 The null-store report uses Source's `NullStateStore` marker, because its remote
 auditor checks that exact marker to detect process-local transcripts.
+
+### Go local deployment audit observation
+
+`SessionManager.ObserveDeploymentAudit(ctx)` returns concrete agent-owned
+`DeploymentAuditObservation` metadata. Existing audit observation type names
+remain aliases. `audit.Manager(ctx, manager, settings, environment)` composes
+configuration and live findings over a caller-owned manager; nil environment
+is captured once, and an explicit empty map stays empty. The caller supplies
+the selected settings and trusted fleet visibility. This API provides no owner
+admission, manager lifecycle, route or model tool.
+
+Unlike health's first-live selection, deployment auditing reads manager/template
+bindings. Custom Bash factories must expose `shell.SandboxPostureProvider`;
+unavailable metadata fails observation. Optional secret Names/Unresolved/
+ShortValues getters must return cached reports without resolving values.
+ProblemSource getters run outside manager locks and must be concurrency safe.
+Returned entries, summaries, counters, reasons and failures are detached.
+Callback panics and failed ledgers cannot become successful empty findings.
+Snapshots are component snapshots, not an atomic fleet transaction.
+
+Root cron/skills and actions/approvals/bus/raw-memory/trajectory ledgers match
+Source deployment scope. Per-session task/gate/owner diagnostics stay in existing
+self-audit. All published sessions contribute persistence faults and retained
+MCP entries; repeated counts are merged exactly without count-sized replay.
+Observation opens no owner bundle or task board, visits no historical recording,
+creates no session and invokes no provider/tool. Local CLI startup/shutdown
+remains a separate migration slice.

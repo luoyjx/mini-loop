@@ -13929,3 +13929,75 @@ contract commit. README outline and git diff --check passed. Existing CGO
 linker warnings were nonfatal. Python package invariant/guard checks and
 coverage were not refreshed because package modules and mutation anchors are
 unchanged. No push; native observation and full migration acceptance remain open.
+
+## Native manager deployment observation and SDK audit — 2026-10-09
+
+Base: `724899f`. `SessionManager.ObserveDeploymentAudit(ctx)` now snapshots
+manager/template bindings and all published session handles. Agent owns the
+concrete DeploymentAuditObservation schema; existing audit type names remain
+aliases, avoiding a package cycle without dynamic payloads or reflection.
+`audit.Manager` composes selected settings, one environment snapshot and real
+manager observations into Source-compatible full findings. Manager ownership
+and shutdown remain caller responsibilities.
+
+The collector reads explicit/default catalogue semantics, sandbox factory
+metadata, cached secret Names/Unresolved/ShortValues, persistence write faults,
+cron/skills and manager-held actions/approvals/bus/raw-memory/trajectory ledgers.
+It aggregates retained MCP entries from every published session, matching Source
+count replay and FIFO retention in bulk, including 30-digit counters; evicted
+source history is not reintroduced. Per-session task/gate/owner diagnostics
+remain in existing self-audit. There is no 100-session observation truncation.
+
+Callbacks run outside manager locks; returned containers, summaries, counters,
+reasons and failures detach from injected storage. Cancellation, unobservable
+custom Bash factories, callback panics and failed ledgers cannot become clean
+findings. Component snapshots are not an atomic fleet transaction. This
+privileged local API provides no owner admission and has no health/model-tool
+binding. It creates no session/task board/owner bundle, executes no provider or
+tool, visits no historical recording and resolves no secret value.
+
+Thirteen actual Source profiles match exact native findings and rendering using
+real native managers. Remaining Source fault/ledger profiles stay covered by
+pure composition; native tests separately exercise actual persisted write
+failure, action/approval diagnostics, multi-session MCP repeats, bounded replay,
+concurrent snapshots, unlocked callbacks, injected ledger failures and detached
+fields. Native persistence error class labels retain Go identity rather than
+pretending to be Source RuntimeError. No new dependencies or feature defaults.
+
+README canonical map/boundary/baseline, extension seam and architecture source
+are updated. Generated HTML passes Archify 9/9 showcase checks, zero errors or
+warnings; specification/artifact hashes and byte counts match the receipt.
+Visual review was not repeated because prior browser inspection was denied;
+correction rounds 0. Local audit CLI startup/shutdown, default diagnostic
+selection and full migration acceptance remain open.
+
+Final gates: focused TestDeployment/TestManagerAudit/TestComposeLive race tests,
+full serialized Go tests, full serialized Go race tests, go vet ./... and full
+cross-package coverage tests all passed. README outline, typed-payload search
+and git diff --check passed. Existing Darwin CGO linker warnings were nonfatal.
+Python pytest/exporter/invariant/scanner/guard gates were not repeated: no
+Python package, export, scanner, mutation anchor or Go default-tool type changed.
+The preceding Source contract delivery passed Python pytest and all 194 exports.
+No push.
+
+### Current coverage after manager deployment audit
+
+Darwin arm64, implementation base `724899f` plus this slice. Cross-package
+statement coverage merges identical blocks by maximum hit count.
+
+| Scope | Covered | Statements | Coverage |
+| --- | ---: | ---: | ---: |
+| ALL | 27,699 | 30,729 | 90.14% |
+| audit | 311 | 321 | 96.88% |
+| agent | 8,992 | 10,003 | 89.89% |
+| httpapi | 1,616 | 1,806 | 89.48% |
+| launcher | 196 | 236 | 83.05% |
+| sandbox | 157 | 189 | 83.07% |
+| shell | 383 | 406 | 94.33% |
+| sqlitestate | 521 | 625 | 83.36% |
+
+Gate: `go test -p=1 -count=1 -timeout=300s -coverpkg=./...
+-coverprofile=/tmp/mini-loop-manager-audit-cover.out ./...` passed.
+The overall 90.14% is executed-statement coverage, not migration acceptance.
+Python and mutation coverage were not refreshed. Full race ran separately
+and passed without coverage instrumentation.
